@@ -1,66 +1,66 @@
-Return-Path: <stable+bounces-272075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272076-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id iQdoJ/9pSmqhCgEAu9opvQ
-	(envelope-from <stable+bounces-272075-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 16:28:15 +0200
+	id f7hpFiZqSmqwCgEAu9opvQ
+	(envelope-from <stable+bounces-272076-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 16:28:54 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBC8A70A4BC
-	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 16:28:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0FF370A4C4
+	for <lists+stable@lfdr.de>; Sun, 05 Jul 2026 16:28:53 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=callumwong.com header.s=tm32yydslvviquw2x2q4ycbntmmm3paz header.b=IpkeFCRF;
-	dkim=pass header.d=amazonses.com header.s=ulrbq2zjesb42hdt6rpnifgor3epinsy header.b=a7nS7U7x;
+	dkim=pass header.d=callumwong.com header.s=tm32yydslvviquw2x2q4ycbntmmm3paz header.b=AskJC0mg;
+	dkim=pass header.d=amazonses.com header.s=ulrbq2zjesb42hdt6rpnifgor3epinsy header.b=UMXVTPxb;
 	dmarc=pass (policy=none) header.from=callumwong.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272075-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-272075-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272076-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-272076-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9E34F3014648
-	for <lists+stable@lfdr.de>; Sun,  5 Jul 2026 14:27:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B9E383023FBB
+	for <lists+stable@lfdr.de>; Sun,  5 Jul 2026 14:27:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47EB838551D;
-	Sun,  5 Jul 2026 14:27:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 525E238551D;
+	Sun,  5 Jul 2026 14:27:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from b232-8.smtp-out.ap-southeast-2.amazonses.com (b232-8.smtp-out.ap-southeast-2.amazonses.com [69.169.232.8])
+Received: from b232-9.smtp-out.ap-southeast-2.amazonses.com (b232-9.smtp-out.ap-southeast-2.amazonses.com [69.169.232.9])
 	(using TLSv1.2 with cipher AES128-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 414C93815CA;
-	Sun,  5 Jul 2026 14:27:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58783384CF7;
+	Sun,  5 Jul 2026 14:27:54 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783261672; cv=none; b=Pe7CrgKfBoCFF4fR8STdMGrhGT1/GMSOnxUqopFhCbDETvnZwckJQ/OhimYCKlUh4NTqNbQvDXwgQny84f3ZonbRvr+V9APMNXfFYzDBI2+MnRultQJ7ImHpK184BEH9JHP2gFy1jXbw/PvguOpfWPyINyhFQ+m1CVLOrUDgx4Q=
+	t=1783261676; cv=none; b=sbuPUKZTEf9i9ObBxLwGyb0USTnO76ok8ppZMIoHuRfLcxkOIQryUlb8yWKGIN0RhrqkzyAvDAjASMCw7SG/WIV9+F8NSQjkgetWV4NA/guLODPCVFzVcUvKFbIZJSbdGZrMZyaIjeyPB/oKQieVeehCqrFOmhTouimwezlJWV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783261672; c=relaxed/simple;
-	bh=/WqMBAa7Ytdpy/iYnElYCAeZTp9y9w7UfskxqkelEgE=;
+	s=arc-20240116; t=1783261676; c=relaxed/simple;
+	bh=DD7/7mBFojVAb1s4AG49ZXVXz2Ddgt86NIiBgUi2IJE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lhpX0+Si+uYZZCr6ngQ3Y5mFW8RoTHH2mwjIGXLJaA3x+ft44KMaDHVZyGZKnfvFcdp4hz0MxXIYsxTlFOaCL1e8NXbPYULoLQUbrYWvLutuYawOWx/kflX6+RQOTITENb2cq6sEzkNv+QaRXgnK31zMsMF88nZ81TANdKKvedU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=callumwong.com; spf=pass smtp.mailfrom=bounce.callumwong.com; dkim=pass (2048-bit key) header.d=callumwong.com header.i=@callumwong.com header.b=IpkeFCRF; dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b=a7nS7U7x; arc=none smtp.client-ip=69.169.232.8
+	 MIME-Version; b=kS/84XsSOrbkuneu6Phcau5YapRgNuIYdQR/fYMD6lcRiGexk3O1c2m2hhOLvTJn8YSPI292lUUpzBU7IV0uGpCnm2DWntoxNAJNHHG208pqsiI8Mtlju/lo/1ndSfWVmUFMcJQOswA0ri7lJT2icTiOGJK34N4cnmV6/dYst9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=callumwong.com; spf=pass smtp.mailfrom=bounce.callumwong.com; dkim=pass (2048-bit key) header.d=callumwong.com header.i=@callumwong.com header.b=AskJC0mg; dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b=UMXVTPxb; arc=none smtp.client-ip=69.169.232.9
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-	s=tm32yydslvviquw2x2q4ycbntmmm3paz; d=callumwong.com; t=1783261668;
+	s=tm32yydslvviquw2x2q4ycbntmmm3paz; d=callumwong.com; t=1783261672;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=/WqMBAa7Ytdpy/iYnElYCAeZTp9y9w7UfskxqkelEgE=;
-	b=IpkeFCRFJ6QdYy0irnv9WO2Our0EUnN/IpJONXKDNkVORGWIDK1suVlAEk82mclZ
-	k7y6iTZqyD+fJpxb3SWLnYS4D8kfmhU8Bj2VN3ckT6BAopBftJndNRpnea0YI13Lyfs
-	La3DHS7ooouhIQGofwpcVsFVtEemkIYulTyaMnvBKjf0pINVT+NyMbJ1qMVkRhG6/oV
-	XUVcFr2/MoGrbuGhh62P6mweBt3BZ4w3teCoPVteVvtDBTqlXkl9VZJmkoDUD6EKjke
-	kXVm7Ms3p1KUleInl7mbQfWa+nPGa+WsYBCkSnuHtH0eYOBnzJ1RcFeCdhzF6OsHwzS
-	KGxGE+Hm9Q==
+	bh=DD7/7mBFojVAb1s4AG49ZXVXz2Ddgt86NIiBgUi2IJE=;
+	b=AskJC0mgEl5/QXE8XFGhbm8uxnu6pjGcIIErNl5nM/7Np+WBlObgifImQ5elIHAZ
+	f/pDFpVxYNdj/38vN9vpeX/gkA9eIdRiRBdV65vBMGhAfgF/ZasaCVkvirWAKkOyswF
+	x0gUA1y673pkuHouD4hXSBGlPAbSvbvn8lCgbhaVPuTjxft3oo5WzEb/+Evz2cO1LVl
+	eWEUS0qcLYmtfpxAUJDr7XPa1oKb9T0ScR1oN6UJxAbk36ALcpDuCnClwIvpBp44v6d
+	SvOmLxSAn8ajVKjQ+G8DkxDyZ+/hPmWAljxjvwwpnqxt+zdJu4DG/JnW+kU1RzwSvL5
+	Nyj6BAcdwg==
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-	s=ulrbq2zjesb42hdt6rpnifgor3epinsy; d=amazonses.com; t=1783261668;
+	s=ulrbq2zjesb42hdt6rpnifgor3epinsy; d=amazonses.com; t=1783261672;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Feedback-ID;
-	bh=/WqMBAa7Ytdpy/iYnElYCAeZTp9y9w7UfskxqkelEgE=;
-	b=a7nS7U7xLAKFglg9UjBFKc+X859c/ujG1GUP6zHPtSItYXNows8swbNhznmTH9wC
-	w8WOwzq8Ck7n+uwyawPbn4ruLmz7qttbnsHY6Kt3vz5erhHGP4rP8FkaaBE6CjYRs+N
-	bKFS4vzwekvK4ZFoPNMPOslf2ailZdrNXxPe3PRU=
+	bh=DD7/7mBFojVAb1s4AG49ZXVXz2Ddgt86NIiBgUi2IJE=;
+	b=UMXVTPxbW88f2KYrNAt41i5Fuyw59k54iO2MSP4C3JL33qQIQi8mnZUe1+3i/pJS
+	eaWpJiTQCzJjxEQFCr81GNrr7ZRpiSEzsyTmSwleP4uLItkdIGb5nm+3gQtb/CexVvV
+	zBEVOzjS8T5pNioUWb0lbI2CMPxXTT/FHd3TRzOY=
 From: Callum Wong <mail@callumwong.com>
 To: tiwai@suse.com, perex@perex.cz
 Cc: linux-sound@vger.kernel.org, sbinding@opensource.cirrus.com, 
 	patches@opensource.cirrus.com, rf@opensource.cirrus.com, 
 	david.rhodes@cirrus.com, linux-kernel@vger.kernel.org, 
 	Callum Wong <mail@callumwong.com>, stable@vger.kernel.org
-Subject: [PATCH 1/2] ALSA: hda: cs35l41: Support HP OmniBook 7 Laptop 14-fr0xxx
-Date: Sun, 5 Jul 2026 14:27:48 +0000
-Message-ID: <0108019f32ada4d0-8ff2c576-8eb9-4ac4-803e-8ff4e1ce57d3-000000@ap-southeast-2.amazonses.com>
+Subject: [PATCH 2/2] ALSA: hda/realtek: Enable mute LEDs on HP OmniBook 7 Laptop 14-fr0xxx
+Date: Sun, 5 Jul 2026 14:27:52 +0000
+Message-ID: <0108019f32adb483-2c606373-6a9f-483c-ba13-c413bc432170-000000@ap-southeast-2.amazonses.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260705142535.186028-1-mail@callumwong.com>
 References: <20260705142535.186028-1-mail@callumwong.com>
@@ -72,7 +72,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Feedback-ID: ::1.ap-southeast-2.Bo07if0thBjjxfhnG0PllidpkDb4AFgWjQ4XZlpgJDk=:AmazonSES
-X-SES-Outgoing: 2026.07.05-69.169.232.8
+X-SES-Outgoing: 2026.07.05-69.169.232.9
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -84,7 +84,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-272075-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-272076-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:tiwai@suse.com,m:perex@perex.cz,m:linux-sound@vger.kernel.org,m:sbinding@opensource.cirrus.com,m:patches@opensource.cirrus.com,m:rf@opensource.cirrus.com,m:david.rhodes@cirrus.com,m:linux-kernel@vger.kernel.org,m:mail@callumwong.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
@@ -105,48 +105,60 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[ap-southeast-2.amazonses.com:mid,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amazonses.com:dkim,callumwong.com:from_mime,callumwong.com:email,callumwong.com:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: EBC8A70A4BC
+X-Rspamd-Queue-Id: C0FF370A4C4
 
-The HP OmniBook 7 Laptop 14-fr0xxx (SSID 103C8E3B) has two CS35L41
-amplifiers connected over I2C. The firmware provides a _DSD, but as with
-the other HP laptops already handled by this driver the properties are
-not exposed to the generic ACPI path, so the amplifiers fail to probe
-with "Platform not supported" and the speakers only play at a much lower
-volume. Provide the configuration through cs35l41_hda_property.c
-instead, so the amplifiers probe and drive the speakers at full volume.
+The HP OmniBook 7 Laptop 14-fr0xxx (SSID 103c:8e3b) is already handled by
+ALC287_FIXUP_CS35L41_I2C_2, which binds its two CS35L41 amplifiers but
+does not enable the keyboard mute LEDs. On this machine the F6
+speaker-mute LED is driven via the ALC245 COEF register and the F9
+mic-mute LED via a codec GPIO, the same as
+ALC245_FIXUP_HP_X360_MUTE_LEDS.
 
-The values are taken from the machine's _DSD. There are two amplifiers
-using internal boost (1000 nH, 4500 mA, 24 uF) with the speakers wired
-right/left, the reset line at _CRS GPIO index 0 and the speaker-id line
-at index 1.
+Add a fixup that binds the amplifiers and chains that mute-LED path, and
+point the 8e3b quirk at it, so both LEDs work in addition to the
+speakers.
 
 Fixes: 7150d57c370f ("ALSA: hda/realtek: Add support for HP Agusta using CS35L41 HDA")
 Cc: stable@vger.kernel.org
 Signed-off-by: Callum Wong <mail@callumwong.com>
 ---
- sound/hda/codecs/side-codecs/cs35l41_hda_property.c | 2 ++
- 1 file changed, 2 insertions(+)
+ sound/hda/codecs/realtek/alc269.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/sound/hda/codecs/side-codecs/cs35l41_hda_property.c b/sound/hda/codecs/side-codecs/cs35l41_hda_property.c
-index 416d7bf3e289..1d2a83b47cde 100644
---- a/sound/hda/codecs/side-codecs/cs35l41_hda_property.c
-+++ b/sound/hda/codecs/side-codecs/cs35l41_hda_property.c
-@@ -85,6 +85,7 @@ static const struct cs35l41_config cs35l41_config_table[] = {
- 	{ "103C8C51", 2, INTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, 1, -1, 1000, 4100, 24 },
- 	{ "103C8CDD", 2, INTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, 1, -1, 1000, 4100, 24 },
- 	{ "103C8CDE", 2, INTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, 1, -1, 1000, 3900, 24 },
-+	{ "103C8E3B", 2, INTERNAL, { CS35L41_RIGHT, CS35L41_LEFT, 0, 0 }, 0, 1, -1, 1000, 4500, 24 },
- 	{ "104312AF", 2, INTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 1, 2, 0, 1000, 4500, 24 },
- 	{ "10431433", 2, INTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, 1, -1, 1000, 4500, 24 },
- 	{ "10431463", 2, INTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, 1, -1, 1000, 4500, 24 },
-@@ -511,6 +512,7 @@ static const struct cs35l41_prop_model cs35l41_prop_model_table[] = {
- 	{ "CSC3551", "103C8C6A", hp_i2c_int_2amp_dual_spkid },
- 	{ "CSC3551", "103C8CDD", generic_dsd_config },
- 	{ "CSC3551", "103C8CDE", generic_dsd_config },
-+	{ "CSC3551", "103C8E3B", generic_dsd_config },
- 	{ "CSC3551", "104312AF", generic_dsd_config },
- 	{ "CSC3551", "10431433", generic_dsd_config },
- 	{ "CSC3551", "10431463", generic_dsd_config },
+diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/realtek/alc269.c
+index 9ce143598b66..ec82e665a3a5 100644
+--- a/sound/hda/codecs/realtek/alc269.c
++++ b/sound/hda/codecs/realtek/alc269.c
+@@ -4170,6 +4170,7 @@ enum {
+ 	ALC245_FIXUP_BASS_HP_DAC,
+ 	ALC245_FIXUP_ACER_MICMUTE_LED,
+ 	ALC245_FIXUP_CS35L41_I2C_2_MUTE_LED,
++	ALC245_FIXUP_HP_OMNIBOOK_7_14_FR0XXX,
+ 	ALC236_FIXUP_HP_DMIC,
+ 	ALC256_FIXUP_HONOR_MRB_XXX_M1020_AUDIO,
+ 	ALC245_FIXUP_HP_ENVY_X360_15_FH0XXX,
+@@ -6745,6 +6746,12 @@ static const struct hda_fixup alc269_fixups[] = {
+ 		.chained = true,
+ 		.chain_id = ALC287_FIXUP_CS35L41_I2C_2,
+ 	},
++	[ALC245_FIXUP_HP_OMNIBOOK_7_14_FR0XXX] = {
++		.type = HDA_FIXUP_FUNC,
++		.v.func = cs35l41_fixup_i2c_two,
++		.chained = true,
++		.chain_id = ALC245_FIXUP_HP_X360_MUTE_LEDS,
++	},
+ 	[ALC236_FIXUP_HP_DMIC] = {
+ 		.type = HDA_FIXUP_PINS,
+ 		.v.pins = (const struct hda_pintbl[]) {
+@@ -7318,7 +7325,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x8e36, "HP 14 Enstrom OmniBook X", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x103c, 0x8e37, "HP 16 Piston OmniBook X", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x103c, 0x8e3a, "HP Agusta", ALC287_FIXUP_CS35L41_I2C_2),
+-	SND_PCI_QUIRK(0x103c, 0x8e3b, "HP Agusta", ALC287_FIXUP_CS35L41_I2C_2),
++	SND_PCI_QUIRK(0x103c, 0x8e3b, "HP OmniBook 7 Laptop 14-fr0xxx", ALC245_FIXUP_HP_OMNIBOOK_7_14_FR0XXX),
+ 	SND_PCI_QUIRK(0x103c, 0x8e60, "HP OmniBook 7 Laptop 16-bh0xxx", ALC245_FIXUP_CS35L41_I2C_2_MUTE_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8e61, "HP Trekker ", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x103c, 0x8e62, "HP Trekker ", ALC287_FIXUP_CS35L41_I2C_2),
 -- 
 2.54.0
 
