@@ -1,144 +1,174 @@
-Return-Path: <stable+bounces-272185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272186-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id yq4/FkiRS2qhVgEAu9opvQ
-	(envelope-from <stable+bounces-272185-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 13:28:08 +0200
+	id hHFuDhGJS2oSVAEAu9opvQ
+	(envelope-from <stable+bounces-272186-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 12:53:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97C3770FD65
-	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 13:28:07 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BCD070F812
+	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 12:53:04 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W8tOvrpS;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272185-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272185-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=arm.com header.s=foss header.b="Y86LUQ/8";
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272186-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-272186-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 194D130FB9E9
-	for <lists+stable@lfdr.de>; Mon,  6 Jul 2026 10:51:08 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E5CBE3017B8B
+	for <lists+stable@lfdr.de>; Mon,  6 Jul 2026 10:53:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55ABE3F660F;
-	Mon,  6 Jul 2026 10:50:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BC5D3E4C65;
+	Mon,  6 Jul 2026 10:53:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E51613F39E8;
-	Mon,  6 Jul 2026 10:50:41 +0000 (UTC)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A601377EAF;
+	Mon,  6 Jul 2026 10:52:58 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783335043; cv=none; b=ijkJC5Wsvzq93AK2G8SWX9thg8ZwRpVewOQ8/ynDIynQCAhjxZ+PKT30mxtka7Qvv2auSQrij4QC49AeonvviYwmsQq9n3zZOcYvNaTrTcvYssVZTmnQ9gv1mVICPXtcB4fVJX/oTtglUt2doBbqmoXWMrXVs4TxgCE9CRDEAVg=
+	t=1783335181; cv=none; b=nAw6m1ouSawM9UY38k9q/7kfyxH9Wnh3gnTyPSneCyq1xCkHiiTQDFQ1xnwC/nNplncmk42HFdSZz90+LyrnC9njlvEkYSZ1Wv2vbP3NfyORiBip4nMyHoGuU7vV8GF0KTrNxoM9lUFcKF3MgGFr6YH1/PiQGoRCSliSQtmu4d0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783335043; c=relaxed/simple;
-	bh=yctoVFD91OFx4fFlRA1MPazNYejGlaXFotK29gkw3PE=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=JJLZ4WLeEpfQOBUIQjx+PhyZYn/heMQj1l5DPvu5DmDn/CGoP7j3olM74l9DcIfu0+6JCjs3xGpg45prqoNGp1BrYAAoBqOTmmxhurKUV/D3oQmCLfiMHhCrPsmd11VZP8cLWoA5z/cHeP4RdXn5jhR0Xj7EXPMnFajx0O7D5GM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W8tOvrpS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 817EE1F000E9;
-	Mon,  6 Jul 2026 10:50:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783335041;
-	bh=yHJBd2n2Sa1J667oouse/pt4NTBKScB7z7klNN5CAW4=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=W8tOvrpS0wE/XmOlbNX/4iDM9O9oBpzhAYZB9E4myqREVCZvlpm2ENicf4Umj1wgm
-	 J+z78r96kEnsPoRAsugoIt0xPxGMxkje/OzsxYuTFeloZVOPjl6d4sGzE80X7ahbmC
-	 9pQSe9gKu7dVDsuw7NolP6hD7mybDC+C6e8NImZHR30zndQ3Jv7RHJnbvThLjYsyLe
-	 iFa/30wzdk4eqdYVWdX+vZbFnsjtNYNedX5FS4WnyioozbL4Jhs7SF6di65iWEG08/
-	 dS7zZQVtGTbGDyqsx9bEOqnimCZiX8eKSM/SDGY0UXsRet013wt3w0TXdzg0gvGb3H
-	 EiPO7dmRYfBaQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56B3C3ABD2A5;
-	Mon,  6 Jul 2026 10:50:23 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1783335181; c=relaxed/simple;
+	bh=5PDQKPlKrlK5mkq4F/AqOm5P1FJi9r8quvEcLVadPkI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YGdwxrvIVukQ6lX5lxIw8DLeD41PJEwVUa0VOaCfqc6gBTabVx7dQN2a9Ogp1uVTUz6Ihgo+juNKwwcLP1BmJ2tdd/xFVdda7Rdgw4umepycg0pEPSNv912NyqCI2F6/h9tfdW+edVwvXVBlVJ9cLh7BIWmfnOXMUNiZclJhtCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=Y86LUQ/8; arc=none smtp.client-ip=217.140.110.172
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6E9512BC4;
+	Mon,  6 Jul 2026 03:52:53 -0700 (PDT)
+Received: from [10.164.148.41] (MacBook-Pro.blr.arm.com [10.164.148.41])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2F4B13F85F;
+	Mon,  6 Jul 2026 03:52:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1783335177; bh=5PDQKPlKrlK5mkq4F/AqOm5P1FJi9r8quvEcLVadPkI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Y86LUQ/88wqr9q+XQgYX5M2rHKMDqwHVd78+V56i28vxi0bJqCg45smjItGSht6vM
+	 LhTmj1Ma7QeT9qBKxDeVirPdzgpCOF1LMTwfCAoG4OkTwOZr6+PrXWwP5PvS1/LvOO
+	 FD/IYsLJPBEPg9IDaQQJJIuEA9IW1pESzn+k4g/8=
+Message-ID: <39a13445-dc6f-4a75-92b8-f4a122c63b89@arm.com>
+Date: Mon, 6 Jul 2026 16:22:25 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] ipvs: fix PMTU for GUE/GRE tunnel ICMP errors
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178333502188.500093.18161993584904393152.git-patchwork-notify@kernel.org>
-Date: Mon, 06 Jul 2026 10:50:21 +0000
-References: <20260702073430.67680-1-zhaoyz24@mails.tsinghua.edu.cn>
-In-Reply-To: <20260702073430.67680-1-zhaoyz24@mails.tsinghua.edu.cn>
-To: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-Cc: netdev@vger.kernel.org, horms@verge.net.au, ja@ssi.bg,
- pablo@netfilter.org, fw@strlen.de, phil@nwl.cc, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- lvs-devel@vger.kernel.org, netfilter-devel@vger.kernel.org,
- coreteam@netfilter.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- yangyx22@mails.tsinghua.edu.cn, wangao@seu.edu.cn, fengxw06@126.com,
- qli01@tsinghua.edu.cn, xuke@tsinghua.edu.cn
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/6] arm64: make huge_ptep_get handled unaligned
+ addresses
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: muchun.song@linux.dev, osalvador@suse.de, ljs@kernel.org,
+ liam@infradead.org, riel@surriel.com, vbabka@kernel.org, harry@kernel.org,
+ jannh@google.com, lance.yang@linux.dev, kas@kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, apopple@nvidia.com, rcampbell@nvidia.com,
+ ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
+ rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
+ ying.huang@linux.alibaba.com, ak@linux.intel.com, nao.horiguchi@gmail.com,
+ mel@csn.ul.ie, j-nomura@ce.jp.nec.com, pfalcato@suse.de, tglx@kernel.org,
+ dave.hansen@intel.com, jpoimboe@kernel.org, catalin.marinas@arm.com,
+ will@kernel.org, linux-arm-kernel@lists.infradead.org, ryan.roberts@arm.com,
+ anshuman.khandual@arm.com, stable@vger.kernel.org
+References: <20260703114202.365553-1-dev.jain@arm.com>
+ <20260703114202.365553-2-dev.jain@arm.com>
+ <20260705003559.8b124d2b94b685cc2e4e77ae@linux-foundation.org>
+ <8fdbe0d6-87fd-441c-b6d2-baac380f6fb3@arm.com>
+ <4b4e8007-3747-457a-85cc-d1003e1c8fe2@kernel.org>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <4b4e8007-3747-457a-85cc-d1003e1c8fe2@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-5.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[arm.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[arm.com:s=foss];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-272185-lists,stable=lfdr.de,netdevbpf];
-	FREEMAIL_CC(0.00)[vger.kernel.org,verge.net.au,ssi.bg,netfilter.org,strlen.de,nwl.cc,davemloft.net,google.com,kernel.org,redhat.com,mails.tsinghua.edu.cn,seu.edu.cn,126.com,tsinghua.edu.cn];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
-	FORGED_SENDER(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	FORGED_RECIPIENTS(0.00)[m:zhaoyz24@mails.tsinghua.edu.cn,m:netdev@vger.kernel.org,m:horms@verge.net.au,m:ja@ssi.bg,m:pablo@netfilter.org,m:fw@strlen.de,m:phil@nwl.cc,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:lvs-devel@vger.kernel.org,m:netfilter-devel@vger.kernel.org,m:coreteam@netfilter.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:yangyx22@mails.tsinghua.edu.cn,m:wangao@seu.edu.cn,m:fengxw06@126.com,m:qli01@tsinghua.edu.cn,m:xuke@tsinghua.edu.cn,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[37];
+	TAGGED_FROM(0.00)[bounces-272186-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:david@kernel.org,m:akpm@linux-foundation.org,m:muchun.song@linux.dev,m:osalvador@suse.de,m:ljs@kernel.org,m:liam@infradead.org,m:riel@surriel.com,m:vbabka@kernel.org,m:harry@kernel.org,m:jannh@google.com,m:lance.yang@linux.dev,m:kas@kernel.org,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:apopple@nvidia.com,m:rcampbell@nvidia.com,m:ziy@nvidia.com,m:matthew.brost@intel.com,m:joshua.hahnjy@gmail.com,m:rakie.kim@sk.com,m:byungchul@sk.com,m:gourry@gourry.net,m:ying.huang@linux.alibaba.com,m:ak@linux.intel.com,m:nao.horiguchi@gmail.com,m:mel@csn.ul.ie,m:j-nomura@ce.jp.nec.com,m:pfalcato@suse.de,m:tglx@kernel.org,m:dave.hansen@intel.com,m:jpoimboe@kernel.org,m:catalin.marinas@arm.com,m:will@kernel.org,m:linux-arm-kernel@lists.infradead.org,m:ryan.roberts@arm.com,m:anshuman.khandual@arm.com,m:stable@vger.kernel.org,m:joshuahahnjy@gmail.com,m:naohoriguchi@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[dev.jain@arm.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linux.dev,suse.de,kernel.org,infradead.org,surriel.com,google.com,kvack.org,vger.kernel.org,nvidia.com,intel.com,gmail.com,sk.com,gourry.net,linux.alibaba.com,linux.intel.com,csn.ul.ie,ce.jp.nec.com,arm.com,lists.infradead.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	FROM_NO_DN(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dev.jain@arm.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[arm.com:+];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,strlen.de:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,arm.com:from_mime,arm.com:email,arm.com:mid,arm.com:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 97C3770FD65
+X-Rspamd-Queue-Id: 7BCD070F812
 
-Hello:
 
-This patch was applied to netdev/net.git (main)
-by Florian Westphal <fw@strlen.de>:
 
-On Thu,  2 Jul 2026 15:34:28 +0800 you wrote:
-> When an ICMP Fragmentation Needed error is received for a tunneled IPVS
-> connection, ip_vs_in_icmp() recomputes the MTU that the original packet
-> can use by subtracting the tunnel overhead from the reported next-hop
-> MTU.
+On 06/07/26 2:15 pm, David Hildenbrand (Arm) wrote:
+> On 7/5/26 10:08, Dev Jain wrote:
+>>
+>>
+>> On 05/07/26 1:05 pm, Andrew Morton wrote:
+>>> On Fri,  3 Jul 2026 11:41:54 +0000 Dev Jain <dev.jain@arm.com> wrote:
+>>>
+>>>> huge_ptep_get() can be handed a virtual address pointing to the middle of
+>>>> a contpmd/contpte mapped hugetlb folio (examples of callers are
+>>>> pagemap_hugetlb_range, page_mapped_in_vma).
+>>>>
+>>>> The arm64 helper rewalks the pgtables in find_num_contig to answer whether
+>>>> the huge pte we have maps a contpmd or a contpte hugetlb folio, and
+>>>> returns CONT_PMDS or CONT_PTES, so that it can collect a/d bits over the
+>>>> contiguous ptes. We can falsely return CONT_PTES instead of CONT_PMDS
+>>>> if the addr is not aligned.
+>>>>
+>>>> Fix this by aligning the pmdp pointer down to a contpmd base before
+>>>> checking equality with the passed huge pte pointer, to correctly answer
+>>>> whether the huge pte is the base of a contpmd block.
+>>>>
+>>>> Fixes: 29cb80519689 ("arm64: hugetlb: Cleanup huge_pte size discovery mechanisms")
+>>>> Cc: stable@vger.kernel.org
+>>>
+>>> Please describe the userspace-visible effects of bugs when fixing them.
+>>> Particularly when cc:stable is proposed.  Thanks.
+>>
+>> Forgot for this one. It should be, on systems where CONT_PTES != CONT_PMDS
+>> (meaning page size is 16K) we could collect excess a/d bit state, meaning
+>> extra work for the kernel.
 > 
-> The current code always subtracts sizeof(struct iphdr), which is only
-> the IPIP overhead. For GUE and GRE tunnels, ipvs_udp_decap() and
-> ipvs_gre_decap() already compute the additional tunnel header length,
-> but that value is scoped to the decapsulation block and is lost before
-> the ICMP_FRAG_NEEDED handling. As a result, the ICMP error sent back to
-> the client advertises an MTU that is too large, so PMTUD can fail to
-> converge for GUE/GRE-tunneled real servers.
+> Even worse, right? We could walk 128 entries, when we really should just walk 16
+> (IIRC) entries, possibly reading garbage or even worse, into a memory hole at
+> the end of memory?
+
+Hmm I was thinking that the checks pte_dirty() and pte_young() wouldn't care whether
+the pte is garbage. But, we could actually dereference a ptep pointer not having
+backing memory at all.
+
+Does the following sound good?
+
+"On systems where CONT_PTES != CONT_PMDS (meaning page size is 16K), we could collect
+excess a/d bit state, meaning extra work for the kernel. Even worse, we may iterate
+beyond the PTE table and dereference a garbage ptep pointer to access physical
+memory we don't own. Since the ptep pointer is a linear map address, we may run off
+the end of the linear map, dereference a VA not mapped into the kernel pgtables and
+cause kernel panic."
+
+Although I checked on arm64, there is no case in which there is a hole after the
+linear map, but still that assumption shouldn't be made.
+
+
 > 
-> [...]
-
-Here is the summary with links:
-  - [net,v2] ipvs: fix PMTU for GUE/GRE tunnel ICMP errors
-    https://git.kernel.org/netdev/net/c/6b335af0d0d1
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
 
 
