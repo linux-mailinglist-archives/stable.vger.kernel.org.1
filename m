@@ -1,181 +1,208 @@
-Return-Path: <stable+bounces-272224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272219-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id SE8OCgavS2rkYQEAu9opvQ
-	(envelope-from <stable+bounces-272224-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 15:35:02 +0200
+	id 8C00MayqS2rYYAEAu9opvQ
+	(envelope-from <stable+bounces-272219-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 15:16:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B725E711552
-	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 15:35:01 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 388C8711200
+	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 15:16:28 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Fk9g4a+X;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272224-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272224-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=P+YjQi8x;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272219-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-272219-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E3C2F3036128
-	for <lists+stable@lfdr.de>; Mon,  6 Jul 2026 13:27:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 60F56301E9A8
+	for <lists+stable@lfdr.de>; Mon,  6 Jul 2026 13:04:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEA8441613B;
-	Mon,  6 Jul 2026 13:25:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57A5E420899;
+	Mon,  6 Jul 2026 13:04:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 553FC296BC8;
-	Mon,  6 Jul 2026 13:25:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01B1F3148D2
+	for <stable@vger.kernel.org>; Mon,  6 Jul 2026 13:04:18 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783344306; cv=none; b=H9e+XnFVqmU01AnxCoLxw4iki4mAw6MNLzVcAUnPU68E6P0G2yztnDPB6I1TpYIJyAIZ1wW37p6IvBghams5HimozcgSHUuv5e0veI/R6ZsVM6bOfYGJD1RnINDBRLtR5t4uphVbuG3AcIqccZkl/wSXZPiieI0cMB85M7t9lZI=
+	t=1783343060; cv=none; b=OQhPq4Cd7o8NSLPkbzf/uhadNcoHLwcMHSnvYQtXB1Q5ZJACbeZJYTGv/bbRt3ExcSJUqYdANr78mnSAkByd6ZkMFNEtxfZT416QS1D8C41yyt8bef4tAHGfD5MfRt1CMuD6GGlvVXelceFle+P+tKVh+8Y5zHCMDUTNyMNI4Ds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783344306; c=relaxed/simple;
-	bh=OTokZRt5phSX/EHX4ehUkaFnY3khII19gH5YByBQvnc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=t/njjvNueMpZ0WQuPcG+hX2x/HJROv2mDn/4keEI5J217NZQLnMvFPOvl+KP3dkHz8jNwGrzjz+s3ViSAPtmajHmew2eUAwYi0m44gfWaiusIMWsECdCGVH0EC4QvFwuePQW45Zn9pF8InrRoxm3rWMyWmw+CYLte0gHiGBzWIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Fk9g4a+X; arc=none smtp.client-ip=192.198.163.12
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1783344305; x=1814880305;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:to:cc;
-  bh=OTokZRt5phSX/EHX4ehUkaFnY3khII19gH5YByBQvnc=;
-  b=Fk9g4a+XRFD+LfryCoxHaDrjhyrY2E9sYtrY/lANctZMA7egQjR0ZoKE
-   8H5PLI5/MtiZJexlOsFsgyx97rJwC8tpLGP5vn2svfVBtLOv6pWvnFj8O
-   6Tvm4OM3t6+JiFHOEBgswKUrmQz84SfvXvYdn+KdYe32HUUAO2J8E72Bm
-   8QGe3q5s1ZEouA11RZBCSHgLHgS4/KmKXmmXZufD6papjq7tf4dpUqM+/
-   cpbaYZ3VjcbVA8bia5bQlfwHVN63K0kgLv8BOwGkxprCmYJEmdGB9F0Wj
-   gZTjTJ1jW22Dx7hZguuJiXtZuQCSz9xCD8VQhoUIbGQg2FMQn+CaNyZ0W
-   w==;
-X-CSE-ConnectionGUID: jIvuEFFfTVW3YAyl4yl0Kg==
-X-CSE-MsgGUID: zdiLlb87QVaR25sIWTZlTg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11838"; a="87797699"
-X-IronPort-AV: E=Sophos;i="6.25,149,1779174000"; 
-   d="scan'208";a="87797699"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2026 06:25:05 -0700
-X-CSE-ConnectionGUID: 8j+OlK40TZ2G7zg7kLJhvQ==
-X-CSE-MsgGUID: Vh8tCdpyR6q1M9JHPhs+ig==
-X-ExtLoop1: 1
-Received: from sannilnx-dsk.jer.intel.com (HELO [127.0.1.1]) ([10.12.231.107])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2026 06:25:02 -0700
-From: Alexander Usyskin <alexander.usyskin@intel.com>
-Date: Mon, 06 Jul 2026 16:01:30 +0300
-Subject: [PATCH char-misc v2] mei: lb: fix incorrect type in assignment
+	s=arc-20240116; t=1783343060; c=relaxed/simple;
+	bh=wtAL55Vy1IAVfMt9lDQ6e1FXFicQRPy2EBLWfWBUGcM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EG6nuLuwnNjCAvu6piHuL11IpT0kNB19HknpqkIi1e8PdCcDikim0kwFVcSAAGUMpwGWwXaEQHyqHnbkfiauCyxh/Epr0kQm3Nhs8s6EBw1BcMQX4ZaCpdqvt4P1RLAZLQ3jiVu60X5zmS5EgmwqiFi8IAA3mFBkMuIDlV2bQhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P+YjQi8x; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3A891F00A3A
+	for <stable@vger.kernel.org>; Mon,  6 Jul 2026 13:04:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783343058;
+	bh=03m1i1njTYKshtMRdqLIQtrRPKyxLQ0WpIMYuekAZ+I=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=P+YjQi8xJY0C73JtdBM+t3wwj2gtxC/v2J+ZVFysO1xMnkuaHKIvmPBB8lcUlCYJE
+	 WQjGlWpvYiy5ZoM+m1lTadl5bawgUYCKd0/K1upoXLkBo4TPMzeZ0XxVQGFu4TsS1u
+	 kMlhT055hUimiQgT620sxyhCYexwFW3AUdY+z+EIeI1GZ77Jdd3sVTZPSudKKWUuiJ
+	 knxVGsTBuxIyVjbqFwznKbKoHroI0y+CiEz+gkU3FMiSv56jhptovh2FweygIW5/Ig
+	 iB0qr49Z4haX9b35TrmzblmNyv6XBCj/GW7geIkj31jUZGSSUVeYKyWvF2L2kAnPHT
+	 AQpXnoHen1WQQ==
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-92e6391b114so213630285a.3
+        for <stable@vger.kernel.org>; Mon, 06 Jul 2026 06:04:18 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+Rrjt7X3U3a7rrv9FQKzxg9HK6objDCwTBW7a9OBXAX1hvgtlluXL8QVpk+E1jT3dEPvl0V+mH8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxbKfk3hFoH9K7p0D/0xUSvNZy0FF/lGZ0iKRoCR1KczxvQaA5E
+	kd2jcG/f5vIBPj1nNqWqCNyQRyIzgeINwM9kZsCE3jH+1rhAXQh5zuruEcBQjkLcBQb+HTi1GO6
+	cm+Y4Qc9tgHYu6prpOqogfPaoqtbKTmg=
+X-Received: by 2002:a05:620a:19a4:b0:916:1806:302d with SMTP id
+ af79cd13be357-92ebb60cc71mr55371685a.58.1783343058102; Mon, 06 Jul 2026
+ 06:04:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260706-fix_type_le-v2-1-586826351454@intel.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/1WNzQ7CIBCEX6XZsxigP7aefA/TNJaudpMWGiDEp
- uHdRTyZOU1m5psDHFpCB9fiAIuBHBmdjDwVoOaHfiGjKXmQXDa84SV70nvw+4bDgoyLtlIXnGT
- ZdZAWm8UUZ9r9O7dsJaegT9FMzhu7558gcuGHFPwPGQRLqpUceTs2VS1upD0uZ2VW6GOMHwqns
- ymxAAAA
-X-Change-ID: 20260603-fix_type_le-0184c7ed2399
-To: Arnd Bergmann <arnd@arndb.de>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Badal Nilawar <badal.nilawar@intel.com>, 
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: linux-kernel@vger.kernel.org, Menachem Adin <menachem.adin@intel.com>, 
- Alexander Usyskin <alexander.usyskin@intel.com>, stable@vger.kernel.org, 
- kernel test robot <lkp@intel.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1783342932; l=2290;
- i=alexander.usyskin@intel.com; s=20260315; h=from:subject:message-id;
- bh=OTokZRt5phSX/EHX4ehUkaFnY3khII19gH5YByBQvnc=;
- b=ljUjmX10BeqMCTSjpzlaCOo2fBRW8uLxnjp0hC3OdX50TfZIkHdPjA1ps+boRtQkA9mfWj2Tn
- mSYgntcMho8DgPaQj9zmEALwe7dlNmfwUWYyEPPo76VC7u12Br7YYku
-X-Developer-Key: i=alexander.usyskin@intel.com; a=ed25519;
- pk=X+qoF/nFCdDOV04IForWSxnkyoCAbUE10egZi6PSfcU=
+References: <173f3fd983d735155d47e9e39d27f0c2d62a7c31.1783307463.git.baolin.wang@linux.alibaba.com>
+ <CAMgjq7AQcyypJ-VhJ_CxY6fdEph64fxjOzzYU-=EkMrHemkpzA@mail.gmail.com> <8ef0b72e-a0e8-4913-8d30-519335305260@linux.alibaba.com>
+In-Reply-To: <8ef0b72e-a0e8-4913-8d30-519335305260@linux.alibaba.com>
+From: Barry Song <baohua@kernel.org>
+Date: Mon, 6 Jul 2026 21:04:06 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4z5N6FSfWt5WUZ5YmqhCzLcd3Cj1sc9B79WYX9ZbDH8Gw@mail.gmail.com>
+X-Gm-Features: AVVi8Cc4-cCPMWvrStzPGpTwA44_ETQ7K94w2ZYd1ngI74f-KWgZnyW5L8IF4f8
+Message-ID: <CAGsJ_4z5N6FSfWt5WUZ5YmqhCzLcd3Cj1sc9B79WYX9ZbDH8Gw@mail.gmail.com>
+Subject: Re: [PATCH 6.18.y] mm: shmem: fix potential livelock issue for shmem
+ direct swapin
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Kairui Song <ryncsn@gmail.com>, akpm@linux-foundation.org, hughd@google.com, 
+	stable@vger.kernel.org, machao26@xiaomi.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-5.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-272224-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-272219-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,linux-foundation.org,google.com,vger.kernel.org,xiaomi.com,kvack.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[alexander.usyskin@intel.com,stable@vger.kernel.org];
+	FORGED_SENDER(0.00)[baohua@kernel.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:arnd@arndb.de,m:gregkh@linuxfoundation.org,m:badal.nilawar@intel.com,m:andriy.shevchenko@linux.intel.com,m:linux-kernel@vger.kernel.org,m:menachem.adin@intel.com,m:alexander.usyskin@intel.com,m:stable@vger.kernel.org,m:lkp@intel.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:baolin.wang@linux.alibaba.com,m:ryncsn@gmail.com,m:akpm@linux-foundation.org,m:hughd@google.com,m:stable@vger.kernel.org,m:machao26@xiaomi.com,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MISSING_XM_UA(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alexander.usyskin@intel.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[baohua@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:from_mime,intel.com:email,intel.com:mid,intel.com:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,mail.gmail.com:mid,alibaba.com:email,xiaomi.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B725E711552
+X-Rspamd-Queue-Id: 388C8711200
 
-Fix the mix between __le32 and integer by casting
-the MEI_LB2_CMD constant as __le32 while using it.
+On Mon, Jul 6, 2026 at 8:08=E2=80=AFPM Baolin Wang
+<baolin.wang@linux.alibaba.com> wrote:
+>
+>
+>
+> On 7/6/26 1:59 PM, Kairui Song wrote:
+> > On Mon, Jul 6, 2026 at 11:25=E2=80=AFAM Baolin Wang
+> > <baolin.wang@linux.alibaba.com> wrote:
+> >>
+> >> When skipping swapcache for synchronous IO swap devices, swapcache_pre=
+pare()
+> >> is used to prevent parallel swapin from proceeding with the swap cache=
+ flag.
+> >> However, on PREEMPT kernels this can lead to a livelock, as reported b=
+y Chao[1]:
+> >>
+> >> Thread A starts direct swapin of a shmem folio and calls swapcache_pre=
+pare()
+> >> to set SWAP_HAS_CACHE. It may then be preempted inside workingset_refa=
+ult().
+> >> Meanwhile, a higher priority thread B also attempts direct swapin of t=
+he same
+> >> shmem swap entry. Since swapcache_prepare() already marks the entry, t=
+hread B
+> >> repeatedly gets -EEXIST and busy-loops waiting for thread A to finish.=
+ But as
+> >> thread B runs at higher priority, thread A cannot preempt it, resultin=
+g in
+> >> starvation and a livelock.
+> >>
+> >> Fix it by yielding the CPU with schedule_timeout_uninterruptible(1) wh=
+en
+> >> swapcache_prepare() fails, following the same approach used in commits
+> >> 029c4628b2eb ("mm: swap: get rid of livelock in swapin readahead") and
+> >> 13ddaf26be32 ("mm/swap: fix race when skipping swapcache").
+> >>
+> >> Note that mainline does not have this potential issue, which has alrea=
+dy been
+> >> resolved by Kairui's swap refactoring work[2].
+> >>
+> >> [1] https://lore.kernel.org/all/700a2cbf90a2484f979aac858f08f5d4@xiaom=
+i.com/
+> >> [2] https://lore.kernel.org/all/20260517-swap-table-p4-v5-0-88ae43e064=
+c7@tencent.com/
+> >> Fixes: 1dd44c0af4fa ("mm: shmem: skip swapcache for swapin of synchron=
+ous swap device")
+> >> Reported-by: Ma Chao <machao26@xiaomi.com>
+> >> Closes: https://lore.kernel.org/all/700a2cbf90a2484f979aac858f08f5d4@x=
+iaomi.com/
+> >> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> >> ---
+> >> Hi Chao, could you try this patch to check if it fixes your issue? Tha=
+nks.
+> >> ---
+> >>   mm/shmem.c | 2 ++
+> >>   1 file changed, 2 insertions(+)
+> >>
+> >> diff --git a/mm/shmem.c b/mm/shmem.c
+> >> index 94c5b0d78ac3..d4cb57b3b0ef 100644
+> >> --- a/mm/shmem.c
+> >> +++ b/mm/shmem.c
+> >> @@ -2066,6 +2066,8 @@ static struct folio *shmem_swap_alloc_folio(stru=
+ct inode *inode,
+> >>          if (swapcache_prepare(entry, nr_pages)) {
+> >>                  folio_put(new);
+> >>                  new =3D ERR_PTR(-EEXIST);
+> >> +               /* Relax a bit to prevent rapid repeated page faults *=
+/
+> >> +               schedule_timeout_uninterruptible(1);
+> >>                  /* Try smaller folio to avoid cache conflict */
+> >>                  goto fallback;
+> >>          }
+> >> --
+> >> 2.47.3
+> >>
+> >
+> > Thanks! That's much more simpler than I expected. Do we need a wakeup
+> > queue like the one in commit 01626a1823024? Perhaps the reporter can
+> > help confirm and test? I personally prefer to keep it simple if shmem
+> > users aren't as sensitive as anon users.
+>
+> I agree. I'd like to keep the bugfix as simple as possible, if the
+> reporter's scenario isn't latency-sensitive.
 
-Fixes sparse waring:
-drivers/misc/mei/mei_lb.c:284:32: sparse: sparse: restricted __le32 degrades to integer
-drivers/misc/mei/mei_lb.c:330:40: sparse: sparse: incorrect type in assignment (different base types) @@     expected restricted __le32 [usertype] command_id @@     got int @@
-drivers/misc/mei/mei_lb.c:330:40: sparse:     expected restricted __le32 [usertype] command_id
-drivers/misc/mei/mei_lb.c:330:40: sparse:     got int
+On Android, we don't see much shmem; it's much less common
+than anon. So the chance of this concurrency happening should
+be lower than for anon. However, shmem can be shared by
+multiple processes, so could this still happen if process A is
+blocked by process B?
 
-Cc: stable@vger.kernel.org
-Fixes: 773a43b8627f ("mei: lb: add late binding version 2")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202605091533.79Zcv3CX-lkp@intel.com/
-Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
----
-Changes in v2:
-- Move cast to where macro is actually compared and assigned (GregKH)
-- Link to v1: https://lore.kernel.org/r/20260610-fix_type_le-v1-1-15c2b08b6451@intel.com
----
- drivers/misc/mei/mei_lb.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/misc/mei/mei_lb.c b/drivers/misc/mei/mei_lb.c
-index f6a258c2b838..9fa69acf28d5 100644
---- a/drivers/misc/mei/mei_lb.c
-+++ b/drivers/misc/mei/mei_lb.c
-@@ -281,7 +281,7 @@ static int mei_lb_check_response_v2(const struct device *dev, ssize_t bytes,
- 			bytes, sizeof(rsp->rheader));
- 		return -ENOMSG;
- 	}
--	if (rsp->rheader.header.command_id != MEI_LB2_CMD) {
-+	if (rsp->rheader.header.command_id != cpu_to_le32(MEI_LB2_CMD)) {
- 		dev_err(dev, "Mismatch command: 0x%x instead of 0x%x\n",
- 			rsp->rheader.header.command_id, MEI_LB2_CMD);
- 		return -EPROTO;
-@@ -327,7 +327,7 @@ static int mei_lb_push_payload_v2(struct device *dev, struct mei_cl_device *clde
- 		if (sent_data + chunk_size == payload_size)
- 			last_chunk = MEI_LB2_FLAG_LST_CHUNK;
- 
--		req->header.command_id = MEI_LB2_CMD;
-+		req->header.command_id = cpu_to_le32(MEI_LB2_CMD);
- 		req->type = cpu_to_le32(type);
- 		req->flags = cpu_to_le32(flags | first_chunk | last_chunk);
- 		req->reserved = 0;
-
----
-base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
-change-id: 20260603-fix_type_le-0184c7ed2399
-
-Best regards,
--- 
-Alexander Usyskin <alexander.usyskin@intel.com>
-
+I'm not really sure. Only large-scale data can tell. :-)
 
