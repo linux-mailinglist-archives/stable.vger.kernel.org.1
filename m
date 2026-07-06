@@ -1,87 +1,97 @@
-Return-Path: <stable+bounces-272166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272167-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id eMPaE7J/S2qlSQEAu9opvQ
-	(envelope-from <stable+bounces-272166-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 12:13:06 +0200
+	id MU9wIs16S2qDSAEAu9opvQ
+	(envelope-from <stable+bounces-272167-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 11:52:13 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A718670EF74
-	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 12:13:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D92070ECB0
+	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 11:52:13 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=D8nxjzQp;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272166-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-272166-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=do2eLCyc;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=TZLAGWVG;
+	dmarc=pass (policy=none) header.from=linutronix.de;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272167-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-272167-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8622E317EA41
-	for <lists+stable@lfdr.de>; Mon,  6 Jul 2026 09:40:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BF4E130B0CDD
+	for <lists+stable@lfdr.de>; Mon,  6 Jul 2026 09:44:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B485D41F7FE;
-	Mon,  6 Jul 2026 09:27:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9746E366806;
+	Mon,  6 Jul 2026 09:30:22 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDAD1478E51
-	for <stable@vger.kernel.org>; Mon,  6 Jul 2026 09:27:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9416933F588
+	for <stable@vger.kernel.org>; Mon,  6 Jul 2026 09:30:18 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783330048; cv=none; b=Fu7OqhjNTKRK4v6X6bE2Aa68gU0OVoaI3ws8HvjNAfF6v40jkB7zqYLc9QwUwliklE0tF5zAAbSMjLbLm0cEB2PTLEX6H3u/uL8FUSJ+oeARNHwmnxEA5555tbDR8ho4NJUCKx7T7Vs2S8MjX8Z7dAO+seHSn0i0S+fdNym46t0=
+	t=1783330221; cv=none; b=RRB2HfzRFr9oer/pV14x5sEdlRZFSGZHKR3+J7x4jrvv+i0tz9uiJy8WK7lAIWtZNLhzn4IjCY9TVJNjp+hTIgPjAzS0BOl9rJewD/Rseznq6/wDHrOfBmrMcjpL8hWwCC8i8JNpBwZIkBx1hZWtSVkaRZWuS/N3cc4xqjPLZXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783330048; c=relaxed/simple;
-	bh=rlVE9YWQPh36iqr67g1bGTaonjgcgQ48S78TGYsExfM=;
+	s=arc-20240116; t=1783330221; c=relaxed/simple;
+	bh=KP+uKZiu8rS+uPOHNzCRU28Ii/xFlt5AO5k9H93CzXs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VHHOXiOY79sgOztJzdvOWLghuN2U957yrbfDdXsMa/A63fO3YkTwQpwrkb19ZeTfTvYmt712FCws+Jx1mDsEMgIAe4jzk3LZGvnnAZeIzCE1ta0WifhC4+YsYc/k6adAzacPH2vFKBsGboVXHDs54YlOQxCVAfk+UEBEbn24js0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D8nxjzQp; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CCD71F000E9;
-	Mon,  6 Jul 2026 09:27:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783330044;
-	bh=xf+RPcaEtEZGSlMseuJMWcV/tNux9CLmNcr0O8HzctU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=D8nxjzQpi65fd1TPMI6r62VTL862a79Tbcv/IOt+YkM4b90BUe1EBcMlWfK4h0qD3
-	 hfxUEPAHlK25lM/giHcUcLBqJ9vWjwKJ88uzWhl76q0uELY1MXEcdjjKJo5n0gWQs7
-	 ugkerIsTAMIwLSHasXNkZOLymovfouiFLAlnGLFc=
-Date: Mon, 6 Jul 2026 11:27:33 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+	 Content-Type:Content-Disposition:In-Reply-To; b=C+HWRZWRtRUon2sw/GmXDCKiG6x32yPfoy9qwX6YbPIsDCM55LWs7myS3s2VyvJJ4iDcC4sz/cNRL3cG+HM+8WN2uIrGFrXXnqe8MrE0jj5UhS3CjBaB9DCv9IkiDe45Idy9Te5x3eWgDSYEy+5CZj0gKPfI2CAODDQE6HwqmvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=do2eLCyc; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=TZLAGWVG; arc=none smtp.client-ip=193.142.43.55
+Date: Mon, 6 Jul 2026 11:30:15 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1783330216;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9/sP+9IJHiTcPvRDofoirdvmhhmP1Ud1uACSRGWuNwE=;
+	b=do2eLCyc8Yc9kH+7qI4ohRE03/OYiwp7JkQljGX/+wvDB/QlU6YXBbGLUkuPRtR+YKmnnj
+	rGYq1hCKMic6rpHh/7DvJeIc/ZTqQ89BObOScjLGDYWiSGvfHmUrYDqi0JnU3aP6XVduv2
+	vmVwWPMO4Mbod1SKn+GwJN2grz6556rhW7aOsT7XBDzHCFhAVlanF8SRwCtfRR0peyV7D4
+	LuwNeHjJGAAf+Btj7t1d7jtxGXa1TztzBcE0y0ZtK3unbhJxsuQ8rN8Axn6OnFrDt63aVA
+	pr1hP7gDV/F56N27HuNi8m0JuRf0yuTHhCsQGdwi7pCAVyhkVWtJeu/nNiviww==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1783330216;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9/sP+9IJHiTcPvRDofoirdvmhhmP1Ud1uACSRGWuNwE=;
+	b=TZLAGWVGbLpXn1gVLa8SwjDFIkbX9ofsHFWOf/DMKjeVAXwhYmcYLxz5OitfGWyW3qSYd2
+	ypot6E0K3Ip8gLAQ==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Greg KH <gregkh@linuxfoundation.org>
 Cc: stable@vger.kernel.org, Jan Kiszka <jan.kiszka@siemens.com>,
 	Jon Humphreys <j-humphreys@ti.com>,
 	Russell King <rmk+kernel@armlinux.org.uk>
 Subject: Re: [PATCH v6.18 0/3] ARM: PREEMPT_RT backports
-Message-ID: <2026070604-washday-tightrope-dcee@gregkh>
+Message-ID: <20260706093015.YFRtVKDu@linutronix.de>
 References: <20260629144131.788576-1-bigeasy@linutronix.de>
  <2026070229-rendering-plus-be9d@gregkh>
  <20260706085940.3lUHUu8z@linutronix.de>
+ <2026070604-washday-tightrope-dcee@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260706085940.3lUHUu8z@linutronix.de>
+In-Reply-To: <2026070604-washday-tightrope-dcee@gregkh>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [3.84 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
+	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-272166-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-272167-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:jan.kiszka@siemens.com,m:j-humphreys@ti.com,m:rmk+kernel@armlinux.org.uk,m:rmk@armlinux.org.uk,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[bigeasy@linutronix.de,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:bigeasy@linutronix.de,m:stable@vger.kernel.org,m:jan.kiszka@siemens.com,m:j-humphreys@ti.com,m:rmk+kernel@armlinux.org.uk,m:rmk@armlinux.org.uk,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[3];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
@@ -90,45 +100,27 @@ X-Spamd-Result: default: False [3.84 / 15.00];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bigeasy@linutronix.de,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linutronix.de:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable,kernel];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MISSING_XM_UA(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,linutronix.de:from_mime,linutronix.de:dkim,linutronix.de:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A718670EF74
+X-Rspamd-Queue-Id: 0D92070ECB0
 
-On Mon, Jul 06, 2026 at 10:59:40AM +0200, Sebastian Andrzej Siewior wrote:
-> On 2026-07-02 16:06:48 [+0200], Greg KH wrote:
-> > On Mon, Jun 29, 2026 at 04:41:28PM +0200, Sebastian Andrzej Siewior wrote:
-> > > Hi,
-> > > 
-> > > ARM missed the PREEMPT_RT window for v6.18. The following three patches
-> > > have been merged as of v7.1-rc1 and are the missing pieces.
-> > > 
-> > > I've been asked by people if it would be possible to include them in the
-> > > stable tree as it would make their life easier.
-> > 
-> > Why can't the -rt patchset just include these?  Why put the burden on
-> > us?
+On 2026-07-06 11:27:33 [+0200], Greg KH wrote:
+> Please let's have new features stick to feature-patchsets like the -rt
+> kernel is, and not put that burden on us stable maintainers for
+> something that we don't use :)
+
+Understood.
+
+> thanks,
 > 
-> It is part of the -rt patchset. I've been asked if it would be possible
-> to include it (ARM support) as part of -stable tree. I've been looking
-> at what is missing and it included two Kconfig changes and one code
-> change. This looked small so I thought maybe, why not let's ask. I'm
-> sorry if it looked other than asking.
-> 
-> If this puts burden on you and it does not qualify for a stable change
-> then it can't be included.
+> greg k-h
 
-Please let's have new features stick to feature-patchsets like the -rt
-kernel is, and not put that burden on us stable maintainers for
-something that we don't use :)
-
-thanks,
-
-greg k-h
+Sebastian
 
