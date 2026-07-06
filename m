@@ -1,65 +1,61 @@
-Return-Path: <stable+bounces-272250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272251-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id kxGSHfy6S2pbZQEAu9opvQ
-	(envelope-from <stable+bounces-272250-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 16:26:04 +0200
+	id npdBIkbBS2rtZgEAu9opvQ
+	(envelope-from <stable+bounces-272251-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 16:52:54 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54EBF711F0D
-	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 16:26:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6022671237E
+	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 16:52:53 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IHOQOImP;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JiKByEBg;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272250-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-272250-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272251-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-272251-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D209B300CF3C
-	for <lists+stable@lfdr.de>; Mon,  6 Jul 2026 14:08:39 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8E7D0321A7DE
+	for <lists+stable@lfdr.de>; Mon,  6 Jul 2026 14:11:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 300B33793B4;
-	Mon,  6 Jul 2026 14:08:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEBBA378D92;
+	Mon,  6 Jul 2026 14:11:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4E442BEC5F;
-	Mon,  6 Jul 2026 14:08:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC7F4378833
+	for <stable@vger.kernel.org>; Mon,  6 Jul 2026 14:10:59 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783346913; cv=none; b=Yir4cy1M+h3zRKbPqwCFCaoczy6NfkIYi/8phn73jtvTVH/MgIL6uTXA4qjiKDUkXMu9kE4W02HuTkJNG4VL1T9R6jgw14gsB4Rf/wrVie/k/lkifCJMmRFe0KWpZWfSZVjBTmNY/zIktefsZglFTOGcSipiID9fl86IMz1urA8=
+	t=1783347060; cv=none; b=qC2Dgdi0IeDkWQd3FT8ckhDXMha3sXOxA2hRXqPkM5bwSNOwn4+IkG8QjtZg42cFgioMZv+8s5J3tRU5Ij2zjrBqSDkjvkmLh64udCuX45zO705lCT1BlcafUH/nUHm0P65wWpt7R9Gnq5ioHwBoOpbbIQh53UQCN1L7NHUUqmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783346913; c=relaxed/simple;
-	bh=omFLfqHUMtKGYUCSITPWHFqJ+Ge4dFOsW3TBIjU3gVM=;
+	s=arc-20240116; t=1783347060; c=relaxed/simple;
+	bh=yjXj8BpWn7yDz5jFHEhSbFmp79/Nd6kYIqXR21eJ408=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PyPY5TcLtlr3LtMIeFW0mvXOfsJCUrP6wsFgDYoeUb1VpAYKmvDEd/yfxZ4xZszKB+ZbdRNQ2dMj6PL6dneOGkNAZYmzuJ/UwalIP+GUEA0U+XQwGG8R9nBjRR1Zr8LuBUFEFVQKt1RVueigmJBlprIJvIICwe1zt0RbMx419Os=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IHOQOImP; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E831B1F00A3D;
-	Mon,  6 Jul 2026 14:08:30 +0000 (UTC)
+	 MIME-Version; b=q31A2HOgwOqkzRyYLdvT051CjiYlzZ12FMxHUDzc3uML6APbX3XL5i3w1P+OiRUEF1E0J9eW/m/fICS6++L4Xq8OSDLmUL+sQ3A6b6uCNtbyCImAcEhs8e5UVKIVkOyzDz0NRbmHIBkqxNB5v38bXdqTfGmb7iQH6sYtr7e3r5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JiKByEBg; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 042331F000E9;
+	Mon,  6 Jul 2026 14:10:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783346911;
-	bh=q8+MGqf6q/NjxeYoH9XtM00SPb6CU+uTf/7HC064t/c=;
+	s=k20260515; t=1783347059;
+	bh=PfScW7IQB1rr+CZXbEdhNTssCGC7wUw3H9GVCqGbxIk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IHOQOImPKLRO/2IJTruEda7JV+JW5MVwANnHnnu3CJwAat6r//4ICi+MHJ/iCOM7h
-	 R3uw70Y6fVOpmJG6bS3J0yJiped6pg+2BMmi4wruVsWZT0/KczzabLwn1wonJ9bF3c
-	 rx355/27cmiFEV1e4YXsp1CwaGNFGWjKyYO/gG3EJym4E92BxadFQ+ozNyNbdi/EDd
-	 G2XhWs5c2FnyRN1gWSzpuh/iDmoIWfzuTW42o8zBtNQTWxWbGZmChhRUhvpwdJ7m2b
-	 i2ECLse1VPUCTDAkamN/6LKKwQxgL3/MMccPKplzDjrlfoLnl2CltVvKcfAH66wpT8
-	 +s5eISYqi0TiQ==
+	b=JiKByEBgQ3EUTqXgerpwYzkdmXxGPDVCG5r2icfSjfZb/9E73SRTDRuC1snEl8I+3
+	 Jb9nVOYxMCUBNjCIZPHafphGiAiqNYPYDwxd0d4Gm8iuVH6ECzhobzqHMWTpcxs2NI
+	 SZO6rpBqOR1zfS/TTSGqSVETdT2yk7kXmsnZUFzARsJMvszzAaQmCVQs5B+lMpk+vK
+	 M1TH1iET6DeXj4hi7ZBOvNTT9DdPpguS50Diw77m+YO6lo03yNw0wJE9vn1StWppE8
+	 +ZrYuDxPim9hS5HMYjg26eCYK4oBNX74FyPPbpMMwAJRmnRbPKqa9mY7Nyj+8sqI6O
+	 nTeT1oWh2muYQ==
 From: Sasha Levin <sashal@kernel.org>
-To: Robert Garcia <rob_garcia@163.com>
-Cc: Sasha Levin <sashal@kernel.org>,
-	stable@vger.kernel.org,
-	Duoming Zhou <duoming@zju.edu.cn>,
-	Johannes Berg <johannes.berg@intel.com>,
-	linux-wireless@vger.kernel.org,
-	Arend van Spriel <arend.vanspriel@broadcom.com>
-Subject: Re: [PATCH 5.15.y] wifi: brcmfmac: fix use-after-free when rescheduling brcmf_btcoex_info work
-Date: Mon,  6 Jul 2026 10:08:22 -0400
-Message-ID: <20260706135124.draft-0006@kernel.org>
+To: stable@vger.kernel.org
+Cc: John Johansen <john.johansen@canonical.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y] apparmor: advertise the tcp fast open fix is applied
+Date: Mon,  6 Jul 2026 10:10:57 -0400
+Message-ID: <20260706141057.2348305-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260706102512.1429947-1-arend.vanspriel@broadcom.com>
-References: <20260706102512.1429947-1-arend.vanspriel@broadcom.com>
+In-Reply-To: <2026070218-chihuahua-spectator-c61e@gregkh>
+References: <2026070218-chihuahua-spectator-c61e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,78 +64,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.66 / 15.00];
+X-Spamd-Result: default: False [-3.66 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-272250-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:rob_garcia@163.com,m:sashal@kernel.org,m:stable@vger.kernel.org,m:duoming@zju.edu.cn,m:johannes.berg@intel.com,m:linux-wireless@vger.kernel.org,m:arend.vanspriel@broadcom.com,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[163.com];
-	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:john.johansen@canonical.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-272251-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_THREE(0.00)[3];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp,canonical.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 54EBF711F0D
+X-Rspamd-Queue-Id: 6022671237E
 
-> The upstream fix uses timer_shutdown_sync() which prevents the timer from
-> being re-armed after it returns. del_timer_sync() does not have this
-> guarantee.
->
-> brcmf_btcoex_handler() has three mod_timer() calls - two in
-> BRCMF_BT_DHCP_START and one in BRCMF_BT_DHCP_OPPR_WIN - none of which are
-> guarded by timer_on. A work item running between del_timer_sync() and
-> cancel_work_sync() can re-arm the timer, leaving it pending when kfree() is
-> called.
+From: John Johansen <john.johansen@canonical.com>
 
-Agreed on the analysis. One thing to note: this backport already
-shipped in v5.15.210, and 6.1.y shipped the same weakened
-del_timer_sync() variant in v6.1.167, so this needs follow-up patches
-rather than a v2 of the original.
+[ Upstream commit 2f6701a5ce6257ae7a64ddc6d89d0a08d2a034f8 ]
 
-> If the mod_timer() calls were made conditional on timer_on, setting
-> timer_on = false before del_timer_sync() would be sufficient. That would be
-> my preferred fix. Alternatively a second del_timer_sync() after
-> cancel_work_sync() would also work.
->
-> Also the commit message still mentions timer_shutdown_sync() rather than
-> del_timer_sync().
+The fix for tcp-fast-open ensures that the connect permission is being
+mediated correctly but it didn't add an artifact to the feature set to
+advertise the fix is available. Add an artifact so that the test suite
+can identify if the fix has not been properly applied or a new
+unexpected regression has occurred.
 
-There's a simpler option: timer_shutdown_sync() is actually available
-in both 5.15.y and 6.1.y, so the del_timer_sync() substitution was
-never necessary in the first place. A one-line follow-up converting
-del_timer_sync() to timer_shutdown_sync() makes brcmf_btcoex_detach()
-match the upstream post-image exactly, closes the re-arm window you
-describe, and avoids a stable-only divergence guarding the mod_timer()
-calls.
+Fixes: 4d587cd8a7215 ("apparmor: mediate the implicit connect of TCP fast open sendmsg")
+Signed-off-by: John Johansen <john.johansen@canonical.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ security/apparmor/net.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Robert, could you send follow-up patches for 5.15.y and 6.1.y doing
-that conversion?
-
+diff --git a/security/apparmor/net.c b/security/apparmor/net.c
+index 0c980e62dbe7a2..a7fe1167e0cd29 100644
+--- a/security/apparmor/net.c
++++ b/security/apparmor/net.c
+@@ -21,6 +21,7 @@
+ 
+ struct aa_sfs_entry aa_sfs_entry_network[] = {
+ 	AA_SFS_FILE_STRING("af_mask",	AA_SFS_AF_MASK),
++	AA_SFS_FILE_BOOLEAN("tcp-fast-open",		1),
+ 	{ }
+ };
+ 
 -- 
-Thanks,
-Sasha
+2.53.0
+
 
