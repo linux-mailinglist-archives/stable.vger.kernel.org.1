@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-272157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272158-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id QtotBtRvS2qORQEAu9opvQ
-	(envelope-from <stable+bounces-272157-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 11:05:24 +0200
+	id NUsFCkJ4S2rRRwEAu9opvQ
+	(envelope-from <stable+bounces-272158-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 11:41:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7792470E6A7
-	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 11:05:23 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75BD470EB0E
+	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 11:41:21 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VoNyyimY;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HlPUd2mz;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272157-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-272157-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272158-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272158-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2E2A2330EBDD
-	for <lists+stable@lfdr.de>; Mon,  6 Jul 2026 08:47:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4BF6D333B6A9
+	for <lists+stable@lfdr.de>; Mon,  6 Jul 2026 08:48:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A083D3F9F5B;
-	Mon,  6 Jul 2026 08:46:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEAF5421A08;
+	Mon,  6 Jul 2026 08:46:45 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72F67388898;
-	Mon,  6 Jul 2026 08:46:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39FA43955F1;
+	Mon,  6 Jul 2026 08:46:32 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783327567; cv=none; b=Pocj3/7MJ/ynqBtahT9GwD7p6litojvnTSeBlibfjZYrHAt3Y+iqVmpXicvjemb9fGieEgpm1ckjbyXVtU2yfImZVaIfr/tHevTd7rvONGA2cIOKb5y+d6q78hDXE9I3R4xCAe9HBuf0FxUW9pIihvmAT4Q9aCt5P8x5t6IQxs0=
+	t=1783327597; cv=none; b=ZZZqQahztkaH9eVY6HDT3CEviOFRFTHxhga4bgVn7u3nZ+C/ck76dkjF0S5Onl1/t3y2E8vqZKdXtqoUS8C4cenWRTPI7yG4L83w/s60+en4J6oI7v6mcRO5INHE7sBZ0Cb4VL8EOMylSKowGKMpGS603g1Jl8aYBywlV3dE7wo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783327567; c=relaxed/simple;
-	bh=yVfJ7vYaLxMKYQ23eZ8ZVLgi3CuLhcXCzf/o4zL5Ehg=;
+	s=arc-20240116; t=1783327597; c=relaxed/simple;
+	bh=6V3uxTNpw2DwcL4pY4YUj/uA8EtgvAQShL4ykwQuHpU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mW5DvTa7ujv+X05IxCGBK1MYKcJz5WgdH2h5UipBJftfrMYNIs24eKmyMTYziG6g1MCExKmgvt8fVxS6iPW84bfS7b02hokOsl1nBNno/TdiVFp49pgQzGnAQlddJm++59W//m6M4Knbq/h5xKj9kHrOsS8KpIXixJUDjYIJzEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VoNyyimY; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9ED01F000E9;
-	Mon,  6 Jul 2026 08:45:48 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=QY947HTFSnY5oF85sgBzAet59sQtSxVrbHNPNiactw4Kzp63UwpYALW83JCH+mcCoajxPVW0MFeKaz5833D0XiYryLUwgMw0k53OpMTK2u8FxNI0pIRHd0BWuWJqnFvikoB0GRYzQuVny8tZPdDXYVPQ1mqc5J5dtMitXqbtyB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HlPUd2mz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C97E11F00A3D;
+	Mon,  6 Jul 2026 08:46:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783327556;
-	bh=+VphFpucmenCRxzAqf6GCG3ouKRkPe9LBUQD12MWcpw=;
+	s=k20260515; t=1783327590;
+	bh=dUt7AOxRukVfPJ2p/55WSVBMngsUv1Y3ji3BCuv1HZU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=VoNyyimYnqqKLu1tQ9fTHSAp21AMnYBuiWyDfCJxhaM5/Kel8HyLFCw14x1s78N9U
-	 7mGtgGN7PQ4XmdHlIMaW/7mlNyN/cMHkDlR8PbVdbyty6JdKay20g0qf+oHdS6g7BD
-	 uF9eg8bFVbc42WPLvi/yhsVBGSO6LkgMOTX2l+QzthLuq25fpiD6WwgLlbBL/WWC2U
-	 kdApDETEjy1WcUFc6A2sdKhZdnKGL20lVZikzBik4ow8GBgILpM6f0eCBgmOBqBrF4
-	 hqE4J+OoveSZBRXmoWaSnTu/fspZaLo9MMP1OudEZa2PkV/QKRUvIlQW0v+WLjL8KI
-	 c0u/RfKS2F/2g==
-Message-ID: <4b4e8007-3747-457a-85cc-d1003e1c8fe2@kernel.org>
-Date: Mon, 6 Jul 2026 10:45:47 +0200
+	b=HlPUd2mzwaFf4msXPmbw624UQ2RQeaoEX4P/n1HCZMANG1h4a39HQaAwKLtbpzLTe
+	 6b9dm+Jyv5X5zCuA9sRQGboJyABYDxhOXTz7wRAjN49iJnrefHnFPVhRwAb5td0dbF
+	 2bhhCW6aNGevq8T6wFXUX8pErBYCLmC570vZFa801ex0KxxJjNjowVeqjTL4WDqV4Z
+	 GNoPXWJjmL5tpz8qXdNfG0//Ibc2CPy2zB7Pvh0+pblfDFqBk2hv2fCi3ggIPY9NbL
+	 rmkawtIYxjkkd1DKfwzeg7ww+m7Q2KTrkyDBMKe9HJnovHcqQ1ZboDykCbAxNXGDLs
+	 mIbCywI6rteMQ==
+Message-ID: <44bc953d-d0ab-49d1-a299-ce1fab68d134@kernel.org>
+Date: Mon, 6 Jul 2026 10:46:20 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,12 +55,11 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/6] arm64: make huge_ptep_get handled unaligned
- addresses
-To: Dev Jain <dev.jain@arm.com>, Andrew Morton <akpm@linux-foundation.org>
-Cc: muchun.song@linux.dev, osalvador@suse.de, ljs@kernel.org,
- liam@infradead.org, riel@surriel.com, vbabka@kernel.org, harry@kernel.org,
- jannh@google.com, lance.yang@linux.dev, kas@kernel.org, linux-mm@kvack.org,
+Subject: Re: [PATCH v3 2/6] mm/rmap: use huge_ptep_get() in try_to_unmap_one()
+To: Dev Jain <dev.jain@arm.com>, muchun.song@linux.dev, osalvador@suse.de,
+ akpm@linux-foundation.org, ljs@kernel.org, liam@infradead.org
+Cc: riel@surriel.com, vbabka@kernel.org, harry@kernel.org, jannh@google.com,
+ lance.yang@linux.dev, kas@kernel.org, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org, apopple@nvidia.com, rcampbell@nvidia.com,
  ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
  rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
@@ -70,9 +69,7 @@ Cc: muchun.song@linux.dev, osalvador@suse.de, ljs@kernel.org,
  will@kernel.org, linux-arm-kernel@lists.infradead.org, ryan.roberts@arm.com,
  anshuman.khandual@arm.com, stable@vger.kernel.org
 References: <20260703114202.365553-1-dev.jain@arm.com>
- <20260703114202.365553-2-dev.jain@arm.com>
- <20260705003559.8b124d2b94b685cc2e4e77ae@linux-foundation.org>
- <8fdbe0d6-87fd-441c-b6d2-baac380f6fb3@arm.com>
+ <20260703114202.365553-3-dev.jain@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -119,7 +116,7 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <8fdbe0d6-87fd-441c-b6d2-baac380f6fb3@arm.com>
+In-Reply-To: <20260703114202.365553-3-dev.jain@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
@@ -129,14 +126,14 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-272157-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-272158-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:dev.jain@arm.com,m:akpm@linux-foundation.org,m:muchun.song@linux.dev,m:osalvador@suse.de,m:ljs@kernel.org,m:liam@infradead.org,m:riel@surriel.com,m:vbabka@kernel.org,m:harry@kernel.org,m:jannh@google.com,m:lance.yang@linux.dev,m:kas@kernel.org,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:apopple@nvidia.com,m:rcampbell@nvidia.com,m:ziy@nvidia.com,m:matthew.brost@intel.com,m:joshua.hahnjy@gmail.com,m:rakie.kim@sk.com,m:byungchul@sk.com,m:gourry@gourry.net,m:ying.huang@linux.alibaba.com,m:ak@linux.intel.com,m:nao.horiguchi@gmail.com,m:mel@csn.ul.ie,m:j-nomura@ce.jp.nec.com,m:pfalcato@suse.de,m:tglx@kernel.org,m:dave.hansen@intel.com,m:jpoimboe@kernel.org,m:catalin.marinas@arm.com,m:will@kernel.org,m:linux-arm-kernel@lists.infradead.org,m:ryan.roberts@arm.com,m:anshuman.khandual@arm.com,m:stable@vger.kernel.org,m:joshuahahnjy@gmail.com,m:naohoriguchi@gmail.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:dev.jain@arm.com,m:muchun.song@linux.dev,m:osalvador@suse.de,m:akpm@linux-foundation.org,m:ljs@kernel.org,m:liam@infradead.org,m:riel@surriel.com,m:vbabka@kernel.org,m:harry@kernel.org,m:jannh@google.com,m:lance.yang@linux.dev,m:kas@kernel.org,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:apopple@nvidia.com,m:rcampbell@nvidia.com,m:ziy@nvidia.com,m:matthew.brost@intel.com,m:joshua.hahnjy@gmail.com,m:rakie.kim@sk.com,m:byungchul@sk.com,m:gourry@gourry.net,m:ying.huang@linux.alibaba.com,m:ak@linux.intel.com,m:nao.horiguchi@gmail.com,m:mel@csn.ul.ie,m:j-nomura@ce.jp.nec.com,m:pfalcato@suse.de,m:tglx@kernel.org,m:dave.hansen@intel.com,m:jpoimboe@kernel.org,m:catalin.marinas@arm.com,m:will@kernel.org,m:linux-arm-kernel@lists.infradead.org,m:ryan.roberts@arm.com,m:anshuman.khandual@arm.com,m:stable@vger.kernel.org,m:joshuahahnjy@gmail.com,m:naohoriguchi@gmail.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[david@kernel.org,stable@vger.kernel.org];
 	RCPT_COUNT_TWELVE(0.00)[37];
@@ -149,50 +146,38 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[david@kernel.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linux.dev,suse.de,kernel.org,infradead.org,surriel.com,google.com,kvack.org,vger.kernel.org,nvidia.com,intel.com,gmail.com,sk.com,gourry.net,linux.alibaba.com,linux.intel.com,csn.ul.ie,ce.jp.nec.com,arm.com,lists.infradead.org];
+	FREEMAIL_CC(0.00)[surriel.com,kernel.org,google.com,linux.dev,kvack.org,vger.kernel.org,nvidia.com,intel.com,gmail.com,sk.com,gourry.net,linux.alibaba.com,linux.intel.com,csn.ul.ie,ce.jp.nec.com,suse.de,arm.com,lists.infradead.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,arm.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7792470E6A7
+X-Rspamd-Queue-Id: 75BD470EB0E
 
-On 7/5/26 10:08, Dev Jain wrote:
+On 7/3/26 13:41, Dev Jain wrote:
+> try_to_unmap_one() handles hugetlb folios when memory failure needs
+> to replace a poisoned hugetlb mapping with a hwpoison entry. In that
+> case page_vma_mapped_walk() returns the pte pointer to the hugetlb folio
+> in pvmw.pte, but the code reads it with ptep_get().
 > 
+> On arches which provide their own huge_ptep_get() to dereference a huge
+> pte pointer, accessing via ptep_get() would cause pte_pfn(), pte_present()
+> etc to misbehave.
 > 
-> On 05/07/26 1:05 pm, Andrew Morton wrote:
->> On Fri,  3 Jul 2026 11:41:54 +0000 Dev Jain <dev.jain@arm.com> wrote:
->>
->>> huge_ptep_get() can be handed a virtual address pointing to the middle of
->>> a contpmd/contpte mapped hugetlb folio (examples of callers are
->>> pagemap_hugetlb_range, page_mapped_in_vma).
->>>
->>> The arm64 helper rewalks the pgtables in find_num_contig to answer whether
->>> the huge pte we have maps a contpmd or a contpte hugetlb folio, and
->>> returns CONT_PMDS or CONT_PTES, so that it can collect a/d bits over the
->>> contiguous ptes. We can falsely return CONT_PTES instead of CONT_PMDS
->>> if the addr is not aligned.
->>>
->>> Fix this by aligning the pmdp pointer down to a contpmd base before
->>> checking equality with the passed huge pte pointer, to correctly answer
->>> whether the huge pte is the base of a contpmd block.
->>>
->>> Fixes: 29cb80519689 ("arm64: hugetlb: Cleanup huge_pte size discovery mechanisms")
->>> Cc: stable@vger.kernel.org
->>
->> Please describe the userspace-visible effects of bugs when fixing them.
->> Particularly when cc:stable is proposed.  Thanks.
+> It is not clear whether this has a trivially visible effect to userspace.
 > 
-> Forgot for this one. It should be, on systems where CONT_PTES != CONT_PMDS
-> (meaning page size is 16K) we could collect excess a/d bit state, meaning
-> extra work for the kernel.
+> Just use huge_ptep_get() for dereferencing a huge pte pointer.
+> 
+> Fixes: c7ab0d2fdc84 ("mm: convert try_to_unmap_one() to use page_vma_mapped_walk()")
+> Cc: stable@vger.kernel.org
+> Reported-by: David Hildenbrand <david@kernel.org>
+> Signed-off-by: Dev Jain <dev.jain@arm.com>
+> ---
 
-Even worse, right? We could walk 128 entries, when we really should just walk 16
-(IIRC) entries, possibly reading garbage or even worse, into a memory hole at
-the end of memory?
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
