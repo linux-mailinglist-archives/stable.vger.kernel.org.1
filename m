@@ -1,214 +1,192 @@
-Return-Path: <stable+bounces-272200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272201-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Ev79JcGvS2oWYgEAu9opvQ
-	(envelope-from <stable+bounces-272200-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 15:38:09 +0200
+	id NiR8In6YS2rfWAEAu9opvQ
+	(envelope-from <stable+bounces-272201-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 13:58:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A16867115BC
-	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 15:38:08 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D29097102B6
+	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 13:58:53 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=mails.tsinghua.edu.cn header.s=dkim header.b=gNWrlvDo;
-	dmarc=pass (policy=quarantine) header.from=mails.tsinghua.edu.cn;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272200-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-272200-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=C3Yo7znj;
+	dkim=pass header.d=redhat.com header.s=google header.b=jKu58+bi;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272201-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-272201-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C6B1F301724D
-	for <lists+stable@lfdr.de>; Mon,  6 Jul 2026 11:48:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1BACE302D32C
+	for <lists+stable@lfdr.de>; Mon,  6 Jul 2026 11:49:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60E4041F7DB;
-	Mon,  6 Jul 2026 11:48:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73F7A41F7DB;
+	Mon,  6 Jul 2026 11:49:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [13.76.78.106])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DADC63BE17F;
-	Mon,  6 Jul 2026 11:48:44 +0000 (UTC)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C005B41D4DF
+	for <stable@vger.kernel.org>; Mon,  6 Jul 2026 11:49:24 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783338530; cv=none; b=LYLDO+T9IO3p4lYehb0UgNaAAj36zOsUXTG3Pvt7L16rVF8U9KcHvoqu9pAJFRAfQVnKz3uIpC2s8aRG+oU5paJd9CU9jyi/MFaTh6Of6SVYglal3uS5z14o/p2bV8BzsTmlwVXl5vTiblZzCUE4gTSPlAj5CZoaIA/7SF93KKk=
+	t=1783338566; cv=none; b=UhBcE5A+nU8TCHyFZkL6ph+NeNDiqWshIlehicBuS0/mSYn5zCOpULz1Ds3oja9pK+qkFEeGUKqfQ4bU7GqyyW4KcSEVMKfEuhiwFfhnN970+11nvcxkPdfDaRK9MwtvZLZtvwsB2NEcWGA+uDaXjJJZMmNzeYGyMZzFBOa5kF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783338530; c=relaxed/simple;
-	bh=nEukqTZBZ1X9i1rVreRZyN7lvtpb58xrxYOHWZfd9TM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pcvXw2w4GvG2oC4WupAYurDtBIDdKSaPrt5IyMNSfi930Fz8byf0vrbIdNf1wj7jHmXZyoA1U9NSUajFtDYRmX4Kt0UtQEukLDKiac91dpZKn9Abn8adFlmkYvZXHqkG69vamyLaGvp7+m89l5Sb1pBLAirsyms/t149XwKU6b4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn; dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b=gNWrlvDo; arc=none smtp.client-ip=13.76.78.106
+	s=arc-20240116; t=1783338566; c=relaxed/simple;
+	bh=ej669tqdQRBrUGwoO+9YEmnfZjZOl4s5UHB7MEdZfF4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=M8YakVNAvDIKi40XyXGfVGBp0IH5Y9Ap24K2oGruozSzoNXqe/O68O4L95F0kr0Nj7hgjGFtSc/jDs3VX8nMSMCwgTJ8D5pWM82w5iOTBc3FJMGN4Z1MwkqUze84Scw0xql/eUrewr0aSOYyrkTnQwR6qvUC5jENJl+dfWkEyck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=C3Yo7znj; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=jKu58+bi; arc=none smtp.client-ip=170.10.133.124
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1783338563;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ej669tqdQRBrUGwoO+9YEmnfZjZOl4s5UHB7MEdZfF4=;
+	b=C3Yo7znj9rV/se1ONNNfWcm2V2hXPau2tIiHJJlsV9xtXzFdsAjCGkmXelI08kRnHhem1K
+	gZhlg6dFFXDI+Q5zQEXzkVSjMlsPKg36Nu+BJ6xh8xn5+jftDBWJKfa2LS1/yF+HdKOnCF
+	FHsvR/BW1yldIzIA0tzO2ZWGrVfQk4Q=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-110-EZfZSozYOI6HYJraXNqagg-1; Mon, 06 Jul 2026 07:49:22 -0400
+X-MC-Unique: EZfZSozYOI6HYJraXNqagg-1
+X-Mimecast-MFC-AGG-ID: EZfZSozYOI6HYJraXNqagg_1783338561
+Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-bf481a6e4e6so198807666b.3
+        for <stable@vger.kernel.org>; Mon, 06 Jul 2026 04:49:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=mails.tsinghua.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:
-	Date:Message-ID:MIME-Version:Content-Transfer-Encoding; bh=1c5rR
-	SeA44CoP10ZtJ1PJVKO0i9gPVa/NJLx733Iw68=; b=gNWrlvDoIYpVYLDEp1IuZ
-	rs12UMR++sxykXrw6FScLXojZotehumO1lITeCVlzCqJKNwD9NdUAjt2/dg9UuZP
-	iPHyLqYWV5F0i/52/2gTLX62zHJI0znZrntgQG3dFsiiw2brjzuNmKVu+PQQ/JA3
-	QZTDDa0Qs6yaMj9qFW9fbQ=
-Received: from localhost.localdomain (unknown [101.5.13.242])
-	by web2 (Coremail) with SMTP id yQQGZQAn0pQNlktqskzGAg--.22382S2;
-	Mon, 06 Jul 2026 19:48:30 +0800 (CST)
-From: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-To: netfilter-devel@vger.kernel.org
-Cc: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	Phil Sutter <phil@nwl.cc>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	coreteam@netfilter.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
-	Ao Wang <wangao@seu.edu.cn>,
-	Xuewei Feng <fengxw06@126.com>,
-	Qi Li <qli01@tsinghua.edu.cn>,
-	Ke Xu <xuke@tsinghua.edu.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH nf] netfilter: nf_conncount: fix zone comparison in tuple dedup
-Date: Mon,  6 Jul 2026 19:48:18 +0800
-Message-ID: <20260706114820.74006-1-zhaoyz24@mails.tsinghua.edu.cn>
-X-Mailer: git-send-email 2.46.2
+        d=redhat.com; s=google; t=1783338561; x=1783943361; darn=vger.kernel.org;
+        h=mime-version:references:in-reply-to:message-id:date:subject:cc:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ej669tqdQRBrUGwoO+9YEmnfZjZOl4s5UHB7MEdZfF4=;
+        b=jKu58+bi/uwSZJhHtAswirNFDHNTG28+UPWscDa00BiRC7d5scqZP1EtXla+kYGCWS
+         O4ZJQqATXO7pw7wpvntlsf/A4cLYt4gA+f1SSjPXKa1wm0Hpsd8fWfvEOmmjC9QTHVEl
+         fvRfQqGfgItMK7folGDSv0RKt2dGIj1g/9uB0HIcfDLKz7AG3G/KJdP41oPXfW0G1ZF0
+         EjTtc6yTVHIMIHvZxXLfepbsTwUMvQ5LDmEHAOuS7Q4PO8yKRNNJIA7yC8hQvprXUIyf
+         Nh21TjKiWzq/BGM5gQY/356lgURGZ7LnTvxc8c4ZK0TVQZsdAe7DARxjJJAtZu1jBsxZ
+         u5XA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783338561; x=1783943361;
+        h=mime-version:references:in-reply-to:message-id:date:subject:cc:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ej669tqdQRBrUGwoO+9YEmnfZjZOl4s5UHB7MEdZfF4=;
+        b=EMZD1OyD3gqpayrlCaU6r5RIDMtMGloRO06brz/8ppbzH1gHIcJ+0UcsQiI1uVNPkF
+         o/ZW4hABCmImXIZDHpAbYLw0M3cxuUe2R4qHa/BkFzyDm/tfydSlAk09z4BJqCWavijP
+         WVBEYwGnioV+ViwHj8p9rdq/VMQXx9emJmRMO5NzfC2DOXI0Rdaswgu9VZoiF7a6DBY0
+         OGYcRJ1MlW0kfwFSVJq5AxmeUsl6kbHGjmUQMBBbNsZhwYc0Q5svPZ1CvuWgMr6zEHBT
+         B+aaptDMeheB+eIUutnKYzfD7WvoqSlHLLS3k38v+HAlwRv77QMZPkGC2nC+vX3jusc0
+         804w==
+X-Forwarded-Encrypted: i=1; AHgh+RreQ3mv6a6SctNX844XM1cE/Pc7pGM6c4ABd45iQTlCu5zFSm2QeDovwdfom0yPeTuyYI68S8Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyC+wyDmAMxwkFUkqahGc1oZOQi6CYVUeTAAYDbQoQ+wb949f1X
+	mG+/tw0By6KSR7IZmczDWWtrBRfcsYTe3tpdOf5D7UUVi8/+eTaNYF00X/9KexWSFc58gaSlZgD
+	rlFLgSGjthKJK5fFlKSx3Pj4X8ngN0BqWi73soTN8bh1eIH/G8UezGR5p6Q==
+X-Gm-Gg: AfdE7ckMsfMwlj4vkjazwPZVnw/ct+lCcLRxNpaZSmAgUqn1mhPExEG14LTXkHC3EOM
+	vEaEBiHscP5vI15GsfXP75RG1P1odnMCuClTJShxfKsVpU++KJWhcigaNzdsqCYpjhOZIlDfB80
+	zYzfq5mU66E6fjibDaqfnR6TweIBGFN+MwmbgWcTZhfc/1WLF9H4DRGEtNWW0qSj4AJcyw9k997
+	oSxt8qyp2KVhJ0DDnfUIlfSqYVi3FFxAcgrK/KO5v28OuJ+1m36sLoQOKPTwegkMDVNbdWf2SfB
+	4vANG5GOBmUcu1rNJHzcPGBiEjyJlju3GJU5s611lDKYF+r0LoSgA/wiKJ8cnB+z9e05EEbn3tr
+	mvqJ7KsIpuV4FOR/iPm1Yh6DlHxrs71/1PFlUAgiYbGGiij93rEx/Vxxxpi0=
+X-Received: by 2002:a17:907:399b:b0:c12:9b93:61fd with SMTP id a640c23a62f3a-c15a67dcb6amr12179266b.6.1783338561106;
+        Mon, 06 Jul 2026 04:49:21 -0700 (PDT)
+X-Received: by 2002:a17:907:399b:b0:c12:9b93:61fd with SMTP id a640c23a62f3a-c15a67dcb6amr12177866b.6.1783338560626;
+        Mon, 06 Jul 2026 04:49:20 -0700 (PDT)
+Received: from [10.44.49.24] (5920ab7b.static.cust.trined.nl. [89.32.171.123])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c12b628c16fsm752234066b.37.2026.07.06.04.49.19
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 06 Jul 2026 04:49:20 -0700 (PDT)
+From: Eelco Chaudron <echaudro@redhat.com>
+To: Asim Viladi Oglu Manizada <manizada@pm.me>
+Cc: netdev@vger.kernel.org, dev@openvswitch.org, aconole@redhat.com,
+ i.maximets@ovn.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net] net: openvswitch: reject oversized nested action
+ attrs
+Date: Mon, 06 Jul 2026 13:49:17 +0200
+X-Mailer: MailMate (2.0r6292)
+Message-ID: <EECA04B1-CDC4-4902-9DF3-4DE93515E6EF@redhat.com>
+In-Reply-To: <20260706094336.38639-1-manizada@pm.me>
+References: <20260706094336.38639-1-manizada@pm.me>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:yQQGZQAn0pQNlktqskzGAg--.22382S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxCw1rXr4UWF4fZryktF17Awb_yoWrGryrpF
-	WYk3sayrWkXrsFkas7ZrnrAF13tws8AF1fGFn5C3y29wn0gFnYvayxta47A3WDCFWDGF1U
-	ZF45Wr1DAan8ZrDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9m1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l8cAvFVAK
-	0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW5JVW7JwA2z4
-	x0Y4vE2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2
-	z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4
-	CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E74AGY7Cv6cx26r4r
-	Kr1UJr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc
-	8vx2IErcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVW8ZVWrXwCY02Av
-	z4vE14v_Gw4l42xK82IYc2Ij64vIr41l42xK82IY6x8ErcxFaVAv8VW8Ww4UJr1UMxC20s
-	026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_
-	JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14
-	v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xva
-	j40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8Jr
-	0_Cr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUWUDXUUUUU=
-X-CM-SenderInfo: 52kd05r2suqzpdlo2hxwvl0wxkxdhvlgxou0/1tbiAQMAAWpLXR9YbwAAsX
+Content-Type: text/plain
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[mails.tsinghua.edu.cn,quarantine];
-	R_DKIM_ALLOW(-0.20)[mails.tsinghua.edu.cn:s=dkim];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-272200-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[zhaoyz24@mails.tsinghua.edu.cn,stable@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	FORGED_RECIPIENTS(0.00)[m:netfilter-devel@vger.kernel.org,m:zhaoyz24@mails.tsinghua.edu.cn,m:pablo@netfilter.org,m:fw@strlen.de,m:phil@nwl.cc,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:coreteam@netfilter.org,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:yangyx22@mails.tsinghua.edu.cn,m:wangao@seu.edu.cn,m:fengxw06@126.com,m:qli01@tsinghua.edu.cn,m:xuke@tsinghua.edu.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[mails.tsinghua.edu.cn,netfilter.org,strlen.de,nwl.cc,davemloft.net,google.com,kernel.org,redhat.com,vger.kernel.org,seu.edu.cn,126.com,tsinghua.edu.cn];
-	DKIM_TRACE(0.00)[mails.tsinghua.edu.cn:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[zhaoyz24@mails.tsinghua.edu.cn,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-272201-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER(0.00)[echaudro@redhat.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:manizada@pm.me,m:netdev@vger.kernel.org,m:dev@openvswitch.org,m:aconole@redhat.com,m:i.maximets@ovn.org,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[echaudro@redhat.com,stable@vger.kernel.org];
+	ALIAS_RESOLVED(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,seu.edu.cn:email,tsinghua.edu.cn:email,mails.tsinghua.edu.cn:from_mime,mails.tsinghua.edu.cn:dkim,mails.tsinghua.edu.cn:mid,vger.kernel.org:from_smtp]
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[pm.me:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A16867115BC
+X-Rspamd-Queue-Id: D29097102B6
 
-The "already exists" dedup logic in __nf_conncount_add() decides
-whether a connection has already been counted and can be skipped instead
-of incrementing the connlimit count.  It compares the conntrack zone of a
-list entry with the zone of the connection being added using
-nf_ct_zone_id() and nf_ct_zone_equal(), passing conn->zone.dir or
-zone->dir as the direction argument.
 
-Those helpers take enum ip_conntrack_dir values: IP_CT_DIR_ORIGINAL is 0
-and IP_CT_DIR_REPLY is 1.  However, zone->dir is a u8 bitmask:
-NF_CT_ZONE_DIR_ORIG is 1, NF_CT_ZONE_DIR_REPL is 2 and
-NF_CT_DEFAULT_ZONE_DIR is 3.  Passing that bitmask as the enum direction
-shifts the meaning of every non-zero value.  An ORIG-only zone passes 1
-and is tested as REPLY, while REPL-only and default zones pass 2 or 3 and
-test bits beyond the valid direction range.  In those cases
-nf_ct_zone_id() can fall back to NF_CT_DEFAULT_ZONE_ID instead of using
-the real zone id, so different zones can be treated as equal and dedup
-collapses to tuple equality alone.
 
-Do not special-case NF_CT_DEFAULT_ZONE_DIR and do not compare raw zone
-ids: that would address only the common bidirectional case and would
-bypass the direction-aware NF_CT_DEFAULT_ZONE_ID fallback.  Instead, add
-a small conncount-local helper that converts the zone direction bitmask
-to a valid enum direction before calling the existing zone helpers.  A
-default bidirectional zone contains the ORIG bit, so it naturally maps to
-IP_CT_DIR_ORIGINAL; single-direction zones continue to use the existing
-nf_ct_zone_id() fallback semantics.
+On 6 Jul 2026, at 11:44, Asim Viladi Oglu Manizada wrote:
 
-Fixes: 21ba8847f857 ("netfilter: nf_conncount: Fix garbage collection with zones")
-Fixes: b36e4523d4d5 ("netfilter: nf_conncount: fix garbage collection confirm race")
-Cc: stable@vger.kernel.org
-Reported-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-Reported-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
-Reported-by: Ao Wang <wangao@seu.edu.cn>
-Reported-by: Xuewei Feng <fengxw06@126.com>
-Reported-by: Qi Li <qli01@tsinghua.edu.cn>
-Reported-by: Ke Xu <xuke@tsinghua.edu.cn>
-Assisted-by: Claude-Code:GLM-5.2
-Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
----
-diff --git a/net/netfilter/nf_conncount.c b/net/netfilter/nf_conncount.c
-index 91582069f6d2..eb3156782405 100644
---- a/net/netfilter/nf_conncount.c
-+++ b/net/netfilter/nf_conncount.c
-@@ -127,6 +127,15 @@ find_or_evict(struct net *net, struct nf_conncount_list *list,
- 	return ERR_PTR(-EAGAIN);
- }
- 
-+static enum ip_conntrack_dir
-+nf_conncount_zone_dir(const struct nf_conntrack_zone *zone)
-+{
-+	if (zone->dir & NF_CT_ZONE_DIR_ORIG)
-+		return IP_CT_DIR_ORIGINAL;
-+
-+	return IP_CT_DIR_REPLY;
-+}
-+
- static bool get_ct_or_tuple_from_skb(struct net *net,
- 				     const struct sk_buff *skb,
- 				     u16 l3num,
-@@ -211,8 +220,10 @@ static int __nf_conncount_add(struct net *net,
- 			/* Not found, but might be about to be confirmed */
- 			if (PTR_ERR(found) == -EAGAIN) {
- 				if (nf_ct_tuple_equal(&conn->tuple, &tuple) &&
--				    nf_ct_zone_id(&conn->zone, conn->zone.dir) ==
--				    nf_ct_zone_id(zone, zone->dir))
-+				    nf_ct_zone_id(&conn->zone,
-+						  nf_conncount_zone_dir(&conn->zone)) ==
-+				    nf_ct_zone_id(zone,
-+						  nf_conncount_zone_dir(zone)))
- 					goto out_put; /* already exists */
- 			} else {
- 				collect++;
-@@ -223,7 +234,7 @@ static int __nf_conncount_add(struct net *net,
- 		found_ct = nf_ct_tuplehash_to_ctrack(found);
- 
- 		if (nf_ct_tuple_equal(&conn->tuple, &tuple) &&
--		    nf_ct_zone_equal(found_ct, zone, zone->dir)) {
-+		    nf_ct_zone_equal(found_ct, zone, nf_conncount_zone_dir(zone))) {
- 			/*
- 			 * We should not see tuples twice unless someone hooks
- 			 * this into a table without "-p tcp --syn".
+> Open vSwitch stores generated flow actions as nlattrs, whose nla_len
+> field is u16. Commit a1e64addf3ff ("net: openvswitch: remove
+> misbehaving actions length check") allowed the total sw_flow_actions
+> stream to grow beyond 64 KiB, which is valid, but also removed the last
+> guard preventing a generated nested action attribute from exceeding
+> U16_MAX.
+>
+> An oversized generated container can thus be closed with a truncated
+> nla_len. A later dump or teardown then walks a structurally different
+> stream than the one that was validated. In particular, an oversized
+> nested CLONE/CT action may cause subsequent bytes in the generated
+> stream to be interpreted as independent actions.
+>
+> Keep the larger total-action-stream behavior, but make nested action
+> close reject generated containers that do not fit in nla_len, and return
+> the error through all callers. For recursive SAMPLE, CLONE, DEC_TTL, and
+> CHECK_PKT_LEN builders, trim resource-owning action-list tails in reverse
+> construction order before discarding failed wrappers, so resources copied
+> into the rejected tails are released before the wrappers are removed.
+>
+> Most failed outer wrappers are discarded by truncating actions_len after
+> child resources have been released. CHECK_PKT_LEN also trims its parent
+> after branch resources are gone. SET/TUNNEL close failures unwind their
+> known tun_dst ownership directly, and SET_TO_MASKED has no external
+> ownership and truncates on close failure.
+>
+> Fixes: a1e64addf3ff ("net: openvswitch: remove misbehaving actions length check")
+> Cc: stable@vger.kernel.org
+> Assisted-by: avom-custom-harness:gpt-5.5-qwen3.6-mod-mix
+> Signed-off-by: Asim Viladi Oglu Manizada <manizada@pm.me>
 
---
-2.47.3
+Thanks Asim for the patch, and Ilya for the offline review.
+
+The changes look good to me.
+
+Reviewed-by: Eelco Chaudron <echaudro@redhat.com>
 
 
