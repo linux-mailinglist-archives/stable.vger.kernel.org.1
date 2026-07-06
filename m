@@ -1,232 +1,218 @@
-Return-Path: <stable+bounces-272194-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272196-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id KCHKE7aWS2pkWAEAu9opvQ
-	(envelope-from <stable+bounces-272194-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 13:51:18 +0200
+	id tgRjH9OTS2pjVwEAu9opvQ
+	(envelope-from <stable+bounces-272196-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 13:38:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86CFA710188
-	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 13:51:17 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1139970FF67
+	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 13:38:59 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=bp.renesas.com header.s=selector1 header.b=QV3C0bIA;
-	dmarc=pass (policy=none) header.from=renesas.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272194-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272194-lists+stable=lfdr.de@vger.kernel.org";
-	arc=reject ("cv is fail on i=2")
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="mvK/Hbn6";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272196-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272196-lists+stable=lfdr.de@vger.kernel.org";
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 010B4302A78D
-	for <lists+stable@lfdr.de>; Mon,  6 Jul 2026 11:33:58 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 268EE300F447
+	for <lists+stable@lfdr.de>; Mon,  6 Jul 2026 11:38:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 106EE41737A;
-	Mon,  6 Jul 2026 11:33:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4159341D4E5;
+	Mon,  6 Jul 2026 11:38:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from OS0P286CU010.outbound.protection.outlook.com (mail-japanwestazon11011030.outbound.protection.outlook.com [40.107.74.30])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6D7535AC24
-	for <stable@vger.kernel.org>; Mon,  6 Jul 2026 11:33:52 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783337634; cv=fail; b=B45hXJcMGOr4SbTYjfJzGD23/Uaiau7E0fb6mKwcJ1XUj4eWsfZxe0FFg9irImebPsyCjoLfK4taDz0xiS74vtUzcaXyFJGTt4n52RUtTwSp61HIM6iaVD0G6BXHNuFeOmfQeTTYVxXpKHROLPx+5D+Bf3afdNaGWJw8Jxq1iW0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783337634; c=relaxed/simple;
-	bh=yhn9u+EMtAXG3cZLk9gQZ1HbRt5FSUty+wQ5De0VyBk=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=ptc6f8d2zBNIaPOPVwSfnZ18bn1w+jmyDOFt4kj6m/e4leYifR1h9Ir3LVRAEwMGkJ7qGBWsaRHTmpIIerPi6D2+UPW96ThlQ4O+AbwWn/rH/yclfxNhWRndq5WItihPFEY1w6cnksPrqy+Zvg5X6ANOtOev49rKzTkmd7jLwTo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com; spf=pass smtp.mailfrom=bp.renesas.com; dkim=pass (1024-bit key) header.d=bp.renesas.com header.i=@bp.renesas.com header.b=QV3C0bIA; arc=fail smtp.client-ip=40.107.74.30
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Djxldn3zSCo0UHogMTwnw12GjqHI0Lf76eEo5RFuykVoba6kfwP0KKAkwRKaqyCXg5lANuVRQwO2KVfm/cbpC14Hm4enT+pZawUVC3h6VWzBO7+EO1/kG6DHxI30VSiKZ4D2yCviy5v7oBMPfeXIXbWLPydpC+xMZn/NxP24LKqpa7+Q52g+YScpgN4b0JGYKpKsMeY23cbEaiffmJJyxy7tNW4/2bqIyled9dTr8KYm2I1xIHLzo/TQLXS8xD8B9Q5zAj2Sj5rOuRef+1Apczhd5dR6P8iXyABTkUyVZqcmeLxGWS0EhJBfO53iXqafHPqK9/yLbtbjn0pVBslj/w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yhn9u+EMtAXG3cZLk9gQZ1HbRt5FSUty+wQ5De0VyBk=;
- b=TZYDhCPvK7BIlxV4PeU06mdDUxILsBlzRVhd9GFN12ni8Mw6geIWWzkgaTFJ0os8Jipx/5byrDZUS1JgkNrL2SRTkHNyJ5iHHem45mDZi0MLssuY9h1WJgRBevoMm3WpL9I8tg6wQ8apZSaLpAUf5DRTdICSi/cWCAU8XTNaArib5T/DHA//NQVXf7kPXzt1Bt+OmnjlNubCW9SuvZsTIViSWu5rFh4VkofrkfkmW4h9Lyq9keavzi96GzoEXcwArTRb8cfSZWpPsK9TJ35zvSlPq2w8nTUubhvUdjpatUbNjh9GlgjneGqeInWJPf2jX1IfnR6e94SC2KOIRv4RdA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=bp.renesas.com; dmarc=pass action=none
- header.from=bp.renesas.com; dkim=pass header.d=bp.renesas.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bp.renesas.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yhn9u+EMtAXG3cZLk9gQZ1HbRt5FSUty+wQ5De0VyBk=;
- b=QV3C0bIASgRosB+cGczEDM0yp1DEcFzp6TiNBpgQmmgwz1fW/ox2yrfuZsFiHrrtn70v9reM2NSTOmXQMejQCDyxQPidKvYrzpRfoH0jssC4sHPx6+HtB0bh1RylgzRuT5rV86aRK6y+7ZxS9XJ95E/adfjcM0/Yw5NNuFmZo2s=
-Received: from OSCPR01MB14315.jpnprd01.prod.outlook.com (2603:1096:604:39f::5)
- by TYRPR01MB16392.jpnprd01.prod.outlook.com (2603:1096:405:13e::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Mon, 6 Jul 2026
- 11:33:50 +0000
-Received: from OSCPR01MB14315.jpnprd01.prod.outlook.com
- ([fe80::66f:fac9:2ef6:9796]) by OSCPR01MB14315.jpnprd01.prod.outlook.com
- ([fe80::66f:fac9:2ef6:9796%6]) with mapi id 15.21.0181.008; Mon, 6 Jul 2026
- 11:33:49 +0000
-From: Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>
-To: geert <geert@linux-m68k.org>, Ben Hutchings <ben@decadent.org.uk>
-CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>, "patches@lists.linux.dev"
-	<patches@lists.linux.dev>, wsa+renesas <wsa+renesas@sang-engineering.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>, Ulf Hansson <ulfh@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: RE: [PATCH 5.10 94/96] mmc: renesas_sdhi: Add OF entry for RZ/G2H SoC
-Thread-Topic: [PATCH 5.10 94/96] mmc: renesas_sdhi: Add OF entry for RZ/G2H
- SoC
-Thread-Index: AQHdCj+FKf8oM+BZj0GrJ6s5iCm/JrZfgvoAgAChXwCAADznsA==
-Date: Mon, 6 Jul 2026 11:33:49 +0000
-Message-ID:
- <OSCPR01MB14315350989F1BD556CA5B1E9AAF12@OSCPR01MB14315.jpnprd01.prod.outlook.com>
-References: <20260702155108.949633242@linuxfoundation.org>
- <20260702155110.958322610@linuxfoundation.org>
- <ed0c9af450494df5f7bfd72670754c8e48e1f36d.camel@decadent.org.uk>
- <CAMuHMdWEVCxK3gPCrD5cTAsGguE6WOJ8sAHMrX_Ba992gkKubg@mail.gmail.com>
-In-Reply-To:
- <CAMuHMdWEVCxK3gPCrD5cTAsGguE6WOJ8sAHMrX_Ba992gkKubg@mail.gmail.com>
-Accept-Language: en-US, en-GB
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: OSCPR01MB14315:EE_|TYRPR01MB16392:EE_
-x-ms-office365-filtering-correlation-id: 19904155-d49b-46ae-f9aa-08dedb5272c0
-x-ld-processed: 53d82571-da19-47e4-9cb4-625a166a4a2a,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|23010399003|376014|1800799024|366016|22082099003|18002099003|38070700021|6133799003|4143699003|11063799006|56012099006;
-x-microsoft-antispam-message-info:
- E4X+KCtu38/VQ3W2L/+2xaBg9WOPiBKTGjFLOmyLMA+jRYZkOQ3G3RvdoNraN69s6l9/h88cFcvn8F7suGJzcbwM+g1LcJ5RCr7BprNFIJ6KQY26xGiZ4TxMhWF8iJVcDattXDeCCikaEddL4KboCztQssfOjWCis3zjZTpHWgYQJqz5aw1MnIhZNnJWwff0kB995FQpXmJys8/q9hkj6AAVBlAzwPeA3oK5M9Bohv+MXVYHNhFIWQat72zHkaUn7CdzO7QsLPX1Q5Ey6S8+qUROjBnkHXMbDQFuAyznvnT4Mnk4QYDTBqFRkTfZEiSWQ4PZxgXgydfpJJMob47gFFe8T1CrZaNbTA4meEGrunkwQpLaFU/RqFZdREdYwgF7SYAgL8eN0pZ/v64bRCaFkibgZJORM1hIfTdvXg20kaJZys9gZVggkt47hu1quO/gXFiJU0ctOgnoVGughWDN02JcwQ5rDt/1dAo1iD59nwf+h/fK60OO9VJe6GfoEMB31/918ftLOvG6/gksg3ish8o3taB11zekM8LuOJu5NFSqmKOnQz/xkk0RVOQWYIorvK6A7M4JfjJu0nFfxlmtEn6s+SlVVTH7Xu2bh70RgxQwnod3uvJVP9kcgrNwV/zaF6ErX4c/NOdB4MMwDalQuyM8d9qJk9d/xYx7A627nvjEedHFjxMVM3Tu9FV1CPq5QHMNWX/CK4n5utbayD/mZM5WVeML89ZQglNRUh/u/gM=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:OSCPR01MB14315.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(1800799024)(366016)(22082099003)(18002099003)(38070700021)(6133799003)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?T05mbWFwZ3FTdFo4MGE4TjFRQTY2VnB6T3l2Z0FkckhLV0VOcjlmcmZIMThp?=
- =?utf-8?B?SGlXcUpCREM1UHlRaG5valV5Z3R6a1hhb05BbEkrRXR1eHQ1Zm1VVmJqbklj?=
- =?utf-8?B?YzI2SUVRSW1xL3FpcnBvMDRITG4xRU5tODFSM0VBMFp0SDVzak9mWTNsYml6?=
- =?utf-8?B?SkNaeUp5Qkd1NHJLdk5qMSs1bCtLcmVnYm5KWWppMnlSbkQxVVM5cGNKcFk1?=
- =?utf-8?B?amZiMzl0UmdPVW5IOWZoY3FobitZMmx4Z0ZPSkFmSEVOQThGaDJuS0wxOVVj?=
- =?utf-8?B?YUJHQnV2MXo4d0lQc0plWC9kb2VwKzVqUmQ1eWRPa3FITnp1ME9YOGlsSnNr?=
- =?utf-8?B?MmhjaGZxWnpRUFlaR0ZndXllY293VzJlYllVenQ0VzJGRVNIQlo5c3ZkZjlM?=
- =?utf-8?B?T2JSMDlmV0IrN0wxakQ0MWVqYmlBa3ZXVEdPVmtBbGZRUC94UDBhNzRmcVVi?=
- =?utf-8?B?ZDBEUWFFb2g3Z3FmaDhYNVZOdjhIV3VGekpOR1VjRmtwdnJPQWtsMC9IUUdu?=
- =?utf-8?B?WmNkL2xIOWV2R1Q0eVFrengzVkxSSDJueHExWFBZYmpFUzhlVlRaTnVjYTk5?=
- =?utf-8?B?Z3JZd05kR1Y5aC90U3VyOHpZcVFLbzJxa3NOZWJQZkRSMjgxQzIyRHRjeE1h?=
- =?utf-8?B?VURiWE9tdlVXMEdLNXRUOFRVTmVoNjhJaTcrYXZmWmZ1UkpibEFxNjNTME5r?=
- =?utf-8?B?b0d1cDF0WUN4eStGQjJITmovbFowbU1jbUw1L0NtaFc0QllsL0Zhamw5cEpG?=
- =?utf-8?B?RkpiRmdsQ0Vhd3RieTBCSzBKWjZVZTI1MHJMSTZJUzRUNS85NDk3ajZXOHo1?=
- =?utf-8?B?NWhaU3ZUY3BVTlB0QkVwWGZPOWVkNVp0T1JWWFg5LzIyK2JtTkVtZXhxZXpi?=
- =?utf-8?B?U3JjNnRRc0RJeDZiOVZ5ZEZIMnk5YWY3emdmSzEzZXFxSzFVeUZUQkZOV21Z?=
- =?utf-8?B?cmtIekg3dGJTSmp6QUora0ptUUlIQURCQnJTeUcrT1licGhQUGRma3ZnNlVh?=
- =?utf-8?B?SEhZcmlYaHZIMWcrSmkyM2xpSXBCT2dYRDZqWWk5UzdNajZiS1dibS9ad0Rm?=
- =?utf-8?B?ejBEUkhzOTJFQzlVcG9KSytSYkJyM1U5WjVOVWxNUjJjV3kxV3NTS1BzOGcr?=
- =?utf-8?B?WjB6YzdyaWVNMCtnY3hRbjBnWVV6dGV2RFNrcVlURzNaSGNVZmJTRzFveHRO?=
- =?utf-8?B?V0t0RmVxalFMUXI2TEVBMXZqZE1rSnRPSDUxYWZheW1Tak9IdEg1ODJuYmVt?=
- =?utf-8?B?MEJ1Mm40WTZnVHYyZGg2UW9lR054cjVoNS84cXYyZWxoRHlOSFdpek9VUXpO?=
- =?utf-8?B?VFpEWTliZXEvZlVQd2dMalpLVHl0MzF0NTlDMGhzbkF6dkszU2lCS3FXTzBw?=
- =?utf-8?B?YmRjQWJUQjVwRklTR3k2cUN3WWk5aFhKdmppb0FORkNIdUJqeGRBQzhXUWF2?=
- =?utf-8?B?KzlKOWR6Y3pBckIxSVRkUmdBbVFpTE1uZ29DTnVEbWpyVGtRaHhtSGhJM2tK?=
- =?utf-8?B?VnFaeXViZExUc2dCQVhBcW9xVXVjaFVtaHRLdDhPU0l2REFsZ2ozb1lJQ3Rr?=
- =?utf-8?B?WlFXbVBWZ3dWcHJCVkhkWm9vOGkxNFFxeEVjQlQvWFhQY3ZKZkRid3gvaDA3?=
- =?utf-8?B?TStlNk9MbkNkV0VZdE5nbE1KRW1TbkFWc25YZ2NNMUFOSG10bkM1Z1B2L2ps?=
- =?utf-8?B?N09yMGN6di9UdnUzQWZpRmIxcHZ1cUpxZDdPeVZBVVFCdzZpWG1reW80TUJD?=
- =?utf-8?B?eUp6MUd2b1BQSHJkYXk0bHBBZGtMYUhSZE05RFBDUUhFeDZJNWZydTdrdnZW?=
- =?utf-8?B?NlhGT3NreFh0dmQvRjFqdVJiZVRZZ2xOVEJ5RGdhRTB5MmFGRnM0L3pPQnFx?=
- =?utf-8?B?ZjNHYUxsLzlDbmNYVEZ4V202dW5paDFxWlVraE1pQmM2L00vVXZqYmtjdUFy?=
- =?utf-8?B?QXBENXlxYU9GenB5dW1DTnUyMXAxY1ZFZ2Zvdk1BbzBjKytwVTg1NzMrZWQv?=
- =?utf-8?B?cDFxMzlUMTVLVkJRZ2Rra2plYkluOTlacHBBUllDeU1MMzdremtULzNyVjNH?=
- =?utf-8?B?MURNeXNGdDUrOGhtNnZxQWI0MHIvaDE4WWErR0VZS0VTTnA4cUNFV3pxc2RK?=
- =?utf-8?B?VnIyZFFpU3R3cWZCSDlqOWZ1dFFYKzhnYkJnTmZBQ1BpVWhqREVoYnVmV202?=
- =?utf-8?B?c1dodFIwVXYydWhFMUtWTTdsMXMwcUtHdDJtTkYremNabVVLdDA1cjdyck03?=
- =?utf-8?B?VmtIemtsdlZ4K2pqWVdrWWtreVJsVklGNXd4WlNmYWYrdE1vcHdRUlp1TDVE?=
- =?utf-8?B?dGtTa3A4VThFY2k5bUE0eCsvUzl6bEpja0c4c1VQREFKbmtmdzBiZ0k3Yytu?=
- =?utf-8?Q?UMh0AU4SCtJvs26AB4Ig1L/hgoHTdeU+fnrhY?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8CC541D4F8
+	for <stable@vger.kernel.org>; Mon,  6 Jul 2026 11:38:54 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783337936; cv=none; b=CxVh3euKzu3SjJEEGwN83dAVXGtu2R5iddUIMTGD3/ayf5OiVhW9fjTzw/wuXdGlmECsdTzx+acOwcRA/2ZSZKYJbQpwXg+aAWuNF2Kf0Q8D5xXb+MIatBKciHYicgR449ZAzTSgAAw7WBeh3oCrAG9hoMo4TGKBwopNu+sycZM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783337936; c=relaxed/simple;
+	bh=7sAeWkd7EwlEsoCRUeUm175QpZ9wzHwghbd3UXK25OE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=BGjxA0R2rQ202pCimBWA/tqE+VzhHMVSxpa1uRppIkXSqlXVj3emJaH944hRzR7YU6P9YJRgjU4onq+kcJAsBjUexo5D3/RiNGeU2gqxFdAXacqPl1fqPMb68EuxWPHZmRmkYrcwGLRq6JTnZuLodm7G+eonRRnURTg3E8PbnyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mvK/Hbn6; arc=none smtp.client-ip=209.85.216.47
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-3817f800c8bso2027730a91.1
+        for <stable@vger.kernel.org>; Mon, 06 Jul 2026 04:38:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783337934; x=1783942734; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XPiB1VecAR3TN1u8hRdYEbrIAIhOnDTmSxtVCqyGQ3Y=;
+        b=mvK/Hbn6C3GajLr04bOG/ecwTbmfmm6pHZZ7LY4p89pdJ3v3rdQzhDFRQW/A5HiMCw
+         9zULrIHngYM/c8fdUQWS+atr0E/rZuplm9GpBnoKhSOTJHo+JC7A8DQK2Kk0CwtDFFSS
+         ufAkvVoMr4/zc+Vd1pB9tDGd1N+eXqj0ztn8snMpBezK3nse5dDIX6JFPl8X3eW6Z44/
+         BQgytokyVcUPVp9tpbNTRP5au9Wtx3HKvcITyrySvaOQJ7EIwULzOaL0FwMdQCS+kQ/v
+         2oZGCl+3X38vUrvWkWPgj2+8WG6DBBQw6Qn4sbqcOR8hRC8HEqtJCOZDEF/wF+lW7cLT
+         Cc5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783337934; x=1783942734;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=XPiB1VecAR3TN1u8hRdYEbrIAIhOnDTmSxtVCqyGQ3Y=;
+        b=SZAVjnkOUwaW+7AW4s98XZ6iW6AX5lwVxcRE1aSWSXKHayDJJFtG2ff4amj7TlCx9+
+         StqoUbgAKuUTQotxahpMI1gNBXbAe0c3CkN2O6OAY5ycjriQrkwGCvOTCwerOBJSe/A0
+         Q9QYermqTKe8pi7I4O5WuoVixG2e77xPidzQUmBwRWw/29y5VDLHNC31bvb6JAsBrtCh
+         pPNX8OJM8/WiSbo++mSgrwUELlKJlch/iafStf0uCir7okTNlDdE3cM/TQAVq39EXsJQ
+         wj7insY2f4YH9fCwnjJ+FUbrpLWDkVPgNM5NCWhrGiaTKEjaQB9jySLM/XA19mY/rwYH
+         Dk2Q==
+X-Forwarded-Encrypted: i=1; AHgh+RpiL89G94mcBiyY26e5mHcCzUfxi7BJzMhfqr/tHjMneWuz0/yZeuInNpz9rJvcBtYxyE1MwNY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyx/2vW0FVARFIoRFjVk4i1alUkwqXB2IH7lLojFrKJ/ZrDvFS8
+	NdgkcJogZjAj2koP8usbHcs5d0nLnLNVye3T1CzVTlkOFMDhKHIPdrpY
+X-Gm-Gg: AfdE7cl1LaQfd251n2DNuuTNpESsqqdg1YJ5bFjk0LSlPNqziOMHxasdeSy/4BfrY4r
+	j00bY5++ZKpAd9xM5QDLHtZr7QilUnTNgrHJGe7G7DQkOhtRASD8qcF5U5H+NecO5MaxzM/lzU+
+	zvT5xK8TAGC2VqCQ67GfH2OY1iZQbqUP36GRm+Zu6x6IlW/x+hVcuOHAJYVm4bNKrdXv6tG4PoU
+	4mfrXBvUwuVhCnTxlc9KQr5Ysa54aFGmO4/TDkMx0Y2HE3FkVeKlhC0l0qqC/gvuTwuQ0jsvknN
+	42VWMpPtssnPszpcg1mtOWbmhQVp5mh2vWR/YCrEG90Swm56TrYrcqethdVrd1KEcQ7Jq6Mzccv
+	pHsyCZeriPTXtnPLq0KSyP3xj222NhiSDl0S6/tCGw/6KPFmE9r1VK9mZ0Pv5pPzGFZKkwviI87
+	Acg9fZIntYzv3ouxH2rD1OehNysodgMarqPvIN02lBwFYcSYCSrKGPHI55Xtlsnj4hrSUpb96DX
+	VvXSVKJ4PgQMhOv7B8=
+X-Received: by 2002:a17:90b:51:b0:37f:9cdf:f0ab with SMTP id 98e67ed59e1d1-3829f9debb6mr8700704a91.26.1783337933770;
+        Mon, 06 Jul 2026 04:38:53 -0700 (PDT)
+Received: from leonardoc-nb ([67.159.246.222])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-31151fff32fsm18581752eec.21.2026.07.06.04.38.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Jul 2026 04:38:53 -0700 (PDT)
+From: Leonardo Costa <leoreis.costa@gmail.com>
+To: leoreis.costa@gmail.com
+Cc: Laurent.pinchart@ideasonboard.com,
+	airlied@gmail.com,
+	andrzej.hajda@intel.com,
+	dri-devel@lists.freedesktop.org,
+	francesco@dolcini.it,
+	jernej.skrabec@gmail.com,
+	jonas@kwiboo.se,
+	leonardo.costa@toradex.com,
+	linux-kernel@vger.kernel.org,
+	luca.ceresoli@bootlin.com,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	neil.armstrong@linaro.org,
+	rfoss@kernel.org,
+	simona@ffwll.ch,
+	stable@vger.kernel.org,
+	tomi.valkeinen@ideasonboard.com,
+	tzimmermann@suse.de
+Subject: Re: [PATCH] drm/bridge: tc358768: Enforce input bus flags via atomic_check
+Date: Mon,  6 Jul 2026 08:38:36 -0300
+Message-ID: <20260706113838.1586775-1-leoreis.costa@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260706105840.1582166-1-leoreis.costa@gmail.com>
+References: <20260706105840.1582166-1-leoreis.costa@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: bp.renesas.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: OSCPR01MB14315.jpnprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 19904155-d49b-46ae-f9aa-08dedb5272c0
-X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Jul 2026 11:33:49.1527
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 5VsPySTAM29kUIEhC1YY7pG78li46za/avuSIljoR6qFW2FI4dujDKH6SyQ5T9bReB+lOZ0HxrcF/NSlFRb1jAmp9S5Y6UG+0Zw8/P5ZpB8A/2YLdt6wL76TvTXaBiF2
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYRPR01MB16392
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [2.44 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	MIME_BASE64_TEXT_BOGUS(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[renesas.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[bp.renesas.com:s=selector1];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	MIME_BASE64_TEXT(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[ideasonboard.com,gmail.com,intel.com,lists.freedesktop.org,dolcini.it,kwiboo.se,toradex.com,vger.kernel.org,bootlin.com,linux.intel.com,kernel.org,linaro.org,ffwll.ch,suse.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-272194-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-272196-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:leoreis.costa@gmail.com,m:Laurent.pinchart@ideasonboard.com,m:airlied@gmail.com,m:andrzej.hajda@intel.com,m:dri-devel@lists.freedesktop.org,m:francesco@dolcini.it,m:jernej.skrabec@gmail.com,m:jonas@kwiboo.se,m:leonardo.costa@toradex.com,m:linux-kernel@vger.kernel.org,m:luca.ceresoli@bootlin.com,m:maarten.lankhorst@linux.intel.com,m:mripard@kernel.org,m:neil.armstrong@linaro.org,m:rfoss@kernel.org,m:simona@ffwll.ch,m:stable@vger.kernel.org,m:tomi.valkeinen@ideasonboard.com,m:tzimmermann@suse.de,m:leoreiscosta@gmail.com,m:jernejskrabec@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[leoreiscosta@gmail.com,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	FREEMAIL_TO(0.00)[gmail.com];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[prabhakar.mahadev-lad.rj@bp.renesas.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:geert@linux-m68k.org,m:ben@decadent.org.uk,m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:wsa+renesas@sang-engineering.com,m:geert+renesas@glider.be,m:ulfh@kernel.org,m:sashal@kernel.org,m:wsa@sang-engineering.com,m:geert@glider.be,s:lists@lfdr.de];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[bp.renesas.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[prabhakar.mahadev-lad.rj@bp.renesas.com,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[leoreiscosta@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_NONE(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,toradex.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 86CFA710188
+X-Rspamd-Queue-Id: 1139970FF67
 
-SGkgR2VlcnQsDQoNCj4gRnJvbTogR2VlcnQgVXl0dGVyaG9ldmVuIDxnZWVydEBsaW51eC1tNjhr
-Lm9yZz4NCj4gU2VudDogMDYgSnVseSAyMDI2IDA4OjUzDQo+IFRvOiBCZW4gSHV0Y2hpbmdzIDxi
-ZW5AZGVjYWRlbnQub3JnLnVrPg0KPiBDYzogR3JlZyBLcm9haC1IYXJ0bWFuIDxncmVna2hAbGlu
-dXhmb3VuZGF0aW9uLm9yZz47DQo+IHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmc7IHBhdGNoZXNAbGlz
-dHMubGludXguZGV2OyBQcmFiaGFrYXIgTWFoYWRldiBMYWQNCj4gPHByYWJoYWthci5tYWhhZGV2
-LWxhZC5yakBicC5yZW5lc2FzLmNvbT47IHdzYStyZW5lc2FzIDx3c2ErcmVuZXNhc0BzYW5nLQ0K
-PiBlbmdpbmVlcmluZy5jb20+OyBHZWVydCBVeXR0ZXJob2V2ZW4gPGdlZXJ0K3JlbmVzYXNAZ2xp
-ZGVyLmJlPjsgVWxmDQo+IEhhbnNzb24gPHVsZmhAa2VybmVsLm9yZz47IFNhc2hhIExldmluIDxz
-YXNoYWxAa2VybmVsLm9yZz4NCj4gU3ViamVjdDogUmU6IFtQQVRDSCA1LjEwIDk0Lzk2XSBtbWM6
-IHJlbmVzYXNfc2RoaTogQWRkIE9GIGVudHJ5IGZvciBSWi9HMkgNCj4gU29DDQo+IA0KPiBIaSBC
-ZW4sDQo+IA0KPiBPbiBNb24sIDYgSnVsIDIwMjYgYXQgMDA6MTUsIEJlbiBIdXRjaGluZ3MgPGJl
-bkBkZWNhZGVudC5vcmcudWs+IHdyb3RlOg0KPiA+IE9uIFRodSwgMjAyNi0wNy0wMiBhdCAxODoy
-MCArMDIwMCwgR3JlZyBLcm9haC1IYXJ0bWFuIHdyb3RlOg0KPiA+ID4gNS4xMC1zdGFibGUgcmV2
-aWV3IHBhdGNoLiAgSWYgYW55b25lIGhhcyBhbnkgb2JqZWN0aW9ucywgcGxlYXNlIGxldCBtZQ0K
-PiBrbm93Lg0KPiA+ID4NCj4gPiA+IC0tLS0tLS0tLS0tLS0tLS0tLQ0KPiA+ID4NCj4gPiA+IEZy
-b206IExhZCBQcmFiaGFrYXIgPHByYWJoYWthci5tYWhhZGV2LWxhZC5yakBicC5yZW5lc2FzLmNv
-bT4NCj4gPiA+DQo+ID4gPiBbIFVwc3RyZWFtIGNvbW1pdCBmNDhlZTQ5NzI2ZWU0YWI1NDVmZDJk
-YzY0NGYxNjljMDgwOWIxOWIzIF0NCj4gPiA+DQo+ID4gPiBUaGUgUlovRzJIIChSOEE3NzRFMSkg
-U29DIHdhcyBwcmV2aW91c2x5IGhhbmRsZWQgdmlhIHRoZSBnZW5lcmljDQo+ID4gPiAicmVuZXNh
-cyxyY2FyLWdlbjMtc2RoaSIgZmFsbGJhY2sgY29tcGF0aWJsZSBzdHJpbmcuIEhvd2V2ZXIsDQo+
-ID4gPiBiZWNhdXNlIHRoZSBTREhJIElQIG9uIFJaL0cySCBpcyBpZGVudGljYWwgd2l0aCB0aGUg
-Ui1DYXIgSDMtTg0KPiA+ID4gKFI4QTc3OTUxKSwgaXQgcmVxdWlyZXMgdGhlIHNwZWNpZmljIHF1
-aXJrcyBhbmQgY29uZmlndXJhdGlvbg0KPiA+ID4gZGVmaW5lZCBpbiBgb2ZfcjhhNzc5NV9jb21w
-YXRpYmxlYCByYXRoZXIgdGhhbiB0aGUgZ2VuZXJpYyBHZW4zIGRhdGEuDQo+ID4NCj4gPiBCdXQg
-dGhpcyBiYWNrcG9ydCBtYXBzIGl0IHRvIHRoZSBnZW5lcmljIEdlbjMgZGF0YSwgc28gSSdtIHdv
-bmRlcmluZw0KPiA+IHdoYXQgdGhlIHBvaW50IG9mIGl0IGlzPw0KPiANCj4gTmljZSBjYXRjaCEN
-Cj4gDQo+IEluZGVlZCwgdGhlIHVwc3RyZWFtIGNvbW1pdCBkZXBlbmRzIG9uIGNvbW1pdCA3MWI3
-NTk3YzYzZDJkZGY2ICgibW1jOg0KPiByZW5lc2FzX3NkaGk6IFJlZmFjdG9yIHJlbmVzYXNfc2Ro
-aV9wcm9iZSgpIikgaW4gdjUuMTUuDQo+IA0KPiBGb3IgdjUuMTAsIEkgdGhpbmsgeW91IG5lZWQg
-dG8gYWRkIGEgbGluZQ0KPiANCj4gICAgIHsgLnNvY19pZCA9ICJyOGE3N2UxIiwgLnJldmlzaW9u
-ID0gIkVTMy4qIiwgLmRhdGEgPQ0KPiAmc2RoaV9xdWlya3NfYmFkX3RhcHMyMzY3IH0sDQo+IA0K
-PiB0byBzZGhpX3F1aXJrc19tYXRjaFtdIGluIGRyaXZlcnMvbW1jL2hvc3QvcmVuZXNhc19zZGhp
-X2NvcmUuYyBpbnN0ZWFkLg0KPiANClRoYW5rcyBmb3IgcG9pbnRpbmcgdGhhdCBvdXQuIFdlIGNv
-dWxkIGRyb3AgdGhpcyBwYXRjaCBmcm9tIHN0YWJsZSA1LjEwIGFuZCBJIGNhbiBiYWNrcG9ydCB0
-aGlzIHBhdGNoIGFuZCBjb21taXQgNzFiNzU5N2M2M2QyZGRmNiB0byBDSVAga2VybmVscyA8PSA1
-LjEwLg0KDQpDaGVlcnMsDQpQcmFiaGFrYXINCg==
+Hello,
+
+> The tc358768 declares static bridge timings requiring pixel data to be
+> sampled on the positive clock edge.
+> 
+> However, the DRM core default propagation simply copies the output-side
+> bus flags, coming from the next bridge, connector or panel, to the
+> input side. If the propagated flags are incompatible with the bridge
+> ones, the data is wrongly sampled, typically resulting in visual
+> artifacts on the panel.
+> 
+> Implement the atomic_check hook, replacing the mutually exclusive
+> mode_fixup, and set the bridge state input bus flags to the ones
+> required by the tc358768. The sync polarity defaulting previously done
+> in mode_fixup is carried over into atomic_check unchanged.
+> 
+> Fixes: ff1ca6397b1d ("drm/bridge: Add tc358768 driver")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Leonardo Costa <leonardo.costa@toradex.com>
+> ---
+>  drivers/gpu/drm/bridge/tc358768.c | 15 ++++++++++-----
+>  1 file changed, 10 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/bridge/tc358768.c b/drivers/gpu/drm/bridge/tc358768.c
+> index 0d85120fcc7a3..0516a331e71ba 100644
+> --- a/drivers/gpu/drm/bridge/tc358768.c
+> +++ b/drivers/gpu/drm/bridge/tc358768.c
+> @@ -1262,10 +1262,13 @@ tc358768_atomic_get_input_bus_fmts(struct drm_bridge *bridge,
+>  	return input_fmts;
+>  }
+>  
+> -static bool tc358768_mode_fixup(struct drm_bridge *bridge,
+> -				const struct drm_display_mode *mode,
+> -				struct drm_display_mode *adjusted_mode)
+> +static int tc358768_bridge_atomic_check(struct drm_bridge *bridge,
+> +					struct drm_bridge_state *bridge_state,
+> +					struct drm_crtc_state *crtc_state,
+> +					struct drm_connector_state *conn_state)
+>  {
+> +	struct drm_display_mode *adjusted_mode = &crtc_state->adjusted_mode;
+> +
+>  	/* Default to positive sync */
+>  
+>  	if (!(adjusted_mode->flags &
+> @@ -1276,13 +1279,15 @@ static bool tc358768_mode_fixup(struct drm_bridge *bridge,
+>  	      (DRM_MODE_FLAG_PVSYNC | DRM_MODE_FLAG_NVSYNC)))
+>  		adjusted_mode->flags |= DRM_MODE_FLAG_PVSYNC;
+>  
+> -	return true;
+> +	bridge_state->input_bus_cfg.flags = bridge->timings->input_bus_flags;
+> +
+> +	return 0;
+>  }
+>  
+>  static const struct drm_bridge_funcs tc358768_bridge_funcs = {
+>  	.attach = tc358768_bridge_attach,
+>  	.mode_valid = tc358768_bridge_mode_valid,
+> -	.mode_fixup = tc358768_mode_fixup,
+> +	.atomic_check = tc358768_bridge_atomic_check,
+>  	.atomic_pre_enable = tc358768_bridge_atomic_pre_enable,
+>  	.atomic_enable = tc358768_bridge_atomic_enable,
+>  	.atomic_disable = tc358768_bridge_atomic_disable,
+
+Please ignore this, as it was not meant to be sent in reply to the thread
+above. That was an accident.
 
