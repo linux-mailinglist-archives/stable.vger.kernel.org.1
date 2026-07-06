@@ -1,146 +1,249 @@
-Return-Path: <stable+bounces-272285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272286-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 6Bw9EC7XS2rtbAEAu9opvQ
-	(envelope-from <stable+bounces-272285-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 18:26:22 +0200
+	id rahbJ6zZS2qgbQEAu9opvQ
+	(envelope-from <stable+bounces-272286-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 18:37:00 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C23E57133C5
-	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 18:26:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EF547135BA
+	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 18:37:00 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EZDwuy93;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272285-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272285-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=V4X877jB;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272286-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272286-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CC9C6309783F
-	for <lists+stable@lfdr.de>; Mon,  6 Jul 2026 16:20:07 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 31CA0300103C
+	for <lists+stable@lfdr.de>; Mon,  6 Jul 2026 16:36:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E36A432BC5;
-	Mon,  6 Jul 2026 16:19:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98A5B432BF7;
+	Mon,  6 Jul 2026 16:36:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0C42430CC6;
-	Mon,  6 Jul 2026 16:19:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAA574314AE
+	for <stable@vger.kernel.org>; Mon,  6 Jul 2026 16:36:53 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783354796; cv=none; b=kXCyiGZqWH3ZaF7a2gpiQyvJ07Ga8XOS+p9XW6ZRQTytDhTGyXi2lDuOTyc7l07DN/L9CWVJsx93GCpcKPE9tOclgFcPXbhOhcKKQVRhYbchgvHBAWq77KZBJErEbQfQRLhz4vDXgFXmaZKf3CKHLZkhsxnfAuCs7mUS7A2bQak=
+	t=1783355815; cv=none; b=QHXljzj/WLkF/5cc8n4C0AWAwHtFAJjW39eUz8C7IhosWYIPwKwveIWrjDXs98M1k00usQupVNW/9cqmlxF1BnK3alGxLNdAL9CRcI0aG/eYa96/fE5/DknSAvUCScGimUNy/S4wfziWsHeipO4hax/nXJizGo/0eh7tBDv6hcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783354796; c=relaxed/simple;
-	bh=78fhhankv14oGSqYHnz2NT+Tk9f3xYa5kAjCmEehPn4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mJgmfzeb4BHW2F6OCnRqNQj6NNx+5DhU7eIXXwUGzK++yI2Z+cSeglyjlfsrGa6Tuxall6yPh4fDZtmhn2gKwHTU4py0rg1OHzEypw7NLQVzVq4N32S9caIcCTD1EZQOCJmCulr9YhpY0Gl7YlIGgG+11vsJhePPklidKKgUV1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EZDwuy93; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98E261F00A3D;
-	Mon,  6 Jul 2026 16:19:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783354795;
-	bh=qkeQCDXCe8FgrurW8DLDVZj+1YSS1GZoll7hPEXalKU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EZDwuy93qzpSMRj4Ucu3W+Ex/p2JCeSFM5Zga7VwZh0v9DxSVnUAR1rF++JY7yGlA
-	 x+7Yn6UTjNbWEBFVMGqI9KbUYWsoikGx88ZrwdzwK74Zej141pLbb31dVGEbxYUQvh
-	 tqzHDz1CaKRdzRs0vJ+8Zy4dqvcXE7e5JgrKyze+EeNH0eOcoCSmwYHoL8zurEGNz3
-	 0hjCjY+eiDn3ddu3oLxOXb4QfkwtjN2UidanIOX0cgVcH9uwLMe+/CtLUglX/42Kxe
-	 d52PpUw2z7gpPpB/9iBq6G+XGTwcY2Rv9FRR+R4CR/pNMm/9I6YhoD5afnv506z8rf
-	 lXiM6D5EEz1Gg==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wgm2y-00000002244-2k4P;
-	Mon, 06 Jul 2026 16:19:52 +0000
-From: Marc Zyngier <maz@kernel.org>
-To: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	Marc Zyngier <maz@kernel.org>
-Cc: Steffen Eiden <seiden@linux.ibm.com>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Oliver Upton <oupton@kernel.org>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] KVM: Move kvm_io_bus_get_dev() locking responsibilities to callers
-Date: Mon,  6 Jul 2026 17:19:49 +0100
-Message-ID: <178335476041.1423186.3105343217982386007.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260627105105.1005990-1-maz@kernel.org>
-References: <20260627105105.1005990-1-maz@kernel.org>
+	s=arc-20240116; t=1783355815; c=relaxed/simple;
+	bh=Rq2wwkYTiUr3Hh85G7r77JXihYNgK7FBfHMZJMmDOgw=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=lihuySsYgYTW2L3vgfMskLWnPNq9ueUE4uauaOO8jTbVCtBWn+aElN0V7VRvg8U5uG+/547Wkx0soob0/OhY1Iads3/JBY5o8dkOjCG0r6xyK5Yjd/2j9IqtuN2Y4jnjJBpZdekYKX7osmDdPaUBSso8s/atthRGhjaqX/AusgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V4X877jB; arc=none smtp.client-ip=209.85.128.176
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-8143d904b01so34534677b3.3
+        for <stable@vger.kernel.org>; Mon, 06 Jul 2026 09:36:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783355813; x=1783960613; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=0pJcWvIhqLuJxPO4aE4cyY/xCREGxJtBF+FRAD54hro=;
+        b=V4X877jBA9oDVQfacZTHh6TmZK3jJb0jUWyEPTuOKLpq+ELFkbFePRD98+hhojR5kL
+         s9XkPqndgB4AqsaztKYHkFrg7Q+rvIOYa6CBwYpqduAbYwauX9TB7dPjsNUYhwD2XrMz
+         GIMijs/flIefi7urgK/1KKVqQ4SD6C7A2zpLZnOQrAXtYshud5kFACcGvd1/vwbMUN+Y
+         xGlyY0ToXXN9EZamR1giZj5FLOzY/Ry/TYPjPf+6u5xMrMld432ZXpKcmT2crC6p8O2o
+         PxOpQLtmDglTb83OtDo7XTC2ERQpBYiLjXEqpFkwzNV+uAe+xSKbV4WTpSdsBc9Sz14f
+         /ufA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783355813; x=1783960613;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=0pJcWvIhqLuJxPO4aE4cyY/xCREGxJtBF+FRAD54hro=;
+        b=VbvOM+pGlQyVcz5WiRZZk1zPaS/TpDI12zB6RTo885S0pdzeM4Vq/G5BIykz4M+SMm
+         bNf06zjMoRhQ2dKIzNcl49FAUxNkHXHN13sxs3IQDKkfarBMDyL9QbTs9FOJLyp1YbSv
+         HNoK/95YAK899VTQpt5NqznbNz21PCJ+2a3riyj9NgxYRgBSfZla9m7KVsHKeJb2b/yA
+         5DqHpLmIv/KqDnYSt10v/f7V9eEYSj+QinuL8/rkEHwqDvmlN30Hf4qNMuHfC/atdiNH
+         IcAIDPIHMTyQH2oHUo4XX0Gs5Z+odAGoRGorIdDrd1vNNYZ/Bxkko1hR2k6JjSp/29Rd
+         j/2g==
+X-Gm-Message-State: AOJu0YyI8zp5MO4AP8KJ8yS9CPaipLxDpp9faDeZR/k2wqyKsc9QGAlR
+	4xgYe1z6px3AINtdrrqMBOB1HOLo0byY1ox1LcIVM/0LZhln1C4Byps+
+X-Gm-Gg: AfdE7clAcudz5vhbAJ3c4fABk9Fj82NKVS7oV/cwiODd9myce5LrfDxkVI/Mi1OEEZT
+	uWEFkQwgj6gLcHmSMxItWnFGOWGuZdzFc6yCwItmpU9tUmccUCkJ1OyPgm4Wlu+uGsj/82kzfGJ
+	ZPRfNDH/wCu/7j7O6mDF8wCmdEtfPYh+xnGXgwz68PmYG8HPdR7Rb0i8cf8RAB1tPRd+/kRxKpO
+	OLh9+Iz8iSj1Jsyw0QRMO+BIjkp9dYqJVdjuUBV3zEX6t6IPz087++zaelm8AvNZuRJUMhMrfdO
+	ZJA3bHHb/2MFpG7i4oBVtEO6fGNmrK+ku3m+Uv+0zhK+ENnN+OO1HwXsCsuXAFCsNPNEjrWfB7y
+	v50FAS35aFe4PmMPn67SujvwgeWw0x3y3QUVLqhXhAORVfDDTE38XViox4hnArCk+cw/xTqzZAD
+	11BIWFFQELQl3OZLpcsbFp93UMg0ZiRCH7d1shiRSs1dI9jeFNVWBBgQAFatQsCI+Pkw==
+X-Received: by 2002:a05:690c:ed6:b0:80c:85e5:8750 with SMTP id 00721157ae682-81be33a3727mr8097857b3.57.1783355812853;
+        Mon, 06 Jul 2026 09:36:52 -0700 (PDT)
+Received: from gmail.com (172.235.85.34.bc.googleusercontent.com. [34.85.235.172])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8144bd26ebfsm59805817b3.48.2026.07.06.09.36.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Jul 2026 09:36:52 -0700 (PDT)
+Date: Mon, 06 Jul 2026 12:36:51 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Shiming Cheng <shiming.cheng@mediatek.com>, 
+ davem@davemloft.net, 
+ edumazet@google.com, 
+ kuba@kernel.org, 
+ pabeni@redhat.com, 
+ horms@kernel.org, 
+ matthias.bgg@gmail.com, 
+ angelogioacchino.delregno@collabora.com, 
+ willemb@google.com, 
+ daniel.zahka@gmail.com, 
+ alice@isovalent.com, 
+ sd@queasysnail.net, 
+ eilaimemedsnaimel@gmail.com, 
+ imv4bel@gmail.com, 
+ nbd@nbd.name, 
+ dsahern@kernel.org, 
+ netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, 
+ linux-mediatek@lists.infradead.org, 
+ steffen.klassert@secunet.com
+Cc: stable@vger.kernel.org, 
+ lena.wang@mediatek.com, 
+ shiming.cheng@mediatek.com
+Message-ID: <willemdebruijn.kernel.27b4940999026@gmail.com>
+In-Reply-To: <20260706034611.360-1-shiming.cheng@mediatek.com>
+References: <20260706034611.360-1-shiming.cheng@mediatek.com>
+Subject: Re: [PATCH v5] net: gro: fix double aggregation of flush-marked skbs
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org, seiden@linux.ibm.com, joey.gouly@arm.com, suzuki.poulose@arm.com, oupton@kernel.org, yuzenghui@huawei.com, pbonzini@redhat.com, will@kernel.org, stable@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-5.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[24];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-272285-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:kvm@vger.kernel.org,m:kvmarm@lists.linux.dev,m:maz@kernel.org,m:seiden@linux.ibm.com,m:joey.gouly@arm.com,m:suzuki.poulose@arm.com,m:oupton@kernel.org,m:yuzenghui@huawei.com,m:pbonzini@redhat.com,m:will@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[maz@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-272286-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[mediatek.com,davemloft.net,google.com,kernel.org,redhat.com,gmail.com,collabora.com,isovalent.com,queasysnail.net,nbd.name,vger.kernel.org,lists.infradead.org,secunet.com];
+	FORGED_RECIPIENTS(0.00)[m:shiming.cheng@mediatek.com,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:matthias.bgg@gmail.com,m:angelogioacchino.delregno@collabora.com,m:willemb@google.com,m:daniel.zahka@gmail.com,m:alice@isovalent.com,m:sd@queasysnail.net,m:eilaimemedsnaimel@gmail.com,m:imv4bel@gmail.com,m:nbd@nbd.name,m:dsahern@kernel.org,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-mediatek@lists.infradead.org,m:steffen.klassert@secunet.com,m:stable@vger.kernel.org,m:lena.wang@mediatek.com,m:matthiasbgg@gmail.com,m:danielzahka@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[willemdebruijnkernel@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[maz@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[willemdebruijnkernel@gmail.com,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C23E57133C5
+X-Rspamd-Queue-Id: 3EF547135BA
 
-On Sat, 27 Jun 2026 11:51:05 +0100, Marc Zyngier wrote:
-> kvm_io_bus_get_dev() returns a device that is only matched by the
-> address, and nothing else. This can cause a lifetime issue if
-> the matched device is not the expected type, as by the time
-> the caller can introspect the object, it might be gone (the srcu
-> lock having been dropped).
+[PATCH net v5]
+
+Shiming Cheng wrote:
+> The skb_gro_receive_list() function is missing a critical safety check
+> that exists in the skb_gro_receive() implementation. Specifically, it
+> does not validate NAPI_GRO_CB(skb)->flush before allowing packet
+> aggregation
+
+In v3 I requested referring to the commit that fixed this in
+skb_gro_receive: commit 0ab03f353d36 ("net-gro: Fix GRO flush when
+receiving a GSO packet."). That explains the issue well.
 > 
-> Given that there is only a single user of this helper, the simplest
-> option is to move the locking responsibility to the caller, which
-> can keep the srcu lock held for as long as it wants.
+> This allows already-GRO'd packets with existing frag_list to be
+> re-aggregated into a new GRO session, corrupting the frag_list chain
+> structure. When skb_segment() attempts to unpack these malformed packets,
+> it encounters invalid state and triggers a kernel panic.
 > 
-> [...]
+> Scenario (Tethering/Device forwarding):
+>   1. Driver: Generated aggregated packet P1 via LRO with frag_list
+>   2. Dev A: Receives aggregated fraglist packet and flush flag set
+>   3. Dev A: Re-enters GRO, skb_gro_receive_list() is called
+>   4. Missing flush check allows re-aggregation despite flush flag
+>   5. Frag_list chain becomes corrupted (loops or dangling refs)
+>   6. Dev B: TX path calls skb_segment(), crashes on corrupted frag_list
+> 
+> Root cause in skb_segment():
+>   The check at line ~4891:
+>     if (hsize <= 0 && i >= nfrags && skb_headlen(list_skb) &&
+>         (skb_headlen(list_skb) == len || sg)) {
+> 
+>   When frag_list is corrupted by double aggregation, when list_skb is
+>   a NULL pointer from skb->next, skb_headlen(list_skb) dereference
+>   NULL/corrupted pointers occurs.
+> 
+> Call Trace:
+>  skb_headlen(NULL skb)
+>  skb_segment
+>  tcp_gso_segment
+>  tcp4_gso_segment
+>  inet_gso_segment
+>  skb_mac_gso_segment
+>  __skb_gso_segment
+>  skb_gso_segment
+>  validate_xmit_skb
+>  validate_xmit_skb_list
+>  sch_direct_xmit
+>  qdisc_restart
+>  __qdisc_run
+>  qdisc_run
+>  net_tx_action
+> 
+> Fix: Add NAPI_GRO_CB(skb)->flush validation to the early-return check in
+> skb_gro_receive_list(), matching the defensive programming pattern of
+> skb_gro_receive().
+> 
+> Fixes: 3a1296a38d0c ("net: Support GRO/GSO fraglist chaining.")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Shiming Cheng <shiming.cheng@mediatek.com>
+> ---
+>  net/core/gro.c | 9 ++++++++-
+>  1 file changed, 8 insertions(+), 1 deletion(-)
+> 
+> diff --git a/net/core/gro.c b/net/core/gro.c
+> index 35f2f708f010..b1573d98f3a5 100644
+> --- a/net/core/gro.c
+> +++ b/net/core/gro.c
+> @@ -229,7 +229,14 @@ int skb_gro_receive(struct sk_buff *p, struct sk_buff *skb)
+>  
+>  int skb_gro_receive_list(struct sk_buff *p, struct sk_buff *skb)
+>  {
+> -	if (unlikely(p->len + skb->len >= 65536))
+> +	/*
+> +	 * Packets marked with NAPI_GRO_CB(skb)->flush have already gone
+> +	 * through GRO/LRO processing and must not be aggregated again.
+> +	 * Re-entering frag_list GRO may corrupt the frag_list chain and
+> +	 * later crash during GSO segmentaiont.
+> +	 */
 
-Applied to fixes, thanks!
+Such a verbose comment is not needed. Code would be overwhelmed by
+comments if done everywhere.
 
-[1/1] KVM: Move kvm_io_bus_get_dev() locking responsibilities to callers
-      commit: 3a07249981629ace483ebbef81ef6b34c2d2afec
-
-Cheers,
-
-	M.
--- 
-Without deviation from the norm, progress is not possible.
+> +	if (unlikely(p->len + skb->len >= 65536 ||
+> +		     NAPI_GRO_CB(skb)->flush))
+>  		return -E2BIG;
+>  
+>  	if (!pskb_may_pull(skb, skb_gro_offset(skb))) {
+> -- 
+> 2.45.2
+> 
 
 
 
