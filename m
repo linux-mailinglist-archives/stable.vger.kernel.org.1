@@ -1,206 +1,190 @@
-Return-Path: <stable+bounces-272133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272134-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 5iADCyZIS2pjOgEAu9opvQ
-	(envelope-from <stable+bounces-272133-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 08:16:06 +0200
+	id 5Tc5Ke5aS2rFPwEAu9opvQ
+	(envelope-from <stable+bounces-272134-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 09:36:14 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7890670CD1E
-	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 08:16:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 035C970D9D6
+	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 09:36:14 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=intel.com header.s=Intel header.b=iojLuAK5;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272133-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-272133-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=breiti.cc header.s=google header.b=JJ3ONEMS;
+	dmarc=none;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272134-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-272134-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 18B07301F5C2
-	for <lists+stable@lfdr.de>; Mon,  6 Jul 2026 06:11:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0F817317EE0E
+	for <lists+stable@lfdr.de>; Mon,  6 Jul 2026 06:27:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 794D03BFAF7;
-	Mon,  6 Jul 2026 06:11:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 642BA3E16B7;
+	Mon,  6 Jul 2026 06:20:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 586F637D114;
-	Mon,  6 Jul 2026 06:11:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D7A53DC4CB
+	for <stable@vger.kernel.org>; Mon,  6 Jul 2026 06:20:27 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783318301; cv=none; b=RU5Hueu3bFhpHd7Akbri2kv6ZVeiJzJ2Vm8ObsenrErREWSSyM3SbzobQxCbRMqtXGNWc4GysDFRRm3vIVdS2h88G3N88E1vFC2FZu+rWb1Ob/t3l0htNXfQ9YK7bQi9YcxyODwguDzaiVJgYemFlhQ0YQ9sIG85kYv4jT0TxMQ=
+	t=1783318834; cv=none; b=FIlzA6eReqnltC2LzzDabIaB/N27yGM9fAyyAAY84zrsfUVuTSsDiMm3R+jgNQdubCMHu0ypZAvOyZIo38+7SUAMvwRMXVXeYFXj6Tb2EFSmzBdbYMooxrEHj6BTrgU9cVI5dL/XdljlMNXRzLrQ8zMgjz14q6+B199789plDSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783318301; c=relaxed/simple;
-	bh=4FNyroCFzDU6GNKjynRdVC6aEFSJ5FrF9nGYQKVEJno=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Mb9FBGWCwo0PDkzm4mlwDzr4Vpgfxv29O+cJPNvYCwKBCBPzv1naGW6QAx/kJqQYi1SMcKImKlXdVsS9jT9xI8K6j56iU9Uyfm4ncTK4CCr0571386wxCHFSuSU0Ia9/yXhBBytuNcZ+8vauIGQf8ZfnvV45XtOVa2zFFGNRNoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iojLuAK5; arc=none smtp.client-ip=192.198.163.10
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1783318299; x=1814854299;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=4FNyroCFzDU6GNKjynRdVC6aEFSJ5FrF9nGYQKVEJno=;
-  b=iojLuAK5nHUY3xQwXnfZIYk/oHkNMVfBv45g+p7IDafd/3CVKBb8QpC7
-   p3uVdWV5AokeVzMzy+UuhUSnk/+QOF7FFWM7WuTMitULVCVTtNQB42INU
-   vqHTcT/9NNyWO/cF7/Htg+ByxFp9BGoCMgijqaVgeZGNAPBL4wzhHDvKd
-   qiFCEJUH4MR3MOjI5dmPLEDDxHQnxe4MSwAROmk6mr9Np6h+t3RmW5MS8
-   YYKG2iPYZUS2uDPALuiT5LYXJvxrPVpajkayKUrUbzGKSo8WLZrB/k2uG
-   YGZozk39F786nt4n1e/I3qN7OBh3ta8xZUS4rO3D6G0WxSvUvZHBAIXFV
-   Q==;
-X-CSE-ConnectionGUID: 1Ut1rkOSRDaoPL/ABOlqMA==
-X-CSE-MsgGUID: M1TsP/leS1eyqLsdd+8s1w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11838"; a="95320269"
-X-IronPort-AV: E=Sophos;i="6.25,149,1779174000"; 
-   d="scan'208";a="95320269"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jul 2026 23:11:37 -0700
-X-CSE-ConnectionGUID: xDu7sIkMRyC6CeZEDnuUQA==
-X-CSE-MsgGUID: Lgvpn3Y2RKKrz3wrv/Vn3A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,149,1779174000"; 
-   d="scan'208";a="255564397"
-Received: from vpanait-mobl.ger.corp.intel.com (HELO localhost) ([10.245.244.48])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jul 2026 23:11:35 -0700
-Date: Mon, 6 Jul 2026 09:11:33 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Melbin K Mathew <mlbnkm1@gmail.com>, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH] iio: accel: bmc150: free irq before teardown
-Message-ID: <aktHFWgrl76gi-oX@ashevche-desk.local>
-References: <20260705042731.388592-1-mlbnkm1@gmail.com>
- <20260706000233.3104e0d3@jic23-huawei>
+	s=arc-20240116; t=1783318834; c=relaxed/simple;
+	bh=LWglcUmKJJujYCrUKRMCU+qSUx0o9x0XMXsedC1YP84=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ozgH3ycYNq9nyOgrrzC1hdI3QtR+sPBYy8EtiV9lcb/Ds3kdmKM0lZqtso8v3EQm9PMaVU+D3RtKabjL2e3dEppzFUR4C6NFUrCJTAfuvCMcDZc7BJ6qigedprYQDqZKQTES8aq9yv6iPQHhjyDcmaqDvw9+HEUdq7yXtafkCvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=breiti.cc; spf=pass smtp.mailfrom=breiti.cc; dkim=temperror (0-bit key) header.d=breiti.cc header.i=@breiti.cc header.b=JJ3ONEMS; arc=none smtp.client-ip=209.85.221.41
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-4720d22c94aso2582236f8f.1
+        for <stable@vger.kernel.org>; Sun, 05 Jul 2026 23:20:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=breiti.cc; s=google; t=1783318820; x=1783923620; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=aKPxjwYIwY+lwdwsN7x/+EZw5Zz00YN/j9XJOtJ8WiY=;
+        b=JJ3ONEMSNC36xwlbXZlm8bhWbiCOuqrA/XFHSWEIpMdypYW8vsvIgBeXITQISRzI2j
+         yv3oEnex9UFF5me6ecsVB/dBBD+YlwsUGIiDC8HUMZl4L5aXlXpllkx2Itt0t038Bk4k
+         wk8IpS9P8UQ44U5VF0CSiY7+gO5eWXxl1uAmI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783318820; x=1783923620;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=aKPxjwYIwY+lwdwsN7x/+EZw5Zz00YN/j9XJOtJ8WiY=;
+        b=ELCffeRu0IsqZISzMpoBOrgFPZfrWT43bgeUpdZl722l1ma3mMj1z1t/nJfxryMt30
+         oJZHLjHzOQ8oOTFNAIB9ssrAoLSfAjJaP6SuUqfctjzT58K5yPFq9ktn7gu3G41jLVbR
+         fzydYtBOnjRg5JfXLDJutZuJRGAY83dlOLxYUwHk8KCmWNL2ouZ8PaCVTKQMRsPunjeK
+         JA6jc+11tDdylkql/MV0zlv3ov5VzslDENE95X7yFUU6McJY8F/c/34J00O6TGZDg4Wv
+         eZiwxd917xaAI6ZpgmKEdWfpgwDrNXl42UmY5BgmOo4ASpftj3HwMlz8ivi8vzS/7tNm
+         yJmg==
+X-Forwarded-Encrypted: i=1; AHgh+Rq0/+/x9b0xe7+zkT/HvAx5YG3R9gnHgICa0ua8QSCvqAdmKin0PObDdYJ9bGNPAoHcNy26kHY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxUScyR4G+wCOvIErQOo1ijb76Z3FcuUvbaNtwxa5oZ29UHhD3Y
+	g8CoT/ARHthhGSGm0hHzqtFlMRpRpQ5OOhrU/L0FBh3VC/Op2jg6QJ1czMGq1Shdog==
+X-Gm-Gg: AfdE7cmHvpp1a/rYAYFR5cjZSaUoVZjlY/2haQiaIPqJHmo17cy4A6I+SiOWlabBFDZ
+	HjpNBQ7Jbk1A/J2RfypdRjh9K8NqrqwtK5uBX83GQOaf8BKHiZ/8b03bLik8ME7v5c/o0BEWHmM
+	uLluEDv2qPtzGFcr+FCQgU2twxgX5yUxzWs3XcZRK9GcoqLWPIbPslFsu2/uyGFXE6NRgAsdrZ7
+	FJ2fx7ECUfQovzf5hKA5xEWNNf1k75bQcZNEPTiRCWA10l92+SyPujRJJUPnyp7EhXCO2s1ZzJ7
+	ZEMRdOxR1ktKGTdHtvoffE+fiGIU5pfJddBbk9MPUELKprex/EGoFyVeEAMLLI30PV3Jc/P1xju
+	kkOMZ0XWc+0ilrzOFFk4HvMbz+L0WF8xfEv5diuzUkSxcSyoJgFxdkV38eRAsHpR0C+vEBcl0Oq
+	Jygcm2GHE0ng+8Gy8cIrOOdXOjZgYSI+JvRC4W+ckfy7qz4Q37CQ==
+X-Received: by 2002:a5d:5d03:0:b0:476:e67a:dfa7 with SMTP id ffacd0b85a97d-47aaa4222c9mr11073751f8f.7.1783318818209;
+        Sun, 05 Jul 2026 23:20:18 -0700 (PDT)
+Received: from framework.casa.breiti.cc ([2.57.48.190])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47a9e3e2702sm22194047f8f.9.2026.07.05.23.20.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 05 Jul 2026 23:20:17 -0700 (PDT)
+From: Markus Breitenberger <bre@breiti.cc>
+To: netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Choong Yong Liang <yong.liang.choong@linux.intel.com>,
+	Markus Breitenberger <bre@breiti.cc>,
+	stable@vger.kernel.org,
+	Markus Breitenberger <bre@keba.com>
+Subject: [PATCH net] net: stmmac: intel: don't reconfigure SerDes on unchanged mode
+Date: Mon,  6 Jul 2026 08:19:54 +0200
+Message-ID: <20260706061954.94842-1-bre@breiti.cc>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260706000233.3104e0d3@jic23-huawei>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-5.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [1.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[breiti.cc:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-272133-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	HAS_ORG_HEADER(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:jic23@kernel.org,m:mlbnkm1@gmail.com,m:linux-iio@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:dlechner@baylibre.com,m:nuno.sa@analog.com,m:andy@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[andriy.shevchenko@intel.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,baylibre.com,analog.com,kernel.org];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-272134-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:netdev@vger.kernel.org,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:yong.liang.choong@linux.intel.com,m:bre@breiti.cc,m:stable@vger.kernel.org,m:bre@keba.com,m:andrew@lunn.ch,s:lists@lfdr.de];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@intel.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[intel.com:+];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER(0.00)[bre@breiti.cc,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DMARC_NA(0.00)[breiti.cc];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FROM_NEQ_ENVFROM(0.00)[bre@breiti.cc,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	ALIAS_RESOLVED(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[breiti.cc:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,netdev];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,ashevche-desk.local:mid,intel.com:from_mime,intel.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,keba.com:email,breiti.cc:from_mime,breiti.cc:dkim,breiti.cc:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7890670CD1E
+X-Rspamd-Queue-Id: 035C970D9D6
 
-On Mon, Jul 06, 2026 at 12:02:33AM +0100, Jonathan Cameron wrote:
-> On Sun,  5 Jul 2026 06:27:31 +0200
-> Melbin K Mathew <mlbnkm1@gmail.com> wrote:
+From: Markus Breitenberger <bre@keba.com>
 
-> > bmc150_accel_core_probe() requests the interrupt with
-> > devm_request_threaded_irq().  The managed IRQ is released only after the
-> > driver remove callback has returned unless it is freed explicitly.
-> > 
-> > bmc150_accel_core_remove() currently unregisters the IIO device and
-> > triggers, cleans up the triggered buffer, suspends the chip and disables
-> > the regulators while the IRQ action is still registered.  A late
-> > interrupt can therefore run the hard or threaded handler while the IIO
-> > trigger state is being torn down or after the device has been put into
-> > deep suspend.
-> 
-> For me this raises a load of questions.
+intel_mac_finish() is registered as the phylink mac_finish() callback
+for the Elkhart Lake SGMII ports. phylink calls mac_finish() at the end
+of every major link reconfiguration, including the initial one during
+probe, before any interface mode has actually changed.
 
-Oh, I was too quick with my glance on this.
+The callback reprograms the shared ModPHY LCPLL through the PMC IPC and
+then power-cycles the SerDes. On Elkhart Lake that ModPHY is also used
+by the on-die AHCI SATA PHY. Running the reconfiguration during the
+initial boot-time link-up disturbs the shared analog block while it is
+still driving SATA, so the SATA link fails to train:
 
-> In particular having the interrupt
-> torn down before we remove userspace interfaces (as occurs after this change)
-> is itself a big source of race conditions as we have to cope with userspace
-> being able to poke every interface with the interrupts missing.  So it is
-> a design pattern I'm very resistant to!
-> 
-> Anyhow, is this theoretical or have you seen it in practice? i.e. can we test
-> fixes? Are we talking spurious or shared interrupts, or is there a path in
-> which a race generates a real interrupt? My guess would be the thread
-> running a while after the interrupt but please confirm.  What is the effect
-> of talking to the device when powered down? Bus errors, stalls?  A quick
-> glance at the datasheet suggests some registers are fine, so this description
-> would need to say which ones that are accessed are not.  I think it's only
-> the fifo_data but I haven't checked the code or datasheet closely.  What
-> actually happens if we access that register? An error or garbage data?
-> 
-> Maybe we just turn the power on again in the thread handler? Vast majority of the
-> time that will just be a ref count increment and decrement, but in the race
-> here it will turn the power on again so no problem accessing the device.  
-> Or a local flag to say if accessing that fifo register is fine - if it's
-> not just erroring out on trying.
-> 
-> We do have internal infrastructure to close down races around
-> teardown (see the exist_lock and how iio_dev->info is set to NULL
-> which acts as a marker of a device going away - maybe we need to make
-> that available to drivers (though I'd rather not as it's easy to use
-> wrong!) I'm not aware of any core interfaces such as accessing the
-> buffers or open chardevs etc that are not appropriately guarded so
-> hopefully the races you are seeing are just at the driver
-> level. The usual route to handling this stuff is to make the interrupt
-> handling safe to the transitions that occur on tear down, not reorder
-> things to stop the handler running.  Note that making it safe
-> can absolutely include simply returning errors from accesses that don't
-> work due to power conditions.
-> 
-> > Free the IRQ at the start of remove so that no handler is running while
-> > the rest of the driver state and hardware resources are dismantled.
+  ata1: SATA link down (SStatus 1 SControl 300)
 
-> > +	if (data->irq > 0)
-> > +		devm_free_irq(dev, data->irq, indio_dev);
-> 
-> If (and it is a very big if) this is the right thing to do then it must
-> be accompanied by documentation of why we need the remove to not be in
-> the reverse order of probe.  Also, rip out devm registration and
-> move to none devm for everything after the request of the irq.
-> 
-> Note that because userspace interfaces are still up at this point
-> we may well get normal operations generating unhandled interrupts, potentially
-> resulting in the interrupt core taking that interrupt offline.
-> 
-> It is for this reason that we generally disable userspace interfaces
-> first and then remove the interrupts.
+The disk carrying the root filesystem is never detected and the system
+hangs at rootwait. Ethernet itself comes up normally, which makes the
+failure look unrelated to the network driver.
 
-Indeed, the current logic seems correct.
+Firmware already programs the ModPHY for the configured interface, so
+the reconfiguration is redundant unless the interface mode really
+changes. Return early when the requested mode equals the current one.
+This avoids touching the shared ModPHY (and the SATA PHY) during boot
+while preserving runtime SGMII to 2500BASE-X switching, which still
+sees a genuine mode change and reconfigures as before.
 
-> >  	iio_device_unregister(indio_dev);
-> >  
-> >  	pm_runtime_disable(dev);
+Fixes: a42f6b3f1cc1 ("net: stmmac: configure SerDes according to the interface mode")
+Cc: stable@vger.kernel.org
+Assisted-by: GitHub-Copilot:claude-opus-4.8
+Signed-off-by: Markus Breitenberger <bre@keba.com>
+---
+ drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c
+index b8d467ba6d72..9a162831ca40 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c
+@@ -536,6 +536,15 @@ static int intel_mac_finish(struct net_device *ndev,
+ 	int max_regs = 0;
+ 	int ret = 0;
+ 
++	/* mac_finish() runs at the end of every major link reconfiguration,
++	 * including the initial one at probe, where the interface mode has
++	 * not actually changed. Reprogramming and power-cycling the SerDes is
++	 * only needed on a real mode change and is otherwise needlessly
++	 * disruptive, so skip it when the mode is unchanged.
++	 */
++	if (priv->plat->phy_interface == interface)
++		return 0;
++
+ 	ret = intel_tsn_lane_is_available(ndev, intel_priv);
+ 	if (ret < 0) {
+ 		netdev_info(priv->dev, "No TSN lane available to set the registers.\n");
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.55.0
 
 
