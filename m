@@ -1,267 +1,252 @@
-Return-Path: <stable+bounces-272128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272129-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 8YZSKJMyS2q/NQEAu9opvQ
-	(envelope-from <stable+bounces-272128-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 06:44:03 +0200
+	id qgoJCbtAS2oJOQEAu9opvQ
+	(envelope-from <stable+bounces-272129-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 07:44:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F66E70C792
-	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 06:44:03 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EC0C70CAD2
+	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 07:44:26 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=fail ("headers rsa verify failed") header.d=w6rz.net header.s=default header.b=rsjwdHq2;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272128-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272128-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=ideasonboard.com header.s=mail header.b=DZIofuqG;
+	dmarc=pass (policy=none) header.from=ideasonboard.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272129-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-272129-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 16476300652C
-	for <lists+stable@lfdr.de>; Mon,  6 Jul 2026 04:44:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F3CCC302EEFE
+	for <lists+stable@lfdr.de>; Mon,  6 Jul 2026 05:39:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68D572F25F5;
-	Mon,  6 Jul 2026 04:43:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E6133BE627;
+	Mon,  6 Jul 2026 05:39:08 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from omta36.uswest2.a.cloudfilter.net (omta36.uswest2.a.cloudfilter.net [35.89.44.35])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8984281503
-	for <stable@vger.kernel.org>; Mon,  6 Jul 2026 04:43:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BA263AEF36;
+	Mon,  6 Jul 2026 05:39:06 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783313039; cv=none; b=nOr6SJozVlhmFPvYF0TgxTPqHMLumbUTEmCl/eG97dCEfXfFW2pk9atCDYdpRRzKF3BXU0LYB6OHdxGav8zFGtiy3e2ViQOMlbA2qYLYpUFVE/1F0r7i1xVce2HJ8kNTNWfIYx7E60dbZvLpLXEhTYUVc0yRGFDOjiMqtgHX/w8=
+	t=1783316348; cv=none; b=BqOdK82evYud5i6/tWzkofE1VNODiAjN1cmFT+Dm21K4L5L9zRtSgQUekeCI2YUfDV5UKcqxLf/DQGJCBX0iAWKgfiKT4G/FqkiRhRlLVbTZRAx+AHT7QLKqJ0Q4L/D6XTiGWkKgx0WRRqY0jLgreMrdTidfTln73SY4odtutL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783313039; c=relaxed/simple;
-	bh=vQhHfsHKOLxnYTIE/T8DRNMiXl0A8Jz5me6T1CRgnU0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=kDNTy0hgmyVZkU86mwgJbzYtsoENUuCaLBVDAW0orWuP8R25gqVBingaymoR19du+7bq5iK4i2BbeQTOZwAet0oeqKTeuMrsS2KMfR/UIUFFoyv6pshUhw5lv773VG6xo7t642v0HuRLXjiPSULVA85j0PmU/d5yN8ZUVtzu50Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=rsjwdHq2; arc=none smtp.client-ip=35.89.44.35
-Received: from eig-obgw-5004b.ext.cloudfilter.net ([10.0.29.208])
-	by cmsmtp with ESMTPS
-	id gVogwAk4xPpWVgbBVwrJ2b; Mon, 06 Jul 2026 04:43:57 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id gbBUwZKZTLQlXgbBVw23Ku; Mon, 06 Jul 2026 04:43:57 +0000
-X-Authority-Analysis: v=2.4 cv=AeWxH2XG c=1 sm=1 tr=0 ts=6a4b328d
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=7vwVE5O1G3EA:10 a=zd2uoN0lAAAA:8
- a=HaFmDPmJAAAA:8 a=5g331mcoVzyfAfNjrRgA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=nmWuMzfKamIsx3l42hEX:22 a=L5EjiQpGQaFGZdqT14z7:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:
-	Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=LPl0RSE1LXpSGvQ8cLYYRFZ6+5PiIperp40zPuaUvBU=; b=rsjwdHq2LtdC7d2aQkxcqyLFUB
-	/HKRx4p0U+BoAdvQAJsOCb86Ow42gDLilC8usyW/tYLc9iRs1j8dPRcCMe6nUZEVgHKTFsqHELKGt
-	C8qCLDLr1wI0jBECHgEipr6rDJEFaW9NnfwpV5NjumZSekjCT2WZLaFPGp3IbanJndLcX5FVHdagY
-	+/ID4W0iFK8CWNbrRaeSX2KavVpFTawAaPhYkMLaQN+IwMznKuS/jgQZmqRCEuvIp/iTJJHijFB2w
-	ooA95hsdS4wHh+Q+ZvLlHxSlXjubguRkEBfz4AskC4wN4/3LXTg1njgBcTmzGesSOYfBKUWY1gcFm
-	RNNQWsHw==;
-Received: from c-73-162-206-103.hsd1.ca.comcast.net ([73.162.206.103]:54282 helo=beavis.silicon)
-	by box5620.bluehost.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.2)
-	(envelope-from <re@w6rz.net>)
-	id 1wgbBU-00000003wEK-2Gd4;
-	Sun, 05 Jul 2026 22:43:56 -0600
-From: Ron Economos <re@w6rz.net>
-To: stable@vger.kernel.org
-Cc: Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Ron Economos <re@w6rz.net>
-Subject: [PATCH 6.6.y] drm/amd: Fix set but not used warnings
-Date: Sun,  5 Jul 2026 21:42:00 -0700
-Message-ID: <20260706044341.1099693-1-re@w6rz.net>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1783316348; c=relaxed/simple;
+	bh=QoBk2MJt5q5R2u0f27bQBWEiEBvkGW/NVJ/zWtTl7uM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lPnLyWIfPiW0LAyjbwtIw8+YdrRMttMuajt1bL1SeWitFojAcSHBJw06nVlKae7TpSvZcK2IkU4pYPqv6ukxMLKwsZIBZ6FEvzEMLXx4KyMuix7bn+Nxo4P5EGy+ipFxZyMztMCJuyCJivjTRq7V0HQt9M1pxHKvmqS0jE2oB38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=DZIofuqG; arc=none smtp.client-ip=213.167.242.64
+Received: from ideasonboard.com (mob-109-113-60-81.net.vodafone.it [109.113.60.81])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id DB062524;
+	Mon,  6 Jul 2026 07:38:15 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1783316296;
+	bh=QoBk2MJt5q5R2u0f27bQBWEiEBvkGW/NVJ/zWtTl7uM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DZIofuqGTgmVRCs2r0RqpDUtxpc3QUJZv600xzY9pXgX6HZ0FrlUYHY3KxCWahlJi
+	 15+L/fQLkplnsC6Dwoch4b5vWzBO2ldrna68RmL+k+P1lD2LEj0F2vwrYKCdyPydJn
+	 mZ9lMXlgA0ZuHs3J1A7DZzDu2pUftp1dxY/9QvOU=
+Date: Mon, 6 Jul 2026 07:38:58 +0200
+From: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+To: David Laight <david.laight.linux@gmail.com>
+Cc: Jacopo Mondi <jacopo.mondi@ideasonboard.com>, 
+	David Carlier <devnexen@gmail.com>, dan.scally@ideasonboard.com, mchehab@kernel.org, 
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] media: mali-c55: Fix unaligned access of AEC histogram
+ zone weights
+Message-ID: <aks7usxfDajS-W_5@zed>
+References: <20260702103453.348056-1-devnexen@gmail.com>
+ <akd8E5jr722oTm49@zed>
+ <20260703221651.41669d55@pumpkin>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.162.206.103
-X-Source-L: No
-X-Exim-ID: 1wgbBU-00000003wEK-2Gd4
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-162-206-103.hsd1.ca.comcast.net (beavis.silicon) [73.162.206.103]:54282
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 6
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfPYvlRgvmsgEQtl0VwIN45VlZPTAotZDcbvIFVAqQxHBnS2USEArA91tsts+IlNL9Qyw7O8JVUP6Fxq3UDBRbymygV4dlMIEZTAe65BXzIeCWgYKGLCy
- NY2rE/RwvSNkTatpTkC0kNQDAf0Ryc473xSkx1UgI1QAVhCooSzG4i4UblNJnYgHZIE0WOcBsXgt5A==
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260703221651.41669d55@pumpkin>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.54 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_REJECT(1.00)[w6rz.net:s=default];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[ideasonboard.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_DKIM_ALLOW(-0.20)[ideasonboard.com:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-272128-lists,stable=lfdr.de];
-	HAS_X_SOURCE(0.00)[];
-	FORGED_SENDER(0.00)[re@w6rz.net,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-272129-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:david.laight.linux@gmail.com,m:jacopo.mondi@ideasonboard.com,m:devnexen@gmail.com,m:dan.scally@ideasonboard.com,m:mchehab@kernel.org,m:linux-media@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:davidlaightlinux@gmail.com,s:lists@lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[ideasonboard.com,gmail.com,kernel.org,vger.kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	DMARC_NA(0.00)[w6rz.net];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:yangtiezhu@loongson.cn,m:alexander.deucher@amd.com,m:re@w6rz.net,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[jacopo.mondi@ideasonboard.com,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	HAS_X_ANTIABUSE(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	RCVD_COUNT_FIVE(0.00)[6];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[re@w6rz.net,stable@vger.kernel.org];
-	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[w6rz.net:-];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jacopo.mondi@ideasonboard.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[ideasonboard.com:+];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,loongson.cn:email,amd.com:email,vger.kernel.org:from_smtp,w6rz.net:from_mime,w6rz.net:email,w6rz.net:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[zed:mid,ideasonboard.com:from_mime,ideasonboard.com:email,ideasonboard.com:dkim,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0F66E70C792
+X-Rspamd-Queue-Id: 5EC0C70CAD2
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+Hi David
 
-[ Upstream commit 46791d147d3ab3262298478106ef2a52fc7192e2 ]
+On Fri, Jul 03, 2026 at 10:16:51PM +0100, David Laight wrote:
+> On Fri, 3 Jul 2026 11:44:31 +0200
+> Jacopo Mondi <jacopo.mondi@ideasonboard.com> wrote:
+>
+> > Hi David,
+> >    thanks for sending a patch to address this issue
+> >
+> > On Thu, Jul 02, 2026 at 11:34:53AM +0100, David Carlier wrote:
+> > > mali_c55_params_aexp_hist_weights() packs the 225 per-zone u8 weights
+> > > into the ISP registers four at a time by casting the zone_weights array
+> > > to u32 and dereferencing it. The array sits at offset 10 within the
+> > > parameter block, so it is only 2-byte aligned: the u32 access is
+> > > unaligned, which is undefined behaviour and can fault on strict-align
+> > > configurations or once the loop is auto-vectorised.
+> >
+> > well, I don't there is a risk of undefined behaviour on ARMv8, it's
+> > just less efficient
+> >
+> > >
+> > > The cast also reads the four weights in host byte order before they are
+> > > written to the little-endian register, so on big-endian hosts the four
+> > > weights packed into each register end up in the wrong byte lanes.
+> >
+> > Also we don't have any endianess issue as the IP is only found on
+> > little endian systems
+> >
+> > >
+> > > Read the weights with get_unaligned_le32() instead, which is both
+> > > alignment-safe and fixes the byte order regardless of host endianness.
+> > >
+> >
+> > mmm, I read in Documentation/core-api/unaligned-memory-access.rst
+> > that:
+> >
+> > ------------------------------------------------------------------------------
+> > 	u32 value = get_unaligned((u32 *) data);
+> >
+> > These macros work for memory accesses of any length (not just 32 bits as
+> > in the examples above). Be aware that when compared to standard access of
+> > aligned memory, using these macros to access unaligned memory can be costly in
+> > terms of performance.
+> >
+> > If use of such macros is not convenient, another option is to use memcpy(),
+> > where the source or destination (or both) are of type u8* or unsigned char*.
+> > Due to the byte-wise nature of this operation, unaligned accesses are avoided.
+> > ------------------------------------------------------------------------------
+> >
+> > Which seems to suggest, if the issue here is performances, we should
+> > aim for something different ? (honest question here, any kind of
+> > guidance is appreciated)
+> >
+> > > Fixes: d5f281f3dd29 ("media: mali-c55: Add Mali-C55 ISP driver")
+> > > Cc: stable@vger.kernel.org
+> >
+> > If it's only about performances, does this qualifies as a fix ?
+> >
+> > > Signed-off-by: David Carlier <devnexen@gmail.com>
+> > > ---
+> > >  drivers/media/platform/arm/mali-c55/mali-c55-params.c | 3 ++-
+> > >  1 file changed, 2 insertions(+), 1 deletion(-)
+> > >
+> > > diff --git a/drivers/media/platform/arm/mali-c55/mali-c55-params.c b/drivers/media/platform/arm/mali-c55/mali-c55-params.c
+> > > index de0e9d898..1aaf64dde 100644
+> > > --- a/drivers/media/platform/arm/mali-c55/mali-c55-params.c
+> > > +++ b/drivers/media/platform/arm/mali-c55/mali-c55-params.c
+> > > @@ -6,6 +6,7 @@
+> > >   */
+> > >  #include <linux/media/arm/mali-c55-config.h>
+> > >  #include <linux/pm_runtime.h>
+> > > +#include <linux/unaligned.h>
+> > >
+> > >  #include <media/media-entity.h>
+> > >  #include <media/v4l2-dev.h>
+> > > @@ -203,7 +204,7 @@ mali_c55_params_aexp_hist_weights(struct mali_c55 *mali_c55,
+> > >  	 * of overwriting other registers.
+> > >  	 */
+> > >  	for (unsigned int i = 0; i < 56; i++) {
+> > > -		val = ((u32 *)params->zone_weights)[i]
+> > > +		val = get_unaligned_le32(&params->zone_weights[i * 4])
+> > >  			    & MALI_C55_AEXP_HIST_ZONE_WEIGHT_MASK;
+>
+> On LE with HAVE_EFFICIENT_UNALIGNED_ACCESS the latter generates what you
+> expect the former to generate.
+> But gcc can unroll loops and use (IIRC) 'rdp' to read two registers at once.
+> That will crash and burn.
+>
+> The best thing would be to have a union of the two arrays with the
+> member marked __packed to remove the padding before it.
+>
 
-There are many set but not used warnings under drivers/gpu/drm/amd when
-compiling with the latest upstream mainline GCC:
+I'm not sure I got what are the "two arrays" you mentioned here.
 
-  drivers/gpu/drm/amd/amdgpu/amdgpu_gart.c:305:18: warning: variable ‘p’ set but not used [-Wunused-but-set-variable=]
-  drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.h:103:26: warning: variable ‘internal_reg_offset’ set but not used [-Wunused-but-set-variable=]
-  ...
-  drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.h:164:26: warning: variable ‘internal_reg_offset’ set but not used [-Wunused-but-set-variable=]
-  ...
-  drivers/gpu/drm/amd/amdgpu/../display/dc/dc_dmub_srv.c:445:13: warning: variable ‘pipe_idx’ set but not used [-Wunused-but-set-variable=]
-  drivers/gpu/drm/amd/amdgpu/../display/dc/dc_dmub_srv.c:875:21: warning: variable ‘pipe_idx’ set but not used [-Wunused-but-set-variable=]
+params->zone_weights[] is uABI, it's hard to change its definition
+without really good motivations.
 
-Remove the variables actually not used or add __maybe_unused attribute for
-the variables actually used to fix them, compile tested only.
+> >
+> >
+> > We could do:
+> >
+> >         memcpy(&val, &params->zone_weights[4 * i], 4);
+>
+> Some of the KASAN (etc) builds might make a mess of that.
+> Without compiler optimisations of memcpy() it is horrid.
+>
+> >         addr = base + MALI_C55_AEXP_HIST_ZONE_WEIGHTS_OFFSET + (4 * i);
+> >
+> >         mali_c55_ctx_write(mali_c55, addr,
+> >                            val & MALI_C55_AEXP_HIST_ZONE_WEIGHT_MASK);
+> >
+> > Or this could be an alternative:
+> >
+> >         const u8 *w = &params->zone_weights[4 * i];
+> >
+> >         val = w[0] | w[1] << 8 | w[2] << 16 | w[3] << 24;
+>
+> That is a possible implementation of get_unaligned_le32() no point
+> doing it explicitly.
+>
+> A late enough gcc will convert that to a 32bit memory read (with any
+> byteswap in the read or after) if unaligned accesses are supported.
+> Otherwise you get byte loads, shifts and ors.
+>
 
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Ron Economos <re@w6rz.net>
----
- drivers/gpu/drm/amd/amdgpu/amdgpu_gart.c     |  4 +---
- drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.h      |  3 ++-
- drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c | 11 ++++-------
- 3 files changed, 7 insertions(+), 11 deletions(-)
+To sum it up: since we can't change uABI easily, the best thing here
+is not change anything and drop this patch ?
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_gart.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_gart.c
-index ea75c2b2bbb1..055aa0418a73 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gart.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gart.c
-@@ -299,7 +299,6 @@ void amdgpu_gart_unbind(struct amdgpu_device *adev, uint64_t offset,
- 			int pages)
- {
- 	unsigned t;
--	unsigned p;
- 	int i, j;
- 	u64 page_base;
- 	/* Starting from VEGA10, system bit must be 0 to mean invalid. */
-@@ -313,8 +312,7 @@ void amdgpu_gart_unbind(struct amdgpu_device *adev, uint64_t offset,
- 		return;
- 
- 	t = offset / AMDGPU_GPU_PAGE_SIZE;
--	p = t / AMDGPU_GPU_PAGES_IN_CPU_PAGE;
--	for (i = 0; i < pages; i++, p++) {
-+	for (i = 0; i < pages; i++) {
- 		page_base = adev->dummy_page_addr;
- 		if (!adev->gart.ptr)
- 			continue;
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.h
-index 3dc2cffdae4f..ba45e85b23f1 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.h
-@@ -101,7 +101,8 @@
- 
- #define SOC15_DPG_MODE_OFFSET(ip, inst_idx, reg) 						\
- 	({											\
--		uint32_t internal_reg_offset, addr;						\
-+		/* To avoid a -Wunused-but-set-variable warning. */				\
-+		uint32_t internal_reg_offset __maybe_unused, addr;				\
- 		bool video_range, video1_range, aon_range, aon1_range;				\
- 												\
- 		addr = (adev->reg_offset[ip##_HWIP][inst_idx][reg##_BASE_IDX] + reg);		\
-diff --git a/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c b/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c
-index 4c5ef3ef8dbd..30a79dffbd37 100644
---- a/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c
-+++ b/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c
-@@ -322,7 +322,6 @@ bool dc_dmub_srv_p_state_delegate(struct dc *dc, bool should_manage_pstate, stru
- 	int i = 0, k = 0;
- 	int ramp_up_num_steps = 1; // TODO: Ramp is currently disabled. Reenable it.
- 	uint8_t visual_confirm_enabled;
--	int pipe_idx = 0;
- 
- 	if (dc == NULL)
- 		return false;
-@@ -336,7 +335,7 @@ bool dc_dmub_srv_p_state_delegate(struct dc *dc, bool should_manage_pstate, stru
- 	cmd.fw_assisted_mclk_switch.config_data.visual_confirm_enabled = visual_confirm_enabled;
- 
- 	if (should_manage_pstate) {
--		for (i = 0, pipe_idx = 0; i < dc->res_pool->pipe_count; i++) {
-+		for (i = 0; i < dc->res_pool->pipe_count; i++) {
- 			struct pipe_ctx *pipe = &context->res_ctx.pipe_ctx[i];
- 
- 			if (!pipe->stream)
-@@ -350,7 +349,6 @@ bool dc_dmub_srv_p_state_delegate(struct dc *dc, bool should_manage_pstate, stru
- 				cmd.fw_assisted_mclk_switch.config_data.vactive_stretch_margin_us = dc->debug.fpo_vactive_margin_us;
- 				break;
- 			}
--			pipe_idx++;
- 		}
- 	}
- 
-@@ -714,7 +712,7 @@ void dc_dmub_setup_subvp_dmub_command(struct dc *dc,
- 		bool enable)
- {
- 	uint8_t cmd_pipe_index = 0;
--	uint32_t i, pipe_idx;
-+	uint32_t i;
- 	uint8_t subvp_count = 0;
- 	union dmub_rb_cmd cmd;
- 	struct pipe_ctx *subvp_pipes[2];
-@@ -740,7 +738,7 @@ void dc_dmub_setup_subvp_dmub_command(struct dc *dc,
- 
- 	if (enable) {
- 		// For each pipe that is a "main" SUBVP pipe, fill in pipe data for DMUB SUBVP cmd
--		for (i = 0, pipe_idx = 0; i < dc->res_pool->pipe_count; i++) {
-+		for (i = 0; i < dc->res_pool->pipe_count; i++) {
- 			struct pipe_ctx *pipe = &context->res_ctx.pipe_ctx[i];
- 
- 			if (!pipe->stream)
-@@ -763,7 +761,6 @@ void dc_dmub_setup_subvp_dmub_command(struct dc *dc,
- 				populate_subvp_cmd_vblank_pipe_info(dc, context, &cmd, pipe, cmd_pipe_index++);
- 
- 			}
--			pipe_idx++;
- 		}
- 		if (subvp_count == 2) {
- 			update_subvp_prefetch_end_to_mall_start(dc, context, &cmd, subvp_pipes);
-@@ -1054,4 +1051,4 @@ void dc_dmub_srv_enable_dpia_trace(const struct dc *dc)
- 	}
- 
- 	DC_LOG_DEBUG("Enabled DPIA trace\n");
--}
-\ No newline at end of file
-+}
--- 
-2.43.0
 
+> 	David
+>
+> >         addr = base + MALI_C55_AEXP_HIST_ZONE_WEIGHTS_OFFSET + (4 * i);
+> >
+> >         mali_c55_ctx_write(mali_c55, addr,
+> >                            val & MALI_C55_AEXP_HIST_ZONE_WEIGHT_MASK);
+> >
+> > What do you think ?
+> >
+> > >  		addr = base + MALI_C55_AEXP_HIST_ZONE_WEIGHTS_OFFSET + (4 * i);
+> > >
+> > > --
+> > > 2.53.0
+> > >
+> > >
+> >
+>
 
