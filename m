@@ -1,55 +1,77 @@
-Return-Path: <stable+bounces-272189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272191-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id gXHEK8uSS2oNVwEAu9opvQ
-	(envelope-from <stable+bounces-272189-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 13:34:35 +0200
+	id sGLdEGGLS2rdVAEAu9opvQ
+	(envelope-from <stable+bounces-272191-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 13:02:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12FF370FE5B
-	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 13:34:35 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDBAD70F9B6
+	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 13:02:56 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L8OC2G1b;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272189-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272189-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=wdc.com header.s=dkim.wdc.com header.b=auek1Yit;
+	dmarc=pass (policy=quarantine) header.from=wdc.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272191-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-272191-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3F3173111B1E
-	for <lists+stable@lfdr.de>; Mon,  6 Jul 2026 11:00:36 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4031C3003813
+	for <lists+stable@lfdr.de>; Mon,  6 Jul 2026 11:02:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9904D3F44F7;
-	Mon,  6 Jul 2026 11:00:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E49243CB8F0;
+	Mon,  6 Jul 2026 11:02:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from esa5.hgst.iphmx.com (esa5.hgst.iphmx.com [216.71.153.144])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 037103E7BA4;
-	Mon,  6 Jul 2026 11:00:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E14438E126;
+	Mon,  6 Jul 2026 11:02:53 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783335631; cv=none; b=HiqIE1rzijknNNs6Z38lsRWu2+AeZNy23EYQrJwTwZCPFe5oMspAj2nKo9tsDiY7Dlz4Y6OVVlsodUeG+3GHLoZg4rvS7utdnUq9afPvsY+KW2xjcmx1PjqSVDx0aDh4CrfMwivcYGahHcH4f6c/oJsIJfnL4ozPQ5cmyfj3row=
+	t=1783335774; cv=none; b=oVx7ygQyeIEFJEq0JN5v57yDTYfoON9ZsxYUhsMVq8zq19CGf4Aow4xVN1BdSMJm16qtrsaZbdZo0Z6xbz4TiF9UXbjktush3dEmQ8g3+AD8J9r9IWzkTY481QOAwva+jr+tonHJYfSoefFFKSItvx6AzYtavaF5R5bYerattPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783335631; c=relaxed/simple;
-	bh=oSJcizVEB2AE5qWYIy6hS6yMTz9ZS1gwNvy3ZT70Md8=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=mfAMdATSB3KHRz5bvAmWC7HJ/72e7Wzgmq/FJkBg/ho7msaBxL/H7+RP4h+t3J4PZZWyL5Z0hTU+ktIpoUKEcUhP3pQ/tGeZ1lolVjMsntlaYh5On8xquERrpXzT6MLs2Y5GSmvBO9mW2dy/IMIcSFEss9Sauv0RF7wmjVV1iK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L8OC2G1b; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 837941F00A3D;
-	Mon,  6 Jul 2026 11:00:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783335628;
-	bh=z1Exyblzz3CqiQ4kTkKOEQNGqw6O5u89Bc9MEMUXO+I=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=L8OC2G1b5iLLPIYIr8g8nqarIYxcSjwRjciXCm5VurS4B5liWxKsMGqGB6yxLroS6
-	 CCGA4MXhX+V97Vf95ttygRNhHW415CbYActu8/fhvzO9d+J5+onq2vkQZutiZGwbSN
-	 JDH054i6/pc6ZnljlI9uhK51KTvVooIO7eBTFudGcHLxHAVO7C+STh/C1VvrZu0zTl
-	 Z6hNFtzz6r2zQXnInmmuO4m2jKSzPAoKyk5tvXCTbddQk4fS/vcuAFYPj+JMyiT5l0
-	 qZPYWsVGGgxw8HRrlprQsiII/OPxUnQUArqxeEbd4Fh8rYNXQOCjn74iliVKqJ2KAD
-	 5BxHEtdgqJNMQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5697B3ABD2A5;
-	Mon,  6 Jul 2026 11:00:10 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1783335774; c=relaxed/simple;
+	bh=SIgnQ/c46m89viwgiMNhwOml4Tt4n+xioz3+YQ6G898=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JxEzCFdV/9Ki8uYWDq95ZlmmzC5jiGcGzymD4uvh3jKhCQ6kMgEfDmHBcpe8VYyb+t/tEId/YdBGCEBgB6qo1Qk4i2ZxSDsu25HToP3tqmlRVrlfdWvg4MZNH/t/4igNn1T8FW1VWvgt5zYd4k9+5GgW80K9t8Jxbv1ShdiG4pc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wdc.com; spf=pass smtp.mailfrom=wdc.com; dkim=pass (2048-bit key) header.d=wdc.com header.i=@wdc.com header.b=auek1Yit; arc=none smtp.client-ip=216.71.153.144
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
+  t=1783335775; x=1814871775;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=SIgnQ/c46m89viwgiMNhwOml4Tt4n+xioz3+YQ6G898=;
+  b=auek1YitsW+PXfiYuqvyhpPri3oaY+PPHnkSb6T8i50x3s1rF2LaC6uP
+   JfCnLfRViDqDnxfd9pjL/vFaQofx6baLs2pDVwW43OgA9KgbtOQNAfmzL
+   5GPEedlBayCOl4jcFzLGpcWxgvmGPzR8mlQsZqYtT3/yPp/bO73L4/q+U
+   Y8KO2ldvi7X5848pgaencK8azB9GGjUx1tdsvTXFCDubNrxg0inmO6O+t
+   qxEBz65oYp3hqfHgwmN5ul7UkDfRmLewRlk2FJSIB/7Su7GOJ58/fWe/e
+   Er8mOd4D/uVJzCdv1yFi71h6W4rhFRg+JwZkyzkHVw83JcJ2MZ7ThSA0w
+   g==;
+X-CSE-ConnectionGUID: sLKCcQpVT1O8HfIc6M3DCg==
+X-CSE-MsgGUID: fFUm+Q0wSvakYh/ddw0ZQA==
+X-IronPort-AV: E=Sophos;i="6.25,149,1779120000"; 
+   d="scan'208";a="149506415"
+Received: from unknown (HELO uls-op-esad1-o.wdc.com) ([199.255.45.14])
+  by ob1.hgst.iphmx.com with ESMTP; 06 Jul 2026 19:02:49 +0800
+X-CSE-ConnectionGUID: JFEAN1qiRCO0udeQq8/JSg==
+X-CSE-MsgGUID: 2j/42uS4S+ic+K+4Flrh7g==
+IronPort-SDR: 6a4b8b3b_va6S7SSEVMpfX7zcw4YDZwWwHwK9UT1Qh3ggBsCV+9Cf/2G
+ x/YshRpdntbc2xDMoNhJlGQyBszZACjREnTJisg==
+Received: from uls-op-esai2-o.wdc.com ([10.248.3.38])
+  by uls-op-esad1-o.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 06 Jul 2026 04:02:19 -0700
+X-CSE-ConnectionGUID: bAfoFoTjSWOUdAB0uxOh1A==
+X-CSE-MsgGUID: CITimRKzRVWFYdkzM789yw==
+WDCIronportException: Internal
+Received: from wdap-aswpwbowkq.ad.shared (HELO neo.fritz.box) ([10.224.26.2])
+  by uls-op-esai2-o.wdc.com with ESMTP; 06 Jul 2026 04:02:18 -0700
+From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+To: linux-btrfs@vger.kernel.org
+Cc: Naohiro Aota <naohiro.aota@wdc.com>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v3] btrfs: zoned: reset active_meta_bg on zone finish
+Date: Mon,  6 Jul 2026 13:02:16 +0200
+Message-ID: <20260706110216.232055-1-johannes.thumshirn@wdc.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,86 +79,112 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 1/1] net/sched: act_pedit: fix TOCTOU heap OOB write
- in tc
- offload
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178333560889.503923.6757355467613392279.git-patchwork-notify@kernel.org>
-Date: Mon, 06 Jul 2026 11:00:08 +0000
-References: <20260701161912.125355-1-jhs@mojatatu.com>
-In-Reply-To: <20260701161912.125355-1-jhs@mojatatu.com>
-To: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, jiri@resnulli.us,
- victor@mojatatu.com, security@kernel.org, zdi-disclosures@trendmicro.com,
- stable@vger.kernel.org
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-5.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[wdc.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[wdc.com:s=dkim.wdc.com];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-272189-lists,stable=lfdr.de,netdevbpf];
-	FROM_NEQ_ENVFROM(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
-	FORGED_SENDER(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FORGED_RECIPIENTS(0.00)[m:jhs@mojatatu.com,m:netdev@vger.kernel.org,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:jiri@resnulli.us,m:victor@mojatatu.com,m:security@kernel.org,m:zdi-disclosures@trendmicro.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-272191-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:linux-btrfs@vger.kernel.org,m:naohiro.aota@wdc.com,m:johannes.thumshirn@wdc.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[johannes.thumshirn@wdc.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johannes.thumshirn@wdc.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[wdc.com:+];
+	RCVD_COUNT_FIVE(0.00)[6];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,trendmicro.com:email]
+	ALIAS_RESOLVED(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 12FF370FE5B
+X-Rspamd-Queue-Id: CDBAD70F9B6
 
-Hello:
+do_zone_finish() clears BLOCK_GROUP_FLAG_ZONE_IS_ACTIVE and removes the
+block group from zone_active_bgs, but only the pivot path in
+check_bg_is_active() resets fs_info->active_meta_bg / active_system_bg.
+Any other finish path (the async zone-finish endio work,
+btrfs_zone_finish(), reclaim) then leaves active_meta_bg / active_system_bg
+pointing at an inactive, fully written block group.
 
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+Reset the corresponding active_{meta,system}_bg pointer in do_zone_finish()
+so it can never go stale.
 
-On Wed,  1 Jul 2026 12:19:12 -0400 you wrote:
-> There is a TOCTOU race condition in flower lockless approach between sizing
-> a flow_rule buffer and filling it.
-> zdi-disclosures@trendmicro.com reports:
-> The cls_flower classifier operates with TCF_PROTO_OPS_DOIT_UNLOCKED
-> (fl_change runs without RTNL), while RTM_NEWACTION holds RTNL, so the
-> independent locking domains make the race reachable in practice.  KASAN
-> confirms:
->   BUG: KASAN: slab-out-of-bounds in tcf_pedit_offload_act_setup+0x81b/0x930
->   Write of size 4 at addr ffff888001f27520 by task poc-toctou/312
->   The buggy address is located 0 bytes to the right of
->    allocated 288-byte region [ffff888001f27400, ffff888001f27520)
->    (cache kmalloc-512)
-> 
-> [...]
+Fixes: 13bb483d32ab ("btrfs: zoned: activate metadata block group on write time")
+Cc: stable@vger.kernel.org
+Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+---
+Changes to v2:
+- Get reference to "tgt" inside check_bg_is_active() if it can actually
+  vanish underneath us.
 
-Here is the summary with links:
-  - [net,1/1] net/sched: act_pedit: fix TOCTOU heap OOB write in tc offload
-    https://git.kernel.org/netdev/net/c/8b519cbcabe8
+ fs/btrfs/zoned.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-You are awesome, thank you!
+diff --git a/fs/btrfs/zoned.c b/fs/btrfs/zoned.c
+index 97f06dd01693..fd578bef1f4f 100644
+--- a/fs/btrfs/zoned.c
++++ b/fs/btrfs/zoned.c
+@@ -2213,6 +2213,7 @@ static bool check_bg_is_active(struct btrfs_eb_write_context *ctx,
+ 			}
+ 
+ 			/* Pivot active metadata/system block group. */
++			btrfs_get_block_group(tgt);
+ 			btrfs_zoned_meta_io_unlock(fs_info);
+ 			wait_eb_writebacks(tgt);
+ 			do_zone_finish(tgt, true);
+@@ -2221,6 +2222,7 @@ static bool check_bg_is_active(struct btrfs_eb_write_context *ctx,
+ 				btrfs_put_block_group(tgt);
+ 				*active_bg = NULL;
+ 			}
++			btrfs_put_block_group(tgt);
+ 		}
+ 		if (!btrfs_zone_activate(block_group))
+ 			return false;
+@@ -2535,6 +2537,7 @@ static int do_zone_finish(struct btrfs_block_group *block_group, bool fully_writ
+ 	const bool is_metadata = (block_group->flags &
+ 			(BTRFS_BLOCK_GROUP_METADATA | BTRFS_BLOCK_GROUP_SYSTEM));
+ 	struct btrfs_dev_replace *dev_replace = &fs_info->dev_replace;
++	struct btrfs_block_group **active_bg = NULL;
+ 	int ret = 0;
+ 	int i;
+ 
+@@ -2632,6 +2635,20 @@ static int do_zone_finish(struct btrfs_block_group *block_group, bool fully_writ
+ 	/* For active_bg_list */
+ 	btrfs_put_block_group(block_group);
+ 
++	if (block_group->flags & BTRFS_BLOCK_GROUP_SYSTEM)
++		active_bg = &fs_info->active_system_bg;
++	else if (block_group->flags & BTRFS_BLOCK_GROUP_METADATA)
++		active_bg = &fs_info->active_meta_bg;
++
++	if (active_bg) {
++		btrfs_zoned_meta_io_lock(fs_info);
++		if (*active_bg == block_group) {
++			btrfs_put_block_group(block_group);
++			*active_bg = NULL;
++		}
++		btrfs_zoned_meta_io_unlock(fs_info);
++	}
++
+ 	clear_and_wake_up_bit(BTRFS_FS_NEED_ZONE_FINISH, &fs_info->flags);
+ 
+ 	return 0;
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.54.0
 
 
