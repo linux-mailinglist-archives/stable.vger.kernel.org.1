@@ -1,212 +1,180 @@
-Return-Path: <stable+bounces-272321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272322-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id /qMdODAeTGo1ggEAu9opvQ
-	(envelope-from <stable+bounces-272321-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 23:29:20 +0200
+	id BlC1MsceTGpLggEAu9opvQ
+	(envelope-from <stable+bounces-272322-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 23:31:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id D334A715B82
-	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 23:29:19 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41DD7715BB6
+	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 23:31:51 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="BvNe1Z/F";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272321-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-272321-lists+stable=lfdr.de@vger.kernel.org";
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
+	dkim=pass header.d=google.com header.s=20251104 header.b=ujXuQxMl;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272322-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-272322-lists+stable=lfdr.de@vger.kernel.org";
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DF2FF300B9C0
-	for <lists+stable@lfdr.de>; Mon,  6 Jul 2026 21:29:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D8F293020A4A
+	for <lists+stable@lfdr.de>; Mon,  6 Jul 2026 21:31:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B560643787D;
-	Mon,  6 Jul 2026 21:29:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE8E147DD75;
+	Mon,  6 Jul 2026 21:31:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+Received: from mail-ot1-f73.google.com (mail-ot1-f73.google.com [209.85.210.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 003B13FD95C
-	for <stable@vger.kernel.org>; Mon,  6 Jul 2026 21:29:13 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783373355; cv=pass; b=UL837/C1xljOx5tFTOVH4WeJPhY2dus9Uvn/kUcYusl9hFQIJK6aJeHI4ScS2m+O5nSCV5u58alW4xJ0mAZkF5xRNJ993OGyp7EVaFUodhHVLiqXv7z5p3XJmKWxmFzAMo6m5Jb/axgFW63zlQ2quD6kERCB7K7Uv5RQ2n6Exg0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783373355; c=relaxed/simple;
-	bh=ejtDMaJdQXxJ/SvynymwK2ueeJspq+S9GvRCUAy+T8c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LYp32k3SZan3WKiZdQ4QCm9GkyrF/23aTJRGaYh1PQTXPhQDmWWSP/PZ3kkdb0yiXjduu7Wh7ExWimia/J82+fsXyX5xnJOEIwOt2F93xgMUHEvWZ3L0ry91WlplIwfcfOcuWB78j3TrwEUQM0ggPjwo4bIKNmXP9ShQb0BapMc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BvNe1Z/F; arc=pass smtp.client-ip=209.85.221.46
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-475417f010dso1921166f8f.2
-        for <stable@vger.kernel.org>; Mon, 06 Jul 2026 14:29:13 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783373352; cv=none;
-        d=google.com; s=arc-20260327;
-        b=q2zvVMHDwE6g0I+QPtSnz8ekxCCw7jmwtvJV8PB2W2BH6H+V0Da7z0rr5dSo6wckgv
-         HDpjdbjpO0HaTKrRSAB2hGZk2rykTtLFr4hn3QVblZNkha9/ESlgq3lUTzD35/3BZzmn
-         v6cBq1wCAafxJyKqcl9DRk7pWP514lvmeeokcxvdHcHa61GNzFKpIYxl+liCa51rPN8S
-         HLuYKSaqdWtaw6tF/5bXstKkqGmCa/+YsRD6da+xltaD4i9F+MtSM0ebfdjZBLu3ucIM
-         i7A5gYZLBwjfiowq3+4xJEBGKcaqfjbKFyAGcUNfMKp2NvJBzkePybidjFSF8AV1Y9wI
-         Nn2A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=yV2xPTCF17xoiTfTi0rcuMy0VIBAYGpyV+M9+DsjCZI=;
-        fh=9GMGu9EbqiCSh3DA7iOhbFN/tflvVoL7pXEcugNuGls=;
-        b=AbyLa30h5zgke2GTNmPbgdK3yqvRXTEY4AaSRUsBLTGkB3VCRIz/Ao3OM6OYraZHJs
-         OaxTEJE+tAKNBruFt160NjsZJjHtfPBZuwrzY6ifuv4/yhL8aTGQnN8gZNwdE8FcUIid
-         ve5Ttp2rYcR6EqMzVxorXSxcF9IlyIDbtr3NkAlr7vGZCySOnYSfDhFBVoloSUy0qa4V
-         f2kBynEEae/PaD4752xiVdJylPc550uaxPVdnc3QvPYEN/XlY4Awr2n7aRwGuu2mJHw7
-         gEqAgcjZZr6hBH9pu4/iahse39JfHadlbBX14COHjoELL8eRRtg9BM7sUrqdyHGTF8BM
-         5mFw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33FA318AE3
+	for <stable@vger.kernel.org>; Mon,  6 Jul 2026 21:31:25 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783373486; cv=none; b=C1gpRtL8mcScoQ7PKf6BzvN2lgh5x9Qv198zDeRAAD2jeBtBaPKkQ69PAO/f5fPFeeHQ7SwJn4NcoSSglwRz6lPXPpURf43ugH4jYCOf6nyqZHnrWbyCv3PxVuwKba8DN++Fz4coOceIncx+naXWwsGdza6nTFL8fCTBHH5ceAc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783373486; c=relaxed/simple;
+	bh=KNBWdwrXuVuLe1pGgzoYnnrur2xfF1tee4C4t7SlKBI=;
+	h=Date:In-Reply-To:Mime-Version:Message-ID:Subject:From:To:Cc:
+	 Content-Type; b=ilH90pTkJWlwOnUxG1c5w5/jZOSBoBqGDu9FPxTCxvY/GQfZ7TsTQ1LyPworvfZCDrHjq6Y2jcm68ga+Dp+2I764IGV0KczJNrUkdglRyEI7sWAT4LUiWNqTDQOC4Nmf/g7s/gIcG5pHp9UORYCPcerqHIvjuTFvyKNaAS5Cs4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--coltonlewis.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ujXuQxMl; arc=none smtp.client-ip=209.85.210.73
+Received: by mail-ot1-f73.google.com with SMTP id 46e09a7af769-7e9dc0f5900so38749a34.0
+        for <stable@vger.kernel.org>; Mon, 06 Jul 2026 14:31:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783373352; x=1783978152; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yV2xPTCF17xoiTfTi0rcuMy0VIBAYGpyV+M9+DsjCZI=;
-        b=BvNe1Z/F3ONFfxdTpIA0zE0Mx8tysybqjyNwqf9Qze83M9msFlMfzyLNoS+C58EQIU
-         0a3taqt5luWH6NJfQPZoOjFySxCGXqyBJ04XOVV5FBy71wRecAWmTZ6yiC28z0HRPEz/
-         XCDd08PizmHlVkKfljBRp0+npGwBBTgP3WZG6c6fWXf+QA1PdMndRxFhKIjNWcuWy56R
-         gMyRW5gjnCDL0smQspu8qJ4YmKVK9nfOsmMRZslK9CDTs/H1w3UAeg/H7gx/gs4ALc3G
-         +Fgad0UEIzuXMg9WMXNUtmyJH/J6obUv3LpjzthADRpWRNlEHgMJm8jS7dnIiaal4jJO
-         D5iQ==
+        d=google.com; s=20251104; t=1783373484; x=1783978284; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:in-reply-to:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=wrEtuZnNKTHhXzzXH6FBZuUyiD4QdjI7aUV2ges9QRI=;
+        b=ujXuQxMltjCwjeaRO5X/+cs9wjpq4TcLMkHSBFigL65F4d77USM6no6VrftLLdtPNB
+         kTkMo59K++FToNKieSQzWhfuF19MM5hSATEqZvnNXSyMAHqDpBzQBL9+wjHo0hl385Se
+         Wg2Z0uOXMLc0UaLb9d0Bz+4vOTNt7PC3iba/fbaBEFt5OVNvCIID+bMbZpwe94YGxg6R
+         JqF+LV8ZGG5V1jC95fguLgdhV7xakvhbRqIzyeIm2xPM9OgMZ7zCnz6bSzLh6yqqYxOr
+         Ibl+Ytmz5AYMSnuoWP9wPqweEpOlLsKIRL7p8jX2UrnR3MRSDpoHEPwntRVlXAG9Ekld
+         90WQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783373352; x=1783978152;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=yV2xPTCF17xoiTfTi0rcuMy0VIBAYGpyV+M9+DsjCZI=;
-        b=AGtDyPjs5Fu4YOU8Wboch5j8lOuDxe/0WiLMG9iR5EvGL1Y5IH14XLEEYGgGd9w1dX
-         avcRu/j1cy6Ny3RUWU68XFlRe2DBCcUN6JDn/d3ALx84AG+jZIDfEu5ejRCm6Ks3rw86
-         GCDLIg0+fw7v3WvZSpByRSPyLqzUsMkriM0Gk1GbHuRDJO+CG9Tr0m/oUvLvSIhDoBbU
-         IqF3z8LxqADXDUcLPs695x8cdWllQnLyXuGl15AnWYiPEAysBQgWepYKi5EZW1BXuaEa
-         eHex2tsAeT/J4Xay7OVnChCFGGFr9/Po0osGl7alP/bF7gFUIISHbDzHTby7cdInB+LJ
-         parQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrH7jx34rAhLUBYlZyoMIxGbgk+RXi5q+nZKkXQjTbmGhgAaAveTEN4JQlE6J8Sy3CWgQOmx6g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyKmjwiImm7x45xt86OcG3e50uaYbgy7dtzZ+kH4zPTCalbBv4t
-	zBsuE3ndwWXGbzjWPxKRfpBHk0dL6gH5YoVHPXi7UhNXRqPFcnngTY6+Cf479fezugYMQ6oOG+S
-	Jtwr/F95Ow16WjZ4Bd7hz2i6VokdRukc=
-X-Gm-Gg: AfdE7cltXY8EFiRSera0xVaHCbQv+pBLOrx5sp7pdKkRyCH12nZLfP/WbXJm5cMwvth
-	E0Ya7bDgz9uX0KcgS5VsDeeUsR3du6eKOKS3WskZrqTpVNUaT1b2MBMkSlESVGTezpOyZavcoM6
-	q2Pwd07PKJ1+NEfGXDULJUHNdzfMK7t1u/Kly7hodEPOgWb0rUYmtJnFU8i90xqDzxG7W7/kNBb
-	UK9tBqiHsxIY0Z6dhH1ubhv14WW424VHhT9tusqXjZ7E8uYI9DOtaIAyuo8+gqDmRRzqc2XSlMQ
-	xiw4ij+5eV0R1no6jnKElBnjQ7DrJ0DG+nPzGVojhBnr+B9bLBMM
-X-Received: by 2002:a05:6000:461e:b0:470:258b:b20a with SMTP id
- ffacd0b85a97d-47de666aef2mr2350243f8f.10.1783373352362; Mon, 06 Jul 2026
- 14:29:12 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1783373484; x=1783978284;
+        h=cc:to:from:subject:message-id:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=wrEtuZnNKTHhXzzXH6FBZuUyiD4QdjI7aUV2ges9QRI=;
+        b=PZfDwgXid/GTDfQOndtJeCM42Q8KmXvvBruoivCxMGIInoaqEzoHh8R9WxXi8UvP6X
+         /Gh2VigAN8U4sctMCHK9w/HjuzVhan18RvzxGK+AiZ4f9p8E+bV4mQGKSLoL7DabsJ0n
+         ygxqvDkS4jcOX3BetDmUBee6ddqqzynwz1BzJCoijtRiFzxkgQDoCc3UUsDNhv86x2OT
+         jJoOV0w1MzMSjvaEOlsR6gOkonto8Wb42QuqB6J07az22eKk0zvI9d1fo4oYxqED2uej
+         VbpeHeHfjkiYJEXuF5gJKFonqZU6R6+v0DiYexZ3Nm6eNjmyzDAg2c+AkPuf9uQJ9t6u
+         u5uw==
+X-Gm-Message-State: AOJu0YyAuMPDLH3wNk+BKI4KC2MIDgLuuzqz8cKQd0ZaeTIfnHcyCyYU
+	26fcdf1YTvtDeLURR9fUDt7e4js+ZfifeA2LcpSGi9DK+RQrJL5pbNXPb+eXKoXMCZuVoztlTbs
+	X4kgpo4hVpYGCCDlA9ZdRn712ng==
+X-Received: from ioel1.prod.google.com ([2002:a05:6602:2761:b0:9a7:ea8a:6db6])
+ (user=coltonlewis job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6820:c92:b0:6a1:93a5:cd70 with SMTP id 006d021491bc7-6a35c45cbfbmr12190eaf.31.1783373483917;
+ Mon, 06 Jul 2026 14:31:23 -0700 (PDT)
+Date: Mon, 06 Jul 2026 21:31:22 +0000
+In-Reply-To: <akWhad3U5VNjWzxu@kernel.org> (message from Oliver Upton on Wed,
+ 1 Jul 2026 16:23:21 -0700)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260706191309.2887515-1-xmei5@asu.edu> <20260706191309.2887515-2-xmei5@asu.edu>
-In-Reply-To: <20260706191309.2887515-2-xmei5@asu.edu>
-From: Joanne Koong <joannelkoong@gmail.com>
-Date: Mon, 6 Jul 2026 14:28:59 -0700
-X-Gm-Features: AVVi8Cctz9S3C3og57xfHMRSwiAL9HNQVcXwAkJBNWzNm0RaRb4KC_PHR3BqWaI
-Message-ID: <CAJnrk1Z8uS=ZR9HPeuuUiHUcydE6OW9WkmnonqSchTnfmwhk+g@mail.gmail.com>
-Subject: Re: [PATCH 2/2] fuse: reject oversized payload_sz in fuse_uring_copy_from_ring()
-To: Xiang Mei <xmei5@asu.edu>
-Cc: Bernd Schubert <bernd@bsbernd.com>, Miklos Szeredi <miklos@szeredi.hu>, Kees Cook <kees@kernel.org>, 
-	"Gustavo A . R . Silva" <gustavoars@kernel.org>, fuse-devel@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, Pavel Begunkov <asml.silence@gmail.com>, 
-	Luis Henriques <luis@igalia.com>, Weiming Shi <bestswngs@gmail.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Message-ID: <gsntqzlf6c0l.fsf@coltonlewis-kvm.c.googlers.com>
+Subject: Re: [PATCH 0/5] Backport ARM64 VHE boot fixes to 6.6.y
+From: Colton Lewis <coltonlewis@google.com>
+To: Oliver Upton <oupton@kernel.org>
+Cc: stable@vger.kernel.org, catalin.marinas@arm.com, will@kernel.org, 
+	maz@kernel.org, oliver.upton@linux.dev, james.morse@arm.com, 
+	suzuki.poulose@arm.com, yuzenghui@huawei.com, mizhang@google.com, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	MV_CASE(0.50)[];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-272321-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:oupton@kernel.org,m:stable@vger.kernel.org,m:catalin.marinas@arm.com,m:will@kernel.org,m:maz@kernel.org,m:oliver.upton@linux.dev,m:james.morse@arm.com,m:suzuki.poulose@arm.com,m:yuzenghui@huawei.com,m:mizhang@google.com,m:linux-arm-kernel@lists.infradead.org,m:kvmarm@lists.linux.dev,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[bsbernd.com,szeredi.hu,kernel.org,lists.linux.dev,vger.kernel.org,gmail.com,igalia.com];
-	FORGED_RECIPIENTS(0.00)[m:xmei5@asu.edu,m:bernd@bsbernd.com,m:miklos@szeredi.hu,m:kees@kernel.org,m:gustavoars@kernel.org,m:fuse-devel@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:asml.silence@gmail.com,m:luis@igalia.com,m:bestswngs@gmail.com,m:stable@vger.kernel.org,m:asmlsilence@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[joannelkoong@gmail.com,stable@vger.kernel.org];
+	FORGED_SENDER(0.00)[coltonlewis@google.com,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-272322-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[joannelkoong@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[coltonlewis@google.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[google.com:+];
+	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp,asu.edu:email,mail.gmail.com:mid]
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,coltonlewis-kvm.c.googlers.com:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D334A715B82
+X-Rspamd-Queue-Id: 41DD7715BB6
 
-On Mon, Jul 6, 2026 at 12:13=E2=80=AFPM Xiang Mei <xmei5@asu.edu> wrote:
->
-> fuse_uring_copy_from_ring() imports the payload buffer with length
-> ring->max_payload_sz but passes the server-controlled payload_sz to
-> fuse_copy_out_args() unchecked.  A larger payload_sz drains the iterator
-> to exhaustion and fuse_copy_fill() hits BUG_ON(!err), panicking the
-> kernel.  Reject replies whose payload_sz exceeds the imported buffer.
->
->   kernel BUG at fs/fuse/dev.c:1053!
->   RIP: 0010:fuse_copy_fill+0x6c6/0x7e0
->   Call Trace:
->    fuse_copy_args
->    fuse_uring_copy_from_ring     fs/fuse/dev_uring.c:686
->    fuse_uring_cmd
->    io_uring_cmd
->    __io_issue_sqe
->    io_submit_sqes
->    __do_sys_io_uring_enter
->    entry_SYSCALL_64_after_hwframe
->
-> Fixes: c090c8abae4b ("fuse: Add io-uring sqe commit and fetch support")
-> Reported-by: Weiming Shi <bestswngs@gmail.com>
-> Assisted-by: Claude:claude-opus-4-8
-> Signed-off-by: Xiang Mei <xmei5@asu.edu>
-> ---
->  fs/fuse/dev_uring.c | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/fs/fuse/dev_uring.c b/fs/fuse/dev_uring.c
-> index 0814681eb04b..f6127c230dd9 100644
-> --- a/fs/fuse/dev_uring.c
-> +++ b/fs/fuse/dev_uring.c
-> @@ -679,6 +679,9 @@ static int fuse_uring_copy_from_ring(struct fuse_ring=
- *ring,
->         if (err)
->                 return err;
->
-> +       if (ring_in_out.payload_sz > ring->max_payload_sz)
-> +               return -EINVAL;
-> +
->         err =3D setup_fuse_copy_state(&cs, ring, req, ent, ITER_SOURCE, &=
-iter);
->         if (err)
->                 return err;
-> --
-> 2.43.0
->
+Hi Oliver, thanks for reviewing.
 
-Makes sense to me. Thanks for including the stack trace in the commit messa=
-ge.
+Oliver Upton <oupton@kernel.org> writes:
 
-Reviewed-by: Joanne Koong <joannelkoong@gmail.com>
+> The subject prefix should be "[PATCH 6.6 0/5]" so people know right up
+> front where this is going.
 
-Same comment about stable@ as in the other patch - not sure if the
-commit message has to explicitly include the tag.
+I'll make sure to include that in the subject.
 
-Thanks,
-Joanne
+
+> On Wed, Jul 01, 2026 at 08:43:37PM +0000, Colton Lewis wrote:
+>> This series backports VHE CPU boot fixes to the 6.6.y stable branch.
+
+>> These fixes are already present in the 6.12.y stable branch (and
+>> newer), but are missing in 6.6.y. They are required to enable booting
+>> L1 guests with nested virtualization enabled (kvm-arm.mode=nested).
+
+> It's a bit worse than this. The architecture retroactively made
+> FEAT_E2H0 an optional feature, there are now implementations in the wild
+> that do not support the feature.
+
+Good to know. I'll include that context in my next cover letter.
+
+>> Without these patches, a 6.6.y guest boots with HCR_EL2.E2H
+>> incorrectly configured (because it misses VHE-only detection or early
+>> initialization), causing early boot hangs/trap loops.
+
+>> Conflict resolutions:
+>> - Patch 4 (KVM: arm64: Initialize HCR_EL2.E2H early) had conflicts in
+>>    arch/arm64/kvm/hyp/nvhe/hyp-init.S due to differences in state
+>>    initialization. Resolved by extracting EL2 state initialization into
+>>    __kvm_init_el2_state.
+>> - Patch 5 (arm64: Revamp HCR_EL2.E2H RES1 detection) had conflicts in
+>>    arch/arm64/include/asm/el2_setup.h. Resolved by using raw msr hcr_el2
+>>    instead of the missing msr_hcr_el2 macro.
+
+
+>> Marc Zyngier (4):
+>>    arm64: sysreg: Add layout for ID_AA64MMFR4_EL1
+>>    arm64: Treat HCR_EL2.E2H as RES1 when ID_AA64MMFR4_EL1.E2H0 is
+>>      negative
+>>    arm64: Fix early handling of FEAT_E2H0 not being implemented
+>>    arm64: Revamp HCR_EL2.E2H RES1 detection
+
+>> Mark Rutland (1):
+>>    KVM: arm64: Initialize HCR_EL2.E2H early
+
+>>   arch/arm64/include/asm/el2_setup.h | 52 ++++++++++++++++++++++++++++++
+>>   arch/arm64/kernel/head.S           | 17 +++-------
+>>   arch/arm64/kvm/hyp/nvhe/hyp-init.S | 16 +++++++--
+>>   arch/arm64/tools/sysreg            | 37 +++++++++++++++++++++
+>>   4 files changed, 107 insertions(+), 15 deletions(-)
+
+
+>> base-commit: d1cfde2d5d15be14123bdd1689162bd27f995a90
+>> --
+>> 2.55.0.rc2.803.g1fd1e6609c-goog
+
 
