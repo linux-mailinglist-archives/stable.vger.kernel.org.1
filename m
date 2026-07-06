@@ -1,78 +1,79 @@
-Return-Path: <stable+bounces-272192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272193-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id qT96DwurS2r2YAEAu9opvQ
-	(envelope-from <stable+bounces-272192-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 15:18:03 +0200
+	id kSmyKTGSS2rgVgEAu9opvQ
+	(envelope-from <stable+bounces-272193-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 13:32:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90D61711265
-	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 15:18:02 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id B798570FDE1
+	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 13:32:00 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QoqpDxCJ;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dTHzh7vf;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272192-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272192-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272193-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-272193-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B8DB2339C495
-	for <lists+stable@lfdr.de>; Mon,  6 Jul 2026 11:25:22 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E146A30011A6
+	for <lists+stable@lfdr.de>; Mon,  6 Jul 2026 11:31:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75509421A07;
-	Mon,  6 Jul 2026 11:24:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 842DF417362;
+	Mon,  6 Jul 2026 11:31:47 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97C8641D4CC
-	for <stable@vger.kernel.org>; Mon,  6 Jul 2026 11:24:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 491563DFC61
+	for <stable@vger.kernel.org>; Mon,  6 Jul 2026 11:31:46 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783337093; cv=none; b=t1O8c8YaCCjx0UtFOoMKjf4vb/+4+C/IkcaU9cjmdlbL4v6E255sD6BKO8OxaZ9BqNjOQXOWoMkmnGDdIco8urhh4BoP/wokOGT+sz5BFMu/TFn+ajgizYtyfDQbKGfctplO9tHbKF9rpydBXDRz87s+WCgEdr2j9CIc4Q+oEH4=
+	t=1783337507; cv=none; b=dJYjkTAAQ2aifHs/eMN+AJrNObkxpO5BnFboIvdP1wXOTPijBP+4Uf/cxx1CaBLaLnzjvLoqo0l8MjLBDObaLxoAWFcZEIzO4iQdFvIqPVhWatuJ4/yBNmJCXInK9e8CNUKY/yiG7Gn4h67H5KYGBgSqQwEpbGBxNww4UCGzMRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783337093; c=relaxed/simple;
-	bh=VN64XrkozeduO5JdP2TA5jqS51ZDA8Tu6RJMWzMlQ0k=;
+	s=arc-20240116; t=1783337507; c=relaxed/simple;
+	bh=RCZP6RNRIhcn7c6ICdIorZOEH3sijgDTepbEk8t5dKI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fy0Ld/8nxg5MzttdLB8vplP0DqdeGV9z2AZMW8bSe58OpoU9QlXh4SYbD2JZfm+MIoZsmcNP++nmL//dmbgqKZjC/pErvotNQxt3m1b7Ddg3QRD7yQxUVP+3wI09vDTbsvpVrFYtQ3wM1b4kYjPlJKkn7gUIwl9vnzUdtgOldAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QoqpDxCJ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DCF91F0155F
-	for <stable@vger.kernel.org>; Mon,  6 Jul 2026 11:24:49 +0000 (UTC)
+	 To:Cc:Content-Type; b=SiN1xYRW/LfkLSOUELbEnCFPL5gSd059VP8UU4dAg0E6KH+JQjqUe66NEfsXob7TRBfgtcx4c3Date1LexuyJn0tfGRCQJoeT7Li6JLWkAuLJK9D4Agrz7PRvQ9Nwvobq5MsruSg1M6nciWztw/XpR0H/59ktiukZo1PEwPlRTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dTHzh7vf; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30BB91F00A3D
+	for <stable@vger.kernel.org>; Mon,  6 Jul 2026 11:31:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783337089;
-	bh=jPLDYOKFkvXy2BBkBzYJ2/R/fRfON+A+ox1E0KysDk4=;
+	s=k20260515; t=1783337506;
+	bh=RCZP6RNRIhcn7c6ICdIorZOEH3sijgDTepbEk8t5dKI=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=QoqpDxCJrgwnu5mQvgbMr5auep+HIC0JkGEJwctBc/z5FI5yApxARkSDEtAnlFNYI
-	 /xjuLGBFjFaAcubtT+O6FSFy1mkqbvWXSm5mZlmG9vdhdX6vSTpvMmUnPN/6c3ljg8
-	 4NqDz90NyKkp68bYFptZrX1hFE1M0gF56IsMfPuUy1CTIW4UwCYtuaku+1jvz6ckKu
-	 GF4/HML8i0PfWpP0ztxHJSoTScN4EVCHp0f5LEzCyrF/uUTjy8T4R8M51uaFHaFnDj
-	 n39w3GMGxJ9H88HxTfqSwotjjxdG4iz3HKIEyHw6tXv62oRCLTczPL33/yQgl1muPg
-	 MApp+LXiGqQBQ==
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-c127a694ccbso373321366b.3
-        for <stable@vger.kernel.org>; Mon, 06 Jul 2026 04:24:49 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RpIONFYyoddhT18KzyFPqpuPIFS/GQP1PJHjmuAihkdrX14K2hdQ4GGV0+8TgD9Foy41P/p0a8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzVs519eu+ofe32uK49lpLkeR+ryuSozV7Jp+kVxTHA0WQL6riM
-	ji43B1KUMLVRiuJb3Ro55wD2/R4SbgQF5mR5SNhsLfXDyWHHRBSf8d4VD5uudXlWLDD/hJC0Rj1
-	Td4IZfYwTqGf9e1s8++hoWxwbt6RpaPs=
-X-Received: by 2002:a17:907:3f02:b0:c12:6c2e:ae9 with SMTP id
- a640c23a62f3a-c15a6854790mr4960466b.22.1783337087801; Mon, 06 Jul 2026
- 04:24:47 -0700 (PDT)
+	b=dTHzh7vflZFrkDob5shxnjB7Q5fH5AquAJVpqYDSQw4myoFmxIg5A1ocj/yXr5flJ
+	 nOjzLGeOASaqZCPAC6Pxq/d17GFqtu61h/sJNnEb27ccWoGhc1PghL0mMgIt7T6lp6
+	 LTxZv6dQ8ditH/8uypMSMepAomg9kLXMr0FLh7k1968L1xKrSazTgj1ziPSgdcwzzU
+	 VOoRv1b+jVq908liC11AuB4bLSR6n3pclZI8mPU5m5mzaFKQQh2QLqkBzZRhoVGB4v
+	 Jn8rzngrYmHIjtYIMZWLZNJvDhHMZcuXWz1y7g1Z+uVWA21QFR0P68a4IvaPvblgFj
+	 TB9RbhCgRIj2g==
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-698aa8d4dafso2897352a12.0
+        for <stable@vger.kernel.org>; Mon, 06 Jul 2026 04:31:46 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+Rpx0ddH63uUv92pqJiwBcf6tRt3FFjcJJWNAJnP0E8rcAloa5aHIhipppqTE/pihwxdgCIb4zM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxrdvUWEFhKlGCzG7A9CDE9l8KxDJxcMwt6P9BzPUIQrsaBMLAa
+	wq4Av/N6yd8kJluUm3RMqV88aflpwlQLXaXJMwFJZMCWEQTR+pWts9r5/oWpGWpPCEnqJQGTNEp
+	Wi5uh7VFXHr/76S1lwlwqz0/xdlBqLmg=
+X-Received: by 2002:a17:907:9608:b0:c12:34ec:ad25 with SMTP id
+ a640c23a62f3a-c15a69d18d5mr4163366b.65.1783337504852; Mon, 06 Jul 2026
+ 04:31:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260705054637.80584-1-shuangpeng.kernel@gmail.com>
-In-Reply-To: <20260705054637.80584-1-shuangpeng.kernel@gmail.com>
-From: Filipe Manana <fdmanana@kernel.org>
-Date: Mon, 6 Jul 2026 12:24:09 +0100
-X-Gmail-Original-Message-ID: <CAL3q7H5ddufnZO5soRWHV0MDwJ+Ak4zr7H8iFcoBB_n5zoDcog@mail.gmail.com>
-X-Gm-Features: AVVi8Cc2303h-SpwDH0-rMIdG6X2vRKKChI4K3iVx_f1QnwHweGmAjHq5GcDm-Y
-Message-ID: <CAL3q7H5ddufnZO5soRWHV0MDwJ+Ak4zr7H8iFcoBB_n5zoDcog@mail.gmail.com>
-Subject: Re: [PATCH v2] btrfs: fix extent map leak in NOCOW direct I/O write
-To: Shuangpeng Bai <shuangpeng.kernel@gmail.com>
-Cc: linux-btrfs@vger.kernel.org, linux-kernel@vger.kernel.org, clm@fb.com, 
-	dsterba@suse.com, fdmanana@suse.com, jbacik@fb.com, wqu@suse.com, 
-	stable@vger.kernel.org
+References: <5A2D944D5FE68879+20260705100554.3797781-1-peiyang_he@smail.nju.edu.cn>
+ <01B02B3C02CE4CD1+20260705111409.3834024-1-peiyang_he@smail.nju.edu.cn>
+In-Reply-To: <01B02B3C02CE4CD1+20260705111409.3834024-1-peiyang_he@smail.nju.edu.cn>
+From: Namjae Jeon <linkinjeon@kernel.org>
+Date: Mon, 6 Jul 2026 20:31:32 +0900
+X-Gmail-Original-Message-ID: <CAKYAXd89HbdpoE3PAWHtmm9kqKuGGAdUWMVJtEgQs-cwy4n39w@mail.gmail.com>
+X-Gm-Features: AVVi8CdqaDpoNmD9wo2ubOTy9q8KGscJdCVQ_uytQJDdNLuN4EkueIpNujE7oP8
+Message-ID: <CAKYAXd89HbdpoE3PAWHtmm9kqKuGGAdUWMVJtEgQs-cwy4n39w@mail.gmail.com>
+Subject: Re: [PATCH v2] ntfs: fix hole runlist memory leak in insert range
+ error path
+To: Peiyang He <peiyang_he@smail.nju.edu.cn>
+Cc: Hyunchul Lee <hyc.lee@gmail.com>, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Action: no action
@@ -80,112 +81,54 @@ X-Spamd-Result: default: False [-5.16 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-272192-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:shuangpeng.kernel@gmail.com,m:linux-btrfs@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:clm@fb.com,m:dsterba@suse.com,m:fdmanana@suse.com,m:jbacik@fb.com,m:wqu@suse.com,m:stable@vger.kernel.org,m:shuangpengkernel@gmail.com,s:lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[fdmanana@kernel.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-272193-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS(0.00)[m:peiyang_he@smail.nju.edu.cn,m:hyc.lee@gmail.com,m:linux-fsdevel@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:hyclee@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[linkinjeon@kernel.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[fdmanana@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[linkinjeon@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,suse.com:email,mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,mail.gmail.com:mid,nju.edu.cn:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 90D61711265
+X-Rspamd-Queue-Id: B798570FDE1
 
-On Sun, Jul 5, 2026 at 6:47=E2=80=AFAM Shuangpeng Bai
-<shuangpeng.kernel@gmail.com> wrote:
+On Sun, Jul 5, 2026 at 8:14=E2=80=AFPM Peiyang He <peiyang_he@smail.nju.edu=
+.cn> wrote:
 >
-> btrfs_dio_iomap_begin() calls btrfs_get_extent(), which returns an
-> extent map reference that must be dropped on all exit paths.
+> ntfs_non_resident_attr_insert_range() allocates hole_rl before mapping th=
+e
+> whole runlist. If ntfs_attr_map_whole_runlist() fails, the error path dro=
+ps
+> ni->runlist.lock and returns without freeing hole_rl. This leaks memory
+> of sizeof(*hole_rl) * 2 bytes.
 >
-> For direct writes into a NOCOW range, btrfs_get_blocks_direct_write()
-> keeps using that extent map and asks btrfs_create_dio_extent() to
-> allocate the ordered extent. If that fails, for example because
-> btrfs_alloc_ordered_extent() fails, the function returns the error
-> without dropping the input extent map. The PREALLOC path avoided this by
-> dropping the input extent map before replacing it with the newly
-> created one.
+> Fix this memory leak by freeing hole_rl before returning from
+> that error path, matching the later error paths in the same function.
 >
-> Check the error from btrfs_create_dio_extent() before replacing the
-> map and drop the input extent map on failure.
->
-> Fixes: 5f9a8a51d8b9 ("Btrfs: add semaphore to synchronize direct IO write=
-s with fsync")
+> Fixes: 495e90fa3348 ("ntfs: update attrib operations")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Shuangpeng Bai <shuangpeng.kernel@gmail.com>
-
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-
-Adding it to the for-next branch, thanks.
-
-> ---
-> Changes since v1:
-> - Add a comment explaining the returned @em2 pointer.
-> - Use @em2 to decide whether to replace the old extent map and assert
->   that this only happens for PREALLOC writes.
->
->  fs/btrfs/direct-io.c | 19 +++++++++++++------
->  1 file changed, 13 insertions(+), 6 deletions(-)
->
-> diff --git a/fs/btrfs/direct-io.c b/fs/btrfs/direct-io.c
-> index 460326d34143..19a1259b3b2f 100644
-> --- a/fs/btrfs/direct-io.c
-> +++ b/fs/btrfs/direct-io.c
-> @@ -281,17 +281,24 @@ static int btrfs_get_blocks_direct_write(struct ext=
-ent_map **map,
->                 em2 =3D btrfs_create_dio_extent(BTRFS_I(inode), dio_data,=
- start,
->                                               &file_extent, type);
->                 btrfs_dec_nocow_writers(bg);
-> -               if (type =3D=3D BTRFS_ORDERED_PREALLOC) {
-> -                       btrfs_free_extent_map(em);
-> -                       *map =3D em2;
-> -                       em =3D em2;
-> -               }
-> -
->                 if (IS_ERR(em2)) {
->                         ret =3D PTR_ERR(em2);
-> +                       btrfs_free_extent_map(em);
-> +                       *map =3D NULL;
->                         goto out;
->                 }
->
-> +               /*
-> +                * True NOCOW writes don't need to create a new extent ma=
-p,
-> +                * while PREALLOC writes must replace the existing one.
-> +                */
-> +               if (em2) {
-> +                       ASSERT(type =3D=3D BTRFS_ORDERED_PREALLOC);
-> +                       btrfs_free_extent_map(em);
-> +                       *map =3D em2;
-> +                       em =3D em2;
-> +               }
-> +
->                 dio_data->nocow_done =3D true;
->         } else {
->                 /* Our caller expects us to free the input extent map. */
-> --
-> 2.43.0
->
+> Signed-off-by: Peiyang He <peiyang_he@smail.nju.edu.cn>
+Applied it to #ntfs-next.
+Thanks!
 
