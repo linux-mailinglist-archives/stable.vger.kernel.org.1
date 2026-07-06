@@ -1,50 +1,58 @@
-Return-Path: <stable+bounces-272209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272211-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 9ut6NF2yS2rHYgEAu9opvQ
-	(envelope-from <stable+bounces-272209-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 15:49:17 +0200
+	id JHWUJDabS2o+WwEAu9opvQ
+	(envelope-from <stable+bounces-272211-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 14:10:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2C217117B7
-	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 15:49:16 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29306710567
+	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 14:10:30 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Gdoe5j5t;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272209-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272209-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=h-partners.com header.s=dkim header.b=P54UHUvT;
+	dmarc=pass (policy=quarantine) header.from=h-partners.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272211-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-272211-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 939D233CDB99
-	for <lists+stable@lfdr.de>; Mon,  6 Jul 2026 12:08:46 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1B94230432E4
+	for <lists+stable@lfdr.de>; Mon,  6 Jul 2026 12:08:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DC82424647;
-	Mon,  6 Jul 2026 12:08:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00629424670;
+	Mon,  6 Jul 2026 12:08:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
+Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDFD33033F5;
-	Mon,  6 Jul 2026 12:08:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E142424640;
+	Mon,  6 Jul 2026 12:08:45 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783339724; cv=none; b=Bn2Y5r9FNtpuKlgzXBg56f9YIAdoJ9W0/V03CH05in3Q67zHg6xFJDPN5LdJgYKGsWExeMki4jsKKhP0CgbA5e54ulfN5Z8yNotSNfmJNsBSmZOphzF4QF9o/Gxtf6lin6LpFJ+2Fzt65/2TPDdKmeM098pcSBDN9rh0pjk1W/M=
+	t=1783339729; cv=none; b=e0P9+LUubR8KpwdlTh8Bs0HM4MlcB3Yv4wPFhkNucQm/rzbDoi+s5kNH/TtpKG/48C7OfHsnQKPUMXZlks6Tucl+th3Zi9//cVcPNk3zWCPdY09dgr3uZAlW6Bo+JvvdaJjVhg3N4i26O30c/OHlnRcmWKOgblTrtDhCPLivNTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783339724; c=relaxed/simple;
-	bh=b8jXmnYhK3uOLfgrdJYFzlV8ZSiFyPZ71Gpw3aE3XQ0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VQHoxC/nPk/IZfFP00cTo7JdO1DLXU6yDbL3VqX8Ej89pc1JtDhWt3cwH+OehOhFkDdTlk527RmgctjrCZEtVusoq6xU18dNlylxeeq5fGePXWsHuIFC0wPcm4gWocjEG8yr4OHWctleLZ7Y6BbL+Pb2U+xvBo8CWK1IiQ6w8aM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=Gdoe5j5t; arc=none smtp.client-ip=115.124.30.124
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1783339717; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=xZddxHRGgxDKnCx0072/zTHmK6GyWnLW8ka8kUBFC/I=;
-	b=Gdoe5j5t+m8cSozIbugHPlSUQi2UagikqKdGSwcLCd/agJVE+EICm6dEUeSc4hGb1otRm4lupNNVE2UF0R5gQwhUODlGebA9G5D7pF0LDxdsf5B7lGWUDWUp2UbqSazJi2QoB2p9J4RiKaeooyydkIQ73UbIrAv1ivKaJnYNmSw=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R181e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=8;SR=0;TI=SMTPD_---0X6VYQxf_1783339715;
-Received: from 30.246.179.165(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X6VYQxf_1783339715 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 06 Jul 2026 20:08:36 +0800
-Message-ID: <8ef0b72e-a0e8-4913-8d30-519335305260@linux.alibaba.com>
-Date: Mon, 6 Jul 2026 20:08:35 +0800
+	s=arc-20240116; t=1783339729; c=relaxed/simple;
+	bh=tRs3GVTaKzsZ4pdHTplCBL/FRJCM1VCYpeCmaeWDU2k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=od5wuqgaoesNYbmSzJi7SUyEqOYVy5NwnabXDxR2hu5lzJ7owipS7fsXYGAvjcThFRqO2H0QkwNeuoEQ8T7sBKtFdtxYq7Ia7++1BJIQ0Id+BuLpI72ZsVzRfOy1x3u3/iZ0ORWraXQtkEuVsj/XCxbVxqzd9tAx/IPWjKG83Dc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=h-partners.com; spf=pass smtp.mailfrom=h-partners.com; dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b=P54UHUvT; arc=none smtp.client-ip=113.46.200.223
+dkim-signature: v=1; a=rsa-sha256; d=h-partners.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=vC10ux4fJtQ16w2EzTd3hzZ1Dnuiiz7X0EywE4oxAms=;
+	b=P54UHUvTOpJkTtH/lmfy0vUn1/WhBFUf4N2W5KI5Q/vjZFxwpf+PP4OyJlNBL9okxWu4TPgT6
+	1IPJa9HGTEseaHIHEBvjZk1IxavKqPg1fuT9pQIvJKlMfZmdh9lSs3iF9RQ8+f5wY+jCV1b/i9S
+	gnEs1kKLhkwbMBBfo/WEhdM=
+Received: from mail.maildlp.com (unknown [172.19.163.200])
+	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4gv2vz3HFnzmVbL;
+	Mon,  6 Jul 2026 19:59:27 +0800 (CST)
+Received: from kwepemr100001.china.huawei.com (unknown [7.202.195.168])
+	by mail.maildlp.com (Postfix) with ESMTPS id 7C65D4055B;
+	Mon,  6 Jul 2026 20:08:40 +0800 (CST)
+Received: from [10.136.112.147] (10.136.112.147) by
+ kwepemr100001.china.huawei.com (7.202.195.168) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.36; Mon, 6 Jul 2026 20:08:39 +0800
+Message-ID: <3620a5a9-9ced-4825-9bc4-6950be205749@h-partners.com>
+Date: Mon, 6 Jul 2026 20:08:38 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -52,115 +60,122 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.18.y] mm: shmem: fix potential livelock issue for shmem
- direct swapin
-To: Kairui Song <ryncsn@gmail.com>
-Cc: akpm@linux-foundation.org, hughd@google.com, stable@vger.kernel.org,
- baohua@kernel.org, machao26@xiaomi.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <173f3fd983d735155d47e9e39d27f0c2d62a7c31.1783307463.git.baolin.wang@linux.alibaba.com>
- <CAMgjq7AQcyypJ-VhJ_CxY6fdEph64fxjOzzYU-=EkMrHemkpzA@mail.gmail.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <CAMgjq7AQcyypJ-VhJ_CxY6fdEph64fxjOzzYU-=EkMrHemkpzA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH net] netfilter: nf_nat_masquerade: recalculate TCP TS
+ offset when port is randomized
+To: Florian Westphal <fw@strlen.de>
+CC: Pablo Neira Ayuso <pablo@netfilter.org>, Phil Sutter <phil@nwl.cc>, "David
+ S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+	<horms@kernel.org>, gaoxingwang <gaoxingwang1@huawei.com>, huyizhen
+	<huyizhen2@huawei.com>, <netfilter-devel@vger.kernel.org>,
+	<coreteam@netfilter.org>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+References: <20260629093408.3927103-1-xietangxin@h-partners.com>
+ <akKN4cywAsFRdefX@strlen.de>
+ <0ad60f06-387e-49bc-9e26-3dcebf182cb4@h-partners.com>
+ <akUhid7_3iHovivd@strlen.de>
+Content-Language: en-US
+From: xietangxin <xietangxin@h-partners.com>
+In-Reply-To: <akUhid7_3iHovivd@strlen.de>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ kwepemr100001.china.huawei.com (7.202.195.168)
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-12.16 / 15.00];
-	WHITELIST_DMARC(-7.00)[alibaba.com:D:+];
-	WHITELIST_SPF_DKIM(-3.00)[alibaba.com:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.alibaba.com,none];
-	R_DKIM_ALLOW(-0.20)[linux.alibaba.com:s=default];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[h-partners.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[h-partners.com:s=dkim];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:ryncsn@gmail.com,m:akpm@linux-foundation.org,m:hughd@google.com,m:stable@vger.kernel.org,m:baohua@kernel.org,m:machao26@xiaomi.com,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-272209-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[baolin.wang@linux.alibaba.com,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-272211-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:fw@strlen.de,m:pablo@netfilter.org,m:phil@nwl.cc,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:gaoxingwang1@huawei.com,m:huyizhen2@huawei.com,m:netfilter-devel@vger.kernel.org,m:coreteam@netfilter.org,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[baolin.wang@linux.alibaba.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linux.alibaba.com:+];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	FORGED_SENDER(0.00)[xietangxin@h-partners.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	DKIM_TRACE(0.00)[h-partners.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,alibaba.com:email,xiaomi.com:email,linux.alibaba.com:from_mime,linux.alibaba.com:dkim,linux.alibaba.com:mid]
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[xietangxin@h-partners.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp,h-partners.com:from_mime,h-partners.com:email,h-partners.com:mid,h-partners.com:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: F2C217117B7
+X-Rspamd-Queue-Id: 29306710567
 
 
 
-On 7/6/26 1:59 PM, Kairui Song wrote:
-> On Mon, Jul 6, 2026 at 11:25 AM Baolin Wang
-> <baolin.wang@linux.alibaba.com> wrote:
->>
->> When skipping swapcache for synchronous IO swap devices, swapcache_prepare()
->> is used to prevent parallel swapin from proceeding with the swap cache flag.
->> However, on PREEMPT kernels this can lead to a livelock, as reported by Chao[1]:
->>
->> Thread A starts direct swapin of a shmem folio and calls swapcache_prepare()
->> to set SWAP_HAS_CACHE. It may then be preempted inside workingset_refault().
->> Meanwhile, a higher priority thread B also attempts direct swapin of the same
->> shmem swap entry. Since swapcache_prepare() already marks the entry, thread B
->> repeatedly gets -EEXIST and busy-loops waiting for thread A to finish. But as
->> thread B runs at higher priority, thread A cannot preempt it, resulting in
->> starvation and a livelock.
->>
->> Fix it by yielding the CPU with schedule_timeout_uninterruptible(1) when
->> swapcache_prepare() fails, following the same approach used in commits
->> 029c4628b2eb ("mm: swap: get rid of livelock in swapin readahead") and
->> 13ddaf26be32 ("mm/swap: fix race when skipping swapcache").
->>
->> Note that mainline does not have this potential issue, which has already been
->> resolved by Kairui's swap refactoring work[2].
->>
->> [1] https://lore.kernel.org/all/700a2cbf90a2484f979aac858f08f5d4@xiaomi.com/
->> [2] https://lore.kernel.org/all/20260517-swap-table-p4-v5-0-88ae43e064c7@tencent.com/
->> Fixes: 1dd44c0af4fa ("mm: shmem: skip swapcache for swapin of synchronous swap device")
->> Reported-by: Ma Chao <machao26@xiaomi.com>
->> Closes: https://lore.kernel.org/all/700a2cbf90a2484f979aac858f08f5d4@xiaomi.com/
->> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
->> ---
->> Hi Chao, could you try this patch to check if it fixes your issue? Thanks.
->> ---
->>   mm/shmem.c | 2 ++
->>   1 file changed, 2 insertions(+)
->>
->> diff --git a/mm/shmem.c b/mm/shmem.c
->> index 94c5b0d78ac3..d4cb57b3b0ef 100644
->> --- a/mm/shmem.c
->> +++ b/mm/shmem.c
->> @@ -2066,6 +2066,8 @@ static struct folio *shmem_swap_alloc_folio(struct inode *inode,
->>          if (swapcache_prepare(entry, nr_pages)) {
->>                  folio_put(new);
->>                  new = ERR_PTR(-EEXIST);
->> +               /* Relax a bit to prevent rapid repeated page faults */
->> +               schedule_timeout_uninterruptible(1);
->>                  /* Try smaller folio to avoid cache conflict */
->>                  goto fallback;
->>          }
->> --
->> 2.47.3
->>
+On 7/1/2026 10:17 PM, Florian Westphal wrote:
+> xietangxin <xietangxin@h-partners.com> wrote:
+>> Shifting the helper down to nf_nat_l4proto_unique_tuple() as you suggested
+>> encounters a structural roadblock. we don't have access to the skb there.
+>> Adding skb to all intermediate callers (like nf_nat_setup_info, get_unique_tuple)
+>> would severely pollute the core NAT APIs.
 > 
-> Thanks! That's much more simpler than I expected. Do we need a wakeup
-> queue like the one in commit 01626a1823024? Perhaps the reporter can
-> help confirm and test? I personally prefer to keep it simple if shmem
-> users aren't as sensitive as anon users.
+> Right, propagating the skb is too much code churn.
+> 
+>> would it be acceptable to place this logic in nf_nat_inet_fn() before do_nat?
+>>
+>>  963 do_nat:
+>>              ..here
+> 
+> This is hit for every packet, not just the first one after
+> nf_nat_setup_info().  I suggest a slightly earlier spot in the
+> same function.
+> 
+>  936                                 ret = e->hooks[i].hook(e->hooks[i].priv, skb,
+>  937                                                        state);
+>  938                                 if (ret != NF_ACCEPT)
+>  939                                         return ret;
+>  940                                 if (nf_nat_initialized(ct, maniptype))
+>  941                                         goto do_nat;
+>  942                         }
+>  943 null_bind:
+>  944                         ret = nf_nat_alloc_null_binding(ct, state->hook);
+>  945                         if (ret != NF_ACCEPT)
+>  946                                 return ret;
+> 
+>  .... Here.
+> 
+>  947                 } else {
+> 
+> This spot runs only for new connections, right after a nf_nat_setup_info() call.
 
-I agree. I'd like to keep the bugfix as simple as possible, if the 
-reporter's scenario isn't latency-sensitive.
+Hi Florian,
+
+Thanks for your guidance. I’ve successfully fix the helper location
+as you suggested, and it works fine for local traffic.
+
+However, I realized that I had completely overlooked the forwarding scenario
+(where SNAT acts as a middlebox gateway, e.g. Host A -> Gateway B -> Server C).
+In this gateway scenario, when random-fully is enabled, the test results show
+a massive performance degradation: the QPS drops from ~19000 down to ~10000.
+
+Since skb->sk is NULL on the forwarding gateway, my current approach of
+updating tp->tsoffset in struct tcp_sock cannot be applied here.
+To be honest, I am currently stuck on how to handle this forwarding scenario
+within the netfilter architecture without adding redundant overhead to the fast path.
+
+Could you please give some advice on how the community would prefer to resolve this?
+For instance, should we look into extending the Conntrack NAT extension to
+track and adjust the TCP timestamps?
+
+Any suggestions would be highly appreciated!
+
+-- 
+Best regards,
+Tangxin Xie
+
 
