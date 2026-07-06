@@ -1,173 +1,209 @@
-Return-Path: <stable+bounces-272311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272312-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id b3kkDCUITGpSfAEAu9opvQ
-	(envelope-from <stable+bounces-272311-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 21:55:17 +0200
+	id fyHaI18RTGqTfwEAu9opvQ
+	(envelope-from <stable+bounces-272312-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 22:34:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A41FB7152C4
-	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 21:55:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA2D3715779
+	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 22:34:38 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C+94d6Id;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272311-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272311-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=O4hFfb6X;
+	dkim=pass header.d=redhat.com header.s=google header.b=ludN8PLQ;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272312-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-272312-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 826DC302419B
-	for <lists+stable@lfdr.de>; Mon,  6 Jul 2026 19:54:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8327F319DA13
+	for <lists+stable@lfdr.de>; Mon,  6 Jul 2026 19:59:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24F4A3D3D04;
-	Mon,  6 Jul 2026 19:54:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAFCA3D3D0C;
+	Mon,  6 Jul 2026 19:59:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C95743C6A43;
-	Mon,  6 Jul 2026 19:54:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0E793D4112
+	for <stable@vger.kernel.org>; Mon,  6 Jul 2026 19:59:15 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783367684; cv=none; b=WmUAL/C3XZxMWYATbDVzVJ+t+DiAS2FbhCTBprsYKVkAPlXB0a6thb79YE5AQMEtwPmuR5znEvSCL3Yy2G+2DiXnUdTyrvlRhkQLNYeEmYGWEb0jjm+d3dcXXmh+xm5FztkxF41FnCWrJPTtNH5357+lbpjuvRlfbHFooRT+2pY=
+	t=1783367957; cv=none; b=LPvujt8DyS9tO4uv/88XcST6LXY6Alcy0Pp+VR7mf9WMlWzLHoL5bSwNNVBku1gcSSj0iDf4cLXD+XjeVrYFpxoahh6PXYUfoh1e9rFT4i8nhevbgfTz94G4a/XU+wd2KPOrWnxQ32fkVCSTv2s7At6vBdhhU1yuWviMamYEvnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783367684; c=relaxed/simple;
-	bh=CXuN/SKa1PPqCyuMUimFuRCk8zlVeXxVv5QjWF4EVOY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OC+5J3Q2KIDOLgSD0kDqbAyfpOBTE1s+8MatZsQdqVEEhdAp0aB34+e2OfjILeLHsx2T5ufHgSak00Iu77jB4I9kMKSdsLErA5OVwPYq5BfYSJ2ZkVpjsTrxRDPJFrGDJdPaaef5veYDKiqI5Hqx3dDGWvllFQ7ajUoQF7ZjhZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C+94d6Id; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E4191F00A3D;
-	Mon,  6 Jul 2026 19:54:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783367683;
-	bh=I5xj/qWEmAskgEVgftFii5/CUCVUTTeCRaGrmv9HR6E=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=C+94d6IdItHrDM9oEW8bwAA0X78ogpNMHO8kZLJnocIygc4eBO0HASFs7wr5TNKV7
-	 6/HJ/bX91sjFHmJmE1oFXO43wjZnb3LgcpG7GqcMHQWDHQfv6PsIzE2RMNJqkPEtk/
-	 5fBDRjQoW8Ff1zfe/9DMBXuPs1MUO42DLK/HO2Lutsw5MkNbMchEENaHc6gr4hdOIj
-	 EJmHtXNFPWv5IkBzrZ/mSYehrSKLSfNXEyaVsSyVeNzfPu5IXS7FXIe4cQXSwY8P+S
-	 Q8xeo+ARKOrAj0gg1YrhIAMEVEK+9g4cJXnNFgBhzb+8o2GVenTcCmrUyQbEFg4Yme
-	 kpYFOO3MMqufQ==
-From: Yosry Ahmed <yosry@kernel.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Yosry Ahmed <yosry@kernel.org>,
+	s=arc-20240116; t=1783367957; c=relaxed/simple;
+	bh=9HWeIwTTx2EQ/+4qhn4IVPVNueno6718Zzeh+X7aaog=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=M+ClqBOU8XJIiH8E8F06itQ3YgTTufjQ5uznTPevXv/4Em53maAbBMqKXtrWcO7Z8nApN8c5sXEchsVnQfg4JNsTOLWSJsyvJFt6Y/VMBgHUS1VLj52BWqMO+2qhRM/oYwoB1QbxZGR2eAEgfvbBUzfp/j4UXxLYynW4t2s4sXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=O4hFfb6X; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=ludN8PLQ; arc=none smtp.client-ip=170.10.133.124
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1783367954;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=miOaW9hoFfDuFPnXiu262F/4yDf/EKYiy2TifipKj0Q=;
+	b=O4hFfb6XYW7+q2mw4nalPOPkj2/yaUX6hujnrfv3E3ZEqE8oTIYOZ/ECQyXbrqm3K4CRd1
+	Jui2Rs8l1Cf9f6lOWG39kirZGTSFD+pip5ANLH+IkQlIwRNCftgrQxUEU0bOJyqQjRkAdW
+	bobbJMDPjOidYI6wJcBFbY22sXdtHCU=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-164-TiCTDXN6MeukXLmCiyzGaA-1; Mon, 06 Jul 2026 15:59:10 -0400
+X-MC-Unique: TiCTDXN6MeukXLmCiyzGaA-1
+X-Mimecast-MFC-AGG-ID: TiCTDXN6MeukXLmCiyzGaA_1783367950
+Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-8ef8249f871so40210566d6.0
+        for <stable@vger.kernel.org>; Mon, 06 Jul 2026 12:59:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1783367950; x=1783972750; darn=vger.kernel.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=miOaW9hoFfDuFPnXiu262F/4yDf/EKYiy2TifipKj0Q=;
+        b=ludN8PLQ+BJ6uHL1m9W8Wj//DhmjPDjwZiuzo999ZByjOZ/LSePw0lw0OPl48BUIZh
+         hdgHQfkDv/WjHikD4HNd9PPLeKQX0PFf93p/JJ6Fw2CbxLghMndUoAyD1NGrn3aXOB8a
+         nYpFsIgERFEIknVEpU2iX3VmmzEQxEoF6RFmmodUSRODN2ZJ8+5UCgZPziF+PtqQ6srd
+         tKN+N7Mh09R0upoDxl27tLUGR4ELEkgs2ykLSQFX1NkNW/ABuv5W8Fne/Cr7cpcBJMcQ
+         nhHbseDPiG3QGHIrvq0VW7jNs7vA3J8dLQx9aQ4qnbd4knvlgWzBSIKjUtLrVBwbtY7x
+         GEhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783367950; x=1783972750;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=miOaW9hoFfDuFPnXiu262F/4yDf/EKYiy2TifipKj0Q=;
+        b=MAO1jqimT3FbQkmpEb4OwhmytND5uYZkBBySPiuac2JnFfe7cKesXwd76HUQ4Nhot4
+         3beNhE1mLYy9V6Y3GnuaVd9TB8hRXcvelgruZK9Xu3/d4puxTRcNWzbrk3t9qGppSMyl
+         PSm0QOlb7yn0pJk2a6hNjQx8IKkmcH6UJxVXUaEhNFmT+CLqou1Pf8bf8z+aTE2lJ1wR
+         TnxFxqau+AdWzPpUl68JBXlXD98goyGVRCLp6E/KNtIwBbWIiX2W4eZ3kHJSHwxTXK6h
+         3UByybVCZu8ejx1Ms7a1Rmxds8KcroO/3al9HOxMr0FLi7L+K1MUe6bsCIfR76gmv0Yh
+         +EBg==
+X-Forwarded-Encrypted: i=1; AHgh+RqmyYn8KaX/tIePdGcdXKLipWTplhQ5jjYqUL3iUaz5tvXWwMNjIcFkX8jP4OMKB9OK/k4X77w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwBcPLbbMUjHrlkGQLQnqVOtwZBLZSFUdlVSbv79uwBjmrvWQWo
+	ykWEKp4yFjE4At08q6oPz9H/zUux7RwPvPcceVB+cS7oFBcweeq+xQxA6B5sHkW3cpaHfOMu4zO
+	pZoM9MaNNVlKDULMPtg5guV6m3dgp59Pj4Lm0Id0moF8zolzh9nsXzQsmTzuVtbEP0Q==
+X-Gm-Gg: AfdE7cnxDq6jpJyf3Sb50vzVQyFsPGKGlsbDQM4Nyn7YQMY4kHjSG5W5IrAOZGXRPzt
+	mQo7a94OmQgVSLsCf42NRj1u4aoacavwHSDmmpUVV9Z4Tqg5MnRhgVwkCzWXrL+cvXq9rtqPUiQ
+	oG4DDTwatAIiOG59j9jy6zZiENDpbXKiaw7dEgfcEaqYHFGeoVgacX3DzJBFCgiror9saxnFmgE
+	qKbXqoKaRqqGpPaAJwWg8ywooN5OinYzklkX7RPR8PKugQ+6EUef7QDxajTzVnadaGY/F6A1RY8
+	7ze3LZuGkU/9sb/kAK6xajf8tsbw5iMj1UMHbUa+An3HzvZLHo7xxJo77CQgLZTa3GlUiENFU2f
+	fM+w3lvik5s1jGrrSJpOBTx0tnCLimiD1IigxL4+qWhPQYA==
+X-Received: by 2002:a05:6214:2605:b0:8eb:70e0:47d0 with SMTP id 6a1803df08f44-8fcb4c006ddmr26668696d6.37.1783367950097;
+        Mon, 06 Jul 2026 12:59:10 -0700 (PDT)
+X-Received: by 2002:a05:6214:2605:b0:8eb:70e0:47d0 with SMTP id 6a1803df08f44-8fcb4c006ddmr26668246d6.37.1783367949576;
+        Mon, 06 Jul 2026 12:59:09 -0700 (PDT)
+Received: from redhat.com (c-73-183-53-213.hsd1.pa.comcast.net. [73.183.53.213])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8f46f013f05sm143092136d6.16.2026.07.06.12.59.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Jul 2026 12:59:08 -0700 (PDT)
+Date: Mon, 6 Jul 2026 15:59:06 -0400
+From: Brian Masney <bmasney@redhat.com>
+To: WenTao Liang <vulab@iscas.ac.cn>
+Cc: paul@crapouillou.net, mturquette@baylibre.com, sboyd@kernel.org,
+	linux-mips@vger.kernel.org, linux-clk@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>,
 	stable@vger.kernel.org
-Subject: [PATCH v2 2/7] KVM: SVM: Disallow EFER.SVME and EFER.LSMLE if nested is disabled
-Date: Mon,  6 Jul 2026 19:54:08 +0000
-Message-ID: <20260706195413.1966458-3-yosry@kernel.org>
-X-Mailer: git-send-email 2.55.0.rc2.803.g1fd1e6609c-goog
-In-Reply-To: <20260706195413.1966458-1-yosry@kernel.org>
-References: <20260706195413.1966458-1-yosry@kernel.org>
+Subject: Re: [PATCH v2] clk/ingenic: fix clock leak on clk_register_clkdev
+ failure
+Message-ID: <akwJCq9uUY3rzFxe@redhat.com>
+References: <20260628122811.44799-1-vulab@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260628122811.44799-1-vulab@iscas.ac.cn>
+User-Agent: Mutt/2.3.2 (2026-04-26)
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-272311-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:seanjc@google.com,m:pbonzini@redhat.com,m:kvm@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:yosry@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[yosry@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[redhat.com:+];
 	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-272312-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[bmasney@redhat.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:vulab@iscas.ac.cn,m:paul@crapouillou.net,m:mturquette@baylibre.com,m:sboyd@kernel.org,m:linux-mips@vger.kernel.org,m:linux-clk@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[yosry@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bmasney@redhat.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,iscas.ac.cn:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A41FB7152C4
+X-Rspamd-Queue-Id: DA2D3715779
 
-Explicitly disallow setting EFER.SVME and EFER.LSMLE if nested
-virtualization is disabled on SVM, to prevent the bits remaining allowed
-if kvm_amd is loaded with nested=1 and then reloaded with nested=0.
+On Sun, Jun 28, 2026 at 08:28:11PM +0800, WenTao Liang wrote:
+> clk_register() succeeds but clk_register_clkdev() fails, and the error
+> path jumps to out without calling clk_unregister or clk_put to release
+> the registered clock. This leaks the clock object within the common clock
+> framework
 
-This is a minimal fix for the benefit of stable backports, which will be
-followed by a more systematic fix (moving efer_reserved_bits to
-kvm_caps).
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Yosry Ahmed <yosry@kernel.org>
----
- arch/x86/kvm/msrs.c    | 8 +++++++-
- arch/x86/kvm/msrs.h    | 1 +
- arch/x86/kvm/svm/svm.c | 3 +++
- 3 files changed, 11 insertions(+), 1 deletion(-)
+> , contrasting with the CGU_CLK_EXT type path which correctly
+> calls clk_put on error.
 
-diff --git a/arch/x86/kvm/msrs.c b/arch/x86/kvm/msrs.c
-index c230b18d87e38..45170df0ce40b 100644
---- a/arch/x86/kvm/msrs.c
-+++ b/arch/x86/kvm/msrs.c
-@@ -660,10 +660,16 @@ static int set_efer(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 
- void kvm_enable_efer_bits(u64 mask)
- {
--       efer_reserved_bits &= ~mask;
-+	efer_reserved_bits &= ~mask;
- }
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_enable_efer_bits);
- 
-+void kvm_disable_efer_bits(u64 mask)
-+{
-+	efer_reserved_bits |= mask;
-+}
-+EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_disable_efer_bits);
-+
- bool kvm_msr_allowed(struct kvm_vcpu *vcpu, u32 index, u32 type)
- {
- 	struct kvm_x86_msr_filter *msr_filter;
-diff --git a/arch/x86/kvm/msrs.h b/arch/x86/kvm/msrs.h
-index b698983e37fb6..89f10447cdddf 100644
---- a/arch/x86/kvm/msrs.h
-+++ b/arch/x86/kvm/msrs.h
-@@ -59,6 +59,7 @@ int kvm_get_reg_list(struct kvm_vcpu *vcpu,
- 		     struct kvm_reg_list __user *user_list);
- 
- void kvm_enable_efer_bits(u64);
-+void kvm_disable_efer_bits(u64);
- bool kvm_valid_efer(struct kvm_vcpu *vcpu, u64 efer);
- int kvm_emulate_msr_read(struct kvm_vcpu *vcpu, u32 index, u64 *data);
- int kvm_emulate_msr_write(struct kvm_vcpu *vcpu, u32 index, u64 data);
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index ef69a51ab27f9..1d51500238462 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -5645,6 +5645,9 @@ static __init int svm_hardware_setup(void)
- 		r = nested_svm_init_msrpm_merge_offsets();
- 		if (r)
- 			return r;
-+	} else {
-+		kvm_disable_efer_bits(EFER_SVME);
-+		kvm_disable_efer_bits(EFER_LMSLE);
- 	}
- 
- 	/*
--- 
-2.55.0.rc2.803.g1fd1e6609c-goog
+I would drop this part. Just focus on what you are fixing.
+
+> 
+> Suggested-by: Greg KH <gregkh@linuxfoundation.org>
+
+I don't see where on the v1 Greg suggested this, unless I am missing
+something?
+
+> Fixes: b066303fb3e7 ("clk: ingenic: add driver for Ingenic SoC CGU clocks")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: WenTao Liang <vulab@iscas.ac.cn>
+> ---
+> Changes in v2:
+> - Fix patch format based on reviewer feedback
+
+Link to v1: https://lore.kernel.org/linux-clk/20260626115644.33779-1-vulab@iscas.ac.cn/
+
+With those fixes:
+
+Reviewed-by: Brian Masney <bmasney@redhat.com>
+
+
+> ---
+>  drivers/clk/ingenic/cgu.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/clk/ingenic/cgu.c b/drivers/clk/ingenic/cgu.c
+> index 41e4c69131bd..b59b24d0e3cf 100644
+> --- a/drivers/clk/ingenic/cgu.c
+> +++ b/drivers/clk/ingenic/cgu.c
+> @@ -774,8 +774,10 @@ static int ingenic_register_clock(struct ingenic_cgu *cgu, unsigned idx)
+>  	}
+>  
+>  	err = clk_register_clkdev(clk, clk_info->name, NULL);
+> -	if (err)
+> +	if (err) {
+> +		clk_unregister(clk);
+>  		goto out;
+> +	}
+>  
+>  	cgu->clocks.clks[idx] = clk;
+>  out:
+> -- 
+> 2.39.5 (Apple Git-154)
+> 
 
 
