@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-272329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272330-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id TbyCDCgwTGr+hQEAu9opvQ
-	(envelope-from <stable+bounces-272329-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 00:46:00 +0200
+	id qSuOALE4TGqRhwEAu9opvQ
+	(envelope-from <stable+bounces-272330-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 01:22:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54632716216
-	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 00:45:59 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF8A2716494
+	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 01:22:23 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=qfnb+9l5;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Ya+tqX8f;
 	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272329-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272329-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272330-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-272330-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0C61E30356E3
-	for <lists+stable@lfdr.de>; Mon,  6 Jul 2026 22:35:22 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E77D93007B2C
+	for <lists+stable@lfdr.de>; Mon,  6 Jul 2026 23:16:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DFB6436BC2;
-	Mon,  6 Jul 2026 22:35:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63D2B3E63A3;
+	Mon,  6 Jul 2026 23:16:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4654435AAC;
-	Mon,  6 Jul 2026 22:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2C6A3A75BD;
+	Mon,  6 Jul 2026 23:16:48 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783377321; cv=none; b=W/e5Qc1LWDbIfV383S1b7/qcXRHRHmZc/aZkuunPYt65w6Mq0bDOqWCa8c+EP5fA5zpZrk1cup8xATySCnaERjHX4IQaowMi9dUm9FUbHEqKh8itKtP/k7mSHzkHpTNXoQRzesUvXb2AkvyVEAtJcnhv5e3kNNsimWoYW49r7x8=
+	t=1783379810; cv=none; b=GpvxrTvHjnsocNlFig97Yt0uZrb57R9H5Ep7IUFFv+RF74ss3HUeIK2+TdEnaeQCYGxz+Bo547hWsUjsuz5vti7c/V7qIn+DDripAfNY/JmvnYtEDorrPF3bb+vrrbuI8FfYGkfkEwUAfnxqATAPXQdUQ5ex8ICv0QZrs8lS0Po=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783377321; c=relaxed/simple;
-	bh=6Nl2iQ6tZq+bO9CkJVUSPDv3GsulWOnR0YIBzQO4yo0=;
-	h=Date:To:From:Subject:Message-Id; b=EVRs+6g09vcNTtqnA/LFET06zzq4Aj1dPznKEAmHUtcGPrV3WE6nZWH/rWGQOIZnQ14eAf9u/Jc6x168NozUT71OI3wRYW9hfL7JzueGQMgBinDehsu3hDJfMwJgfE/e+CoDfTPMtbZuV7QzsSXQ8TRSW66FKQ2DFtnadPILZFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=qfnb+9l5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD6A71F000E9;
-	Mon,  6 Jul 2026 22:35:19 +0000 (UTC)
+	s=arc-20240116; t=1783379810; c=relaxed/simple;
+	bh=lMK5IY/GLwCKqSc0EPzjsvQTP1hko0NMVzIVzDZxOpg=;
+	h=Date:To:From:Subject:Message-Id; b=e41MqYvFbl7TGTkiKCpPa9qcsC1TYSzKPO6jGg3d2eGpQO1M+EzBqobnXsy5bPx5sF8xZd56MkIevecAz79KkIxm7QcetkHPfvkAhwqvlHMMO5rKuVyl61N9ViPIAuorRUXVKgLIMVoryAgn7c/N5WIiC723WJkp/Divw6fm9Pc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Ya+tqX8f; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86A221F000E9;
+	Mon,  6 Jul 2026 23:16:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1783377319;
-	bh=hGTsLnzqyox/bUn+Vll9LL7sKRpbkVRK/Zhsm92XuB8=;
+	d=linux-foundation.org; s=korg; t=1783379808;
+	bh=8SOhLGoqJbJihhgr4HsVj9xf2+MXkkekLW95+/gxOJA=;
 	h=Date:To:From:Subject;
-	b=qfnb+9l5AKoLXg3Ep9dzMjM/kUcV6yEGZE0KxDZzGrqFZPI2b5O5N9f//z3dCBkVE
-	 S3LzFMQtlGjsRy8Gcbf6HjztjQ2Y294Y1C38tAORFJgZq41G7XnqIS3PBG+Mflh1TL
-	 AH3opeh3sxzlVtjT3AJgeGOISYzfzJzGd86BjQJg=
-Date: Mon, 06 Jul 2026 15:35:19 -0700
+	b=Ya+tqX8fYAeakqOH5QjLkswE++rE295yDaiiv/vDnCIyWtDGwFYgnT1vg4rfpRgxO
+	 pA6jYSNH2+hAqEvck7jcpHOPpG1tsPWr4QRK/KiCNNP7MXFDHrqbIuuXDOkkz2PSA6
+	 CmN7Za9xlSLlIS0kPTEDxdmE8f/j8n/QxUuniRcM=
+Date: Mon, 06 Jul 2026 16:16:48 -0700
 To: mm-commits@vger.kernel.org,ziy@nvidia.com,ying.huang@linux.alibaba.com,tj@kernel.org,stable@vger.kernel.org,ridong.chen@linux.dev,rakie.kim@sk.com,mkoutny@suse.com,matthew.brost@intel.com,longman@redhat.com,linux@rasmusvillemoes.dk,joshua.hahnjy@gmail.com,hannes@cmpxchg.org,gourry@gourry.net,david@kernel.org,byungchul@sk.com,apopple@nvidia.com,farhad.alemi@berkeley.edu,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + cgroup-cpuset-rebind-mm-mempolicy-to-effective_mems-not-mems_allowed.patch added to mm-hotfixes-unstable branch
-Message-Id: <20260706223519.BD6A71F000E9@smtp.kernel.org>
+Subject: [merged] cgroup-cpuset-rebind-mm-mempolicy-to-effective_mems-not-mems_allowed.patch removed from -mm tree
+Message-Id: <20260706231648.86A221F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,67 +55,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [5.34 / 15.00];
 	R_BAD_CTE_7BIT(3.50)[unknown];
-	SUSPICIOUS_RECIPS(1.50)[];
 	BROKEN_CONTENT_TYPE(1.50)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:mm-commits@vger.kernel.org,m:ziy@nvidia.com,m:ying.huang@linux.alibaba.com,m:tj@kernel.org,m:stable@vger.kernel.org,m:ridong.chen@linux.dev,m:rakie.kim@sk.com,m:mkoutny@suse.com,m:matthew.brost@intel.com,m:longman@redhat.com,m:linux@rasmusvillemoes.dk,m:joshua.hahnjy@gmail.com,m:hannes@cmpxchg.org,m:gourry@gourry.net,m:david@kernel.org,m:byungchul@sk.com,m:apopple@nvidia.com,m:farhad.alemi@berkeley.edu,m:akpm@linux-foundation.org,m:joshuahahnjy@gmail.com,s:lists@lfdr.de];
+	DMARC_NA(0.00)[linux-foundation.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FREEMAIL_TO(0.00)[vger.kernel.org,nvidia.com,linux.alibaba.com,kernel.org,linux.dev,sk.com,suse.com,intel.com,redhat.com,rasmusvillemoes.dk,gmail.com,cmpxchg.org,gourry.net,berkeley.edu,linux-foundation.org];
+	FORGED_SENDER(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[19];
 	GREYLIST(0.00)[pass,body];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	DMARC_NA(0.00)[linux-foundation.org];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-272329-lists,stable=lfdr.de];
-	MISSING_XM_UA(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-272330-lists,stable=lfdr.de];
+	ALIAS_RESOLVED(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_HAS_DN(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 54632716216
+X-Rspamd-Queue-Id: EF8A2716494
 
 
-The patch titled
+The quilt patch titled
      Subject: cgroup/cpuset: rebind mm mempolicy to effective_mems, not mems_allowed
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+has been removed from the -mm tree.  Its filename was
      cgroup-cpuset-rebind-mm-mempolicy-to-effective_mems-not-mems_allowed.patch
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/cgroup-cpuset-rebind-mm-mempolicy-to-effective_mems-not-mems_allowed.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
+This patch was dropped because it was merged into mainline or a subsystem tree
 
 ------------------------------------------------------
 From: Farhad Alemi <farhad.alemi@berkeley.edu>
@@ -190,6 +173,5 @@ _
 
 Patches currently in -mm which might be from farhad.alemi@berkeley.edu are
 
-cgroup-cpuset-rebind-mm-mempolicy-to-effective_mems-not-mems_allowed.patch
 
 
