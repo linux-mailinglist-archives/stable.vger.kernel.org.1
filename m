@@ -1,110 +1,79 @@
-Return-Path: <stable+bounces-272312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272313-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id fyHaI18RTGqTfwEAu9opvQ
-	(envelope-from <stable+bounces-272312-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 22:34:39 +0200
+	id co9uNDwKTGrofAEAu9opvQ
+	(envelope-from <stable+bounces-272313-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 22:04:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA2D3715779
-	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 22:34:38 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85FCC71542C
+	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 22:04:12 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=O4hFfb6X;
-	dkim=pass header.d=redhat.com header.s=google header.b=ludN8PLQ;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272312-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-272312-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=intel.com header.s=Intel header.b=G0grXB6v;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272313-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-272313-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8327F319DA13
-	for <lists+stable@lfdr.de>; Mon,  6 Jul 2026 19:59:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6B1CA30254BB
+	for <lists+stable@lfdr.de>; Mon,  6 Jul 2026 20:01:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAFCA3D3D0C;
-	Mon,  6 Jul 2026 19:59:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89D99397332;
+	Mon,  6 Jul 2026 20:01:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0E793D4112
-	for <stable@vger.kernel.org>; Mon,  6 Jul 2026 19:59:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D8903446CE;
+	Mon,  6 Jul 2026 20:01:34 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783367957; cv=none; b=LPvujt8DyS9tO4uv/88XcST6LXY6Alcy0Pp+VR7mf9WMlWzLHoL5bSwNNVBku1gcSSj0iDf4cLXD+XjeVrYFpxoahh6PXYUfoh1e9rFT4i8nhevbgfTz94G4a/XU+wd2KPOrWnxQ32fkVCSTv2s7At6vBdhhU1yuWviMamYEvnw=
+	t=1783368096; cv=none; b=QlYeGQSKIt6K3dP8O8CLQEztD4QxBQoendVQaZUIdCPnEYIniwoRsz8CVsnzP4MUwXJ16ItHtgTR+ZvBUlxCAmj9l1SaAEvl2Z+c7LFTeNzC3Ddb6YIWTTGH3wmKSfbZxivfjEvqTrDOargNdjutuZaNqZRkop6ivnmEpAm60M4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783367957; c=relaxed/simple;
-	bh=9HWeIwTTx2EQ/+4qhn4IVPVNueno6718Zzeh+X7aaog=;
+	s=arc-20240116; t=1783368096; c=relaxed/simple;
+	bh=5xfJqS2aaRzQYveMm2C0uDJWas4EwwnhfgPKx0bu1Kg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M+ClqBOU8XJIiH8E8F06itQ3YgTTufjQ5uznTPevXv/4Em53maAbBMqKXtrWcO7Z8nApN8c5sXEchsVnQfg4JNsTOLWSJsyvJFt6Y/VMBgHUS1VLj52BWqMO+2qhRM/oYwoB1QbxZGR2eAEgfvbBUzfp/j4UXxLYynW4t2s4sXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=O4hFfb6X; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=ludN8PLQ; arc=none smtp.client-ip=170.10.133.124
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1783367954;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=miOaW9hoFfDuFPnXiu262F/4yDf/EKYiy2TifipKj0Q=;
-	b=O4hFfb6XYW7+q2mw4nalPOPkj2/yaUX6hujnrfv3E3ZEqE8oTIYOZ/ECQyXbrqm3K4CRd1
-	Jui2Rs8l1Cf9f6lOWG39kirZGTSFD+pip5ANLH+IkQlIwRNCftgrQxUEU0bOJyqQjRkAdW
-	bobbJMDPjOidYI6wJcBFbY22sXdtHCU=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-164-TiCTDXN6MeukXLmCiyzGaA-1; Mon, 06 Jul 2026 15:59:10 -0400
-X-MC-Unique: TiCTDXN6MeukXLmCiyzGaA-1
-X-Mimecast-MFC-AGG-ID: TiCTDXN6MeukXLmCiyzGaA_1783367950
-Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-8ef8249f871so40210566d6.0
-        for <stable@vger.kernel.org>; Mon, 06 Jul 2026 12:59:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1783367950; x=1783972750; darn=vger.kernel.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=miOaW9hoFfDuFPnXiu262F/4yDf/EKYiy2TifipKj0Q=;
-        b=ludN8PLQ+BJ6uHL1m9W8Wj//DhmjPDjwZiuzo999ZByjOZ/LSePw0lw0OPl48BUIZh
-         hdgHQfkDv/WjHikD4HNd9PPLeKQX0PFf93p/JJ6Fw2CbxLghMndUoAyD1NGrn3aXOB8a
-         nYpFsIgERFEIknVEpU2iX3VmmzEQxEoF6RFmmodUSRODN2ZJ8+5UCgZPziF+PtqQ6srd
-         tKN+N7Mh09R0upoDxl27tLUGR4ELEkgs2ykLSQFX1NkNW/ABuv5W8Fne/Cr7cpcBJMcQ
-         nhHbseDPiG3QGHIrvq0VW7jNs7vA3J8dLQx9aQ4qnbd4knvlgWzBSIKjUtLrVBwbtY7x
-         GEhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783367950; x=1783972750;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=miOaW9hoFfDuFPnXiu262F/4yDf/EKYiy2TifipKj0Q=;
-        b=MAO1jqimT3FbQkmpEb4OwhmytND5uYZkBBySPiuac2JnFfe7cKesXwd76HUQ4Nhot4
-         3beNhE1mLYy9V6Y3GnuaVd9TB8hRXcvelgruZK9Xu3/d4puxTRcNWzbrk3t9qGppSMyl
-         PSm0QOlb7yn0pJk2a6hNjQx8IKkmcH6UJxVXUaEhNFmT+CLqou1Pf8bf8z+aTE2lJ1wR
-         TnxFxqau+AdWzPpUl68JBXlXD98goyGVRCLp6E/KNtIwBbWIiX2W4eZ3kHJSHwxTXK6h
-         3UByybVCZu8ejx1Ms7a1Rmxds8KcroO/3al9HOxMr0FLi7L+K1MUe6bsCIfR76gmv0Yh
-         +EBg==
-X-Forwarded-Encrypted: i=1; AHgh+RqmyYn8KaX/tIePdGcdXKLipWTplhQ5jjYqUL3iUaz5tvXWwMNjIcFkX8jP4OMKB9OK/k4X77w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwBcPLbbMUjHrlkGQLQnqVOtwZBLZSFUdlVSbv79uwBjmrvWQWo
-	ykWEKp4yFjE4At08q6oPz9H/zUux7RwPvPcceVB+cS7oFBcweeq+xQxA6B5sHkW3cpaHfOMu4zO
-	pZoM9MaNNVlKDULMPtg5guV6m3dgp59Pj4Lm0Id0moF8zolzh9nsXzQsmTzuVtbEP0Q==
-X-Gm-Gg: AfdE7cnxDq6jpJyf3Sb50vzVQyFsPGKGlsbDQM4Nyn7YQMY4kHjSG5W5IrAOZGXRPzt
-	mQo7a94OmQgVSLsCf42NRj1u4aoacavwHSDmmpUVV9Z4Tqg5MnRhgVwkCzWXrL+cvXq9rtqPUiQ
-	oG4DDTwatAIiOG59j9jy6zZiENDpbXKiaw7dEgfcEaqYHFGeoVgacX3DzJBFCgiror9saxnFmgE
-	qKbXqoKaRqqGpPaAJwWg8ywooN5OinYzklkX7RPR8PKugQ+6EUef7QDxajTzVnadaGY/F6A1RY8
-	7ze3LZuGkU/9sb/kAK6xajf8tsbw5iMj1UMHbUa+An3HzvZLHo7xxJo77CQgLZTa3GlUiENFU2f
-	fM+w3lvik5s1jGrrSJpOBTx0tnCLimiD1IigxL4+qWhPQYA==
-X-Received: by 2002:a05:6214:2605:b0:8eb:70e0:47d0 with SMTP id 6a1803df08f44-8fcb4c006ddmr26668696d6.37.1783367950097;
-        Mon, 06 Jul 2026 12:59:10 -0700 (PDT)
-X-Received: by 2002:a05:6214:2605:b0:8eb:70e0:47d0 with SMTP id 6a1803df08f44-8fcb4c006ddmr26668246d6.37.1783367949576;
-        Mon, 06 Jul 2026 12:59:09 -0700 (PDT)
-Received: from redhat.com (c-73-183-53-213.hsd1.pa.comcast.net. [73.183.53.213])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8f46f013f05sm143092136d6.16.2026.07.06.12.59.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jul 2026 12:59:08 -0700 (PDT)
-Date: Mon, 6 Jul 2026 15:59:06 -0400
-From: Brian Masney <bmasney@redhat.com>
-To: WenTao Liang <vulab@iscas.ac.cn>
-Cc: paul@crapouillou.net, mturquette@baylibre.com, sboyd@kernel.org,
-	linux-mips@vger.kernel.org, linux-clk@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] clk/ingenic: fix clock leak on clk_register_clkdev
- failure
-Message-ID: <akwJCq9uUY3rzFxe@redhat.com>
-References: <20260628122811.44799-1-vulab@iscas.ac.cn>
+	 Content-Type:Content-Disposition:In-Reply-To; b=eNJf8Vc9WScDxdK3fWOWN2yfmQvQkj+2PpzARmIN5taXLdckvpwscuIT7cddrikitrTkXv2ducz14TIt0uimLVMIXoP8xNF32JMPscuCpGx1rYDy/O1NEi7i0HY1h1dzLACM1CWZScOvwoaFonbsFxd5s+6VZiJHqYTcrATsuMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=G0grXB6v; arc=none smtp.client-ip=192.198.163.13
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1783368094; x=1814904094;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=5xfJqS2aaRzQYveMm2C0uDJWas4EwwnhfgPKx0bu1Kg=;
+  b=G0grXB6v3ENuZFjfw3fecOU9dS1ZKNT+22ZfnNMkRxs3AirU62iFy9fP
+   /b9ByL5FvmuGsPuu1RmDTqv1q+nk08sElOZTUw3xXUz0CbnCAzX7K7xl3
+   JJHxkQfU1K3ZuHfpPE70nAXH7kA3jsEw2CAx5Cuuht/CF+Xo8ONbOy/t8
+   fEpnny9RKn7NzDOblHVSxT/xoxThlwiZMa2S05cHeTPWyOpKzYOF992EI
+   hzuuvYb5zKtbTPp8aKCupel5Uh66XeHABpyb1WnZojsY34VFSXjzg+3A7
+   0d4EgXBfybZkB+21G29P+S6WGYE8xgBBF9kSskuVqHqPTifqMaEgrWnux
+   g==;
+X-CSE-ConnectionGUID: vnrYQPtIRMai2ZvfjDKv4Q==
+X-CSE-MsgGUID: JreMIObsRFmw1nCS3TSc6w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11839"; a="86560229"
+X-IronPort-AV: E=Sophos;i="6.25,151,1779174000"; 
+   d="scan'208";a="86560229"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2026 13:01:33 -0700
+X-CSE-ConnectionGUID: 8fTwLb3VT9Sbu7VupIeMbw==
+X-CSE-MsgGUID: 66ZHab8rQ1mEYSJLJS+8fw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,151,1779174000"; 
+   d="scan'208";a="249367328"
+Received: from vpanait-mobl.ger.corp.intel.com (HELO localhost) ([10.245.244.48])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2026 13:01:31 -0700
+Date: Mon, 6 Jul 2026 23:01:29 +0300
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Biren Pandya <birenpandya@gmail.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Linus Walleij <linusw@kernel.org>, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] iio: accel: kxsd9: fix Use-After-Free in remove()
+Message-ID: <akwJmUiCXHezZfcl@ashevche-desk.local>
+References: <20260706074650.96042-3-birenpandya@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -113,97 +82,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260628122811.44799-1-vulab@iscas.ac.cn>
-User-Agent: Mutt/2.3.2 (2026-04-26)
+In-Reply-To: <20260706074650.96042-3-birenpandya@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-5.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[redhat.com:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-272312-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[bmasney@redhat.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:vulab@iscas.ac.cn,m:paul@crapouillou.net,m:mturquette@baylibre.com,m:sboyd@kernel.org,m:linux-mips@vger.kernel.org,m:linux-clk@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:birenpandya@gmail.com,m:jic23@kernel.org,m:dlechner@baylibre.com,m:nuno.sa@analog.com,m:andy@kernel.org,m:sakari.ailus@linux.intel.com,m:linusw@kernel.org,m:linux-iio@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	HAS_ORG_HEADER(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_SENDER(0.00)[andriy.shevchenko@intel.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-272313-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bmasney@redhat.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@intel.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[intel.com:+];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,iscas.ac.cn:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,intel.com:from_mime,intel.com:dkim,ashevche-desk.local:mid,sashiko.dev:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DA2D3715779
+X-Rspamd-Queue-Id: 85FCC71542C
 
-On Sun, Jun 28, 2026 at 08:28:11PM +0800, WenTao Liang wrote:
-> clk_register() succeeds but clk_register_clkdev() fails, and the error
-> path jumps to out without calling clk_unregister or clk_put to release
-> the registered clock. This leaks the clock object within the common clock
-> framework
-
-
-> , contrasting with the CGU_CLK_EXT type path which correctly
-> calls clk_put on error.
-
-I would drop this part. Just focus on what you are fixing.
-
+On Mon, Jul 06, 2026 at 01:16:51PM +0530, Biren Pandya wrote:
+> The kxsd9 driver currently calls iio_triggered_buffer_cleanup() before
+> iio_device_unregister() in the remove() function. This order creates a
+> race condition where userspace can still access sysfs or ioctl interfaces
+> while the triggered buffers are being torn down, potentially leading to
+> a use-after-free.
 > 
-> Suggested-by: Greg KH <gregkh@linuxfoundation.org>
+> Fix this by swapping the cleanup order. Unregister the IIO device first
+> to guarantee that all userspace interfaces are destroyed and no new
+> accesses can occur before cleaning up the triggered buffers.
+> 
+> This vulnerability was flagged by the Sashiko automated review system.
 
-I don't see where on the v1 Greg suggested this, unless I am missing
-something?
+> Link: https://sashiko.dev/#/patchset/20260621193036.78549-2-birenpandya@gmail.com
 
-> Fixes: b066303fb3e7 ("clk: ingenic: add driver for Ingenic SoC CGU clocks")
+I believe you wanted Closes: and Reported-by: tags instead of simple Link.
+
+> Fixes: 0427a106a98a ("iio: accel: kxsd9: Add triggered buffer handling")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: WenTao Liang <vulab@iscas.ac.cn>
-> ---
-> Changes in v2:
-> - Fix patch format based on reviewer feedback
+> Signed-off-by: Biren Pandya <birenpandya@gmail.com>
 
-Link to v1: https://lore.kernel.org/linux-clk/20260626115644.33779-1-vulab@iscas.ac.cn/
+...
 
-With those fixes:
+You have a series, where is the cover letter and the changelog, please?
+Do not abuse the process.
 
-Reviewed-by: Brian Masney <bmasney@redhat.com>
+-- 
+With Best Regards,
+Andy Shevchenko
 
-
-> ---
->  drivers/clk/ingenic/cgu.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/clk/ingenic/cgu.c b/drivers/clk/ingenic/cgu.c
-> index 41e4c69131bd..b59b24d0e3cf 100644
-> --- a/drivers/clk/ingenic/cgu.c
-> +++ b/drivers/clk/ingenic/cgu.c
-> @@ -774,8 +774,10 @@ static int ingenic_register_clock(struct ingenic_cgu *cgu, unsigned idx)
->  	}
->  
->  	err = clk_register_clkdev(clk, clk_info->name, NULL);
-> -	if (err)
-> +	if (err) {
-> +		clk_unregister(clk);
->  		goto out;
-> +	}
->  
->  	cgu->clocks.clks[idx] = clk;
->  out:
-> -- 
-> 2.39.5 (Apple Git-154)
-> 
 
 
