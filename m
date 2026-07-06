@@ -1,150 +1,146 @@
-Return-Path: <stable+bounces-272282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272285-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id pvxkK4HbS2oibgEAu9opvQ
-	(envelope-from <stable+bounces-272282-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 18:44:49 +0200
+	id 6Bw9EC7XS2rtbAEAu9opvQ
+	(envelope-from <stable+bounces-272285-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 18:26:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE06071373E
-	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 18:44:48 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C23E57133C5
+	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 18:26:21 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=sntech.de header.s=gloria202408 header.b=MCvV9lBc;
-	dmarc=pass (policy=quarantine) header.from=sntech.de;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272282-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272282-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EZDwuy93;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272285-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272285-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 00A1C30CEE51
-	for <lists+stable@lfdr.de>; Mon,  6 Jul 2026 16:17:35 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CC9C6309783F
+	for <lists+stable@lfdr.de>; Mon,  6 Jul 2026 16:20:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC36D37FF5E;
-	Mon,  6 Jul 2026 16:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E36A432BC5;
+	Mon,  6 Jul 2026 16:19:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49D2B3A7595
-	for <stable@vger.kernel.org>; Mon,  6 Jul 2026 16:17:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0C42430CC6;
+	Mon,  6 Jul 2026 16:19:55 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783354653; cv=none; b=W9Ao+kHuml67xXfxRj0p97YKHJ9egc/OHW9CA+Vhhm+cf6J8x8jmf0yTUgb5L8nBtz1vhqiXJA7dRqhmW8L19o+BeXzhfk70PCkGIoFESoCyQTJzQfmZNuXEY23CAmdOf1mzw9dAPoCTwHJynMK98GVv5ihtKspUBZ6d4dj8oeY=
+	t=1783354796; cv=none; b=kXCyiGZqWH3ZaF7a2gpiQyvJ07Ga8XOS+p9XW6ZRQTytDhTGyXi2lDuOTyc7l07DN/L9CWVJsx93GCpcKPE9tOclgFcPXbhOhcKKQVRhYbchgvHBAWq77KZBJErEbQfQRLhz4vDXgFXmaZKf3CKHLZkhsxnfAuCs7mUS7A2bQak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783354653; c=relaxed/simple;
-	bh=ww6lIWGqon9ltCE6mo0ciN1wMO1MrO3FXa9+7rxtG9o=;
+	s=arc-20240116; t=1783354796; c=relaxed/simple;
+	bh=78fhhankv14oGSqYHnz2NT+Tk9f3xYa5kAjCmEehPn4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ta9DJgBJiz5H2T3ieOW4OW5msr/alzwGA9vU3Q/M4OrieLYwWse+elropfDn3b1lDqf1ZOsdivQUEzISZ+M5cG5VhMMg3tCeZSwfDKx6lzWQ7BLIWqLEQn74IEgLgWtvG7GDDyFidAsGPpDCXGXt2YXRMwC8AMzd3fRN5RxYI/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=MCvV9lBc; arc=none smtp.client-ip=185.11.138.130
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
-	s=gloria202408; h=Content-Transfer-Encoding:MIME-Version:References:
-	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type;
-	bh=DnUQ7xqngB7ltpwKd6wuyVZHXfqWSlaOeWxQxVJmfC8=; b=MCvV9lBctrSSNVNyHP944gtXZH
-	g+PRC5gxo503aFbKeXb/jUMLS9DDlH7MxwmUgSxjzsQsB4w1yma+PpbxM4hHAmV9//mL1p62VWTKb
-	u4ibbm+CpNWEQG2pWX9zwBOkQ7hFz0klEr32/fO99M5iGZAJnYwYwV0ZHuRpq0rcIGdTqZHsMJwBh
-	Vgc8F9f0dQNANBIG4DDNxTSFDgDslIxDKNsG12XKwH9NPZ/pdH/iWRaZuTOj3OvzolpfzQYVMhbEe
-	cASFuv5nNmd1oA/m8rdl4DTmZSgPP/J8/H2W3wkoevV8DnWwmHJEkK2PR7M7LXNkvahn1WcUkbpCG
-	lWrsiddQ==;
-From: Heiko Stuebner <heiko@sntech.de>
-To: stable@vger.kernel.org
-Cc: heiko@sntech.de,
-	quentin.schulz@cherry.de,
-	Marco Scardovi <scardracs@disroot.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Heiko Stuebner <heiko.stuebner@cherry.de>
-Subject: [PATCH 6.12.y 3/3] gpio: rockchip: fix generic IRQ chip leak on remove
-Date: Mon,  6 Jul 2026 18:17:13 +0200
-Message-ID: <20260706161713.2676365-4-heiko@sntech.de>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260706161713.2676365-1-heiko@sntech.de>
-References: <20260706161713.2676365-1-heiko@sntech.de>
+	 MIME-Version:Content-Type; b=mJgmfzeb4BHW2F6OCnRqNQj6NNx+5DhU7eIXXwUGzK++yI2Z+cSeglyjlfsrGa6Tuxall6yPh4fDZtmhn2gKwHTU4py0rg1OHzEypw7NLQVzVq4N32S9caIcCTD1EZQOCJmCulr9YhpY0Gl7YlIGgG+11vsJhePPklidKKgUV1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EZDwuy93; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98E261F00A3D;
+	Mon,  6 Jul 2026 16:19:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783354795;
+	bh=qkeQCDXCe8FgrurW8DLDVZj+1YSS1GZoll7hPEXalKU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=EZDwuy93qzpSMRj4Ucu3W+Ex/p2JCeSFM5Zga7VwZh0v9DxSVnUAR1rF++JY7yGlA
+	 x+7Yn6UTjNbWEBFVMGqI9KbUYWsoikGx88ZrwdzwK74Zej141pLbb31dVGEbxYUQvh
+	 tqzHDz1CaKRdzRs0vJ+8Zy4dqvcXE7e5JgrKyze+EeNH0eOcoCSmwYHoL8zurEGNz3
+	 0hjCjY+eiDn3ddu3oLxOXb4QfkwtjN2UidanIOX0cgVcH9uwLMe+/CtLUglX/42Kxe
+	 d52PpUw2z7gpPpB/9iBq6G+XGTwcY2Rv9FRR+R4CR/pNMm/9I6YhoD5afnv506z8rf
+	 lXiM6D5EEz1Gg==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wgm2y-00000002244-2k4P;
+	Mon, 06 Jul 2026 16:19:52 +0000
+From: Marc Zyngier <maz@kernel.org>
+To: kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	Marc Zyngier <maz@kernel.org>
+Cc: Steffen Eiden <seiden@linux.ibm.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Oliver Upton <oupton@kernel.org>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] KVM: Move kvm_io_bus_get_dev() locking responsibilities to callers
+Date: Mon,  6 Jul 2026 17:19:49 +0100
+Message-ID: <178335476041.1423186.3105343217982386007.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260627105105.1005990-1-maz@kernel.org>
+References: <20260627105105.1005990-1-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org, seiden@linux.ibm.com, joey.gouly@arm.com, suzuki.poulose@arm.com, oupton@kernel.org, yuzenghui@huawei.com, pbonzini@redhat.com, will@kernel.org, stable@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-5.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[sntech.de,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[sntech.de:s=gloria202408];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-272282-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:heiko@sntech.de,m:quentin.schulz@cherry.de,m:scardracs@disroot.org,m:bartosz.golaszewski@oss.qualcomm.com,m:heiko.stuebner@cherry.de,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[heiko@sntech.de,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-272285-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:kvm@vger.kernel.org,m:kvmarm@lists.linux.dev,m:maz@kernel.org,m:seiden@linux.ibm.com,m:joey.gouly@arm.com,m:suzuki.poulose@arm.com,m:oupton@kernel.org,m:yuzenghui@huawei.com,m:pbonzini@redhat.com,m:will@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[maz@kernel.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[heiko@sntech.de,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[sntech.de:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[maz@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,cherry.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,qualcomm.com:email,sntech.de:from_mime,sntech.de:dkim,sntech.de:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: EE06071373E
+X-Rspamd-Queue-Id: C23E57133C5
 
-From: Marco Scardovi <scardracs@disroot.org>
+On Sat, 27 Jun 2026 11:51:05 +0100, Marc Zyngier wrote:
+> kvm_io_bus_get_dev() returns a device that is only matched by the
+> address, and nothing else. This can cause a lifetime issue if
+> the matched device is not the expected type, as by the time
+> the caller can introspect the object, it might be gone (the srcu
+> lock having been dropped).
+> 
+> Given that there is only a single user of this helper, the simplest
+> option is to move the locking responsibility to the caller, which
+> can keep the srcu lock held for as long as it wants.
+> 
+> [...]
 
-[ Upstream commit 1c1e0fc88d6ef65bf15d517853251f75ab9d18c3 ]
+Applied to fixes, thanks!
 
-The driver allocates domain generic chips using
-irq_alloc_domain_generic_chips() during probe. However, on driver
-remove/teardown, the generic chips are not automatically freed when the
-IRQ domain is removed because the domain flags do not include
-IRQ_DOMAIN_FLAG_DESTROY_GC.
+[1/1] KVM: Move kvm_io_bus_get_dev() locking responsibilities to callers
+      commit: 3a07249981629ace483ebbef81ef6b34c2d2afec
 
-This causes both the domain generic chips structure and the associated
-generic chips to be leaked. Additionally, the generic chips remain on
-the global gc_list and may later be visited by generic IRQ chip suspend,
-resume, or shutdown callbacks after the GPIO bank has been removed,
-potentially resulting in a use-after-free and kernel crash.
+Cheers,
 
-Fix the resource leak by explicitly calling
-irq_domain_remove_generic_chips() before removing the IRQ domain in
-rockchip_gpio_remove().
-
-Fixes: 936ee2675eee ("gpio/rockchip: add driver for rockchip gpio")
-Assisted-by: Antigravity:gemini-3.5-flash
-Signed-off-by: Marco Scardovi <scardracs@disroot.org>
-Link: https://patch.msgid.link/20260607230504.35392-2-scardracs@disroot.org
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Signed-off-by: Heiko Stuebner <heiko.stuebner@cherry.de>
----
- drivers/gpio/gpio-rockchip.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/gpio/gpio-rockchip.c b/drivers/gpio/gpio-rockchip.c
-index 0a93c74933f0..9c419625c753 100644
---- a/drivers/gpio/gpio-rockchip.c
-+++ b/drivers/gpio/gpio-rockchip.c
-@@ -792,8 +792,10 @@ static void rockchip_gpio_remove(struct platform_device *pdev)
- 	struct rockchip_pin_bank *bank = platform_get_drvdata(pdev);
- 
- 	irq_set_chained_handler_and_data(bank->irq, NULL, NULL);
--	if (bank->domain)
-+	if (bank->domain) {
-+		irq_domain_remove_generic_chips(bank->domain);
- 		irq_domain_remove(bank->domain);
-+	}
- 	gpiochip_remove(&bank->gpio_chip);
- }
- 
+	M.
 -- 
-2.53.0
+Without deviation from the norm, progress is not possible.
+
 
 
