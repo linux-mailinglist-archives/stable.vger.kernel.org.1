@@ -1,135 +1,146 @@
-Return-Path: <stable+bounces-272228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272229-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id B2peD/3HS2qUaAEAu9opvQ
-	(envelope-from <stable+bounces-272228-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 17:21:33 +0200
+	id oxFbATjDS2p3ZwEAu9opvQ
+	(envelope-from <stable+bounces-272229-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 17:01:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA54B7127EF
-	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 17:21:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ECDD712511
+	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 17:01:06 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QJB5p27d;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272228-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272228-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=bootlin.com header.s=dkim header.b=wegslaAl;
+	dmarc=pass (policy=reject) header.from=bootlin.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272229-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-272229-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 163F83168720
-	for <lists+stable@lfdr.de>; Mon,  6 Jul 2026 13:34:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5EFDF330E694
+	for <lists+stable@lfdr.de>; Mon,  6 Jul 2026 13:37:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95DEF28D8D0;
-	Mon,  6 Jul 2026 13:34:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C966532B111;
+	Mon,  6 Jul 2026 13:37:17 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5990029D268
-	for <stable@vger.kernel.org>; Mon,  6 Jul 2026 13:34:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40349317177
+	for <stable@vger.kernel.org>; Mon,  6 Jul 2026 13:37:15 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783344850; cv=none; b=f1anacHzBBjWXohYB02Tsawi1suiWtXCmlmpSWAJCGUSMEj0Zs46VoU1gNyzcZkJTb+eQFS0kzrRXhpDCUkFANd6xmUPswTQFIsAKI5GUvTFs1RzkayyLLmZTeHOtWp4yZivy9H6T1dfIP8jx9Nas4JSaXyQXHjUW2u5SVpJW/A=
+	t=1783345037; cv=none; b=U3PxrsZB9EAFDXq1ZTWzLwBValBwWZExMOUlRYSwOkKFBxRl0bZ6w5YqohkOL2CR+Vj7O5iO8Q9hU1evG5LVpodRoAbKqU0tqpKZLTLHgZ8eqw4JrttBGloHy11QAra21iTGrmMtOZrYN/Y5kl3ZDCYEUe4X4yskGLuYAYZMiXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783344850; c=relaxed/simple;
-	bh=G6F7J8gmpgK6KEC2oVwHQE8kdfXvIeMMN3hdNFlP7NE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CZW3VeONVGULOg1TwaAOQSw3fAPY+CliAUXLvvDtKausZ6Tn9NncIlhwcD0+Ab+WhRlfXOJsHazzew1Ni+KZBwBO73OHfKSs+lxU9wfyNeq0CdwbOGN2H13DQFSPb6MPr4EvuhG+NfO7O3ve1PkRvy2XrnlB72c7CDo2kH1ESC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QJB5p27d; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D50941F000E9;
-	Mon,  6 Jul 2026 13:34:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783344849;
-	bh=y6c/NHkjbM2PWPiw1dt6sCq+Fd18gY+nhoyhIx/Tfjs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QJB5p27dIrePqUqEdjB9ZC3Tcnzsc92AretKwVPELOLcyfhvgs6OUwn431zcbvo5+
-	 kJqgye+Y/lVO6Eo2NlDD4PV59r9DjHw4rB0v+w0oUs6QPBIHAmCM8aeC5cWvg/XBnr
-	 e0it/efLABMBdYcmng3gEx3jzkLii8B0VZMwWFTBdamDSWq5T/vUqBWexUnfKV7+MP
-	 gaLBAGxJ/ao2YJhkYIOpW60L1qVb9j5WeMWYJBHmeFMmpBaI+JXpAK5ZD7NF7X0vr4
-	 MXE8Hz77tHdnUStmv2z7epUII+dWDBvteUcBw/xoC/b83gu3MxtbfVfQfHuy1m7f0h
-	 65UvJ8uEGEe1g==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: John Johansen <john.johansen@canonical.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] apparmor: advertise the tcp fast open fix is applied
-Date: Mon,  6 Jul 2026 09:34:07 -0400
-Message-ID: <20260706133407.2334924-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026070217-plentiful-create-ce90@gregkh>
-References: <2026070217-plentiful-create-ce90@gregkh>
+	s=arc-20240116; t=1783345037; c=relaxed/simple;
+	bh=nYc4/CNmu/Hpz2BKrNBXe2Sm/VGLPPqJIS4LBxS09v0=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:From:To:
+	 References:In-Reply-To; b=gaS9oVmn2hgOfrn9UXJS3RuBpdPoduTeEkEgN7C9y0SGNXNjin8a5Z54ZRQaqi3pn4Qakeom5EVuxaSLD5s5byLGnVqj7fuNas12QEbH93+TZjxPtQ+uWrV0T/ZuGckofP5PPxx5oAvXEVXHJB//Jg50J4jn0hRoEYGxpnroYTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=wegslaAl; arc=none smtp.client-ip=185.246.84.56
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id CFF931A0E91;
+	Mon,  6 Jul 2026 13:37:13 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 9FDD8601A2;
+	Mon,  6 Jul 2026 13:37:13 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0AE7B11BBA1FA;
+	Mon,  6 Jul 2026 15:37:11 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1783345033; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=nYc4/CNmu/Hpz2BKrNBXe2Sm/VGLPPqJIS4LBxS09v0=;
+	b=wegslaAlf/E5SyUEcIoDiMbBET9wPd31EhjJaORyDUHeGfSD2rlw4+T4IuFQr4MtIzhotd
+	pNj3N3xwlYIr797dpayIGaEYscOgoVNAaw3LA5tkZ3QwnI6DHroyUHOiyQdR9nwmc/rNbA
+	b2lO79LVvj6LOPs02iZW1cQVGdrdMFnxfXGkAk5kHeo3d6PaM9++X2J8YKc8/oB8D8CHV7
+	XnUtwSVHDBpwqhOhUeRpjQ4Sz0H5iohEm/SJE+Dw0QFv9RncEhKt4KSxL9rP+GBOBDk6O8
+	PzC9y5NcPl3chwPjfZhLNjFbVSRVBHo63hsd7lo4PHfVUim8p8vcQw9pWRltqA==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 06 Jul 2026 15:37:11 +0200
+Message-Id: <DJRJ1XHDEB9M.W9JU7GHZX0NJ@bootlin.com>
+Subject: Re: [PATCH v3 0/2] nvmem: layouts: Add fixed-layout driver
+Cc: "Miquel Raynal" <miquel.raynal@bootlin.com>,
+ =?utf-8?q?Gr=C3=A9gory_Clement?= <gregory.clement@bootlin.com>, "Thomas
+ Petazzoni" <thomas.petazzoni@bootlin.com>, <linux-kernel@vger.kernel.org>,
+ <stable@vger.kernel.org>, "Mathieu Dubois-Briand"
+ <mathieu.dubois-briand@bootlin.com>
+From: "Mathieu Dubois-Briand" <mathieu.dubois-briand@bootlin.com>
+To: "Srinivas Kandagatla" <srini@kernel.org>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260608-mathieu-nvmem-fixed-layout-v3-0-12ddc69f4c51@bootlin.com>
+In-Reply-To: <20260608-mathieu-nvmem-fixed-layout-v3-0-12ddc69f4c51@bootlin.com>
+X-Last-TLS-Session-Version: TLSv1.3
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	MV_CASE(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
+	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:john.johansen@canonical.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-272228-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-272229-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_THREE(0.00)[3];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:miquel.raynal@bootlin.com,m:gregory.clement@bootlin.com,m:thomas.petazzoni@bootlin.com,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:mathieu.dubois-briand@bootlin.com,m:srini@kernel.org,m:gregkh@linuxfoundation.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[mathieu.dubois-briand@bootlin.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[bootlin.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RSPAMD_EMAILBL_FAIL(0.00)[mathieu.dubois-briand@bootlin.com:query timed out];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mathieu.dubois-briand@bootlin.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,canonical.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,bootlin.com:dkim,bootlin.com:mid,bootlin.com:from_mime,bootlin.com:url,bootlin.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: AA54B7127EF
+X-Rspamd-Queue-Id: 8ECDD712511
 
-From: John Johansen <john.johansen@canonical.com>
+On Mon Jun 8, 2026 at 3:42 PM CEST, Mathieu Dubois-Briand wrote:
+> Signed-off-by: Mathieu Dubois-Briand <mathieu.dubois-briand@bootlin.com>
+> ---
+> Changes in v3:
+> - Fix device node pointer leakage
+> - Move nvmem_add_cells_from_dt() prototype to internals.h
+> - Enable fixed-layout as built-in by default
+> - Rebased on v7.1-rc7
+> - Link to v2: https://lore.kernel.org/r/20260515-mathieu-nvmem-fixed-layo=
+ut-v2-0-8ac215dd4016@bootlin.com
+>
+> Changes in v2:
+> - Fixed dependency on core layout code with CONFIG_NVMEM_LAYOUTS
+> - Make fixed layout optional
+> - Link to v1: https://lore.kernel.org/r/20260505-mathieu-nvmem-fixed-layo=
+ut-v1-1-7f6ecbce108d@bootlin.com
+>
+> ---
 
-[ Upstream commit 2f6701a5ce6257ae7a64ddc6d89d0a08d2a034f8 ]
+Hi Srinivas,
 
-The fix for tcp-fast-open ensures that the connect permission is being
-mediated correctly but it didn't add an artifact to the feature set to
-advertise the fix is available. Add an artifact so that the test suite
-can identify if the fix has not been properly applied or a new
-unexpected regression has occurred.
+Do you have any comment about this updated series?
 
-Fixes: 4d587cd8a7215 ("apparmor: mediate the implicit connect of TCP fast open sendmsg")
-Signed-off-by: John Johansen <john.johansen@canonical.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- security/apparmor/net.c | 1 +
- 1 file changed, 1 insertion(+)
+Thanks,
+Mathieu
 
-diff --git a/security/apparmor/net.c b/security/apparmor/net.c
-index 3e632700d06fb3..bcba4d2a7aa4d1 100644
---- a/security/apparmor/net.c
-+++ b/security/apparmor/net.c
-@@ -21,6 +21,7 @@
- 
- struct aa_sfs_entry aa_sfs_entry_network[] = {
- 	AA_SFS_FILE_STRING("af_mask",	AA_SFS_AF_MASK),
-+	AA_SFS_FILE_BOOLEAN("tcp-fast-open",		1),
- 	{ }
- };
- 
--- 
-2.53.0
+--=20
+Mathieu Dubois-Briand, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
