@@ -1,213 +1,172 @@
-Return-Path: <stable+bounces-272221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272223-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 9W8sF1asS2pLYQEAu9opvQ
-	(envelope-from <stable+bounces-272221-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 15:23:34 +0200
+	id ZQ0pG+arS2owYQEAu9opvQ
+	(envelope-from <stable+bounces-272223-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 15:21:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C42A4711367
-	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 15:23:33 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0846E71130D
+	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 15:21:42 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272221-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-272221-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=yandex.ru header.s=mail header.b=EhBS5TGu;
+	dmarc=pass (policy=none) header.from=yandex.ru;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272223-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-272223-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 766E2306926C
-	for <lists+stable@lfdr.de>; Mon,  6 Jul 2026 13:16:23 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B5389303B8B4
+	for <lists+stable@lfdr.de>; Mon,  6 Jul 2026 13:17:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A5E640A932;
-	Mon,  6 Jul 2026 13:16:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C771C40A958;
+	Mon,  6 Jul 2026 13:17:30 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm2-f0.google.com (mail-wm2-f0.google.com [74.125.225.128])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from forward103d.mail.yandex.net (forward103d.mail.yandex.net [178.154.239.214])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A30540A92C
-	for <stable@vger.kernel.org>; Mon,  6 Jul 2026 13:16:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC1DE40A933;
+	Mon,  6 Jul 2026 13:17:26 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783343782; cv=none; b=FHoknneV+Qf+fSe2KkPM7YKCn2w8SK2O7UTlbzw8qvIdnJL1FTW7vKRlUeRiCAEVIzXxke1i3qlZl+e9mIt/Wd85PRkSoorxBFp9so7sfGhZoWzmPcALTRh/a5uCpSqfTAEOmvYYQlOXJZX6HiWA3qembZsw6IN6FHXhuKXAdGc=
+	t=1783343850; cv=none; b=VcrTb86adhBMInLs2ZqySBGhCV6mm/rC7TNFU+83z39PVpSVFEx1k4ZfNYXj/fMisrr+hc84r7xA/hcEC6uz4Q/5LB8iugbgDYVbH5joMTGN+joXmYjLDJY18hdeYPhfKC1psKAyDgp1MB1eOGLImbR2sil2kEwottiRjqTntwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783343782; c=relaxed/simple;
-	bh=iZO7UJmoKqo2Js4YAEPS6GeuLtX5Yha65THfQuxwRLI=;
-	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=HBYRT4zn/3UD/RUwHaqxz0us5SQZtV+7J5yjJtJrISudI6nXZMmWKGC4sgx4YlvuUNTg2yW5GlP6mNGOZ084OdEU+MKSvQBZ3xjPdR3VdpgCPfsYTrKc08BSBxKljM9WUKVY/DYAUplSporzwo5dII8Xq+6xDl4zE7Jsy1RVf0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.225.128
-Received: by mail-wm2-f0.google.com with SMTP id 5b1f17b1804b1-493b4e7be03so2282975e9.1
-        for <stable@vger.kernel.org>; Mon, 06 Jul 2026 06:16:20 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783343779; x=1783948579;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:to:subject:cc:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AIiiqzXRF32WNsiZGRhA0NE/qXMc61zioEknUOFZclo=;
-        b=nuLSG7jcmBUg9GCLqMsvNPGmjQSzPnN4rJmFQ2vKHc5ZBaz8X8+snTy9GrMtAsdYJm
-         r/AMaZ9lXRmQsVC2VHPWLwXyBjlrjFS0pNlpF7qZMTWdbRECyltoY13hFa8M7k2QCB1K
-         lc5JyC6znjbVo+eRRDqLpIkmMsYgLZeiGN+gdAA2hWsK33vCp/7CPcvTL0q9wMI8fMHQ
-         oAhzns77+QRUoVZ68G707LOpVMjZ/VzZ4VUNueU98xUm0ssSMT+a75bVAU1/EJebbHH0
-         Vfb9wYVgM5y3cFQExyz+NoadBC7yh5JD97ZjQxJ28/2krqa5jjOxNN0QbRyLb5WnbmHK
-         p0SQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqT3KIQavfEpSo5b88DRVe4Iz70acFZsDV5PeSGDDaj5dQlQda2vdQmsmXTN8MBCEw2bLelOm0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwOZEXe5rqs+JZ0TXAdZZuZA3I1WwKCGyaZ1fzwcKpM/+RmqXRC
-	FSIJhDdkJF0S+FlzMh39kFdLFuQp4OfXTQNrlxCm3xTi2rLSK0lxZ9h4
-X-Gm-Gg: AfdE7cl7WiSLSZuLDd9bs5Ba9yPm/LweNKqKnYO2VdQBke32gU6UBWXqdzyp9P8Vgrt
-	WZYAeJEWDRfS32axkD7pF/nNL2ydTR0jDeo7/W/YvontHqEw/QWVlDPk0SUPuhsNg7k+nghS69z
-	CmNVGG7iEdi8XTFk2EffbclGkjlT+MDRzFFvHKz5lpaXbIf+o0Z2pG9D6/nYfJeqN0CmYG6K723
-	VsjPEylYcyT9kKss6aDNlHhIaa3BgMPzuKc9uThRFbh3FyaXqUIs8rIJ8DTMxMhwrhhr1p6jVGs
-	Pd5qcCARX5wdTFp4+Mc37+fRI/AKHw8FMYBj9Mital5Jaz9yO+KIzttxlD945wdWANJjhOtmmE5
-	Zqxkf/rKxUNOfKWLZY2sPOl+ILeRqwIAxdYUS8F0jPNscag75QXiPJiWaXqXpp3DfdFgjJ+Nxru
-	FPfoaJcgJKK6j6LfZ1M8Noz8d/ywLrIys2w9inyfahSz77OK0lvA==
-X-Received: by 2002:a7b:c38e:0:b0:492:6f6f:fa42 with SMTP id 5b1f17b1804b1-493df0a1b84mr3528435e9.37.1783343778676;
-        Mon, 06 Jul 2026 06:16:18 -0700 (PDT)
-Received: from [192.168.88.241] (78-80-108-129.customers.tmcz.cz. [78.80.108.129])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493d1b83e5dsm125477615e9.0.2026.07.06.06.16.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 06 Jul 2026 06:16:18 -0700 (PDT)
-Message-ID: <36bcf7e1-e590-4df4-a908-42e93435ee03@ovn.org>
-Date: Mon, 6 Jul 2026 15:16:16 +0200
+	s=arc-20240116; t=1783343850; c=relaxed/simple;
+	bh=sdK/bIunMo2jlgdfKxH+DwdzFngmIEIaJAKn96X05II=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hL275q+9Skxc6PPptOoNYjDNWfI1VLjNG27CVEMnD1/AfD5k03+S6AwRZ3pRFWXyaMU+XHbg++SlHE/RJFJM3CMWaM9keoWWaQpjRHLiraEcioewmuCXtS7Q2lAjY+gHC18Kx9oOIB7PVdbCRIjqZRtBUk4dgl1e908Ff8GdBW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=EhBS5TGu; arc=none smtp.client-ip=178.154.239.214
+Received: from mail-nwsmtp-smtp-production-main-57.klg.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-57.klg.yp-c.yandex.net [IPv6:2a02:6b8:c42:494f:0:640:ed81:0])
+	by forward103d.mail.yandex.net (postfix) with ESMTPS id 2391FC0057;
+	Mon, 06 Jul 2026 16:17:19 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-57.klg.yp-c.yandex.net (smtp) with ESMTPSA id 7HH7Vouh6Gk0-UGOmfjR3;
+	Mon, 06 Jul 2026 16:17:18 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
+	t=1783343838; bh=0//cNyPgkDdvk5L3OrxuLFpjjJl59Z687lOZPDLOfxU=;
+	h=Message-ID:Date:Cc:Subject:To:From;
+	b=EhBS5TGuAg8RUUGciSFO5zY/8EAwd9pvBtzUBrV4BRheiekRBScVe1LAdVcLJh02J
+	 9BAT2p8zCJvzsE49gHrWckoh4elv4Pj5Cx++2qan+xxKX2r2XnCih1uVL0pVmWZe+k
+	 89XVJEenOHrs0IkigpEyVhEspgT37u+gIy6+d7+o=
+From: Evgenii Burenchev <evg28bur@yandex.ru>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Evgenii Burenchev <evg28bur@yandex.ru>,
+	perex@perex.cz,
+	tiwai@suse.com,
+	u.kleine-koenig@baylibre.com,
+	kees@kernel.org,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org
+Subject: [PATCH] ALSA: via82xx: Remove unreachable branch in  snd_via686_pcm_pointer()
+Date: Mon,  6 Jul 2026 16:16:34 +0300
+Message-ID: <20260706131638.15311-1-evg28bur@yandex.ru>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: i.maximets@ovn.org, dev@openvswitch.org, aconole@redhat.com,
- echaudro@redhat.com, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net] net: openvswitch: reject oversized nested action
- attrs
-To: Asim Viladi Oglu Manizada <manizada@pm.me>, netdev@vger.kernel.org
-References: <20260706094336.38639-1-manizada@pm.me>
-Content-Language: en-US
-From: Ilya Maximets <i.maximets@ovn.org>
-Autocrypt: addr=i.maximets@ovn.org; keydata=
- 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
-In-Reply-To: <20260706094336.38639-1-manizada@pm.me>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.46 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[yandex.ru,none];
+	R_DKIM_ALLOW(-0.20)[yandex.ru:s=mail];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-272221-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[ovn.org];
-	FORGED_RECIPIENTS(0.00)[m:i.maximets@ovn.org,m:dev@openvswitch.org,m:aconole@redhat.com,m:echaudro@redhat.com,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:stable@vger.kernel.org,m:manizada@pm.me,m:netdev@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[i.maximets@ovn.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FREEMAIL_CC(0.00)[yandex.ru,perex.cz,suse.com,baylibre.com,kernel.org,vger.kernel.org,linuxtesting.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-272223-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:evg28bur@yandex.ru,m:perex@perex.cz,m:tiwai@suse.com,m:u.kleine-koenig@baylibre.com,m:kees@kernel.org,m:linux-sound@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:lvc-project@linuxtesting.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[evg28bur@yandex.ru,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[yandex.ru:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FREEMAIL_FROM(0.00)[yandex.ru];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[i.maximets@ovn.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	R_DKIM_NA(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[evg28bur@yandex.ru,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,pm.me:email,ovn.org:from_mime,ovn.org:email,ovn.org:mid]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C42A4711367
+X-Rspamd-Queue-Id: 0846E71130D
 
-On 7/6/26 11:44 AM, Asim Viladi Oglu Manizada wrote:
-> Open vSwitch stores generated flow actions as nlattrs, whose nla_len
-> field is u16. Commit a1e64addf3ff ("net: openvswitch: remove
-> misbehaving actions length check") allowed the total sw_flow_actions
-> stream to grow beyond 64 KiB, which is valid, but also removed the last
-> guard preventing a generated nested action attribute from exceeding
-> U16_MAX.
-> 
-> An oversized generated container can thus be closed with a truncated
-> nla_len. A later dump or teardown then walks a structurally different
-> stream than the one that was validated. In particular, an oversized
-> nested CLONE/CT action may cause subsequent bytes in the generated
-> stream to be interpreted as independent actions.
-> 
-> Keep the larger total-action-stream behavior, but make nested action
-> close reject generated containers that do not fit in nla_len, and return
-> the error through all callers. For recursive SAMPLE, CLONE, DEC_TTL, and
-> CHECK_PKT_LEN builders, trim resource-owning action-list tails in reverse
-> construction order before discarding failed wrappers, so resources copied
-> into the rejected tails are released before the wrappers are removed.
-> 
-> Most failed outer wrappers are discarded by truncating actions_len after
-> child resources have been released. CHECK_PKT_LEN also trims its parent
-> after branch resources are gone. SET/TUNNEL close failures unwind their
-> known tun_dst ownership directly, and SET_TO_MASKED has no external
-> ownership and truncates on close failure.
-> 
-> Fixes: a1e64addf3ff ("net: openvswitch: remove misbehaving actions length check")
-> Cc: stable@vger.kernel.org
-> Assisted-by: avom-custom-harness:gpt-5.5-qwen3.6-mod-mix
-> Signed-off-by: Asim Viladi Oglu Manizada <manizada@pm.me>
-> ---
->  net/openvswitch/flow_netlink.c | 201 +++++++++++++++++++++++++--------
->  1 file changed, 157 insertions(+), 44 deletions(-)
+The condition
 
-Thanks!  As I said before, this is a bit of a lengthy fix, but it seems
-to be the best way of dealing with this whole class of issues at once,
-given the restrictions of the historical interface.
+	if (count && size < count)
 
-I see checkpatch complains about couple lines being over 80, but it's
-hard to please it with such a long enum names, so it's fine.  The
-'inline' thing is also pre-existing and unrelated to the change.
+can never evaluate to true.
 
-Let's see if LLMs will find anything (they didn't when I tried locally),
-but the change LGTM.
+The VIA DMA count register is masked with 0x00ffffff before use, while
+the DMA buffer size is limited to 0x00fffffe bytes. As a result, 'count'
+can never exceed 'size', making the condition permanently false.
 
-Reviewed-by: Ilya Maximets <i.maximets@ovn.org>
+This branch has therefore been unreachable since the driver was
+introduced. Remove the unreachable branch without changing runtime
+behavior.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Evgenii Burenchev <evg28bur@yandex.ru>
+---
+ sound/pci/via82xx_modem.c | 26 ++++++++++----------------
+ 1 file changed, 10 insertions(+), 16 deletions(-)
+
+diff --git a/sound/pci/via82xx_modem.c b/sound/pci/via82xx_modem.c
+index 9b84d3fb9eaf..b32f84ac17cc 100644
+--- a/sound/pci/via82xx_modem.c
++++ b/sound/pci/via82xx_modem.c
+@@ -573,24 +573,18 @@ static inline unsigned int calc_linear_pos(struct via82xx_modem *chip,
+ 		       viadev->bufsize2, viadev->idx_table[idx].offset,
+ 		       viadev->idx_table[idx].size, count);
+ #endif
+-		if (count && size < count) {
++		if (! count)
++			/* bogus count 0 on the DMA boundary? */
++			res = viadev->idx_table[idx].offset;
++		else
++			/* count register returns full size
++			 * when end of buffer is reached
++			 */
++			res = viadev->idx_table[idx].offset + size;
++		if (check_invalid_pos(viadev, res)) {
+ 			dev_dbg(chip->card->dev,
+-				"invalid via82xx_cur_ptr, using last valid pointer\n");
++				"invalid via82xx_cur_ptr (2), using last valid pointer\n");
+ 			res = viadev->lastpos;
+-		} else {
+-			if (! count)
+-				/* bogus count 0 on the DMA boundary? */
+-				res = viadev->idx_table[idx].offset;
+-			else
+-				/* count register returns full size
+-				 * when end of buffer is reached
+-				 */
+-				res = viadev->idx_table[idx].offset + size;
+-			if (check_invalid_pos(viadev, res)) {
+-				dev_dbg(chip->card->dev,
+-					"invalid via82xx_cur_ptr (2), using last valid pointer\n");
+-				res = viadev->lastpos;
+-			}
+ 		}
+ 	}
+ 	viadev->lastpos = res; /* remember the last position */
+-- 
+2.43.0
+
 
