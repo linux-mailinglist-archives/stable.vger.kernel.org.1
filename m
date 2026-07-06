@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-272241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272243-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id wzhCAVO6S2okZQEAu9opvQ
-	(envelope-from <stable+bounces-272241-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 16:23:15 +0200
+	id t3K7DFe6S2onZQEAu9opvQ
+	(envelope-from <stable+bounces-272243-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 16:23:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3FCF711E6B
-	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 16:23:13 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 059EA711E79
+	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 16:23:18 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rGymLJEy;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bVrbbLoQ;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272241-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272241-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272243-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-272243-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id EF87931A0BF9
-	for <lists+stable@lfdr.de>; Mon,  6 Jul 2026 14:02:55 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D0C7C31A0BD2
+	for <lists+stable@lfdr.de>; Mon,  6 Jul 2026 14:02:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DA26378D93;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DC623793AD;
 	Mon,  6 Jul 2026 14:02:32 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB9A93750CF;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB9293749F5;
 	Mon,  6 Jul 2026 14:02:31 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783346551; cv=none; b=DlpaOoGaAYtb5wB4X5qN1eoJemNu0OGES9ARkcVEfr85tbFgFYr7SndZ5QAL0A7N/LEYdpkx1CbCnLMTlbVfp1aQlGrYCNj+PZ3C16zW98sRSP5W6YsDNFj08oyCmFvEjNpPvIe9VyXTFmRr/NEYgkKQzG1lLRW68QXNEiuSnbw=
+	t=1783346551; cv=none; b=IgVTg0M7R/rZqOEe/ZRhIdMpnupbzEWgwcDX0aBzt2zEG6ji3MQ2uqYkTkb+3Yb52NYY0R1YMdUsZ1O/qzRCDFRFXJFxw1Tf79CvFZ2H5w0bippTNNNPGJvcmCmplSRhsJok9r2oaW62uHZ+T9LS1R9H/sD92ANb+XJbi+oUe7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1783346551; c=relaxed/simple;
-	bh=jDQaGuHJa9ycuFv2OnHwG9zQdfvsyWvNp9UmIOQhU60=;
+	bh=8Rpe+J7dIpaIyBcpK0349gl9Z47YAALum6ZWmue+hjc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=XlZihpzwGx81X9JU9RMTL5yx8d6VyiF2EPWvZ+oHpGiC+BTb/+aLHQlxdhcNxmpks3Ohu4lnwgzBwJaIC6CmQ1Gum3n1BR/yzCsnOgSd0arpgVcCj4PUhAlzcr9Ll/zQMGi2pAMzSWZxtZs8qki958oKYq9cxOtYtUwGW3uEP6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rGymLJEy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 6A350C2BCF5;
+	 In-Reply-To:To:Cc; b=FigNabXx2tTfma5ccjY18bORAavRc7WU3vH2ybweTnOE69kH2y3zpsJ1A9lH9DgHOGT5iIGa8TAzgD14hWs+NtXJnTO/Dq5D27WUigM0kod3M1n7c7+nsPEfewi2ie77itmrUP5BXaRlC2rpdTEIwQxZgG67EEiSALRn1LvPyd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bVrbbLoQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 7AECBC2BCF6;
 	Mon,  6 Jul 2026 14:02:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1783346551;
-	bh=jDQaGuHJa9ycuFv2OnHwG9zQdfvsyWvNp9UmIOQhU60=;
+	bh=8Rpe+J7dIpaIyBcpK0349gl9Z47YAALum6ZWmue+hjc=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=rGymLJEyswmCbmSytPwKnXtg1U9IjmLQ0j4/DD4hwnmT0GSwtcC3TXVZn7sNEbT+1
-	 BNEf1XubPRGCAO0OgHiFy2KXfIW1oFDRtLhqyPnoYxtF4+3VNqpJEpaGfi0M+0vfNq
-	 PdgusVWb3Wd0cYUUc4DC/+/McqZ8O8U2ZHjZ2YB+3FxnV6Eb9XnK4Pn66Vn3iWHhBX
-	 WETV5SgjGuTx8BxkJAYDF7qGHJ5EltKh3jDojZJ9uIYs53nctV7l/ts4A2DG1+LqPO
-	 ORh01879L0XX48WHgYemoX75Iwk4ggWkb9wI8Y8/N6RuS8Zltcs1G+TPViIOO5RPK3
-	 5/F90+NQN88uA==
+	b=bVrbbLoQv4GabRkZKBSxTLYpKdpnCZVJTqmdDainGMTYaA7FV9Jl0PRnyBzRCh0RE
+	 IqR3LgXCIdsMViVa3/QFbSmn5uZoPWufVTROeyInrn9m88RQiShl9AHhULCwiAwtUx
+	 p5L54uvfJs4JwNM6PLB619DmF+tbLIr5KIQ+3Z0wVhqKxPXDFGYtmZsRNta5DrL2/m
+	 KI7QnhgPr0QRYcWSkhzYmxwZ/+QtJmCwygx9GC9zMDBapxA4M9bObWMB4neFJilK4e
+	 W2DAWDIBpvyaiB2C7L3Jr5lwnHFiSDhzj2nJP2yq8wW5t4sSyumoc3p0t4OmicEMMv
+	 UvBmfI9JalxhA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 49387C44501;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5DCFBC44502;
 	Mon,  6 Jul 2026 14:02:31 +0000 (UTC)
 From: Christian Taedcke via B4 Relay <devnull+christian.taedcke.weidmueller.com@kernel.org>
-Date: Mon, 06 Jul 2026 16:02:14 +0200
-Subject: [PATCH net 1/2] net: macb: reprogram TBQP after shuffling the TX
- ring on link-up
+Date: Mon, 06 Jul 2026 16:02:15 +0200
+Subject: [PATCH net 2/2] net: macb: mask TXUBR during TX NAPI poll to
+ prevent IRQ storms
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,7 +61,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260706-upstreaming-macb-irq-storm-v1-1-ab3115b5a13a@weidmueller.com>
+Message-Id: <20260706-upstreaming-macb-irq-storm-v1-2-ab3115b5a13a@weidmueller.com>
 References: <20260706-upstreaming-macb-irq-storm-v1-0-ab3115b5a13a@weidmueller.com>
 In-Reply-To: <20260706-upstreaming-macb-irq-storm-v1-0-ab3115b5a13a@weidmueller.com>
 To: christian.taedcke-oss@weidmueller.com, 
@@ -79,12 +79,12 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  Christian Taedcke <christian.taedcke@weidmueller.com>, 
  stable@vger.kernel.org
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1783346550; l=2872;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783346550; l=3260;
  i=christian.taedcke@weidmueller.com; s=20260702;
  h=from:subject:message-id;
- bh=H15tV2WNXlEeiA35QduT20PmtQLsXi8wSQpnaTH6KQM=;
- b=eQ8abbcaQIhIYzqDk1BVu0/b83QpqD0j2q+jiInsufeXTYDW8TEKd1RH0P/Z47bctMT9ExMBR
- cbEM6cfeVQWDe/eoMsQ1Wmjj6GYgIEMTvVArsiqF+sJdsh+NYrqBNfj
+ bh=qBAhD1fzYGVIv2HSHAY5AonQugiJMQCwmywRThD7Rc4=;
+ b=lcab6wkUlVeW0bvlaxZSpaBZqBvr6Zx9OuvIStOIGAmSoiW9ZJf6A8IlFCP42Kzx4ozF9l8b3
+ OSRsiux4tV7AmDByrJMRhxrRmeXmwTNs9x4S9R9JnCKcYZc351QLXnW
 X-Developer-Key: i=christian.taedcke@weidmueller.com; a=ed25519;
  pk=fVCoBhFV3uMogA2nxIOU/rynNY+O2TDJgWvWjR06TrQ=
 X-Endpoint-Received: by B4 Relay for
@@ -99,7 +99,7 @@ X-Spamd-Result: default: False [-2.66 / 15.00];
 	MID_RHS_MATCH_TO(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -113,7 +113,7 @@ X-Spamd-Result: default: False [-2.66 / 15.00];
 	FREEMAIL_TO(0.00)[weidmueller.com,bootlin.com,microchip.com,lunn.ch,davemloft.net,google.com,kernel.org,redhat.com,gmail.com,linutronix.de,goodmis.org,calian.com];
 	FORGED_SENDER(0.00)[devnull@kernel.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-272241-lists,stable=lfdr.de,christian.taedcke.weidmueller.com];
+	TAGGED_FROM(0.00)[bounces-272243-lists,stable=lfdr.de,christian.taedcke.weidmueller.com];
 	FROM_HAS_DN(0.00)[];
 	HAS_REPLYTO(0.00)[christian.taedcke@weidmueller.com];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -126,74 +126,77 @@ X-Spamd-Result: default: False [-2.66 / 15.00];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,weidmueller.com:replyto,weidmueller.com:mid,weidmueller.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E3FCF711E6B
+X-Rspamd-Queue-Id: 059EA711E79
 
 From: Christian Taedcke <christian.taedcke@weidmueller.com>
 
-gem_shuffle_tx_one_ring() rotates the software TX ring so that the
-tail sits at index 0 and resets queue->tx_tail to 0, but it never
-reprograms the hardware transmit buffer queue pointer (TBQP). Other
-paths that reset tx_tail to the ring base (macb_init_buffers() and
-macb_tx_error_task()) also reprogram TBQP to queue->tx_ring_dma; this
-path does not, leaving TBQP pointing at a stale descriptor.
+macb_interrupt() defers TX completion handling to NAPI, but when it
+schedules the poll it only masks TCOMP, even though TXUBR is enabled
+alongside it (both are part of MACB_TX_INT_FLAGS). macb_tx_poll() is
+asymmetric in the same way and only re-enables TCOMP. TXUBR is thus
+left unmasked while responsibility for handling it has been deferred
+to NAPI.
 
-gem_shuffle_tx_rings() runs on every link-up from
-macb_mac_link_up(). After a few link up/down flaps that leave
-un-completed descriptors in the ring, the stale TBQP keeps pointing at
-a descriptor whose used bit is set. When TX is re-enabled on link-up,
-the GEM reads that used descriptor and raises TXUBR. macb_interrupt()
-schedules the TX NAPI, macb_tx_poll() makes no progress (work_done ==
-0) and macb_tx_restart() re-issues TSTART, which makes the controller
-read the same used descriptor again and re-assert TXUBR. As the MAC
-interrupt is level-triggered, it never deasserts and one CPU is pegged
-at 100% in the threaded handler, eventually triggering "sched: RT
-throttling activated" and a dead network interface.
+Unlike an edge event, TXUBR is a persistent condition: the controller
+keeps it asserted for as long as the transmitter reads a buffer
+descriptor whose used bit is set. Leaving a level-triggered source
+enabled while NAPI owns its processing means the interrupt refires
+immediately after the handler returns, before the poll has had a
+chance to clear the underlying condition. This turns into a hard
+interrupt storm that pegs a CPU in the (threaded) MAC IRQ handler and,
+on PREEMPT_RT, triggers RT throttling ("sched: RT throttling
+activated"), taking the network interface down.
 
-Fix it by reprogramming TBQP to the ring base on every path of
-gem_shuffle_tx_one_ring() that resets tx_tail to 0, mirroring
-macb_tx_error_task(). The early return for an already-aligned tail is
-left untouched as TBQP is already consistent there. This is safe
-because the shuffle runs from macb_mac_link_up() while TE is still
-disabled, so the transmitter is halted.
+Several situations can keep the used-bit read asserted across a poll -
+for example unreaped completed descriptors still sitting at tx_tail,
+or a transmit restart racing with macb_start_xmit(). The specific
+trigger does not matter: as long as the source stays unmasked, any
+persistent assertion is enough to storm, so the interrupt handling
+itself must be made self-limiting.
 
-Fixes: 881a0263d502 ("net: macb: Shuffle the tx ring before enabling tx")
+Mask TXUBR together with TCOMP in the IDR write when scheduling the TX
+NAPI, and re-enable both from the napi_complete path in
+macb_tx_poll(), making the TX interrupt mask/unmask symmetric and
+consistent with how the driver already treats every other
+NAPI-serviced source. The pending TXUBR is still recorded in
+queue->txubr_pending before masking and acted on by macb_tx_restart(),
+so no event is lost. A persistent TXUBR now degrades to NAPI-paced
+polling instead of a CPU-pegging hard interrupt storm.
+
+Fixes: 138badbc21a0 ("net: macb: use NAPI for TX completion path")
 Cc: stable@vger.kernel.org
 Assisted-by: Claude:claude-opus-4-8
 Signed-off-by: Christian Taedcke <christian.taedcke@weidmueller.com>
 ---
- drivers/net/ethernet/cadence/macb_main.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/cadence/macb_main.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index fd282a1700fb..b11cb8f068b7 100644
+index b11cb8f068b7..f75cf2ffdf6f 100644
 --- a/drivers/net/ethernet/cadence/macb_main.c
 +++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -820,7 +820,7 @@ static void gem_shuffle_tx_one_ring(struct macb_queue *queue)
- 	if (!count) {
- 		queue->tx_head = 0;
- 		queue->tx_tail = 0;
--		goto unlock;
-+		goto reset_hw_ptr;
- 	}
+@@ -1971,7 +1971,7 @@ static int macb_tx_poll(struct napi_struct *napi, int budget)
+ 		    (unsigned int)(queue - bp->queues), work_done, budget);
  
- 	shift = tail % ring_size;
-@@ -869,6 +869,13 @@ static void gem_shuffle_tx_one_ring(struct macb_queue *queue)
- 	/* Make descriptor updates visible to hardware */
- 	wmb();
+ 	if (work_done < budget && napi_complete_done(napi, work_done)) {
+-		queue_writel(queue, IER, MACB_BIT(TCOMP));
++		queue_writel(queue, IER, MACB_BIT(TCOMP) | MACB_BIT(TXUBR));
  
-+reset_hw_ptr:
-+	/* tx_tail was reset to the ring base, so TBQP must be reprogrammed
-+	 * to match; otherwise it keeps pointing at a stale descriptor. Safe
-+	 * to write directly here as TX is still disabled (called from
-+	 * macb_mac_link_up() before TE is set).
-+	 */
-+	queue_writel(queue, TBQP, lower_32_bits(queue->tx_ring_dma));
- unlock:
- 	spin_unlock_irqrestore(&queue->tx_ptr_lock, flags);
- }
+ 		/* Packet completions only seem to propagate to raise
+ 		 * interrupts when interrupts are enabled at the time, so if
+@@ -2161,7 +2161,8 @@ static irqreturn_t macb_interrupt(int irq, void *dev_id)
+ 
+ 		if (status & (MACB_BIT(TCOMP) |
+ 			      MACB_BIT(TXUBR))) {
+-			queue_writel(queue, IDR, MACB_BIT(TCOMP));
++			queue_writel(queue, IDR, MACB_BIT(TCOMP) |
++						 MACB_BIT(TXUBR));
+ 			macb_queue_isr_clear(bp, queue, MACB_BIT(TCOMP) |
+ 							MACB_BIT(TXUBR));
+ 			if (status & MACB_BIT(TXUBR)) {
 
 -- 
 2.54.0
