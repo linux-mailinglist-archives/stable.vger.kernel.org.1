@@ -1,75 +1,55 @@
-Return-Path: <stable+bounces-272175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272176-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id YLX1KN6KS2rCVAEAu9opvQ
-	(envelope-from <stable+bounces-272175-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 13:00:46 +0200
+	id 218/A/CFS2rYSwEAu9opvQ
+	(envelope-from <stable+bounces-272176-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 12:39:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9904770F95E
-	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 13:00:45 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53F0670F4E0
+	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 12:39:43 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=mails.tsinghua.edu.cn header.s=dkim header.b=VTXK7oOv;
-	dmarc=pass (policy=quarantine) header.from=mails.tsinghua.edu.cn;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272175-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-272175-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="BQl8/0sF";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272176-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-272176-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1BCCF39C18F3
-	for <lists+stable@lfdr.de>; Mon,  6 Jul 2026 10:18:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C684E33F1A32
+	for <lists+stable@lfdr.de>; Mon,  6 Jul 2026 10:21:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2F293E7BA4;
-	Mon,  6 Jul 2026 10:17:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39F1D3A4535;
+	Mon,  6 Jul 2026 10:20:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [13.76.78.106])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F1D027EFE9;
-	Mon,  6 Jul 2026 10:17:15 +0000 (UTC)
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7FF144212C;
+	Mon,  6 Jul 2026 10:20:25 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783333038; cv=none; b=m2egHoBuS3J3cnfWC6jcuMQr9zYnDs69ynrfal5dKc+h6BOIBStGePhT0DYUEgKRnhUZ9Wbl10EAeI2S03swvSu+gEwkO9PDziqhXg4pOEkAJRW3ujeUD3h8qXUFILnNjvYtHgktm/fwVq6w10qMOak2Gmq9GcaTigQxvbc43sE=
+	t=1783333227; cv=none; b=L8yDuIebbq4xTGsTykgym8OBRzttgpzUoWKK4fY99Da6YgmO21tGIoyal8GYucG8EvEcR82cm4ytOMZV7Axnmv8jVK4W6x4Ymsvh+6E2FbHcEfH6L1e7r2C2/lEsFD6vzAPYN007evjRdyVm5CPy2jQcF5FG+OkzrJknJfFjlJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783333038; c=relaxed/simple;
-	bh=p+si7ZsHjIMJ1PEOiQoKrg9He0a297zC3FGaqIu/EKw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YfPzx7HKo1d80+NvhhB9jVh2sz9jw2wivZK+nRzxE+r6CiZYsPt4X9fBuyraMXA/3tTZGiXYNOng8jN43/At/P/bS1QPzq5231HdPVVTH5DWYeDqQwYuoIg+PyEXHvufdeIjojTeoxp+MlmqN1fgnFotNr5btw2VY5Q39D6caQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn; dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b=VTXK7oOv; arc=none smtp.client-ip=13.76.78.106
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=mails.tsinghua.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:
-	Date:Message-ID:In-Reply-To:References:MIME-Version:
-	Content-Transfer-Encoding; bh=WGOYNbLeYd80tonmLqfKBMz1uAVyPNhwQe
-	rZgJCcNHg=; b=VTXK7oOvM4W7C3crCBBgzmO4fT8BZkcsm1pXRgIPmP05+nB298
-	mttIltCI1B/tg001RYnE+SZweqC9d0413wv/k6gD8gfQwjhFAI+U4zcb+hI3pnhv
-	C55yjDYswmipsEb+CFWiXMV4jxNYNUTuOgJ5X5VSqsaMuDfJORgO0Jm6U=
-Received: from localhost.localdomain (unknown [101.5.13.242])
-	by web4 (Coremail) with SMTP id ywQGZQD3CJ6GgEtq_fjIAg--.37800S5;
-	Mon, 06 Jul 2026 18:16:53 +0800 (CST)
-From: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-To: netdev@vger.kernel.org
-Cc: coreteam@netfilter.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	fengxw06@126.com,
-	fw@strlen.de,
-	horms@verge.net.au,
-	ja@ssi.bg,
-	kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	lvs-devel@vger.kernel.org,
-	netfilter-devel@vger.kernel.org,
-	pabeni@redhat.com,
-	pablo@netfilter.org,
-	phil@nwl.cc,
-	qli01@tsinghua.edu.cn,
-	stable@vger.kernel.org,
-	wangao@seu.edu.cn,
-	xuke@tsinghua.edu.cn,
-	yangyx22@mails.tsinghua.edu.cn,
-	Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-Subject: [PATCH nf v2 3/3] ipvs: use parsed transport offset in SCTP state lookup
-Date: Mon,  6 Jul 2026 18:16:24 +0800
-Message-ID: <20260706101624.69471-4-zhaoyz24@mails.tsinghua.edu.cn>
-X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20260706101624.69471-1-zhaoyz24@mails.tsinghua.edu.cn>
-References: <20260706101624.69471-1-zhaoyz24@mails.tsinghua.edu.cn>
+	s=arc-20240116; t=1783333227; c=relaxed/simple;
+	bh=TbS4whPA7BqetYpEMyEfBenVEo1dobd9dMMAgwfY94Y=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=tgrgELM0DyyUtN89EcqncC3crXPWmOc9oMMP3pOqCOyzdZQKdnhpTXk23pkgYvybSHt12JxgkQy0V+GmiM8SR5lcHPbucNiD2+SX7Wppo4qJo8FUc7gTiBXSiRbJSVChcGWPioIVfWTC8uASYR5SyaaRwG/EM4WsATIpg9i7rHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BQl8/0sF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC3241F00A3D;
+	Mon,  6 Jul 2026 10:20:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783333225;
+	bh=pYbEhN7G2VytXVvQ6vuXrI5sYUDrK5WlwR9Yr1E3c9M=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=BQl8/0sFFHS5FeLF+kQs0gAZwN62CM8E9VYzKAOxtiYEDYI9fAzlWVq/9SB1UXYx9
+	 UiezOOqMBpU/NeykE9PQynnc28TfinrN0aIt2IDPJ9T4gEupoj4txSU7gdPtV0QLAX
+	 Fz0BZO8lDmh/O0BRBKMVm/tFBmJwmJEmkuaQEZlwMiY3jS80wv/PIek89ODuXxUgJC
+	 CzwcTQpWnBHymD6JfqeMTO+5GkaLzixjq85FpA3sOm/D6E0stBJae8XYDPgTLWYaIL
+	 NZiOyaExseO4zo+1W/rTmK3X7NgyovPY9ZA/3ctOYbw4TWyoBzobn7bIyFHGiJkQIs
+	 kLC14LzCudTzw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 939C83AB1394;
+	Mon,  6 Jul 2026 10:20:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -77,134 +57,82 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:ywQGZQD3CJ6GgEtq_fjIAg--.37800S5
-X-Coremail-Antispam: 1UD129KBjvJXoWxZry8CF48CF13GrW5Ar1DWrg_yoW5CFyDpa
-	90krW3Wry7Jryqqws7Aw18C3y5Gws7W3yagr98tasxA3Z0grn5tF97KrWY9a1FkrWvgry2
-	vr90q3y5ZF4kAFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9G1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l8cAvFVAK
-	0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW5JVW7JwA2z4
-	x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l
-	84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcx
-	kEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6x8ErcxFaVAv8VW8
-	Ww4UJr1UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6I
-	AqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_GFv_Wrylc2xS
-	Y4AK67AK6r4DMxAIw28IcxkI7VAKI48JMxAIw28IcVCjz48v1sIEY20_GrWkJr1UJwCFx2
-	IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v2
-	6r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67
-	AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Cr0_Gr1UMIIF0xvE42xK8VAvwI8I
-	cIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r
-	4UJVWxJrUvcSsGvfC2KfnxnUUI43ZEXa7VU1Z2-7UUUUU==
-X-CM-SenderInfo: 52kd05r2suqzpdlo2hxwvl0wxkxdhvlgxou0/1tbiAgYAAWpLXY1APgAAsK
+Subject: Re: [PATCH net v2] selftests: net: make busywait timeout clock
+ portable
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178333320639.484760.17349135118133429852.git-patchwork-notify@kernel.org>
+Date: Mon, 06 Jul 2026 10:20:06 +0000
+References: <20260630165157.3814871-1-nirmoyd@nvidia.com>
+In-Reply-To: <20260630165157.3814871-1-nirmoyd@nvidia.com>
+To: Nirmoy Das <nirmoyd@nvidia.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, shuah@kernel.org, netdev@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, stable@vger.kernel.org
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-5.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[mails.tsinghua.edu.cn,quarantine];
-	R_DKIM_ALLOW(-0.20)[mails.tsinghua.edu.cn:s=dkim];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-272175-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[zhaoyz24@mails.tsinghua.edu.cn,stable@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	FORGED_RECIPIENTS(0.00)[m:netdev@vger.kernel.org,m:coreteam@netfilter.org,m:davem@davemloft.net,m:edumazet@google.com,m:fengxw06@126.com,m:fw@strlen.de,m:horms@verge.net.au,m:ja@ssi.bg,m:kuba@kernel.org,m:linux-kernel@vger.kernel.org,m:lvs-devel@vger.kernel.org,m:netfilter-devel@vger.kernel.org,m:pabeni@redhat.com,m:pablo@netfilter.org,m:phil@nwl.cc,m:qli01@tsinghua.edu.cn,m:stable@vger.kernel.org,m:wangao@seu.edu.cn,m:xuke@tsinghua.edu.cn,m:yangyx22@mails.tsinghua.edu.cn,m:zhaoyz24@mails.tsinghua.edu.cn,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-272176-lists,stable=lfdr.de,netdevbpf];
+	FROM_NEQ_ENVFROM(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:nirmoyd@nvidia.com,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:shuah@kernel.org,m:netdev@vger.kernel.org,m:linux-kselftest@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[netfilter.org,davemloft.net,google.com,126.com,strlen.de,verge.net.au,ssi.bg,kernel.org,vger.kernel.org,redhat.com,nwl.cc,tsinghua.edu.cn,seu.edu.cn,mails.tsinghua.edu.cn];
-	DKIM_TRACE(0.00)[mails.tsinghua.edu.cn:+];
+	FORGED_SENDER(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[zhaoyz24@mails.tsinghua.edu.cn,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NO_DN(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[seu.edu.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,tsinghua.edu.cn:email,vger.kernel.org:from_smtp,mails.tsinghua.edu.cn:from_mime,mails.tsinghua.edu.cn:dkim,mails.tsinghua.edu.cn:mid]
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9904770F95E
+X-Rspamd-Queue-Id: 53F0670F4E0
 
-set_sctp_state() reads the SCTP chunk header again in order to drive the
-IPVS SCTP state table. For IPv6 it computes the offset with
-sizeof(struct ipv6hdr), while the surrounding IPVS code uses iph.len from
-ip_vs_fill_iph_skb(), where ipv6_find_hdr() has already skipped
-extension headers and found the real transport header.
+Hello:
 
-This makes the state machine read from the wrong offset for IPv6 SCTP
-packets that carry extension headers. For example, an INIT packet with an
-8-byte destination options header can be scheduled correctly by
-sctp_conn_schedule(), but set_sctp_state() reads the first byte of the
-SCTP verification tag as a DATA chunk type. The connection then moves
-from NONE to ESTABLISHED instead of INIT1, gets the longer established
-timeout, and updates the active/inactive destination counters
-incorrectly. This happens even though the SCTP handshake has not
-completed.
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-Use the parsed transport offset passed down from ip_vs_set_state() for
-the SCTP chunk-header lookup. For IPv4 and IPv6 packets without
-extension headers this preserves the existing offset.
+On Tue, 30 Jun 2026 09:51:57 -0700 you wrote:
+> loopy_wait() expects millisecond timestamps. However, Ubuntu Resolute
+> can use uutils date, where `date -u +%s%3N` returns seconds plus full
+> nanoseconds instead of a 3-digit millisecond field. This makes
+> busywait expire too early and can make vlan_bridge_binding.sh read a
+> stale operstate.
+> 
+> Fixes: 25ae948b4478 ("selftests/net: add lib.sh")
+> Cc: stable@vger.kernel.org # 6.8+
+> Link: https://github.com/uutils/coreutils/issues/11658
+> Signed-off-by: Nirmoy Das <nirmoyd@nvidia.com>
+> 
+> [...]
 
-Fixes: 2906f66a5682 ("ipvs: SCTP Trasport Loadbalancing Support")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/netdev/20260705123040.35755-1-zhaoyz24@mails.tsinghua.edu.cn/
-Reported-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-Reported-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
-Reported-by: Ao Wang <wangao@seu.edu.cn>
-Reported-by: Xuewei Feng <fengxw06@126.com>
-Reported-by: Qi Li <qli01@tsinghua.edu.cn>
-Reported-by: Ke Xu <xuke@tsinghua.edu.cn>
-Assisted-by: Claude Code:GLM-5.2
-Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
----
- net/netfilter/ipvs/ip_vs_proto_sctp.c | 15 +++++----------
- 1 file changed, 5 insertions(+), 10 deletions(-)
+Here is the summary with links:
+  - [net,v2] selftests: net: make busywait timeout clock portable
+    https://git.kernel.org/netdev/net/c/dd6a23bac306
 
-diff --git a/net/netfilter/ipvs/ip_vs_proto_sctp.c b/net/netfilter/ipvs/ip_vs_proto_sctp.c
-index 394367b7b388..c67317be17df 100644
---- a/net/netfilter/ipvs/ip_vs_proto_sctp.c
-+++ b/net/netfilter/ipvs/ip_vs_proto_sctp.c
-@@ -372,20 +372,15 @@ static const char *sctp_state_name(int state)
- 
- static inline void
- set_sctp_state(struct ip_vs_proto_data *pd, struct ip_vs_conn *cp,
--		int direction, const struct sk_buff *skb)
-+		int direction, const struct sk_buff *skb,
-+		unsigned int iph_len)
- {
- 	struct sctp_chunkhdr _sctpch, *sch;
- 	unsigned char chunk_type;
- 	int event, next_state;
--	int ihl, cofs;
--
--#ifdef CONFIG_IP_VS_IPV6
--	ihl = cp->af == AF_INET ? ip_hdrlen(skb) : sizeof(struct ipv6hdr);
--#else
--	ihl = ip_hdrlen(skb);
--#endif
-+	int cofs;
- 
--	cofs = ihl + sizeof(struct sctphdr);
-+	cofs = iph_len + sizeof(struct sctphdr);
- 	sch = skb_header_pointer(skb, cofs, sizeof(_sctpch), &_sctpch);
- 	if (sch == NULL)
- 		return;
-@@ -472,7 +467,7 @@ sctp_state_transition(struct ip_vs_conn *cp, int direction,
- 		unsigned int iph_len)
- {
- 	spin_lock_bh(&cp->lock);
--	set_sctp_state(pd, cp, direction, skb);
-+	set_sctp_state(pd, cp, direction, skb, iph_len);
- 	spin_unlock_bh(&cp->lock);
- }
- 
+You are awesome, thank you!
 -- 
-2.34.1
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
 
