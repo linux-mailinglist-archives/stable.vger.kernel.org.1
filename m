@@ -1,215 +1,196 @@
-Return-Path: <stable+bounces-272264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272265-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id rsxSFNrIS2rNaAEAu9opvQ
-	(envelope-from <stable+bounces-272264-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 17:25:14 +0200
+	id W7AGD63MS2rqaQEAu9opvQ
+	(envelope-from <stable+bounces-272265-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 17:41:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B100D712897
-	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 17:25:13 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38DC9712B9D
+	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 17:41:32 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jnPIcqg6;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272264-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-272264-lists+stable=lfdr.de@vger.kernel.org";
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=OCQVfpHt;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272265-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-272265-lists+stable=lfdr.de@vger.kernel.org";
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A5E2A30FB0DC
-	for <lists+stable@lfdr.de>; Mon,  6 Jul 2026 14:45:40 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id AD33C317EFF7
+	for <lists+stable@lfdr.de>; Mon,  6 Jul 2026 14:46:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FBBE395240;
-	Mon,  6 Jul 2026 14:45:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 669F63A9615;
+	Mon,  6 Jul 2026 14:46:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1A8730D401;
-	Mon,  6 Jul 2026 14:45:36 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783349137; cv=none; b=RVGBcKVYBycfI+JGhKd5NjjFpjb2nzqQNDoWXiGwYiYywKS9oc/BneJ8BJ9nh1meruJ0BncTBeIbFL55k4lN59vGjV4deWw+rh+0cAFQdjIgAfSDYC0p8HzIYo2Ulhnad4YLgAPu+wlnZ+GjV0lH6El1QDLnCOI14XMgFzM8hxQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783349137; c=relaxed/simple;
-	bh=exXCNn/YAUFZbvKztOYWREtRr5De83KDg/9ANsgiatI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FQzIA1IV5nA86GLzzOqUsJZnZjQE5R7N/GjKOiK6T9qgLFH6HDtb1bjCvFdiGV3RITUIWQU0oRDOydi+5uXLSc/tXbYOqUVRic+xKSEy+Is9nZDKswFqVxh7ykVhS6gzAHWq0bFLB3YTLqDP5bPhFZ/VDePRl3uYnDdcK29MkcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jnPIcqg6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BE1B1F000E9;
-	Mon,  6 Jul 2026 14:45:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783349136;
-	bh=6ayWcXwml0nfX7A42DCmTXUSehwpYZ9RGLuO9V1EY3U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=jnPIcqg6e1uiSQ42BqdEnWme9Jc44eCR31WxCfftlQ4nwKt1pFXXKw4+gJqQZaWXz
-	 Coq+TyKZ2tBCTs7rPrLGdJUyR0XWB/i3yOfppsiCex0m1ZnsIgAxNe7SYMaSuDZiz9
-	 QkP5hpY/dzKLa+J6YfpdZ8pYOU8aEZNtMM9tuPqQV3CTj6v7Sy0pGaxo5mEg1nGMcn
-	 MnI2X/HzZkY9OMizemxdkin0sO+NapPqXMTbrGL4B5ba04HYWYkrB/l6BmUh9xvtP7
-	 k3jxJkc1ekfU+PKuqJuWtr2Y1yQwvG6uZj6o58f5EqgjkmhjA2hGLzcJmjUG/Os6Lu
-	 FlMC0eoNRtleQ==
-Date: Mon, 6 Jul 2026 16:45:28 +0200
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Wentao Liang <vulab@iscas.ac.cn>
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>, 
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Bjorn Helgaas <bhelgaas@google.com>, linux-arm-msm@vger.kernel.org, linux-pci@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v4] PCI: qcom-ep: Fix runtime PM reference leak in probe
- error paths
-Message-ID: <e5mh6jy5tc3orhcjumwcipxonbxoibvg3psxzr4ekelat32iim@too7vazfi2aa>
-References: <20260624134932.44357-1-vulab@iscas.ac.cn>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE62639AD51
+	for <stable@vger.kernel.org>; Mon,  6 Jul 2026 14:46:53 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783349215; cv=pass; b=SdUUYzjU1Jl63a4O5vqP/cnzwW1JHLc+F2ybewoR6ake+kDlcFagH9DTJ6nYhMfogX8h+3RenqFncbzErLFg4E6eTDyfa0oF0/o+fngNP39Cyzdjh4Aw6b6kg9P3/XhNxXWUMqC1YjcJuoFX+4q+LvQaFkXXJIUEHOiO7MpZ+18=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783349215; c=relaxed/simple;
+	bh=XIt9g8EG67F9cgRee/glyq8tUMfvAYEbWJBaUWy6Nb8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QZ9fQji6hQb+LwVnvWTrzX9kUUZVxMKyf0s26R62TP8dlLO0kLNrf7yIHxF8DXIu5803AoSp8IlgSfJlUZonEmazcgHLivbr+huny/d/WC+DZYwzewvAtGczw7d2E/HHP6FrY6MQv8onqbjUzCFe22e2Btc1ry6iKBQeBRyJOak=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OCQVfpHt; arc=pass smtp.client-ip=209.85.208.42
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-69531108f25so5443483a12.2
+        for <stable@vger.kernel.org>; Mon, 06 Jul 2026 07:46:53 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783349212; cv=none;
+        d=google.com; s=arc-20260327;
+        b=L7g3JdEvfu+sujtx5rJIQNmmqPXLiGkvteOJ/HdSqtAGoBfLnhDfCHKM/lk/zUWiu5
+         GaMGMrXpGH3+oiS8eKx499LQOkh/m+BF73PGUBfQ6tCPWp+jrkfV12epE4AoiYKb3lqR
+         zHc97PgYFZUZ90E/7FNYGxqAmda93R5qxS75h9IAA4YSgIkgM8qKLn/RjkDpWofqHhZv
+         z6D8WfQ7YSspCNo2ql4AEzoNPvBiwFeJVdNw648pRiJaC2OqsYphSNNFULawH9/mNh9k
+         Rs0CbEjKENE2KoWmv3Ia3ClqlebD4EA9mNIHPCqAf5CysFXAaQptsgdQpdpbCTDk9ayP
+         kc3w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=FORy38h/raNHh5CiZOJtyCT7bYZdVLlFNLJYBpR1kIQ=;
+        fh=wOHPHCXpzcR0MBsluzyNGwtGBEezY05glpvhNrrRaoE=;
+        b=kjnRf3VpdO/ywiOnQVf4+H7KG/lA2gjDH13zSVM48KGfFtzd0kztmtNhz9eM2snUQM
+         pyTWsWG8qySM881o0j7ISFxlckmFeT3uazYNTOdZnDM993tWmItSa/Bc3rLmKkQmZrPM
+         m8bQwn1Pr34SW0lQXbLeimh9tv7eskZEv3JbHLoYSqIvNeSVrveip92sFY/azNhUzTUf
+         BPuEKE68ApQyRJx/S69knL0PQ7fG1+Fmi6W5A7gw6q9f7bAH7LmB12Lj3W9WU12fzd0k
+         zRWjVm8TqKsl2dflzYA+cpT7cm9WH2FIrtZ+74Lizi75uYLrCEKlMJewPGR9d6aE4/lz
+         EsEQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783349212; x=1783954012; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=FORy38h/raNHh5CiZOJtyCT7bYZdVLlFNLJYBpR1kIQ=;
+        b=OCQVfpHtTZgsrQ/QlAMqINsuwa1Bo48ySGgc77RDPte0azTcSNSaOIs51lfFkHt9f2
+         UYIBgHzvoJILe6a695tJl11bk0T83K+QHp/fUuKqWoWVY5cCBXVbxbH/PGymR3qHYzx8
+         ufFNtfPmojWakMg06hSWxrqFl/aP3sqGpDLdDrgQ+VNF2W0zc39VoCuHbbnXFslAqBC6
+         O4juZEXvHMf/AlgZ+hR0s5OjNG0vNORg7e3u5nIrzTWlLLJnDj6Kz9fXiPlXc9OTY7MT
+         Dc/kzbOiHFeA78tKa+aBWtkeY6Aa+wVFbH7T47JQ4jser80PvG7LCEzhtp1Jy2QjXG3Y
+         hrYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783349212; x=1783954012;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FORy38h/raNHh5CiZOJtyCT7bYZdVLlFNLJYBpR1kIQ=;
+        b=YsBCFel/KI3LQl9wkQZKkm8UF604qX9YWfend0YRFtEfbZv6+D/XOv76KhxLECpj+I
+         g0gOzOr/a24CnEVyQImq6vpcHXLfUaMcQ5O+ARJYUUIbWE0dwNOYq7kMQQb0+T+7zOkl
+         LZsx2GnXnYAnfBziuQvaWmqBSGDuxKXWI1i/C6XLjhNbO8PSUpHWFsQNl5PTACbp6ZaD
+         zZgObRRl5XJHPDfFW5IpJRtgHyt0XdvvjIUFiircSrvvJ1yNrovQX9K3b+JwSuLXQFJO
+         hPOyapjw8tnFv7WEna+OSsvfx7I50OrihWEpDGNxkeZssL8G7ERwwoja96kOo/nu+RXH
+         9O2g==
+X-Forwarded-Encrypted: i=1; AFNElJ+kOkSbQBtyasDG5H5Dv0PI621stc8ExZhweJ82PQwsWQueiTbCcZqDJoMODpMlhv+cCTdffiM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yww0syvlXuI7el47gen0dqx4JDYgKnD5VwUTotHxRFrD/9lxun1
+	0eJY7JKy9RhXf6suNkZ1eOKWwMuYp0AYUKz3fZhgenVEKRdJN27uj0ZeKeEzob4BbM+Q+vkCE/5
+	UEcJRhSkqGVO7ERaMFtr0/i+SP2glPf8=
+X-Gm-Gg: AfdE7cnNN9P40bEOIFvEFZxrtgIgfHzbDWtKj3lS41hBtu7OkeXXXeO83EB6v6Q+EvW
+	9qYWjHButPHnFd4tk3LLGpjwZpZzLtE5mwT+oL78m2PCLaew934cBjEh/FLfueO3wwLTORaGKZW
+	W+h9Cy3jxDfwOSHeMXOm5TtoCW6bgZRGV5U91TKLq6eFsolUYqBvGz6/uf1a1d+oO2709ODUFBu
+	qr27K/r5kzl5iUXzeIhPgo6n0Uym6s4RW1M6c6kZbn/0aJefoE1SvWLoMaXb5uEOyequqTh0baB
+	PvtMaP1SOuDnD7IJOqB6zc/0UdEs1FeJKevbuG0gd5DLgQ9URUCz13HO2xA=
+X-Received: by 2002:a17:907:c785:b0:c12:2acc:c9d7 with SMTP id
+ a640c23a62f3a-c15a67f7e94mr49868766b.15.1783349211791; Mon, 06 Jul 2026
+ 07:46:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260624134932.44357-1-vulab@iscas.ac.cn>
+References: <20260623161035.5792-1-nikhilsolanke5@gmail.com>
+ <20260628231634.6752f74d.michal.pecio@gmail.com> <CAFgddh+AUNH9Ji-Qd=BKEDZWJrzPMWN20-g-htQDPSdSehZStQ@mail.gmail.com>
+ <e7d49127-0215-4b29-9a2a-e1dc0d889b70@rowland.harvard.edu> <CAFgddhLeQ1cJv-E4mYWR8cs7T2USkrEd5i=uxqkNCH2UWaQ5=g@mail.gmail.com>
+In-Reply-To: <CAFgddhLeQ1cJv-E4mYWR8cs7T2USkrEd5i=uxqkNCH2UWaQ5=g@mail.gmail.com>
+From: Nikhil Solanke <nikhilsolanke5@gmail.com>
+Date: Mon, 6 Jul 2026 20:16:37 +0530
+X-Gm-Features: AVVi8Cc6S4gmNZiqXPN-q3CLCjzsrywYMCqte4aKKTPMu6Gbk__YM43TBXfYweM
+Message-ID: <CAFgddhL__55iy5FyekW+-dWD6j913DuEV-_505gKRTT4pe6YPQ@mail.gmail.com>
+Subject: Re: [PATCH v2] usbcore: Add quirk for 255-bytes initial config read
+To: Alan Stern <stern@rowland.harvard.edu>
+Cc: Michal Pecio <michal.pecio@gmail.com>, linux-usb@vger.kernel.org, 
+	gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, corbet@lwn.net, skhan@linuxfoundation.org, 
+	linux-doc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:vulab@iscas.ac.cn,m:lpieralisi@kernel.org,m:kwilczynski@kernel.org,m:robh@kernel.org,m:bhelgaas@google.com,m:linux-arm-msm@vger.kernel.org,m:linux-pci@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-272265-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[mani@kernel.org,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-272264-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,linuxfoundation.org,lwn.net];
+	FORGED_RECIPIENTS(0.00)[m:stern@rowland.harvard.edu,m:michal.pecio@gmail.com,m:linux-usb@vger.kernel.org,m:gregkh@linuxfoundation.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:corbet@lwn.net,m:skhan@linuxfoundation.org,m:linux-doc@vger.kernel.org,m:michalpecio@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[nikhilsolanke5@gmail.com,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mani@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FROM_NEQ_ENVFROM(0.00)[nikhilsolanke5@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,iscas.ac.cn:email,too7vazfi2aa:mid]
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,mail.gmail.com:mid,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B100D712897
+X-Rspamd-Queue-Id: 38DC9712B9D
 
-On Wed, Jun 24, 2026 at 09:49:32PM +0800, Wentao Liang wrote:
-> The qcom_pcie_ep_probe() function obtains a runtime PM reference via
-> pm_runtime_get_noresume() at the beginning of the probe, but this
-> reference is only released on the successful completion path using
-> pm_runtime_put_sync().
-> 
-> However, the error paths fail to release this reference. The devres
-> cleanup registered by devm_pm_runtime_enable() only calls
-> pm_runtime_disable() and does not decrement the usage_count. As a
-> result, if any error occurs during probe (e.g., resource acquisition
-> failure or endpoint initialization failure), the reference is leaked,
-> permanently elevating the device's usage_count. This prevents proper
-> runtime suspend and clean device removal.
-> 
-> Fix this by properly distinguishing error paths that occur before and
-> after devm_pm_runtime_enable() succeeds:
-> 
-> - For errors before devm_pm_runtime_enable() succeeds: call
->   pm_runtime_put_noidle() and pm_runtime_disable() manually to clean
->   up the initial reference and disable runtime PM.
-> 
-> - For errors after devm_pm_runtime_enable() succeeds: only call
->   pm_runtime_put_sync() to drop the initial reference. The
->   pm_runtime_disable() is left to the devres cleanup handler,
->   avoiding a double-disable.
-> 
-> - On the successful probe path: call pm_runtime_put_sync() to drop
->   the initial reference. The return value is not checked because
->   -EAGAIN/-EBUSY only indicate that the device cannot be suspended
->   at this moment and do not represent a probe failure. Checking
->   the return value would cause a double-put if it fails.
-> 
-> This ensures the runtime PM reference is correctly released on all
-> error paths without introducing double-disables or double-puts.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 5b026a9e714d ("PCI: qcom-ep: Add support for firmware-managed PCIe Endpoint")
-> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-> ---
->  drivers/pci/controller/dwc/pcie-qcom-ep.c | 19 +++++++++++--------
->  1 file changed, 11 insertions(+), 8 deletions(-)
-> 
-> diff --git a/drivers/pci/controller/dwc/pcie-qcom-ep.c b/drivers/pci/controller/dwc/pcie-qcom-ep.c
-> index 257c2bcb5f76..4fb21ef50cd0 100644
-> --- a/drivers/pci/controller/dwc/pcie-qcom-ep.c
-> +++ b/drivers/pci/controller/dwc/pcie-qcom-ep.c
-> @@ -892,16 +892,16 @@ static int qcom_pcie_ep_probe(struct platform_device *pdev)
->  	pm_runtime_set_active(dev);
->  	ret = devm_pm_runtime_enable(dev);
->  	if (ret)
-> -		return ret;
-> +		goto err_manual_cleanup;
->  
->  	ret = qcom_pcie_ep_get_resources(pdev, pcie_ep);
->  	if (ret)
-> -		return ret;
-> +		goto err_put_ref;
->  
->  	ret = dw_pcie_ep_init(&pcie_ep->pci.ep);
->  	if (ret) {
->  		dev_err(dev, "Failed to initialize endpoint: %d\n", ret);
-> -		return ret;
-> +		goto err_put_ref;
->  	}
->  
->  	ret = qcom_pcie_ep_enable_irq_resources(pdev, pcie_ep);
-> @@ -914,11 +914,7 @@ static int qcom_pcie_ep_probe(struct platform_device *pdev)
->  		goto err_disable_irqs;
->  	}
->  
-> -	ret = pm_runtime_put_sync(dev);
-> -	if (ret < 0) {
-> -		dev_err(dev, "Failed to suspend device: %d\n", ret);
-> -		goto err_disable_irqs;
-> -	}
-> +	pm_runtime_put_sync(dev);
->  
->  	pcie_ep->debugfs = debugfs_create_dir(name, NULL);
->  	qcom_pcie_ep_init_debugfs(pcie_ep);
-> @@ -932,6 +928,13 @@ static int qcom_pcie_ep_probe(struct platform_device *pdev)
->  err_ep_deinit:
->  	dw_pcie_ep_deinit(&pcie_ep->pci.ep);
->  
-> +err_put_ref:
-> +	pm_runtime_put_sync(dev);
-> +	return ret;
+On Tue, 30 Jun 2026 at 22:40, Nikhil Solanke <nikhilsolanke5@gmail.com> wrote:
+>
+> > There's nothing wrong with trusting the caller to do the right thing.
+> > Besides, if a segfault does occur then it will be pretty obvious that
+> > the caller needs to be fixed.
+> >
+> > What would you do if buf is NULL?  Return an error code?  That won't
+> > help anyone locate the bug.  Put an error message in the log?  Segfaults
+> > are much more visible.
+>
+> Understood. I guess my coding style is a little "too paranoid" and
+> "check everything and report errors". I understood now why this may
+> not always be the best approach in low level programming like kernel
+> development.
+>
+> Anyways, I have done all the requested changes. Here's a short summary:
+> - put strings in a single line
+> - copy bytes from desc to bigbuffer instead of pointer aliasing. (so
+> no krealloc too)
+> - change tabs to spaces in documentation
+> - reworded some comments
+> - drop USB_CONFIG_WINDOWS_REQ_SIZE macro
+> - revert USB_DELAY_INIT to original behavior. no delay before 1st request.
+>
+> Let me know if I missed any changes mentioned in previous discussions
+> (or misunderstood and made unnecessary changes :') ).
+>
+> > I wonder if it wouldn't make sense to split announce_device() so that
+> > the first line is printed as soon as usb_new_device() starts, before
+> > enumeration is attempted and possibly fails.
+>
+> The current patch still logs device ids upon failure in
+> usb_enumerate_device(). Do you want me to implement that suggestion?
+>
+> Thanks,
+> Nikhil Solanke
 
-Returning from 2 different error labels is not a standard pattern in kernel.
+Just following up on my previous email regarding the requested changes
+to the patch. Any comments on this?
 
-> +
-> +err_manual_cleanup:
-
-Weird error label name.
-
-> +	pm_runtime_put_noidle(dev);
-
-Why pm_runtime_put_noidle() and not pm_runtime_put_sync()?
-
-> +	pm_runtime_disable(dev);
-
-If devm_pm_runtime_enable() fails, pm_runtime_disable() will be called in the
-error path as well. So this pm_runtime_disable() will decrement the disable
-counter twice.
-
-- Mani
-
--- 
-மணிவண்ணன் சதாசிவம்
+Thanks,
+Nikhil Solanke
 
