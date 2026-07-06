@@ -1,125 +1,214 @@
-Return-Path: <stable+bounces-272198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272200-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 36osJOaXS2qvWAEAu9opvQ
-	(envelope-from <stable+bounces-272198-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 13:56:22 +0200
+	id Ev79JcGvS2oWYgEAu9opvQ
+	(envelope-from <stable+bounces-272200-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 15:38:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3BEA710249
-	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 13:56:21 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A16867115BC
+	for <lists+stable@lfdr.de>; Mon, 06 Jul 2026 15:38:08 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=sipsolutions.net header.s=mail header.b=J9E2wZkW;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272198-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272198-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=mails.tsinghua.edu.cn header.s=dkim header.b=gNWrlvDo;
+	dmarc=pass (policy=quarantine) header.from=mails.tsinghua.edu.cn;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272200-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-272200-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DD591305DE63
-	for <lists+stable@lfdr.de>; Mon,  6 Jul 2026 11:47:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C6B1F301724D
+	for <lists+stable@lfdr.de>; Mon,  6 Jul 2026 11:48:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 707B241F7F3;
-	Mon,  6 Jul 2026 11:47:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60E4041F7DB;
+	Mon,  6 Jul 2026 11:48:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF8163FD14D;
-	Mon,  6 Jul 2026 11:47:26 +0000 (UTC)
+Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [13.76.78.106])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DADC63BE17F;
+	Mon,  6 Jul 2026 11:48:44 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783338448; cv=none; b=oHmO7gFUS069vXaWMwgSxN6CUDFv/KVx0cEkw4x9YVrFeFNkB3L6dR/xfMEhxg+E4Ryu2Q1nfjFPt/warc3PSBeTH/jwrBy4To9UKJB5yeCJC0IDCh+BdZbtXSkT4wLxK09o9wxl+svcI65wueUW12egMo06x5yK2x5FI9pVC0c=
+	t=1783338530; cv=none; b=LYLDO+T9IO3p4lYehb0UgNaAAj36zOsUXTG3Pvt7L16rVF8U9KcHvoqu9pAJFRAfQVnKz3uIpC2s8aRG+oU5paJd9CU9jyi/MFaTh6Of6SVYglal3uS5z14o/p2bV8BzsTmlwVXl5vTiblZzCUE4gTSPlAj5CZoaIA/7SF93KKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783338448; c=relaxed/simple;
-	bh=w/+dOqGuQIuH0grBXnx/cqJx/6F3mIWhizKWONFKFLk=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=u23RtAaQZ6w/f+jPl71ygXD4HRbRU5/4DrlifTw3XFOpgSrXUct/S/6l4lmILapPyqr5pIvpKbrcXhBL7dyxqDBhBEJ+5Hr9ASt/cn0BnwJ0YgMKQgsDZn++tWzNKSfwIvXZq8ega8Qs1qiX2pmK/5K0N1YzdtfA2BgCC6A2jTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=J9E2wZkW; arc=none smtp.client-ip=168.119.38.16
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=w/+dOqGuQIuH0grBXnx/cqJx/6F3mIWhizKWONFKFLk=;
-	t=1783338446; x=1784548046; b=J9E2wZkWOGarCKXCAlfFvQEi+z06jNg/avWr7glReGXQN+f
-	KQPfyE6UWUdcTWsH0i8/ufG1Ed+do5OXuVEwlBf6VKy+vlEnCVANxtBW3MmeGcvY7K939AWVDhuMU
-	4VfdMm7uVzMK754JX2pNa/frTy1qi0fZe3jg3Gi7/UbB6r4nvSjRthiLjcZi8nO0eeaVQuxgNJ7IT
-	00Ud9ACWk3UveFLmxhyzMLJnkYMSyNah3KfHLIrafIBUaIlvQUfgYyQ/8269b0dWu7v8cyj4BFPjx
-	WKhGNz2/vetbkeq8gL2S3/eT5PbngKSrRkI39XZIb8CFFJbB7MlkBST0hXCxp7Lg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__ECDSA_SECP256R1_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1wghnH-0000000DNfF-2SFk;
-	Mon, 06 Jul 2026 13:47:23 +0200
-Message-ID: <986fff6416ba2acd8d7a4e5fb2f6a89eb40e10d1.camel@sipsolutions.net>
-Subject: Re: [PATCH net] wifi: mac80211: fix memory leak in
- ieee80211_register_hw()
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Dawei Feng <dawei.feng@seu.edu.cn>, jeff.johnson@oss.qualcomm.com
-Cc: jianhao.xu@seu.edu.cn, linux-kernel@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, stable@vger.kernel.org, zilin@seu.edu.cn
-Date: Mon, 06 Jul 2026 13:47:22 +0200
-In-Reply-To: <20260609074044.3745473-1-dawei.feng@seu.edu.cn>
-References: <dffefec6-14e0-4a87-85dd-97d328fedb50@oss.qualcomm.com>
-	 <20260609074044.3745473-1-dawei.feng@seu.edu.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	s=arc-20240116; t=1783338530; c=relaxed/simple;
+	bh=nEukqTZBZ1X9i1rVreRZyN7lvtpb58xrxYOHWZfd9TM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pcvXw2w4GvG2oC4WupAYurDtBIDdKSaPrt5IyMNSfi930Fz8byf0vrbIdNf1wj7jHmXZyoA1U9NSUajFtDYRmX4Kt0UtQEukLDKiac91dpZKn9Abn8adFlmkYvZXHqkG69vamyLaGvp7+m89l5Sb1pBLAirsyms/t149XwKU6b4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn; dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b=gNWrlvDo; arc=none smtp.client-ip=13.76.78.106
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=mails.tsinghua.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:
+	Date:Message-ID:MIME-Version:Content-Transfer-Encoding; bh=1c5rR
+	SeA44CoP10ZtJ1PJVKO0i9gPVa/NJLx733Iw68=; b=gNWrlvDoIYpVYLDEp1IuZ
+	rs12UMR++sxykXrw6FScLXojZotehumO1lITeCVlzCqJKNwD9NdUAjt2/dg9UuZP
+	iPHyLqYWV5F0i/52/2gTLX62zHJI0znZrntgQG3dFsiiw2brjzuNmKVu+PQQ/JA3
+	QZTDDa0Qs6yaMj9qFW9fbQ=
+Received: from localhost.localdomain (unknown [101.5.13.242])
+	by web2 (Coremail) with SMTP id yQQGZQAn0pQNlktqskzGAg--.22382S2;
+	Mon, 06 Jul 2026 19:48:30 +0800 (CST)
+From: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+To: netfilter-devel@vger.kernel.org
+Cc: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	Phil Sutter <phil@nwl.cc>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
+	Ao Wang <wangao@seu.edu.cn>,
+	Xuewei Feng <fengxw06@126.com>,
+	Qi Li <qli01@tsinghua.edu.cn>,
+	Ke Xu <xuke@tsinghua.edu.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH nf] netfilter: nf_conncount: fix zone comparison in tuple dedup
+Date: Mon,  6 Jul 2026 19:48:18 +0800
+Message-ID: <20260706114820.74006-1-zhaoyz24@mails.tsinghua.edu.cn>
+X-Mailer: git-send-email 2.46.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:yQQGZQAn0pQNlktqskzGAg--.22382S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxCw1rXr4UWF4fZryktF17Awb_yoWrGryrpF
+	WYk3sayrWkXrsFkas7ZrnrAF13tws8AF1fGFn5C3y29wn0gFnYvayxta47A3WDCFWDGF1U
+	ZF45Wr1DAan8ZrDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9m1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l8cAvFVAK
+	0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW5JVW7JwA2z4
+	x0Y4vE2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2
+	z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4
+	CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E74AGY7Cv6cx26r4r
+	Kr1UJr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc
+	8vx2IErcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVW8ZVWrXwCY02Av
+	z4vE14v_Gw4l42xK82IYc2Ij64vIr41l42xK82IY6x8ErcxFaVAv8VW8Ww4UJr1UMxC20s
+	026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_
+	JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14
+	v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xva
+	j40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8Jr
+	0_Cr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUWUDXUUUUU=
+X-CM-SenderInfo: 52kd05r2suqzpdlo2hxwvl0wxkxdhvlgxou0/1tbiAQMAAWpLXR9YbwAAsX
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[mails.tsinghua.edu.cn,quarantine];
+	R_DKIM_ALLOW(-0.20)[mails.tsinghua.edu.cn:s=dkim];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-272200-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:dawei.feng@seu.edu.cn,m:jeff.johnson@oss.qualcomm.com,m:jianhao.xu@seu.edu.cn,m:linux-kernel@vger.kernel.org,m:linux-wireless@vger.kernel.org,m:stable@vger.kernel.org,m:zilin@seu.edu.cn,s:lists@lfdr.de];
-	DMARC_NA(0.00)[sipsolutions.net: no valid DMARC record];
-	FORGED_SENDER(0.00)[johannes@sipsolutions.net,stable@vger.kernel.org];
+	FORGED_SENDER(0.00)[zhaoyz24@mails.tsinghua.edu.cn,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	FORGED_RECIPIENTS(0.00)[m:netfilter-devel@vger.kernel.org,m:zhaoyz24@mails.tsinghua.edu.cn,m:pablo@netfilter.org,m:fw@strlen.de,m:phil@nwl.cc,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:coreteam@netfilter.org,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:yangyx22@mails.tsinghua.edu.cn,m:wangao@seu.edu.cn,m:fengxw06@126.com,m:qli01@tsinghua.edu.cn,m:xuke@tsinghua.edu.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-272198-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,stable@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[mails.tsinghua.edu.cn,netfilter.org,strlen.de,nwl.cc,davemloft.net,google.com,kernel.org,redhat.com,vger.kernel.org,seu.edu.cn,126.com,tsinghua.edu.cn];
+	DKIM_TRACE(0.00)[mails.tsinghua.edu.cn:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[zhaoyz24@mails.tsinghua.edu.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,sipsolutions.net:from_mime,sipsolutions.net:dkim,sipsolutions.net:mid]
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,seu.edu.cn:email,tsinghua.edu.cn:email,mails.tsinghua.edu.cn:from_mime,mails.tsinghua.edu.cn:dkim,mails.tsinghua.edu.cn:mid,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E3BEA710249
+X-Rspamd-Queue-Id: A16867115BC
 
-On Tue, 2026-06-09 at 15:40 +0800, Dawei Feng wrote:
->=20
-> Zilin is the discoverer of this bug. We are in the same research group,
-> and he actively participated in reviewing this patch.=20
+The "already exists" dedup logic in __nf_conncount_add() decides
+whether a connection has already been counted and can be skipped instead
+of incrementing the connlimit count.  It compares the conntrack zone of a
+list entry with the zone of the connection being added using
+nf_ct_zone_id() and nf_ct_zone_equal(), passing conn->zone.dir or
+zone->dir as the direction argument.
 
-Reported-by? Reviewed-by?
+Those helpers take enum ip_conntrack_dir values: IP_CT_DIR_ORIGINAL is 0
+and IP_CT_DIR_REPLY is 1.  However, zone->dir is a u8 bitmask:
+NF_CT_ZONE_DIR_ORIG is 1, NF_CT_ZONE_DIR_REPL is 2 and
+NF_CT_DEFAULT_ZONE_DIR is 3.  Passing that bitmask as the enum direction
+shifts the meaning of every non-zero value.  An ORIG-only zone passes 1
+and is tested as REPLY, while REPL-only and default zones pass 2 or 3 and
+test bits beyond the valid direction range.  In those cases
+nf_ct_zone_id() can fall back to NF_CT_DEFAULT_ZONE_ID instead of using
+the real zone id, so different zones can be treated as equal and dedup
+collapses to tuple equality alone.
 
-> To better align with the kernel submission guidelines, I will add a
-> "Co-developed-by:" tag in the v2 patch for Zilin to properly reflect his
-> contributions. Would this be acceptable?
+Do not special-case NF_CT_DEFAULT_ZONE_DIR and do not compare raw zone
+ids: that would address only the common bidirectional case and would
+bypass the direction-aware NF_CT_DEFAULT_ZONE_ID fallback.  Instead, add
+a small conncount-local helper that converts the zone direction bitmask
+to a valid enum direction before calling the existing zone helpers.  A
+default bidirectional zone contains the ORIG bit, so it naturally maps to
+IP_CT_DIR_ORIGINAL; single-direction zones continue to use the existing
+nf_ct_zone_id() fallback semantics.
 
-If he did development, I guess?
+Fixes: 21ba8847f857 ("netfilter: nf_conncount: Fix garbage collection with zones")
+Fixes: b36e4523d4d5 ("netfilter: nf_conncount: fix garbage collection confirm race")
+Cc: stable@vger.kernel.org
+Reported-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+Reported-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
+Reported-by: Ao Wang <wangao@seu.edu.cn>
+Reported-by: Xuewei Feng <fengxw06@126.com>
+Reported-by: Qi Li <qli01@tsinghua.edu.cn>
+Reported-by: Ke Xu <xuke@tsinghua.edu.cn>
+Assisted-by: Claude-Code:GLM-5.2
+Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+---
+diff --git a/net/netfilter/nf_conncount.c b/net/netfilter/nf_conncount.c
+index 91582069f6d2..eb3156782405 100644
+--- a/net/netfilter/nf_conncount.c
++++ b/net/netfilter/nf_conncount.c
+@@ -127,6 +127,15 @@ find_or_evict(struct net *net, struct nf_conncount_list *list,
+ 	return ERR_PTR(-EAGAIN);
+ }
+ 
++static enum ip_conntrack_dir
++nf_conncount_zone_dir(const struct nf_conntrack_zone *zone)
++{
++	if (zone->dir & NF_CT_ZONE_DIR_ORIG)
++		return IP_CT_DIR_ORIGINAL;
++
++	return IP_CT_DIR_REPLY;
++}
++
+ static bool get_ct_or_tuple_from_skb(struct net *net,
+ 				     const struct sk_buff *skb,
+ 				     u16 l3num,
+@@ -211,8 +220,10 @@ static int __nf_conncount_add(struct net *net,
+ 			/* Not found, but might be about to be confirmed */
+ 			if (PTR_ERR(found) == -EAGAIN) {
+ 				if (nf_ct_tuple_equal(&conn->tuple, &tuple) &&
+-				    nf_ct_zone_id(&conn->zone, conn->zone.dir) ==
+-				    nf_ct_zone_id(zone, zone->dir))
++				    nf_ct_zone_id(&conn->zone,
++						  nf_conncount_zone_dir(&conn->zone)) ==
++				    nf_ct_zone_id(zone,
++						  nf_conncount_zone_dir(zone)))
+ 					goto out_put; /* already exists */
+ 			} else {
+ 				collect++;
+@@ -223,7 +234,7 @@ static int __nf_conncount_add(struct net *net,
+ 		found_ct = nf_ct_tuplehash_to_ctrack(found);
+ 
+ 		if (nf_ct_tuple_equal(&conn->tuple, &tuple) &&
+-		    nf_ct_zone_equal(found_ct, zone, zone->dir)) {
++		    nf_ct_zone_equal(found_ct, zone, nf_conncount_zone_dir(zone))) {
+ 			/*
+ 			 * We should not see tuples twice unless someone hooks
+ 			 * this into a table without "-p tcp --syn".
 
-Anyway you didn't do that for v2, so please resend after you figure out
-what you want :-)
+--
+2.47.3
 
-johannes
 
