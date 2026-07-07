@@ -1,250 +1,171 @@
-Return-Path: <stable+bounces-272427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272431-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id gkFcFIQFTWqFtgEAu9opvQ
-	(envelope-from <stable+bounces-272427-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 15:56:20 +0200
+	id DXx9OccHTWpttwEAu9opvQ
+	(envelope-from <stable+bounces-272431-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 16:05:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A73571C2F3
-	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 15:56:19 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id D559C71C515
+	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 16:05:58 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RCFIMrJV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272427-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272427-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=ssi.bg header.s=ssi header.b=aRVnyjvY;
+	dmarc=pass (policy=reject) header.from=ssi.bg;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272431-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-272431-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3C5803200205
-	for <lists+stable@lfdr.de>; Tue,  7 Jul 2026 13:46:53 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C8F2B3084541
+	for <lists+stable@lfdr.de>; Tue,  7 Jul 2026 13:52:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1F4F422544;
-	Tue,  7 Jul 2026 13:46:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 814C0422528;
+	Tue,  7 Jul 2026 13:51:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx.ssi.bg (mx.ssi.bg [193.238.174.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D60C34218B6;
-	Tue,  7 Jul 2026 13:46:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B41EA3F4DDB;
+	Tue,  7 Jul 2026 13:51:23 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783431985; cv=none; b=NjqkPw9BW1W/hAhksPBQ/YHeOm/UHwnT4rzu7DIZ7NsNC+Q7oWLOUAkkwpn9I2uh2DtwS2APsz8iXpJEvmnIvrU0WeujBB0KtOVcrXE9Pv9LTwCkwx6tFWED0TmxyK2Ac+qcC9VlGHbN/jux/pl1N39xwS3KpGx9A2o+vYb0lL0=
+	t=1783432288; cv=none; b=OiUpJUylyNescsB/hSEFycLseRte5esbQbqIm3VaxknLjjvVu9McJ2YGcyLaoJWHJ4cjMIz+ynnMUNcHWjBeisHj1XkhRXQ2ZB5CIP2jDtINWqRyV95eIZ5A9/byFIMRW27mIhzcK2kZjDzxal6DBuMWT1ShyPEUWVSAvuCDrIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783431985; c=relaxed/simple;
-	bh=3iW7iRW3LaWmn/h2ZPnzqj+1x7yTXCh97LlZnZtXpaY=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=Gka4GkxSl05kIcn285kv1XhQ8DwD4tZet4zNUwRa09c7ePE4XDcSDSVKXVP4HE1bKsTos98GGBo7xpxrBbvQhuxa279t3fLp0fkXR3HY9AmX2E8T7azHbSnLMT4ngQcIHwq3IjK01otSHWxEWDy/2ak0bZua48wW1FIE8j2pn7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RCFIMrJV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10D9E1F00A3F;
-	Tue,  7 Jul 2026 13:46:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783431982;
-	bh=itfil0QL1K++We8bxiSxbgpQq8sOzLNqstQlIyIxIE4=;
-	h=Date:From:To:Cc:Subject:References;
-	b=RCFIMrJVipdqK2MgNdcXsYxXbJm6Hdl38Le+du2vuCaJ8zhQTrrxSLqj3/VzKJYXR
-	 tTG4WqbU73kEI8XFmdoz7acZDI4JtGjUDpZatZo+MpxCcPOHN5sWgt0SpQKrjD3/S2
-	 bmds2dYmtU0Ve3TCR3C1aVXn4vgYwhRrW+T7BqeGt/MOvBex1miMzl0PANYU5L0FRZ
-	 i1e+KSRygCVuVMZnH32bpUQQoJR/YwB+mtAVKmtwYlFC4nP5iZqp8qcupyf7dey5pk
-	 aSQgBla2lT5RDE4gRSU6s0zw2dCYP9mewsC2GURT1Zv4cKyKhSww7O5bzGAC7QXc0p
-	 PWz9mMMOs2WhQ==
-Received: from rostedt by gandalf with local (Exim 4.99.4)
-	(envelope-from <rostedt@kernel.org>)
-	id 1wh681-00000000h6a-1Us7;
-	Tue, 07 Jul 2026 09:46:25 -0400
-Message-ID: <20260707134625.188028635@kernel.org>
-User-Agent: quilt/0.69
-Date: Tue, 07 Jul 2026 09:46:16 -0400
-From: Steven Rostedt <rostedt@kernel.org>
-To: linux-kernel@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- stable@vger.kernel.org,
- Yuan Tan <yuantan098@gmail.com>,
- Yifan Wu <yifanwucs@gmail.com>,
- Juefei Pu <tomapufckgml@gmail.com>,
- Zhengchuan Liang <zcliangcn@gmail.com>,
- Xin Liu <bird@lzu.edu.cn>,
- Huihui Huang <hhhuang@smu.edu.sg>,
- Ren Wei <n05ec@lzu.edu.cn>
-Subject: [for-linus][PATCH 12/13] tracing: Prevent out-of-bounds read in glob matching
-References: <20260707134604.275787924@kernel.org>
+	s=arc-20240116; t=1783432288; c=relaxed/simple;
+	bh=vxInMY00Jzl3/lr3lH3zr+U2RqbRBBU8wA4aSfKJKHc=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=IlWXGN6bPQ4J5R/jw3IwBOLtJTV85HlLkrFOf30kX6wXhA+ju4ao0/Lnh4ZKldKsyCdEYXc0XSzyUccYgsXsRjBNTMLpjf/IaWASYTG+0IEMJcwHc1dIiNMIznR+2meDWWi+wqcuzKuIhw71OOFGvVt5DTnLCRr1C0/yd+2GRVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg; spf=pass smtp.mailfrom=ssi.bg; dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b=aRVnyjvY; arc=none smtp.client-ip=193.238.174.39
+Received: from mx.ssi.bg (localhost [127.0.0.1])
+	by mx.ssi.bg (Potsfix) with ESMTP id 9030521302;
+	Tue, 07 Jul 2026 16:51:19 +0300 (EEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ssi.bg; h=cc:cc
+	:content-type:content-type:date:from:from:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=ssi;
+	 bh=VI3pBgOZzhP1av4QcJZuHCeEiA9AJwOZl1ZTj3J6s6I=; b=aRVnyjvYKndf
+	Wn5j9k9AMp/tVUoNhE0mjfPQdiw1gGY3BM1wK5BvC0yQmaBuE8idfDBR7bx/nZnr
+	2R9p8a+sl2oGo/mzHg0w98fb67ZPeDH5AfebmnFodr037ReG1kcxFg6hVz2cSkzk
+	chUbHWNl8k1pxOR/6WBw0fa6tQIy5y4sHkHPu9Mtz0S7V9oZrQlzhesv2JNKGGvq
+	iEysO2/mkZME2ba/E+NqhvV+bET8WgePSQ2vk2mC4PvHBcxTkFiVRa2THE/zeaUz
+	JdKQqdUenqpZuTQY9CKRgsNcyVbHzPpQqXHsXtGBls8xZazG76cfJ2iu8sWY+b7T
+	RRfM6rk+WJ2QRX3YNNMkHmB8TjSAgeDH9Vo8sQY4TRUqvuAhKg791D6aWtiiqabj
+	ITcE4O/4p81Weip24c7GHM2KVOrtLCi8tS1GkN45Ua88Zh9+UdMZ0mioiQNlwF73
+	2+1XTwFnCZaVAeSA1ZZjSP1062X7JpFzush0FlwZCKNf7kzjrkO0uzRKifQvBNZs
+	GtVHvfxVI9rcb3TnVzwa/nWrRmYtUnn13yRMZf7tUqUAAQbGbynK9G6gZzwErmSV
+	velTwRWw9LFDK67bi+epGLUQjeCH3lxFps01ttWT+d7qUpY3OCazjdh32Khfbo6j
+	xIR5kAFkzrqZRixWdkugfSEUKgIl4dI=
+Received: from box.ssi.bg (box.ssi.bg [193.238.174.46])
+	by mx.ssi.bg (Potsfix) with ESMTPS;
+	Tue, 07 Jul 2026 16:51:19 +0300 (EEST)
+Received: from ja.ssi.bg (unknown [213.16.62.126])
+	by box.ssi.bg (Potsfix) with ESMTPSA id A9C4F60374;
+	Tue,  7 Jul 2026 16:51:15 +0300 (EEST)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by ja.ssi.bg (8.18.2/8.18.2) with ESMTP id 667Dp6Hk048186;
+	Tue, 7 Jul 2026 16:51:07 +0300
+Date: Tue, 7 Jul 2026 16:51:06 +0300 (EEST)
+From: Julian Anastasov <ja@ssi.bg>
+To: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+cc: netdev@vger.kernel.org, coreteam@netfilter.org, davem@davemloft.net,
+        edumazet@google.com, fengxw06@126.com, fw@strlen.de,
+        horms@verge.net.au, kuba@kernel.org, linux-kernel@vger.kernel.org,
+        lvs-devel@vger.kernel.org, netfilter-devel@vger.kernel.org,
+        pabeni@redhat.com, pablo@netfilter.org, phil@nwl.cc,
+        qli01@tsinghua.edu.cn, stable@vger.kernel.org, wangao@seu.edu.cn,
+        xuke@tsinghua.edu.cn, yangyx22@mails.tsinghua.edu.cn
+Subject: Re: [PATCH nf v2 0/3] ipvs: use parsed transport offsets in state
+ handlers
+In-Reply-To: <20260706101624.69471-1-zhaoyz24@mails.tsinghua.edu.cn>
+Message-ID: <f1ca1fbd-b8db-a012-3db1-c5aa7d579408@ssi.bg>
+References: <20260706101624.69471-1-zhaoyz24@mails.tsinghua.edu.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-5.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[ssi.bg,reject];
+	R_DKIM_ALLOW(-0.20)[ssi.bg:s=ssi];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-272427-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-272431-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,netfilter.org,davemloft.net,google.com,126.com,strlen.de,verge.net.au,kernel.org,redhat.com,nwl.cc,tsinghua.edu.cn,seu.edu.cn,mails.tsinghua.edu.cn];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,sashiko.dev:url,ssi.bg:from_mime,ssi.bg:email,ssi.bg:mid,ssi.bg:dkim];
+	FORGED_SENDER(0.00)[ja@ssi.bg,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	FORGED_RECIPIENTS(0.00)[m:zhaoyz24@mails.tsinghua.edu.cn,m:netdev@vger.kernel.org,m:coreteam@netfilter.org,m:davem@davemloft.net,m:edumazet@google.com,m:fengxw06@126.com,m:fw@strlen.de,m:horms@verge.net.au,m:kuba@kernel.org,m:linux-kernel@vger.kernel.org,m:lvs-devel@vger.kernel.org,m:netfilter-devel@vger.kernel.org,m:pabeni@redhat.com,m:pablo@netfilter.org,m:phil@nwl.cc,m:qli01@tsinghua.edu.cn,m:stable@vger.kernel.org,m:wangao@seu.edu.cn,m:xuke@tsinghua.edu.cn,m:yangyx22@mails.tsinghua.edu.cn,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:linux-kernel@vger.kernel.org,m:mhiramat@kernel.org,m:mark.rutland@arm.com,m:mathieu.desnoyers@efficios.com,m:akpm@linux-foundation.org,m:stable@vger.kernel.org,m:yuantan098@gmail.com,m:yifanwucs@gmail.com,m:tomapufckgml@gmail.com,m:zcliangcn@gmail.com,m:bird@lzu.edu.cn,m:hhhuang@smu.edu.sg,m:n05ec@lzu.edu.cn,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[rostedt@kernel.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[kernel.org,arm.com,efficios.com,linux-foundation.org,vger.kernel.org,gmail.com,lzu.edu.cn,smu.edu.sg];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FORWARDED(0.00)[lists@lfdr.de];
+	DKIM_TRACE(0.00)[ssi.bg:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rostedt@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ja@ssi.bg,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,goodmis.org:email,smu.edu.sg:email,lzu.edu.cn:email]
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9A73571C2F3
+X-Rspamd-Queue-Id: D559C71C515
 
-From: Huihui Huang <hhhuang@smu.edu.sg>
 
-String event fields are not necessarily NUL-terminated, so the filter
-predicate functions (filter_pred_string(), filter_pred_strloc() and
-filter_pred_strrelloc()) pass the field length to the regex match
-callbacks, and the length-aware matchers honour it.
+	Hello,
 
-regex_match_glob() was the exception: it ignored the length and called
-glob_match(), which scans the string until it hits a NUL byte. Some
-string fields are not NUL-terminated. One example is the dynamic char
-array of the xfs_* namespace tracepoints, which is copied without a
-trailing NUL. For such a field, glob matching reads past the end of
-the event field, causing a KASAN slab-out-of-bounds read in
-glob_match(), reached via regex_match_glob() and filter_match_preds()
-from the xfs_lookup tracepoint.
+On Mon, 6 Jul 2026, Yizhou Zhao wrote:
 
-Add a length-bounded glob_match_len() and use it from regex_match_glob()
-so glob matching always stops at the field boundary. The matching loop
-is factored into a shared helper so glob_match() keeps its behaviour.
+> IPVS parses packets into struct ip_vs_iphdr before scheduling and state
+> handling.  For IPv6, iph.len contains the real transport-header offset
+> after ipv6_find_hdr() has skipped any extension headers.
+> 
+> TCP and SCTP state handlers still recompute their own transport offsets.
+> They use sizeof(struct ipv6hdr) for IPv6, so packets with extension
+> headers make the state machines read the wrong bytes.
+> 
+> Pass the parsed transport offset through the common IPVS state handling
+> callback, then use it in the TCP and SCTP state lookups.
+> 
+> Changes in v2:
+> - Pass the parsed transport offset through ip_vs_set_state() and the
+>   protocol callbacks.
+> - Fix TCP state handling as well as SCTP.
+> - Avoid reparsing the skb in SCTP state handling.
+> - Split the common plumbing, TCP fix and SCTP fix into a 3-patch series.
+> 
+> Yizhou Zhao (3):
+>   ipvs: pass parsed transport offset to state handlers
+>   ipvs: use parsed transport offset in TCP state lookup
+>   ipvs: use parsed transport offset in SCTP state lookup
+> 
+>  include/net/ip_vs.h                   |  3 ++-
+>  net/netfilter/ipvs/ip_vs_core.c       | 10 +++++-----
+>  net/netfilter/ipvs/ip_vs_proto_sctp.c | 18 +++++++-----------
+>  net/netfilter/ipvs/ip_vs_proto_tcp.c  | 11 +++--------
+>  net/netfilter/ipvs/ip_vs_proto_udp.c  |  3 ++-
+>  5 files changed, 19 insertions(+), 26 deletions(-)
 
-Fixes: 60f1d5e3bac4 ("ftrace: Support full glob matching")
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/da1aaf125fc3b63320b0c540fd6afa7c3d5b4f1a.1782836943.git.hhhuang@smu.edu.sg
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Zhengchuan Liang <zcliangcn@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Assisted-by: Codex:GPT-5.4
-Signed-off-by: Huihui Huang <hhhuang@smu.edu.sg>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
----
- include/linux/glob.h               |  1 +
- kernel/trace/trace_events_filter.c |  6 ++----
- lib/glob.c                         | 31 ++++++++++++++++++++++++++++--
- 3 files changed, 32 insertions(+), 6 deletions(-)
+	The patchset looks good to me, thanks!
 
-diff --git a/include/linux/glob.h b/include/linux/glob.h
-index 861327b33e41..91595e750936 100644
---- a/include/linux/glob.h
-+++ b/include/linux/glob.h
-@@ -6,5 +6,6 @@
- #include <linux/compiler.h>	/* For __pure */
- 
- bool __pure glob_match(char const *pat, char const *str);
-+bool __pure glob_match_len(char const *pat, char const *str, size_t len);
- 
- #endif	/* _LINUX_GLOB_H */
-diff --git a/kernel/trace/trace_events_filter.c b/kernel/trace/trace_events_filter.c
-index 609325f57942..6385cd662d8d 100644
---- a/kernel/trace/trace_events_filter.c
-+++ b/kernel/trace/trace_events_filter.c
-@@ -1056,11 +1056,9 @@ static int regex_match_end(char *str, struct regex *r, int len)
- 	return 0;
- }
- 
--static int regex_match_glob(char *str, struct regex *r, int len __maybe_unused)
-+static int regex_match_glob(char *str, struct regex *r, int len)
- {
--	if (glob_match(r->pattern, str))
--		return 1;
--	return 0;
-+	return glob_match_len(r->pattern, str, len) ? 1 : 0;
- }
- 
- /**
-diff --git a/lib/glob.c b/lib/glob.c
-index 7aca76c25bcb..c80d9dd736b4 100644
---- a/lib/glob.c
-+++ b/lib/glob.c
-@@ -11,6 +11,9 @@
- MODULE_DESCRIPTION("glob(7) matching");
- MODULE_LICENSE("Dual MIT/GPL");
- 
-+static bool __pure glob_match_str(char const *pat, char const *str,
-+				  char const *str_end);
-+
- /**
-  * glob_match - Shell-style pattern matching, like !fnmatch(pat, str, 0)
-  * @pat: Shell-style pattern to match, e.g. "*.[ch]".
-@@ -40,6 +43,29 @@ MODULE_LICENSE("Dual MIT/GPL");
-  * An opening bracket without a matching close is matched literally.
-  */
- bool __pure glob_match(char const *pat, char const *str)
-+{
-+	return glob_match_str(pat, str, NULL);
-+}
-+EXPORT_SYMBOL(glob_match);
-+
-+/**
-+ * glob_match_len - glob match against a length-bounded string
-+ * @pat: Shell-style pattern to match.
-+ * @str: String to match.  Need not be NUL-terminated.
-+ * @len: Number of bytes of @str that may be read.
-+ *
-+ * Like glob_match(), but @str is only read up to @len bytes, so it can be
-+ * used on buffers that are not NUL-terminated (e.g. trace event fields).
-+ * A NUL byte within @len still terminates the string.
-+ */
-+bool __pure glob_match_len(char const *pat, char const *str, size_t len)
-+{
-+	return glob_match_str(pat, str, str + len);
-+}
-+EXPORT_SYMBOL(glob_match_len);
-+
-+static bool __pure glob_match_str(char const *pat, char const *str,
-+				  char const *str_end)
- {
- 	/*
- 	 * Backtrack to previous * on mismatch and retry starting one
-@@ -55,9 +81,11 @@ bool __pure glob_match(char const *pat, char const *str)
- 	 * on mismatch, or true after matching the trailing nul bytes.
- 	 */
- 	for (;;) {
--		unsigned char c = *str++;
-+		unsigned char c = (str_end && str >= str_end) ? '\0' : *str;
- 		unsigned char d = *pat++;
- 
-+		str++;
-+
- 		switch (d) {
- 		case '?':	/* Wildcard: anything but nul */
- 			if (c == '\0')
-@@ -125,4 +153,3 @@ bool __pure glob_match(char const *pat, char const *str)
- 		}
- 	}
- }
--EXPORT_SYMBOL(glob_match);
--- 
-2.53.0
+Acked-by: Julian Anastasov <ja@ssi.bg>
 
+	The Sashiko comments need additional fixes:
+
+https://sashiko.dev/#/patchset/20260706101624.69471-1-zhaoyz24%40mails.tsinghua.edu.cn
+
+Regards
+
+--
+Julian Anastasov <ja@ssi.bg>
 
 
