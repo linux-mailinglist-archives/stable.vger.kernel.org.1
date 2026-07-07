@@ -1,63 +1,66 @@
-Return-Path: <stable+bounces-272437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272438-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 7S71CTMOTWpDuQEAu9opvQ
-	(envelope-from <stable+bounces-272437-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 16:33:23 +0200
+	id +nv9NxcSTWpWugEAu9opvQ
+	(envelope-from <stable+bounces-272438-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 16:49:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A690E71CAB5
-	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 16:33:22 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E134671CD67
+	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 16:49:58 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=FmPPgbhe;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272437-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272437-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=WqCg316b;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272438-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272438-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 19D18300749C
-	for <lists+stable@lfdr.de>; Tue,  7 Jul 2026 14:31:18 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 346DD3064E01
+	for <lists+stable@lfdr.de>; Tue,  7 Jul 2026 14:32:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E21B42847F;
-	Tue,  7 Jul 2026 14:31:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB3F2429825;
+	Tue,  7 Jul 2026 14:32:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B64954252A2;
-	Tue,  7 Jul 2026 14:31:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 697D54252A2;
+	Tue,  7 Jul 2026 14:32:24 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783434675; cv=none; b=Ceza+/xZZ5tZlSmdNJE3fqrMTVM9BEESMAa+azHn3kkOOX7kdVW9qwz7l2pKM358BmdogygszkFoTGQKSzZY0WRHtJMsTNZyMWJSnyZ7SuCrP3t8oGdyuLEDgZvfi7aJH31/SCuJfmlVIRSPvA61uIhA0Fch5bNOvGx2em0OCYI=
+	t=1783434745; cv=none; b=d9SnzRFiA5enEx4j8MpYDOKeWCYfwKRtHSMFOZQ1Kj7x8QcxNSssQ0XEGV7Kf2CdxL2Itwqjuy7DFAnEyCjg/rKE9W7GcH44AqFtMQcX9qMD097MK20K++h4O5pNp1QLEJLdX80T1fB3UIn8lHIBIQSkRRHsqMWGgXQwxbgo8sU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783434675; c=relaxed/simple;
-	bh=xLVQRIygJAF0+r/kQ4mO3IaymdnrpddqCGWjhZmBe2s=;
+	s=arc-20240116; t=1783434745; c=relaxed/simple;
+	bh=gPoZSMVoKKDU70W9KeJ2G7VkXeIEeoNTrZ20F0RQ2vg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uaW+i7K9w9165CElB6mOTX4gwlOMr1ufokyaQk7Z7kObCbuISZwve2NDiDn3kR0aQHaWWoqqLe/SA1Y36NaX4B4Vu3Q4Ht53Xwf9x4uOSM3/qfqeY63C49zBQj7Ua4+1mS8T4jsD8fXSLGMUbMUm0DRn7UNRT9IatwIvi6LeAhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=FmPPgbhe; arc=none smtp.client-ip=115.124.30.110
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1783434662; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-	bh=0pfHhjKxWnCHHqsUGc9OvKP9mug23MNVxOz2WJ7PpuE=;
-	b=FmPPgbhejgFFbNgTe+5KcQju0p7uwJUeSlRwZEIAVAnrrBUh/O96/BR28NBwJqUjY/T5G3JmoxGqQxQZBWL1xMN+MQO0C/JrBNbx+o1nU8e6YyXPHSd2u8edVegg22e3Dzly7SEC0nnuZ1muk6dh6GtHc4h+mWjmuURDdW+KDvM=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=dust.li@linux.alibaba.com;NM=1;PH=DS;RN=11;SR=0;TI=SMTPD_---0X6e2kUt_1783434660;
-Received: from localhost(mailfrom:dust.li@linux.alibaba.com fp:SMTPD_---0X6e2kUt_1783434660 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 07 Jul 2026 22:31:01 +0800
-Date: Tue, 7 Jul 2026 22:31:00 +0800
-From: Dust Li <dust.li@linux.alibaba.com>
-To: Alexandra Winter <wintera@linux.ibm.com>
-Cc: Wenjia Zhang <wenjia@linux.ibm.com>, Wen Gu <guwen@linux.alibaba.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Mahanta Jambigi <mjambigi@linux.ibm.com>,
-	"D . Wythe" <alibuda@linux.alibaba.com>,
-	Sidraya Jayagond <sidraya@linux.ibm.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Federico Kirschbaum <federico.kirschbaum@xbow.com>
-Subject: Re: [PATCH net] dibs: loopback: validate offset and size in
- move_data()
-Message-ID: <ak0NpKUDkvrkuSOm@linux.alibaba.com>
-Reply-To: dust.li@linux.alibaba.com
-References: <20260707074318.1448662-1-dust.li@linux.alibaba.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=gsaWaPyfJbQMtk77R5RSgPe41ipLt7l0EEif3893Bdvgfxt4mmhp4m+s15z36jZvwOqDBLNtynrC3bj9Ld21sohikNcR9QeyldXKJ1UaqnRBaipI9cYvCRxLLEQ+nHD8q+E8yViSOF+GiuxVlLIWzKu2Iwd62iloVKAj/zMzfVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WqCg316b; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C2401F000E9;
+	Tue,  7 Jul 2026 14:32:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1783434744;
+	bh=tiZx/mSPksyD1mLKyg5uePeQoXqwFDq6pOM31+vZe64=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=WqCg316b+TNau89QwssY2sozuvDqj3axyePvbvBrdJj0rW0Lddx8uPiGwACnmAgEv
+	 2zVyimjtyEjfpJ5kIAhm1TmelI11N8LI608nHXnaMujnSqm8NzzBSccy9E5t8RHEMn
+	 pjdp6xwVbYSwVS6qmtpAGzakCSTncDwykXL/4cAo=
+Date: Tue, 7 Jul 2026 16:32:21 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Thorsten Leemhuis <regressions@leemhuis.info>
+Cc: Sasha Levin <sashal@kernel.org>,
+	Linux kernel regressions list <regressions@lists.linux.dev>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Dave Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: Re: Some 7.1-post fixes that might be worth picking up rather sooner
+ than later
+Message-ID: <2026070708-hurricane-tackle-43e1@gregkh>
+References: <91281f28-eccf-4681-8f62-faaa8a3ba529@leemhuis.info>
+ <2026061917-flinch-idealism-898f@gregkh>
+ <2026062236-ludicrous-detached-6e20@gregkh>
+ <d3d467d3-637c-49fe-8516-8da65cf4261b@leemhuis.info>
+ <2026070707-brigade-petted-5ef2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,87 +69,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260707074318.1448662-1-dust.li@linux.alibaba.com>
+In-Reply-To: <2026070707-brigade-petted-5ef2@gregkh>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-12.16 / 15.00];
-	WHITELIST_DMARC(-7.00)[alibaba.com:D:+];
-	WHITELIST_SPF_DKIM(-3.00)[alibaba.com:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.alibaba.com,none];
-	R_DKIM_ALLOW(-0.20)[linux.alibaba.com:s=default];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-272437-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-272438-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[dust.li@linux.alibaba.com,stable@vger.kernel.org];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,lists.linux.dev,vger.kernel.org,amd.com,gmail.com,ffwll.ch,linux-foundation.org];
 	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:wintera@linux.ibm.com,m:wenjia@linux.ibm.com,m:guwen@linux.alibaba.com,m:pabeni@redhat.com,m:mjambigi@linux.ibm.com,m:alibuda@linux.alibaba.com,m:sidraya@linux.ibm.com,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:federico.kirschbaum@xbow.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:regressions@leemhuis.info,m:sashal@kernel.org,m:regressions@lists.linux.dev,m:stable@vger.kernel.org,m:alexander.deucher@amd.com,m:christian.koenig@amd.com,m:airlied@gmail.com,m:simona@ffwll.ch,m:torvalds@linux-foundation.org,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[linux.alibaba.com:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dust.li@linux.alibaba.com,stable@vger.kernel.org];
-	REPLYTO_ADDR_EQ_FROM(0.00)[];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	TAGGED_RCPT(0.00)[stable];
-	HAS_REPLYTO(0.00)[dust.li@linux.alibaba.com];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[alibaba.com:email,vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,xbow.com:email]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gitlab.freedesktop.org:url,vger.kernel.org:from_smtp,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,gregkh:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A690E71CAB5
+X-Rspamd-Queue-Id: E134671CD67
 
-On 2026-07-07 15:43:18, Dust Li wrote:
->The loopback move_data() performs a memcpy into the registered DMB
->without checking whether offset + size exceeds the DMB length.  Unlike
->real ISM hardware, which enforces memory region bounds natively, the
->software loopback has no such protection.
->
->A peer-supplied out-of-bounds offset or oversized write would result in
->an OOB write past the allocated kernel buffer.  Add an explicit bounds
->check before the memcpy to reject such requests with -EINVAL.
->
->Fixes: f7a22071dbf3("net/smc: implement DMB-related operations of loopback-ism")
->Cc: stable@vger.kernel.org
->Reported-by: Federico Kirschbaum <federico.kirschbaum@xbow.com>
+On Tue, Jul 07, 2026 at 01:48:29PM +0200, Greg KH wrote:
+> On Tue, Jul 07, 2026 at 12:19:20PM +0200, Thorsten Leemhuis wrote:
+> > [CCing a few people]
+> > 
+> > On 6/22/26 07:32, Greg KH wrote:
+> > > On Fri, Jun 19, 2026 at 11:43:41AM +0200, Greg KH wrote:
+> > >> On Fri, Jun 19, 2026 at 08:04:35AM +0200, Thorsten Leemhuis wrote:
+> > >>> Hi Stable Team! From the regressions point I think it might be nice to
+> > >>> pick up the following changes for the next round of stable updates (e.g.
+> > >>> 7.1.2), as they seem to fix regressions I've seen multiple people report
+> > >>> with 7.1:
+> > >>> [...]
+> > >>> * 12f58a6caad3be ("drm/amd/display: Fix Color Manager (3DLUT, Shaper,
+> > >>> Blend)") [v7.1-post]
+> > > 
+> > > This doesn't apply to 7.1.y, and would need a working backport.
+> > Just a quick status update twimc:
+> > 
+> > I pointed that out in
+> > https://gitlab.freedesktop.org/drm/amd/-/work_items/5396 , but nothing
+> > happened from the AMD side afaics. They have much on their plate, I
+> > fully understand that, I guess it fell through the cracks (maybe this
+> > mail helps). Thing is: the backport of the revert is quite big, so
+> > nobody else (including me) did yet dare to submit it themselves.
+> > 
+> > So two weeks later the regression caused by e56e3cff2a1bb2
+> > ("drm/amd/display: Sync dcn42 with DC 3.2.373") [v7.1-rc1] is still
+> > unfixed in 7.1.y as far as I can see it -- a regression that is known
+> > since more than two months now, as the revert to fix it (12f58a6caad3be,
+> > mentioned in the quote above) was submitted already on 2026-04-29, but
+> > only made it to mainline during the merge window for 7.2 (this is
+> > another thing that afaics fell through the cracks; sadly I only became
+> > aware of the regression after 7.1 was out, otherwise I would have made
+> > noise earlier to get it included in 7.1).
+> 
+> So should 12f58a6caad3be be added to the stable queues?
 
-Reported-by: Baul Lee <baul.lee@xbow.com>
+It doesn't apply cleanly, so I'd need a backported version.
 
-Best regards,
-Dust
+thanks,
 
->Signed-off-by: Dust Li <dust.li@linux.alibaba.com>
->---
-> drivers/dibs/dibs_loopback.c | 5 +++++
-> 1 file changed, 5 insertions(+)
->
->diff --git a/drivers/dibs/dibs_loopback.c b/drivers/dibs/dibs_loopback.c
->index ec3b48cb0e87..0f2e09311152 100644
->--- a/drivers/dibs/dibs_loopback.c
->+++ b/drivers/dibs/dibs_loopback.c
->@@ -254,6 +254,11 @@ static int dibs_lo_move_data(struct dibs_dev *dibs, u64 dmb_tok,
-> 		read_unlock_bh(&ldev->dmb_ht_lock);
-> 		return -EINVAL;
-> 	}
->+	if ((u64)offset + size > rmb_node->len) {
->+		read_unlock_bh(&ldev->dmb_ht_lock);
->+		return -EINVAL;
->+	}
->+
-> 	memcpy((char *)rmb_node->cpu_addr + offset, data, size);
-> 	sba_idx = rmb_node->sba_idx;
-> 	read_unlock_bh(&ldev->dmb_ht_lock);
->-- 
->2.43.7
+greg k-h
 
