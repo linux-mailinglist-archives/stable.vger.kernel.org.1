@@ -1,169 +1,156 @@
-Return-Path: <stable+bounces-272359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272360-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id qDhlDeqjTGr+nQEAu9opvQ
-	(envelope-from <stable+bounces-272359-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 08:59:54 +0200
+	id mymqFvmlTGpfngEAu9opvQ
+	(envelope-from <stable+bounces-272360-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 09:08:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92D5671836A
-	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 08:59:53 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2421718486
+	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 09:08:40 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=cse-iitm-ac-in.20251104.gappssmtp.com header.s=20251104 header.b=ZYX1OkKp;
-	dmarc=fail reason="SPF not aligned (relaxed), DKIM not aligned (relaxed)" header.from=iitm.ac.in (policy=none);
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272359-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272359-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linux.dev header.s=key1 header.b=VrFm2b+0;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272360-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-272360-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 77C9530534DA
-	for <lists+stable@lfdr.de>; Tue,  7 Jul 2026 06:54:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D67DD300CC91
+	for <lists+stable@lfdr.de>; Tue,  7 Jul 2026 07:00:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 414A43CC332;
-	Tue,  7 Jul 2026 06:53:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 226D61A6813;
+	Tue,  7 Jul 2026 06:59:32 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99BD93B995E
-	for <stable@vger.kernel.org>; Tue,  7 Jul 2026 06:53:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 105443AC0D0
+	for <stable@vger.kernel.org>; Tue,  7 Jul 2026 06:59:28 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783407215; cv=none; b=b8ZGXKtYBcoDpfXvAMgcKQ9LT6s2xHVJQLKe3IY7SCsP03nartgl9H1huhcP55hrmADzg5Hcc4+O1N//NskEvFiZE4RqYOOc/nRlGok/scPiU+KW33s3rnQFFce77TUmKzjUMhm6G3IqE4x9sv/e8fBJH8t7jmDx/ALjwoQKDkY=
+	t=1783407571; cv=none; b=VbokZdpUhZ74cAwPeP7SwGK8HNUJ52ybkAzYQj+4wWZvOiAw4YoOHU6kKp80b7Lomx1Riycy2YEFPa1bURl3vUiBJRrBXhPvkYXPrlhq/XI2kqMRi8Mu3RyccPSOrLHb+Tp6Ve6Rgdo+8OqBRyY02PHNYXPWhpfTSc7bh6J7/Lg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783407215; c=relaxed/simple;
-	bh=j3f8/6Ari+2+xlFJo9OZ6E4fcJIZogJtDZW7dOV+Hww=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MQUxt5/93tCozf/ZF0i6z0kx1rEe/OBIs4wE05b3O0AgXbtkH1RNgpTWdefSRhJQ9HQb1ZzH5lx1efPrhSG4Z2HzaGSXFUBA3xOLw4W6r0Mi+hItLiMTKv/YSaJ251hNwKbe400J2633MtKNkcLnXuNiCizpQwo2FwLYnqAdJr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cse.iitm.ac.in; spf=pass smtp.mailfrom=cse.iitm.ac.in; dkim=pass (2048-bit key) header.d=cse-iitm-ac-in.20251104.gappssmtp.com header.i=@cse-iitm-ac-in.20251104.gappssmtp.com header.b=ZYX1OkKp; arc=none smtp.client-ip=209.85.210.177
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-84532e3dbf7so3990397b3a.1
-        for <stable@vger.kernel.org>; Mon, 06 Jul 2026 23:53:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cse-iitm-ac-in.20251104.gappssmtp.com; s=20251104; t=1783407209; x=1784012009; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=TqIW25gxmpXz6F7g7W0IsW4kAKFmIx2GtIXiGhqGKtM=;
-        b=ZYX1OkKpt1aBMiMm//jv13J0TZmsOQTUztoFk7sMSU2O1OSJTWhME0raOLyTO3DZLF
-         hLnWoASEXn0WpWkZbdB/0cG0mn+v42sSdA5aG24ymQnZcv8Cw6/8QGUK9N0JlC2pe7zS
-         O+z5LuhQfvBjLudxX/u0HmFfRJXerXj+rj6ZJdRD6dljKcx2HGreflNMfQVjJ+GCRB8B
-         TGMnY8wHFKaaocfoeQ5m8rYcUK6QSGGqVa626rH+qSQecm3Sa3XVhfFxkRLuHUR0pNr6
-         UKWVmtvIAy2chVBEwZHhZ+UiJEnSuBkopj5xobdF2yM0GDe7xN1NsmyFI5PDFPRBm4m4
-         A9Nw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783407209; x=1784012009;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TqIW25gxmpXz6F7g7W0IsW4kAKFmIx2GtIXiGhqGKtM=;
-        b=dp0GbzZnspH9Uu03voRlFDxDbSeZYvvUc0meABcO/Nb+J1niBp8gmMuczuhYxNcvSk
-         B27evIuM1tGfuXr/vaFlAjfX63qbz8v8BLtYlHui7C0a3ytKw0DUjaFhFNfqMgEF8pBP
-         o1Ubu6/aP1y3gWQu3w+VuzWhzhUjqPE3DEa2e8t8n6p7hfOk5LRyx+fY4X3pyiVwcnOU
-         1MDagfoSFEHTlqYtLmUjY2hzLHuJNmyryhm6c8zFpNq6rxgsK6aOp/C86pBaw2fpNlbZ
-         5nb+MQMDr/3np4qWimZ1oen97sc1+Udk5F6pYA+y0Wsl4T9JlwzVyp8bs+p8v2IFi/rY
-         WKMg==
-X-Forwarded-Encrypted: i=1; AHgh+RozeohkJuTnDGSVImP1SEL6/b2+7iwCNE7JytBULuuefdpEdso86pFwRjOKj3I6VQjtB2o45rw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzL/yv5pyVCJ4ylcJ0CdCVzrtYfpMzaR+DuEqB3p5ea/drqA3k7
-	pSKRd01ohBYjqVwqsIFjOgOm5/3HkhRp2N+rzB8j2QcEGsXAvNx/xTEVH4uGE5SPvQI=
-X-Gm-Gg: AfdE7ckYFuY2vsPKef2wgAcEfdyQJzUoFAF7WPBSEwjsGWojqsnGujV/ZgLIpn0zgV8
-	noHf0yW6+IWEJb/S4RDiESJ4AoLLfV0uqjIG1hW64DsuXZCnCBvZRQh8ok55+3kBQ53kCYT7ewv
-	ojKMvrxZ4VXGkQvnEzVsfPgkuK9RGsvmF/Kn29mLucl6T6G1ya8bm4o2F8lrdU7gsuvj1hy8KTL
-	et9FPqB68z6NJGtktyigHx6zUR9fRJcS3qdSVaqcvdxJCcc+hlqD32o2vRZ07yDETR19TcjM92p
-	kCB2apzVjQOd2qzoEcY/tf3cdKIKR28wTEvOZ7I2Rz1sULLZ2E4lH0ctajcv7ELqnqUBoNXE6ye
-	mDd4K6FmRHH7U8ifdphAOB1+8GELcinkDjnpm3LAyWROR3jE/Us27nhEfUvVwLlfJNalDpbSVpW
-	WwZwzr/1WUxpEl1d00yyU6syk/QwTFceUSGDQH1B5ybCqP+mG6OdSsOmXB8nCXPtZTgVsJiJ2Yo
-	Frb0GCBOw/t3Zk4bsZC0xjeIJOsiKNWZOj+hpDX9ro=
-X-Received: by 2002:a05:6a00:2d86:b0:847:77f0:72af with SMTP id d2e1a72fcca58-84826d3e339mr3820247b3a.40.1783407209410;
-        Mon, 06 Jul 2026 23:53:29 -0700 (PDT)
-Received: from Metius.iitm.ac.in ([103.158.43.43])
-        by smtp.googlemail.com with ESMTPSA id 41be03b00d2f7-ca5af7d595dsm517238a12.6.2026.07.06.23.53.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jul 2026 23:53:28 -0700 (PDT)
-From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
-To: justin.tee@broadcom.com
-Cc: Abdun Nihaal <nihaal@cse.iitm.ac.in>,
-	paul.ely@broadcom.com,
-	James.Bottomley@HansenPartnership.com,
-	martin.petersen@oracle.com,
-	linux-scsi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] scsi: lpfc: Fix memory leak in lpfc_sli4_driver_resource_setup()
-Date: Tue,  7 Jul 2026 12:23:02 +0530
-Message-ID: <20260707065304.949135-1-nihaal@cse.iitm.ac.in>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1783407571; c=relaxed/simple;
+	bh=vIxIQqpTIhDDpxaWL/KxlpymPgYqFIm+IIELYKWx95k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=u4NjxXIh0yFadJaQumLxayySbUarWd9npivv+TuWtLJcci0vLc6qQBCIz6sdlnrwWMxiQbfP/qUxbrnxM4iLKwW2VWHhBiZU0VQVc3iNncp+vW3tUyveNl8VN3DLzQEm1xXpAy/tLRy1x0KV1yVpPQJeHQANMvJOLnbF0k0wMEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=VrFm2b+0; arc=none smtp.client-ip=91.218.175.177
+Date: Tue, 7 Jul 2026 08:59:22 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783407567;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Z3mZO7NTFKwd7aHo5QwYs5BUY5MkVsANllXsSCa2qZE=;
+	b=VrFm2b+0l3DoRENXcu2oq2+VoUSPORFXWwBWSpMDShvNzdUzeQux2FVSRMbWyi7PZesnE6
+	icAHh1s7Y8EC9bFxgk5HBn+5/6R8DbllGINY5Ep+Q8u3x1nqo3F9hwlX7k5FYRHJPoIweP
+	J25P0up1nNwqJCdsByOUKUsimX69ZmA=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Thorsten Blum <thorsten.blum@linux.dev>
+To: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Chao Fan <fanc.fnst@cn.fujitsu.com>
+Cc: stable@vger.kernel.org, Borislav Petkov <bp@suse.de>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] x86/boot: Reject overlong acpi_rsdp= values
+Message-ID: <akyjyoPhYdmzYyvl@linux.dev>
+References: <20260621170010.276591-2-thorsten.blum@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260621170010.276591-2-thorsten.blum@linux.dev>
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.06 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[cse-iitm-ac-in.20251104.gappssmtp.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[iitm.ac.in : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_FROM(0.00)[bounces-272359-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-272360-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:justin.tee@broadcom.com,m:nihaal@cse.iitm.ac.in,m:paul.ely@broadcom.com,m:James.Bottomley@HansenPartnership.com,m:martin.petersen@oracle.com,m:linux-scsi@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[nihaal@cse.iitm.ac.in,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	FORGED_SENDER(0.00)[thorsten.blum@linux.dev,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:x86@kernel.org,m:hpa@zytor.com,m:fanc.fnst@cn.fujitsu.com,m:stable@vger.kernel.org,m:bp@suse.de,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[cse-iitm-ac-in.20251104.gappssmtp.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[nihaal@cse.iitm.ac.in,stable@vger.kernel.org];
-	ALIAS_RESOLVED(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linux.dev:+];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[thorsten.blum@linux.dev,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,cse-iitm-ac-in.20251104.gappssmtp.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,cse.iitm.ac.in:mid,cse.iitm.ac.in:from_mime]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,linux.dev:from_mime,linux.dev:email,linux.dev:mid,linux.dev:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 92D5671836A
+X-Rspamd-Queue-Id: C2421718486
 
-The memory allocated for mboxq using mempool_alloc() is not freed in
-some of the early exit error paths. Fix that by moving the
-mempool_free() call to an earlier point after last use.
+On Sun, Jun 21, 2026 at 07:00:10PM +0200, Thorsten Blum wrote:
+> cmdline_find_option() returns the full length of the acpi_rsdp= value
+> even if it is truncated. However, get_cmdline_acpi_rsdp() only checks
+> whether acpi_rsdp= is present and does not reject overlong values that
+> do not fit in the buffer.
+> 
+> Reject overlong values and warn to prevent boot_kstrtoul() from parsing
+> a truncated value and thus from silently using the wrong RSDP address.
+> 
+> Fixes: 3c98e71b42a7 ("x86/boot: Add "acpi_rsdp=" early parsing")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+> ---
+> Changes in v3:
+> - Drop the newline as warn() already prints newlines around the message
+> - v2: https://lore.kernel.org/r/20260621131836.175468-2-thorsten.blum@linux.dev/
+> 
+> Changes in v2:
+> - Warn on overlong acpi_rsdp= values (Boris)
+> - v1: https://lore.kernel.org/r/20260617130417.36651-4-thorsten.blum@linux.dev/
+> ---
+>  arch/x86/boot/compressed/acpi.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/x86/boot/compressed/acpi.c b/arch/x86/boot/compressed/acpi.c
+> index f196b1d1ddf8..aed27604c11f 100644
+> --- a/arch/x86/boot/compressed/acpi.c
+> +++ b/arch/x86/boot/compressed/acpi.c
+> @@ -184,10 +184,15 @@ static unsigned long get_cmdline_acpi_rsdp(void)
+>  	char val[MAX_ADDR_LEN] = { };
+>  	int ret;
+>  
+> -	ret = cmdline_find_option("acpi_rsdp", val, MAX_ADDR_LEN);
+> +	ret = cmdline_find_option("acpi_rsdp", val, sizeof(val));
+>  	if (ret < 0)
+>  		return 0;
+>  
+> +	if (ret >= sizeof(val)) {
+> +		warn("acpi_rsdp= value too long; ignoring");
+> +		return 0;
+> +	}
+> +
+>  	if (boot_kstrtoul(val, 16, &addr))
+>  		return 0;
+>  #endif
 
-Fixes: d79c9e9d4b3d ("scsi: lpfc: Support dynamic unbounded SGL lists on G7 hardware.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
----
- drivers/scsi/lpfc/lpfc_init.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+Hi Boris,
 
-diff --git a/drivers/scsi/lpfc/lpfc_init.c b/drivers/scsi/lpfc/lpfc_init.c
-index 82af59c913e9..23355f12fbff 100644
---- a/drivers/scsi/lpfc/lpfc_init.c
-+++ b/drivers/scsi/lpfc/lpfc_init.c
-@@ -8189,6 +8189,7 @@ lpfc_sli4_driver_resource_setup(struct lpfc_hba *phba)
- 		mempool_free(mboxq, phba->mbox_mem_pool);
- 		goto out_free_bsmbx;
- 	}
-+	mempool_free(mboxq, phba->mbox_mem_pool);
- 
- 	/*
- 	 * 1 for cmd, 1 for rsp, NVME adds an extra one
-@@ -8311,8 +8312,6 @@ lpfc_sli4_driver_resource_setup(struct lpfc_hba *phba)
- 		goto out_free_sg_dma_buf;
- 	}
- 
--	mempool_free(mboxq, phba->mbox_mem_pool);
--
- 	/* Verify OAS is supported */
- 	lpfc_sli4_oas_verify(phba);
- 
--- 
-2.43.0
+Could you please take another look at this when you get a chance?
 
+Thanks,
+Thorsten
 
