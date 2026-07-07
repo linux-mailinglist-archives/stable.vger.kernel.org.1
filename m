@@ -1,156 +1,177 @@
-Return-Path: <stable+bounces-272360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272361-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id mymqFvmlTGpfngEAu9opvQ
-	(envelope-from <stable+bounces-272360-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 09:08:41 +0200
+	id gqm9JR2oTGrpngEAu9opvQ
+	(envelope-from <stable+bounces-272361-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 09:17:49 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2421718486
-	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 09:08:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5092F7185FF
+	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 09:17:49 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VrFm2b+0;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272360-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-272360-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=cse-iitm-ac-in.20251104.gappssmtp.com header.s=20251104 header.b=EaP6yODx;
+	dmarc=fail reason="SPF not aligned (relaxed), DKIM not aligned (relaxed)" header.from=iitm.ac.in (policy=none);
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272361-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-272361-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D67DD300CC91
-	for <lists+stable@lfdr.de>; Tue,  7 Jul 2026 07:00:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F1DA23034B7B
+	for <lists+stable@lfdr.de>; Tue,  7 Jul 2026 07:05:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 226D61A6813;
-	Tue,  7 Jul 2026 06:59:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A6EB3B42D4;
+	Tue,  7 Jul 2026 07:05:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 105443AC0D0
-	for <stable@vger.kernel.org>; Tue,  7 Jul 2026 06:59:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B8253AB5BB
+	for <stable@vger.kernel.org>; Tue,  7 Jul 2026 07:05:35 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783407571; cv=none; b=VbokZdpUhZ74cAwPeP7SwGK8HNUJ52ybkAzYQj+4wWZvOiAw4YoOHU6kKp80b7Lomx1Riycy2YEFPa1bURl3vUiBJRrBXhPvkYXPrlhq/XI2kqMRi8Mu3RyccPSOrLHb+Tp6Ve6Rgdo+8OqBRyY02PHNYXPWhpfTSc7bh6J7/Lg=
+	t=1783407937; cv=none; b=PNEdWuNFk5BynXBrbKy+ohkk+RjCnO2mNbso9SxmXzPn5+stEZLYSYE2Ti9G73VESy02C1Ztik0b+ANjTk99LsRBgYGXUAV2R7PDCpPzlFfmoSSuta4sxJ++BrQHTyV/hS644kUiKksHsQwxc9aK2Ksp3ZTyy3aVVvjU6+N6hwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783407571; c=relaxed/simple;
-	bh=vIxIQqpTIhDDpxaWL/KxlpymPgYqFIm+IIELYKWx95k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=u4NjxXIh0yFadJaQumLxayySbUarWd9npivv+TuWtLJcci0vLc6qQBCIz6sdlnrwWMxiQbfP/qUxbrnxM4iLKwW2VWHhBiZU0VQVc3iNncp+vW3tUyveNl8VN3DLzQEm1xXpAy/tLRy1x0KV1yVpPQJeHQANMvJOLnbF0k0wMEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=VrFm2b+0; arc=none smtp.client-ip=91.218.175.177
-Date: Tue, 7 Jul 2026 08:59:22 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783407567;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Z3mZO7NTFKwd7aHo5QwYs5BUY5MkVsANllXsSCa2qZE=;
-	b=VrFm2b+0l3DoRENXcu2oq2+VoUSPORFXWwBWSpMDShvNzdUzeQux2FVSRMbWyi7PZesnE6
-	icAHh1s7Y8EC9bFxgk5HBn+5/6R8DbllGINY5Ep+Q8u3x1nqo3F9hwlX7k5FYRHJPoIweP
-	J25P0up1nNwqJCdsByOUKUsimX69ZmA=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Thorsten Blum <thorsten.blum@linux.dev>
-To: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Chao Fan <fanc.fnst@cn.fujitsu.com>
-Cc: stable@vger.kernel.org, Borislav Petkov <bp@suse.de>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] x86/boot: Reject overlong acpi_rsdp= values
-Message-ID: <akyjyoPhYdmzYyvl@linux.dev>
-References: <20260621170010.276591-2-thorsten.blum@linux.dev>
+	s=arc-20240116; t=1783407937; c=relaxed/simple;
+	bh=bY5LKc3I0Jv8nZpUIEOF6lgwuy/yE4feoIlM/xShIEU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IcU7MBTTFnIVl3LRGpnUYAUQ17+T5z2lV+M32D5dhoA/ycRAhs70/vqnbzX12YAqhnLTkk2d8+TepTXbVWMB9+SYqHosk+4Q3322wdYYl0wP1WTfUFU3obIAj0de9FaVRL7GvEmVf+tpr1PeGLWipbGfSVnr9d+qYdiS+vRTYAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cse.iitm.ac.in; spf=pass smtp.mailfrom=cse.iitm.ac.in; dkim=pass (2048-bit key) header.d=cse-iitm-ac-in.20251104.gappssmtp.com header.i=@cse-iitm-ac-in.20251104.gappssmtp.com header.b=EaP6yODx; arc=none smtp.client-ip=209.85.210.171
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-84780c95e2eso3033992b3a.3
+        for <stable@vger.kernel.org>; Tue, 07 Jul 2026 00:05:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cse-iitm-ac-in.20251104.gappssmtp.com; s=20251104; t=1783407935; x=1784012735; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=JinMzbnW1YyIiCcwbl+3maMIpSRORpZ9ZKiJ12a6GbA=;
+        b=EaP6yODx08kgproUFTtnRXilV1dE94XAnTRvYsVcD9t5ocNt4ZsrRoeRxJIBqCmTLb
+         3PGJsgCMLDPfdoklquK6PnLQrdLoSnD9lrGLInB6xI7u75Epg4I6EY2zNrJhSA6Q7jsH
+         j/NDBeP7Ucd6OXfKb8js3E6k1bXGEaHhU4kJs+I4S1yK3fsAOBI1j09U0E9fy6SHdplm
+         ySyggBrfvb7Slw5pxesIPUgChAAx1HvupoSUKUQIHZTqCtRcT9dFfLaknFRAubZfn1L6
+         /gXURG11v5Zl7b/GQGTCouhsE5S29K5UnUpHZa/w46E/AWdkXq6uVOeG1lH9fquMKNIp
+         MQxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783407935; x=1784012735;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=JinMzbnW1YyIiCcwbl+3maMIpSRORpZ9ZKiJ12a6GbA=;
+        b=MGZS1BMHsWQb5hlFqKE3DCGV01W25fJ8OVDdM+CA4AKS1QzMUrw+YpgNKD/sF7UVSI
+         NFupwzCeTgNBCHTfP6tzlI5pAi7ueemz0Fle6Kir21e6tiZVjYWTYZDoJZe022H9i5tS
+         g5ja778Kf3PMux82Bu8TqshMQ96M0QzA6Rf7GptHEMrSNiqNDke25s+PFtQ+KnErjLV8
+         nmp1PQ9cmw+I560SVHZkDjh5owj5dBf8+YceJjB4eiICAcvUpppiUyR5qq80IXA9XDDk
+         zpLTbvnJG4eDkIYzlwi9Nf3C+n1jSNG4IMDbqMFwW660gf9ha53Oc5O8q5tptPGZuqlv
+         oCOg==
+X-Forwarded-Encrypted: i=1; AHgh+Rr1AjMhuhidSzeC9PeWhoxnUKZEr5/yVeOLXOiaGxbIdmKILgpSYvtR+iSBeNTDb2Bvr3eGgok=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy7UIPdinuXuUS4gXmT+KukIcPV2jJNiwU8FuU2TyAcaPHaJWqh
+	wLcqcdQqRtBTzPAb03FfpLiwvKgYHtayBfEz/bbIpJu5VWEQf1olYG/yUMEqxAqu4B8=
+X-Gm-Gg: AfdE7cnhQAfqKPgDmtl69JEgYvNjAMQ8qF5STKug/PUnHFnypwDwHaQ+kJZNoTtMsC6
+	DpD/fKIcqwQ8atJlqLnC0ThygXxxRxvrDbCaEYX/b2zk8c4sBylpx7QV1L6nE21BJ9zeHoWv6W0
+	qIhP5uCQ2acvSgmNgkJ/RdUpwlSB7eB38EAFZe7LfdbEhtNy5ah3AijznngVJk3OpxU0vw3I9sY
+	yaSGmqDpwmMly8P6PI3XybvbpMAEy3iDC3EBFZZTEB2iKhsCcVxiXyn6Y49WmizESohWv9wusmD
+	wmA4/wK1nIj1/pg1BVftRmeip/Mz4U7CclWVKFs/cNQ1Rkpua9cmGKSR6mxwrYgN9bn/zNd4+rI
+	KUSRc2zn8fjNI0w+e0MCSvDmzUBDCPL18/73rs8iqVxdj5DRqrrZTY68fhoZDZ9T62LDqZGlbuN
+	H4WGlNZKW66gMIymAhFF7gKEgy3t2GomS31vbAC80C+eGT13jceGImxoHo/jbmSP7ODfIrdfo7K
+	GSFxqjekmB57hzOc6amyw7Biwo+9JPty28QNXttJJw=
+X-Received: by 2002:a05:6a00:2905:b0:848:2f74:d8d2 with SMTP id d2e1a72fcca58-8482f74dc63mr1607434b3a.67.1783407935320;
+        Tue, 07 Jul 2026 00:05:35 -0700 (PDT)
+Received: from Metius.iitm.ac.in ([103.158.43.43])
+        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-847f6d4e741sm4986516b3a.28.2026.07.07.00.05.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Jul 2026 00:05:34 -0700 (PDT)
+From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+To: s.shravan@intel.com
+Cc: Abdun Nihaal <nihaal@cse.iitm.ac.in>,
+	hansg@kernel.org,
+	ilpo.jarvinen@linux.intel.com,
+	platform-driver-x86@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] platform/x86: int1092: Fix potential memory leak in sar_probe()
+Date: Tue,  7 Jul 2026 12:35:22 +0530
+Message-ID: <20260707070524.953741-1-nihaal@cse.iitm.ac.in>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260621170010.276591-2-thorsten.blum@linux.dev>
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.06 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[cse-iitm-ac-in.20251104.gappssmtp.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[iitm.ac.in : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-272360-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_SENDER(0.00)[thorsten.blum@linux.dev,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:x86@kernel.org,m:hpa@zytor.com,m:fanc.fnst@cn.fujitsu.com,m:stable@vger.kernel.org,m:bp@suse.de,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linux.dev:+];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[thorsten.blum@linux.dev,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-272361-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:s.shravan@intel.com,m:nihaal@cse.iitm.ac.in,m:hansg@kernel.org,m:ilpo.jarvinen@linux.intel.com,m:platform-driver-x86@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[nihaal@cse.iitm.ac.in,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	DKIM_TRACE(0.00)[cse-iitm-ac-in.20251104.gappssmtp.com:+];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,linux.dev:from_mime,linux.dev:email,linux.dev:mid,linux.dev:dkim]
+	FROM_NEQ_ENVFROM(0.00)[nihaal@cse.iitm.ac.in,stable@vger.kernel.org];
+	ALIAS_RESOLVED(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[cse.iitm.ac.in:mid,cse.iitm.ac.in:from_mime,iitm.ac.in:email,vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,cse-iitm-ac-in.20251104.gappssmtp.com:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C2421718486
+X-Rspamd-Queue-Id: 5092F7185FF
 
-On Sun, Jun 21, 2026 at 07:00:10PM +0200, Thorsten Blum wrote:
-> cmdline_find_option() returns the full length of the acpi_rsdp= value
-> even if it is truncated. However, get_cmdline_acpi_rsdp() only checks
-> whether acpi_rsdp= is present and does not reject overlong values that
-> do not fit in the buffer.
-> 
-> Reject overlong values and warn to prevent boot_kstrtoul() from parsing
-> a truncated value and thus from silently using the wrong RSDP address.
-> 
-> Fixes: 3c98e71b42a7 ("x86/boot: Add "acpi_rsdp=" early parsing")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-> ---
-> Changes in v3:
-> - Drop the newline as warn() already prints newlines around the message
-> - v2: https://lore.kernel.org/r/20260621131836.175468-2-thorsten.blum@linux.dev/
-> 
-> Changes in v2:
-> - Warn on overlong acpi_rsdp= values (Boris)
-> - v1: https://lore.kernel.org/r/20260617130417.36651-4-thorsten.blum@linux.dev/
-> ---
->  arch/x86/boot/compressed/acpi.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/x86/boot/compressed/acpi.c b/arch/x86/boot/compressed/acpi.c
-> index f196b1d1ddf8..aed27604c11f 100644
-> --- a/arch/x86/boot/compressed/acpi.c
-> +++ b/arch/x86/boot/compressed/acpi.c
-> @@ -184,10 +184,15 @@ static unsigned long get_cmdline_acpi_rsdp(void)
->  	char val[MAX_ADDR_LEN] = { };
->  	int ret;
->  
-> -	ret = cmdline_find_option("acpi_rsdp", val, MAX_ADDR_LEN);
-> +	ret = cmdline_find_option("acpi_rsdp", val, sizeof(val));
->  	if (ret < 0)
->  		return 0;
->  
-> +	if (ret >= sizeof(val)) {
-> +		warn("acpi_rsdp= value too long; ignoring");
-> +		return 0;
-> +	}
-> +
->  	if (boot_kstrtoul(val, 16, &addr))
->  		return 0;
->  #endif
+The memory allocated for device_mode_info in parse_package() called by
+sar_get_data() is not freed in some of the error paths in sar_probe().
+Fix that by adding the corresponding free in the error path.
 
-Hi Boris,
+Fixes: dcfbd31ef4bc ("platform/x86: BIOS SAR driver for Intel M.2 Modem")
+Cc: stable@vger.kernel.org
+Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+---
+ drivers/platform/x86/intel/int1092/intel_sar.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-Could you please take another look at this when you get a chance?
+diff --git a/drivers/platform/x86/intel/int1092/intel_sar.c b/drivers/platform/x86/intel/int1092/intel_sar.c
+index 849f7b415c1e..b27fc07c087a 100644
+--- a/drivers/platform/x86/intel/int1092/intel_sar.c
++++ b/drivers/platform/x86/intel/int1092/intel_sar.c
+@@ -273,13 +273,13 @@ static int sar_probe(struct platform_device *device)
+ 	if (sar_get_device_mode(device) != AE_OK) {
+ 		dev_err(&device->dev, "Failed to get device mode\n");
+ 		result = -EIO;
+-		goto r_free;
++		goto r_sar;
+ 	}
+ 
+ 	result = sysfs_create_group(&device->dev.kobj, &intcsar_group);
+ 	if (result) {
+ 		dev_err(&device->dev, "sysfs creation failed\n");
+-		goto r_free;
++		goto r_sar;
+ 	}
+ 
+ 	if (acpi_install_notify_handler(ACPI_HANDLE(&device->dev), ACPI_DEVICE_NOTIFY,
+@@ -292,6 +292,9 @@ static int sar_probe(struct platform_device *device)
+ 
+ r_sys:
+ 	sysfs_remove_group(&device->dev.kobj, &intcsar_group);
++r_sar:
++	for (reg = 0; reg < MAX_REGULATORY; reg++)
++		kfree(context->config_data[reg].device_mode_info);
+ r_free:
+ 	kfree(context);
+ 	return result;
+-- 
+2.43.0
 
-Thanks,
-Thorsten
 
