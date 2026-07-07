@@ -1,92 +1,65 @@
-Return-Path: <stable+bounces-272361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272363-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id gqm9JR2oTGrpngEAu9opvQ
-	(envelope-from <stable+bounces-272361-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 09:17:49 +0200
+	id IIsuLtWnTGrSngEAu9opvQ
+	(envelope-from <stable+bounces-272363-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 09:16:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5092F7185FF
-	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 09:17:49 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6869D7185B1
+	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 09:16:37 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=cse-iitm-ac-in.20251104.gappssmtp.com header.s=20251104 header.b=EaP6yODx;
-	dmarc=fail reason="SPF not aligned (relaxed), DKIM not aligned (relaxed)" header.from=iitm.ac.in (policy=none);
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272361-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-272361-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=163.com header.s=s110527 header.b="U2iP0/WD";
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272363-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-272363-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F1DA23034B7B
-	for <lists+stable@lfdr.de>; Tue,  7 Jul 2026 07:05:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 59FF43012B18
+	for <lists+stable@lfdr.de>; Tue,  7 Jul 2026 07:16:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A6EB3B42D4;
-	Tue,  7 Jul 2026 07:05:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 889B9357D10;
+	Tue,  7 Jul 2026 07:16:23 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B8253AB5BB
-	for <stable@vger.kernel.org>; Tue,  7 Jul 2026 07:05:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A32FE37C109;
+	Tue,  7 Jul 2026 07:16:14 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783407937; cv=none; b=PNEdWuNFk5BynXBrbKy+ohkk+RjCnO2mNbso9SxmXzPn5+stEZLYSYE2Ti9G73VESy02C1Ztik0b+ANjTk99LsRBgYGXUAV2R7PDCpPzlFfmoSSuta4sxJ++BrQHTyV/hS644kUiKksHsQwxc9aK2Ksp3ZTyy3aVVvjU6+N6hwI=
+	t=1783408582; cv=none; b=vF7TyTAZOAad9rXxG2SDIXGmY+ee7OqjgUzWBx/8OeD2HkV8Spb1tSvGN4sh8uPICwHNdP2iCIhdrXQkPPaJ9QonaS9QeSyhrKEWd6wM6DHBqWDONZNl8zs2ib1K6a76ocbh5J+s1U1BW7ZpC/aM9XOY4PNJbXMErqK4xbuOENo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783407937; c=relaxed/simple;
-	bh=bY5LKc3I0Jv8nZpUIEOF6lgwuy/yE4feoIlM/xShIEU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IcU7MBTTFnIVl3LRGpnUYAUQ17+T5z2lV+M32D5dhoA/ycRAhs70/vqnbzX12YAqhnLTkk2d8+TepTXbVWMB9+SYqHosk+4Q3322wdYYl0wP1WTfUFU3obIAj0de9FaVRL7GvEmVf+tpr1PeGLWipbGfSVnr9d+qYdiS+vRTYAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cse.iitm.ac.in; spf=pass smtp.mailfrom=cse.iitm.ac.in; dkim=pass (2048-bit key) header.d=cse-iitm-ac-in.20251104.gappssmtp.com header.i=@cse-iitm-ac-in.20251104.gappssmtp.com header.b=EaP6yODx; arc=none smtp.client-ip=209.85.210.171
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-84780c95e2eso3033992b3a.3
-        for <stable@vger.kernel.org>; Tue, 07 Jul 2026 00:05:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cse-iitm-ac-in.20251104.gappssmtp.com; s=20251104; t=1783407935; x=1784012735; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=JinMzbnW1YyIiCcwbl+3maMIpSRORpZ9ZKiJ12a6GbA=;
-        b=EaP6yODx08kgproUFTtnRXilV1dE94XAnTRvYsVcD9t5ocNt4ZsrRoeRxJIBqCmTLb
-         3PGJsgCMLDPfdoklquK6PnLQrdLoSnD9lrGLInB6xI7u75Epg4I6EY2zNrJhSA6Q7jsH
-         j/NDBeP7Ucd6OXfKb8js3E6k1bXGEaHhU4kJs+I4S1yK3fsAOBI1j09U0E9fy6SHdplm
-         ySyggBrfvb7Slw5pxesIPUgChAAx1HvupoSUKUQIHZTqCtRcT9dFfLaknFRAubZfn1L6
-         /gXURG11v5Zl7b/GQGTCouhsE5S29K5UnUpHZa/w46E/AWdkXq6uVOeG1lH9fquMKNIp
-         MQxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783407935; x=1784012735;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=JinMzbnW1YyIiCcwbl+3maMIpSRORpZ9ZKiJ12a6GbA=;
-        b=MGZS1BMHsWQb5hlFqKE3DCGV01W25fJ8OVDdM+CA4AKS1QzMUrw+YpgNKD/sF7UVSI
-         NFupwzCeTgNBCHTfP6tzlI5pAi7ueemz0Fle6Kir21e6tiZVjYWTYZDoJZe022H9i5tS
-         g5ja778Kf3PMux82Bu8TqshMQ96M0QzA6Rf7GptHEMrSNiqNDke25s+PFtQ+KnErjLV8
-         nmp1PQ9cmw+I560SVHZkDjh5owj5dBf8+YceJjB4eiICAcvUpppiUyR5qq80IXA9XDDk
-         zpLTbvnJG4eDkIYzlwi9Nf3C+n1jSNG4IMDbqMFwW660gf9ha53Oc5O8q5tptPGZuqlv
-         oCOg==
-X-Forwarded-Encrypted: i=1; AHgh+Rr1AjMhuhidSzeC9PeWhoxnUKZEr5/yVeOLXOiaGxbIdmKILgpSYvtR+iSBeNTDb2Bvr3eGgok=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy7UIPdinuXuUS4gXmT+KukIcPV2jJNiwU8FuU2TyAcaPHaJWqh
-	wLcqcdQqRtBTzPAb03FfpLiwvKgYHtayBfEz/bbIpJu5VWEQf1olYG/yUMEqxAqu4B8=
-X-Gm-Gg: AfdE7cnhQAfqKPgDmtl69JEgYvNjAMQ8qF5STKug/PUnHFnypwDwHaQ+kJZNoTtMsC6
-	DpD/fKIcqwQ8atJlqLnC0ThygXxxRxvrDbCaEYX/b2zk8c4sBylpx7QV1L6nE21BJ9zeHoWv6W0
-	qIhP5uCQ2acvSgmNgkJ/RdUpwlSB7eB38EAFZe7LfdbEhtNy5ah3AijznngVJk3OpxU0vw3I9sY
-	yaSGmqDpwmMly8P6PI3XybvbpMAEy3iDC3EBFZZTEB2iKhsCcVxiXyn6Y49WmizESohWv9wusmD
-	wmA4/wK1nIj1/pg1BVftRmeip/Mz4U7CclWVKFs/cNQ1Rkpua9cmGKSR6mxwrYgN9bn/zNd4+rI
-	KUSRc2zn8fjNI0w+e0MCSvDmzUBDCPL18/73rs8iqVxdj5DRqrrZTY68fhoZDZ9T62LDqZGlbuN
-	H4WGlNZKW66gMIymAhFF7gKEgy3t2GomS31vbAC80C+eGT13jceGImxoHo/jbmSP7ODfIrdfo7K
-	GSFxqjekmB57hzOc6amyw7Biwo+9JPty28QNXttJJw=
-X-Received: by 2002:a05:6a00:2905:b0:848:2f74:d8d2 with SMTP id d2e1a72fcca58-8482f74dc63mr1607434b3a.67.1783407935320;
-        Tue, 07 Jul 2026 00:05:35 -0700 (PDT)
-Received: from Metius.iitm.ac.in ([103.158.43.43])
-        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-847f6d4e741sm4986516b3a.28.2026.07.07.00.05.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jul 2026 00:05:34 -0700 (PDT)
-From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
-To: s.shravan@intel.com
-Cc: Abdun Nihaal <nihaal@cse.iitm.ac.in>,
-	hansg@kernel.org,
-	ilpo.jarvinen@linux.intel.com,
-	platform-driver-x86@vger.kernel.org,
+	s=arc-20240116; t=1783408582; c=relaxed/simple;
+	bh=tS8xW4ACW7vQCCwps22aNMeLPdTivzNwbzURsLhXz9M=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=RugOMkpEYc+JeX2Sfv9wrB6oUZsU6Gcz9aWKLuxpzlSWt4iHS2D+dr9VKPsVpzPJGT0CZzUuySL71jk/hStRWBMcuWa1z+cSUGX2LxFC95dRp6fOOfTV/lPuRo67c0YrEMyd/D26qtjRvnk4G6yPqIYKqu9fStmt5WjrBYkh8pE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=U2iP0/WD; arc=none smtp.client-ip=220.197.31.2
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Z2
+	0YYvDoeUgCrjGuuLr/pDFpGrufeVTIJSYak3iZmRc=; b=U2iP0/WDcxpUXdCn/G
+	nl8vYQHIyIbyfDOzepGC7ewqIQVsw/19RjgTM7DIKIk5/RzSmiI6XiSkTmv+DJDH
+	JGGWOWbhMMTmFH1rk/qaxmvJyMOAL1G5/ugoxxPK5smc3rqB9MJyty6jHkwQJCIO
+	p0G/er4lSH9nBDkDSDpOvDRgU=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wD3n5Cqp0xq6RclIA--.54200S3;
+	Tue, 07 Jul 2026 15:15:56 +0800 (CST)
+From: Haoxiang Li <haoxiang_li2024@163.com>
+To: jikos@kernel.org,
+	jic23@kernel.org,
+	srinivas.pandruvada@linux.intel.com,
+	bentiss@kernel.org
+Cc: linux-input@vger.kernel.org,
+	linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	Sashiko AI Review <sashiko-bot@kernel.org>,
 	stable@vger.kernel.org
-Subject: [PATCH] platform/x86: int1092: Fix potential memory leak in sar_probe()
-Date: Tue,  7 Jul 2026 12:35:22 +0530
-Message-ID: <20260707070524.953741-1-nihaal@cse.iitm.ac.in>
-X-Mailer: git-send-email 2.43.0
+Subject: [PATCH v3 1/2] HID: sensor: custom: Fix use-after-free in enable_sensor
+Date: Tue,  7 Jul 2026 15:15:44 +0800
+Message-Id: <20260707071545.3087073-2-haoxiang_li2024@163.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260707071545.3087073-1-haoxiang_li2024@163.com>
+References: <20260707071545.3087073-1-haoxiang_li2024@163.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -94,84 +67,121 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3n5Cqp0xq6RclIA--.54200S3
+X-Coremail-Antispam: 1Uf129KBjvJXoWxGrW8WFWUtFykZFyDCF47XFb_yoW5Wr1rpF
+	90yFWSgr1UGa47J347AFsrX3W0gr4rWF18WrnrW3s3ZF15Ar97try8Ja40vayYyFWDK3WU
+	Ja1DXas8uFyqgw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pR0Ap5UUUUU=
+X-CM-SenderInfo: xkdr5xpdqjszblsqjki6rwjhhfrp/xtbC7QzCMWpMp6w9sQAA3z
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.06 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[cse-iitm-ac-in.20251104.gappssmtp.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[iitm.ac.in : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_FROM(0.00)[bounces-272361-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:s.shravan@intel.com,m:nihaal@cse.iitm.ac.in,m:hansg@kernel.org,m:ilpo.jarvinen@linux.intel.com,m:platform-driver-x86@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[nihaal@cse.iitm.ac.in,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[cse-iitm-ac-in.20251104.gappssmtp.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[nihaal@cse.iitm.ac.in,stable@vger.kernel.org];
-	ALIAS_RESOLVED(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[cse.iitm.ac.in:mid,cse.iitm.ac.in:from_mime,iitm.ac.in:email,vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,cse-iitm-ac-in.20251104.gappssmtp.com:dkim]
+	FREEMAIL_CC(0.00)[vger.kernel.org,163.com,kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-272363-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:jikos@kernel.org,m:jic23@kernel.org,m:srinivas.pandruvada@linux.intel.com,m:bentiss@kernel.org,m:linux-input@vger.kernel.org,m:linux-iio@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:haoxiang_li2024@163.com,m:sashiko-bot@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[haoxiang_li2024@163.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[163.com];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[haoxiang_li2024@163.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[163.com:+];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,sashiko.dev:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5092F7185FF
+X-Rspamd-Queue-Id: 6869D7185B1
 
-The memory allocated for device_mode_info in parse_package() called by
-sar_get_data() is not freed in some of the error paths in sar_probe().
-Fix that by adding the corresponding free in the error path.
+enable_sensor_store() can call set_power_report_state(), which
+dereferences sensor_inst->power_state and sensor_inst->report_state.
+These pointers refer to entries in sensor_inst->fields.
 
-Fixes: dcfbd31ef4bc ("platform/x86: BIOS SAR driver for Intel M.2 Modem")
+Create the field attributes before exposing the enable_sensor sysfs
+attribute, so enable_sensor cannot be accessed before the state it
+depends on has been initialized.
+
+On remove, delete enable_sensor before freeing the field attributes,
+so a concurrent sysfs write cannot dereference freed memory through
+power_state or report_state.
+
+Reported-by: Sashiko AI Review <sashiko-bot@kernel.org>
+Link: https://sashiko.dev/#/patchset/20260623021950.1736413-1-haoxiang_li2024@163.com?part=1
+Fixes: 4a7de0519df5 ("HID: sensor: Custom and Generic sensor support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
 ---
- drivers/platform/x86/intel/int1092/intel_sar.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/hid/hid-sensor-custom.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/platform/x86/intel/int1092/intel_sar.c b/drivers/platform/x86/intel/int1092/intel_sar.c
-index 849f7b415c1e..b27fc07c087a 100644
---- a/drivers/platform/x86/intel/int1092/intel_sar.c
-+++ b/drivers/platform/x86/intel/int1092/intel_sar.c
-@@ -273,13 +273,13 @@ static int sar_probe(struct platform_device *device)
- 	if (sar_get_device_mode(device) != AE_OK) {
- 		dev_err(&device->dev, "Failed to get device mode\n");
- 		result = -EIO;
--		goto r_free;
-+		goto r_sar;
+diff --git a/drivers/hid/hid-sensor-custom.c b/drivers/hid/hid-sensor-custom.c
+index afffea894021..6b0da2e0e1c9 100644
+--- a/drivers/hid/hid-sensor-custom.c
++++ b/drivers/hid/hid-sensor-custom.c
+@@ -1005,26 +1005,26 @@ static int hid_sensor_custom_probe(struct platform_device *pdev)
+ 		return ret;
  	}
  
- 	result = sysfs_create_group(&device->dev.kobj, &intcsar_group);
- 	if (result) {
- 		dev_err(&device->dev, "sysfs creation failed\n");
--		goto r_free;
-+		goto r_sar;
+-	ret = sysfs_create_group(&sensor_inst->pdev->dev.kobj,
+-				 &enable_sensor_attr_group);
++	ret = hid_sensor_custom_add_attributes(sensor_inst);
+ 	if (ret)
+ 		goto err_remove_callback;
+ 
+-	ret = hid_sensor_custom_add_attributes(sensor_inst);
++	ret = sysfs_create_group(&sensor_inst->pdev->dev.kobj,
++				 &enable_sensor_attr_group);
+ 	if (ret)
+-		goto err_remove_group;
++		goto err_remove_attributes;
+ 
+ 	ret = hid_sensor_custom_dev_if_add(sensor_inst);
+ 	if (ret)
+-		goto err_remove_attributes;
++		goto err_remove_group;
+ 
+ 	return 0;
+ 
+-err_remove_attributes:
+-	hid_sensor_custom_remove_attributes(sensor_inst);
+ err_remove_group:
+ 	sysfs_remove_group(&sensor_inst->pdev->dev.kobj,
+ 			   &enable_sensor_attr_group);
++err_remove_attributes:
++	hid_sensor_custom_remove_attributes(sensor_inst);
+ err_remove_callback:
+ 	sensor_hub_remove_callback(hsdev, hsdev->usage);
+ 
+@@ -1042,9 +1042,10 @@ static void hid_sensor_custom_remove(struct platform_device *pdev)
  	}
  
- 	if (acpi_install_notify_handler(ACPI_HANDLE(&device->dev), ACPI_DEVICE_NOTIFY,
-@@ -292,6 +292,9 @@ static int sar_probe(struct platform_device *device)
+ 	hid_sensor_custom_dev_if_remove(sensor_inst);
+-	hid_sensor_custom_remove_attributes(sensor_inst);
++	/* Remove enable_sensor first as it uses fields via power_state/report_state. */
+ 	sysfs_remove_group(&sensor_inst->pdev->dev.kobj,
+ 			   &enable_sensor_attr_group);
++	hid_sensor_custom_remove_attributes(sensor_inst);
+ 	sensor_hub_remove_callback(hsdev, hsdev->usage);
+ }
  
- r_sys:
- 	sysfs_remove_group(&device->dev.kobj, &intcsar_group);
-+r_sar:
-+	for (reg = 0; reg < MAX_REGULATORY; reg++)
-+		kfree(context->config_data[reg].device_mode_info);
- r_free:
- 	kfree(context);
- 	return result;
 -- 
-2.43.0
+2.25.1
 
 
