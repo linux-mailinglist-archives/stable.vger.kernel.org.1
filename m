@@ -1,112 +1,68 @@
-Return-Path: <stable+bounces-272455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272459-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id +9BMFGEYTWoOvAEAu9opvQ
-	(envelope-from <stable+bounces-272455-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 17:16:49 +0200
+	id IuUtKIobTWrgvAEAu9opvQ
+	(envelope-from <stable+bounces-272459-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 17:30:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBFC371D25A
-	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 17:16:48 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20E2871D498
+	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 17:30:18 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b=y2D7U56W;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=A66O33Om;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272455-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-272455-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=yandex.ru header.s=mail header.b=nb3FNPKF;
+	dmarc=pass (policy=none) header.from=yandex.ru;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272459-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-272459-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 17C73308C709
-	for <lists+stable@lfdr.de>; Tue,  7 Jul 2026 15:14:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9403B30D7C5A
+	for <lists+stable@lfdr.de>; Tue,  7 Jul 2026 15:20:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DA5537C93D;
-	Tue,  7 Jul 2026 15:13:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DCF43BBFDD;
+	Tue,  7 Jul 2026 15:20:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-a7-smtp.messagingengine.com (fhigh-a7-smtp.messagingengine.com [103.168.172.158])
+Received: from forward205a.mail.yandex.net (forward205a.mail.yandex.net [178.154.239.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AEB337B02D;
-	Tue,  7 Jul 2026 15:13:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D59B395AF2;
+	Tue,  7 Jul 2026 15:20:38 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783437235; cv=none; b=ucF9hm0EtlKUN2f5fewpb6mI27eSdJFWi8Om+BBQyG2lq+529lz9pBWHyzW4vSeDDrNohNqf0mbJQ+qGtYQuLL/5/pal14igA3+H6Pe3MIJau6rgbhrKg9L6Y+6BJ1mNkjwoS2Nis2G5yLvpiqm41VpsgfpY48qsdIqYH+zsj7o=
+	t=1783437648; cv=none; b=Uxn6FghMXgCCmG/XObWNMokjeICek9llpiluUHMLTQJBCQBBXsXimXSXbs71al66FRxCSX/DeJbHEvDye6ZD0+7qbhvnrTY/oz0y4bllfLdDIpmjzpjO2Fg3Bh8ilISv2c0PUkyfhPidGg+c9tOFLgGu9IMPOhvmVVDJMenQEf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783437235; c=relaxed/simple;
-	bh=P5shd4uher+LOoJ0dutjD1ui0rDX8pkfvhcm56OtTKs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CX0HGJeoP5V+S8UDI/U4S1PB2oPLY73yN4CtW3nKVKD7rrRcU8ZCpEFoZmnedi+DwmyNiCRkkb/rWGKGmIzvim+V/4Adbxm62KhlFnU7ba3MFOfI5FJxPkh7mqsjv9oUIN6h5mZ7WkMBGHaRZG14/+7u2SscjSidjJ5igkxYAmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name; spf=pass smtp.mailfrom=shutemov.name; dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b=y2D7U56W; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=A66O33Om; arc=none smtp.client-ip=103.168.172.158
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id D32ED1400060;
-	Tue,  7 Jul 2026 11:13:52 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Tue, 07 Jul 2026 11:13:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
-	:from:in-reply-to:message-id:mime-version:reply-to:subject
-	:subject:to:to; s=fm3; t=1783437232; x=1783523632; bh=yHnAHFidDo
-	8khkFB9/mnK79nGDjqLvmK8s2Lu6YNrRs=; b=y2D7U56WVBDMlVcDzkgqSe6iKR
-	e7AQUoz61t1hrh63gYk6Yj7Sz9d18qx71ARnOEDBQjMYdLORasIoVcSX6RfdTuPp
-	GDSRPhGMh5ZE5R4bRnlKpz5Bbi9KnRcFzUyea+u0LsqGB+kd2ZwHg70iquTSB7J9
-	0iG2V5D/Mt5czH123UjK2P0X4pg9xXuEtaaLK89OPilePHyTHcfOEIXHjoSWaJaq
-	zN6wfg/3lpKuTKz3RorO2DrYzs1BIWZt3eqBv8BRUCHEa8dcTpCMM/3ABuhI70h5
-	ahH862/XE9JLV2IKinfNByyc5l0LD7wIXcgvJ59H0oXBKsNIRheExFPEbaqA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1783437232; x=1783523632; bh=yHnAHFidDo8khkFB9/mnK79nGDjqLvmK8s2
-	Lu6YNrRs=; b=A66O33OmsHTi6Doh2SSYWo+yPNwdtdfNPgS7NfQAYlSzrjbEcFO
-	Bjm/ysBPVxPycknpsCqZg6UnhTBfAn/IdH5vAQq3K3Jng3jWCv34bJvA56oYfk/n
-	NT40kmBDgTzxq7dLxHNSCObZDrFV2Jip15W29KgszzXJjOapHtooB3ekwqE/QjNh
-	sKvEYY1l31Jpcs76ad8JLQsG9zAaQk6DnAGPRWWkpjjk2HLs7r0RAVE0lfTcUTrF
-	7BqfN9JZiTyB164PjNkPwm7x3vryPZ67gTPss/m4qjn+LgZPNovzM1BYiGeI7BZS
-	IJBCc8IxV1oO7AThCwSdWTW+jzjZc8v7rvQ==
-X-ME-Sender: <xms:rxdNaqWubJlzNtUGhx1wVQ4VQZgvbwrUZANDClSPY0Xku3B1a4xLHw>
-    <xme:rxdNatj3LSPPGJ7P84BieoAQVBzc6dHLrYEj-JNsUOpsda7RIJ73hi6SLabeM-1Yx
-    8Brvhwwdp8zlMxUGQTYhzMSB2E0pzLJ97yjBqLa-NtRBF9HEBg2tyiz>
-X-ME-Received: <xmr:rxdNajfpTcRiKYdxBFqUA233bKF7SXj45KcYU8vi_xeizaOyxyOO1ujPVX4nZg>
-X-ME-Proxy-Cause: dmFkZTEiLljjhqgaKKNY5aZiI+jEvjyU81SjON7V5vxdWCBsAwiOWcMHlYKbwS5Zrkx5gR
-    gCjHbuYgokG++jJItBiQhtpm+cB6FDJvAvsG3q/4/1cmcnN6cGUCTkXyE0xgArRFzlE5El
-    kS57rEdf6c7FRigb6EVHz5I8NgITm5hE9uU5jJ7Yy0irnbojHwrL3UqHqCzYahdFhlp3Rn
-    t7tNdtwaznApTVOOTQhMcpm/4Ym1ibGsImDL4LHR+9hUOdo4v2M8+/Y81ukPPhJYW+fMNY
-    pv5tppNMfiOEsQWUahBzzxe4IAVuG3YnCsItoPUwYN+1xRunHaMkQ+CwbvNWVkKR95zlPt
-    YCT+F1FZFKCD5Tg3l0hb4zMza38/aDkkI3ZK6OPxjcDlPI0/0JKJ9UmdqBCu4jaBnupI46
-    Ztsv6YbM2s/pnJVI+tQ2H9trktCIKFhZ1JM0yX70Z2AsAYadbPwRWrshFkNMsl//LcWKw8
-    bFIY/9QtE3iqHzYDXJHUVBmv+8jE88fejHKnxY8Qtkpu3BPG3XDETKgib08Zak+XLSNQxD
-    nydTe/Gvou4YUXtei3MSI5dAhhZr7CSiu9HSAwXmthzvyvnEMaGbomJyZ7sRCzyylZeLwq
-    4PwUVXGvwBNLB8rTsbYk+4evVXYRmejH+51UsudB+RAaGK2gN+Z7tMhn7V0g
-X-ME-Proxy: <xmx:rxdNaofuHWpKuAMadg7GdAasb6KLzqSzA5nVG19B2zpJcaXo0VHerw>
-    <xmx:rxdNavXN3iO5BThnNRlkyC6GbyzxCDrntc7wXLA8A9ERf740pKgiVw>
-    <xmx:rxdNasemlUMOaGffimLQbepO2jFqLJRe1OBYd4OqfZD6wBJnuIWkkw>
-    <xmx:rxdNaj8VT7-LKy3y86yuBhs_CCUY3256GQ3-JD7lAqPoJQGXTz8OAQ>
-    <xmx:sBdNatrWZXAHxK-M-H1KwytAJTNxX4CVK9ujGU-u9tp6uVAvi2p_mHRS>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 7 Jul 2026 11:13:51 -0400 (EDT)
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: akpm@linux-foundation.org
-Cc: usama.anjum@collabora.com,
-	peterx@redhat.com,
-	liam@infradead.org,
-	ljs@kernel.org,
-	vbabka@kernel.org,
-	jannh@google.com,
-	pfalcato@suse.de,
-	david@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	shuah@kernel.org,
-	linux-mm@kvack.org,
+	s=arc-20240116; t=1783437648; c=relaxed/simple;
+	bh=MvQ5IhOcJ312c1Cc35IPRjAWxRyOnJpVK6I5+c6nNck=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=q4GUqEicOkBIUzV8dZAEEnqgq9JvdMLdN+e4NAxIAgGs6gEgYHk874EkXvH0t74wIxAYB2DDo6OaBSVjCOkaRYPDV87/WypM6JMM3l8Dtq87+lpzhtBZtbcYC+cvN8CkgXZKmJAroj33EodU1ozohZvBZPPdNDIzOqRH1MlmjME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=nb3FNPKF; arc=none smtp.client-ip=178.154.239.88
+Received: from forward100a.mail.yandex.net (forward100a.mail.yandex.net [IPv6:2a02:6b8:c0e:500:1:45:d181:d100])
+	by forward205a.mail.yandex.net (postfix) with ESMTPS id 2A0E4C5A21;
+	Tue, 07 Jul 2026 18:14:50 +0300 (MSK)
+Received: from mail-nwsmtp-smtp-production-main-55.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-55.vla.yp-c.yandex.net [IPv6:2a02:6b8:c1f:582e:0:640:200:0])
+	by forward100a.mail.yandex.net (postfix) with ESMTPS id 2144CC03BE;
+	Tue, 07 Jul 2026 18:14:42 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-55.vla.yp-c.yandex.net (smtp) with ESMTPSA id DEKSRuAfReA0-iQcqHiMe;
+	Tue, 07 Jul 2026 18:14:40 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
+	t=1783437280; bh=VqwoGV4lGjhRq70DnNTSh9Jinhadlp1128GtY/C7dwc=;
+	h=Message-ID:Date:Cc:Subject:To:From;
+	b=nb3FNPKF2AvbHZQyRSDbmCyJcaYRzwSI5Eo2drYZqSh1/KsY7szLrimllkrjnSFuL
+	 vQSfIci3lENYuIUPvXhdbbvj/ZGfqCxZEzwPskzecTGJIDHMdKFU5Ela8q1uZDDobs
+	 0dMDW8g8njMBw2JPzGFBYNLi6qAfiY5SVSCpuvGg=
+From: Evgenii Burenchev <evg28bur@yandex.ru>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Evgenii Burenchev <evg28bur@yandex.ru>,
+	perex@perex.cz,
+	tiwai@suse.com,
+	kees@kernel.org,
+	eblennerhassett@audioscience.com,
+	linux-sound@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	stable@vger.kernel.org,
-	kernel-team@meta.com
-Subject: [PATCH v2] fs/proc/task_mmu: fix PAGEMAP_SCAN written state for unpopulated ptes
-Date: Tue,  7 Jul 2026 16:13:49 +0100
-Message-ID: <20260707151349.92143-1-kirill@shutemov.name>
-X-Mailer: git-send-email 2.54.0
+	lvc-project@linuxtesting.org
+Subject: [PATCH] ALSA: hpi: Check transport errors during HPI6000 adapter initialization
+Date: Tue,  7 Jul 2026 18:13:58 +0300
+Message-ID: <20260707151400.16437-1-evg28bur@yandex.ru>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -115,202 +71,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[shutemov.name:s=fm3,messagingengine.com:s=fm2];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[yandex.ru,none];
+	R_DKIM_ALLOW(-0.20)[yandex.ru:s=mail];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:akpm@linux-foundation.org,m:usama.anjum@collabora.com,m:peterx@redhat.com,m:liam@infradead.org,m:ljs@kernel.org,m:vbabka@kernel.org,m:jannh@google.com,m:pfalcato@suse.de,m:david@kernel.org,m:rppt@kernel.org,m:surenb@google.com,m:mhocko@suse.com,m:shuah@kernel.org,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:linux-fsdevel@vger.kernel.org,m:linux-kselftest@vger.kernel.org,m:stable@vger.kernel.org,m:kernel-team@meta.com,s:lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-272455-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[shutemov.name];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER(0.00)[kirill@shutemov.name,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[yandex.ru,perex.cz,suse.com,kernel.org,audioscience.com,vger.kernel.org,linuxtesting.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-272459-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[shutemov.name:+,messagingengine.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[kirill@shutemov.name,stable@vger.kernel.org];
-	TO_DN_NONE(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:evg28bur@yandex.ru,m:perex@perex.cz,m:tiwai@suse.com,m:kees@kernel.org,m:eblennerhassett@audioscience.com,m:linux-sound@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:lvc-project@linuxtesting.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[evg28bur@yandex.ru,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[yandex.ru:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FREEMAIL_FROM(0.00)[yandex.ru];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[evg28bur@yandex.ru,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp,messagingengine.com:dkim,collabora.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxtesting.org:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DBFC371D25A
+X-Rspamd-Queue-Id: 20E2871D498
 
-From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+create_adapter_obj() retrieves adapter information by calling
+hpi6000_message_response_sequence(). This function reports transport-level
+errors through its return value and DSP-reported errors via hr0.error.
 
-PAGEMAP_SCAN reports an unpopulated pte differently depending on which
-path serves the request. The PAGE_IS_WRITTEN fast path in
-pagemap_scan_pmd_entry() reports a pte_none as written (and, under
-PM_SCAN_WP_MATCHING, arms a marker); pagemap_page_category() returns 0
-for the same pte_none. A request that cannot take the fast path (an
-extra category bit, category_anyof_mask or category_inverted) therefore
-reports the pte as clean and skips arming it.
+The current code only checks hr0.error, causing transport-level errors to
+be ignored. As a result, adapter initialization may continue with an
+invalid response.
 
-A range that was populated and then MADV_DONTNEED'd reads as written via
-one mask and clean via another, and in the latter case is not re-armed
-for the next round -- an incremental-dump consumer (e.g. CRIU) using a
-richer mask drops the zapped range and stops tracking writes to it.
+Check the return value of hpi6000_message_response_sequence() before
+examining hr0.error.
 
-Report pte_none as written in pagemap_page_category() too. A pte_none
-carries no uffd-wp marker, i.e. it is not write-protected -- the same
-condition under which the present and swap cases already report
-PAGE_IS_WRITTEN. The fast path applies no VMA test, so neither does this.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-The hugetlb and fully-unpopulated-PMD (no page table) scans have no
-PAGE_IS_WRITTEN fast path, so they do not exhibit the per-entry
-divergence and are left unchanged.
-
-Add a pagemap_ioctl selftest that populates a range, drops it with
-MADV_DONTNEED, and checks that the fast path and the generic
-(category_anyof_mask) path both report every page written.
-
-Fixes: 12f6b01a0bcb ("fs/proc/task_mmu: add fast paths to get/clear PAGE_IS_WRITTEN flag")
-Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-Assisted-by: Claude:claude-fable-5
+Fixes: 3285ea10e9b0 ("ALSA: hpi: Add AudioScience HPI driver")
+Signed-off-by: Evgenii Burenchev <evg28bur@yandex.ru>
 ---
+ sound/pci/asihpi/hpi6000.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-Changes since v1 [1], addressing Sashiko AI review:
-  - Report pte_none unconditionally instead of only on userfaultfd_wp
-    VMAs. v1 left the fast vs generic path mismatch in place for
-    non-uffd-wp VMAs, where the fast path applies no VMA test.
-  - Strengthen the selftest to assert both paths report every page
-    written (v1 only checked the two counts were equal, which passes
-    vacuously if both are 0).
-
-The hugetlb and fully-unpopulated-PMD scans have no PAGE_IS_WRITTEN fast
-path, so they stay self-consistent and are out of scope here.
-
-[1] https://lore.kernel.org/all/20260706104308.34741-1-kirill@shutemov.name/
- fs/proc/task_mmu.c                         | 14 +++++-
- tools/testing/selftests/mm/pagemap_ioctl.c | 56 +++++++++++++++++++++-
- 2 files changed, 67 insertions(+), 3 deletions(-)
-
-diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-index d32408f7cd5e..d45c729ab6bb 100644
---- a/fs/proc/task_mmu.c
-+++ b/fs/proc/task_mmu.c
-@@ -2432,8 +2432,18 @@ static unsigned long pagemap_page_category(struct pagemap_scan_private *p,
- {
- 	unsigned long categories;
+diff --git a/sound/pci/asihpi/hpi6000.c b/sound/pci/asihpi/hpi6000.c
+index c8d1518ee3e7..fd7fe9dba0b8 100644
+--- a/sound/pci/asihpi/hpi6000.c
++++ b/sound/pci/asihpi/hpi6000.c
+@@ -537,6 +537,11 @@ static short create_adapter_obj(struct hpi_adapter_obj *pao,
+ 		hr1.size = sizeof(hr1);
  
--	if (pte_none(pte))
--		return 0;
-+	if (pte_none(pte)) {
-+		/*
-+		 * An unpopulated pte carries no uffd-wp marker, i.e. it is not
-+		 * write-protected, the same condition under which the present
-+		 * and swap cases below report PAGE_IS_WRITTEN. Report it here
-+		 * too so this generic path agrees with the PAGE_IS_WRITTEN fast
-+		 * path in pagemap_scan_pmd_entry(), which reports pte_none as
-+		 * written and, under PM_SCAN_WP_MATCHING, arms a marker. The
-+		 * fast path applies no VMA test, so neither does this.
-+		 */
-+		return PAGE_IS_WRITTEN;
-+	}
- 
- 	if (pte_present(pte)) {
- 		struct page *page;
-diff --git a/tools/testing/selftests/mm/pagemap_ioctl.c b/tools/testing/selftests/mm/pagemap_ioctl.c
-index 762306177ad8..550d1f2c059b 100644
---- a/tools/testing/selftests/mm/pagemap_ioctl.c
-+++ b/tools/testing/selftests/mm/pagemap_ioctl.c
-@@ -1051,6 +1051,57 @@ static void test_simple(void)
- 	ksft_test_result(i == TEST_ITERATIONS, "Test %s\n", __func__);
- }
- 
-+/*
-+ * A range that was populated and then MADV_DONTNEED'd is genuine pte_none
-+ * with no uffd-wp marker. Such a pte must read the same regardless of which
-+ * PAGEMAP_SCAN path serves the request: both the PAGE_IS_WRITTEN fast path and
-+ * the generic path (reached e.g. via category_anyof_mask) must report every
-+ * page written.
-+ */
-+static void unpopulated_scan_test(void)
-+{
-+	int npages = 16, i;
-+	long mem_size = npages * page_size;
-+	struct page_region regions[16];
-+	long fast = 0, slow = 0, ret;
-+	char *mem;
-+
-+	mem = mmap(NULL, mem_size, PROT_READ | PROT_WRITE,
-+		   MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-+	if (mem == MAP_FAILED)
-+		ksft_exit_fail_msg("%s mmap failed\n", __func__);
-+
-+	wp_init(mem, mem_size);
-+
-+	/* Populate, then drop: the ptes become pte_none without a marker. */
-+	memset(mem, 1, mem_size);
-+	if (madvise(mem, mem_size, MADV_DONTNEED))
-+		ksft_exit_fail_msg("%s MADV_DONTNEED failed\n", __func__);
-+
-+	/* Fast path: category_mask == return_mask == PAGE_IS_WRITTEN. */
-+	ret = pagemap_ioctl(mem, mem_size, regions, npages, 0, 0,
-+			    PAGE_IS_WRITTEN, 0, 0, PAGE_IS_WRITTEN);
-+	if (ret < 0)
-+		ksft_exit_fail_msg("%s fast scan failed\n", __func__);
-+	for (i = 0; i < ret; i++)
-+		fast += LEN(regions[i]);
-+
-+	/* Generic path: same query expressed via category_anyof_mask. */
-+	ret = pagemap_ioctl(mem, mem_size, regions, npages, 0, 0,
-+			    0, PAGE_IS_WRITTEN, 0, PAGE_IS_WRITTEN);
-+	if (ret < 0)
-+		ksft_exit_fail_msg("%s generic scan failed\n", __func__);
-+	for (i = 0; i < ret; i++)
-+		slow += LEN(regions[i]);
-+
-+	ksft_test_result(fast == npages && slow == npages,
-+			 "%s unpopulated ptes reported written by both paths (%ld, %ld of %d)\n",
-+			 __func__, fast, slow, npages);
-+
-+	wp_free(mem, mem_size);
-+	munmap(mem, mem_size);
-+}
-+
- int sanity_tests(void)
- {
- 	unsigned long long mem_size, vec_size;
-@@ -1559,7 +1610,7 @@ int main(int __attribute__((unused)) argc, char *argv[])
- 	if (!hugetlb_setup_default(4))
- 		ksft_print_msg("HugeTLB test will be skipped\n");
- 
--	ksft_set_plan(117);
-+	ksft_set_plan(118);
- 
- 	page_size = getpagesize();
- 	hpage_size = read_pmd_pagesize();
-@@ -1737,6 +1788,9 @@ int main(int __attribute__((unused)) argc, char *argv[])
- 	/* 17. ZEROPFN tests */
- 	zeropfn_tests();
- 
-+	/* 18. Unpopulated pte scan-path consistency */
-+	unpopulated_scan_test();
-+
- 	close(pagemap_fd);
- 	ksft_finished();
- }
-
-base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
+ 		error = hpi6000_message_response_sequence(pao, 0, &hm, &hr0);
++		if (error) {
++			HPI_DEBUG_LOG(ERROR, "message transport error %d\n",
++						  error);
++			return error;
++		}
+ 		if (hr0.error) {
+ 			HPI_DEBUG_LOG(DEBUG, "message error %d\n", hr0.error);
+ 			return hr0.error;
 -- 
-2.54.0
+2.43.0
 
 
