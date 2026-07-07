@@ -1,79 +1,81 @@
-Return-Path: <stable+bounces-272368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272369-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id eklWGbuzTGqjoQEAu9opvQ
-	(envelope-from <stable+bounces-272368-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 10:07:23 +0200
+	id zOdHIMazTGqpoQEAu9opvQ
+	(envelope-from <stable+bounces-272369-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 10:07:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF7FF718E53
-	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 10:07:22 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1A88718E64
+	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 10:07:33 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=NF81gmrE;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=bY4UowhU;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272368-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-272368-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272369-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272369-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 66AA73070D2A
-	for <lists+stable@lfdr.de>; Tue,  7 Jul 2026 07:49:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 99F9A30D0FE1
+	for <lists+stable@lfdr.de>; Tue,  7 Jul 2026 07:49:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84B1B2EA47C;
-	Tue,  7 Jul 2026 07:49:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A76642DC782;
+	Tue,  7 Jul 2026 07:49:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FD8E231827
-	for <stable@vger.kernel.org>; Tue,  7 Jul 2026 07:49:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 459E42F8E99
+	for <stable@vger.kernel.org>; Tue,  7 Jul 2026 07:49:19 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783410557; cv=none; b=cFO61FuBlOwMS7sMIc246XZA76kUNtgWin4+C/7MbXRK2602IOnLu/gSIQBmFsKS63KT8V/CO20BqvdrEkeR9na40uzvsimJ09v99IkmeOUlm7K1o7I0fqnaKidj3sHTv9N5j5nfiekkmQEnzcEh3JWmKH4BPXmqL6kvI0G2Jqw=
+	t=1783410560; cv=none; b=pd2wuomx3J35bCWZOR57CAo6r0ddKGnjyEkTN8Of1ov680mplA07J+6mZM4iDqhwcXuuNWPQbIL81hqTwaC2du6waGLFJy+wxP7KNo4C2uNZAGjJS9PyYiPO3lcQOngJxKvnhXqagzWEP8yPa+0sXAkPB18/kakercz5aGA+d9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783410557; c=relaxed/simple;
-	bh=Ll69jwTycTVdStJZVNDDkPg2Y7noF1LtSQhw0u/t8tY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eK2WA52zTHOnTUxsnlDBl2DJShexmNoARk8st8Map4FOPqP8dt8YBZJdymuIQtAOXB9oSLv8nThMp2Icajzv0wBeS9pOOJvyJTW6s0lUqV5xO2k7m3yOVVXZYORxkX3nB072zqU/6K36lCTjwsJDGTqvv73/ssodM10WVvngOFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NF81gmrE; arc=none smtp.client-ip=209.85.216.43
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-37cab825ec9so3894970a91.1
-        for <stable@vger.kernel.org>; Tue, 07 Jul 2026 00:49:15 -0700 (PDT)
+	s=arc-20240116; t=1783410560; c=relaxed/simple;
+	bh=AQFEwCYz3sBnBHq96AnYA2nhIyZeOMXIcdTpdmUobzc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=C0NbLWydszRqc/Wj8I6RMpcdZDqsMxD2a7cqFT77u3lJvzGrWhx++CFIDxV+xhu/NIevMq75Anw0Uk+wy8rcHeGCfdUoezMlL+Q6WbGAXwp/jx7m2/9F++Bgg/MDLDc/8nqjxUeVMsWhzAjl5LZin4sCGbkfOq1GqahZWlJ/K54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bY4UowhU; arc=none smtp.client-ip=209.85.216.52
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-380cda7f00cso3326261a91.0
+        for <stable@vger.kernel.org>; Tue, 07 Jul 2026 00:49:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783410555; x=1784015355; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=47qH9DhdGsXSvcnn2TMzn7MFl2kXpbMH9aBDXUUfcBo=;
-        b=NF81gmrExriPwHcYQxKufEChkycKDwPfgnoPb4kOq76khlCZIbGRS750MmLLj+B15N
-         1hxEEU7pN0gVLk5fIJ1xBTY1I1bqDgjKKX/vO79nHrVaE0nVhYJ7HfUYUOM6pQKseMmf
-         0lXUIIEFZ7QKU5e7hvDW/wvBGGzMA2S/lHK/9EK8z9+7+WJQoVJL7RFhPmLM2vGw1P1Q
-         14ErFbrZiBg3N+COpbjduLz20wtLX19w+hUSKGZll4kMYcObwyYezgtXeR4RpCydcS0Y
-         sMBWEqR0qL5gbsI53NoODoXBGo4cQah0osjGYVCHqRaBW6ZraRJ81x1oeTDLse6Rr2wr
-         +9pA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783410555; x=1784015355;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1783410559; x=1784015359; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=47qH9DhdGsXSvcnn2TMzn7MFl2kXpbMH9aBDXUUfcBo=;
-        b=KkvtciMVBE6uadDdX0d04R3YPm8SbQIrE5ovPwvPsuItIpf/4Yt5F06GChxH2TK3JG
-         PIBYQmHFjVKzUDvgQMbPxStH3mRyNK9c++AyippGc43nKiTY0uAkZ0CN08ermE9KKkrR
-         z/Zg7Ek485AEUWMtJu45k54QdfRKnUaUMNAzA8Oa9vIEEWjqq+44RCvmIwjSZfrBKx0l
-         3ECn6JVMSfOq9rT2O5aX4d73Ols4fIWgkXKg4lzyxn71VU0Nr14f+Q74k0YvHlCx5b1c
-         JWzInZ9rXFTAhlmjI0S3x/feMK44JKlgaB4kLcPswpyjMZD/USpvYt0HrqPNnI3tfvh1
-         DBxA==
-X-Forwarded-Encrypted: i=1; AHgh+Rou5tlcHP+g1MdJeisMvpolzM7b/tzpU/rbmH5UgttoKWdexBik6u27CUkuUt/FRzPq5LOPgfI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyywSnyQ1M/VxKc1gXrAVPA4YMcg5wu3k89QpXJ/k7N8MDf3KeG
-	4F1cXdB/OdOP5pOl4hADHUsFrEPyGz9nrq7a23OlgCFfynRosbwoOoBF
-X-Gm-Gg: AfdE7ck4kvZ4/oLQpcSW6zhUXjdoPPnblY8dd0Us7V4OmSGls2NmFPQGBVix6zwJtmk
-	UIkeMA0wND1uCpCVvzhpWpjt25AD+8CnTmtpoOY738sgmCvbJAETcH4lCSQO5OJo75dJEQciMgX
-	HQFHdFYFH0pcjralhcrY0SzVNtlXSkmnmisYA7AZ9s6cuROe54mI/W6qRGckeKJdiMjj4CV6L26
-	DadrEb2q0CLTF8nsgMbmDOdBQQpNtddo/88L+YdJWEOR+08mx50SnDKQN4gE9Uc/lco/XO72E52
-	Grq9uar6xtx+YrO4PoU9V6yhxpzADDu+aBktVF31TOeKmFpJqp5kdEH834olbyUJeD3RCTlupnx
-	ftYj6u1DoNzzgorih0w3qwPpR7zfRCMbyXwLHuG0rmTDshBk7fbt4FRZ6yV3xLjy9dWacryfAwL
-	p/MUYVs5plqje14HVR/wGLMiO59DpdINLkCjRXI6A52qIi
-X-Received: by 2002:a17:90a:da86:b0:381:28e0:624d with SMTP id 98e67ed59e1d1-387597e83dcmr4179386a91.28.1783410555332;
-        Tue, 07 Jul 2026 00:49:15 -0700 (PDT)
+        bh=ZgeIwqrRwEWwVAYs7V5QSF1WwroM+m3Iz8O4TkBApNo=;
+        b=bY4UowhUwDHD1/ifDLtHjlpcMTv4U/JAmG4iwmV/wICM4Aor2g1BVNoPjNleVKEizU
+         kyUoqZxVRPlDhk993n+CPFfuQ9/sLGBLkCBhetMakoQTDMavJ421yFFwE5hNspHBrtZK
+         ykyiM748LrNC7yKhYWC4l7TOD9iiHU6k9ovxGZaiTqGtw57rGuuKhGMQiFljfgWMzYv8
+         lLQkQZuK63J1xb0pst9MSxBrRZt2Nv8B2XrRsGMzJqRumonPKvUX2JmHqaj9qIW67Cl5
+         rqfkxvm9w9vGG5L/1oAuUQgITqYSKd6KjREnv+p3Rn1KtAhCpm6tuxtlfjjBTwPIexEs
+         SyBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783410559; x=1784015359;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ZgeIwqrRwEWwVAYs7V5QSF1WwroM+m3Iz8O4TkBApNo=;
+        b=UefNI+BckD0xdbP6iY+EY2zeaFqApw+6DFCa0zMJk9Nldvfj7kOI2BRJocJNJd3NS9
+         cNYnBNdZ+ma5JYeUQLGzBxpiO5lyIv7fkGnSFRvMn5JdVVAxr4bRAR197G/roREmiIUq
+         QwM1kx6J6115b92vLyNUeDj4JMieAzkXYqXlJx9iXZNBwCAy7j7JY0vmRwPbPjU8f1tb
+         pL5wlA1j/aAVvKzB3N39bf4GBmQj2O74qqRGITT+giMrjnB3rotffvjSiKzo1naQQsiD
+         mwvKtvBMjAuvnL62EBjGdtr8mJi0D93nCy0z1+MzGrLiG0KAcDuHfP18KI7stbeDHQcV
+         5l2g==
+X-Forwarded-Encrypted: i=1; AHgh+Rpb8gHbk2J4iWc/AqJCBueUwneIUmfEhWnTBVfVGR153pr4bguh3sNWJDXp4T33ry8cQS8E1s4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyeXrVuUzsllOA8dfW1z7S4x94CchjtrLHaf5XhKGQIVmVpa4Sh
+	1GYBBnIzf+gVccRrPszwypEJlP7g6nXGvilhT198pOyon2IBF1PfzLhH
+X-Gm-Gg: AfdE7ckl5M7ADo4etCzd+8ZkFMnufPT1pdqduZcq7gcRmNnhJCpRw23puis+7UaVFuh
+	8VE/NUcyQo9CRm/19FP/TdwL9eqEKWBfSYlJJGBBWz4ve2UMmMu+zaFcYPecRO/SFYiQ31FZ+KC
+	6jVNGsZRLGXejrlk6D+TYuPlYlcKzbAhw3AYZLmTGtOF8DsqPMzJV4ydCWrLk0dPc8J208jw8Qt
+	VCXzcsgnaZwZP/aYWFrlIOk4Rd1N2/AIxHrVd3Ub73SyBmAcFTzjLNiPvZf6UoAuhNXl+bV3D7R
+	/5mr9JK+Fx+D96guaflVEfUcZjCg9TeEwsjo0oblartvaXlWB0IEtarrf0yNGQp9Uq8bV1YgmVS
+	o9fU8vmxFB1MbewQRc862zt5Ft2ZmG7akl/oXMPzv96+ZPtn2diUE3bB2GVY3iy0ABQguQkcGzY
+	LN+Bng5Krl75S+eAIW3P+zplGGVQ46yZIpehlrsyTjeHL1
+X-Received: by 2002:a17:90b:55cd:b0:381:e93b:f740 with SMTP id 98e67ed59e1d1-3875595f2c7mr4256887a91.15.1783410558557;
+        Tue, 07 Jul 2026 00:49:18 -0700 (PDT)
 Received: from buffalo-ssd (M014013071096.v4.enabler.ne.jp. [14.13.71.96])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-387d20a361asm626710a91.15.2026.07.07.00.49.12
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-387d20a361asm626710a91.15.2026.07.07.00.49.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jul 2026 00:49:14 -0700 (PDT)
+        Tue, 07 Jul 2026 00:49:18 -0700 (PDT)
 From: Akari Tsuyukusa <akkun11.open@gmail.com>
 To: Michael Turquette <mturquette@baylibre.com>,
 	Stephen Boyd <sboyd@kernel.org>,
@@ -88,10 +90,12 @@ Cc: linux-clk@vger.kernel.org (open list:COMMON CLK FRAMEWORK),
 	Chen-Yu Tsai <wenst@chromium.org>,
 	Miles Chen <miles.chen@mediatek.com>,
 	Akari Tsuyukusa <akkun11.open@gmail.com>
-Subject: [PATCH v2 0/6] clk: mediatek: fix memory leak on module removal
-Date: Tue,  7 Jul 2026 16:48:29 +0900
-Message-ID: <20260707074839.240676-1-akkun11.open@gmail.com>
+Subject: [PATCH v2 1/6] clk: mediatek: mt2712: fix memory leak on module removal
+Date: Tue,  7 Jul 2026 16:48:30 +0900
+Message-ID: <20260707074839.240676-2-akkun11.open@gmail.com>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260707074839.240676-1-akkun11.open@gmail.com>
+References: <20260707074839.240676-1-akkun11.open@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -106,14 +110,14 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCPT_COUNT_TWELVE(0.00)[13];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-272368-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-272369-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS(0.00)[m:mturquette@baylibre.com,m:sboyd@kernel.org,m:bmasney@redhat.com,m:matthias.bgg@gmail.com,m:angelogioacchino.delregno@collabora.com,m:linux-clk@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-mediatek@lists.infradead.org,m:stable@vger.kernel.org,m:wenst@chromium.org,m:miles.chen@mediatek.com,m:akkun11.open@gmail.com,m:matthiasbgg@gmail.com,m:akkun11open@gmail.com,s:lists@lfdr.de];
 	FREEMAIL_TO(0.00)[baylibre.com,kernel.org,redhat.com,gmail.com,collabora.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -131,51 +135,43 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DKIM_TRACE(0.00)[gmail.com:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: AF7FF718E53
+X-Rspamd-Queue-Id: D1A88718E64
 
-Some MediaTek clock drivers do not call platform_set_drvdata()
-during probe,
-but their remove callback calls platform_get_drvdata().
-This results in platform_get_drvdata() returning NULL,
-which leads to calling kfree(NULL) in mtk_free_clk_data(NULL).
+clk_mt2712_apmixed_probe() in clk-mt2712-apmixedsys.c does not call
+platform_set_drvdata(), but clk_mt2712_apmixed_remove() callback calls
+platform_get_drvdata().
+This results in platform_get_drvdata() returning NULL, which leads to
+calling kfree(NULL) in mtk_free_clk_data(NULL).
 This leaves clk_data unreleased, causing a memory leak.
 
 Fix this by calling platform_set_drvdata() during probe.
 
-Changes in v2:
-- Add a newline between platform_set_drvdata() and return
-  (suggested by Brian Masney)
-- Split the patch per SoC, (also suggested by Brian Masney)
-- Add "Cc: stable@vger.kernel.org"
-
-Link to v1: https://lore.kernel.org/linux-mediatek/20260629142348.273766-1-akkun11.open@gmail.com/T/#u
-
-Akari Tsuyukusa (6):
-  clk: mediatek: mt2712: fix memory leak on module removal
-  clk: mediatek: mt6795: fix memory leak on module removal
-  clk: mediatek: mt7622: fix memory leak on module removal
-  clk: mediatek: mt8135: fix memory leak on module removal
-  clk: mediatek: mt8173: fix memory leak on module removal
-  clk: mediatek: mt8192: fix memory leak on module removal
-
+Fixes: c6368ce86435 ("clk: mediatek: mt2712-apmixedsys: Add .remove() callback for module build")
+Cc: stable@vger.kernel.org
+Signed-off-by: Akari Tsuyukusa <akkun11.open@gmail.com>
+---
  drivers/clk/mediatek/clk-mt2712-apmixedsys.c | 2 ++
- drivers/clk/mediatek/clk-mt6795-apmixedsys.c | 2 ++
- drivers/clk/mediatek/clk-mt6795-infracfg.c   | 2 ++
- drivers/clk/mediatek/clk-mt6795-pericfg.c    | 2 ++
- drivers/clk/mediatek/clk-mt7622-apmixedsys.c | 2 ++
- drivers/clk/mediatek/clk-mt7622-infracfg.c   | 2 ++
- drivers/clk/mediatek/clk-mt8135-apmixedsys.c | 2 ++
- drivers/clk/mediatek/clk-mt8173-apmixedsys.c | 2 ++
- drivers/clk/mediatek/clk-mt8173-infracfg.c   | 2 ++
- drivers/clk/mediatek/clk-mt8192-apmixedsys.c | 2 ++
- 10 files changed, 20 insertions(+)
+ 1 file changed, 2 insertions(+)
 
+diff --git a/drivers/clk/mediatek/clk-mt2712-apmixedsys.c b/drivers/clk/mediatek/clk-mt2712-apmixedsys.c
+index 54b18e9f83f8..087cf574bcdc 100644
+--- a/drivers/clk/mediatek/clk-mt2712-apmixedsys.c
++++ b/drivers/clk/mediatek/clk-mt2712-apmixedsys.c
+@@ -129,6 +129,8 @@ static int clk_mt2712_apmixed_probe(struct platform_device *pdev)
+ 		goto unregister_plls;
+ 	}
+ 
++	platform_set_drvdata(pdev, clk_data);
++
+ 	return 0;
+ 
+ unregister_plls:
 -- 
 2.54.0
 
