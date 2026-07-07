@@ -1,188 +1,218 @@
-Return-Path: <stable+bounces-272508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272504-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id tK5MEnVgTWpczAEAu9opvQ
-	(envelope-from <stable+bounces-272508-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 22:24:21 +0200
+	id iOKrFONfTWovzAEAu9opvQ
+	(envelope-from <stable+bounces-272504-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 22:21:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D765571F84E
-	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 22:24:20 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0269D71F811
+	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 22:21:54 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=rpioySt8;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272508-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272508-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=aC7koMnd;
+	dmarc=none;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272504-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-272504-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C0664309254B
-	for <lists+stable@lfdr.de>; Tue,  7 Jul 2026 20:22:04 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9161E301A476
+	for <lists+stable@lfdr.de>; Tue,  7 Jul 2026 20:21:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B2763BE148;
-	Tue,  7 Jul 2026 20:22:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F8763BE148;
+	Tue,  7 Jul 2026 20:21:53 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C08623A2540
-	for <stable@vger.kernel.org>; Tue,  7 Jul 2026 20:22:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 956A33D1A98;
+	Tue,  7 Jul 2026 20:21:51 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783455724; cv=none; b=YhxwPXe5YMeQiPPGWL1qgOkclEcZpaZWCk3mH0BZ6x9C8VS3+WOEIBbQoU7qk2XICLQEXn845A5secw+9vEJXliPIZIPozTgNLL1HOmb1YwwWfLPWuvoAL1JDvF0YkQ4hdNvgoX2ZX5hlTkVhDYT+bNqwa/AKqquE02TQrXOTAE=
+	t=1783455712; cv=none; b=eKVVmYHqmFm28KS5/PxIRry8wZY7p9GinakaEs0N2o6SxBZP1rSEEEA2y9746AqhjixSXEDTTGMDK6MDNZU3sLsSkVRdkELJUyzMR/H+oVBzYKKxEBzGzBKAI2ss4UtJkjMKU3i0SviwvhzHe2RE11QjL5B5sbK8W/K+HzpcAi0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783455724; c=relaxed/simple;
-	bh=+fb2hm/AV+gpBOcwwKZ0VASVGKm3XP6ZLpjp9sYFqfw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cy1/9UhbTXU/zAn70Pol8ZzL5jEEtQmxfONQcrsAbr+AzoU1zhidFF4Sd0XtX7lRB10Eov5HDrs1q/m/eFYlH/xCAT4ywjO0SscEgXOHj5KfO4DSgAyDT5hUWW9uBY/RocFRL36dnA6VAUFweV/8JuPCWaGOkGuP9Xp5eBmYFsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rpioySt8; arc=none smtp.client-ip=209.85.208.52
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-698bf053053so6909343a12.3
-        for <stable@vger.kernel.org>; Tue, 07 Jul 2026 13:22:02 -0700 (PDT)
+	s=arc-20240116; t=1783455712; c=relaxed/simple;
+	bh=rjfZFtku+wZMNcM21lS6VCuT8vigPkGWUfb5PNwJKzU=;
+	h=Date:To:From:Subject:Message-Id; b=mDYkWgsfZ3ikJZeS8qRETYpnW1NeRvofh7OdF5i6iib2ieHSwN/XMAf6aKY/SMTIQ12m7gYE/5/wPyJKXpI7RSYgqsx9xUOctcSiyYPwzFpJOALZIaPxKfbMdHoZ4DdloCIGeKKAcc4Ftk7ZtiLMrLFb7eo40iN28n8DSPvENeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=aC7koMnd; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3748A1F000E9;
+	Tue,  7 Jul 2026 20:21:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783455721; x=1784060521; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=aWjcO3quzBLPCQpyEkYQryJlDPpxypgV7KUttYaLljc=;
-        b=rpioySt8g43amb3wPDAvzV2tjYh9b4Qgl4fCThMAkiYRotEaainWy/SOOSGD04GDPg
-         T8IGYvvRYxdsAwqC40w/Pt+bNDcNjEe+JxWaMLm6OF26DuJgyj7IVeSKATgM7mp4cT9E
-         wJxkv8V2howT9LDwC6kKkV2pT6PJuakqVgLyuPcKZ8ijvx3anmHzakbjgpJRNbKJTMgG
-         yh3BOrfbTjzG0L3Or/DVbPXjY7OX3wKTAxWJeeNH1OxFSytdWVmJFYQsUwgFp1xZ4YQa
-         4NrLifDud5PUBiBrmucFvAXHislL24VcDJuPJ7IpFdhbAEbMUAP+Yb7dXeRx7aolsQcq
-         Ttxg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783455721; x=1784060521;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=aWjcO3quzBLPCQpyEkYQryJlDPpxypgV7KUttYaLljc=;
-        b=njI4c2suYIpz+JLwa2RglTa8PrTlurN9/XOxdPzmCkosuXfRd9OON4tAQvdJqU88mN
-         2zd4EPCTsAZWl3gfy38aKC8WAxV8bKDOv44x5v4IABG4+0Z8g9dT4tbsZxBU/2RJ4KQh
-         hfTkf1nrKytAvVRBipAsDR3WRv+4HWXMCyuq0WYP3Wj1Mtv1F/M+b4vEPExQApmGDGpX
-         QGdgvuMPyOicTRl7S8g//aXxBz/l51j4dWRsw3IaOxc08/WDEkCc5WFr5vAhqbwmxUeJ
-         wG/OHH5K/6LS3a+PkoMaGuZT1mMda9w1fQ0tImQbw6cmipGHjifbHGsXiq9FdbhLSmJx
-         gQGg==
-X-Forwarded-Encrypted: i=1; AHgh+RqNH8hUILW6rkB14hYSn2n/gIvuyKBZTqFC+GedcYENyP/bJ8SnVsJmYyUJLvb4EYUcDh5RMys=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywfq4DhfG/4y25qtmLplED6D3dqI8VUml8vThawvfhodjXqeRYO
-	LDUZz/Xp3NNwe6Qcb2XMZfymHsoxUUY7k8LGOI16EtqiiGpaURfKzRYo
-X-Gm-Gg: AfdE7ckpYAMTJO8Yu+Y7WOTQgCEfoETmzhd/0msKUpJt9uc7lOhQMMBumlD9tHYHLcN
-	MIRMOJBNbMARmR9BQbupdb7tUdJHTSkRYP6wj3Ghav2I9Tn/2tMZsMnskKNOTzE1Rgy8IrbT3pe
-	Yy+m5MDq1ZCDPDKjQk6HnE+4IMcrPUi84oghboveJqcnI8BNw/OEJ11GoCape1QFmCO3jxAC7ft
-	22l6xbv8KIHM2l6Hf251jDI3EEaX8lCzpHaxOiOoXfNpmFtvOm5NTWFkjDNSokwtyyWKaNjBIB+
-	cxn5xTY559hLiKbofEaImPVXlQK+2OLPpCancTsojdx/QG3UOT2tcfQd/XYsmP13buSkIiliIUL
-	9wYm4mtGRz4BZP8ZXjPoNtQxWkdk8gjY4g76OKAN1/Jy5t57zawkza90gQ8qViOof9yg5dSk2nQ
-	A/mxJSHzb/2xfMfkJhiGArcpp8IzQCqQxBU3ks2dHvcpOY6QRw7K6oiMOSRSWXZwQ=
-X-Received: by 2002:a05:6402:5107:b0:698:b23a:e54a with SMTP id 4fb4d7f45d1cf-69a85c281cdmr3729267a12.31.1783455720810;
-        Tue, 07 Jul 2026 13:22:00 -0700 (PDT)
-Received: from node ([202.47.63.86])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-69aa6dba523sm637930a12.0.2026.07.07.13.21.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jul 2026 13:22:00 -0700 (PDT)
-From: Muhammad Bilal <meatuni001@gmail.com>
-To: platform-driver-x86@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	ilpo.jarvinen@linux.intel.com,
-	hdegoede@redhat.com,
-	jorge.lopez2@hp.com,
-	Thomas.Weissschuh@linutronix.de,
-	superm1@kernel.org,
-	W_Armin@gmx.de,
-	stable@vger.kernel.org,
-	Muhammad Bilal <meatuni001@gmail.com>
-Subject: [PATCH v3 4/4] platform/x86: hp-bioscfg: warn on element type mismatch instead of failing
-Date: Wed,  8 Jul 2026 01:21:11 +0500
-Message-ID: <20260707202111.35414-5-meatuni001@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260707202111.35414-1-meatuni001@gmail.com>
-References: <20260707202111.35414-1-meatuni001@gmail.com>
+	d=linux-foundation.org; s=korg; t=1783455711;
+	bh=C2jZV48BzSVIz2TLVrSj+BBmx/csPIiRUIpuC34CgwQ=;
+	h=Date:To:From:Subject;
+	b=aC7koMndKQzx7qCqK+rp2nS6II7BAP/zepC93jNAlJSgtpg63ediNMeUhDioe/3Gt
+	 jghy6ZHjPP83/3GM7boMcHvXNpvmrIsZBiD7DEHkwvW4GzpWV+oOnW2ls8dD32rfND
+	 fmWq5BD+VRczDWcIXs+eij3RE9DCj/2U0l/wawAM=
+Date: Tue, 07 Jul 2026 13:21:50 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,osalvador@suse.de,muchun.song@linux.dev,david@kernel.org,baolin.wang@linux.alibaba.com,mawupeng1@huawei.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-hugetlb-fix-missing-migratable-flag-on-same-node-hugetlb-migration.patch added to mm-new branch
+Message-Id: <20260707202151.3748A1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,linux.intel.com,redhat.com,hp.com,linutronix.de,kernel.org,gmx.de,gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-272508-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:platform-driver-x86@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:ilpo.jarvinen@linux.intel.com,m:hdegoede@redhat.com,m:jorge.lopez2@hp.com,m:Thomas.Weissschuh@linutronix.de,m:superm1@kernel.org,m:W_Armin@gmx.de,m:stable@vger.kernel.org,m:meatuni001@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[meatuni001@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[meatuni001@gmail.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-272504-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:mm-commits@vger.kernel.org,m:stable@vger.kernel.org,m:osalvador@suse.de,m:muchun.song@linux.dev,m:david@kernel.org,m:baolin.wang@linux.alibaba.com,m:mawupeng1@huawei.com,m:akpm@linux-foundation.org,s:lists@lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	DMARC_NA(0.00)[linux-foundation.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_NONE(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	MIME_TRACE(0.00)[0:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linux.dev:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D765571F84E
+X-Rspamd-Queue-Id: 0269D71F811
 
-hp_populate_enumeration_elements_from_package() returns -EIO and aborts
-enumeration of the entire attribute when any single element has an
-unexpected ACPI type. This is observed on HP EliteBook 840 G2 when the
-BIOS returns malformed ACPI data following a failed WMI query:
 
-  ACPI BIOS Error (bug): AE_AML_BUFFER_LIMIT, Index (0x000000032)
-    is beyond end of object (length 0x32)
-  ACPI Error: Aborting method \_SB.WMID.WQBE due to previous error
-  Error expected type 2 for elem 13, but got type 1 instead
-  hp_bioscfg: Returned error 0x3,
-    "Invalid command value/Feature not supported"
+The patch titled
+     Subject: mm/hugetlb: fix missing migratable flag on same-node hugetlb migration
+has been added to the -mm mm-new branch.  Its filename is
+     mm-hugetlb-fix-missing-migratable-flag-on-same-node-hugetlb-migration.patch
 
-Aborting immediately discards the attribute entirely.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-hugetlb-fix-missing-migratable-flag-on-same-node-hugetlb-migration.patch
 
-Warn about the unexpected element type, free the temporary string, skip
-the offending element, and continue parsing the remaining package
-instead of failing the whole attribute.
+This patch will later appear in the mm-new branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Fixes: a34fc329b189 ("platform/x86: hp-bioscfg: bioscfg")
-Cc: stable@vger.kernel.org
-Signed-off-by: Muhammad Bilal <meatuni001@gmail.com>
+Note, mm-new is a provisional staging ground for work-in-progress
+patches, and acceptance into mm-new is a notification for others take
+notice and to finish up reviews.  Please do not hesitate to respond to
+review feedback and post updated versions to replace or incrementally
+fixup patches in mm-new.
+
+The mm-new branch of mm.git is not included in linux-next
+
+If a few days of testing in mm-new is successful, the patch will me moved
+into mm.git's mm-unstable branch, which is included in linux-next
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: Wupeng Ma <mawupeng1@huawei.com>
+Subject: mm/hugetlb: fix missing migratable flag on same-node hugetlb migration
+Date: Tue, 7 Jul 2026 19:02:54 +0800
+
+Commit ba23f58de896 ("mm/migrate: don't call
+folio_putback_active_hugetlb() on dst hugetlb folio") moved setting of the
+migratable flag and active-list placement from
+folio_putback_active_hugetlb(dst) into move_hugetlb_state(), so that the
+freshly allocated destination folio is handled where allocation is known
+to have succeeded.
+
+Unfortunately, the new code was appended after the existing
+temporary-folio block in move_hugetlb_state(), which contains an early
+return added earlier by commit 5af1ab1d24e08 ("mm/hugetlb: optimize the
+surplus state transfer code in move_hugetlb_state()"):
+
+  if (folio_test_hugetlb_temporary(new_folio)) {
+      ...
+      if (new_nid == old_nid)
+          return;                       <-- skips the new code
+      ...
+  }
+
+  /* added by ba23f58 */
+  folio_set_hugetlb_migratable(new_folio);
+  list_move_tail(&new_folio->lru, ...&h->hugepage_activelist);
+
+When the destination folio is temporary (i.e.  the hugetlb pool was
+exhausted and the migration callback fell back to
+alloc_migrate_hugetlb_folio()) and the migration does not cross a node --
+the common case, and always true on a single-NUMA system --
+move_hugetlb_state() returns before setting the migratable flag or adding
+the new folio to the active list.  The destination folio is then installed
+in the page table but cannot be isolated afterwards, since
+folio_isolate_hugetlb() rejects folios without the migratable flag; a
+subsequent soft-offline, hard-offline or memory-hotplug offline of that
+folio fails with -EBUSY.
+
+This was reproduced on a single-NUMA arm64 VM: a second MADV_SOFT_OFFLINE
+on an already-migrated hugetlb page returned EBUSY and logged "hugepage
+isolation failed".
+
+Keep the surplus adjustment, which is the only part that depends on the
+node crossing, guarded by `if (new_nid != old_nid)', while making the
+migratable flag and active-list placement unconditional.  This preserves
+the cleanup intent of ba23f58 and closes the early-return hole.
+
+Link: https://lore.kernel.org/20260707110254.3147686-1-mawupeng1@huawei.com
+Fixes: ba23f58de896 ("mm/migrate: don't call folio_putback_active_hugetlb() on dst hugetlb folio")
+Signed-off-by: Wupeng Ma <mawupeng1@huawei.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- drivers/platform/x86/hp/hp-bioscfg/enum-attributes.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/platform/x86/hp/hp-bioscfg/enum-attributes.c b/drivers/platform/x86/hp/hp-bioscfg/enum-attributes.c
-index 3aa2c440e0528..b834303e5bc79 100644
---- a/drivers/platform/x86/hp/hp-bioscfg/enum-attributes.c
-+++ b/drivers/platform/x86/hp/hp-bioscfg/enum-attributes.c
-@@ -163,10 +163,11 @@ static int hp_populate_enumeration_elements_from_package(union acpi_object *enum
- 
- 		/* Check that both expected and read object type match */
- 		if (expected_enum_types[eloc] != enum_obj[elem].type) {
--			pr_err("Error expected type %d for elem %d, but got type %d instead\n",
--			       expected_enum_types[eloc], elem, enum_obj[elem].type);
-+			pr_warn("Unexpected element type at elem %d: expected %d, got %d, skipping\n",
-+				elem, expected_enum_types[eloc], enum_obj[elem].type);
- 			kfree(str_value);
--			return -EIO;
-+			str_value = NULL;
-+			continue;
+ mm/hugetlb.c |   14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
+
+--- a/mm/hugetlb.c~mm-hugetlb-fix-missing-migratable-flag-on-same-node-hugetlb-migration
++++ a/mm/hugetlb.c
+@@ -7252,14 +7252,14 @@ void move_hugetlb_state(struct folio *ol
+ 		 * There is no need to transfer the per-node surplus state
+ 		 * when we do not cross the node.
+ 		 */
+-		if (new_nid == old_nid)
+-			return;
+-		spin_lock_irq(&hugetlb_lock);
+-		if (h->surplus_huge_pages_node[old_nid]) {
+-			h->surplus_huge_pages_node[old_nid]--;
+-			h->surplus_huge_pages_node[new_nid]++;
++		if (new_nid != old_nid) {
++			spin_lock_irq(&hugetlb_lock);
++			if (h->surplus_huge_pages_node[old_nid]) {
++				h->surplus_huge_pages_node[old_nid]--;
++				h->surplus_huge_pages_node[new_nid]++;
++			}
++			spin_unlock_irq(&hugetlb_lock);
  		}
+-		spin_unlock_irq(&hugetlb_lock);
+ 	}
  
- 		/* Assign appropriate element value to corresponding field */
--- 
-2.55.0
+ 	/*
+_
+
+Patches currently in -mm which might be from mawupeng1@huawei.com are
+
+mm-hugetlb-fix-missing-migratable-flag-on-same-node-hugetlb-migration.patch
 
 
