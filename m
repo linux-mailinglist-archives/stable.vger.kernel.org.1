@@ -1,218 +1,522 @@
-Return-Path: <stable+bounces-272504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272509-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id iOKrFONfTWovzAEAu9opvQ
-	(envelope-from <stable+bounces-272504-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 22:21:55 +0200
+	id HrH9JfhgTWptzAEAu9opvQ
+	(envelope-from <stable+bounces-272509-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 22:26:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0269D71F811
-	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 22:21:54 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A6AA71F873
+	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 22:26:32 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=aC7koMnd;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272504-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-272504-lists+stable=lfdr.de@vger.kernel.org";
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=IUwTMGkf;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272509-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272509-lists+stable=lfdr.de@vger.kernel.org";
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9161E301A476
-	for <lists+stable@lfdr.de>; Tue,  7 Jul 2026 20:21:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 00874301B4FC
+	for <lists+stable@lfdr.de>; Tue,  7 Jul 2026 20:26:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F8763BE148;
-	Tue,  7 Jul 2026 20:21:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 571DD3BE148;
+	Tue,  7 Jul 2026 20:26:30 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 956A33D1A98;
-	Tue,  7 Jul 2026 20:21:51 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783455712; cv=none; b=eKVVmYHqmFm28KS5/PxIRry8wZY7p9GinakaEs0N2o6SxBZP1rSEEEA2y9746AqhjixSXEDTTGMDK6MDNZU3sLsSkVRdkELJUyzMR/H+oVBzYKKxEBzGzBKAI2ss4UtJkjMKU3i0SviwvhzHe2RE11QjL5B5sbK8W/K+HzpcAi0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783455712; c=relaxed/simple;
-	bh=rjfZFtku+wZMNcM21lS6VCuT8vigPkGWUfb5PNwJKzU=;
-	h=Date:To:From:Subject:Message-Id; b=mDYkWgsfZ3ikJZeS8qRETYpnW1NeRvofh7OdF5i6iib2ieHSwN/XMAf6aKY/SMTIQ12m7gYE/5/wPyJKXpI7RSYgqsx9xUOctcSiyYPwzFpJOALZIaPxKfbMdHoZ4DdloCIGeKKAcc4Ftk7ZtiLMrLFb7eo40iN28n8DSPvENeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=aC7koMnd; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3748A1F000E9;
-	Tue,  7 Jul 2026 20:21:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 175AE42087F
+	for <stable@vger.kernel.org>; Tue,  7 Jul 2026 20:26:27 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783455990; cv=pass; b=PiwMxtxiL9i7ulhf6QFEjCwoQEgrgM6DD5713h8nPBcYBd1TNd2hvfcOkDNeMNvEizmOFpd9aUXFCWLPlsTAFMNkt3po9L6RjHaCTTC05WK0qxhU456zRPfFUqmWFBYjpgiZNBH7YzpL62AWPlxsBwJgGvBgsY/0EkJZt72/8C8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783455990; c=relaxed/simple;
+	bh=Okcmnx4iuWETJzhrDNCEP79hq9OYC+3w8fa0OQDGGyc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fZ/WFtfYtZ8RvjV6wDp/UszTmb/aZbJxs3yyAgV37ExBSLqLvlY/BsO5TAS8Ib66h6cIgsu8/EjtizUzhUAdWcgzX6uu92s7ThoiHUxum4XzpoPWGc8xt2Tig59y4r5tD99tsBpoq1P7GoxIxfPbF4b1kXbS72SwOZZFwSSp98o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IUwTMGkf; arc=pass smtp.client-ip=209.85.208.178
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-39b27812c96so39322531fa.0
+        for <stable@vger.kernel.org>; Tue, 07 Jul 2026 13:26:27 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783455986; cv=none;
+        d=google.com; s=arc-20260327;
+        b=IQGNAsfbqnjeAs/6YsrI6+6UNIQfXa/cG6YwgzRcgewLN2pTJ/627Wsg6+Cl4W+1Z7
+         tZlfJlscOcnAK27M1AdQJnRBTzPnMikXlLXRVY2YM8mXiEDC0iOHykr5V0tOGKpLS1Bi
+         5xhAWxmMiFQQ1avGFcHVpfERZvkapDr3/SFWL/ShP7nMnjZEbgeOraAP266xijO0lMW8
+         72tFeZYbeBxxYmNeK77Yn2q8E4PbjxAVPuHUbtl+pmyhypsmSs//5y55XuooOgRdrEwD
+         v2BM+Pdh7CV8iWct5s8aXTDahuRH4u01gzI3Y2wwouq7J88HavR6yJ9dNKdLBPhevXE/
+         OlbA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=2vdqMWf3OTU2hmQJltOEb8z7E4SemE8YxCiIWickk4Q=;
+        fh=5Cgkhb1Wb3e5iFzFxainyrnStiB92JUufiQaxQce/sg=;
+        b=GtmGWvTGVsf8/7Emf2I3rF/CXGyGxajIkBt0X15sXkLCgCvMLH0rmt0gwHEQZn2dXK
+         JaAcw45Iwbb2JhWWWFbEBoeNukHhX2Ya/uor1PzLd13E2jnkyMZOyB9ofl994fnpBbyy
+         Gd/OknswIs+smN9ljVN0M0aytGvKaWJ9cIbe3wafx97UC0zAHM3T62rx7aj25y2KcH5E
+         B9TykcxEFD8SP6DxtAql0h4lgUmIvOa04JQMhr8xi8uV/uyxOoMmF3L1dsXW3EMAU/qO
+         AYzZMpOIEUiDoIx9uav8Xh9FlxT2Np/86qnLmJSWivROwr/OuTF7RxpFr8ddVcAhQszw
+         QdeA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1783455711;
-	bh=C2jZV48BzSVIz2TLVrSj+BBmx/csPIiRUIpuC34CgwQ=;
-	h=Date:To:From:Subject;
-	b=aC7koMndKQzx7qCqK+rp2nS6II7BAP/zepC93jNAlJSgtpg63ediNMeUhDioe/3Gt
-	 jghy6ZHjPP83/3GM7boMcHvXNpvmrIsZBiD7DEHkwvW4GzpWV+oOnW2ls8dD32rfND
-	 fmWq5BD+VRczDWcIXs+eij3RE9DCj/2U0l/wawAM=
-Date: Tue, 07 Jul 2026 13:21:50 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,osalvador@suse.de,muchun.song@linux.dev,david@kernel.org,baolin.wang@linux.alibaba.com,mawupeng1@huawei.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-hugetlb-fix-missing-migratable-flag-on-same-node-hugetlb-migration.patch added to mm-new branch
-Message-Id: <20260707202151.3748A1F000E9@smtp.kernel.org>
+        d=gmail.com; s=20251104; t=1783455986; x=1784060786; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2vdqMWf3OTU2hmQJltOEb8z7E4SemE8YxCiIWickk4Q=;
+        b=IUwTMGkfRbsC48X3oZOsebcM+ZM5r1pt3/aw9RUKTGe8VvhBheazswwmdkNw2/zd4q
+         +aCKdlLsFRzVaNnR1cUTMy6ARBwaPgHCN3Bd8WJ1TOedmBaJ7btulVubfZqpkh0jJd1y
+         WYEQ4dqbhYJf2rJ++OVDRe4j4R69xNFu87vcroecqXT+6twzhG/w0Bk+NnOX2WgwNUNu
+         TX2yyOcac1tY43zPtXjoXo8JW//yBDbqqI0n4f+ajG+q/r8JyfLmbPTwBHmo+LcSMj2t
+         X4dgsADman4AmsDU0R7HLwEKfq53I40eAmH1qrw6bSnx+bG6nvrp11WprUFrpbAW2VjR
+         vaKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783455986; x=1784060786;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=2vdqMWf3OTU2hmQJltOEb8z7E4SemE8YxCiIWickk4Q=;
+        b=NNq4l4oBAnmAIvBsrl+QsM/JjWEMLBb730kgXE/UaCxIiIHcuZVMHzICCXmJIa0MT0
+         4GLKZakVNs0EXQGLZ5Q2PQzF7swyWqFVtn9wHigeleyzkMt6nknxkCuodPqNCWR/PTUy
+         KHpry/q65bvQLEipWfbpKyJwNNfFcUysJrrxYexi0hFDyEVGjqsKvD35L8XZuH4Hljcb
+         B5UfkqMeAPZZOhiSM0gC8FDxtjeNqemOhlacVEmcAvpHvYrub+mcDVG9AOpmVw9ht3VL
+         XKnfkb/073jbdDep5zTvvqjbUSBgAKDasm9ugMjwTbFHrWDQZQRRpFKdBOwG7ooBhL0x
+         1nHg==
+X-Forwarded-Encrypted: i=1; AHgh+RqEmY21sZ+B2mXAFuAfsIb6bNOGwlDlqkmZtkAKUhBfI3AD5GJTzal6FMdK8rR7J5nwIjbhRt4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwBC7DM6wSlRVzWd8ojBOf+qCBzSYAFJB17g85ngXbMTfpsqfWn
+	dtgelgtXvBkGIDvXElXKKxMrRUxsple+8wubQ4jgHGLnL3KYho8gikuhOhbV/XhxHSobgxJaNoU
+	2K+URBcvjy50OinBJ0NuasYiqMh6cDPE=
+X-Gm-Gg: AfdE7cnN1TkrhrFVeTgb/oXgQPHOSrIc6cSnFbxmwqjgRK7qG8BD+Pcp0QxG35pgTEV
+	m+K4DQNbkGqQtGdHOFhE89kvPWU6mjO0aLqkzkZ92e3w0do8NRsuP5/Tf4MqYuUyP6URshm0BpT
+	0hXhg0x89aDFkP+/gPHmkeNw+hSice95AuyuebIehY9A4+Nqso6kOHkHefnXUqGC1TOODhiF7oO
+	Mcqn96cb/2CxSatgW9zpA5/nTz7oLEAjRlNnF0YnColEl64kp8afUPLkaj35KkIEw7FkwlTplNO
+	/mdbTuRAMVSx4i6Clg+KDd+oteKrcSRIlb60y4LYdRZPBTST9ILGPcap
+X-Received: by 2002:a2e:a312:0:b0:39b:2df2:9014 with SMTP id
+ 38308e7fff4ca-39c5fd6fd0fmr12640621fa.7.1783455985858; Tue, 07 Jul 2026
+ 13:26:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20260704160759.236249-1-meatuni001@gmail.com> <20260704160759.236249-2-meatuni001@gmail.com>
+ <66b8977e-edd1-242d-1715-d5fe7f11f244@linux.intel.com>
+In-Reply-To: <66b8977e-edd1-242d-1715-d5fe7f11f244@linux.intel.com>
+From: Muhammad Bilal <meatuni001@gmail.com>
+Date: Wed, 8 Jul 2026 01:26:14 +0500
+X-Gm-Features: AVVi8CcdUkq0i8mQirRHfJIdYYuAkr_5uIzqk3y6EcE5X_hrh6bBIdI-08bpIZs
+Message-ID: <CADqcGBmuhY1XUU3gpwJ0mPPRi2pxME=aa55nGjomtEDbAfGAXA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] platform/x86: hp-bioscfg: pass validated element
+ count to package parsers
+To: =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Cc: hdegoede@redhat.com, jorge.lopez2@hp.com, Thomas.Weissschuh@linutronix.de, 
+	platform-driver-x86@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>, 
+	stable@vger.kernel.org, Mario Limonciello <superm1@kernel.org>, Armin Wolf <W_Armin@gmx.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FORGED_RECIPIENTS(0.00)[m:ilpo.jarvinen@linux.intel.com,m:hdegoede@redhat.com,m:jorge.lopez2@hp.com,m:Thomas.Weissschuh@linutronix.de,m:platform-driver-x86@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:superm1@kernel.org,m:W_Armin@gmx.de,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-272509-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-272504-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:mm-commits@vger.kernel.org,m:stable@vger.kernel.org,m:osalvador@suse.de,m:muchun.song@linux.dev,m:david@kernel.org,m:baolin.wang@linux.alibaba.com,m:mawupeng1@huawei.com,m:akpm@linux-foundation.org,s:lists@lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	DMARC_NA(0.00)[linux-foundation.org];
-	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_NONE(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER(0.00)[meatuni001@gmail.com,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[redhat.com,hp.com,linutronix.de,vger.kernel.org,kernel.org,gmx.de];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linux.dev:email]
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[meatuni001@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0269D71F811
+X-Rspamd-Queue-Id: 0A6AA71F873
 
+Hi Ilpo,
 
-The patch titled
-     Subject: mm/hugetlb: fix missing migratable flag on same-node hugetlb migration
-has been added to the -mm mm-new branch.  Its filename is
-     mm-hugetlb-fix-missing-migratable-flag-on-same-node-hugetlb-migration.patch
+I've posted v3 of the series, which splits the prerequisite changes into
+separate patches and updates the commit messages based on your review.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-hugetlb-fix-missing-migratable-flag-on-same-node-hugetlb-migration.patch
+https://lore.kernel.org/all/20260707202111.35414-1-meatuni001@gmail.com/
 
-This patch will later appear in the mm-new branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Thanks for your review.
 
-Note, mm-new is a provisional staging ground for work-in-progress
-patches, and acceptance into mm-new is a notification for others take
-notice and to finish up reviews.  Please do not hesitate to respond to
-review feedback and post updated versions to replace or incrementally
-fixup patches in mm-new.
-
-The mm-new branch of mm.git is not included in linux-next
-
-If a few days of testing in mm-new is successful, the patch will me moved
-into mm.git's mm-unstable branch, which is included in linux-next
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: Wupeng Ma <mawupeng1@huawei.com>
-Subject: mm/hugetlb: fix missing migratable flag on same-node hugetlb migration
-Date: Tue, 7 Jul 2026 19:02:54 +0800
-
-Commit ba23f58de896 ("mm/migrate: don't call
-folio_putback_active_hugetlb() on dst hugetlb folio") moved setting of the
-migratable flag and active-list placement from
-folio_putback_active_hugetlb(dst) into move_hugetlb_state(), so that the
-freshly allocated destination folio is handled where allocation is known
-to have succeeded.
-
-Unfortunately, the new code was appended after the existing
-temporary-folio block in move_hugetlb_state(), which contains an early
-return added earlier by commit 5af1ab1d24e08 ("mm/hugetlb: optimize the
-surplus state transfer code in move_hugetlb_state()"):
-
-  if (folio_test_hugetlb_temporary(new_folio)) {
-      ...
-      if (new_nid == old_nid)
-          return;                       <-- skips the new code
-      ...
-  }
-
-  /* added by ba23f58 */
-  folio_set_hugetlb_migratable(new_folio);
-  list_move_tail(&new_folio->lru, ...&h->hugepage_activelist);
-
-When the destination folio is temporary (i.e.  the hugetlb pool was
-exhausted and the migration callback fell back to
-alloc_migrate_hugetlb_folio()) and the migration does not cross a node --
-the common case, and always true on a single-NUMA system --
-move_hugetlb_state() returns before setting the migratable flag or adding
-the new folio to the active list.  The destination folio is then installed
-in the page table but cannot be isolated afterwards, since
-folio_isolate_hugetlb() rejects folios without the migratable flag; a
-subsequent soft-offline, hard-offline or memory-hotplug offline of that
-folio fails with -EBUSY.
-
-This was reproduced on a single-NUMA arm64 VM: a second MADV_SOFT_OFFLINE
-on an already-migrated hugetlb page returned EBUSY and logged "hugepage
-isolation failed".
-
-Keep the surplus adjustment, which is the only part that depends on the
-node crossing, guarded by `if (new_nid != old_nid)', while making the
-migratable flag and active-list placement unconditional.  This preserves
-the cleanup intent of ba23f58 and closes the early-return hole.
-
-Link: https://lore.kernel.org/20260707110254.3147686-1-mawupeng1@huawei.com
-Fixes: ba23f58de896 ("mm/migrate: don't call folio_putback_active_hugetlb() on dst hugetlb folio")
-Signed-off-by: Wupeng Ma <mawupeng1@huawei.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/hugetlb.c |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
-
---- a/mm/hugetlb.c~mm-hugetlb-fix-missing-migratable-flag-on-same-node-hugetlb-migration
-+++ a/mm/hugetlb.c
-@@ -7252,14 +7252,14 @@ void move_hugetlb_state(struct folio *ol
- 		 * There is no need to transfer the per-node surplus state
- 		 * when we do not cross the node.
- 		 */
--		if (new_nid == old_nid)
--			return;
--		spin_lock_irq(&hugetlb_lock);
--		if (h->surplus_huge_pages_node[old_nid]) {
--			h->surplus_huge_pages_node[old_nid]--;
--			h->surplus_huge_pages_node[new_nid]++;
-+		if (new_nid != old_nid) {
-+			spin_lock_irq(&hugetlb_lock);
-+			if (h->surplus_huge_pages_node[old_nid]) {
-+				h->surplus_huge_pages_node[old_nid]--;
-+				h->surplus_huge_pages_node[new_nid]++;
-+			}
-+			spin_unlock_irq(&hugetlb_lock);
- 		}
--		spin_unlock_irq(&hugetlb_lock);
- 	}
- 
- 	/*
-_
-
-Patches currently in -mm which might be from mawupeng1@huawei.com are
-
-mm-hugetlb-fix-missing-migratable-flag-on-same-node-hugetlb-migration.patch
-
+On Mon, Jul 6, 2026 at 10:57=E2=80=AFPM Ilpo J=C3=A4rvinen
+<ilpo.jarvinen@linux.intel.com> wrote:
+>
+> On Sat, 4 Jul 2026, Muhammad Bilal wrote:
+>
+> > hp_init_bios_package_attribute() validates obj->package.count against
+> > min_elements and then hands off elements =3D obj->package.elements to
+>
+> quoting elements =3D obj->package.elements statement in this context is
+> confusing. I don't think it's usually necessary to copy code like this to
+> changelog, here you can just state "elements" (which even happens to matc=
+h
+> the struct member's name even).
+>
+> > one of the five per-type hp_populate_*_package_data() wrappers
+> > (string, integer, enumeration, ordered list, password). None of these
+> > wrappers receive that validated count. Instead each one re-derives it
+> > locally:
+> >
+> >   hp_populate_integer_elements_from_package(integer_obj,
+> >                                             integer_obj->package.count,
+> >                                             instance_id);
+> >
+> > integer_obj here is elements, i.e. a pointer to elements[0] (the NAME
+> > field, always ACPI_TYPE_STRING). Reading ->package.count off a string
+> > object aliases ->string.length in the underlying union acpi_object, so
+> > the "count" passed down is not the real package size at all.
+>
+> Only at this point you're actually telling what the problem is.
+>
+> My suggestion is to rewrite this so that you start by telling that wrong
+> size (count) is read and passed on by these functions (sort of summary of
+> the problem). Then explain what caused that.
+>
+> > For string, integer, enumeration and password attributes,
+> > hp_populate_*_elements_from_package() bounds its iteration using the
+> > corresponding per-type ELEM_CNT constant (STR_ELEM_CNT,
+> > INT_ELEM_CNT, ENUM_ELEM_CNT and PSWD_ELEM_CNT). This relies on
+> > hp_init_bios_package_attribute() rejecting packages with fewer than
+> > ELEM_CNT elements before invoking the parsers.
+> >
+> > Relaxing that check would allow shorter packages to reach these
+> > functions, making the fixed loop bounds unsafe.
+>
+> ??
+>
+> You might be doing this in some later patch but then you should say
+> that an upcoming patch is going to relax this check, otherwise it comes
+> out of nowhere.
+>
+> So I think you're trying to solve two cases here:
+>
+> 1) Passing wrong count.
+> 2) Allowing count less than what those consts define (but this is only
+> needed for some later patch?).
+>
+> But it's so that fixing 1 ends up also solving 2? I think the changelog
+> should mostly focus on 1 and then only state in the end that it also
+> prepares for an upcoming change that requires supporting 2.
+>
+> > hp_populate_ordered_list_elements_from_package() doesn't even use the
+> > count for its main loop bound - it iterates unconditionally up to
+> > ORD_ELEM_CNT:
+> >
+> >   for (elem =3D 1, eloc =3D 1; eloc < ORD_ELEM_CNT; elem++, eloc++)
+> >
+> > which relies entirely on the same coincidence.
+> >
+> > This is only safe as long as every caller is guaranteed to hand these
+> > functions a package with at least ELEM_CNT real elements. A following
+> > change relaxes that guarantee to allow shorter packages through, which
+> > would turn this into a real out-of-bounds heap read of the
+> > elements[] array once the real count drops below the fixed ELEM_CNT
+> > loop bound.
+> >
+> > Fix this at the source: thread the real, already-validated
+> > obj->package.count down through each *_package_data() wrapper instead
+>
+> "thread down" sounds odd to my (non-native) ear in this context.
+>
+> each *_package_data() wrapper -> *_package_data() wrappers
+>
+> > of letting the per-type code guess at it, and use it to also bound
+>
+> "guess at it" sounds odd to my ear and is now even correct given your
+> explanation of the problem.
+>
+> > hp_populate_ordered_list_elements_from_package()'s main loop.
+>
+> > This is a
+> > no-op for any package that already meets the existing ELEM_CNT
+> > minimums, and is a prerequisite for safely accepting shorter packages.
+> >
+> > Fixes: a34fc329b189 ("platform/x86: hp-bioscfg: bioscfg")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Muhammad Bilal <meatuni001@gmail.com>
+> > ---
+> >  drivers/platform/x86/hp/hp-bioscfg/bioscfg.c               | 5 +++++
+> >  drivers/platform/x86/hp/hp-bioscfg/bioscfg.h               | 5 +++++
+> >  drivers/platform/x86/hp/hp-bioscfg/enum-attributes.c       | 3 ++-
+> >  drivers/platform/x86/hp/hp-bioscfg/int-attributes.c        | 3 ++-
+> >  drivers/platform/x86/hp/hp-bioscfg/order-list-attributes.c | 7 ++++---
+> >  drivers/platform/x86/hp/hp-bioscfg/passwdobj-attributes.c  | 5 +++--
+> >  drivers/platform/x86/hp/hp-bioscfg/string-attributes.c     | 3 ++-
+> >  7 files changed, 23 insertions(+), 8 deletions(-)
+> >
+> > diff --git a/drivers/platform/x86/hp/hp-bioscfg/bioscfg.c b/drivers/pla=
+tform/x86/hp/hp-bioscfg/bioscfg.c
+> > index 27fd6cd215290..768330d291da8 100644
+> > --- a/drivers/platform/x86/hp/hp-bioscfg/bioscfg.c
+> > +++ b/drivers/platform/x86/hp/hp-bioscfg/bioscfg.c
+> > @@ -731,26 +731,31 @@ static int hp_init_bios_package_attribute(enum hp=
+_wmi_data_type attr_type,
+> >       switch (attr_type) {
+> >       case HPWMI_STRING_TYPE:
+> >               ret =3D hp_populate_string_package_data(elements,
+> > +                                                   obj->package.count,
+> >                                                     instance_id,
+> >                                                     attr_name_kobj);
+> >               break;
+> >       case HPWMI_INTEGER_TYPE:
+> >               ret =3D hp_populate_integer_package_data(elements,
+> > +                                                    obj->package.count=
+,
+> >                                                      instance_id,
+> >                                                      attr_name_kobj);
+> >               break;
+> >       case HPWMI_ENUMERATION_TYPE:
+> >               ret =3D hp_populate_enumeration_package_data(elements,
+> > +                                                        obj->package.c=
+ount,
+> >                                                          instance_id,
+> >                                                          attr_name_kobj=
+);
+> >               break;
+> >       case HPWMI_ORDERED_LIST_TYPE:
+> >               ret =3D hp_populate_ordered_list_package_data(elements,
+> > +                                                         obj->package.=
+count,
+> >                                                           instance_id,
+> >                                                           attr_name_kob=
+j);
+> >               break;
+> >       case HPWMI_PASSWORD_TYPE:
+> >               ret =3D hp_populate_password_package_data(elements,
+> > +                                                     obj->package.coun=
+t,
+> >                                                       instance_id,
+> >                                                       attr_name_kobj);
+> >               break;
+> > diff --git a/drivers/platform/x86/hp/hp-bioscfg/bioscfg.h b/drivers/pla=
+tform/x86/hp/hp-bioscfg/bioscfg.h
+> > index f1eec0e4ba075..416d7e7aaaae3 100644
+> > --- a/drivers/platform/x86/hp/hp-bioscfg/bioscfg.h
+> > +++ b/drivers/platform/x86/hp/hp-bioscfg/bioscfg.h
+> > @@ -401,6 +401,7 @@ int hp_populate_string_buffer_data(u8 *buffer_ptr, =
+u32 *buffer_size,
+> >  int hp_alloc_string_data(void);
+> >  void hp_exit_string_attributes(void);
+> >  int hp_populate_string_package_data(union acpi_object *str_obj,
+> > +                                 int str_obj_count,
+> >                                   int instance_id,
+> >                                   struct kobject *attr_name_kobj);
+> >
+> > @@ -411,6 +412,7 @@ int hp_populate_integer_buffer_data(u8 *buffer_ptr,=
+ u32 *buffer_size,
+> >  int hp_alloc_integer_data(void);
+> >  void hp_exit_integer_attributes(void);
+> >  int hp_populate_integer_package_data(union acpi_object *integer_obj,
+> > +                                  int integer_obj_count,
+> >                                    int instance_id,
+> >                                    struct kobject *attr_name_kobj);
+> >
+> > @@ -421,6 +423,7 @@ int hp_populate_enumeration_buffer_data(u8 *buffer_=
+ptr, u32 *buffer_size,
+> >  int hp_alloc_enumeration_data(void);
+> >  void hp_exit_enumeration_attributes(void);
+> >  int hp_populate_enumeration_package_data(union acpi_object *enum_obj,
+> > +                                      int enum_obj_count,
+> >                                        int instance_id,
+> >                                        struct kobject *attr_name_kobj);
+> >
+> > @@ -432,6 +435,7 @@ int hp_populate_ordered_list_buffer_data(u8 *buffer=
+_ptr,
+> >  int hp_alloc_ordered_list_data(void);
+> >  void hp_exit_ordered_list_attributes(void);
+> >  int hp_populate_ordered_list_package_data(union acpi_object *order_obj=
+,
+> > +                                       int order_obj_count,
+> >                                         int instance_id,
+> >                                         struct kobject *attr_name_kobj)=
+;
+> >
+> > @@ -440,6 +444,7 @@ int hp_populate_password_buffer_data(u8 *buffer_ptr=
+, u32 *buffer_size,
+> >                                    int instance_id,
+> >                                    struct kobject *attr_name_kobj);
+> >  int hp_populate_password_package_data(union acpi_object *password_obj,
+> > +                                   int password_obj_count,
+> >                                     int instance_id,
+> >                                     struct kobject *attr_name_kobj);
+> >  int hp_alloc_password_data(void);
+> > diff --git a/drivers/platform/x86/hp/hp-bioscfg/enum-attributes.c b/dri=
+vers/platform/x86/hp/hp-bioscfg/enum-attributes.c
+> > index af4d1920d4880..3aa2c440e0528 100644
+> > --- a/drivers/platform/x86/hp/hp-bioscfg/enum-attributes.c
+> > +++ b/drivers/platform/x86/hp/hp-bioscfg/enum-attributes.c
+> > @@ -304,6 +304,7 @@ static int hp_populate_enumeration_elements_from_pa=
+ckage(union acpi_object *enum
+> >   * @attr_name_kobj: The parent kernel object
+> >   */
+> >  int hp_populate_enumeration_package_data(union acpi_object *enum_obj,
+> > +                                      int enum_obj_count,
+> >                                        int instance_id,
+> >                                        struct kobject *attr_name_kobj)
+> >  {
+> > @@ -312,7 +313,7 @@ int hp_populate_enumeration_package_data(union acpi=
+_object *enum_obj,
+> >       enum_data->attr_name_kobj =3D attr_name_kobj;
+> >
+> >       hp_populate_enumeration_elements_from_package(enum_obj,
+> > -                                                   enum_obj->package.c=
+ount,
+> > +                                                   enum_obj_count,
+> >                                                     instance_id);
+> >       hp_update_attribute_permissions(enum_data->common.is_readonly,
+> >                                       &enumeration_current_val);
+> > diff --git a/drivers/platform/x86/hp/hp-bioscfg/int-attributes.c b/driv=
+ers/platform/x86/hp/hp-bioscfg/int-attributes.c
+> > index d96e160953e39..107e4cf1efb8a 100644
+> > --- a/drivers/platform/x86/hp/hp-bioscfg/int-attributes.c
+> > +++ b/drivers/platform/x86/hp/hp-bioscfg/int-attributes.c
+> > @@ -279,6 +279,7 @@ static int hp_populate_integer_elements_from_packag=
+e(union acpi_object *integer_
+> >   * @attr_name_kobj: The parent kernel object
+> >   */
+> >  int hp_populate_integer_package_data(union acpi_object *integer_obj,
+> > +                                  int integer_obj_count,
+> >                                    int instance_id,
+> >                                    struct kobject *attr_name_kobj)
+> >  {
+> > @@ -286,7 +287,7 @@ int hp_populate_integer_package_data(union acpi_obj=
+ect *integer_obj,
+> >
+> >       integer_data->attr_name_kobj =3D attr_name_kobj;
+> >       hp_populate_integer_elements_from_package(integer_obj,
+> > -                                               integer_obj->package.co=
+unt,
+> > +                                               integer_obj_count,
+> >                                                 instance_id);
+> >       hp_update_attribute_permissions(integer_data->common.is_readonly,
+> >                                       &integer_current_val);
+> > diff --git a/drivers/platform/x86/hp/hp-bioscfg/order-list-attributes.c=
+ b/drivers/platform/x86/hp/hp-bioscfg/order-list-attributes.c
+> > index f09489a085c86..a50d074125268 100644
+> > --- a/drivers/platform/x86/hp/hp-bioscfg/order-list-attributes.c
+> > +++ b/drivers/platform/x86/hp/hp-bioscfg/order-list-attributes.c
+> > @@ -145,7 +145,7 @@ static int hp_populate_ordered_list_elements_from_p=
+ackage(union acpi_object *ord
+> >       if (!order_obj)
+> >               return -EINVAL;
+> >
+> > -     for (elem =3D 1, eloc =3D 1; eloc < ORD_ELEM_CNT; elem++, eloc++)=
+ {
+> > +     for (elem =3D 1, eloc =3D 1; eloc < ORD_ELEM_CNT && elem < order_=
+obj_count; elem++, eloc++) {
+>
+> This looks like a separate fix belonging to own patch. It allows you also
+> to write more focused changelog text for each patch.
+>
+> >
+> >               switch (order_obj[elem].type) {
+> >               case ACPI_TYPE_STRING:
+> > @@ -301,7 +301,8 @@ static int hp_populate_ordered_list_elements_from_p=
+ackage(union acpi_object *ord
+> >   * @instance_id: The instance to enumerate
+> >   * @attr_name_kobj: The parent kernel object
+> >   */
+> > -int hp_populate_ordered_list_package_data(union acpi_object *order_obj=
+, int instance_id,
+> > +int hp_populate_ordered_list_package_data(union acpi_object *order_obj=
+, int order_obj_count,
+> > +                                       int instance_id,
+> >                                         struct kobject *attr_name_kobj)
+> >  {
+> >       struct ordered_list_data *ordered_list_data =3D &bioscfg_drv.orde=
+red_list_data[instance_id];
+> > @@ -309,7 +310,7 @@ int hp_populate_ordered_list_package_data(union acp=
+i_object *order_obj, int inst
+> >       ordered_list_data->attr_name_kobj =3D attr_name_kobj;
+> >
+> >       hp_populate_ordered_list_elements_from_package(order_obj,
+> > -                                                    order_obj->package=
+.count,
+> > +                                                    order_obj_count,
+> >                                                      instance_id);
+> >       hp_update_attribute_permissions(ordered_list_data->common.is_read=
+only,
+> >                                       &ordered_list_current_val);
+> > diff --git a/drivers/platform/x86/hp/hp-bioscfg/passwdobj-attributes.c =
+b/drivers/platform/x86/hp/hp-bioscfg/passwdobj-attributes.c
+> > index 4d79eb8056a5d..89316d90454d2 100644
+> > --- a/drivers/platform/x86/hp/hp-bioscfg/passwdobj-attributes.c
+> > +++ b/drivers/platform/x86/hp/hp-bioscfg/passwdobj-attributes.c
+> > @@ -388,7 +388,8 @@ static int hp_populate_password_elements_from_packa=
+ge(union acpi_object *passwor
+> >   * @instance_id: The instance to enumerate
+> >   * @attr_name_kobj: The parent kernel object
+> >   */
+> > -int hp_populate_password_package_data(union acpi_object *password_obj,=
+ int instance_id,
+> > +int hp_populate_password_package_data(union acpi_object *password_obj,=
+ int password_obj_count,
+> > +                                   int instance_id,
+> >                                     struct kobject *attr_name_kobj)
+> >  {
+> >       struct password_data *password_data =3D &bioscfg_drv.password_dat=
+a[instance_id];
+> > @@ -396,7 +397,7 @@ int hp_populate_password_package_data(union acpi_ob=
+ject *password_obj, int insta
+> >       password_data->attr_name_kobj =3D attr_name_kobj;
+> >
+> >       hp_populate_password_elements_from_package(password_obj,
+> > -                                                password_obj->package.=
+count,
+> > +                                                password_obj_count,
+> >                                                  instance_id);
+> >
+> >       hp_friendly_user_name_update(password_data->common.path,
+> > diff --git a/drivers/platform/x86/hp/hp-bioscfg/string-attributes.c b/d=
+rivers/platform/x86/hp/hp-bioscfg/string-attributes.c
+> > index fe5a9a3a4ef17..da5e81f1d188f 100644
+> > --- a/drivers/platform/x86/hp/hp-bioscfg/string-attributes.c
+> > +++ b/drivers/platform/x86/hp/hp-bioscfg/string-attributes.c
+> > @@ -267,6 +267,7 @@ static int hp_populate_string_elements_from_package=
+(union acpi_object *string_ob
+> >   * @attr_name_kobj: The parent kernel object
+> >   */
+> >  int hp_populate_string_package_data(union acpi_object *string_obj,
+> > +                                 int string_obj_count,
+> >                                   int instance_id,
+> >                                   struct kobject *attr_name_kobj)
+> >  {
+> > @@ -275,7 +276,7 @@ int hp_populate_string_package_data(union acpi_obje=
+ct *string_obj,
+> >       string_data->attr_name_kobj =3D attr_name_kobj;
+> >
+> >       hp_populate_string_elements_from_package(string_obj,
+> > -                                              string_obj->package.coun=
+t,
+> > +                                              string_obj_count,
+> >                                                instance_id);
+> >
+> >       hp_update_attribute_permissions(string_data->common.is_readonly,
+> >
+>
+> --
+>  i.
+>
 
