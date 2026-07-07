@@ -1,95 +1,95 @@
-Return-Path: <stable+bounces-272493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272494-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id DGvQM11NTWqOxwEAu9opvQ
-	(envelope-from <stable+bounces-272493-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 21:02:53 +0200
+	id UiUWNb5NTWrDxwEAu9opvQ
+	(envelope-from <stable+bounces-272494-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 21:04:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA82B71ED0A
-	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 21:02:53 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id D07F071ED62
+	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 21:04:29 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=fQDRSxRh;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=AP7rpcqE;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272493-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-272493-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272494-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-272494-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 81653301D758
-	for <lists+stable@lfdr.de>; Tue,  7 Jul 2026 19:02:30 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6D17C3013195
+	for <lists+stable@lfdr.de>; Tue,  7 Jul 2026 19:03:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDFDF392836;
-	Tue,  7 Jul 2026 19:02:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E77163A1E80;
+	Tue,  7 Jul 2026 19:02:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00A153A1693
-	for <stable@vger.kernel.org>; Tue,  7 Jul 2026 19:02:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 450E02F7F1D
+	for <stable@vger.kernel.org>; Tue,  7 Jul 2026 19:02:55 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783450946; cv=none; b=us8lgayriCGJaEMrznkBZNuX+w8LyKZhKR99whSH0F7mN7/RoMmSejFRWT5zUwuKyKKs7dCjlKJ1jZxntipaJIhHRAw3gkR/NqDG2U7SUswKq3+TyVlT6RN4AB0vevJC5Ol2M+ldwjgPbAb8ZGSb6LfqiZDE4ttO1zHKJpUe1QI=
+	t=1783450977; cv=none; b=IEaGCJFX9ktoXVtd2SyElZ/T6k7AwVicq2BMeQTcZdKIHueEqMkKvf+FyUTd+VbpXJqKjts2TqKAa1uXCOVIYx/6vRREI22na5qLPjGj9FcSh4MIimkGZ/axlIUGo7G6QBhv0Xl7n5Hr6mZLNX0V9KZXxkHQIkJmujRKmc6sU5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783450946; c=relaxed/simple;
-	bh=QYUa20pIZh2wxiF+T5Z9fR8QFbYCIIP9R0h4qS+mLH4=;
+	s=arc-20240116; t=1783450977; c=relaxed/simple;
+	bh=ifTmuhdYEfA8S+Ti9vBnBv8jVJkTFG9fKTW/c6hx1FQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XaE5I2jePWSZj7YKiS4hITe7vGiKklxvyYst1/q0TGCXMTydoXEikhKM/jsJyXV9+UV8Qcjv6E/nkSuh1EaZNjjczjUW/SVsA2JoX2NY53sfuwtZE6yiJxHQcKunP0f/vCYodt9Yp93zW96b58Yz0mPX4nzHoQw9SyxQ2wBqPBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fQDRSxRh; arc=none smtp.client-ip=209.85.214.178
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2cca0c5799eso24609395ad.0
-        for <stable@vger.kernel.org>; Tue, 07 Jul 2026 12:02:24 -0700 (PDT)
+	 MIME-Version; b=DWQnR9Lwne7Dy984zKIBi21q6PvYK0i9P/6r0HYp6hL56yUXwvpDI6r58S7d1kAlQ7XP64ISswkotGPvx1h+FnFUvfqIk3C4SnUXuQThcaomHCHpIp6Zme2ssHNkgzN1L+lpN26P0DQat6cULTSE4nqJSlZXOafXaXysW7qFxm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AP7rpcqE; arc=none smtp.client-ip=209.85.215.169
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-ca12086c06eso3401132a12.0
+        for <stable@vger.kernel.org>; Tue, 07 Jul 2026 12:02:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783450944; x=1784055744; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1783450975; x=1784055775; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=fcqVoGIOsqHneznya0CjxdKSZ/9QYnIEWsldQdbwafY=;
-        b=fQDRSxRhhfDQnouWeQJB+pOAunF2MMAq1smVgQ0SfCJcK6XKgimna0ccpnzeAu69f6
-         NjlxmNqpvPM7aB3mpPMx2lQm7D2w4JsbzCQMDXgZ7otZUIt8/8BI5cN6ng6fpm22DTc5
-         766TTwco4QdtCBDUxoKMgIzX17+v4SfqQSgnNs69ky8UP9tY2M8T8yR1LYoAoKh6rI3I
-         jzNFeLGQG2Fk53aBX5kYTA3y/oDCBJ0EArAzANIImE2DZPI72e/egOzBUeUducmlXASf
-         /3doIdqOSj3Iz6jpYH1ocD2wTd4R5+3nGW0dCA1T8A0xKOclgaVVxCdFX82yD5JCDchV
-         SHDw==
+        bh=ibl0MHrnxFzM837MpKxLVego5yHxJdHEFJ+77R4ZX9E=;
+        b=AP7rpcqEK5S9B7W2eR7+tA+od7iBgBaWyY5p1QvuTTpydqmQLNqZvd514leH3pOZX5
+         o2q4TZga2HHb7foAe+BB9WFBrQemb7aaw3BMXD1FznHinztufSrO9aKzlkpCK2oDksT0
+         4/7YHE9yuP9h9Kxs0vPT4FeUb3ISWvFduJ6R+LruaCJkn45T0RYoHCDB3ksXuJA9VLcl
+         qWXm7GBvGBw6wgD6By1TXlsHk41g+KFhSBlHgyQQPevfG10RxM+ELxB3e3YghJdTtCTr
+         r6xfrhi2JH8CRQjE9iyXbOWGfY70jSLAqjmkYkuFRlwXTAyvWQYgbfyT/241c15n5l9H
+         bL2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783450944; x=1784055744;
+        d=1e100.net; s=20251104; t=1783450975; x=1784055775;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=fcqVoGIOsqHneznya0CjxdKSZ/9QYnIEWsldQdbwafY=;
-        b=pnXB6G+deN5PHELrjpus+xzjpDQh+VJIINTXOyJ34UO0LFnyJgUmU/ABZeD6aah5Re
-         Jtk4vljharvv2jXiQrHN7q49mDlhMl20bJTweQMCiZPZL38TuK822E/x1OkhRlSEXjJI
-         A4jFuN3MHOdg+xuxAHMl08sf0kvhKd+6FTX+lZJ5QUdjAjFIHG3aUFcEBi/JPsSF2+FV
-         LYn859dKTXJ8hKFAr7FfPOrf+bLDFVjUMPnBKVTxSEVLQNhSckE+xx2zqfHO3kpGyX3x
-         pkrndoTR8pt5+G60x2fQ14RA5y5NWt+Nq/IqMKWuiN3QdBGYCh2ILSDuY0zhXFPPMGbe
-         +Gyw==
-X-Forwarded-Encrypted: i=1; AHgh+Rql296BlUnTCzdSLnD+u5gIpdyqHlmFEkNcspBqassGji/sMA9RL+CmmoyBVyqvbpROPcdYxMY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzq/mTabBnB2euT1l+aLaseyXTrQ0lR4NXjh2/y0+6rxleKnGOO
-	D9JBwIhDHwVJIpjjB5FAmGbKNnMJw9OG2IQ3zP6795IviXWs/Pq0tspY
-X-Gm-Gg: AfdE7clmRm/Ub+VeDAD+q8LmPXdi8glt2N/ma81klQ/bmiIVYMnSy9CmXlLmRVJLF9y
-	GhUM9shf+cdWLiGrdGHDlOVpPDyAUabgPmBT9JKcVsZ32lXoTNMqn9JPLYuRJ5RKGcWvKIO7baL
-	QPlxKgaWzEDA83wIwhvnEhHyDlF1UYE4HSBhWWcXj9pCVuglJBdhRTdlMWtpvPNzBoygaFk9At4
-	2Kl4rHMfINtd/IRLC2sL3OWlki+4fKCH11eyN/7zWP/sGuAL7XXBK9rzgb31U6L/XtLHqlYBl+L
-	BMvng+ae/3gfTEaoU2ZCV11sr3YNkifhbco+p6AUv3Lp5VOBilVG53ipkXkekOCUMh5eJFvEf6D
-	X7sbTE8QnNCFfp4WXOwJ25ixq3RNdt+ZziKYdlKH5nlkVKuKkc01hJjKSRdsA7qMh6ICqk2XA3A
-	1zcrxxwW0uDG3kCfM=
-X-Received: by 2002:a17:90a:c2cb:b0:380:21b7:e727 with SMTP id 98e67ed59e1d1-3875547c4cbmr7015406a91.14.1783450944395;
-        Tue, 07 Jul 2026 12:02:24 -0700 (PDT)
+        bh=ibl0MHrnxFzM837MpKxLVego5yHxJdHEFJ+77R4ZX9E=;
+        b=cAkPqBVxBUzeMBePynyYOodVgKhqjFw/JiIAqro1UEkPvAfaq91exBW/ZEcq442yyn
+         mAbzhPPQMXuDDMXVwAcCX7tf50ej9aJtk5vGYni6nxP2ZipvSBa8luBHYq846KMTRRSN
+         /t7HSC90eOnjqZ4u66k1qj8ENG/935E3fHahbL2G+z8PewG7dJnQGVwaf6N+7mS925vr
+         nV0Mv7lCMnv+lVwdHlrbEeYD2gthSVe+jwfEIvWB1imJecg5dZGCKGe8fgQFNnlCmSIZ
+         OITpIuwLZclq0YVtTjRoT8Pm9J3TKhqySlvbub2hXO+AhxMbgP7BnY/goFo+08aqkt9T
+         45wQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rp8s7YnKeuvOa6Si9NB/ei0OL/Jp6LRZR4LTHp+epgqbIFTNpTGdzSkMuH0bxG3DLtY5nUnpbc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz8Bsi+JO94kC/ATDpDdmzT7UAxsjomCnarshyiOs6cOURfUDLu
+	VORL02Kd0txjwrjKyUJXajcQz69CyLXu1jSqHLKgfQ5OnzsGBGWHX7j4
+X-Gm-Gg: AfdE7cm1o5AT0e0/qr05ZQgiwmLzpqCsFJYg3sffUSQvPn7zKeadFqRYBYXL1ZmnzQN
+	5yptz0yaBFUO5TlBR4+9yVS2OQmoi6eZEJsTnKfyJEXPgcINAizBG1oM+gGFvCc+I5UZWGzy6w2
+	gt8rp2EESzV8FjAAbBsZe/U2nvLqemK1HbpYievDRHMsrFakHI2G86E+30kesGgV0S6yEj51Z+6
+	kFRkMkAR+TPVCpM0kssr5xnAskBRpcNNR21iFg9pxMdS5Ly9sKMYf6nTXpQbZzZV7G7+MaFvReF
+	fq1fo7t6c3AlcZq+msn3a0owM9HNuPaGqU2z3TE9aKbBJOOoPJCAFbsXTKtD/QIAJ3F5eU40N8H
+	SxVSkDBpVolNCZHOLy0FpRBVONj9v13K1a/bvVO6PNbPOL2OGFAbbeQY6U8Q2uagj1E8L9d/1ib
+	6XIzPh
+X-Received: by 2002:a05:6300:2203:b0:3bf:6237:4d3f with SMTP id adf61e73a8af0-3c08ed081d3mr7453396637.18.1783450974527;
+        Tue, 07 Jul 2026 12:02:54 -0700 (PDT)
 Received: from beelink.. ([186.22.57.86])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-31174839f89sm11375916eec.10.2026.07.07.12.02.22
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13b6593c76dsm10704585c88.3.2026.07.07.12.02.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jul 2026 12:02:24 -0700 (PDT)
+        Tue, 07 Jul 2026 12:02:54 -0700 (PDT)
 From: Aldo Ariel Panzardo <qwe.aldo@gmail.com>
 To: linux-xfs@vger.kernel.org,
 	Carlos Maiolino <cem@kernel.org>
 Cc: "Darrick J . Wong" <djwong@kernel.org>,
-	Chandan Babu R <chandanrlinux@gmail.com>,
+	Dave Chinner <dchinner@redhat.com>,
 	linux-kernel@vger.kernel.org,
 	Aldo Ariel Panzardo <qwe.aldo@gmail.com>,
 	stable@vger.kernel.org
-Subject: [PATCH v2] xfs: bound inode fork length against the fork size during log recovery
-Date: Tue,  7 Jul 2026 16:02:14 -0300
-Message-ID: <20260707190214.3813321-1-qwe.aldo@gmail.com>
+Subject: [PATCH v2] xfs: bound da-node entry count against the correct geometry
+Date: Tue,  7 Jul 2026 16:02:45 -0300
+Message-ID: <20260707190245.3813498-1-qwe.aldo@gmail.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260707135843.3213352-1-qwe.aldo@gmail.com>
-References: <20260707135843.3213352-1-qwe.aldo@gmail.com>
+In-Reply-To: <20260707135930.3214701-1-qwe.aldo@gmail.com>
+References: <20260707135930.3214701-1-qwe.aldo@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -102,23 +102,23 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[kernel.org,gmail.com,vger.kernel.org];
+	FREEMAIL_CC(0.00)[kernel.org,redhat.com,vger.kernel.org,gmail.com];
 	FORWARDED(0.00)[lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER(0.00)[qwealdo@gmail.com,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-272493-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-272494-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:linux-xfs@vger.kernel.org,m:cem@kernel.org,m:djwong@kernel.org,m:chandanrlinux@gmail.com,m:linux-kernel@vger.kernel.org,m:qwe.aldo@gmail.com,m:stable@vger.kernel.org,m:qwealdo@gmail.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:linux-xfs@vger.kernel.org,m:cem@kernel.org,m:djwong@kernel.org,m:dchinner@redhat.com,m:linux-kernel@vger.kernel.org,m:qwe.aldo@gmail.com,m:stable@vger.kernel.org,m:qwealdo@gmail.com,s:lists@lfdr.de];
 	DKIM_TRACE(0.00)[gmail.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -131,78 +131,66 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: AA82B71ED0A
+X-Rspamd-Queue-Id: D07F071ED62
 
-xlog_recover_inode_commit_pass2() copies an inode log item's data/attr
-fork region into the inode buffer using the on-log region length without
-bounding it against the fork capacity, e.g.:
+xfs_da3_node_verify() bounds the node entry count against the larger of
+the directory and attribute geometries because, as a buffer verifier, it
+cannot tell whether the block belongs to the directory or the attribute
+tree. When the directory block size exceeds the fs block size (e.g.
+mkfs.xfs -n size=64k -b size=4k), an attribute node buffer is a single fs
+block that holds only m_attr_geo->node_ents entries, yet a crafted attr
+node may claim a count up to m_dir_geo->node_ents and still pass the
+verifier.
 
-	len = item->ri_buf[2].iov_len;
-	memcpy(XFS_DFORK_DPTR(dip), src, len);
+xfs_da3_node_lookup_int() then indexes btree[] up to that count during
+its binary search -- an out-of-bounds read via getxattr/listxattr on a
+mounted crafted image.
 
-The only guard is an ASSERT, which is a no-op on production kernels
-(CONFIG_XFS_DEBUG off), and xfs_dinode_verify() runs only after the copy.
-A crafted image with a dirty log can therefore drive a heap out-of-bounds
-write at mount time. The XFS_ILOG_DBROOT sibling already passes
-XFS_DFORK_DSIZE as a bound; the DDATA/DEXT and ADATA/AEXT memcpy paths
-did not.
+The buffer verifier is the wrong place to tighten this: it has no fork
+context, and the transaction-less read path used by getxattr does not run
+xfs_da3_node_set_type() either. xfs_da3_node_lookup_int(), on the other
+hand, always runs on that path and holds args->geo, the geometry of the
+fork actually being searched. Bound the entry count against
+args->geo->node_ents there, before walking the entries.
 
-Bound each logged fork region against the destination fork size before
-copying it, and reject the log item with -EFSCORRUPTED when it does not
-fit. Because the recovered inode is only verified after the fork data has
-been copied in, the checks are done up front, before any memcpy into the
-on-disk inode.
-
-Fixes: 658fa68b6f34 ("xfs: refactor log recovery inode item dispatch for pass2 commit functions")
-Cc: <stable@vger.kernel.org> # v5.8
+Fixes: 7ab610f9e0f1 ("xfs: move node entry counts to xfs_da_geometry")
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Aldo Ariel Panzardo <qwe.aldo@gmail.com>
 ---
-v2: cc stable # v5.8 (per Darrick).  Move both fork-length checks to the
-    top of the fork-copy block, before any memcpy into the on-disk
-    inode, and drop the now-redundant ASSERT.
+v2: reworked per Darrick's review.  Do not infer dir-vs-attr from the
+    buffer size in the verifier; instead bound the entry count in
+    xfs_da3_node_lookup_int() against args->geo->node_ents, the
+    geometry of the fork being searched.  cc stable.
 
- fs/xfs/xfs_inode_item_recover.c | 20 +++++++++++++++++++-
- 1 file changed, 19 insertions(+), 1 deletion(-)
+ fs/xfs/libxfs/xfs_da_btree.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/fs/xfs/xfs_inode_item_recover.c b/fs/xfs/xfs_inode_item_recover.c
-index 169a8fe3bf0a..6c7dd7dd7032 100644
---- a/fs/xfs/xfs_inode_item_recover.c
-+++ b/fs/xfs/xfs_inode_item_recover.c
-@@ -507,6 +507,25 @@ xlog_recover_inode_commit_pass2(
- 	ASSERT(!(fields & XFS_ILOG_DFORK) ||
- 	       (len == xlog_calc_iovec_len(in_f->ilf_dsize)));
+diff --git a/fs/xfs/libxfs/xfs_da_btree.c b/fs/xfs/libxfs/xfs_da_btree.c
+index 9debb95d86fa..95ea3737eb33 100644
+--- a/fs/xfs/libxfs/xfs_da_btree.c
++++ b/fs/xfs/libxfs/xfs_da_btree.c
+@@ -1787,6 +1787,20 @@ xfs_da3_node_lookup_int(
+ 		} else
+ 			expected_level--;
  
-+	/*
-+	 * The recovered inode is verified only after the fork data has been
-+	 * copied into it, so bound each logged fork region against the size of
-+	 * its fork now, before the memcpy below can overrun the on-disk inode.
-+	 * The DBROOT/ABROOT cases already bound their copies against the fork
-+	 * size.
-+	 */
-+	if ((fields & (XFS_ILOG_DDATA | XFS_ILOG_DEXT)) &&
-+	    item->ri_buf[2].iov_len > XFS_DFORK_DSIZE(dip, mp)) {
-+		error = -EFSCORRUPTED;
-+		goto out_release;
-+	}
-+	if ((fields & (XFS_ILOG_ADATA | XFS_ILOG_AEXT)) &&
-+	    item->ri_buf[(fields & XFS_ILOG_DFORK) ? 3 : 2].iov_len >
-+	    XFS_DFORK_ASIZE(dip, mp)) {
-+		error = -EFSCORRUPTED;
-+		goto out_release;
-+	}
++		/*
++		 * The node verifier cannot tell whether this block belongs to
++		 * the directory or the attribute tree, so it only bounds the
++		 * entry count against the larger of the two geometries.  Here
++		 * args->geo is the geometry of the fork we are actually
++		 * searching, so reject a count that would walk btree[] off the
++		 * end of this node buffer.
++		 */
++		if (nodehdr.count > args->geo->node_ents) {
++			xfs_buf_mark_corrupt(blk->bp);
++			xfs_da_mark_sick(args);
++			return -EFSCORRUPTED;
++		}
 +
- 	switch (fields & XFS_ILOG_DFORK) {
- 	case XFS_ILOG_DDATA:
- 	case XFS_ILOG_DEXT:
-@@ -546,7 +565,6 @@ xlog_recover_inode_commit_pass2(
- 		case XFS_ILOG_ADATA:
- 		case XFS_ILOG_AEXT:
- 			dest = XFS_DFORK_APTR(dip);
--			ASSERT(len <= XFS_DFORK_ASIZE(dip, mp));
- 			memcpy(dest, src, len);
- 			break;
+ 		max = nodehdr.count;
+ 		blk->hashval = be32_to_cpu(btree[max - 1].hashval);
  
 -- 
 2.53.0
