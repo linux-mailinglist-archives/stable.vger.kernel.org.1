@@ -1,154 +1,236 @@
-Return-Path: <stable+bounces-272438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272439-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id +nv9NxcSTWpWugEAu9opvQ
-	(envelope-from <stable+bounces-272438-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 16:49:59 +0200
+	id AJOfD1EWTWpmuwEAu9opvQ
+	(envelope-from <stable+bounces-272439-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 17:08:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E134671CD67
-	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 16:49:58 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92AB971D03F
+	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 17:08:00 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=WqCg316b;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272438-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272438-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cHr5YAQg;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272439-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272439-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 346DD3064E01
-	for <lists+stable@lfdr.de>; Tue,  7 Jul 2026 14:32:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D4C3030A65DA
+	for <lists+stable@lfdr.de>; Tue,  7 Jul 2026 14:34:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB3F2429825;
-	Tue,  7 Jul 2026 14:32:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F53F42A151;
+	Tue,  7 Jul 2026 14:34:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 697D54252A2;
-	Tue,  7 Jul 2026 14:32:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAA10428498
+	for <stable@vger.kernel.org>; Tue,  7 Jul 2026 14:34:26 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783434745; cv=none; b=d9SnzRFiA5enEx4j8MpYDOKeWCYfwKRtHSMFOZQ1Kj7x8QcxNSssQ0XEGV7Kf2CdxL2Itwqjuy7DFAnEyCjg/rKE9W7GcH44AqFtMQcX9qMD097MK20K++h4O5pNp1QLEJLdX80T1fB3UIn8lHIBIQSkRRHsqMWGgXQwxbgo8sU=
+	t=1783434867; cv=none; b=hXESZDyX/Rzr0qcv4nUirmOihiMdrfLz6gPpjziwQs422ZlUn39hRBKUaKzd59vVYYY8kv2U+g1sa0P0NgabtYvlmVeltERvo1ItuXOwjntvjwJIL+8QgSNn7NdlVM6319VI/l+CwFSmMGRvNd6rKw+uqdgrlEMIgp5RYe4UVIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783434745; c=relaxed/simple;
-	bh=gPoZSMVoKKDU70W9KeJ2G7VkXeIEeoNTrZ20F0RQ2vg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gsaWaPyfJbQMtk77R5RSgPe41ipLt7l0EEif3893Bdvgfxt4mmhp4m+s15z36jZvwOqDBLNtynrC3bj9Ld21sohikNcR9QeyldXKJ1UaqnRBaipI9cYvCRxLLEQ+nHD8q+E8yViSOF+GiuxVlLIWzKu2Iwd62iloVKAj/zMzfVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WqCg316b; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C2401F000E9;
-	Tue,  7 Jul 2026 14:32:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783434744;
-	bh=tiZx/mSPksyD1mLKyg5uePeQoXqwFDq6pOM31+vZe64=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=WqCg316b+TNau89QwssY2sozuvDqj3axyePvbvBrdJj0rW0Lddx8uPiGwACnmAgEv
-	 2zVyimjtyEjfpJ5kIAhm1TmelI11N8LI608nHXnaMujnSqm8NzzBSccy9E5t8RHEMn
-	 pjdp6xwVbYSwVS6qmtpAGzakCSTncDwykXL/4cAo=
-Date: Tue, 7 Jul 2026 16:32:21 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Thorsten Leemhuis <regressions@leemhuis.info>
-Cc: Sasha Levin <sashal@kernel.org>,
-	Linux kernel regressions list <regressions@lists.linux.dev>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Dave Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: Some 7.1-post fixes that might be worth picking up rather sooner
- than later
-Message-ID: <2026070708-hurricane-tackle-43e1@gregkh>
-References: <91281f28-eccf-4681-8f62-faaa8a3ba529@leemhuis.info>
- <2026061917-flinch-idealism-898f@gregkh>
- <2026062236-ludicrous-detached-6e20@gregkh>
- <d3d467d3-637c-49fe-8516-8da65cf4261b@leemhuis.info>
- <2026070707-brigade-petted-5ef2@gregkh>
+	s=arc-20240116; t=1783434867; c=relaxed/simple;
+	bh=aPvVr0Ll1JKVGggi+f7XHg7MZg7x9R1JAvebDjaxVq0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=g4V/irx+JPk68b1huK8O7W9aLLcn6eDi39zRU+sEak4K/s9ARVdIJxBUu6Zz0R91z1u5924qUQdwElJJPVSold91Od4EoSeb6fZ3K3XywOkrMKg5TXNZxDLvfkEoVGGAHI9r9j2vqEN51vw/K6Es8bERp6Guiz/oED3BYF/8fy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cHr5YAQg; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D57D1F00A3A
+	for <stable@vger.kernel.org>; Tue,  7 Jul 2026 14:34:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783434866;
+	bh=7f2N/SJQhJLGukCIcGmJQv9G5BEKubFQyKhmhbtamRg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=cHr5YAQgwuJ40WYqmmXAvD5Yud1eg+3k/oTgssQil4smRcvOqud5HdZobqZ1DkSXs
+	 Cw2u7GwpXyQTAf5gUWJ7CXzBtie7nKH7vMiLPeNAcyC/5MMyR4j2peWV7JU5Xjv1tS
+	 spAe+JFdqwTmMSjtAshqBS0E2Pzjxg5wtGG99SdOZ+oSQDPla+ZjP7jiUO0Gj0IjQ0
+	 rVnHcCNxtAhm01KECAvj0tyMbxIynhgT0z8gfkpnZXroRE5kEOiCKzJrTnxgg4wrhd
+	 5UUrrTdE4F1P4mIySLv8Q4de9TTwvyQaeZT+OysYYYIeEwHeytkMTlX4AAliA4NvwJ
+	 ylhbhxHe6TVMw==
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-51c08df8513so28877211cf.3
+        for <stable@vger.kernel.org>; Tue, 07 Jul 2026 07:34:26 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RoIbudWLESChPuKdEPhx62HGh0nKJY53xxmR3EM+5VrrnWsjXHK33Img0R9xAC3g9VlCOKhft4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzra/h/EMjeR/2QXj2Ke0K8265Y/MyRCMowt2Z5+A1sktAk1qjK
+	Qt/oNIRIJJup4iujuKpGVC8PwFuS4yuv53FgUatJs0DWxOlGN8SjRKMIFNvfwt8C28KcjpM/Q9L
+	yshQlGS3gNx6jL9t2ic/R1KbAPxvmF4I=
+X-Received: by 2002:a05:622a:e094:20b0:51c:7b12:1207 with SMTP id
+ d75a77b69052e-51c7b12179amr15829651cf.85.1783434865720; Tue, 07 Jul 2026
+ 07:34:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2026070707-brigade-petted-5ef2@gregkh>
+References: <173f3fd983d735155d47e9e39d27f0c2d62a7c31.1783307463.git.baolin.wang@linux.alibaba.com>
+ <CAMgjq7AQcyypJ-VhJ_CxY6fdEph64fxjOzzYU-=EkMrHemkpzA@mail.gmail.com>
+ <8ef0b72e-a0e8-4913-8d30-519335305260@linux.alibaba.com> <CAGsJ_4z5N6FSfWt5WUZ5YmqhCzLcd3Cj1sc9B79WYX9ZbDH8Gw@mail.gmail.com>
+ <d01bae40-f94d-4e8a-baac-ad6fffa18b64@linux.alibaba.com>
+In-Reply-To: <d01bae40-f94d-4e8a-baac-ad6fffa18b64@linux.alibaba.com>
+From: Barry Song <baohua@kernel.org>
+Date: Tue, 7 Jul 2026 22:34:12 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4zbBRe383GQLGuPivUXXnjhs2L9xFyandXkCOUotcb7Vg@mail.gmail.com>
+X-Gm-Features: AVVi8Cdk8e1_A5dUPq7XT_kY-SwTQ4Hn7kKDOOl2oDp5wOSBPnjQwov2kRW5pUQ
+Message-ID: <CAGsJ_4zbBRe383GQLGuPivUXXnjhs2L9xFyandXkCOUotcb7Vg@mail.gmail.com>
+Subject: Re: [PATCH 6.18.y] mm: shmem: fix potential livelock issue for shmem
+ direct swapin
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Kairui Song <ryncsn@gmail.com>, akpm@linux-foundation.org, hughd@google.com, 
+	stable@vger.kernel.org, machao26@xiaomi.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-5.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-272438-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,lists.linux.dev,vger.kernel.org,amd.com,gmail.com,ffwll.ch,linux-foundation.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:regressions@leemhuis.info,m:sashal@kernel.org,m:regressions@lists.linux.dev,m:stable@vger.kernel.org,m:alexander.deucher@amd.com,m:christian.koenig@amd.com,m:airlied@gmail.com,m:simona@ffwll.ch,m:torvalds@linux-foundation.org,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-272439-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,linux-foundation.org,google.com,vger.kernel.org,xiaomi.com,kvack.org];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER(0.00)[baohua@kernel.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:baolin.wang@linux.alibaba.com,m:ryncsn@gmail.com,m:akpm@linux-foundation.org,m:hughd@google.com,m:stable@vger.kernel.org,m:machao26@xiaomi.com,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[baohua@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gitlab.freedesktop.org:url,vger.kernel.org:from_smtp,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,gregkh:mid]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[alibaba.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,mail.gmail.com:mid,xiaomi.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E134671CD67
+X-Rspamd-Queue-Id: 92AB971D03F
 
-On Tue, Jul 07, 2026 at 01:48:29PM +0200, Greg KH wrote:
-> On Tue, Jul 07, 2026 at 12:19:20PM +0200, Thorsten Leemhuis wrote:
-> > [CCing a few people]
-> > 
-> > On 6/22/26 07:32, Greg KH wrote:
-> > > On Fri, Jun 19, 2026 at 11:43:41AM +0200, Greg KH wrote:
-> > >> On Fri, Jun 19, 2026 at 08:04:35AM +0200, Thorsten Leemhuis wrote:
-> > >>> Hi Stable Team! From the regressions point I think it might be nice to
-> > >>> pick up the following changes for the next round of stable updates (e.g.
-> > >>> 7.1.2), as they seem to fix regressions I've seen multiple people report
-> > >>> with 7.1:
-> > >>> [...]
-> > >>> * 12f58a6caad3be ("drm/amd/display: Fix Color Manager (3DLUT, Shaper,
-> > >>> Blend)") [v7.1-post]
-> > > 
-> > > This doesn't apply to 7.1.y, and would need a working backport.
-> > Just a quick status update twimc:
-> > 
-> > I pointed that out in
-> > https://gitlab.freedesktop.org/drm/amd/-/work_items/5396 , but nothing
-> > happened from the AMD side afaics. They have much on their plate, I
-> > fully understand that, I guess it fell through the cracks (maybe this
-> > mail helps). Thing is: the backport of the revert is quite big, so
-> > nobody else (including me) did yet dare to submit it themselves.
-> > 
-> > So two weeks later the regression caused by e56e3cff2a1bb2
-> > ("drm/amd/display: Sync dcn42 with DC 3.2.373") [v7.1-rc1] is still
-> > unfixed in 7.1.y as far as I can see it -- a regression that is known
-> > since more than two months now, as the revert to fix it (12f58a6caad3be,
-> > mentioned in the quote above) was submitted already on 2026-04-29, but
-> > only made it to mainline during the merge window for 7.2 (this is
-> > another thing that afaics fell through the cracks; sadly I only became
-> > aware of the regression after 7.1 was out, otherwise I would have made
-> > noise earlier to get it included in 7.1).
-> 
-> So should 12f58a6caad3be be added to the stable queues?
+On Tue, Jul 7, 2026 at 9:53=E2=80=AFAM Baolin Wang
+<baolin.wang@linux.alibaba.com> wrote:
+>
+>
+>
+> On 7/6/26 9:04 PM, Barry Song wrote:
+> > On Mon, Jul 6, 2026 at 8:08=E2=80=AFPM Baolin Wang
+> > <baolin.wang@linux.alibaba.com> wrote:
+> >>
+> >>
+> >>
+> >> On 7/6/26 1:59 PM, Kairui Song wrote:
+> >>> On Mon, Jul 6, 2026 at 11:25=E2=80=AFAM Baolin Wang
+> >>> <baolin.wang@linux.alibaba.com> wrote:
+> >>>>
+> >>>> When skipping swapcache for synchronous IO swap devices, swapcache_p=
+repare()
+> >>>> is used to prevent parallel swapin from proceeding with the swap cac=
+he flag.
+> >>>> However, on PREEMPT kernels this can lead to a livelock, as reported=
+ by Chao[1]:
+> >>>>
+> >>>> Thread A starts direct swapin of a shmem folio and calls swapcache_p=
+repare()
+> >>>> to set SWAP_HAS_CACHE. It may then be preempted inside workingset_re=
+fault().
+> >>>> Meanwhile, a higher priority thread B also attempts direct swapin of=
+ the same
+> >>>> shmem swap entry. Since swapcache_prepare() already marks the entry,=
+ thread B
+> >>>> repeatedly gets -EEXIST and busy-loops waiting for thread A to finis=
+h. But as
+> >>>> thread B runs at higher priority, thread A cannot preempt it, result=
+ing in
+> >>>> starvation and a livelock.
+> >>>>
+> >>>> Fix it by yielding the CPU with schedule_timeout_uninterruptible(1) =
+when
+> >>>> swapcache_prepare() fails, following the same approach used in commi=
+ts
+> >>>> 029c4628b2eb ("mm: swap: get rid of livelock in swapin readahead") a=
+nd
+> >>>> 13ddaf26be32 ("mm/swap: fix race when skipping swapcache").
+> >>>>
+> >>>> Note that mainline does not have this potential issue, which has alr=
+eady been
+> >>>> resolved by Kairui's swap refactoring work[2].
+> >>>>
+> >>>> [1] https://lore.kernel.org/all/700a2cbf90a2484f979aac858f08f5d4@xia=
+omi.com/
+> >>>> [2] https://lore.kernel.org/all/20260517-swap-table-p4-v5-0-88ae43e0=
+64c7@tencent.com/
+> >>>> Fixes: 1dd44c0af4fa ("mm: shmem: skip swapcache for swapin of synchr=
+onous swap device")
+> >>>> Reported-by: Ma Chao <machao26@xiaomi.com>
+> >>>> Closes: https://lore.kernel.org/all/700a2cbf90a2484f979aac858f08f5d4=
+@xiaomi.com/
+> >>>> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> >>>> ---
+> >>>> Hi Chao, could you try this patch to check if it fixes your issue? T=
+hanks.
+> >>>> ---
+> >>>>    mm/shmem.c | 2 ++
+> >>>>    1 file changed, 2 insertions(+)
+> >>>>
+> >>>> diff --git a/mm/shmem.c b/mm/shmem.c
+> >>>> index 94c5b0d78ac3..d4cb57b3b0ef 100644
+> >>>> --- a/mm/shmem.c
+> >>>> +++ b/mm/shmem.c
+> >>>> @@ -2066,6 +2066,8 @@ static struct folio *shmem_swap_alloc_folio(st=
+ruct inode *inode,
+> >>>>           if (swapcache_prepare(entry, nr_pages)) {
+> >>>>                   folio_put(new);
+> >>>>                   new =3D ERR_PTR(-EEXIST);
+> >>>> +               /* Relax a bit to prevent rapid repeated page faults=
+ */
+> >>>> +               schedule_timeout_uninterruptible(1);
+> >>>>                   /* Try smaller folio to avoid cache conflict */
+> >>>>                   goto fallback;
+> >>>>           }
+> >>>> --
+> >>>> 2.47.3
+> >>>>
+> >>>
+> >>> Thanks! That's much more simpler than I expected. Do we need a wakeup
+> >>> queue like the one in commit 01626a1823024? Perhaps the reporter can
+> >>> help confirm and test? I personally prefer to keep it simple if shmem
+> >>> users aren't as sensitive as anon users.
+> >>
+> >> I agree. I'd like to keep the bugfix as simple as possible, if the
+> >> reporter's scenario isn't latency-sensitive.
+> >
+> > On Android, we don't see much shmem; it's much less common
+> > than anon. So the chance of this concurrency happening should
+> > be lower than for anon. However, shmem can be shared by
+> > multiple processes, so could this still happen if process A is
+> > blocked by process B?
+>
+> Could you be more specific about how that happens? I think we should fix
+> this starvation/livelock issue if you think it could still happen.
 
-It doesn't apply cleanly, so I'd need a backported version.
+Hi Baolin,
 
-thanks,
+I think your change has fixed the livelock issue, but an unconditional
+one-tick sleep could still be problematic, as commit 01626a1823 tried to
+address in do_swap_page():
 
-greg k-h
+"mm: avoid unconditional one-tick sleep when swapcache_prepare fails"
+
+If possible, I would suggest that your fix also include the change from
+commit 01626a1823 to avoid the issue caused by
+schedule_timeout_uninterruptible(1): an unconditional one-tick sleep
+could cause UI stuttering. At least, this would make the code more
+defensive.
+
+Thanks
+Barry
 
