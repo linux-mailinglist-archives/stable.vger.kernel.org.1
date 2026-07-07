@@ -1,274 +1,122 @@
-Return-Path: <stable+bounces-272460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272461-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id AGalCIAaTWqXvAEAu9opvQ
-	(envelope-from <stable+bounces-272460-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 17:25:52 +0200
+	id CFSvIBEbTWrFvAEAu9opvQ
+	(envelope-from <stable+bounces-272461-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 17:28:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9F7D71D3D0
-	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 17:25:51 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1BA471D451
+	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 17:28:16 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="HyJhP/in";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272460-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-272460-lists+stable=lfdr.de@vger.kernel.org";
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=goodmis.org (policy=none);
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272461-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272461-lists+stable=lfdr.de@vger.kernel.org";
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BCC913048CA8
-	for <lists+stable@lfdr.de>; Tue,  7 Jul 2026 15:25:06 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A79563028B19
+	for <lists+stable@lfdr.de>; Tue,  7 Jul 2026 15:27:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 046903F4115;
-	Tue,  7 Jul 2026 15:24:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5929C42F6F9;
+	Tue,  7 Jul 2026 15:27:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yx1-f42.google.com (mail-yx1-f42.google.com [74.125.224.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6342B42E8C7
-	for <stable@vger.kernel.org>; Tue,  7 Jul 2026 15:24:54 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783437895; cv=pass; b=dubaEEOL2R790GGbL3GQTMlmnN79dEepyk6rBFLpFbPy9qqub3C/wvv1DfntpgYV1b6AlSU+5hkwuMe8nPehK705mzkI8ZLe5ixBGV/l/T3o96R8mTLNSRMMAQfUklxAAvjRy+2edVRqAY1OxffAGyGtzIscIBVTAsaIfj2K11s=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783437895; c=relaxed/simple;
-	bh=0njRmYSn4poVC/mArPlC/fR3QLIUbG65yqc9jFtPFNo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NTEJnT3+f8hDjtw6g6EM2KOdIWKrHfRaZ74F9BgE9/MgaG+Ol6kA8PimWvRSJ1ayP29pE2fnmIbDSNCk0UpmypSUAm1u+H3oWiHdsonY+yGP5BK6GJeWGM1DXYWgMBHHkZpPN6wZP4ARA4uziTqE2s6F/QKDv0Qplf/7WfbkmcM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HyJhP/in; arc=pass smtp.client-ip=74.125.224.42
-Received: by mail-yx1-f42.google.com with SMTP id 956f58d0204a3-664ce3000e6so3655484d50.0
-        for <stable@vger.kernel.org>; Tue, 07 Jul 2026 08:24:54 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783437893; cv=none;
-        d=google.com; s=arc-20260327;
-        b=RYPh29cPHa31BiUfsQaQ9cvfI5bGomZ6MOkbUPnkjQVgkTBaHCevQklK9B83zOQMyB
-         yIcshauLTxSXXPVMXI4n9ruXKQxUY2Orhxlp01pNfz2IIb7UC2Es6kGhuwpkChadLv4R
-         G5MqLvFyXGdpzqdxqqfbjuFvZIfxKBuG7hC1Hf4GekGnPnULyKfsW14APs07TgFdmkNd
-         0iMkailv0fTyMLMqQqBhD/hWcOrO0/hOpUfqnbCKAv0atifjhOxC78yKozU7Uu+pywna
-         DCjn3Ah0jlt9lRAf2YDw0wiIQT7jjwkOfZOQTke21yzwb9hXCItgooN22cBsZ8cmlSqG
-         aAzQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Zr16SPndHGc73+Bu8u8Xgo96h3SOtHbZhzKK4VPFL3g=;
-        fh=y1sEBgn4ja/XKqDwORbuLe/YbtYPJGn+SnDN7o8PATA=;
-        b=Kwf0tX9308eXJYxdOcBBKXvUOOYzVeNd+msqG9YqvbjiRo87vdom6uUHsIIxNLzRM3
-         /KPPkZVZ+II6uRPlZRTOrxKtOFpDblorpnGeKiZHrYhF8V9Lu0NO3g/JAEWGEJyd6or7
-         q12Q+z/H4Apo2WurGvfwpatTtX7SeXywhjno50r335J7sgjiyR1nCOUQKIRV01I+oPBW
-         hr3Asbj4vUVryslQ4Oz6Oe4rNf2T15mW/lh1YIoKVgQWInxHcMkjgyI+Vt+jBIG/7Xjv
-         5B1DFfDAzxrIYq6rrk6KcnFPQ1hL6xY2alfJlzt4xOYu/bHENsa0s8hyxaoYuRSbDvRM
-         v83Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783437893; x=1784042693; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Zr16SPndHGc73+Bu8u8Xgo96h3SOtHbZhzKK4VPFL3g=;
-        b=HyJhP/insW/J8beX7sgofJ814t3vsN7LMdaZ0wkxiq9EsbQA5PDjxLTACz+PiyWBym
-         oNB/BQ8OAjkaBGbS7sGG+QnZea4sEyAY/zTzEYVeJG9YDIArS/kSQq0Ge0TK/DYcyYRA
-         l+w9fJCKtm9TXBHMeoDLwIREKdR4bGQrMcDZOZyVLT9LwVbU0qOPLjUKNcxYBasEQZES
-         HgOg1zqZcLOXHnO4CAQG50E4yBG4gD7cxKEjIfEc/n1J4YOvc/08N70nlFPuT7bAYIaV
-         IwCdaNyXOZSnwi3lvrFAYOo3mh37VomZ90O2M8cIz7CEOfuGZiTlOooFcocaaLKE7fKo
-         XwCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783437893; x=1784042693;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Zr16SPndHGc73+Bu8u8Xgo96h3SOtHbZhzKK4VPFL3g=;
-        b=qaFU8eMFmadhM08nXPbpJ2eQS9Dk3kVtuKwooLh6X32dYlLoed3m2esjIOv9VBZASQ
-         ioyj+tXAJkMmEeMneBpdalxNnW1wXoSmCUi5J995GW5dzpzewtF3OhiWyGjBC4JOmPHH
-         y9k28UGJ7+gdfmOnCAUJafO4PmZDnoZTqnwpuvflE5EU0qnuzcuIf0xxRs4gFOHjTXcx
-         pzllPym1QkQf3XdmCRjP8N+LVTUT4FIpjAnBL8hnclH/ToopWyitFuIcjcl8/ABlANOx
-         TTiYUHhPqMdaiKPEg88GRhkgT3rrW+82Mp2vMP7o83kA4hDKFQO6urt/gSum5IgUce8b
-         rCcw==
-X-Forwarded-Encrypted: i=1; AHgh+Ro3wmUtSsvv1e+OinKGzQE38m6XfJX7ijhPfxAlKO6b9MnuRTyhDNbLnE4Pzz3oSmFGnVXJgBk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxGZqYWaU6Ow09Ncx2jhyCNR8ZFjAMiHBZRW/Ti94D878OyKyPE
-	4bcu3pSuIvoJGh+xQ/jGCRb7kv6Kz+xFgZ7gGAyF/GC6mwkUFC+XZHN1uqyHicVd6weN/aREwBu
-	csr5Gn5zkQ2lBrkCKv1J+NGxL9gJh7Og=
-X-Gm-Gg: AfdE7cmkHm481H3HoPAyw3M9RV4MzDH3DULijcJ1V/dTyg/OX7c9XkZ95+VnFMI96qc
-	8YBhvhJ3OYUPbMhvKJiG23II8CiQYKVgoSy/aLI9tiYpw5phBCR+t2iTKovpg4M0Qh3Sq1WqHm1
-	rVkDkLWe9k6uhZ6m9lfQ5AYGyGr1qeBgAz0QymIfBULIfLNZyK0pDDXUUovitwAmLLl4zRda72k
-	Sp1zvJyWKAEjJ+Gi21K2VHnKin/oN3CZIQZw04wAHllbFXxttNqAZtMaBCuPNn9tzvyRST97J9b
-	1kTPoB/NVL/PlGHUXPhSXCn8XZpaRB/48zCvkoK/sxDSWScYddCKiIwgfTc=
-X-Received: by 2002:a05:690e:43cf:b0:664:ae6a:ef0 with SMTP id
- 956f58d0204a3-6677fde0a83mr2583709d50.78.1783437888639; Tue, 07 Jul 2026
- 08:24:48 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5E723E9C2F;
+	Tue,  7 Jul 2026 15:27:23 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783438045; cv=none; b=FSVuIuNamFRa+JOUpZ986K6CVetOpmruJxbnoRDlCRuxkoawRHJQHPt4wieFxC+/LvtqNMMq1koMuegfgCeoTvJp3cxYJA/Y4suue++XIo8hYc21RsqfmMdUnKYgLURvZNlqDK6IPuYBKbjy3UlEyC/m0sDdJG5Z6aKcTcg3taM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783438045; c=relaxed/simple;
+	bh=yTcTkZYFCYgjzsbx0Y3RELwYeCZu/L0CAQ3MePDfBnU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NkK7j2JsyyMwjH2vCum0lbYHO7FGEeLsbsqW2sxkDdFXQNT4aIUhvMis+JLaeAj0euXbQXPMsGKpT0xVbRuKmhB48RrJC2k1vVh+cA63Vv6TF1AE2tBINlpMyvZP+z6yNl2rZsHS+cITSS7PhNSjr1KVYp55F0p2sp6VC4ZkhhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.16
+Received: from omf20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0A7CFC31CB;
+	Tue,  7 Jul 2026 15:27:16 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf20.hostedemail.com (Postfix) with ESMTPA id 0866C20027;
+	Tue,  7 Jul 2026 15:27:14 +0000 (UTC)
+Date: Tue, 7 Jul 2026 11:27:18 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Michael Bommarito <michael.bommarito@gmail.com>
+Cc: Beau Belgrave <beaub@linux.microsoft.com>, XIAO WU <xiaowu.417@qq.com>,
+ Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers
+ <mathieu.desnoyers@efficios.com>, linux-trace-kernel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] tracing/user_events: fix use-after-free of enabler in
+ user_event_mm_dup()
+Message-ID: <20260707112718.7d1442e4@gandalf.local.home>
+In-Reply-To: <CAJJ9bXy78yKmOb+x-THk4EwJxY=0si04YAMtmOu-SzarVJwRBQ@mail.gmail.com>
+References: <20260618222743.538915-1-michael.bommarito@gmail.com>
+	<tencent_89647CE40DC452B891C65C94D1B271DE8E07@qq.com>
+	<20260624200535.GA132-beaub@linux.microsoft.com>
+	<20260706160650.2791767d@gandalf.local.home>
+	<CAJJ9bXzJpYRE-NjOjiArpuJWGnFXr+jq7ukbEEdEhK9YPCbYrQ@mail.gmail.com>
+	<20260707104205.582db193@gandalf.local.home>
+	<CAJJ9bXy78yKmOb+x-THk4EwJxY=0si04YAMtmOu-SzarVJwRBQ@mail.gmail.com>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260707072955.3093138-1-haoxiang_li2024@163.com>
-In-Reply-To: <20260707072955.3093138-1-haoxiang_li2024@163.com>
-From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Date: Tue, 7 Jul 2026 11:24:37 -0400
-X-Gm-Features: AVVi8CdZEiVUSZgzA4k-tWFUHnxIdsPOK0Oc2mjU0zfxCwAA-C_N3ia-In58D3Y
-Message-ID: <CABBYNZ+Bjs2U-gsWFisYG7vHKE2JCFDJmRyBvcGM1c7fC=4BiQ@mail.gmail.com>
-Subject: Re: [PATCH v3] Bluetooth: virtio: Fix HCI device unregister on probe failure
-To: Haoxiang Li <haoxiang_li2024@163.com>
-Cc: marcel@holtmann.org, mst@redhat.com, error27@gmail.com, 
-	yangyingliang@huawei.com, linux-bluetooth@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: c1detodsjrxqa6fnkcpodofbc5iui5sy
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX1+8X/LbQq+S6noAZJrWCl20x35vH6P26Hk=
+X-HE-Tag: 1783438034-387290
+X-HE-Meta: U2FsdGVkX19os0Ok/iA3xJDH9fXasZ4VRTf/V0FdCXfBRa6v8gvy7DXMMQeLP/WM/kvmU+4kfYImZfR/ymq/GdHIeb/vDk266q0aUupdIHl/aBqove+vqCBY5IxdoT9ceGJ/L/kTAX5daFioA6BK4EqbqSND4NmAecE8Q6ATrJMegAqrhgkihBtrDI6tUXlQNSWyh1MBTsmUtZwy8019mXwRQzXKBTXSYGo+RumKs6ya7FD64MDwqNlzklb2tPawneQl++Q+MHjUqxMnicgEYhSGBHsqOLhpZOWS69Tyd6BlSRqXBUa7y7OY+2ed6fl5BNn6IJv1zh73AP2wNxEqk55p0f38W3sj
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+X-Spamd-Result: default: False [0.14 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[goodmis.org : SPF not aligned (relaxed), No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-272461-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-272460-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:haoxiang_li2024@163.com,m:marcel@holtmann.org,m:mst@redhat.com,m:error27@gmail.com,m:yangyingliang@huawei.com,m:linux-bluetooth@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[holtmann.org,redhat.com,gmail.com,huawei.com,vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[luizdentz@gmail.com,stable@vger.kernel.org];
-	FREEMAIL_TO(0.00)[163.com];
 	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:michael.bommarito@gmail.com,m:beaub@linux.microsoft.com,m:xiaowu.417@qq.com,m:mhiramat@kernel.org,m:mathieu.desnoyers@efficios.com,m:linux-trace-kernel@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linux.microsoft.com,qq.com,kernel.org,efficios.com,vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[rostedt@goodmis.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[luizdentz@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[rostedt@goodmis.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[8];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,sashiko.dev:url]
+	R_DKIM_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B9F7D71D3D0
+X-Rspamd-Queue-Id: F1BA471D451
 
-Hi Haoxiang,
+On Tue, 7 Jul 2026 10:43:40 -0400
+Michael Bommarito <michael.bommarito@gmail.com> wrote:
 
-On Tue, Jul 7, 2026 at 3:30=E2=80=AFAM Haoxiang Li <haoxiang_li2024@163.com=
-> wrote:
->
-> virtbt_probe() registers the HCI device before opening the virtio
-> Bluetooth device. If virtbt_open_vdev() fails, the error path frees
-> the HCI device without unregistering it first.
->
-> The probe error paths also leak the virtio_bluetooth structure after it
-> has been allocated.
->
-> Rework the probe error handling into an unwind ladder so each failure
-> path releases the resources acquired earlier. Also close the virtio
-> device before unregistering the HCI device in virtbt_remove(), matching
-> the cleanup order used by the probe failure path.
->
-> Fixes: afd2daa26c7a ("Bluetooth: Add support for virtio transport driver"=
-)
-> Fixes: dc65b4b0f90a ("Bluetooth: virtio_bt: fix device removal")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-> ---
-> Changes in v2:
->  - Rework virtbt_probe() error paths into an unwind ladder.
->  - Free vbt on probe failures.
->  - Reset the virtio device and unregister the HCI device before freeing i=
-t
->    when virtbt_open_vdev() fails.
->  - Close the virtio device before unregistering the HCI device in remove(=
-).
->
->    Thanks Dan for the suggestions. The blog is very helpful.
-> Changes in v3:
->  - Remove virtio_reset_device() from the virtbt_open_vdev() failure path.
-> ---
->  drivers/bluetooth/virtio_bt.c | 22 +++++++++++++---------
->  1 file changed, 13 insertions(+), 9 deletions(-)
->
-> diff --git a/drivers/bluetooth/virtio_bt.c b/drivers/bluetooth/virtio_bt.=
-c
-> index 140ab55c9fc5..c063c2391c5c 100644
-> --- a/drivers/bluetooth/virtio_bt.c
-> +++ b/drivers/bluetooth/virtio_bt.c
-> @@ -311,12 +311,12 @@ static int virtbt_probe(struct virtio_device *vdev)
->
->         err =3D virtio_find_vqs(vdev, VIRTBT_NUM_VQS, vbt->vqs, vqs_info,=
- NULL);
->         if (err)
-> -               return err;
-> +               goto err_free_vbt;
->
->         hdev =3D hci_alloc_dev();
->         if (!hdev) {
->                 err =3D -ENOMEM;
-> -               goto failed;
-> +               goto err_del_vqs;
->         }
->
->         vbt->hdev =3D hdev;
-> @@ -383,23 +383,27 @@ static int virtbt_probe(struct virtio_device *vdev)
->         if (virtio_has_feature(vdev, VIRTIO_BT_F_AOSP_EXT))
->                 hci_set_aosp_capable(hdev);
->
-> -       if (hci_register_dev(hdev) < 0) {
-> -               hci_free_dev(hdev);
-> +       err =3D hci_register_dev(hdev);
-> +       if (err < 0) {
->                 err =3D -EBUSY;
-> -               goto failed;
-> +               goto err_free_hdev;
->         }
->
->         virtio_device_ready(vdev);
->         err =3D virtbt_open_vdev(vbt);
->         if (err)
-> -               goto open_failed;
-> +               goto err_unregister_hdev;
->
->         return 0;
->
-> -open_failed:
-> +err_unregister_hdev:
-> +       hci_unregister_dev(hdev);
-> +err_free_hdev:
->         hci_free_dev(hdev);
-> -failed:
-> +err_del_vqs:
->         vdev->config->del_vqs(vdev);
-> +err_free_vbt:
-> +       kfree(vbt);
+> > Ah, you're going to send a new version. I'll drop the one I pulled then.  
+> 
+> Saw your pull for-linus and I was just about to send a separate patch
+> set for the second UAF with a ktest (as 2/2).  I can do either way,
+> just let me know which is easier
 
-Sashiko flagged a new problem regarding the code above:
+I'll drop it and take your new one.
 
-https://sashiko.dev/#/patchset/20260707072955.3093138-1-haoxiang_li2024%401=
-63.com
-
->         return err;
->  }
->
-> @@ -408,10 +412,10 @@ static void virtbt_remove(struct virtio_device *vde=
-v)
->         struct virtio_bluetooth *vbt =3D vdev->priv;
->         struct hci_dev *hdev =3D vbt->hdev;
->
-> -       hci_unregister_dev(hdev);
->         virtio_reset_device(vdev);
->         virtbt_close_vdev(vbt);
->
-> +       hci_unregister_dev(hdev);
->         hci_free_dev(hdev);
->         vbt->hdev =3D NULL;
->
-> --
-> 2.25.1
->
-
-
---=20
-Luiz Augusto von Dentz
+-- Steve
 
