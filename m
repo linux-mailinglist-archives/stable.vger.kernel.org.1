@@ -1,237 +1,159 @@
-Return-Path: <stable+bounces-272343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272344-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id swjnLEZ4TGoKlAEAu9opvQ
-	(envelope-from <stable+bounces-272343-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 05:53:42 +0200
+	id tnLHBwp5TGpBlAEAu9opvQ
+	(envelope-from <stable+bounces-272344-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 05:56:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D73E71724C
-	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 05:53:42 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8F75717260
+	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 05:56:57 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272343-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272343-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=LlakIQbN;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272344-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-272344-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 696E83031AF8
-	for <lists+stable@lfdr.de>; Tue,  7 Jul 2026 03:53:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5BFE53030814
+	for <lists+stable@lfdr.de>; Tue,  7 Jul 2026 03:56:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29C8F3783AC;
-	Tue,  7 Jul 2026 03:53:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 723FE372045;
+	Tue,  7 Jul 2026 03:56:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9DF83242A4;
-	Tue,  7 Jul 2026 03:53:22 +0000 (UTC)
+Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C7F742086D;
+	Tue,  7 Jul 2026 03:56:29 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783396405; cv=none; b=XelsSVnZuDscZsN9cRMAyjPaq85SmnQMfRTOIjAu5UmQI6bfPKOSk3eszk99EdXG7L3jR0TRjuCv6vRlX8CNHKg1GUKno8uPVEuaLe3HVXGLFKtnCbLvBhf+XZCq/gkJZLRba2uguKurrsRFwgKQzswzuquM5i6x/qDnGL3iCSA=
+	t=1783396594; cv=none; b=dNNuNzVOzrCnvhAxlHfuSIeoKYKtE6VgLPs53ItU4gKzW4YLg6f/NfMciRlpRpkpfW2fYut2B6zH3JAiHX3TuI8sdqjaDuBmZSUMtw25LhkcDfW3Kg7eK4OLcBQmfofqDYIpG6j6t3k3zyTM0qzSzBFPT9HVhsVDSFEEBkmHyYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783396405; c=relaxed/simple;
-	bh=5A3JLo0kESX1OiYCTzKz3yebxAnvlQMiHKNdZqjvGkQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=MPT0xeHK5hu35RwPe0CEVufa7cR+ncbhFbtf4bnA9w+sNKqcwBWXnh5TMcFs3q070HH6lQxT18wx3dXSQK+jG6/1cRLVoonl1GVwcEjo/YBzVwSgCsYZgE8RsFLsZ2Oky2q0Fw7U7aHMpZWfYi9AwZALPcm+D3BOSiHj9H51o/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Received: from loongson.cn (unknown [10.20.42.101])
-	by gateway (Coremail) with SMTP id _____8AxiusxeExqQcUAAA--.3472S3;
-	Tue, 07 Jul 2026 11:53:21 +0800 (CST)
-Received: from loongson-pc.loongson.cn (unknown [10.20.42.101])
-	by front1 (Coremail) with SMTP id qMiowJAxX8creExqYXcDAA--.21037S4;
-	Tue, 07 Jul 2026 11:53:21 +0800 (CST)
-From: Hongliang Wang <wanghongliang@loongson.cn>
-To: Hongliang Wang <wanghongliang@loongson.cn>,
-	Binbin Zhou <zhoubinbin@loongson.cn>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc: linux-i2c@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH v7 2/2] i2c: ls2x: Add clocks property parsing and adjust bus speed
-Date: Tue,  7 Jul 2026 11:51:04 +0800
-Message-Id: <20260707035104.3092-3-wanghongliang@loongson.cn>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20260707035104.3092-1-wanghongliang@loongson.cn>
-References: <20260707035104.3092-1-wanghongliang@loongson.cn>
+	s=arc-20240116; t=1783396594; c=relaxed/simple;
+	bh=AH0x5XaXy0vIg0qhq+qAwESJKMn/Df6ORcuGRPEcxNo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JMjylz9Ovnk9Xpql1fhyuk9qpaeC8vAdJlk6vkk7BRrGC45rR7MbM6hycq6C3UdQl1bmdMnU/p66t4c83i4HJwnGnuflRFigvmsiw3k8k5GtdPHL6saa2CRs5/UyR3oEkwVUebUM2MjNxDIRxQ1jJdU8HsJjxD37NavhQkycFVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=LlakIQbN; arc=none smtp.client-ip=115.124.30.97
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1783396581; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
+	bh=M4RVq49saWLjC2cfzHwMtl8WbBTa/nnpaGr8HOsnPv4=;
+	b=LlakIQbNJhf2JQWChhZ0wz876tCXtu0xCIvHcz8tG2i8d5USKunPD8FXAMy0LuW8opJJ3bPjDHsGRRiLqeByteLJY7bO4BKjhjFL+ovP8ug6UbojUMy83l/0tkkqeO4wPUcoqbZJYYDrPN1zamZm9HQIk622W5rxaq5wFdc30t4=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=dust.li@linux.alibaba.com;NM=1;PH=DS;RN=18;SR=0;TI=SMTPD_---0X6bdqfX_1783396580;
+Received: from localhost(mailfrom:dust.li@linux.alibaba.com fp:SMTPD_---0X6bdqfX_1783396580 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 07 Jul 2026 11:56:21 +0800
+Date: Tue, 7 Jul 2026 11:56:20 +0800
+From: Dust Li <dust.li@linux.alibaba.com>
+To: "D. Wythe" <alibuda@linux.alibaba.com>,
+	Sidraya Jayagond <sidraya@linux.ibm.com>,
+	Wenjia Zhang <wenjia@linux.ibm.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: Mahanta Jambigi <mjambigi@linux.ibm.com>,
+	Tony Lu <tonylu@linux.alibaba.com>,
+	Wen Gu <guwen@linux.alibaba.com>, Simon Horman <horms@kernel.org>,
+	Ursula Braun <ubraun@linux.vnet.ibm.com>,
+	Hans Wippel <hwippel@linux.ibm.com>, linux-rdma@vger.kernel.org,
+	linux-s390@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net] net/smc: ignore peer-supplied rmbe_idx and dmbe_idx
+Message-ID: <akx45Ewt3iuhzCRI@linux.alibaba.com>
+Reply-To: dust.li@linux.alibaba.com
+References: <20260702171137.1099051-2-dust.li@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJAxX8creExqYXcDAA--.21037S4
-X-CM-SenderInfo: pzdqwxxrqjzxhdqjqz5rrqw2lrqou0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxCr15KF15uw15Xw1DAw4fZwc_yoWrXry8pF
-	Z8CF95Gr4qqF42grsxtw18ZFy3tws5Jay8GFy7tw1xW3Z3Arn8Za4ftFnI9F4v9F97XayU
-	XayDGrsxCFWjvrXCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUB2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
-	6r4UJVWxJr1ln4kS14v26r1Y6r17M2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12
-	xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1q
-	6rW5McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64
-	vIr41lc7CjxVAaw2AFwI0_JF0_Jw1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_
-	Jr0_Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8Gjc
-	xK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0
-	cI8IcVAFwI0_Gr0_Xr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8V
-	AvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E
-	14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUxhiSDUUUU
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260702171137.1099051-2-dust.li@linux.alibaba.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.04 / 15.00];
+X-Spamd-Result: default: False [-12.16 / 15.00];
+	WHITELIST_DMARC(-7.00)[alibaba.com:D:+];
+	WHITELIST_SPF_DKIM(-3.00)[alibaba.com:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linux.alibaba.com,none];
+	R_DKIM_ALLOW(-0.20)[linux.alibaba.com:s=default];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-272343-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[loongson.cn];
-	FORGED_RECIPIENTS(0.00)[m:wanghongliang@loongson.cn,m:zhoubinbin@loongson.cn,m:andi.shyti@kernel.org,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:wsa+renesas@sang-engineering.com,m:linux-i2c@vger.kernel.org,m:devicetree@vger.kernel.org,m:loongarch@lists.linux.dev,m:chenhuacai@loongson.cn,m:stable@vger.kernel.org,m:krzk@kernel.org,m:conor@kernel.org,m:wsa@sang-engineering.com,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FORGED_SENDER(0.00)[wanghongliang@loongson.cn,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[wanghongliang@loongson.cn,stable@vger.kernel.org];
+	REPLYTO_DOM_EQ_TO_DOM(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER(0.00)[dust.li@linux.alibaba.com,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:alibuda@linux.alibaba.com,m:sidraya@linux.ibm.com,m:wenjia@linux.ibm.com,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:mjambigi@linux.ibm.com,m:tonylu@linux.alibaba.com,m:guwen@linux.alibaba.com,m:horms@kernel.org,m:ubraun@linux.vnet.ibm.com,m:hwippel@linux.ibm.com,m:linux-rdma@vger.kernel.org,m:linux-s390@vger.kernel.org,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-272344-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	HAS_REPLYTO(0.00)[dust.li@linux.alibaba.com];
 	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	REPLYTO_ADDR_EQ_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dust.li@linux.alibaba.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux.alibaba.com:+];
 	ALIAS_RESOLVED(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable,dt,renesas];
-	R_DKIM_NA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,loongson.cn:from_mime,loongson.cn:email,loongson.cn:mid,vger.kernel.org:from_smtp]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,alibaba.com:email,vger.kernel.org:from_smtp,linux.alibaba.com:from_mime,linux.alibaba.com:replyto,linux.alibaba.com:mid,linux.alibaba.com:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4D73E71724C
+X-Rspamd-Queue-Id: A8F75717260
 
-The i2c-ls2x driver supports dts and acpi parameter passing.
+On 2026-07-03 01:11:38, Dust Li wrote:
+>Linux always uses exactly one RMBE per RMB (index 1 for SMC-R) and
+>one DMBE per DMB (index 0 for SMC-D), so conn->tx_off is always zero.
+>Hardcode these fixed values instead of deriving tx_off from the
+>peer-supplied rmbe_idx / dmbe_idx in the CLC Accept/Confirm message.
+>
+>Fixes: e6727f39004b ("smc: send data (through RDMA)")
+>Fixes: 413498440e30 ("net/smc: add SMC-D support in af_smc")
+>Cc: stable@vger.kernel.org
+>Reported-by: Federico Kirschbaum <federico.kirschbaum@xbow.com>
+>Signed-off-by: Dust Li <dust.li@linux.alibaba.com>
+>---
+> net/smc/af_smc.c | 16 ++++++++++++----
+> 1 file changed, 12 insertions(+), 4 deletions(-)
+>
+>diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
+>index b5db69073e20..3706e8ac49e0 100644
+>--- a/net/smc/af_smc.c
+>+++ b/net/smc/af_smc.c
+>@@ -729,11 +729,15 @@ static void smcr_conn_save_peer_info(struct smc_sock *smc,
+> {
+> 	int bufsize = smc_uncompress_bufsize(clc->r0.rmbe_size);
+> 
+>-	smc->conn.peer_rmbe_idx = clc->r0.rmbe_idx;
+>+	/* Linux uses exactly one RMBE per RMB (always index 1); ignore the
+>+	 * peer-supplied rmbe_idx to prevent a malicious peer from setting an
+>+	 * out-of-bounds tx_off.
+>+	 */
+>+	smc->conn.peer_rmbe_idx = 1;
+> 	smc->conn.local_tx_ctrl.token = ntohl(clc->r0.rmbe_alert_token);
+> 	smc->conn.peer_rmbe_size = bufsize;
+> 	atomic_set(&smc->conn.peer_rmbe_space, smc->conn.peer_rmbe_size);
+>-	smc->conn.tx_off = bufsize * (smc->conn.peer_rmbe_idx - 1);
+>+	smc->conn.tx_off = 0;
 
-In dts, uses clock framework, by parsing clocks property to
-get i2c bus reference clock, and define the div of reference
-clock by device data.
+Althrough we only have 1 RMBE/DMBE per RMB/DMB, but this does break SMC
+protocol.
 
-In acpi, by passing clocks property to describe i2c bus reference
-clock and clock-div property to describe the div of reference clock.
+I will send another patch, checking the bound in dibs_loopback.c, please
+ignore this one.
 
-Based on i2c bus reference clock(clock_a), i2c bus speed(clock_s)
-and div, calculate the prcescale of i2c divider register. The
-calculation formula is
+Thanks sashiko for pointing this out!
 
-prcescale = (clock_a*10)/(div*clock_s)-1
-
-Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
-Cc: stable@vger.kernel.org
-Signed-off-by: Hongliang Wang <wanghongliang@loongson.cn>
----
- drivers/i2c/busses/i2c-ls2x.c | 36 ++++++++++++++++++++++++++++++++---
- 1 file changed, 33 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/i2c/busses/i2c-ls2x.c b/drivers/i2c/busses/i2c-ls2x.c
-index b475dd27b7af..18b79dc759bf 100644
---- a/drivers/i2c/busses/i2c-ls2x.c
-+++ b/drivers/i2c/busses/i2c-ls2x.c
-@@ -12,6 +12,7 @@
- 
- #include <linux/bitfield.h>
- #include <linux/bits.h>
-+#include <linux/clk.h>
- #include <linux/completion.h>
- #include <linux/device.h>
- #include <linux/iopoll.h>
-@@ -63,11 +64,19 @@
- /* The default bus frequency, which is an empirical value */
- #define LS2X_I2C_FREQ_STD	(33 * HZ_PER_KHZ)
- 
-+/* The div of i2c reference clock on LS2K0500/2K1000/2K2000 */
-+#define LS2X_I2C_2K_CLOCK_DIV	40
-+
-+/* The div of i2c reference clock on LS7A1000/7A2000 */
-+#define LS2X_I2C_7A_CLOCK_DIV	50
-+
- struct ls2x_i2c_priv {
- 	struct i2c_adapter	adapter;
- 	void __iomem		*base;
- 	struct i2c_timings	i2c_t;
- 	struct completion	cmd_complete;
-+	unsigned int		div;
-+	unsigned int		pclk;
- };
- 
- /*
-@@ -107,12 +116,13 @@ static void ls2x_i2c_adjust_bus_speed(struct ls2x_i2c_priv *priv)
- 	else
- 		t->bus_freq_hz = LS2X_I2C_FREQ_STD;
- 
-+	val = (priv->pclk * 10) / (priv->div * t->bus_freq_hz) - 1;
-+
- 	/*
- 	 * According to the chip manual, we can only access the registers as bytes,
- 	 * otherwise the high bits will be truncated.
- 	 * So set the I2C frequency with a sequential writeb() instead of writew().
- 	 */
--	val = LS2X_I2C_PCLK_FREQ / (5 * t->bus_freq_hz) - 1;
- 	writeb(FIELD_GET(GENMASK(7, 0), val), priv->base + I2C_LS2X_PRER_LO);
- 	writeb(FIELD_GET(GENMASK(15, 8), val), priv->base + I2C_LS2X_PRER_HI);
- }
-@@ -287,6 +297,7 @@ static const struct i2c_algorithm ls2x_i2c_algo = {
- static int ls2x_i2c_probe(struct platform_device *pdev)
- {
- 	int ret, irq;
-+	struct clk *clk;
- 	struct i2c_adapter *adap;
- 	struct ls2x_i2c_priv *priv;
- 	struct device *dev = &pdev->dev;
-@@ -304,6 +315,25 @@ static int ls2x_i2c_probe(struct platform_device *pdev)
- 	if (irq < 0)
- 		return irq;
- 
-+	if (dev_of_node(dev)) {
-+		clk = devm_clk_get_optional_enabled(dev, NULL);
-+		if (!IS_ERR_OR_NULL(clk))
-+			priv->pclk = clk_get_rate(clk);
-+		else
-+			priv->pclk = LS2X_I2C_PCLK_FREQ;
-+
-+		priv->div = (unsigned long)device_get_match_data(dev);
-+	} else {
-+		/* clocks and clock-div are only ACPI properties. */
-+		ret = device_property_read_u32(dev, "clocks", &priv->pclk);
-+		if (ret)
-+			priv->pclk = LS2X_I2C_PCLK_FREQ;
-+
-+		ret = device_property_read_u32(dev, "clock-div", &priv->div);
-+		if (ret || !priv->div)
-+			priv->div = LS2X_I2C_7A_CLOCK_DIV;
-+	}
-+
- 	/* Add the i2c adapter */
- 	adap = &priv->adapter;
- 	adap->retries = 5;
-@@ -349,8 +379,8 @@ static DEFINE_RUNTIME_DEV_PM_OPS(ls2x_i2c_pm_ops,
- 				 ls2x_i2c_suspend, ls2x_i2c_resume, NULL);
- 
- static const struct of_device_id ls2x_i2c_id_table[] = {
--	{ .compatible = "loongson,ls2k-i2c" },
--	{ .compatible = "loongson,ls7a-i2c" },
-+	{ .compatible = "loongson,ls2k-i2c", .data = (void *)LS2X_I2C_2K_CLOCK_DIV, },
-+	{ .compatible = "loongson,ls7a-i2c", .data = (void *)LS2X_I2C_7A_CLOCK_DIV, },
- 	{ /* sentinel */ }
- };
- MODULE_DEVICE_TABLE(of, ls2x_i2c_id_table);
--- 
-2.47.2
-
+Best regards,
+Dust
 
