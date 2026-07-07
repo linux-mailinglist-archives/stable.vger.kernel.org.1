@@ -1,175 +1,142 @@
-Return-Path: <stable+bounces-272400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272401-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id t3oEJj7UTGrTqQEAu9opvQ
-	(envelope-from <stable+bounces-272400-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 12:26:06 +0200
+	id FkujJiDTTGpxqQEAu9opvQ
+	(envelope-from <stable+bounces-272401-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 12:21:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 399AD71A56E
-	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 12:26:06 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3487971A44B
+	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 12:21:20 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=leemhuis.info header.s=key2 header.b=DJ3sZkK8;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272400-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-272400-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W2UHv+lZ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272401-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-272401-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 56D35306249C
-	for <lists+stable@lfdr.de>; Tue,  7 Jul 2026 10:20:06 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E687830438B7
+	for <lists+stable@lfdr.de>; Tue,  7 Jul 2026 10:20:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 741E73DDB18;
-	Tue,  7 Jul 2026 10:19:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E4C03DFC84;
+	Tue,  7 Jul 2026 10:20:30 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [188.68.61.103])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C7D63DD530
-	for <stable@vger.kernel.org>; Tue,  7 Jul 2026 10:19:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B884A3DEADC;
+	Tue,  7 Jul 2026 10:20:26 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783419574; cv=none; b=MYzDeb7oiTY3BULvc6cxezaCkAN7S3Mt7T3i/juXMKAxWwiq/H898KCGcN4yrqkz7IjiYgPqo1Dt8l5fivGmHfV6I5CEi9nJM8wi3kU1wMOSWXjTiJqGnImbKZc8iBxtO5ZFZWSvv6vDw2hiE3bmKVeTxF66Np5IzV/giEPftGQ=
+	t=1783419628; cv=none; b=BN7C0KOQes0Os5NOEd4+Qlaq3xcjks2AL6MDbG11Z1a62VEi25jdoowhKCX6ew62ZGFY0OFCXFN66WHH39CjW9ElSLH09iqr+N+xqvqWxYgi4qDMUsQmz2oG2flNjSFvuxUol2CSONxSTB5brj1xZr3s7OYQ9sswyU8dRAW087k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783419574; c=relaxed/simple;
-	bh=jkCdGKHrAXlnKoBbnYNWHuWXfPuaFC6iRVd5Bb2qsEQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HJ844BlvjYEgNyOJC3+u69gQYTodXlKu9UM+Yl/kszbwm7S3tHK17N4q6HzM7n9U8CiFC2Njw7fO99MA/ysze5l19HTWJ2LycDtthSvXDDksE2ps69H+/DWbpZDaLlC0s7/3fETiOAktMlHPBSNiKvtj7pao0uQ9B6YXYr3j1Hw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=DJ3sZkK8; arc=none smtp.client-ip=188.68.61.103
-Received: from mors-relay-8403.netcup.net (localhost [127.0.0.1])
-	by mors-relay-8403.netcup.net (Postfix) with ESMTPS id 4gvcf447Flz89sF;
-	Tue,  7 Jul 2026 12:19:24 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
-	s=key2; t=1783419564;
-	bh=jkCdGKHrAXlnKoBbnYNWHuWXfPuaFC6iRVd5Bb2qsEQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=DJ3sZkK8Oky7YIl9PpZ2KwXVNtleOwy7M3f4PNM9hCdkzDk07KuIulKqUPkCQaeoP
-	 HJVBo9G2t9fGhdSqOmzSirSICFLx4K3TBv6LfDUgEIe87idde//yr2NhNgdfkspuwU
-	 oLyDOVDJun314gIq8gJ97gOGK6WgDakwTZck8itlzTntknesXvgrEDYs7d/1hceGLm
-	 UkAYzrhAobtFIsSLaRwYSe9ut2t978gNJL6vVDc9xzHNPNszDpr9qdUErXXxeyDbvr
-	 r7gOxrGrCl6+Q9aXwqfsQFbdMW9Zf2J/0xb2YPId9imyYNOsr+KSr0xO1X/qHyCRr0
-	 r5ZeDTLwxfClQ==
-Received: from policy01-mors.netcup.net (unknown [46.38.225.35])
-	by mors-relay-8403.netcup.net (Postfix) with ESMTPS id 4gvcf43PVvz835F;
-	Tue,  7 Jul 2026 12:19:24 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at policy01-mors.netcup.net
-X-Spam-Flag: NO
-X-Spam-Score: -2.898
-X-Spam-Level: 
-Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by policy01-mors.netcup.net (Postfix) with ESMTPS id 4gvcf26VXyz8tZL;
-	Tue,  7 Jul 2026 12:19:22 +0200 (CEST)
-Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
-	by mxe9fb.netcup.net (Postfix) with ESMTPSA id D01AE60387;
-	Tue,  7 Jul 2026 12:19:21 +0200 (CEST)
-Received-SPF: pass (mxe9fb: connection is authenticated)
-Message-ID: <d3d467d3-637c-49fe-8516-8da65cf4261b@leemhuis.info>
-Date: Tue, 7 Jul 2026 12:19:20 +0200
+	s=arc-20240116; t=1783419628; c=relaxed/simple;
+	bh=BF6QHr9IERaxUJGLyi9UfdrrpYkPazFlm84hoewfZKw=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=oIYRGAnLAN0eIFcsnmuPxiw9qDMQdl+qXyS8s8NExee0B+5IbNq3qDurk2q6eMfM/K8uz24uRR+SjNwonk5v5lKKvclCSzrxNtXAWYObMmFp5Gxac3AJj/Ivsy/b6FIsSdpZyQO0ImTb8CqRBQG5Opgl6Xx4vbI928Je93NXse8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W2UHv+lZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9E741F00A3A;
+	Tue,  7 Jul 2026 10:20:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783419625;
+	bh=/1C4Wt0mf4QAVu/tAVPWfuZuAk6WIVrygpQsGGgS53U=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=W2UHv+lZX4WabMkk1QFfDq1bxiy1rEme1FiQ2AHaHi5cAW2znbCbCqv8eF7gINECr
+	 mVNENRF7qTIxSsIugtYJoCtlc0AMfBLRArSZIk281oZ/uPvENh8ZfGd6CYen+UNd1H
+	 pT2w8JJwytCAx483S/M9v913EmoTEGs4tKHbDeMTEpJvFN4dcCSirbxIF6K/5wdQoN
+	 4TzxqcjwJ7qonh81QXzEfi0s95eS5EviYM3AJxtT88xh+bju2Lv4jsKGYyyw2YqyKA
+	 7Z0g22E2hxz6AyooxoCSmBMHrvWAZXM0NtF11fYGOG56rW/nyIB0SppIAGIFOSR044
+	 Rc3FVZD2V/C+g==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 198883925475;
+	Tue,  7 Jul 2026 10:20:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Some 7.1-post fixes that might be worth picking up rather sooner
- than later
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Sasha Levin <sashal@kernel.org>,
- Linux kernel regressions list <regressions@lists.linux.dev>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- Alex Deucher <alexander.deucher@amd.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Dave Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Linus Torvalds <torvalds@linux-foundation.org>
-References: <91281f28-eccf-4681-8f62-faaa8a3ba529@leemhuis.info>
- <2026061917-flinch-idealism-898f@gregkh>
- <2026062236-ludicrous-detached-6e20@gregkh>
-From: Thorsten Leemhuis <regressions@leemhuis.info>
-Content-Language: de-DE, en-US
-In-Reply-To: <2026062236-ludicrous-detached-6e20@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-PPP-Message-ID: <178341956224.4116813.1796060844406734301@mxe9fb.netcup.net>
-X-NC-CID: t9z4NYfy/uCu+sY8wZzJbyURLwVE4ZPbCV0TuDrLPdGqwFYazFI=
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v3] ipv4: igmp: remove multicast group from hash table
+ on
+ device destruction
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178341960589.1475811.13391372946000599222.git-patchwork-notify@kernel.org>
+Date: Tue, 07 Jul 2026 10:20:05 +0000
+References: <20260701235014.73505-1-yuyanghuang@google.com>
+In-Reply-To: <20260701235014.73505-1-yuyanghuang@google.com>
+To: Yuyang Huang <yuyanghuang@google.com>
+Cc: davem@davemloft.net, xiyou.wangcong@gmail.com, dsahern@kernel.org,
+ edumazet@google.com, idosch@nvidia.com, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ stable@vger.kernel.org
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-3.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[leemhuis.info:s=key2];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-272400-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:sashal@kernel.org,m:regressions@lists.linux.dev,m:stable@vger.kernel.org,m:alexander.deucher@amd.com,m:christian.koenig@amd.com,m:airlied@gmail.com,m:simona@ffwll.ch,m:torvalds@linux-foundation.org,s:lists@lfdr.de];
+	FREEMAIL_CC(0.00)[davemloft.net,gmail.com,kernel.org,google.com,nvidia.com,redhat.com,vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[leemhuis.info];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,gitlab.freedesktop.org:url,leemhuis.info:from_mime,leemhuis.info:dkim,leemhuis.info:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,kde.org:url];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,lists.linux.dev,vger.kernel.org,amd.com,gmail.com,ffwll.ch,linux-foundation.org];
+	TAGGED_FROM(0.00)[bounces-272401-lists,stable=lfdr.de,netdevbpf];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	FORGED_SENDER(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[regressions@leemhuis.info,stable@vger.kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[leemhuis.info:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[regressions@leemhuis.info,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:yuyanghuang@google.com,m:davem@davemloft.net,m:xiyou.wangcong@gmail.com,m:dsahern@kernel.org,m:edumazet@google.com,m:idosch@nvidia.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:linux-kernel@vger.kernel.org,m:netdev@vger.kernel.org,m:stable@vger.kernel.org,m:xiyouwangcong@gmail.com,s:lists@lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	FROM_NO_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 399AD71A56E
+X-Rspamd-Queue-Id: 3487971A44B
 
-[CCing a few people]
+Hello:
 
-On 6/22/26 07:32, Greg KH wrote:
-> On Fri, Jun 19, 2026 at 11:43:41AM +0200, Greg KH wrote:
->> On Fri, Jun 19, 2026 at 08:04:35AM +0200, Thorsten Leemhuis wrote:
->>> Hi Stable Team! From the regressions point I think it might be nice to
->>> pick up the following changes for the next round of stable updates (e.g.
->>> 7.1.2), as they seem to fix regressions I've seen multiple people report
->>> with 7.1:
->>> [...]
->>> * 12f58a6caad3be ("drm/amd/display: Fix Color Manager (3DLUT, Shaper,
->>> Blend)") [v7.1-post]
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
+
+On Thu,  2 Jul 2026 08:50:14 +0900 you wrote:
+> When a device is destroyed under RTNL, ip_mc_destroy_dev() iterates through
+> the multicast list and calls ip_ma_put() on each membership, scheduling
+> them for RCU reclamation. However, they are not unlinked from the device's
+> multicast hash table (mc_hash).
 > 
-> This doesn't apply to 7.1.y, and would need a working backport.
-Just a quick status update twimc:
+> Since the device remains published in dev->ip_ptr until after
+> ip_mc_destroy_dev() completes, concurrent RCU readers traversing mc_hash
+> can still locate and access the multicast group after its refcount is
+> decremented. If the RCU callback runs and frees the group while a reader is
+> accessing it, a use-after-free occurs.
+> 
+> [...]
 
-I pointed that out in
-https://gitlab.freedesktop.org/drm/amd/-/work_items/5396 , but nothing
-happened from the AMD side afaics. They have much on their plate, I
-fully understand that, I guess it fell through the cracks (maybe this
-mail helps). Thing is: the backport of the revert is quite big, so
-nobody else (including me) did yet dare to submit it themselves.
+Here is the summary with links:
+  - [net,v3] ipv4: igmp: remove multicast group from hash table on device destruction
+    https://git.kernel.org/netdev/net/c/7993211bde16
 
-So two weeks later the regression caused by e56e3cff2a1bb2
-("drm/amd/display: Sync dcn42 with DC 3.2.373") [v7.1-rc1] is still
-unfixed in 7.1.y as far as I can see it -- a regression that is known
-since more than two months now, as the revert to fix it (12f58a6caad3be,
-mentioned in the quote above) was submitted already on 2026-04-29, but
-only made it to mainline during the merge window for 7.2 (this is
-another thing that afaics fell through the cracks; sadly I only became
-aware of the regression after 7.1 was out, otherwise I would have made
-noise earlier to get it included in 7.1).
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-This all seems rather unfortunate.
 
-Luckily is seems the KDE Plasma developer turned off support for the
-color pipeline stuff in Kwin 6.7.1
-(https://invent.kde.org/plasma/kwin/-/commit/9079a417b821f80c0d9e3bc5014a388e0e340f82
-), which apparently avoids the problem for many users (see the
-gitlab.freedesktop ticket linked earlier).
-
-Ciao, Thorsten
 
