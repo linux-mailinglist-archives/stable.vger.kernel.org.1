@@ -1,67 +1,60 @@
-Return-Path: <stable+bounces-272344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272345-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id tnLHBwp5TGpBlAEAu9opvQ
-	(envelope-from <stable+bounces-272344-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 05:56:58 +0200
+	id brE6Ked/TGqBlQEAu9opvQ
+	(envelope-from <stable+bounces-272345-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 06:26:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8F75717260
-	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 05:56:57 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E6BC7173B7
+	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 06:26:15 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=LlakIQbN;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272344-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-272344-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=0zhNCZ2u;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272345-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-272345-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5BFE53030814
-	for <lists+stable@lfdr.de>; Tue,  7 Jul 2026 03:56:37 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4AB353025AF3
+	for <lists+stable@lfdr.de>; Tue,  7 Jul 2026 04:25:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 723FE372045;
-	Tue,  7 Jul 2026 03:56:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55381382291;
+	Tue,  7 Jul 2026 04:25:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C7F742086D;
-	Tue,  7 Jul 2026 03:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C229D380FD2;
+	Tue,  7 Jul 2026 04:25:19 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783396594; cv=none; b=dNNuNzVOzrCnvhAxlHfuSIeoKYKtE6VgLPs53ItU4gKzW4YLg6f/NfMciRlpRpkpfW2fYut2B6zH3JAiHX3TuI8sdqjaDuBmZSUMtw25LhkcDfW3Kg7eK4OLcBQmfofqDYIpG6j6t3k3zyTM0qzSzBFPT9HVhsVDSFEEBkmHyYY=
+	t=1783398321; cv=none; b=mb+jfwTLWeD+6Qr+V8BQSwTJM67GT7wIuldsWZojeyXLoPxSBdYPgsO/9AQhvfQzD8eTsJ7DC63TJYrJQxef9loIH+2JeZRh01vdv0FTF/Qrfaka0pGKy9n5u4Xbqb0Qj/vJtPtDe8Tfm1a07deOjQ8dKd5XZDhDpubrDfWIXXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783396594; c=relaxed/simple;
-	bh=AH0x5XaXy0vIg0qhq+qAwESJKMn/Df6ORcuGRPEcxNo=;
+	s=arc-20240116; t=1783398321; c=relaxed/simple;
+	bh=MwSTrKAQv4+8butGz3AGfSkozkAtCqBxCmB3MyfLtDU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JMjylz9Ovnk9Xpql1fhyuk9qpaeC8vAdJlk6vkk7BRrGC45rR7MbM6hycq6C3UdQl1bmdMnU/p66t4c83i4HJwnGnuflRFigvmsiw3k8k5GtdPHL6saa2CRs5/UyR3oEkwVUebUM2MjNxDIRxQ1jJdU8HsJjxD37NavhQkycFVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=LlakIQbN; arc=none smtp.client-ip=115.124.30.97
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1783396581; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-	bh=M4RVq49saWLjC2cfzHwMtl8WbBTa/nnpaGr8HOsnPv4=;
-	b=LlakIQbNJhf2JQWChhZ0wz876tCXtu0xCIvHcz8tG2i8d5USKunPD8FXAMy0LuW8opJJ3bPjDHsGRRiLqeByteLJY7bO4BKjhjFL+ovP8ug6UbojUMy83l/0tkkqeO4wPUcoqbZJYYDrPN1zamZm9HQIk622W5rxaq5wFdc30t4=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=dust.li@linux.alibaba.com;NM=1;PH=DS;RN=18;SR=0;TI=SMTPD_---0X6bdqfX_1783396580;
-Received: from localhost(mailfrom:dust.li@linux.alibaba.com fp:SMTPD_---0X6bdqfX_1783396580 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 07 Jul 2026 11:56:21 +0800
-Date: Tue, 7 Jul 2026 11:56:20 +0800
-From: Dust Li <dust.li@linux.alibaba.com>
-To: "D. Wythe" <alibuda@linux.alibaba.com>,
-	Sidraya Jayagond <sidraya@linux.ibm.com>,
-	Wenjia Zhang <wenjia@linux.ibm.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: Mahanta Jambigi <mjambigi@linux.ibm.com>,
-	Tony Lu <tonylu@linux.alibaba.com>,
-	Wen Gu <guwen@linux.alibaba.com>, Simon Horman <horms@kernel.org>,
-	Ursula Braun <ubraun@linux.vnet.ibm.com>,
-	Hans Wippel <hwippel@linux.ibm.com>, linux-rdma@vger.kernel.org,
-	linux-s390@vger.kernel.org, netdev@vger.kernel.org,
+	 Content-Type:Content-Disposition:In-Reply-To; b=IFP4t5A4xrUl2ZvkscQtgCO8ilKv5vzguWoHJbmNyCUX0ZfN0zZrF2Rgxo8VTmB0FIG4Fk3gNL0G24GrypnUDl6SXOqtyOky55nDk6wQx1Ug7vqR12xqyT2P3lJ8zZImjMl/0xx4fhiSBQnUCo4IGPxImHGyt2jv0w31vGFKwpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0zhNCZ2u; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA0BD1F000E9;
+	Tue,  7 Jul 2026 04:25:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1783398319;
+	bh=zXq9kCinRT0jpDkd1AT4yOu54wVqXbO+1SiH4cMUCW8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=0zhNCZ2u/fbPoO+sXdu022Fd6bPrQ1WmVhfcuKUfwW6TNefcyhG++z9QQGfgmcLMK
+	 GqAYHuZT+jCbxTafqu+EShqu64Ij07rniEwB+h8g6ttK7GN3MNRBC9uI2RirrlZSgC
+	 nbwQKs8CBG198lqm6uIJDSnfMY28cFh6SDvFCsAI=
+Date: Tue, 7 Jul 2026 06:25:32 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Brian Masney <bmasney@redhat.com>
+Cc: WenTao Liang <vulab@iscas.ac.cn>, paul@crapouillou.net,
+	mturquette@baylibre.com, sboyd@kernel.org,
+	linux-mips@vger.kernel.org, linux-clk@vger.kernel.org,
 	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net] net/smc: ignore peer-supplied rmbe_idx and dmbe_idx
-Message-ID: <akx45Ewt3iuhzCRI@linux.alibaba.com>
-Reply-To: dust.li@linux.alibaba.com
-References: <20260702171137.1099051-2-dust.li@linux.alibaba.com>
+Subject: Re: [PATCH v2] clk/ingenic: fix clock leak on clk_register_clkdev
+ failure
+Message-ID: <2026070706-slacking-legwarmer-95ed@gregkh>
+References: <20260628122811.44799-1-vulab@iscas.ac.cn>
+ <akwJCq9uUY3rzFxe@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,90 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260702171137.1099051-2-dust.li@linux.alibaba.com>
+In-Reply-To: <akwJCq9uUY3rzFxe@redhat.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-12.16 / 15.00];
-	WHITELIST_DMARC(-7.00)[alibaba.com:D:+];
-	WHITELIST_SPF_DKIM(-3.00)[alibaba.com:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.alibaba.com,none];
-	R_DKIM_ALLOW(-0.20)[linux.alibaba.com:s=default];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-272345-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	REPLYTO_DOM_EQ_TO_DOM(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[dust.li@linux.alibaba.com,stable@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:alibuda@linux.alibaba.com,m:sidraya@linux.ibm.com,m:wenjia@linux.ibm.com,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:mjambigi@linux.ibm.com,m:tonylu@linux.alibaba.com,m:guwen@linux.alibaba.com,m:horms@kernel.org,m:ubraun@linux.vnet.ibm.com,m:hwippel@linux.ibm.com,m:linux-rdma@vger.kernel.org,m:linux-s390@vger.kernel.org,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:bmasney@redhat.com,m:vulab@iscas.ac.cn,m:paul@crapouillou.net,m:mturquette@baylibre.com,m:sboyd@kernel.org,m:linux-mips@vger.kernel.org,m:linux-clk@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-272344-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	HAS_REPLYTO(0.00)[dust.li@linux.alibaba.com];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	REPLYTO_ADDR_EQ_FROM(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dust.li@linux.alibaba.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linux.alibaba.com:+];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MISSING_XM_UA(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,alibaba.com:email,vger.kernel.org:from_smtp,linux.alibaba.com:from_mime,linux.alibaba.com:replyto,linux.alibaba.com:mid,linux.alibaba.com:dkim]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:from_mime,linuxfoundation.org:email,linuxfoundation.org:dkim,iscas.ac.cn:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A8F75717260
+X-Rspamd-Queue-Id: 7E6BC7173B7
 
-On 2026-07-03 01:11:38, Dust Li wrote:
->Linux always uses exactly one RMBE per RMB (index 1 for SMC-R) and
->one DMBE per DMB (index 0 for SMC-D), so conn->tx_off is always zero.
->Hardcode these fixed values instead of deriving tx_off from the
->peer-supplied rmbe_idx / dmbe_idx in the CLC Accept/Confirm message.
->
->Fixes: e6727f39004b ("smc: send data (through RDMA)")
->Fixes: 413498440e30 ("net/smc: add SMC-D support in af_smc")
->Cc: stable@vger.kernel.org
->Reported-by: Federico Kirschbaum <federico.kirschbaum@xbow.com>
->Signed-off-by: Dust Li <dust.li@linux.alibaba.com>
->---
-> net/smc/af_smc.c | 16 ++++++++++++----
-> 1 file changed, 12 insertions(+), 4 deletions(-)
->
->diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
->index b5db69073e20..3706e8ac49e0 100644
->--- a/net/smc/af_smc.c
->+++ b/net/smc/af_smc.c
->@@ -729,11 +729,15 @@ static void smcr_conn_save_peer_info(struct smc_sock *smc,
-> {
-> 	int bufsize = smc_uncompress_bufsize(clc->r0.rmbe_size);
+On Mon, Jul 06, 2026 at 03:59:06PM -0400, Brian Masney wrote:
+> On Sun, Jun 28, 2026 at 08:28:11PM +0800, WenTao Liang wrote:
+> > clk_register() succeeds but clk_register_clkdev() fails, and the error
+> > path jumps to out without calling clk_unregister or clk_put to release
+> > the registered clock. This leaks the clock object within the common clock
+> > framework
 > 
->-	smc->conn.peer_rmbe_idx = clc->r0.rmbe_idx;
->+	/* Linux uses exactly one RMBE per RMB (always index 1); ignore the
->+	 * peer-supplied rmbe_idx to prevent a malicious peer from setting an
->+	 * out-of-bounds tx_off.
->+	 */
->+	smc->conn.peer_rmbe_idx = 1;
-> 	smc->conn.local_tx_ctrl.token = ntohl(clc->r0.rmbe_alert_token);
-> 	smc->conn.peer_rmbe_size = bufsize;
-> 	atomic_set(&smc->conn.peer_rmbe_space, smc->conn.peer_rmbe_size);
->-	smc->conn.tx_off = bufsize * (smc->conn.peer_rmbe_idx - 1);
->+	smc->conn.tx_off = 0;
+> 
+> > , contrasting with the CGU_CLK_EXT type path which correctly
+> > calls clk_put on error.
+> 
+> I would drop this part. Just focus on what you are fixing.
+> 
+> > 
+> > Suggested-by: Greg KH <gregkh@linuxfoundation.org>
+> 
+> I don't see where on the v1 Greg suggested this, unless I am missing
+> something?
 
-Althrough we only have 1 RMBE/DMBE per RMB/DMB, but this does break SMC
-protocol.
+I did not.
 
-I will send another patch, checking the bound in dibs_loopback.c, please
-ignore this one.
+> > Fixes: b066303fb3e7 ("clk: ingenic: add driver for Ingenic SoC CGU clocks")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: WenTao Liang <vulab@iscas.ac.cn>
+> > ---
+> > Changes in v2:
+> > - Fix patch format based on reviewer feedback
+> 
+> Link to v1: https://lore.kernel.org/linux-clk/20260626115644.33779-1-vulab@iscas.ac.cn/
+> 
+> With those fixes:
+> 
+> Reviewed-by: Brian Masney <bmasney@redhat.com>
 
-Thanks sashiko for pointing this out!
+All of these need to be dropped until the submitter learns how to
+properly submit things.
 
-Best regards,
-Dust
+greg k-h
 
