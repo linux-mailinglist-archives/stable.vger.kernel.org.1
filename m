@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-272430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272427-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 6oryJm0ETWo1tgEAu9opvQ
-	(envelope-from <stable+bounces-272430-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 15:51:41 +0200
+	id gkFcFIQFTWqFtgEAu9opvQ
+	(envelope-from <stable+bounces-272427-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 15:56:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3763071C224
-	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 15:51:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A73571C2F3
+	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 15:56:19 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aq0pZmgn;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RCFIMrJV;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272430-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-272430-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272427-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272427-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 29E5730BEF80
-	for <lists+stable@lfdr.de>; Tue,  7 Jul 2026 13:47:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3C5803200205
+	for <lists+stable@lfdr.de>; Tue,  7 Jul 2026 13:46:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5297421EF4;
-	Tue,  7 Jul 2026 13:46:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1F4F422544;
+	Tue,  7 Jul 2026 13:46:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06B1E4219F7;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D60C34218B6;
 	Tue,  7 Jul 2026 13:46:22 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783431987; cv=none; b=ayOnG8c0QTU6YW6rxCOSyz8TT2DB/FFSr0JNArG/RQR1WybInWX5yWpXni1nsUDOaKRaul/nmNWEdGp3PEX816tJ8yUlwZrUfmJirFMRymDyZxkPKs1e59Ql6jUO5Uuc8cVyREBZNy4257bvRE6hN4iQ/KGFO1nmnVh889ahyf8=
+	t=1783431985; cv=none; b=NjqkPw9BW1W/hAhksPBQ/YHeOm/UHwnT4rzu7DIZ7NsNC+Q7oWLOUAkkwpn9I2uh2DtwS2APsz8iXpJEvmnIvrU0WeujBB0KtOVcrXE9Pv9LTwCkwx6tFWED0TmxyK2Ac+qcC9VlGHbN/jux/pl1N39xwS3KpGx9A2o+vYb0lL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783431987; c=relaxed/simple;
-	bh=W9H2l+XTH59Ig783jGszyEzxeqejZYk96tBBTaP0jt4=;
+	s=arc-20240116; t=1783431985; c=relaxed/simple;
+	bh=3iW7iRW3LaWmn/h2ZPnzqj+1x7yTXCh97LlZnZtXpaY=;
 	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=pQ92xnbi8THATWPWdaXy4FuzetaVXONSXo8XLRzngtumVBBePimyt6lCxwgHjQXg2X8tuK/kmdzvp8efuKxg8gLBp7Jez3NSyQ7xL5c+W12M9Q6EU0rW51CiTwVObaQ4jwhOMbd/zYMmkdSlMTYT10iatih5M994uzUnRMyeQpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aq0pZmgn; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCB2A1F01559;
-	Tue,  7 Jul 2026 13:46:21 +0000 (UTC)
+	 Content-Type; b=Gka4GkxSl05kIcn285kv1XhQ8DwD4tZet4zNUwRa09c7ePE4XDcSDSVKXVP4HE1bKsTos98GGBo7xpxrBbvQhuxa279t3fLp0fkXR3HY9AmX2E8T7azHbSnLMT4ngQcIHwq3IjK01otSHWxEWDy/2ak0bZua48wW1FIE8j2pn7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RCFIMrJV; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10D9E1F00A3F;
+	Tue,  7 Jul 2026 13:46:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783431981;
-	bh=Y7Tm4/VM2bLRCHDwXtpN/zJB4V7HAUOrArAtD+vl6AA=;
+	s=k20260515; t=1783431982;
+	bh=itfil0QL1K++We8bxiSxbgpQq8sOzLNqstQlIyIxIE4=;
 	h=Date:From:To:Cc:Subject:References;
-	b=aq0pZmgni4C6flCe7ODGZa4qt2Yc15mrD1taUd74RaIy3L2O0bMC1j6hEbA41TfA4
-	 DT9fVoeo+2CbaF1wX0NkvFw8QgGoKlYdwNJH2Y68gFdnrxO2gAmXVA85ufOS7IK0ow
-	 jEpV4nuLRh1j64IEjzRZWT/kCReMAWT/PhSWBJMlxX83zqwJBf9YAyenIotFZOY4gQ
-	 oyMQ3N9Yuz/KDLnXKNLJPihmOZlZyM5ze4APdB7/RYRHMSCfd3TPLvrknGJmoMS8OT
-	 ZhKlZq0V0MPVdt8sK4o/O7u8/sUcZyBBvtSXnA94jm0nkoCIy6BT0RQJKb9AWog1ba
-	 mcVR22XfBYnDg==
+	b=RCFIMrJVipdqK2MgNdcXsYxXbJm6Hdl38Le+du2vuCaJ8zhQTrrxSLqj3/VzKJYXR
+	 tTG4WqbU73kEI8XFmdoz7acZDI4JtGjUDpZatZo+MpxCcPOHN5sWgt0SpQKrjD3/S2
+	 bmds2dYmtU0Ve3TCR3C1aVXn4vgYwhRrW+T7BqeGt/MOvBex1miMzl0PANYU5L0FRZ
+	 i1e+KSRygCVuVMZnH32bpUQQoJR/YwB+mtAVKmtwYlFC4nP5iZqp8qcupyf7dey5pk
+	 aSQgBla2lT5RDE4gRSU6s0zw2dCYP9mewsC2GURT1Zv4cKyKhSww7O5bzGAC7QXc0p
+	 PWz9mMMOs2WhQ==
 Received: from rostedt by gandalf with local (Exim 4.99.4)
 	(envelope-from <rostedt@kernel.org>)
-	id 1wh681-00000000h64-0i7i;
+	id 1wh681-00000000h6a-1Us7;
 	Tue, 07 Jul 2026 09:46:25 -0400
-Message-ID: <20260707134625.010455998@kernel.org>
+Message-ID: <20260707134625.188028635@kernel.org>
 User-Agent: quilt/0.69
-Date: Tue, 07 Jul 2026 09:46:15 -0400
+Date: Tue, 07 Jul 2026 09:46:16 -0400
 From: Steven Rostedt <rostedt@kernel.org>
 To: linux-kernel@vger.kernel.org
 Cc: Masami Hiramatsu <mhiramat@kernel.org>,
@@ -60,9 +60,14 @@ Cc: Masami Hiramatsu <mhiramat@kernel.org>,
  Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
  Andrew Morton <akpm@linux-foundation.org>,
  stable@vger.kernel.org,
- Peter Wang <peter.wang@mediatek.com>,
- Bart Van Assche <bvanassche@acm.org>
-Subject: [for-linus][PATCH 11/13] ufs: core: tracing: Do not dereference pointers in TP_printk()
+ Yuan Tan <yuantan098@gmail.com>,
+ Yifan Wu <yifanwucs@gmail.com>,
+ Juefei Pu <tomapufckgml@gmail.com>,
+ Zhengchuan Liang <zcliangcn@gmail.com>,
+ Xin Liu <bird@lzu.edu.cn>,
+ Huihui Huang <hhhuang@smu.edu.sg>,
+ Ren Wei <n05ec@lzu.edu.cn>
+Subject: [for-linus][PATCH 12/13] tracing: Prevent out-of-bounds read in glob matching
 References: <20260707134604.275787924@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -77,282 +82,167 @@ X-Spamd-Result: default: False [-5.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-272430-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:linux-kernel@vger.kernel.org,m:mhiramat@kernel.org,m:mark.rutland@arm.com,m:mathieu.desnoyers@efficios.com,m:akpm@linux-foundation.org,m:stable@vger.kernel.org,m:peter.wang@mediatek.com,m:bvanassche@acm.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-272427-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[rostedt@kernel.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:linux-kernel@vger.kernel.org,m:mhiramat@kernel.org,m:mark.rutland@arm.com,m:mathieu.desnoyers@efficios.com,m:akpm@linux-foundation.org,m:stable@vger.kernel.org,m:yuantan098@gmail.com,m:yifanwucs@gmail.com,m:tomapufckgml@gmail.com,m:zcliangcn@gmail.com,m:bird@lzu.edu.cn,m:hhhuang@smu.edu.sg,m:n05ec@lzu.edu.cn,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[rostedt@kernel.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[kernel.org,arm.com,efficios.com,linux-foundation.org,vger.kernel.org,gmail.com,lzu.edu.cn,smu.edu.sg];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[rostedt@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[acm.org:email,goodmis.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp,msgid.link:url,mediatek.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,goodmis.org:email,smu.edu.sg:email,lzu.edu.cn:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3763071C224
+X-Rspamd-Queue-Id: 9A73571C2F3
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Huihui Huang <hhhuang@smu.edu.sg>
 
-The trace events in drivers/ufs/core/ufs_trace.h were converted to take a
-pointer to the hba structure as an argument for the tracepoint and then in
-TP_printk() the printing of the dev_name from the ring buffer was
-converted to using the dev dereferenced pointer from the hba saved
-pointer.
+String event fields are not necessarily NUL-terminated, so the filter
+predicate functions (filter_pred_string(), filter_pred_strloc() and
+filter_pred_strrelloc()) pass the field length to the regex match
+callbacks, and the length-aware matchers honour it.
 
-This is not allowed as the TP_printk() is executed at the time the trace
-event is read from /sys/kernel/tracing/trace file. That can happen
-literally, seconds, minutes, hours, weeks, days, or even months later!
-There is no guarantee that the hba pointer will still exist by the time it
-is dereferenced when the "trace" file is read.
+regex_match_glob() was the exception: it ignored the length and called
+glob_match(), which scans the string until it hits a NUL byte. Some
+string fields are not NUL-terminated. One example is the dynamic char
+array of the xfs_* namespace tracepoints, which is copied without a
+trailing NUL. For such a field, glob matching reads past the end of
+the event field, causing a KASAN slab-out-of-bounds read in
+glob_match(), reached via regex_match_glob() and filter_match_preds()
+from the xfs_lookup tracepoint.
 
-Instead, save the device name from the hba pointer at the time the
-tracepoint is called and place it into the ring buffer event. Then the
-TP_printk() can read the name directly from the ring buffer and remove the
-possibility that it will read a freed pointer and crash the kernel.
+Add a length-bounded glob_match_len() and use it from regex_match_glob()
+so glob matching always stops at the field boundary. The matching loop
+is factored into a shared helper so glob_match() keeps its behaviour.
 
-This was detected when testing the trace event code that looks for
-TP_printk() parameters doing illegal derferences[1]
-
-[1] https://lore.kernel.org/all/20260630184836.74d477b6@gandalf.local.home/
-
+Fixes: 60f1d5e3bac4 ("ftrace: Support full glob matching")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260630185412.283c26c5@gandalf.local.home
-Fixes: 583e518e71003 ("scsi: ufs: core: Add hba parameter to trace events")
-Reviewed-by: Peter Wang <peter.wang@mediatek.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://patch.msgid.link/da1aaf125fc3b63320b0c540fd6afa7c3d5b4f1a.1782836943.git.hhhuang@smu.edu.sg
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Zhengchuan Liang <zcliangcn@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Assisted-by: Codex:GPT-5.4
+Signed-off-by: Huihui Huang <hhhuang@smu.edu.sg>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 ---
- drivers/ufs/core/ufs_trace.h | 36 +++++++++++++++++++++++++++---------
- 1 file changed, 27 insertions(+), 9 deletions(-)
+ include/linux/glob.h               |  1 +
+ kernel/trace/trace_events_filter.c |  6 ++----
+ lib/glob.c                         | 31 ++++++++++++++++++++++++++++--
+ 3 files changed, 32 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/ufs/core/ufs_trace.h b/drivers/ufs/core/ufs_trace.h
-index 309ae51b4906..377a3c54b9f5 100644
---- a/drivers/ufs/core/ufs_trace.h
-+++ b/drivers/ufs/core/ufs_trace.h
-@@ -89,16 +89,18 @@ TRACE_EVENT(ufshcd_clk_gating,
+diff --git a/include/linux/glob.h b/include/linux/glob.h
+index 861327b33e41..91595e750936 100644
+--- a/include/linux/glob.h
++++ b/include/linux/glob.h
+@@ -6,5 +6,6 @@
+ #include <linux/compiler.h>	/* For __pure */
  
- 	TP_STRUCT__entry(
- 		__field(struct ufs_hba *, hba)
-+		__string(dev_name, dev_name(hba->dev))
- 		__field(int, state)
- 	),
+ bool __pure glob_match(char const *pat, char const *str);
++bool __pure glob_match_len(char const *pat, char const *str, size_t len);
  
- 	TP_fast_assign(
-+		__assign_str(dev_name);
- 		__entry->hba = hba;
- 		__entry->state = state;
- 	),
+ #endif	/* _LINUX_GLOB_H */
+diff --git a/kernel/trace/trace_events_filter.c b/kernel/trace/trace_events_filter.c
+index 609325f57942..6385cd662d8d 100644
+--- a/kernel/trace/trace_events_filter.c
++++ b/kernel/trace/trace_events_filter.c
+@@ -1056,11 +1056,9 @@ static int regex_match_end(char *str, struct regex *r, int len)
+ 	return 0;
+ }
  
- 	TP_printk("%s: gating state changed to %s",
--		dev_name(__entry->hba->dev),
-+		__get_str(dev_name),
- 		__print_symbolic(__entry->state, UFSCHD_CLK_GATING_STATES))
- );
+-static int regex_match_glob(char *str, struct regex *r, int len __maybe_unused)
++static int regex_match_glob(char *str, struct regex *r, int len)
+ {
+-	if (glob_match(r->pattern, str))
+-		return 1;
+-	return 0;
++	return glob_match_len(r->pattern, str, len) ? 1 : 0;
+ }
  
-@@ -111,6 +113,7 @@ TRACE_EVENT(ufshcd_clk_scaling,
+ /**
+diff --git a/lib/glob.c b/lib/glob.c
+index 7aca76c25bcb..c80d9dd736b4 100644
+--- a/lib/glob.c
++++ b/lib/glob.c
+@@ -11,6 +11,9 @@
+ MODULE_DESCRIPTION("glob(7) matching");
+ MODULE_LICENSE("Dual MIT/GPL");
  
- 	TP_STRUCT__entry(
- 		__field(struct ufs_hba *, hba)
-+		__string(dev_name, dev_name(hba->dev))
- 		__string(state, state)
- 		__string(clk, clk)
- 		__field(u32, prev_state)
-@@ -119,6 +122,7 @@ TRACE_EVENT(ufshcd_clk_scaling,
++static bool __pure glob_match_str(char const *pat, char const *str,
++				  char const *str_end);
++
+ /**
+  * glob_match - Shell-style pattern matching, like !fnmatch(pat, str, 0)
+  * @pat: Shell-style pattern to match, e.g. "*.[ch]".
+@@ -40,6 +43,29 @@ MODULE_LICENSE("Dual MIT/GPL");
+  * An opening bracket without a matching close is matched literally.
+  */
+ bool __pure glob_match(char const *pat, char const *str)
++{
++	return glob_match_str(pat, str, NULL);
++}
++EXPORT_SYMBOL(glob_match);
++
++/**
++ * glob_match_len - glob match against a length-bounded string
++ * @pat: Shell-style pattern to match.
++ * @str: String to match.  Need not be NUL-terminated.
++ * @len: Number of bytes of @str that may be read.
++ *
++ * Like glob_match(), but @str is only read up to @len bytes, so it can be
++ * used on buffers that are not NUL-terminated (e.g. trace event fields).
++ * A NUL byte within @len still terminates the string.
++ */
++bool __pure glob_match_len(char const *pat, char const *str, size_t len)
++{
++	return glob_match_str(pat, str, str + len);
++}
++EXPORT_SYMBOL(glob_match_len);
++
++static bool __pure glob_match_str(char const *pat, char const *str,
++				  char const *str_end)
+ {
+ 	/*
+ 	 * Backtrack to previous * on mismatch and retry starting one
+@@ -55,9 +81,11 @@ bool __pure glob_match(char const *pat, char const *str)
+ 	 * on mismatch, or true after matching the trailing nul bytes.
+ 	 */
+ 	for (;;) {
+-		unsigned char c = *str++;
++		unsigned char c = (str_end && str >= str_end) ? '\0' : *str;
+ 		unsigned char d = *pat++;
  
- 	TP_fast_assign(
- 		__entry->hba = hba;
-+		__assign_str(dev_name);
- 		__assign_str(state);
- 		__assign_str(clk);
- 		__entry->prev_state = prev_state;
-@@ -126,7 +130,7 @@ TRACE_EVENT(ufshcd_clk_scaling,
- 	),
- 
- 	TP_printk("%s: %s %s from %u to %u Hz",
--		dev_name(__entry->hba->dev), __get_str(state), __get_str(clk),
-+		__get_str(dev_name), __get_str(state), __get_str(clk),
- 		__entry->prev_state, __entry->curr_state)
- );
- 
-@@ -138,16 +142,18 @@ TRACE_EVENT(ufshcd_auto_bkops_state,
- 
- 	TP_STRUCT__entry(
- 		__field(struct ufs_hba *, hba)
-+		__string(dev_name, dev_name(hba->dev))
- 		__string(state, state)
- 	),
- 
- 	TP_fast_assign(
- 		__entry->hba = hba;
-+		__assign_str(dev_name);
- 		__assign_str(state);
- 	),
- 
- 	TP_printk("%s: auto bkops - %s",
--		dev_name(__entry->hba->dev), __get_str(state))
-+		__get_str(dev_name), __get_str(state))
- );
- 
- DECLARE_EVENT_CLASS(ufshcd_profiling_template,
-@@ -158,6 +164,7 @@ DECLARE_EVENT_CLASS(ufshcd_profiling_template,
- 
- 	TP_STRUCT__entry(
- 		__field(struct ufs_hba *, hba)
-+		__string(dev_name, dev_name(hba->dev))
- 		__string(profile_info, profile_info)
- 		__field(s64, time_us)
- 		__field(int, err)
-@@ -165,13 +172,14 @@ DECLARE_EVENT_CLASS(ufshcd_profiling_template,
- 
- 	TP_fast_assign(
- 		__entry->hba = hba;
-+		__assign_str(dev_name);
- 		__assign_str(profile_info);
- 		__entry->time_us = time_us;
- 		__entry->err = err;
- 	),
- 
- 	TP_printk("%s: %s: took %lld usecs, err %d",
--		dev_name(__entry->hba->dev), __get_str(profile_info),
-+		__get_str(dev_name), __get_str(profile_info),
- 		__entry->time_us, __entry->err)
- );
- 
-@@ -200,6 +208,7 @@ DECLARE_EVENT_CLASS(ufshcd_template,
- 		__field(s64, usecs)
- 		__field(int, err)
- 		__field(struct ufs_hba *, hba)
-+		__string(dev_name, dev_name(hba->dev))
- 		__field(int, dev_state)
- 		__field(int, link_state)
- 	),
-@@ -208,13 +217,14 @@ DECLARE_EVENT_CLASS(ufshcd_template,
- 		__entry->usecs = usecs;
- 		__entry->err = err;
- 		__entry->hba = hba;
-+		__assign_str(dev_name);
- 		__entry->dev_state = dev_state;
- 		__entry->link_state = link_state;
- 	),
- 
- 	TP_printk(
- 		"%s: took %lld usecs, dev_state: %s, link_state: %s, err %d",
--		dev_name(__entry->hba->dev),
-+		__get_str(dev_name),
- 		__entry->usecs,
- 		__print_symbolic(__entry->dev_state, UFS_PWR_MODES),
- 		__print_symbolic(__entry->link_state, UFS_LINK_STATES),
-@@ -279,6 +289,7 @@ TRACE_EVENT(ufshcd_command,
- 	TP_STRUCT__entry(
- 		__field(struct scsi_device *, sdev)
- 		__field(struct ufs_hba *, hba)
-+		__string(dev_name, dev_name(&sdev->sdev_dev))
- 		__field(enum ufs_trace_str_t, str_t)
- 		__field(unsigned int, tag)
- 		__field(u32, doorbell)
-@@ -291,6 +302,7 @@ TRACE_EVENT(ufshcd_command,
- 	),
- 
- 	TP_fast_assign(
-+		__assign_str(dev_name);
- 		__entry->sdev = sdev;
- 		__entry->hba = hba;
- 		__entry->str_t = str_t;
-@@ -307,7 +319,7 @@ TRACE_EVENT(ufshcd_command,
- 	TP_printk(
- 		"%s: %s: tag: %u, DB: 0x%x, size: %d, IS: %u, LBA: %llu, opcode: 0x%x (%s), group_id: 0x%x, hwq_id: %d",
- 		show_ufs_cmd_trace_str(__entry->str_t),
--		dev_name(&__entry->sdev->sdev_dev), __entry->tag,
-+		__get_str(dev_name), __entry->tag,
- 		__entry->doorbell, __entry->transfer_len, __entry->intr,
- 		__entry->lba, (u32)__entry->opcode, str_opcode(__entry->opcode),
- 		(u32)__entry->group_id, __entry->hwq_id
-@@ -322,6 +334,7 @@ TRACE_EVENT(ufshcd_uic_command,
- 
- 	TP_STRUCT__entry(
- 		__field(struct ufs_hba *, hba)
-+		__string(dev_name, dev_name(hba->dev))
- 		__field(enum ufs_trace_str_t, str_t)
- 		__field(u32, cmd)
- 		__field(u32, arg1)
-@@ -331,6 +344,7 @@ TRACE_EVENT(ufshcd_uic_command,
- 
- 	TP_fast_assign(
- 		__entry->hba = hba;
-+		__assign_str(dev_name);
- 		__entry->str_t = str_t;
- 		__entry->cmd = cmd;
- 		__entry->arg1 = arg1;
-@@ -340,7 +354,7 @@ TRACE_EVENT(ufshcd_uic_command,
- 
- 	TP_printk(
- 		"%s: %s: cmd: 0x%x, arg1: 0x%x, arg2: 0x%x, arg3: 0x%x",
--		show_ufs_cmd_trace_str(__entry->str_t), dev_name(__entry->hba->dev),
-+		show_ufs_cmd_trace_str(__entry->str_t), __get_str(dev_name),
- 		__entry->cmd, __entry->arg1, __entry->arg2, __entry->arg3
- 	)
- );
-@@ -353,6 +367,7 @@ TRACE_EVENT(ufshcd_upiu,
- 
- 	TP_STRUCT__entry(
- 		__field(struct ufs_hba *, hba)
-+		__string(dev_name, dev_name(hba->dev))
- 		__field(enum ufs_trace_str_t, str_t)
- 		__array(unsigned char, hdr, 12)
- 		__array(unsigned char, tsf, 16)
-@@ -361,6 +376,7 @@ TRACE_EVENT(ufshcd_upiu,
- 
- 	TP_fast_assign(
- 		__entry->hba = hba;
-+		__assign_str(dev_name);
- 		__entry->str_t = str_t;
- 		memcpy(__entry->hdr, hdr, sizeof(__entry->hdr));
- 		memcpy(__entry->tsf, tsf, sizeof(__entry->tsf));
-@@ -369,7 +385,7 @@ TRACE_EVENT(ufshcd_upiu,
- 
- 	TP_printk(
- 		"%s: %s: HDR:%s, %s:%s",
--		show_ufs_cmd_trace_str(__entry->str_t), dev_name(__entry->hba->dev),
-+		show_ufs_cmd_trace_str(__entry->str_t), __get_str(dev_name),
- 		__print_hex(__entry->hdr, sizeof(__entry->hdr)),
- 		show_ufs_cmd_trace_tsf(__entry->tsf_t),
- 		__print_hex(__entry->tsf, sizeof(__entry->tsf))
-@@ -384,16 +400,18 @@ TRACE_EVENT(ufshcd_exception_event,
- 
- 	TP_STRUCT__entry(
- 		__field(struct ufs_hba *, hba)
-+		__string(dev_name, dev_name(hba->dev))
- 		__field(u16, status)
- 	),
- 
- 	TP_fast_assign(
- 		__entry->hba = hba;
-+		__assign_str(dev_name);
- 		__entry->status = status;
- 	),
- 
- 	TP_printk("%s: status 0x%x",
--		dev_name(__entry->hba->dev), __entry->status
-+		__get_str(dev_name), __entry->status
- 	)
- );
- 
++		str++;
++
+ 		switch (d) {
+ 		case '?':	/* Wildcard: anything but nul */
+ 			if (c == '\0')
+@@ -125,4 +153,3 @@ bool __pure glob_match(char const *pat, char const *str)
+ 		}
+ 	}
+ }
+-EXPORT_SYMBOL(glob_match);
 -- 
 2.53.0
 
