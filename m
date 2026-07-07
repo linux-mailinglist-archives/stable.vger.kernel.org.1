@@ -1,255 +1,162 @@
-Return-Path: <stable+bounces-272524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272522-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id OwPRFKuOTWpu2AEAu9opvQ
-	(envelope-from <stable+bounces-272524-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 01:41:31 +0200
+	id fVF3MUeNTWoY2AEAu9opvQ
+	(envelope-from <stable+bounces-272522-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 01:35:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 995B1720742
-	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 01:41:30 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA38F7206E7
+	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 01:35:35 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FRXKYv9y;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272524-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-272524-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=BnhjEmXP;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272522-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272522-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3DFC8302254B
-	for <lists+stable@lfdr.de>; Tue,  7 Jul 2026 23:41:29 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6A7383008D6C
+	for <lists+stable@lfdr.de>; Tue,  7 Jul 2026 23:35:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F8DD388374;
-	Tue,  7 Jul 2026 23:41:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24A78379C3C;
+	Tue,  7 Jul 2026 23:35:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA11B349CD1;
-	Tue,  7 Jul 2026 23:41:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C0CC329C6D;
+	Tue,  7 Jul 2026 23:35:25 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783467687; cv=none; b=RCIGk+YmuPmZE1YT41wsSvqp4LCrdd8aezw/hkxdH7fTpW9kKz5uv/eY4pcjkfbetdW6RqxXr8R5EFnm5tWO5/kprJhH96DJjsymCA7SwoO/q2K/FTZM/rkoizpvhpb/g6bG/GzTRoYyfw6LvGsYpIJuCwZbszeBxLinpOHf0FA=
+	t=1783467327; cv=none; b=ug4KGN3c1dS2V5EjKHxiIKAJWiJGAUb1S9YAWRAD/3iriEiYtiIghl+a4inlYKFq85/TTC3iVAXvszYxHF2tlpwTszWajT+AIEotMMdB4ecxLT7FbFw0AeZ0haJLZfosNqiFD6jiRL3i1RzXoWhjOSMz55htACoyBwI5XHhVMH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783467687; c=relaxed/simple;
-	bh=i7ewHuxzPkA9KoYX7/PxaB7lMMRloxdH1dHoMAPbIaM=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=PhoX7+iRppDbC4pJp326vUsoRX9mEnMKyRhGbFQ75vA9yM0cfMiBVnYq3nFy0cd/ck2gXDbtVC3Sbyj2ktjU55plnsSNyQ6uN5yD3zt3ICBCYLwQGucvDpPC8LCRzK6Sm6aZ20XPheql+iHwpKFbJXfk1KUZ4ve6nyr+Ny5YCqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FRXKYv9y; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ED711F00A3A;
-	Tue,  7 Jul 2026 23:41:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783467685;
-	bh=GDdmt2xyO1Z29g9+aEQM+ouN+QmqVB/Ldi7iq44JXu8=;
-	h=Date:From:To:Cc:Subject:References;
-	b=FRXKYv9ypeo5O68Un9yvd6hK7X84fuJS2hSD5hox+67BYqAxUUC5o3kXon33PZ9Io
-	 XQM3Z83iCBZUbpD6btj4XmSUXV3xOiijEwGLc7Yr+VduLThaYISFx5I0/K+XkgaciA
-	 4bsVc+uMg47NhNvNTRdNMi8eU8jldQUgWwpCHgKsjKnZNxQBFqP6vhrW7kAE8ViBSS
-	 ISplrELDIfduOwSZ5pteKz6SDHooQcrb4VF8H4eUq1gRQz1RIAI7amVnnowlyFwlz7
-	 tFKfJR4xFfXqGMUwwZVfcDlFM2qlvam2OBEy2iq8VEEfg7MOuzZf1Boup6KHgxhnGn
-	 xJ7tWXmNGbejA==
-Received: from rostedt by gandalf with local (Exim 4.99.4)
-	(envelope-from <rostedt@kernel.org>)
-	id 1whFPt-00000000xpd-2Jo5;
-	Tue, 07 Jul 2026 19:41:29 -0400
-Message-ID: <20260707234129.394585410@kernel.org>
-User-Agent: quilt/0.69
-Date: Tue, 07 Jul 2026 19:34:22 -0400
-From: Steven Rostedt <rostedt@kernel.org>
-To: linux-kernel@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- stable@vger.kernel.org,
- XIAO WU <xiaowu.417@qq.com>,
- Beau Belgrave <beaub@linux.microsoft.com>,
- Michael Bommarito <michael.bommarito@gmail.com>
-Subject: [for-linus][PATCH 1/2] tracing/user_events: Fix use-after-free in user_event_mm_dup()
-References: <20260707233421.684046879@kernel.org>
+	s=arc-20240116; t=1783467327; c=relaxed/simple;
+	bh=bIH2CqlB8Srl7aKBQXLAj7Q1MF7wYMAjLpbQT1UEK5w=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=HnoYL1NJU53ql3q5Kbj0BakPF9cmiuVPfdaXrlklE4K2AvobgFyMcfoOEksjeGbsP3/Pe76e44i1Zsl3fKC3BxKQmdTnWA7wuC8CXMbVWfFD6CvYgbDS/8flhc9Jr1kX9E/DCunrKZorsvepQOhJfD9lpYTWvz6cPPbYyjS4Chk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=BnhjEmXP; arc=none smtp.client-ip=205.220.177.32
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 667JBawH1634982;
+	Tue, 7 Jul 2026 23:35:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=corp-2025-04-25; bh=XXcm5
+	+cu/Q9i2/PTx3ezB3Xqg+Mx56nxnywyJSiVBrk=; b=BnhjEmXPJ7+/xtjs27VL6
+	kr6IzOwl/gVvyEKOjC/4QXGVP9yCUj4B4lAiuhcGedxe16pspKs6yStRwW4H9w5d
+	FRHCZRGcYY0xYJKnaJcmh06Ps8ebUdlHP5Brw/dSONjCL+/bYe//PhSssSp+1nFN
+	nhYnoXF6wEioMTje4IowGdaL2MJPtBjM8QQAXLvohEGcXfV2C5oZWquLUYCjQRsi
+	BUuJmBvTBvCZlXDjHFzKLVhzGD8FwmM/OFarguc+MBxV6Z83oKqghnkqOZ5k/oxU
+	z5ea6RHKJN526enQA5VxqrZnw7y8nuYvtlGJAxFGHGV7dA6c4xp9J5p0xO5M/8cl
+	Q==
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4f6t7cpq57-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 07 Jul 2026 23:35:15 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 667NX8IH027441;
+	Tue, 7 Jul 2026 23:35:14 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4f8wuxvg1s-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 07 Jul 2026 23:35:14 +0000 (GMT)
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.1.12) with ESMTP id 667NZD68032808;
+	Tue, 7 Jul 2026 23:35:13 GMT
+Received: from mbpatil-ws.osdevelopmeniad.oraclevcn.com (mbpatil-ol10-ws.webad1iad.osdevelopmeniad.oraclevcn.com [100.100.228.95])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4f8wuxvg12-1;
+	Tue, 07 Jul 2026 23:35:13 +0000 (GMT)
+From: Manjunath Patil <manjunath.b.patil@oracle.com>
+To: Tariq Toukan <tariqt@nvidia.com>, Saeed Mahameed <saeedm@nvidia.com>,
+        Mark Bloch <mbloch@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
+        netdev@vger.kernel.org
+Cc: Manjunath Patil <manjunath.b.patil@oracle.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S . Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Patrisious Haddad <phaddad@nvidia.com>, linux-rdma@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net] net/mlx5e: Use sender devcom for MPV master-up
+Date: Tue,  7 Jul 2026 16:35:12 -0700
+Message-ID: <20260707233512.3650406-1-manjunath.b.patil@oracle.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260610173915.4053423-1-manjunath.b.patil@oracle.com>
+References: <20260610173915.4053423-1-manjunath.b.patil@oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-07_06,2026-07-06_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
+ adultscore=0 mlxlogscore=889 bulkscore=0 spamscore=0 phishscore=0
+ lowpriorityscore=0 mlxscore=0 suspectscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2606160000 definitions=main-2607070231
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA3MDIzMSBTYWx0ZWRfX/V8CrlYbggAR
+ fc7vXNkvCVCe7xAIL5kpUl+XlelEu3IreC7oT8eVZYvgbF3V5KrTsaHqW2nRJOoJFbGq7YFxFwU
+ N+kT9/rtgFTh9cFMyxClQo30MEB1BrkHXgVu4f/sYVD3+ImN4Q6jiEWRy3KAjN3Ll8mqa+8WbN/
+ zyxjnDKaf+awSAcAqN+aeFnRbL76WyzLApqS7PiGZbUp7iAQ/L9QA5GkGk3anzKe/H85RM3ZqqZ
+ ifpfuDqm2hxPLW2rf49PH5mreBBdheTsouq61YnaN43t7QXN+M9M4NMFDBQ2KAwmdErOXhzjV7u
+ VV5A2EIDW/HcH+WBGhg5JlSA3zEbzuBBUVUznG7AHDnzT1pSMIHgOkqGfjMoM7JRMw4z78bJC/g
+ RmoEsvGD7tIHw6RAif7Fw9Q+vIhDKIi/V6mOgnuNBB5qyZfrcy1K+zpC3k5JIhKgJTY1Wc9y57b
+ wgk0ZhtwNIw3coWp//Q==
+X-Authority-Analysis: v=2.4 cv=P+QKQCAu c=1 sm=1 tr=0 ts=6a4d8d33 b=1 cx=c_pps
+ a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
+ a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=jiCTI4zE5U7BLdzWsZGv:22
+ a=BqU2WV_vvsyTyxaotp0D:22 a=yPCof4ZbAAAA:8 a=AMRCNjAxEI7RdWKJrAQA:9
+ a=w8a1T8f1T5UA:10 a=WmVTiCyuxqgg3mnwYu6p:22
+X-Proofpoint-GUID: 2Fokue6usvQR9RJ89X6QdduGrckf_tb_
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA3MDIzMSBTYWx0ZWRfX1fSt9fOuUpvx
+ Jmb3E0yPOXgCF4raJqbrXnxharhoCO4/OqxAUc1lekxPoyVKuAoLuGPRaQV/c1TPXlyR5K934s8
+ PizCeeeaK1NC5URVwyJ5yg92cx8tEpo/jOWhIza/294tOb/w46xz
+X-Proofpoint-ORIG-GUID: 2Fokue6usvQR9RJ89X6QdduGrckf_tb_
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-6.16 / 15.00];
+	WHITELIST_DMARC(-7.00)[oracle.com:D:+];
 	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[oracle.com,reject];
+	R_DKIM_ALLOW(-0.20)[oracle.com:s=corp-2025-04-25];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[kernel.org,arm.com,efficios.com,linux-foundation.org,vger.kernel.org,qq.com,linux.microsoft.com,gmail.com];
-	TAGGED_FROM(0.00)[bounces-272524-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:linux-kernel@vger.kernel.org,m:mhiramat@kernel.org,m:mark.rutland@arm.com,m:mathieu.desnoyers@efficios.com,m:akpm@linux-foundation.org,m:stable@vger.kernel.org,m:xiaowu.417@qq.com,m:beaub@linux.microsoft.com,m:michael.bommarito@gmail.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[rostedt@kernel.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-272522-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[15];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rostedt@kernel.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[manjunath.b.patil@oracle.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:tariqt@nvidia.com,m:saeedm@nvidia.com,m:mbloch@nvidia.com,m:leon@kernel.org,m:netdev@vger.kernel.org,m:manjunath.b.patil@oracle.com,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:phaddad@nvidia.com,m:linux-rdma@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:andrew@lunn.ch,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[manjunath.b.patil@oracle.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[oracle.com:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,oracle.com:from_mime,oracle.com:email,oracle.com:mid,oracle.com:dkim];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,goodmis.org:email]
+	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	RCVD_COUNT_SEVEN(0.00)[9]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 995B1720742
+X-Rspamd-Queue-Id: AA38F7206E7
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+I sent v2 with the defensive master_priv/master_priv->devcom check
+dropped as suggested:
 
-user_event_mm_dup() walks the parent mm's enabler list locklessly under
-rcu_read_lock() during fork() (from copy_process()); it does not take
-event_mutex:
+  Message-ID: <20260707233337.3650025-1-manjunath.b.patil@oracle.com>
 
-	rcu_read_lock();
-	list_for_each_entry_rcu(enabler, &old_mm->enablers, mm_enablers_link)
-		enabler->event = user_event_get(orig->event);
+Please proceed with v2.
 
-user_event_enabler_destroy() removes an enabler from that list with
-list_del_rcu() and then, without waiting for a grace period, drops the
-enabler's user_event reference with user_event_put() and frees the enabler
-with kfree(). A reader that loaded the enabler before the list_del_rcu()
-can still be walking it, which leads to two use-after-frees:
-
- - kfree(enabler) frees the enabler while that reader dereferences
-   enabler->event.
-
- - user_event_put() may drop the last reference to the user_event, which
-   is then freed (via delayed_destroy_user_event() on a work queue), while
-   the same reader does user_event_get(orig->event) on it.
-
-Both are reachable by an unprivileged task that can open user_events_data:
-one multithreaded process that registers an enabler and then concurrently
-unregisters it and calls fork() triggers the race. KASAN reports a
-slab-use-after-free in user_event_mm_dup() during clone(), with a
-"refcount_t: addition on 0" warning when the user_event is freed.
-
-The enabler use-after-free was found first; the user_event one was reported
-by XIAO WU, and the earlier enabler-only fix did not address it.
-
-Defer both the user_event_put() and the kfree(enabler) to a work item
-queued with queue_rcu_work(), so they run only after an RCU grace period,
-once all readers walking the enabler list have finished. The put must run
-in process context because user_event_put() takes event_mutex on the last
-reference, so a work queue is used rather than call_rcu(). The now-unlocked
-put lets the locked argument of user_event_enabler_destroy() be removed;
-all callers are updated.
-
-Fixes: 7235759084a4 ("tracing/user_events: Use remote writes for event enablement")
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260707165912.2560537-2-michael.bommarito@gmail.com
-Reported-by: XIAO WU <xiaowu.417@qq.com>
-Closes: https://lore.kernel.org/all/tencent_89647CE40DC452B891C65C94D1B271DE8E07@qq.com/
-Suggested-by: Beau Belgrave <beaub@linux.microsoft.com>
-Assisted-by: Claude:claude-opus-4-8
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
----
- kernel/trace/trace_events_user.c | 39 ++++++++++++++++++++++++++------
- 1 file changed, 32 insertions(+), 7 deletions(-)
-
-diff --git a/kernel/trace/trace_events_user.c b/kernel/trace/trace_events_user.c
-index c4ba484f7b38..8c82ecb735f4 100644
---- a/kernel/trace/trace_events_user.c
-+++ b/kernel/trace/trace_events_user.c
-@@ -109,6 +109,9 @@ struct user_event_enabler {
- 
- 	/* Track enable bit, flags, etc. Aligned for bitops. */
- 	unsigned long		values;
-+
-+	/* Defer the event put and enabler free past an RCU grace period. */
-+	struct rcu_work		put_rwork;
- };
- 
- /* Bits 0-5 are for the bit to update upon enable/disable (0-63 allowed) */
-@@ -396,17 +399,39 @@ static struct user_event_group *user_event_group_create(void)
- 	return NULL;
- };
- 
--static void user_event_enabler_destroy(struct user_event_enabler *enabler,
--				       bool locked)
-+static void delayed_user_event_enabler_put(struct work_struct *work)
- {
--	list_del_rcu(&enabler->mm_enablers_link);
-+	struct user_event_enabler *enabler = container_of(to_rcu_work(work),
-+			struct user_event_enabler, put_rwork);
- 
- 	/* No longer tracking the event via the enabler */
--	user_event_put(enabler->event, locked);
-+	user_event_put(enabler->event, false);
- 
-+	/* Run from queue_rcu_work(), the RCU grace period has elapsed */
- 	kfree(enabler);
- }
- 
-+static void user_event_enabler_destroy(struct user_event_enabler *enabler)
-+{
-+	list_del_rcu(&enabler->mm_enablers_link);
-+
-+	/*
-+	 * The enabler is removed from an RCU-traversed list
-+	 * (user_event_mm_dup() walks mm->enablers under rcu_read_lock() only),
-+	 * and readers there dereference enabler->event and take a new ref on
-+	 * it. Both the put of that event reference and the free of the enabler
-+	 * therefore have to wait for a grace period so no reader can be looking
-+	 * at the enabler or racing the last put of its event.
-+	 *
-+	 * The put itself must not run in RCU context: when it drops the last
-+	 * reference user_event_put() takes event_mutex, which cannot be taken
-+	 * from a softirq/RCU callback. Defer both to a work item scheduled
-+	 * after a grace period via queue_rcu_work().
-+	 */
-+	INIT_RCU_WORK(&enabler->put_rwork, delayed_user_event_enabler_put);
-+	queue_rcu_work(system_percpu_wq, &enabler->put_rwork);
-+}
-+
- static int user_event_mm_fault_in(struct user_event_mm *mm, unsigned long uaddr,
- 				  int attempt)
- {
-@@ -464,7 +489,7 @@ static void user_event_enabler_fault_fixup(struct work_struct *work)
- 
- 	/* User asked for enabler to be removed during fault */
- 	if (test_bit(ENABLE_VAL_FREEING_BIT, ENABLE_BITOPS(enabler))) {
--		user_event_enabler_destroy(enabler, true);
-+		user_event_enabler_destroy(enabler);
- 		goto out;
- 	}
- 
-@@ -764,7 +789,7 @@ static void user_event_mm_destroy(struct user_event_mm *mm)
- 	struct user_event_enabler *enabler, *next;
- 
- 	list_for_each_entry_safe(enabler, next, &mm->enablers, mm_enablers_link)
--		user_event_enabler_destroy(enabler, false);
-+		user_event_enabler_destroy(enabler);
- 
- 	mmdrop(mm->mm);
- 	kfree(mm);
-@@ -2645,7 +2670,7 @@ static long user_events_ioctl_unreg(unsigned long uarg)
- 			flags |= enabler->values & ENABLE_VAL_COMPAT_MASK;
- 
- 			if (!test_bit(ENABLE_VAL_FAULTING_BIT, ENABLE_BITOPS(enabler)))
--				user_event_enabler_destroy(enabler, true);
-+				user_event_enabler_destroy(enabler);
- 
- 			/* Removed at least one */
- 			ret = 0;
--- 
-2.53.0
-
-
+Thanks,
+Manjunath
 
