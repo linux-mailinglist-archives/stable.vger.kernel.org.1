@@ -1,177 +1,141 @@
-Return-Path: <stable+bounces-272440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272441-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id N9Y9ElcSTWprugEAu9opvQ
-	(envelope-from <stable+bounces-272440-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 16:51:03 +0200
+	id 97nrA+IPTWqpuQEAu9opvQ
+	(envelope-from <stable+bounces-272441-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 16:40:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD9C371CD99
-	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 16:51:02 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 947AB71CBDD
+	for <lists+stable@lfdr.de>; Tue, 07 Jul 2026 16:40:33 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=0sJYxCis;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=0YMMt6+q;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=pFiHrJS3;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=rjWJtHFj;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272440-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272440-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=goodmis.org (policy=none);
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272441-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-272441-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id ADBF930EEBE8
-	for <lists+stable@lfdr.de>; Tue,  7 Jul 2026 14:35:04 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5892C302734E
+	for <lists+stable@lfdr.de>; Tue,  7 Jul 2026 14:38:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D64D42A15E;
-	Tue,  7 Jul 2026 14:35:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 123AF42F6E8;
+	Tue,  7 Jul 2026 14:37:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DB9F4252A2
-	for <stable@vger.kernel.org>; Tue,  7 Jul 2026 14:35:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 595E642F6E5;
+	Tue,  7 Jul 2026 14:37:24 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783434904; cv=none; b=qHJN+jgbIKg8Z9pnM8ShpPkx1ESgqSYrhR/MwdQtO+XfiTrEGsgJs/oTqAVGDI5JIc10+MsIPTn+AkHQmkEUVfuGtJECD7Z5EqCUjxzsOGFnXjRGZ8bZ0MP3+xV2ibJk6668GIFLx/pMb6BToG3Gtpat8WIhH5ng4gUHXoSm/Wc=
+	t=1783435045; cv=none; b=alJQwwX7/qoHhHHVHyx1LqhMKX+EAkPZ84mc4maLEABEaDaI2WM0jItk5ALjGt8TcsGV39JXAxSifZ/1i/K2B5NE7TTcvwQektLuHFQgEjPY3GKBP7Y6Nm5lOupzER2hm89sZo8R7zg1+UtjUyVD5YNWq3GngK5FOTTiovrcymE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783434904; c=relaxed/simple;
-	bh=nyF2vOsXxB4vbdjfJf9HiOfpFFrAc5XBX8bxWrx+bGc=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jhCQHJyR6HaTLGObdB9d3bmSaFyNnTkThdW1vEsBrIHSmxuELv1FSezhlQZcwvVXkKF/fthYZQeMAwpNvz4j2WVYeGuFa22G/prnUi/P1TU4sCHfmyeiQMfV1er2sCRo93l8fCcnAwreDRoJnjuToIJIKMjFPCRCSbziJWtjMSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=0sJYxCis; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=0YMMt6+q; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=pFiHrJS3; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=rjWJtHFj; arc=none smtp.client-ip=195.135.223.131
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id E880B75A1D;
-	Tue,  7 Jul 2026 14:35:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1783434901; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NSW0XXzcO8qWdFbKcYxKPrsCCSuZezRHN2R8pHXp+Hc=;
-	b=0sJYxCisd+QGzcmbynYzVIH9QDSypDTlczoLv8e6HfkvUhPjhwxcE0giV6WHAgD/01PWcE
-	mG1aot+mOL0ltPu3i79cA0SeG5QJZH9YEe86gAyojQtAcqdWm3OTLcIEAP2GnpTKN9l4Kj
-	1v8aexAM8mqhgpBd5XWV1dcst9TNTFA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1783434901;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NSW0XXzcO8qWdFbKcYxKPrsCCSuZezRHN2R8pHXp+Hc=;
-	b=0YMMt6+q0roI62YaJkFhIKcd/5sR1lB4f63W4LkxB1l4C4GWAr4avfeGhBdUDrzEMkPHTP
-	QBy+CvWj/ZIoPdBw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1783434900; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NSW0XXzcO8qWdFbKcYxKPrsCCSuZezRHN2R8pHXp+Hc=;
-	b=pFiHrJS3/x1MiogWNjVG/0lpNaodhqfYBQ8yTddlr7y46Wy6oLAyjxBD9eZl6O407byz60
-	P4uLRUrYmXy6/VDrL17/3ue2Xap2UJvnrq1xyeeyC9ecgd0eryMecO7HynErViW0xSP44s
-	BzYV99g+Cb1TsXSAUsCfv9aivphujt4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1783434900;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NSW0XXzcO8qWdFbKcYxKPrsCCSuZezRHN2R8pHXp+Hc=;
-	b=rjWJtHFjiNbTlUVGQRVIlnI+Vm3O6GfV/iBXzoEl8CCu2gv8rSpE8ET8sN5JnCs8XrsIXZ
-	A8RXHcxxuWIVqiDw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C4426779AE;
-	Tue,  7 Jul 2026 14:35:00 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id okBDL5QOTWpVcAAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Tue, 07 Jul 2026 14:35:00 +0000
-Date: Tue, 07 Jul 2026 16:35:00 +0200
-Message-ID: <87y0fm6f6z.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: Evgenii Burenchev <evg28bur@yandex.ru>
-Cc: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	perex@perex.cz,
-	tiwai@suse.com,
-	u.kleine-koenig@baylibre.com,
-	kees@kernel.org,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org
-Subject: Re: [PATCH] ALSA: via82xx: Remove unreachable branch in  snd_via686_pcm_pointer()
-In-Reply-To: <20260706131638.15311-1-evg28bur@yandex.ru>
-References: <20260706131638.15311-1-evg28bur@yandex.ru>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/30.2 Mule/6.0
+	s=arc-20240116; t=1783435045; c=relaxed/simple;
+	bh=o2TARrpWo8vqtW0kZHBxOFO7tI8soNubxkLSKCCZBtM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=YAXTa48aVPXBQrUZvK7zCqQI63hmwaI1VnGCLKfOMNXq2ZWmQK/o4Bc5PDnYpwSw4P8IJzKPdUPDAv5vzkDopjTnTWX2dfWVfHZ+g1xoBdCTkCXNQFiCunrNImv+/J0iLpRUMqFQR/RfKAvK85iIVLwq3yVVuO1kn/Wr8/nQN1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.11
+Received: from omf14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0C2C7168D60;
+	Tue,  7 Jul 2026 14:37:23 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf14.hostedemail.com (Postfix) with ESMTPA id 05D9B33;
+	Tue,  7 Jul 2026 14:37:20 +0000 (UTC)
+Date: Tue, 7 Jul 2026 10:37:24 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: linux-kernel@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>, Mark Rutland
+ <mark.rutland@arm.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Andrew Morton <akpm@linux-foundation.org>, stable@vger.kernel.org,
+ syzbot+2dd9d02f60775ce5c1fb@syzkaller.appspotmail.com, Yash Suthar
+ <yashsuthar983@gmail.com>
+Subject: Re: [for-linus][PATCH 05/13] ring_buffer: Check page order under
+ reader_lock
+Message-ID: <20260707103724.1b64b679@gandalf.local.home>
+In-Reply-To: <20260707134623.914907495@kernel.org>
+References: <20260707134604.275787924@kernel.org>
+	<20260707134623.914907495@kernel.org>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
-X-Spam-Flag: NO
-X-Spam-Score: -3.30
-X-Spam-Level: 
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 44xeehycxgyqtuke5qzwj51h6ui8piqc
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX1+LcWp+mRPr0dr5XDyLfS04dNpWUgYjyEI=
+X-HE-Tag: 1783435040-88840
+X-HE-Meta: U2FsdGVkX1/qBOPkA7JVOI8pJ59cf3HDqViBTYEv1kyfjD+PlLHa6tYnX7ffw8iYbQ2KaUNqIIZAYzHwrrnQO+ROYxskxc0Sb9BDn0BZh7zMFi3p7HNUN6LxE74gb4PIGTReLwqYJdUrSIZf3YoVBYb60PZYHQ4zvrakkuZzg/p9LIhvv5vVH01PoLKTpBUEajX3XK+xxvpDA+zIW5oU40hPWmAKneoM7M0z2108JbOQJI7rUXBn1ZvW9FSAlN4Grrd0EgtQOm5+PlnmotkYbSmv62f5bZvrl75ArqZmInnlTc0kf85ArNrwtXv3iBItl5WCm8xxg8meKwAGf637GYynNHCa38JliVGaDeR/iwAIYUqYUEqOSCHJEIWy1TGtffrYbpIfSOg0I4pRFFTFIDfmYppRR7zz/AFYlc6/AtyZOCQ4CWJ+WqCFgwjy2XADv3QFzNrnnF+Rc1cC/UoNzD784K9IqfwhegJ6PYwN3Nm1js5tij7T5O5pZEa7RhmyEYsZEUbYIPPpkcZGmtHnDt04UxdYKSwnLLFO33va2u4B3pL50WXsv3gQh3dbOqioFM6yfy0nsFe7kk1gbfgN8BeLPbvIGzsyidfV8PY5Isx7WgyI5NICdkYnpM2VXB6g
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.14 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[goodmis.org : SPF not aligned (relaxed), No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-272440-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[yandex.ru];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:evg28bur@yandex.ru,m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:perex@perex.cz,m:tiwai@suse.com,m:u.kleine-koenig@baylibre.com,m:kees@kernel.org,m:linux-sound@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:lvc-project@linuxtesting.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[tiwai@suse.de,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[kernel.org,arm.com,efficios.com,linux-foundation.org,vger.kernel.org,syzkaller.appspotmail.com,gmail.com];
+	FORGED_SENDER(0.00)[rostedt@goodmis.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-272441-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS(0.00)[m:linux-kernel@vger.kernel.org,m:mhiramat@kernel.org,m:mark.rutland@arm.com,m:mathieu.desnoyers@efficios.com,m:akpm@linux-foundation.org,m:stable@vger.kernel.org,m:syzbot+2dd9d02f60775ce5c1fb@syzkaller.appspotmail.com,m:yashsuthar983@gmail.com,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tiwai@suse.de,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rostedt@goodmis.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	R_DKIM_NA(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxtesting.org:url,vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.de:from_mime,suse.de:dkim,suse.de:mid]
+	TAGGED_RCPT(0.00)[stable,2dd9d02f60775ce5c1fb];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,goodmis.org:from_mime,goodmis.org:email,gandalf.local.home:mid,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: AD9C371CD99
+X-Rspamd-Queue-Id: 947AB71CBDD
 
-On Mon, 06 Jul 2026 15:16:34 +0200,
-Evgenii Burenchev wrote:
-> 
-> The condition
-> 
-> 	if (count && size < count)
-> 
-> can never evaluate to true.
-> 
-> The VIA DMA count register is masked with 0x00ffffff before use, while
-> the DMA buffer size is limited to 0x00fffffe bytes. As a result, 'count'
-> can never exceed 'size', making the condition permanently false.
-> 
-> This branch has therefore been unreachable since the driver was
-> introduced. Remove the unreachable branch without changing runtime
-> behavior.
-> 
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
-> 
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Signed-off-by: Evgenii Burenchev <evg28bur@yandex.ru>
+On Tue, 07 Jul 2026 09:46:09 -0400
+Steven Rostedt <rostedt@kernel.org> wrote:
 
-Applied now.  Thanks.
+> From: Yash Suthar <yashsuthar983@gmail.com>
+> 
+> When the ring_buffer_subbuf_order_set() is called the same time as the
+> ring_buffer_read_page(), the wrong buffer->subbuf_size can be used as
+> there is nothing keeping that in sync. This can cause an incorrect
+> allocation and initialization that can cause a crash.
+> 
+> Move the saving of the subbuf_size into a variable within the
+> cpu_buffer->reader_lock, and use that throughout the function.
+> The size only needs to be consistent throughout the allocation and
+> initialization. If the buffer->subbuf_size changes when used, the reader
+> data page will be found to be invalid and the read function will return an
+> error (this is as expected).
+> 
+> syzbot did not provide a reproducer for this crash, the race
+> condition is logically sound and found via code inspection of the
+> trace.
+> 
+> Cc: stable@vger.kernel.org
+> Link: https://patch.msgid.link/20260611151736.255767-1-yashsuthar983@gmail.com
+> Fixes: bce761d75745 ("ring-buffer: Read and write to ring buffers with custom sub buffer size")
+> Reported-by: syzbot+2dd9d02f60775ce5c1fb@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=2dd9d02f60775ce5c1fb
+> Signed-off-by: Yash Suthar <yashsuthar983@gmail.com>
+> [ Rebased to 7.2-rc2 ]
+> Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 
+I'm actually dropping this. It's not enough, and there is work to fix it
+properly:
 
-Takashi
+  https://lore.kernel.org/all/20260628004653.28065-1-alhouseenyousef@gmail.com/
+
+-- Steve
 
