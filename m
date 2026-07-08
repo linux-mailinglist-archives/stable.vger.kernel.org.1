@@ -1,203 +1,153 @@
-Return-Path: <stable+bounces-272619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272614-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id uU0RDKIhTmouDwIAu9opvQ
-	(envelope-from <stable+bounces-272619-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 12:08:34 +0200
+	id AF9SAQIhTmoTDwIAu9opvQ
+	(envelope-from <stable+bounces-272614-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 12:05:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7E327240D8
-	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 12:08:33 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E038724079
+	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 12:05:53 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=bootlin.com header.s=dkim header.b=QhcocFqC;
-	dmarc=pass (policy=reject) header.from=bootlin.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272619-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272619-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=davidgow.net (policy=none);
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272614-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-272614-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 38B143066A3C
-	for <lists+stable@lfdr.de>; Wed,  8 Jul 2026 10:06:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 41DA6301F4B5
+	for <lists+stable@lfdr.de>; Wed,  8 Jul 2026 10:03:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0FCD3FB075;
-	Wed,  8 Jul 2026 10:05:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCB6A388E43;
+	Wed,  8 Jul 2026 10:03:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from sphereful.davidgow.net (sphereful.davidgow.net [203.29.242.92])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3269F39021C;
-	Wed,  8 Jul 2026 10:05:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1896837F739;
+	Wed,  8 Jul 2026 10:03:46 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783505111; cv=none; b=mpb0AoPwLQv458wuf8YonX84qCpP7cNgI9P8JKxFc2gAHg3uRWtnbl6C7zPVnqpytF0Iwz/XjKzcDOnCLGjKTfIcaX4UZarcy0KuRqM7Je6iRkIFdVq+ZR8ngUny3eh9XsQpRG/dGZ8AfwSZyJ1qvTYZGRte0Qgmogmj4XHZvzM=
+	t=1783505028; cv=none; b=aGxr6PwVNji3XD7yY+cDWrpSkmzrFQZYy8UsrjuRUWY7uipNYJD0De6gDCXNs96Aqc5eJCh/zlHWFNx3okY2Njv8z9mftYbywbNjMDtXmv+UjsS7/vcLqqyRosknO+1oTjePLjVBC7sDgBsIMHuHx9mtxiMaC4z4CgtrxJIuGgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783505111; c=relaxed/simple;
-	bh=ZO3CPaachQ9of39ED6ljme0Gb2h+6QSksq8qavKxWy4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iOfZ5XUZHmc/W/5imp08mKiIapQfbYpria8tPNFJCEmgBo2H58V3KSrs8dPyYDQ8sN+5w9s7gp49YsaMogJB+ZV9hB9J7dQd3qtkagOJTiSF2Al/QHDEV4FKIVzyp7pes6kL1onY36n56HOysXzZlc7ztL9Bl8Edxosi99ETUZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=QhcocFqC; arc=none smtp.client-ip=185.246.84.56
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id F10A91A0ED6;
-	Wed,  8 Jul 2026 10:05:08 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id C2AE060337;
-	Wed,  8 Jul 2026 10:05:08 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6FB2A11BC31A3;
-	Wed,  8 Jul 2026 12:05:03 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1783505106; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=HajgvDDuiFnLBfzyeG/8/2SdD3nFHBqBhyDSk8qlAuc=;
-	b=QhcocFqCwf9aMgYOOdLLHbS2EESzmWJYXMtFZGeca7Zw2orGBoBmJg46Hb5XTXiLxbVpJN
-	nVjcHnLSDOZRHZQNUIFYXXCu0O0jdL/86ds7jqHoZHm2iO4c+xkw07Bw0vADdCXU3DhaI7
-	osafN+Qkfp4ZikOAGJAuJcGmuVh/5qFbnF7HojPc/KYaFlgmRoJs0h9biO47dMK7QfUyXx
-	WA5pl3GcqRJ+9dbc7PAY/hyuidfDf+OLIcB/BvREQcXmjiPHZdzMhzfBkANi9UvdwvXEYq
-	tqeyez8fTmM7kHBkWHqoYu1OzqVHd+6tCP8QlXraPib7OOGT+y9ouG4ob5bHkA==
-From: Herve Codina <herve.codina@bootlin.com>
-To: Richard Cheng <icheng@nvidia.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	David Rhodes <david.rhodes@cirrus.com>,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Dan Williams <djbw@kernel.org>,
-	Ira Weiny <iweiny@kernel.org>,
-	Li Ming <ming.li@zohomail.com>,
-	Lizhi Hou <lizhi.hou@amd.com>,
-	Herve Codina <herve.codina@bootlin.com>
-Cc: driver-core@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	patches@opensource.cirrus.com,
-	linux-gpio@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-cxl@vger.kernel.org,
-	Allan Nielsen <allan.nielsen@microchip.com>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Daniel Machon <daniel.machon@microchip.com>,
-	Steen Hegelund <steen.hegelund@microchip.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v9 9/9] PCI: of: Remove fwnode_dev_initialized() call for a PCI root bridge node
-Date: Wed,  8 Jul 2026 12:02:59 +0200
-Message-ID: <20260708100302.517792-10-herve.codina@bootlin.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260708100302.517792-1-herve.codina@bootlin.com>
-References: <20260708100302.517792-1-herve.codina@bootlin.com>
+	s=arc-20240116; t=1783505028; c=relaxed/simple;
+	bh=99VawtomK1HW3/fySWTZPlKvsLK3E35s/W95572iyQY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OOBSrFVXLGdw08FXlRQ1devwXquu0tbcOGFpnThYtXaZUrOguEUC4xb+4df/eNOLKtU1eHRDoMys0PstyxtLLefm16mRE5QqwyaI8UCYPbidbbdnLbZfnRUiXG6PV8C9tuhVZlLDJRGVEHqeB0g6l7/sCd/AsaDVVY6o3S6UdG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=davidgow.net; spf=pass smtp.mailfrom=davidgow.net; arc=none smtp.client-ip=203.29.242.92
+Received: by sphereful.davidgow.net (Postfix, from userid 119)
+	id 816D51EA685; Wed,  8 Jul 2026 18:03:38 +0800 (AWST)
+X-Spam-Level: 
+Received: from [IPV6:2001:8003:8810:ea00::9c4] (unknown [IPv6:2001:8003:8810:ea00::9c4])
+	by sphereful.davidgow.net (Postfix) with ESMTPSA id 193981EA67A;
+	Wed,  8 Jul 2026 18:03:36 +0800 (AWST)
+Message-ID: <ece47e97-0287-4e83-b9fc-294407393f82@davidgow.net>
+Date: Wed, 8 Jul 2026 18:03:31 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] bug: fix warning suppressions with kunit built as
+ module
+To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+ Shuah Khan <skhan@linuxfoundation.org>, Guenter Roeck <linux@roeck-us.net>,
+ Albert Esteve <aesteve@redhat.com>, Kees Cook <kees@kernel.org>,
+ Alessandro Carminati <acarmina@redhat.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Brendan Higgins <brendan.higgins@linux.dev>, Rae Moar <raemoar63@gmail.com>
+Cc: linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ brgl@kernel.org, stable@vger.kernel.org
+References: <20260708095459.12111-1-bartosz.golaszewski@oss.qualcomm.com>
+From: David Gow <david@davidgow.net>
+Content-Language: fr
+In-Reply-To: <20260708095459.12111-1-bartosz.golaszewski@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.36 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[davidgow.net : SPF not aligned (relaxed), No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[42];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-272619-lists,stable=lfdr.de];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:icheng@nvidia.com,m:andrew@lunn.ch,m:robh@kernel.org,m:saravanak@kernel.org,m:gregkh@linuxfoundation.org,m:rafael@kernel.org,m:dakr@kernel.org,m:bhelgaas@google.com,m:david.rhodes@cirrus.com,m:rf@opensource.cirrus.com,m:ckeepax@opensource.cirrus.com,m:linusw@kernel.org,m:lenb@kernel.org,m:andriy.shevchenko@linux.intel.com,m:djrscally@gmail.com,m:heikki.krogerus@linux.intel.com,m:sakari.ailus@linux.intel.com,m:dave@stgolabs.net,m:jic23@kernel.org,m:dave.jiang@intel.com,m:alison.schofield@intel.com,m:vishal.l.verma@intel.com,m:djbw@kernel.org,m:iweiny@kernel.org,m:ming.li@zohomail.com,m:lizhi.hou@amd.com,m:herve.codina@bootlin.com,m:driver-core@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:linux-pci@vger.kernel.org,m:linux-sound@vger.kernel.org,m:patches@opensource.cirrus.com,m:linux-gpio@vger.kernel.org,m:linux-acpi@vger.kernel.org,m:linux-cxl@vger.kernel.org,m:allan.nielsen@microchip.com,m:horatiu.vultur@microchip.com,m:daniel.machon@microchip.com,m:stee
- n.hegelund@microchip.com,m:luca.ceresoli@bootlin.com,m:thomas.petazzoni@bootlin.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[herve.codina@bootlin.com,stable@vger.kernel.org];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_TO(0.00)[nvidia.com,lunn.ch,kernel.org,linuxfoundation.org,google.com,cirrus.com,opensource.cirrus.com,linux.intel.com,gmail.com,stgolabs.net,intel.com,zohomail.com,amd.com,bootlin.com];
+	TAGGED_FROM(0.00)[bounces-272614-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:bartosz.golaszewski@oss.qualcomm.com,m:skhan@linuxfoundation.org,m:linux@roeck-us.net,m:aesteve@redhat.com,m:kees@kernel.org,m:acarmina@redhat.com,m:akpm@linux-foundation.org,m:brendan.higgins@linux.dev,m:raemoar63@gmail.com,m:linux-kernel@vger.kernel.org,m:linux-kselftest@vger.kernel.org,m:brgl@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FREEMAIL_TO(0.00)[oss.qualcomm.com,linuxfoundation.org,roeck-us.net,redhat.com,kernel.org,linux-foundation.org,linux.dev,gmail.com];
+	FORGED_SENDER(0.00)[david@davidgow.net,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[herve.codina@bootlin.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[bootlin.com:+];
-	RCVD_COUNT_FIVE(0.00)[6];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[david@davidgow.net,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	R_DKIM_NA(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,bootlin.com:from_mime,bootlin.com:email,bootlin.com:mid,bootlin.com:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,davidgow.net:from_mime,davidgow.net:email,davidgow.net:mid,qualcomm.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C7E327240D8
+X-Rspamd-Queue-Id: 9E038724079
 
-During the instantiation of devices described by a device-tree overlay
-applied on a PCI device, devlink displays the following kind of debug
-messages instead of creating the expected links:
-   'Not linking xxxx - might never become dev'
+Le 08/07/2026 à 5:54 PM, Bartosz Golaszewski a écrit :
+> CONFIG_KUNIT is a tristate symbol but the warning suppression code in
+> lib/bug.c is only built if it's built-in due to it using a plain #ifdef,
+> rendering warning suppressions broken for kunit build as loadable module.
+> 
+> kunit_is_suppressed_warning() already has a stub for when kunit is
+> disabled so drop that guard entirely.
+> 
+> Suggested-by: Albert Esteve <aesteve@redhat.com>
+> Cc: stable@vger.kernel.org
+> Fixes: 85347718ab0d ("bug/kunit: Core support for suppressing warning backtraces")
+> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+> ---
+> Changes in v2:
+> - drop the guard entirely instead of switching to IS_ENABLED()
+> 
 
-Without those expected links, the device removal order cannot be
-correct.
+Thanks very much. Works well here.
 
-Those debug traces are printed by fw_devlink_create_devlink(). In our
-use case, they are all printed because the supplier of the link has at
-least one of its ancestor with its fwnode flag FWNODE_FLAG_INITIALIZED
-set.
+Reviewed-by: David Gow <david@davidgow.net>
 
-The culprit ancestor is the PCI root bridge.
+Happy to take this via kselftest/kunit, but if you'd prefer it go in via
+mm-nonmm, that's fine too.
 
-The fwnode related to the PCI root bridge is created dynamically by the
-of_pci_make_host_bridge_node() function. During this creation
-fwnode_dev_initialized() is called which set the FWNODE_FLAG_INITIALIZED
-flag.
+Cheers,
+-- David
 
-Calling fwnode_dev_initialized() tells devlink that the device related
-to this node is handled out of the driver core. This is not correct in
-our case. Indeed the device related to this firmware node is handled
-using driver core mechanisms and is fully compliant devlink
-expectations.
-
-Simply remove the fwnode_dev_initialized() call. With that done, the
-devlink debug messages are no more displayed and links that were missing
-are correctly created.
-
-Fixes: 1f340724419e ("PCI: of: Create device tree PCI host bridge node")
-Cc: stable@vger.kernel.org
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
----
- drivers/pci/of.c | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/drivers/pci/of.c b/drivers/pci/of.c
-index ca83006b7c7e..cb2470ca592f 100644
---- a/drivers/pci/of.c
-+++ b/drivers/pci/of.c
-@@ -813,7 +813,6 @@ void of_pci_make_host_bridge_node(struct pci_host_bridge *bridge)
- 	 */
- 	of_node_set_flag(np, OF_POPULATED);
- 	fw_devlink_set_device(&np->fwnode, &bridge->dev);
--	fwnode_dev_initialized(&np->fwnode, true);
- 
- 	ret = of_changeset_apply(cset);
- 	if (ret)
--- 
-2.54.0
+>  lib/bug.c | 2 --
+>  1 file changed, 2 deletions(-)
+> 
+> diff --git a/lib/bug.c b/lib/bug.c
+> index 292420f45811..7c1c2c27f58e 100644
+> --- a/lib/bug.c
+> +++ b/lib/bug.c
+> @@ -219,14 +219,12 @@ static enum bug_trap_type __report_bug(struct bug_entry *bug, unsigned long buga
+>  	no_cut   = bug->flags & BUGFLAG_NO_CUT_HERE;
+>  	has_args = bug->flags & BUGFLAG_ARGS;
+>  
+> -#ifdef CONFIG_KUNIT
+>  	/*
+>  	 * Before the once logic so suppressed warnings do not consume
+>  	 * the single-fire budget of WARN_ON_ONCE().
+>  	 */
+>  	if (warning && kunit_is_suppressed_warning(true))
+>  		return BUG_TRAP_TYPE_WARN;
+> -#endif
+>  
+>  	disable_trace_on_warning();
+>  
 
 
