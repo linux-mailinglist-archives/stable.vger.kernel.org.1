@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-272744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272745-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id lqFfOGvLTmoEUQIAu9opvQ
-	(envelope-from <stable+bounces-272744-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 00:12:59 +0200
+	id 7DQCHnXLTmoNUQIAu9opvQ
+	(envelope-from <stable+bounces-272745-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 00:13:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 567E772ACFB
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 00:12:59 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD16E72AD0B
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 00:13:08 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QRFMA1DN;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GSVIvt7L;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272744-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-272744-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272745-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272745-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E38D73017F8A
+	by sea.lore.kernel.org (Postfix) with ESMTP id E5CB8304D244
 	for <lists+stable@lfdr.de>; Wed,  8 Jul 2026 22:12:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F2013F4DFE;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61E333F5BE5;
 	Wed,  8 Jul 2026 22:12:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B98038AC79;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BDE138B122;
 	Wed,  8 Jul 2026 22:12:54 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783548774; cv=none; b=YJg0DLin3rynuR0nbSJUHR2KyDFyuUfshmES8nFGmgbX2Whdo2uETtFLC+g4UeMffz6F+l31zJVrho0Y8ZCRIGja1vPYjSuP6bEqK7wBv8xkgw1tAOi5LOu2xyV8PaEPTkF1LW8cdk3WOR70e/Jx8cmIG+0QTpGx6CvYDCJrs9U=
+	t=1783548774; cv=none; b=OS1cPqmBvxE3GNuYOsrXxSIHrTmbmJ7Ltu1Wrf97bzb2JypEqnWNoF8DGjiJllSt1J/6sOI/B5X+rLl9hh7gO+RT3uMMhifDhuz+V6GV6KGq8gIhPpGtTv5kxzOwD/yl0/oWWWZcItYkaKhZumna8+X4JEDEOWIN+BpQ0Ba8Uak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1783548774; c=relaxed/simple;
-	bh=nj+rgJC/HXTPwcNbSn5Q7M0LTgytd4Dk2hug7ZsqSBA=;
+	bh=ocs3W/FAuSHd6XHuqJdgjkplQY7OsSH3DoKXZ4km4mg=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=vBrZcTtH/X2VAhcfMj/zqWIjB+AzqDdQEstGtme6ynxHiZbwxjGAe/xn5IZzxTQO220nTU7+Kjj41/1L9kV7h/C+wCwNSLuydcPDM9P3LxWvUQlt5HiSQ4vFF/4nuzGI4JEGS8mWv6jW98SfwZ3pDx7vM88klXd7kYQXUbHXuHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QRFMA1DN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id D4FC0C2BCC9;
+	 In-Reply-To:To:Cc; b=i0UOaD7lMHiqUisZkPawtDioRCRP32rrbqKFhMC2d114xkpgmVkqKF5fRZnCyIoV6d9XjjWZ9nhvOQexQfWWMXmBGkCbY9jy4QTMrJ03q/Ku8RcD94yI09FcFPk4xtLup5FaHFu9tnUkPQtmypG89Y+lJQRkuPLVyZKSKXnY+z0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GSVIvt7L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id DD883C2BCF5;
 	Wed,  8 Jul 2026 22:12:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1783548773;
-	bh=nj+rgJC/HXTPwcNbSn5Q7M0LTgytd4Dk2hug7ZsqSBA=;
+	bh=ocs3W/FAuSHd6XHuqJdgjkplQY7OsSH3DoKXZ4km4mg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=QRFMA1DNLbWwQuGfVPuCW6A9wUCNbUBUoFvK5oGQXBSytV7p6oT5evv18q+SbQjp1
-	 tE7tg3Q6v0fTw7PxbklRx29qRMuXm58VVHbHi5ktkmUY0Qs9uNLIaJq1DNWOcGpV4n
-	 J+lESTmLkWQh/n+z68eNJ8Ktxwb8vxcjjblI/4uKs5cEzo45eYiFGoQWzmioZY4vVq
-	 4ZDEMY4Y0bme5UmQDfEG6v8iOFWE3zvoBYzGJqRneaMJ20JVkuxW3WKbTJMjqxlbxR
-	 94gotWCbDbGA2MwveqPFAlshgtfkLH6+xYaT3tkHlSnqETT/8fCcT8Wu8qBe01sYpj
-	 dQ0xgsHjUPPJg==
+	b=GSVIvt7LaUewb6Yor4iDkwNMfDJhf/m/vroxwPYPSCGrSK0e1KXQIj2XUJGuLEpu8
+	 b9Cq/6qAQ436CNHHNJqb9rdjTG8YvBCoFTLow5TOldA51qbumUzi4a5K9tM9Q7yKbA
+	 wH7ep7cNFMfDKPdMXJOCpjLgM0syVBs0+N2MBYZcv7VesC685hR+I5qLTON1Lnu6wd
+	 WAyAcoSOVjwKWYNVzCc19k03PEod1xovD9CHpTHonS/tQ2r+H5l9brT324ei9NTKof
+	 8n1M6JGS1ohWkQZwLbMw03Lql4cte5xIUYvYQpFpZ16frIumykFxe54zpC+eZ84Vjb
+	 8dxr1dpU4bmLw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B6152C44506;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C421CC44503;
 	Wed,  8 Jul 2026 22:12:53 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Wed, 08 Jul 2026 15:12:50 -0700
-Subject: [PATCH v2 2/5] mm: hugetlb: Fix subpool usage leak on allocation
- failure
+Date: Wed, 08 Jul 2026 15:12:51 -0700
+Subject: [PATCH v2 3/5] mm: hugetlb: Fix folio refcount mismatch on memcg
+ charge failure
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,7 +61,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260708-hugetlb-alloc-failure-fixes-v2-2-c7f27cbb462b@google.com>
+Message-Id: <20260708-hugetlb-alloc-failure-fixes-v2-3-c7f27cbb462b@google.com>
 References: <20260708-hugetlb-alloc-failure-fixes-v2-0-c7f27cbb462b@google.com>
 In-Reply-To: <20260708-hugetlb-alloc-failure-fixes-v2-0-c7f27cbb462b@google.com>
 To: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
@@ -74,11 +74,11 @@ Cc: vannapurve@google.com, erdemaktas@google.com, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org, Ackerley Tng <ackerleytng@google.com>, 
  stable@vger.kernel.org
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1783548773; l=2183;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783548773; l=1242;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=8pgD6+H5WXDhqxeVR1T9DEMEA9n+rne9MvjgkpNJ/6Y=;
- b=tmNC77AlJSVebS5RY5iI4MPVusjxMx2IC/1THhUAM6VizHc2+2UAt3vcvxbqcvzVnISeBK1ur
- Nnldn6syc2gBrP7TLZEdPYvfD1LeleDU15RVNgSoiQOUF80MZtxysjz
+ bh=VCn99bEoQNyadmxjsM1rKLroB6Ii6NvdNcvQQwTosM0=;
+ b=o1JFZ+27rVlos6MFYdiRSbM7jq5fQzxYDj7CUQVhhs+9hVEUTxvX8ee80Lj2a0M6OeF/Mef73
+ j5AZHRgZWgxCMzoi/qtVUEcHbbk7tolQ4opx4Apg+u3CPShEJZQp8hA
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -92,12 +92,12 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-272744-lists,stable=lfdr.de,ackerleytng.google.com];
+	TAGGED_FROM(0.00)[bounces-272745-lists,stable=lfdr.de,ackerleytng.google.com];
 	FORGED_RECIPIENTS(0.00)[m:muchun.song@linux.dev,m:osalvador@suse.de,m:david@kernel.org,m:joshua.hahnjy@gmail.com,m:shakeel.butt@linux.dev,m:nphamcs@gmail.com,m:akpm@linux-foundation.org,m:peterx@redhat.com,m:mawupeng1@huawei.com,m:fvdl@google.com,m:rientjes@google.com,m:jthoughton@google.com,m:vannapurve@google.com,m:erdemaktas@google.com,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:ackerleytng@google.com,m:stable@vger.kernel.org,m:joshuahahnjy@gmail.com,s:lists@lfdr.de];
 	FREEMAIL_TO(0.00)[linux.dev,suse.de,kernel.org,gmail.com,linux-foundation.org,redhat.com,huawei.com,google.com];
 	FORGED_SENDER(0.00)[devnull@kernel.org,stable@vger.kernel.org];
@@ -119,66 +119,46 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 567E772ACFB
+X-Rspamd-Queue-Id: CD16E72AD0B
 
 From: Ackerley Tng <ackerleytng@google.com>
 
-When alloc_hugetlb_folio() fails early (e.g. buddy allocation failure or
-hugetlb cgroup charging failure) and gbl_chg == 1 (meaning a reservation
-was not used, but a global page was allocated instead), the subpool page
-acquired via hugepage_subpool_get_pages() must still be returned.
+When mem_cgroup_charge_hugetlb(folio, gfp) returns -ENOMEM, the folio has
+its refcount set to 1 via folio_ref_unfreeze(folio, 1).
 
-Currently, the error path out_subpool_put: only calls
-hugepage_subpool_put_pages() if !gbl_chg is true. If gbl_chg is 1, it
-skips it, permanently leaking the subpool's used_hpages counter.
+The error path calls free_huge_folio(folio) directly, which expects a
+refcount of 0. Hence, VM_BUG_ON_FOLIO(folio_ref_count(folio), folio) is
+triggered.
 
-With the earlier patch to always track used_hpages in the subpool, always
-call hugepage_subpool_put_pages() if map_chg is true to consistently
-restore the page to the subpool. Only call hugetlb_acct_memory() to adjust
-global reservations if gbl_chg == 0 since gbl_chg == 0 indicates a
-subpool (and global) reservation was used.
+Even with CONFIG_DEBUG_VM disabled, returning a folio with refcount 1 to
+the freelist can corrupt allocator state later.
 
-Fixes: a833a693a490e ("mm: hugetlb: fix incorrect fallback for subpool")
+Use folio_put(folio) instead of free_huge_folio(folio) to properly drop the
+reference before freeing it.
+
+Fixes: 991135774c0e0 ("memcg/hugetlb: introduce mem_cgroup_charge_hugetlb")
 Cc: stable@vger.kernel.org
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+Reviewed-by: Muchun Song <muchun.song@linux.dev>
 ---
- mm/hugetlb.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ mm/hugetlb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index ee5e99c1894b9..4093c1c0a4a1d 100644
+index 4093c1c0a4a1d..1f3f4b964b153 100644
 --- a/mm/hugetlb.c
 +++ b/mm/hugetlb.c
-@@ -2852,7 +2852,7 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
- 	struct hugepage_subpool *spool = subpool_vma(vma);
- 	struct hstate *h = hstate_vma(vma);
- 	struct folio *folio;
--	long retval, gbl_chg, gbl_reserve;
-+	long retval, gbl_chg;
- 	map_chg_state map_chg;
- 	int ret, idx;
- 	struct hugetlb_cgroup *h_cg = NULL;
-@@ -3003,13 +3003,11 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
- 		hugetlb_cgroup_uncharge_cgroup_rsvd(idx, pages_per_huge_page(h),
- 						    h_cg_rsvd);
- out_subpool_put:
--	/*
--	 * put page to subpool iff the quota of subpool's rsv_hpages is used
--	 * during hugepage_subpool_get_pages.
--	 */
--	if (map_chg && !gbl_chg) {
--		gbl_reserve = hugepage_subpool_put_pages(spool, 1);
--		hugetlb_acct_memory(h, -gbl_reserve);
-+	if (map_chg) {
-+		long gbl_reserve = hugepage_subpool_put_pages(spool, 1);
-+
-+		if (!gbl_chg)
-+			hugetlb_acct_memory(h, -gbl_reserve);
- 	}
+@@ -2990,7 +2990,7 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
+ 	lruvec_stat_mod_folio(folio, NR_HUGETLB, pages_per_huge_page(h));
  
+ 	if (ret == -ENOMEM) {
+-		free_huge_folio(folio);
++		folio_put(folio);
+ 		return ERR_PTR(-ENOMEM);
+ 	}
  
 
 -- 
