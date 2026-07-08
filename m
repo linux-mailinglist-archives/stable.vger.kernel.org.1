@@ -1,143 +1,214 @@
-Return-Path: <stable+bounces-272714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272715-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id /xoRLPqRTmqmPgIAu9opvQ
-	(envelope-from <stable+bounces-272714-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 20:07:54 +0200
+	id pRkIGfmSTmrUPgIAu9opvQ
+	(envelope-from <stable+bounces-272715-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 20:12:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BAE27296B6
-	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 20:07:54 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F11377296E5
+	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 20:12:08 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Np18De23;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272714-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272714-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=asu.edu header.s=google header.b=VD+NNV33;
+	dmarc=pass (policy=none) header.from=asu.edu;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272715-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272715-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 51F36306AB6E
-	for <lists+stable@lfdr.de>; Wed,  8 Jul 2026 18:04:25 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 49F6F301D7A4
+	for <lists+stable@lfdr.de>; Wed,  8 Jul 2026 18:12:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC099348C64;
-	Wed,  8 Jul 2026 18:04:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41EE73BE165;
+	Wed,  8 Jul 2026 18:12:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64E8524293C;
-	Wed,  8 Jul 2026 18:04:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BE3E3BB66B
+	for <stable@vger.kernel.org>; Wed,  8 Jul 2026 18:12:05 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783533864; cv=none; b=KVOU/FbBLkG+rpZZX8RPL/z7HT0or9lOUys6vX0H+z8lvPixcFYbdA0ybt1ZDXGFGRstamXXg/TBluCOYX5+RvxVZXWpgwJxmE78JZwVmwBr9xdhOhWGUZOL5BVAwjlHTDTQHRjJiDRipmEi7GyK3JGhsOhu0g/rGULEM9cs/iQ=
+	t=1783534327; cv=none; b=Npt1azVGAjDBfkeZSQxeG9jBERH3ljSWF1cfOdcy68yOX+BQwY36Ch8v0hz0fXWrBgInqeNKQ5mLzaDJbtSwyA5tkqRB20RWZqEtzy4sXc83OOj+yjUNEoXyORoIHuvEyUGCql4x46OxeZgWo7Jh9nP30rLJ6YJqJjJHSryWlrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783533864; c=relaxed/simple;
-	bh=BYoyTsXKeOKLoybb9RXpJX7DfLF46U+dXVSkSmt1cA4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=oQlo/wzBZn3RQ/z1ecWOuSR20kPgluuMOMYWbmwJHkCfW9pJAnU4R/Rh3jA2qoshlmIhLPA6tPk3RuUtAwmvSTsRkOqeqx2Vkwjh7KCH+0bJ4PYm4He3EPa4ePxRSyjhkg9R+UCPXpMYIngteW5eGGRur3QcuHIgtiOXqTQR7K4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Np18De23; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 497A31F000E9;
-	Wed,  8 Jul 2026 18:04:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783533862;
-	bh=lglVf6gCknhzk8O/k1JDutf15oIRKP3Kl5VT874IV5w=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=Np18De23cSWDdpOvofshVSCFsCyYrL2Zsv7ZRjFsVprcsfSFYs9CoCUAfOR/itfWc
-	 1m6/TTt+rIOtOXjeuTK8kM9VBE5F7yr8ZKBw0mAEZnbHkUcXIGN/A6r7gem55EhMPf
-	 JrCS85isVx17+lIpnJfb/GddL1VQRmI4qFiQ79FFP1dJ6FEixpUjTugve+4YBQOmfZ
-	 i/5tlBYSkFi3FDxuWFCmdfn2mErdp01NJ3F8eeN2eZfWyGte1ZEA9w8NP8ajp191W7
-	 bvLZwCeueMvoRbZ+LUlQr0dD9d3sn7I+/HV9JEDF/0z9o3G21FXnNWRAvrAWe9oo1q
-	 1STlFakM3nBig==
-From: Thomas Gleixner <tglx@kernel.org>
-To: Oleg Nesterov <oleg@redhat.com>, Frederic Weisbecker <frederic@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org, Wongi
- Lee <qw3rtyp0@gmail.com>, Jungwoo Lee <jwlee2217@gmail.com>,
- stable@vger.kernel.org, x86@kernel.org
-Subject: Re: [tip: timers/urgent] posix-cpu-timers: Prevent UAF caused by
- non-leader exec() race
-In-Reply-To: <ak5-L-1SzGPEc0_i@redhat.com>
-References: <178324479651.744054.11944477307374142373.tip-bot2@tip-bot2>
- <ak51mpHPzsQrGFmv@localhost.localdomain> <ak5-L-1SzGPEc0_i@redhat.com>
-Date: Wed, 08 Jul 2026 20:04:19 +0200
-Message-ID: <87v7apqrx8.ffs@fw13>
+	s=arc-20240116; t=1783534327; c=relaxed/simple;
+	bh=l8GFelL0rMozLzXKhSXMvAK+Hz6wk24SoDq74J3vLDY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lA/W2d9mYZPNoF9JQ5EO10c0id0rpzKMAZaHezSp96lr3erm8Q+06QS80z4XvHc2e/MJP79YAZfFyaNT4EK6KMO3BtoQ28bbbKyoA4H6+Z1AdfCOxEmGDRgGoS6I+R1VO/Jf4wqWWuqn6yw1nTOP+WYfI1BcUOSh3fiwh/HXEJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu; spf=pass smtp.mailfrom=asu.edu; dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b=VD+NNV33; arc=none smtp.client-ip=209.85.216.43
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-385ea3ce80dso1123968a91.2
+        for <stable@vger.kernel.org>; Wed, 08 Jul 2026 11:12:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=asu.edu; s=google; t=1783534325; x=1784139125; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=0BR+SF/CxmhPdAIZMWxo2CbL+bjRHrbqDrG5ybWBgFU=;
+        b=VD+NNV333+ei9F/wIwOZ098hJ5gmuDxdOhlEiQALpevUZ3bAMUAi5Dd9RevhLGFHlX
+         N7unnAsINveskg1JFr2m5ZTbdGN8IUrRHxAZy4DL2x4aBwSCy3thSrAo44C6GfKt7AFj
+         eLUS4yzK9rqOqDuIrWKk1+o2LQxFasmLTETvI2Y8z1cCehonnPmU13HYx6+zgz3omcrK
+         kIgpTwTriCcx87F4ubwph0MXAPtAvxpSSd3WFVu2d1YwY8BD83omfu3qKhNZz3+mwtmT
+         TKcH0ChVLZByeRQLe4q92ifSR26E4nO5eWLIGSOorAmzbrrXt+xDHWaLdW+whl5FWn/w
+         zCtQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783534325; x=1784139125;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=0BR+SF/CxmhPdAIZMWxo2CbL+bjRHrbqDrG5ybWBgFU=;
+        b=ae1sDivAL9wbxayUTwdPGAtnVyIJI/CHIQR2vxC7CmvNDQDZ6l7K2BFvZYJLkdRCAf
+         v9FzjBvyHUmh0A0ExmRGdGGZP1J0ONjZexCsbUkZTGyw457A5vax0VwtQdpwvzfJlDTB
+         QSXoMbD64yj75l7kOk35827a4tKcFyGzgRJFKaqYxSTYTV8+aC+p3xqJNBslAH5WC5MS
+         EPavjNOQlJmkYolBYG6pvGrN3OFGAmbt54flQElLIyPp/x9C1KD9Nq5CCoZCfIZNyUYp
+         QucDKmD5ruRSkPPKKxrtOr5k2XLUGfYucNk2AsDMYDuGYyyBMz8obS5em/7iYq/qJBSy
+         WFqg==
+X-Forwarded-Encrypted: i=1; AHgh+RpQdMK9Wo55xrdDrfwpR52EG807yP2eXlLy3VtCR/kTIvI0lEu0M5VLh/kDcBaSDPlFFV2HrME=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy1kKmrH9GuQv4cgXvbBKg6UouK2bDujFXQ0xoYEDK4FDy3NzHY
+	WqQGCteZAROPIEilMn0VAb2LxDenZppqVG+l5tE7r4/v6R0eyDMG6SKa/xKnltQnsw==
+X-Gm-Gg: AfdE7cnF+EQTcwCf+vz6XqtLyTj4wg5++sky6NhG1DTbrWyDn/lh98kBMiKNLPL9kKi
+	rOhWWXw4+WlFtYEkYw9CDv1KyBNwGzSRJqJqaAbfOF4DBsSTfLYZF4mMbCKW15CZNIVCtiYfuLN
+	b8qqQhKWhOfgtjaZDgBR2rlSfqdcoWTcSaYN5tuF5RfWgimrKjzR4eXaX/msLLdKY6ykYolZ8Eh
+	OSGOKd+3sjA+lWM2QlTgKoU6Shhfu9k4A8FyeeSyB5HwztvYESHoivOpSV47mwvtFvqXlNMJKTu
+	2RkGNIQ5pxFxq6H4hpKabMUZb7HxuKVMqMsuxpxWI1RcDsRVvNuiuqtsQxeZfVMagnyR4U5yzkv
+	5iM2jq4RsloxBt+a0o/hYDOtljmNKTpIPWlI6KboDk5hkcgGUNsIT3LrvuCFPI5Yaqv15e+/acy
+	6UAqvaYCnLCn/TLWka9g==
+X-Received: by 2002:a17:90a:c106:b0:380:9d0d:7ade with SMTP id 98e67ed59e1d1-3893d33d9d4mr3982591a91.0.1783534324758;
+        Wed, 08 Jul 2026 11:12:04 -0700 (PDT)
+Received: from xiang.tailc0aff1.ts.net ([20.171.14.70])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-31174a56848sm23336464eec.16.2026.07.08.11.12.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Jul 2026 11:12:04 -0700 (PDT)
+From: "Xiang Mei (Microsoft)" <xmei5@asu.edu>
+To: Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Phil Sutter <phil@nwl.cc>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	AutonomousCodeSecurity@microsoft.com,
+	tgopinath@linux.microsoft.com,
+	kys@microsoft.com,
+	"Xiang Mei (Microsoft)" <xmei5@asu.edu>,
+	stable@vger.kernel.org
+Subject: [PATCH net v2] netfilter: bridge: fix stale prevhdr pointer in br_ip6_fragment()
+Date: Wed,  8 Jul 2026 18:11:50 +0000
+Message-ID: <20260708181150.3944015-1-xmei5@asu.edu>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[asu.edu,none];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[asu.edu:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-272715-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-272714-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:fw@strlen.de,m:pablo@netfilter.org,m:phil@nwl.cc,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:netfilter-devel@vger.kernel.org,m:coreteam@netfilter.org,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:AutonomousCodeSecurity@microsoft.com,m:tgopinath@linux.microsoft.com,m:kys@microsoft.com,m:xmei5@asu.edu,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	FORGED_SENDER(0.00)[xmei5@asu.edu,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[tglx@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:oleg@redhat.com,m:frederic@kernel.org,m:linux-kernel@vger.kernel.org,m:linux-tip-commits@vger.kernel.org,m:qw3rtyp0@gmail.com,m:jwlee2217@gmail.com,m:stable@vger.kernel.org,m:x86@kernel.org,s:lists@lfdr.de];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tglx@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[asu.edu:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[xmei5@asu.edu,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ALIAS_RESOLVED(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,asu.edu:from_mime,asu.edu:email,asu.edu:mid,asu.edu:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4BAE27296B6
+X-Rspamd-Queue-Id: F11377296E5
 
-On Wed, Jul 08 2026 at 18:43, Oleg Nesterov wrote:
+br_ip6_fragment() gets prevhdr, a pointer into the skb head, from
+ip6_find_1stfragopt(), then calls skb_checksum_help().  For a cloned skb
+skb_checksum_help() reallocates the head via pskb_expand_head(), leaving
+prevhdr dangling.  It is later dereferenced in ip6_frag_next(), causing a
+use-after-free write.
 
-> On 07/08, Frederic Weisbecker wrote:
->>
->> > There is a similar problem vs. posix_cpu_timer_set(). For regular posix
->> > timers it just transiently returns -ESRCH to user space, but for the use
->> > case in do_cpu_nanosleep() it's the same UAF just that the k_itimer is
->> > allocated on the stack.
->>
->> do_cpu_nanosleep() only targets current and since it's on the stack, no
->> other task can access it. And the current task can't be exiting/exec'ing
->> while calling posix_cpu_timer_set() on that stack timer.
->
-> I thought the same initially, but it seems that this is not true...
+Save prevhdr's offset before skb_checksum_help() and recompute it after,
+like commit ef0efcd3bd3f ("ipv6: Fix dangling pointer when ipv6
+fragment").
 
-Indeed.
+  BUG: KASAN: slab-use-after-free in ip6_frag_next (net/ipv6/ip6_output.c:857)
+  Write of size 1 at addr ffff888013ff5016 by task exploit/141
+  Call Trace:
+   ...
+   kasan_report (mm/kasan/report.c:595)
+   ip6_frag_next (net/ipv6/ip6_output.c:857)
+   br_ip6_fragment (net/ipv6/netfilter.c:212)
+   nf_ct_bridge_post (net/bridge/netfilter/nf_conntrack_bridge.c:407)
+   nf_hook_slow (net/netfilter/core.c:619)
+   br_forward_finish (net/bridge/br_forward.c:66)
+   __br_forward (net/bridge/br_forward.c:115)
+   maybe_deliver (net/bridge/br_forward.c:191)
+   br_flood (net/bridge/br_forward.c:245)
+   br_handle_frame_finish (net/bridge/br_input.c:229)
+   br_handle_frame (net/bridge/br_input.c:442)
+   ...
+   packet_sendmsg (net/packet/af_packet.c:3114)
+   ...
+   do_syscall_64 (arch/x86/entry/syscall_64.c:94)
+   entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
+  Kernel panic - not syncing: Fatal exception in interrupt
 
-> I can never understand this API, but it seems that
-> sys_clock_nanosleep() can target the !current processes/threads ?
+Fixes: 764dd163ac92 ("netfilter: nf_conntrack_bridge: add support for IPv6")
+Cc: stable@vger.kernel.org
+Reported-by: AutonomousCodeSecurity@microsoft.com
+Signed-off-by: Xiang Mei (Microsoft) <xmei5@asu.edu>
+---
+ net/ipv6/netfilter.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-It obviously can't target the current thread because how would that
-accumulate run-time when it's sleeping?
+diff --git a/net/ipv6/netfilter.c b/net/ipv6/netfilter.c
+index 6d80f85e55fa..a7025ec87035 100644
+--- a/net/ipv6/netfilter.c
++++ b/net/ipv6/netfilter.c
+@@ -120,7 +120,7 @@ int br_ip6_fragment(struct net *net, struct sock *sk, struct sk_buff *skb,
+ 	ktime_t tstamp = skb->tstamp;
+ 	struct ip6_frag_state state;
+ 	u8 *prevhdr, nexthdr = 0;
+-	unsigned int mtu, hlen;
++	unsigned int mtu, hlen, nexthdr_offset;
+ 	int hroom, err = 0;
+ 	__be32 frag_id;
+ 
+@@ -129,6 +129,7 @@ int br_ip6_fragment(struct net *net, struct sock *sk, struct sk_buff *skb,
+ 		goto blackhole;
+ 	hlen = err;
+ 	nexthdr = *prevhdr;
++	nexthdr_offset = prevhdr - skb_network_header(skb);
+ 
+ 	mtu = skb->dev->mtu;
+ 	if (frag_max_size > mtu ||
+@@ -147,6 +148,7 @@ int br_ip6_fragment(struct net *net, struct sock *sk, struct sk_buff *skb,
+ 	    (err = skb_checksum_help(skb)))
+ 		goto blackhole;
+ 
++	prevhdr = skb_network_header(skb) + nexthdr_offset;
+ 	hroom = LL_RESERVED_SPACE(skb->dev);
+ 	if (skb_has_frag_list(skb)) {
+ 		unsigned int first_len = skb_pagelen(skb);
+-- 
+2.43.0
 
-It can target the current or some other process, so it's subject to the
-non-leader exec race.
-
-> Or why else we have clock_getcpuclockid() ?
-
-To express which thread or thread group the sleep should be on. It's
-exactly the same as timer_create() + timer_set(). It sleeps until that
-clock accumulated enough runtime, while regular posix-timers either wait
-for a signal or handle it async.
-
-Thanks,
-
-        tglx
 
