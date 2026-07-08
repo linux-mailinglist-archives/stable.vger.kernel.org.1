@@ -1,189 +1,160 @@
-Return-Path: <stable+bounces-272539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272542-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ngLtFOvFTWop+AEAu9opvQ
-	(envelope-from <stable+bounces-272539-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 05:37:15 +0200
+	id vl9mNFzOTWqY+QEAu9opvQ
+	(envelope-from <stable+bounces-272542-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 06:13:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 856AE721680
-	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 05:37:14 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 589097218D6
+	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 06:13:16 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=ultrarisc.com header.s=dkim header.b=jmTOj9Z1;
-	dmarc=pass (policy=none) header.from=ultrarisc.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272539-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272539-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linux.dev header.s=key1 header.b=UCEZEhKb;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272542-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-272542-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A30E2303C4E3
-	for <lists+stable@lfdr.de>; Wed,  8 Jul 2026 03:36:04 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C56F5300D366
+	for <lists+stable@lfdr.de>; Wed,  8 Jul 2026 04:13:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07F603750A9;
-	Wed,  8 Jul 2026 03:36:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 911D337A843;
+	Wed,  8 Jul 2026 04:13:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from ultrarisc.com (unknown [218.76.62.146])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEFA43271FD;
-	Wed,  8 Jul 2026 03:35:59 +0000 (UTC)
+Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF8CB282F22
+	for <stable@vger.kernel.org>; Wed,  8 Jul 2026 04:13:12 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783481762; cv=none; b=fdP1TgFSpUOnltVrtZsb9si7s7JZ9CTbv4/Wd8T9sS3phuPsWI+tBTPcxPjPzpkOQUW4oqtfiUWNPPXQKv8f53Xej9pVkUI8LZ3+PbyNpeNcAE3gUMXIaMKz55vFZ9XSRVL6ZOEvYoJTlRvP//AELsgQpeKoWhWfg/fkslSogoA=
+	t=1783483994; cv=none; b=OzYYe4uDI4JArgJFgwFiuKQwtTBpO5bQZLOvFJpfUJIZl51UFITJsbn5qWpRWT0Jy02BZJTknFz5QMGyqJL0zHtOBRyAaNgHcyWG1vqF8Te8a+14qRWE8CWb7glBJM5Vfc/VmYm6a9RCYARUfUA95o99m134Ue3TKo8xp7IGnY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783481762; c=relaxed/simple;
-	bh=/TxT7+LqcF/EQaAAzNtP/qRbeXyI866HvEjmWx8r2IA=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=eRwxQrkM4N1GxplCI9ezZA6DeWLLD8bgNFuLOXPvIxwx4Dmm2IqZlihh0odIPCgOxFTH3ieuIG3xYfaauOJo2cU/GYxSE19KdGqeY/hWxyq0NazTUWQPYeWf8rQQ92i4QHw5QeF251wcqIo/BvhWRMJqFNXfxCzy7woWORg+OJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ultrarisc.com; spf=pass smtp.mailfrom=ultrarisc.com; dkim=pass (1024-bit key) header.d=ultrarisc.com header.i=@ultrarisc.com header.b=jmTOj9Z1; arc=none smtp.client-ip=218.76.62.146
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=ultrarisc.com; s=dkim; h=Received:From:To:Cc:Subject:Date:
-	Message-ID:Content-Type:Content-Transfer-Encoding:MIME-Version;
-	bh=yIm/R+UfKG6ozRg3WZyqHLKZhdaLouDOHlH/xTo8KtU=; b=jmTOj9Z1zbuC8
-	QTDDjncUaA/bNYyRHJ11FQsetLK1gwXc5nbWf2nQfL2B6swi+Xd1k+L68m1xrf3j
-	25SkZ4VNGAGxxp6CDJNLd0zlEL+IPVxP5lTI5X3hlbllufFDyPrUgC5O32m9iRxz
-	J1Qlyy07tgENMe1GDWn7IDiCG/pOsU=
-Received: from [127.0.1.1] (unknown [192.168.100.1])
-	by localhost.localdomain (Coremail) with SMTP id AQAAfwA3cUKoxU1qq0gPAA--.15489S2;
-	Wed, 08 Jul 2026 11:36:08 +0800 (CST)
-From: Xie Bo <xb@ultrarisc.com>
-To: Anup Patel <anup@brainfault.org>, kvm-riscv@lists.infradead.org
-Cc: Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alex@ghiti.fr>, Paolo Bonzini <pbonzini@redhat.com>,
- Alexander Graf <graf@amazon.com>, kvm@vger.kernel.org,
- linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, Xie Bo <xb@ultrarisc.com>
-Subject:
- [PATCH v2 0/1] RISC-V: KVM: Serialize virtual interrupt pending state updates
-Date: Wed, 08 Jul 2026 11:35:36 +0800
-Message-ID: <178348173646.64306.17443207006998871369@ultrarisc.com>
-X-Mailer: python-smtplib kernel patch sender
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=arc-20240116; t=1783483994; c=relaxed/simple;
+	bh=BY43jJdoDHic7q32e8pfnv+cyvyGa/sRjfjMh0rHVCQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jrU37KtMHEEFmnkCDWnSzAAi43DutMPaYt+iF6atADCfT5jN5jH9w5lSEpvwBo8qkJ6984gdgG17tNE2falZtNWIKFFMAMYT5EnDPJGhem0e5a/U4LAdWxq3MIgOLSUC4Yp+SvyTvCkOZxAKJ2h/mhDsS4gsvCGRD+czsFj3joA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=UCEZEhKb; arc=none smtp.client-ip=91.218.175.188
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783483980;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=JgCF/d1GzpHoQKC1qhkhHRFZUTixiHjHsF4UG1qii78=;
+	b=UCEZEhKbX1dlK8CTrdLBo+EbszDWU9fQk1ecn+HXPsx6OtoBHPR+eExQ7BoZfUFlrQ65KK
+	MMLe9Daz2f5ZX/BppB246vI1n8S9CcG6HjYg7nlKm4VopaL2mOFEN9hyOW4AczVNFUdC+T
+	V3fd0oNUO6yYwI4YFXwkYVexyT6CvhM=
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+To: stable@vger.kernel.org,
+	linux-mm@kvack.org
+Cc: jiayuan.chen@shopee.com,
+	jiayuan.chen@linux.dev,
+	yingfu.zhou@shopee.com,
+	willy@infradead.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Huang Ying <ying.huang@intel.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 5.15.y 6.1.y 6.6.y 0/1] mm/vmscan: flush deferred TLB before freeing large folios in reclaim
+Date: Wed,  8 Jul 2026 12:12:35 +0800
+Message-ID: <20260708041237.289026-1-jiayuan.chen@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-CM-TRANSID:AQAAfwA3cUKoxU1qq0gPAA--.15489S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7tw48Ww1rur15Aw1DCw48WFg_yoW8KF43pF
-	Z8G34Sgr1kJrWfCwn3Jr48Zr1SgF1kGa15Grn7G347Ars0vF10vF1kKa4jyF1UCr97Zw1j
-	vr4YgryDu3yUZaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9l14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Jr0_Gr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4j6r
-	4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUtVWrXwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r
-	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
-	n2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCY02Avz4vE-syl42xK82IYc2Ij64vIr41l4I
-	8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AK
-	xVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcV
-	AFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8I
-	cIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r
-	4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfU5byZUUUUU
-X-CM-SenderInfo: l0e63zxwud2x1vfou0bp/1tbiAQABB2pMd84ABQABsc
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.15 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ultrarisc.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[ultrarisc.com:s=dkim];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	XM_UA_NO_VERSION(0.01)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:anup@brainfault.org,m:kvm-riscv@lists.infradead.org,m:atish.patra@linux.dev,m:pjw@kernel.org,m:palmer@dabbelt.com,m:aou@eecs.berkeley.edu,m:alex@ghiti.fr,m:pbonzini@redhat.com,m:graf@amazon.com,m:kvm@vger.kernel.org,m:linux-riscv@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:xb@ultrarisc.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[xb@ultrarisc.com,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-272542-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-272539-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[jiayuan.chen@linux.dev,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:linux-mm@kvack.org,m:jiayuan.chen@shopee.com,m:jiayuan.chen@linux.dev,m:yingfu.zhou@shopee.com,m:willy@infradead.org,m:akpm@linux-foundation.org,m:ying.huang@intel.com,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
+	DKIM_TRACE(0.00)[linux.dev:+];
+	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[xb@ultrarisc.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[ultrarisc.com:+];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jiayuan.chen@linux.dev,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,ultrarisc.com:from_mime,ultrarisc.com:dkim,ultrarisc.com:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 856AE721680
+X-Rspamd-Queue-Id: 589097218D6
 
 Hi,
 
-This is v2 of the RISC-V KVM virtual interrupt synchronization fix.
+We were chasing random user-space segfaults on our production kernels.
+They were fully non-deterministic, and the fault address reported for each
+SIGSEGV was itself random and had nothing to do with the code that was
+actually running -- which smells like a stale TLB entry, not corrupted
+data.
 
-The first version described the irqs_pending/irqs_pending_mask race, but
-it did not provide enough context on:
+We managed to reproduce it with stress-ng: under memory pressure the
+workers take random SIGSEGV/SIGILL too, again at random fault addresses.
 
-  - the exact lost-interrupt interleaving
-  - the user-visible failure mode
-  - why the existing lockless protocol is replaced instead of being
-    repaired with additional barriers
-  - what was exercised during validation
+It turns out we're missing a TLB flush. In reclaim, shrink_folio_list()
+tears down the PTEs with a deferred, batched flush. Order-0 folios are
+collected and only freed after that batch is flushed by
+try_to_unmap_flush(). Large folios, though, are freed right away at the
+free_it label via destroy_large_folio(), which runs *before* the flush. So
+a large folio's pages can go back to the allocator and get reused while
+some other CPU still has a stale TLB entry pointing at them -- and that CPU
+then reads or executes through the old translation into a page that now
+belongs to someone else. When it's executable text mapped as a large
+folio, the CPU literally fetches instructions out of a reused page, which
+is where the random crashes come from. (This is about file-backed large
+folios, not anonymous THP, so transparent_hugepage=never doesn't help.)
 
-This version updates only the commit message and keeps the code change
-the same.
+How we reproduce it:
+- Make a cgroup and set memory.high.
+- Run ~45 stress-ng workers in it (e.g. --cpu N --cpu-method all).
+- Alongside, run a tiny program that keeps allocating anonymous memory to
+  push the cgroup over memory.high and keep reclaim busy.
+Dropping caches first (echo 3 > /proc/sys/vm/drop_caches) makes the text
+refault as large folios and reproduces it much faster.
 
-Problem summary
-===============
+To be 100% sure about the mechanism, we filled every reclaimed large folio
+with 0xCC (INT3) and held onto it instead of freeing it. Under the repro,
+stress-ng workers immediately hit INT3 at instruction pointers inside their
+own text -- i.e. CPUs were fetching instructions through stale TLB entries
+from freed, poisoned pages. stress-ng has no INT3 in its binary, so the
+only way to execute one is through a stale translation into a freed page.
+Several CPUs hit it within the same microsecond, which lines up nicely with
+a single batched unmap whose flush was skipped on more than one CPU.
 
-The current code treats irqs_pending and irqs_pending_mask as a lockless
-multiple-producer, single-consumer state machine.  In practice,
-kvm_riscv_vcpu_sync_interrupts() is not a pure consumer because it also
-writes both bitmaps while synchronizing guest-visible HVIP state back
-into KVM state.
+Upstream this got fixed as a side effect of
+commit bc2ff4cbc329 ("mm: free folios in a batch in shrink_folio_list()")
+which sends large folios down the same flush-before-free batch path.
 
-That means the two bitmaps represent one logical state transition, but
-they are updated independently.  A host-side interrupt injection can
-race with guest-side VSSIP clearing and lose the newly injected pending
-bit.
+The patch below is the minimal fix: just flush the deferred batch before
+freeing a large folio inline.
 
-Observed symptom
-================
+Jiayuan Chen (1):
+  mm/vmscan: flush deferred TLB before freeing large folios
 
-The failure that motivated this patch was an occasional guest hang where
-the guest remained blocked in WFI even though host-side virtual
-interrupt injection and vCPU kick had already happened.
-
-Why replace the lockless protocol
-=================================
-
-This is not just a missing barrier.  The bug comes from encoding one
-shared state machine in two separate bitmaps while allowing both
-producers and the sync path to modify them.
-
-Repairing that while staying lockless would require redesigning the
-state transition protocol itself.  A per-vCPU raw spinlock makes the
-state transition explicit and keeps the fix small enough for stable
-backporting.
-
-Validation
-==========
-
-The issue was reproduced under RISC-V KVM stress workloads that exposed
-guest stalls in WFI.  After applying this patch, the same stress setup
-no longer reproduced the lost-VSSIP hang.
-
-Thanks,
-Xie Bo
-
-Xie Bo (1):
-  RISC-V: KVM: Serialize virtual interrupt pending state updates
-
- arch/riscv/include/asm/kvm_host.h | 10 +++++-----
- arch/riscv/kvm/aia.c              | 28 +++++++++++++++++++++-------
- arch/riscv/kvm/vcpu.c             | 27 ++++++++++++++++++++++-----
- arch/riscv/kvm/vcpu_onereg.c      | 13 +++++++++----
- 4 files changed, 57 insertions(+), 21 deletions(-)
+ mm/vmscan.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
 -- 
-2.54.0
+2.43.0
 
 
