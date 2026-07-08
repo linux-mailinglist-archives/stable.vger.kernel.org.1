@@ -1,66 +1,59 @@
-Return-Path: <stable+bounces-272573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272575-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id LHShIX0LTmq4CAIAu9opvQ
-	(envelope-from <stable+bounces-272573-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 10:34:05 +0200
+	id OKkJBsENTmpGCQIAu9opvQ
+	(envelope-from <stable+bounces-272575-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 10:43:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3BE072332D
-	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 10:34:04 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23D487234A0
+	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 10:43:44 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="g/F6NZyn";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272573-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-272573-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linux.dev header.s=key1 header.b=nNWDn5qx;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272575-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-272575-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 22BC2301703F
-	for <lists+stable@lfdr.de>; Wed,  8 Jul 2026 08:32:10 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BCF78300BEBB
+	for <lists+stable@lfdr.de>; Wed,  8 Jul 2026 08:42:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F66C3A16AE;
-	Wed,  8 Jul 2026 08:32:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18453403AF5;
+	Wed,  8 Jul 2026 08:42:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B84C29992B;
-	Wed,  8 Jul 2026 08:32:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BA76403126
+	for <stable@vger.kernel.org>; Wed,  8 Jul 2026 08:42:37 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783499529; cv=none; b=A33ZsWS0GfFtF7wdRLUWFn3x0zT2K/2CWzOApY40GfEjZgIv/Q782Vma3JUHeeXRT3NzI4Sw4bNrixXjSRFlABt8FgT4LP1E18nXdyXgN3dat7oBU4P0omrHSivP4dYU1zvLHbVpQO5WVVapYWcOWI1+xQiL6FkkJy98n3ckfNA=
+	t=1783500158; cv=none; b=Ihn5V1qD//JCl4+YKyImsiK/fHSSugS+1acmtNKyrqQt4moHuQkst52twZ6hYr995fu5pjQnILqXSFYgWMfBoBp+QuCEKIhAQy5W++kMMUmuB/72RF/fyE64VOskZQSBXsWD0plqriAYOIqTllPLyKxG/5HxJPAXsMcUeEp9OQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783499529; c=relaxed/simple;
-	bh=Yo2zB0eULVVqb8jXoImLc72duqPtdPjbKTlsD6uwDqY=;
+	s=arc-20240116; t=1783500158; c=relaxed/simple;
+	bh=3S54tvLnJDDcjJDxOOY+h9gVuveFhs2NHvH6IYwnHRs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CEt9aIx/9GoM6JqAYGY10duXjLDRC1JDes1kDGQTPQaB8aofM8vn2H20h/7G7d3YSvMlWALDyPU9MVdLcfUhQh++/aw948BIoictYp7MI59yMdIlMob4AMb0a1zlsaU8UxJzccBf/dRfI2vHUnUAzIgxrAqhfRRFEGSxBASo5Sk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g/F6NZyn; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD7831F000E9;
-	Wed,  8 Jul 2026 08:32:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783499527;
-	bh=c4ESd5w+M2nYuptCS0AZ2uFcE5EIsy34u8jWL9YQIJs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=g/F6NZynkHZZkdMtfyNvxGJ83yPjcmU31yD2r/fGncf00K1xWvN34mwxbRKQ4iSxC
-	 G5hFe+apUbqNMCB9UyRUOxa6zNKzqCMz6tBRvAYoIrQSFIYfPdctennxQeO+G3Kk4k
-	 irJDpo0mZ5/I8gFw6zSGfprFs6k+pbS0Dhj516GApTErgkop/C1Fm1yj+K6A8VBFN+
-	 IhDLzOYO+ozJqAXJ245zl9cCajx8Lo17qbFs9AnGgOWIeKNmx/s04lzTTB7gxEcT8s
-	 vPNDhuz8rbOZcR9IAXJp/Lm9zi4rXFb0MbiHaRfEcoKVB2Ua0+h2MFfwS9GTp9Cl8w
-	 dsDJo4QXWiL6A==
-Date: Wed, 8 Jul 2026 09:31:55 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Aboorva Devarajan <aboorvad@linux.ibm.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, "Liam R . Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Luiz Capitulino <luizcap@redhat.com>, Sourabh Jain <sourabhjain@linux.ibm.com>, 
-	Ritesh Harjani <ritesh.list@gmail.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mm/util: don't read __page_2 for order-1 folios in
- snapshot_page()
-Message-ID: <ak4KweoRcwnxZC-5@lucifer>
-References: <20260708015252.296103-1-aboorvad@linux.ibm.com>
- <6fec660b-7c6b-44b1-a7bc-f4687cda734a@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=TNYySJgEbR/hEiv5HWYFBefe4pfhX54jb3gMEgd3CQwQjktgZp+eBewe1jTYHuBcXwpe+R4GtDuUFwiqguX6EC0JvsJXKfFskTy2E07a0XPWBjjsHbnW2iCo1vSW6/5Ruv6CLb50qwzn8J2NfrdytHxbPXb/1x3Eepfhsn4TUEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=nNWDn5qx; arc=none smtp.client-ip=95.215.58.181
+Date: Wed, 8 Jul 2026 10:42:28 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783500155;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WfJsk8jFI3Rg6L7ThuU45KGpVrVhFDnsSLp+u4bja+4=;
+	b=nNWDn5qxCcOVN3q1dRbmb6q3bJxLvNWNqCU+MHeMeT/7w4i0Wpx8qcVQVfHlbdwGx/oTVR
+	hIO98IIq4rYDHjJD4rlL+y/82m5q6tOrSS7KYzLXZQj4b0qs5oRi0CxEvSaP5aB4OMbl77
+	LoGEZERYslR5C93XajB1w5zTd9amZ70=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Thorsten Blum <thorsten.blum@linux.dev>
+To: Binbin Wu <binbin.wu@linux.intel.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	stable@vger.kernel.org, seanjc@google.com, pbonzini@redhat.com,
+	kas@kernel.org, rick.p.edgecombe@intel.com
+Subject: Re: [PATCH] KVM: x86: TDX: Use validated CPUID entry count for TD
+ init
+Message-ID: <ak4NdJSK60zKD8Uy@linux.dev>
+References: <20260708022937.2465796-1-binbin.wu@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,148 +62,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <6fec660b-7c6b-44b1-a7bc-f4687cda734a@kernel.org>
+In-Reply-To: <20260708022937.2465796-1-binbin.wu@linux.intel.com>
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-272575-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:david@kernel.org,m:aboorvad@linux.ibm.com,m:akpm@linux-foundation.org,m:liam@infradead.org,m:vbabka@kernel.org,m:rppt@kernel.org,m:surenb@google.com,m:mhocko@suse.com,m:luizcap@redhat.com,m:sourabhjain@linux.ibm.com,m:ritesh.list@gmail.com,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:riteshlist@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-272573-lists,stable=lfdr.de];
-	FORGED_SENDER(0.00)[ljs@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	FORGED_SENDER(0.00)[thorsten.blum@linux.dev,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:binbin.wu@linux.intel.com,m:linux-kernel@vger.kernel.org,m:kvm@vger.kernel.org,m:stable@vger.kernel.org,m:seanjc@google.com,m:pbonzini@redhat.com,m:kas@kernel.org,m:rick.p.edgecombe@intel.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linux.dev:+];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ljs@kernel.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linux.ibm.com,linux-foundation.org,infradead.org,kernel.org,google.com,suse.com,redhat.com,gmail.com,kvack.org,vger.kernel.org];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[thorsten.blum@linux.dev,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lucifer:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,intel.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D3BE072332D
+X-Rspamd-Queue-Id: 23D487234A0
 
-On Wed, Jul 08, 2026 at 10:10:33AM +0200, David Hildenbrand (Arm) wrote:
-> On 7/8/26 03:52, Aboorva Devarajan wrote:
-> > snapshot_page() reconstructs a folio from a struct page.  After copying
-> > the head and __page_1 it reads __page_2 whenever the folio has more than
-> > one page:
-> >
-> > 	if (nr_pages > 1)
-> > 		memcpy(&ps->folio_snapshot.__page_2, &foliop->__page_2,
-> > 		       sizeof(struct page));
-> >
-> > __page_2 is the folio's third struct page, so it is part of the folio
-> > only for order >= 2 (nr_pages > 2).  For an order-1 folio (exactly two
-> > pages) __page_2 is not part of the folio at all, it is the struct page
-> > of the following pfn.
-> >
-> > When such an order-1 head sits in the last struct page slots of a
-> > populated section whose neighbouring section is absent (a memory hole),
-> > __page_2 falls into the next section's unpopulated vmemmap and the
-> > read oopses.
-> >
-> > Observed on a 22 TB ppc64le LPAR during DLPAR memory remove, on the page
-> > isolation dump path:
-> >
-> > 	offline_pages -> start_isolate_page_range -> isolate_single_pageblock
-> > 	  -> set_migratetype_isolate -> dump_page -> __dump_page -> snapshot_page
-> >
-> > 	NIP   = snapshot_page+264  (ld of __page_2)
-> > 	r4    = foliop = head = 0xc00c0005a03fff80
-> > 	DAR   = r4 + 0x88     = 0xc00c0005a0400008   (unmapped)
-> > 	DSISR = 0x40000000                           (no translation)
-> >
-> > The faulting head was a free page that still carried PG_head with
-> > _nr_pages == 2; its __page_2 is the first entry of the absent section.
-> >
-> > It is also reproducible deterministically in a VM by placing an order-1
-> > folio in the last slots of a populated section adjacent to a hole
-> > (memmap=nnM$ssM) and calling dump_page() on it.
-> >
-> > Only read __page_2 for order >= 2 folios (nr_pages > 2).
->
-> Hi!
->
-> Can you shorten that a bit? It's rather trivial, really.
->
-> "snapshot_page() currently reads __page_2 after checking nr_pages > 1, whereby
-> we really should only do so for nr_pages > 2. Let's fix that to avoid reading
-> memmap that doesn't exist (e.g., vmemmap hole)
->
->
-> Observed on a 22 TB ppc64le LPAR during DLPAR memory remove ...
-> "
->
-> >
-> > Fixes: 31a31da8a618 ("mm: move _pincount in folio to page[2] on 32bit")
-> > Cc: stable@vger.kernel.org # v6.15+
-> > Reported-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-> > Signed-off-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
-> > ---
-> >  mm/util.c | 8 +++++++-
-> >  1 file changed, 7 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/mm/util.c b/mm/util.c
-> > index af2c2103f0d95..b3d48a05e6d82 100644
-> > --- a/mm/util.c
-> > +++ b/mm/util.c
-> > @@ -1353,7 +1353,13 @@ void snapshot_page(struct page_snapshot *ps, const struct page *page)
-> >  	if (ps->idx < MAX_FOLIO_NR_PAGES) {
-> >  		memcpy(&ps->folio_snapshot, foliop, 2 * sizeof(struct page));
-> >  		nr_pages = folio_nr_pages(&ps->folio_snapshot);
-> > -		if (nr_pages > 1)
-> > +		/*
-> > +		 * __page_2 is the folio's third struct page and is part of the
-> > +		 * folio only for order >= 2 (nr_pages > 2).  For an order-1
-> > +		 * folio it is not part of the folio and may fall into an
-> > +		 * adjacent, possibly absent, section.
-> > +		 */
->
-> No need for the comment, really, this is rather trivial.
->
-> > +		if (nr_pages > 2)
-> >  			memcpy(&ps->folio_snapshot.__page_2, &foliop->__page_2,
-> >  			       sizeof(struct page));
-> >  		set_ps_flags(ps, foliop, page);
->
->
-> With a condensed patch description and the comment dropped
->
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
->
-> Thanks!
->
-> --
-> Cheers,
->
-> David
+On Wed, Jul 08, 2026 at 10:29:37AM +0800, Binbin Wu wrote:
+> Use the validated CPUID entry count when parsing CPUID data for
+> KVM_TDX_INIT_VM.
+> 
+> tdx_td_init() first reads user_data->cpuid.nent to size the flexible
+> kvm_tdx_init_vm copy.  The copied structure also contains cpuid.nent, and
+> that field can differ from the value used to size the allocation if
+> userspace modifies the input concurrently.  setup_tdparams_cpuids() later
+> passes init_vm->cpuid.nent to kvm_find_cpuid_entry2(), which uses it as
+> the array bound for the copied entries.
+> 
+> Overwrite the copied nent with the validated count so CPUID parsing is
+> bounded by the number of entries actually copied.
+> 
+> Fixes: 0bd0a4a1428b ("KVM: TDX: Replace kmalloc + copy_from_user with memdup_user in tdx_td_init()")
+> Reported-by: Sashiko:gemini-3.1-pro-preview
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Binbin Wu <binbin.wu@linux.intel.com>
+> ---
+>  arch/x86/kvm/vmx/tdx.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+> index ffe9d0db58c5..b658b03e7750 100644
+> --- a/arch/x86/kvm/vmx/tdx.c
+> +++ b/arch/x86/kvm/vmx/tdx.c
+> @@ -2802,6 +2802,12 @@ static int tdx_td_init(struct kvm *kvm, struct kvm_tdx_cmd *cmd)
+>  	if (IS_ERR(init_vm))
+>  		return PTR_ERR(init_vm);
+>  
+> +	/*
+> +	 * Use the validated entry count, as user_data->cpuid.nent may have
+> +	 * changed.
+> +	 */
+> +	init_vm->cpuid.nent = nr_user_entries;
+> +
 
-Agree with everything David said :)
+Maybe it would be better to check for a mismatch and return -EINVAL?
 
-Patch looks good with changes David suggested applied, so feel free to add my
-tag to v2 alongside David's:
+	if (init_vm->cpuid.nent != nr_user_entries) {
+		ret = -EINVAL;
+		goto out;
+	}
 
-Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+That would make the mismatch explicit instead of silently accepting an
+inconsistent userspace snapshot.
 
-Cheers, Lorenzo
+>  	if (memchr_inv(init_vm->reserved, 0, sizeof(init_vm->reserved))) {
+>  		ret = -EINVAL;
+>  		goto out;
+> 
+> base-commit: 50406d35f5635e1cc523e61409d57e851b5f5df8
+> -- 
+> 2.46.0
+> 
 
