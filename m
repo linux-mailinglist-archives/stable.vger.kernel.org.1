@@ -1,197 +1,223 @@
-Return-Path: <stable+bounces-272673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272667-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id /uPaFpdyTmrYMwIAu9opvQ
-	(envelope-from <stable+bounces-272673-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 17:53:59 +0200
+	id uFBaJ/xqTmpBMQIAu9opvQ
+	(envelope-from <stable+bounces-272667-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 17:21:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B72272850B
-	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 17:53:58 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B662727EB3
+	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 17:21:32 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=intel.com header.s=Intel header.b=A9uHYFTp;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272673-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-272673-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ndT9M2GA;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272667-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272667-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 997CA31CA4D0
-	for <lists+stable@lfdr.de>; Wed,  8 Jul 2026 15:23:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DE5A23103017
+	for <lists+stable@lfdr.de>; Wed,  8 Jul 2026 15:10:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B52F93B71AA;
-	Wed,  8 Jul 2026 15:23:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ABC8430799;
+	Wed,  8 Jul 2026 15:05:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBF6F439354;
-	Wed,  8 Jul 2026 15:23:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79B0140928F
+	for <stable@vger.kernel.org>; Wed,  8 Jul 2026 15:05:33 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783524217; cv=none; b=Bsx/E2pplU06JP+UBmRw88HrbBil2gsvmpwRTyTQaJ8INwprTP7zBuh29KoM7Uewh4wPd/ze+Gz90bwNg/Q+pwD2E33g6St8SOBsgSui7Iguk58a+B6WAtsbKnQuna5axLZZO/BKgQ1x0XpVg+T5bb2NpIGC4Y6HYKJqIYr0oM8=
+	t=1783523134; cv=none; b=icikIYm6Fx2gBKtiWoKBDMnq4NtcYcGyxI/zohC03ftdGJ4raJ5Ol47Je8lD7o3rKAIwopGYJpSA1KuN+rNA4jA6S4yzSlAsSgN1ARVMaAvDnShl3o65Z2yLWKzU1QoZbivNZhYHalT88U+Nop1XmGr6VWJ5YJSQrYs+70EehVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783524217; c=relaxed/simple;
-	bh=2bHyd0HYt0l7hyE2ucHxpvOuK+AjtrhAl7AvVaHul+w=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ora54e8hPlzg47O9Pl1sCTvQfOK1xDXq7EMU8ob9h9Y0gNE4T/z/ppM6Ab89Cjn0Rc/VnbG9Yv9NgEjVsJRjKCOY9/azCtf6CLMMBNUkMIhiSkk4AmfNXj4vdRKkApc6sruqWModVmrMzLbFQ9hWwzJ7AG3NmSwLLg96vxs2yy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=A9uHYFTp; arc=none smtp.client-ip=192.198.163.11
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1783524216; x=1815060216;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:to:cc;
-  bh=2bHyd0HYt0l7hyE2ucHxpvOuK+AjtrhAl7AvVaHul+w=;
-  b=A9uHYFTp8tq9NJ8IsMPrrXqBeiZtWGY6pBIJkJgqp3RG5/5C9mA0474j
-   hWbodNoU9io6HPXABaNb9tbUnvJH2+XNQ4D1lCUW9KHj/GKOYnGpiyeGV
-   g+kNcBzfCHixA8dmKgnVz+TEUiWAzQdZRwTMdCvd99dwWVqHl7Mcqe2MH
-   /L8UGpWIT4xkqy69dYcnPa3p/1IG1RORm1qxXuBglI/pH4grfyAJVi2GM
-   MavEb3YKqVm9pJ6uJwwfHG8rYaJHP37T63iR/B2qYv6hQ0vJDX9mm92Q4
-   2rWb2c8n0pgE1qPi3MYMO5fDIa5raUBY4GVH/CKkQpFLcrhDzPMFOmN5W
-   g==;
-X-CSE-ConnectionGUID: qPifkGHKR1GsIUxDXiIjqQ==
-X-CSE-MsgGUID: e3b9HfHNQnaBzXKujf1IXw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="94795910"
-X-IronPort-AV: E=Sophos;i="6.25,153,1779174000"; 
-   d="scan'208";a="94795910"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2026 08:23:35 -0700
-X-CSE-ConnectionGUID: v7cevtXwQgSkrAfmoaX+cQ==
-X-CSE-MsgGUID: wxWuiIpTQsWxdUN/fWviSw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,153,1779174000"; 
-   d="scan'208";a="278710205"
-Received: from sannilnx-dsk.jer.intel.com (HELO [127.0.1.1]) ([10.12.231.107])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2026 08:23:32 -0700
-From: Alexander Usyskin <alexander.usyskin@intel.com>
-Date: Wed, 08 Jul 2026 18:00:17 +0300
-Subject: [PATCH] drm/xe/nvm: fix writable override for CRI
+	s=arc-20240116; t=1783523134; c=relaxed/simple;
+	bh=1yVTfUcNgUS1ulpZLy9An3ShkB5C76Jexu6G3Gsalxw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=KXBp5zojNqviZ3RPBsS/T9H0xcdaI7vUywwqP0axQPQxZMWc/nSzFho2HY+dtGr/1x4TZjEsR8l6sOWPmC0xZP7spbpLwp9tcMrrwtq3fBzfAWRmDPdBufkkeM5dWYtyxqiMrHGJVJamMxGFkMsuJrS9ybt/umccIjtoTm8O0+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ndT9M2GA; arc=none smtp.client-ip=209.85.219.47
+Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-8f18d92172aso10147916d6.2
+        for <stable@vger.kernel.org>; Wed, 08 Jul 2026 08:05:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783523132; x=1784127932; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=pLVhwAX9nNwgl4ODyEb98lq7vMVDHRccpj+VTBcaPiE=;
+        b=ndT9M2GAdDvMjNrlwqhX1E1vFOrOuj8cA9mAkJ0LkTfw+Z5Uvrp3GQLD4ORrcJ5E27
+         HCiwQqzd66Z5Zgr6fWX0b/YZaG7p97YWepKs0RVwhL5sBFvgJ1CkBIskvr0Lhy/m2J7N
+         BRhIB3IdNocAjs6QE+C6/Y/BDJcNkxhwxDYkIUd+EEw1sxURSVMnamlzImNbhjgtbcDQ
+         pEHA+F9viCUDUlyCLKf61ax9w9q6bX+eHU5rHubwsxuoTXZIbDf7+az5zG843tPooxZw
+         1cHrfrJHll2MxXTEamDzwNVNk5W/aQYVuHGJANMScmN3heWZS5uR1GtpeaJKadUqVOXm
+         iLCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783523132; x=1784127932;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=pLVhwAX9nNwgl4ODyEb98lq7vMVDHRccpj+VTBcaPiE=;
+        b=aXIFeLUG0TL/ofLUxWAZOnhDSmMV1S5LJ7+BWpaCM9oWD1yjiFLolbrCDdg32ZXb1l
+         0gxcS3jM0dlL0AXO9f3XNHC5Gsbiafh/bFdhS2jgfLQFWEm635CfoJXi58Ti0CmxLKJO
+         argW9hWf6FbTt77mSikM1m0QOqcnQWr9Pqs99LX6AQ6hP1vlvjTzx9CatcErqQ8wWZRu
+         rs9JTfgU3DOPdqzrS6QryyKI+Qzwdw18BE3LPsismJeIxZNBJ3EJFFCmpQNEolgS/Sdj
+         SOUieWa3cqXqqWw4oSoDAPe5r5ApWrveFFJW2HM/jbUgJRVhvnmHwjiKbvhGAvRnYnuz
+         zegw==
+X-Gm-Message-State: AOJu0YwLeZC4jVRcww6MtyNNTEOLpTK61whvJ7HozNOKI91IhyWV0gYG
+	JXLU9Mnx0whIGaaqN6uR/GJTys/CrhJHSgzqGlis2bOUScjuGMU/CUJNFNldU0Ee
+X-Gm-Gg: AfdE7clHdOpP9nIk1lWlN16V8cuCsQlVzQNVTkS5pioCQdKreX3N9XyesdUAYCU8Dwz
+	qGgaAov6fA6LKIlx/Remhg5SSZ4Cj1ZlWSUfIWSgs7jJFbBcPchgpSRgVuvWfRJlTr0REq0pirM
+	zA+77/DC7Hy34lDQTxED9c7LfdaQOfZWbtRZA0v0nlSCb5DgtlxzE3bNYkFByWo7yyBbZkvMEXB
+	QVTKYs5EkxEAr2iRh3rUIHIt7afNIGLjFpye1I692o/uGGCMWJGnI4gEU8kSFYx1lJD++xrUbGD
+	gXycCEaAA2vZ7APlyLZ3bKE8l0utqVA0s/gsTPnVe+2KYv3504+p9NmlXaaDoA67hiJl1WxSUBb
+	MzMsKozeFoyuR5DoUz7E56MzM5Inxl2RUod5rsE5Bo3++kz3WB96YOzNBswxf7qU2oAhaix6J6Y
+	eMDLcRltWwePJFxiKQKc0ywTHncrOHHrJ1g5gw9yVEEjqZEkCYluxkL2ctGND42otq3yeo6oZpF
+	iLbsHdNceH912Jq2NXbFqfNqu93RvA89Ik/jvYvB78f4LBCgs38whk=
+X-Received: by 2002:a05:6214:e87:b0:8ee:e686:1b24 with SMTP id 6a1803df08f44-8fec2a48035mr32916256d6.45.1783523130869;
+        Wed, 08 Jul 2026 08:05:30 -0700 (PDT)
+Received: from sm-sl16-1.lab-skae.tower-research.com (static-71-183-126-99.nycmny.fios.verizon.net. [71.183.126.99])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8f4722ca4c6sm185022976d6.39.2026.07.08.08.05.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Jul 2026 08:05:29 -0700 (PDT)
+From: Sid Kumar <sidkumar1@gmail.com>
+To: stable@vger.kernel.org
+Cc: Keenan Dong <keenanat2000@gmail.com>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Sid Kumar <sidkumar1@gmail.com>
+Subject: [PATCH 5.15.y] rtmutex: Use waiter::task instead of current in remove_waiter()
+Date: Wed,  8 Jul 2026 11:05:27 -0400
+Message-ID: <20260708150527.3212183-1-sidkumar1@gmail.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <2026050433-granular-zookeeper-b705@gregkh>
+References: <2026050433-granular-zookeeper-b705@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260708-cri_nvm_fdo_flip-v1-1-792373667334@intel.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MTQqAIBBA4avErBMs+6OrREjpWAOloiCBdPek5
- bd4L0PEQBhhrjIETBTJ2YKmrkCdmz2QkS6GlrcDH/nEVCBp0y2NdtJc5JkQYu+7HhutJyiZD2j
- o+ZfL+r4fclTRvGIAAAA=
-X-Change-ID: 20260708-cri_nvm_fdo_flip-333b545e1dd8
-To: Matthew Brost <matthew.brost@intel.com>, 
- =?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
- Rodrigo Vivi <rodrigo.vivi@intel.com>, David Airlie <airlied@gmail.com>, 
- Simona Vetter <simona@ffwll.ch>
-Cc: intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- Alexander Usyskin <alexander.usyskin@intel.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1783522843; l=2075;
- i=alexander.usyskin@intel.com; s=20260315; h=from:subject:message-id;
- bh=2bHyd0HYt0l7hyE2ucHxpvOuK+AjtrhAl7AvVaHul+w=;
- b=u69QQyE7bZIM7sHe+PyjKm6pWbCkMTCF227z8KfKfdORYwtCWqsrtIbSe48v65lka92Q8wfz+
- 5Zjzil3vWjOBuedkUx3D3Y2Mq1cPazPHNEaOQ64EwJK1QBlwWFX1yef
-X-Developer-Key: i=alexander.usyskin@intel.com; a=ed25519;
- pk=X+qoF/nFCdDOV04IForWSxnkyoCAbUE10egZi6PSfcU=
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-5.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-272673-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:matthew.brost@intel.com,m:thomas.hellstrom@linux.intel.com,m:rodrigo.vivi@intel.com,m:airlied@gmail.com,m:simona@ffwll.ch,m:intel-xe@lists.freedesktop.org,m:dri-devel@lists.freedesktop.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:alexander.usyskin@intel.com,s:lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[alexander.usyskin@intel.com,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[intel.com,linux.intel.com,gmail.com,ffwll.ch];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FREEMAIL_CC(0.00)[gmail.com,lzu.edu.cn,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-272667-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:keenanat2000@gmail.com,m:yuantan098@gmail.com,m:yifanwucs@gmail.com,m:tomapufckgml@gmail.com,m:bird@lzu.edu.cn,m:tglx@kernel.org,m:sidkumar1@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[sidkumar1@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alexander.usyskin@intel.com,stable@vger.kernel.org];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sidkumar1@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:from_mime,intel.com:email,intel.com:mid,intel.com:dkim,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5B72272850B
+X-Rspamd-Queue-Id: 0B662727EB3
 
-The witable override should be set when FDO_MODE bit is enabled.
-Fix the comparison to distingush this case from legacy systems
-where bit should be disabled to have override.
+From: Keenan Dong <keenanat2000@gmail.com>
 
+remove_waiter() is used by the slowlock paths, but it is also used for
+proxy-lock rollback in rt_mutex_start_proxy_lock() when invoked from
+futex_requeue().
+
+In the latter case waiter::task is not current, but remove_waiter()
+operates on current for the dequeue operation. That results in several
+problems:
+
+  1) the rbtree dequeue happens without waiter::task::pi_lock being held
+
+  2) the waiter task's pi_blocked_on state is not cleared, which leaves a
+     dangling pointer primed for UAF around.
+
+  3) rt_mutex_adjust_prio_chain() operates on the wrong top priority waiter
+     task
+
+Use waiter::task instead of current in all related operations in
+remove_waiter() to cure those problems.
+
+[ tglx: Fixup rt_mutex_adjust_prio_chain(), add a comment and amend the
+  	changelog ]
+
+[ sidk: Replace scoped_guard() macro with raw spinlock operations for
+	5.15]
+
+Fixes: 8161239a8bcc ("rtmutex: Simplify PI algorithm and make highest prio task get lock")
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Keenan Dong <keenanat2000@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
 Cc: stable@vger.kernel.org
-Fixes: 9dde74fd9e65 ("drm/xe/nvm: enable cri platform")
-Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
+(cherry picked from commit 3bfdc63936dd4773109b7b8c280c0f3b5ae7d349)
+Signed-off-by: Sid Kumar <sidkumar1@gmail.com>
 ---
- drivers/gpu/drm/xe/xe_nvm.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ kernel/locking/rtmutex.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_nvm.c b/drivers/gpu/drm/xe/xe_nvm.c
-index 33487e91f366..d50ee414e83e 100644
---- a/drivers/gpu/drm/xe/xe_nvm.c
-+++ b/drivers/gpu/drm/xe/xe_nvm.c
-@@ -60,35 +60,39 @@ static bool xe_nvm_writable_override(struct xe_device *xe)
- 	struct xe_mmio *mmio = xe_root_tile_mmio(xe);
- 	bool writable_override;
- 	struct xe_reg reg;
--	u32 test_bit;
-+	u32 test_bit, test_val;
+diff --git a/kernel/locking/rtmutex.c b/kernel/locking/rtmutex.c
+index cf72ef77bfe7..f79c9286c7c0 100644
+--- a/kernel/locking/rtmutex.c
++++ b/kernel/locking/rtmutex.c
+@@ -1500,20 +1500,23 @@ static bool rtmutex_spin_on_owner(struct rt_mutex_base *lock,
+  *
+  * Must be called with lock->wait_lock held and interrupts disabled. It must
+  * have just failed to try_to_take_rt_mutex().
++ *
++ * When invoked from rt_mutex_start_proxy_lock() waiter::task != current !
+  */
+ static void __sched remove_waiter(struct rt_mutex_base *lock,
+ 				  struct rt_mutex_waiter *waiter)
+ {
+ 	bool is_top_waiter = (waiter == rt_mutex_top_waiter(lock));
+ 	struct task_struct *owner = rt_mutex_owner(lock);
++	struct task_struct *waiter_task = waiter->task;
+ 	struct rt_mutex_base *next_lock;
  
- 	switch (xe->info.platform) {
- 	case XE_CRESCENTISLAND:
- 		reg = PCODE_SCRATCH(0);
--		test_bit = FDO_MODE;
-+		test_val = test_bit = FDO_MODE;
- 		break;
- 	case XE_BATTLEMAGE:
- 		reg = HECI_FWSTS2(DG2_GSC_HECI2_BASE);
- 		test_bit = HECI_FW_STATUS_2_NVM_ACCESS_MODE;
-+		test_val = 0;
- 		break;
- 	case XE_PVC:
- 		reg = HECI_FWSTS2(PVC_GSC_HECI2_BASE);
- 		test_bit = HECI_FW_STATUS_2_NVM_ACCESS_MODE;
-+		test_val = 0;
- 		break;
- 	case XE_DG2:
- 		reg = HECI_FWSTS2(DG2_GSC_HECI2_BASE);
- 		test_bit = HECI_FW_STATUS_2_NVM_ACCESS_MODE;
-+		test_val = 0;
- 		break;
- 	case XE_DG1:
- 		reg = HECI_FWSTS2(DG1_GSC_HECI2_BASE);
- 		test_bit = HECI_FW_STATUS_2_NVM_ACCESS_MODE;
-+		test_val = 0;
- 		break;
- 	default:
- 		drm_err(&xe->drm, "Unknown platform\n");
- 		return true;
- 	}
+ 	lockdep_assert_held(&lock->wait_lock);
  
--	writable_override = !(xe_mmio_read32(mmio, reg) & test_bit);
-+	writable_override = (xe_mmio_read32(mmio, reg) & test_bit) == test_val;
- 	if (writable_override)
- 		drm_info(&xe->drm, "NVM access overridden by jumper\n");
- 	return writable_override;
-
----
-base-commit: 8cdeaa50eae8dad34885515f62559ee83e7e8dda
-change-id: 20260708-cri_nvm_fdo_flip-333b545e1dd8
-
-Best regards,
+-	raw_spin_lock(&current->pi_lock);
++	raw_spin_lock(&waiter_task->pi_lock);
+ 	rt_mutex_dequeue(lock, waiter);
+-	current->pi_blocked_on = NULL;
+-	raw_spin_unlock(&current->pi_lock);
++	waiter_task->pi_blocked_on = NULL;
++	raw_spin_unlock(&waiter_task->pi_lock);
+ 
+ 	/*
+ 	 * Only update priority if the waiter was the highest priority
+@@ -1549,7 +1552,7 @@ static void __sched remove_waiter(struct rt_mutex_base *lock,
+ 	raw_spin_unlock_irq(&lock->wait_lock);
+ 
+ 	rt_mutex_adjust_prio_chain(owner, RT_MUTEX_MIN_CHAINWALK, lock,
+-				   next_lock, NULL, current);
++				   next_lock, NULL, waiter_task);
+ 
+ 	raw_spin_lock_irq(&lock->wait_lock);
+ }
 -- 
-Alexander Usyskin <alexander.usyskin@intel.com>
+2.52.0
 
 
