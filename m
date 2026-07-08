@@ -1,67 +1,65 @@
-Return-Path: <stable+bounces-272608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272607-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id iimAKKkdTmopDgIAu9opvQ
-	(envelope-from <stable+bounces-272608-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 11:51:37 +0200
+	id 7NqPLpcdTmofDgIAu9opvQ
+	(envelope-from <stable+bounces-272607-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 11:51:19 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20214723E8A
-	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 11:51:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EB3B723E7A
+	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 11:51:19 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b="a7/uLaAd";
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=D6nyRvVp;
 	dmarc=pass (policy=none) header.from=uniontech.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272608-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272608-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272607-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272607-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9AF7430107DC
-	for <lists+stable@lfdr.de>; Wed,  8 Jul 2026 09:50:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4ABEE302AD0A
+	for <lists+stable@lfdr.de>; Wed,  8 Jul 2026 09:50:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C5BB326923;
-	Wed,  8 Jul 2026 09:50:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C9E533BBCB;
+	Wed,  8 Jul 2026 09:50:30 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbgsg1.qq.com (smtpbgsg1.qq.com [54.254.200.92])
+Received: from smtpbgbr1.qq.com (smtpbgbr1.qq.com [54.207.19.206])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A233233948
-	for <stable@vger.kernel.org>; Wed,  8 Jul 2026 09:50:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8E6731D757
+	for <stable@vger.kernel.org>; Wed,  8 Jul 2026 09:50:26 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783504238; cv=none; b=XokGftcINpV8HrvE2FyP1O48kDnsGXwBGpzYson1q5tE7HmemcpiomtjIADbFHEjrKOBemWZdeZoyUjBw9gruLIfdNv3spqYfbEskn+4j8xb6wBIuyVQlMzxMFLgRvwbVoseB818lOb6Ji3cFckkyKPtTwbTDL3eBBsQ2KrBrKQ=
+	t=1783504230; cv=none; b=QGJVVf94cjXVt+eEbLOPzCVvwtVkoh+CVmpS2/8FWrrP+Pnp9e8zL5a+++t+N6jSxvbfAF2U/zw/qFhwZB0jLLWopWIfghyV3XGwkk0pjzzoAMboouM5XKLQEJdoQylkHTCdoGm80NpCcbY95lXL0UPEWG1CpTk06bs1YjzPAMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783504238; c=relaxed/simple;
-	bh=fTKKpGduZnLhb3LZiLH1R6HY0uk1sO7aj/VAOhrTWWM=;
+	s=arc-20240116; t=1783504230; c=relaxed/simple;
+	bh=wvhpOHWqq7MVni/QkoO+h3IQWg7oy2hjmRHMhH7PRPo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=JKK/z3uEhXjZevxmPO1lFFGSMjD4Y+A3uflq7cCxhR+0e8m9AmXDYnE8GcTc8mvnNFro4+PVaeecAr74JGgIEHo1aWjaMEb2nguL18JBAt2+fJxYu4lFtvqNLSUxlcutQKzlY5/q160ZpaBPmwsPpakX/F5jCQ1w5Y4/4/LF0+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=a7/uLaAd; arc=none smtp.client-ip=54.254.200.92
+	 MIME-Version; b=nYlXoTRCgxtJM+wNx8vmJJUO0TvycM5phtQI8dnYQNhM+Qk7Fl+Ha6QaNyZ4/ktTX5qHLkYHVLWo2niCk/8eIzFKl/issQgCDqXitv1XCpVAgK5CnJ6C3BSYNYrtGFrxi61s02Nk/OMr8kfZ8jXQWYZBveoWekZkmvOb/yRBkMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=D6nyRvVp; arc=none smtp.client-ip=54.207.19.206
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1783504190;
-	bh=/bcrOR9j8N4/tQ6USyl/3WauH0y00KM301TgDlkKIDk=;
+	s=onoh2408; t=1783504189;
+	bh=zzCaLGI0qvCalvHjWbifgrSHeHiWep4X3s159hw0lIs=;
 	h=From:To:Subject:Date:Message-Id:MIME-Version;
-	b=a7/uLaAd31HcyOTRNLia4ejnzqqjtftBL5vR1cb1zxrwlh+XHBVU7LK76oKuri2I1
-	 SjHvAb2W3jE7W2DDXLV1I0NUgwMu1N3k2axnEQNZxto/R5JSupyRmXXP/ZPdh4iFsa
-	 7zVzYWwohZJpxzi1Cv9ZgjO3lx9bxJjbqrg12Cqw=
-X-QQ-mid: zesmtpgz3t1783504171tf238f551
-X-QQ-Originating-IP: TPBpY3JrKzBromWo3b1tyyjF94QgSJDr3Gh3cAiaGgI=
+	b=D6nyRvVpHWjT/vyQWkE8at4ep8DXvUuWJ/dKmxKLgJE7pv7LMUVogfMf1DLcRqbZA
+	 +ZMMxMSMWwsgbVjRPGFz7cPxcNmjN99uQ2o1RewQxbHldqlUxBl+owZbtgpv10mejd
+	 v4JtD6u0eqkCsVrzsnQb6LuU76ykJfyuU59H3x0U=
+X-QQ-mid: zesmtpgz3t1783504183t4d3628ba
+X-QQ-Originating-IP: yAEl3bDBkeh72eNUMcyG1x1kAvVUGiQfOqvsJkCNHnI=
 Received: from localhost.localdomain ( [113.57.152.160])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Wed, 08 Jul 2026 17:49:00 +0800 (CST)
+	id ; Wed, 08 Jul 2026 17:49:34 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 5263401670316410863
-EX-QQ-RecipientCnt: 8
+X-BIZMAIL-ID: 14071937880604546317
+EX-QQ-RecipientCnt: 6
 From: Wentao Guan <guanwentao@uniontech.com>
 To: sashal@kernel.org
 Cc: stable@vger.kernel.org,
 	gregkh@linuxfoundation.org,
 	Hangbin Liu <liuhangbin@gmail.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Wentao Guan <guanwentao@uniontech.com>
-Subject: [PATCH 6.6.y 07/11] bonding: use common function to compute the features
-Date: Wed,  8 Jul 2026 17:47:15 +0800
-Message-Id: <20260708094710.27047-8-guanwentao@uniontech.com>
+Subject: [PATCH 6.6.y 08/11] bonding: fix xfrm offload feature setup on active-backup mode
+Date: Wed,  8 Jul 2026 17:47:17 +0800
+Message-Id: <20260708094710.27047-9-guanwentao@uniontech.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20260708094710.27047-1-guanwentao@uniontech.com>
 References: <20260708094710.27047-1-guanwentao@uniontech.com>
@@ -74,30 +72,30 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: zesmtpgz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
-X-QQ-XMAILINFO: OO98jC/ZOxmeoOSx6bij4ArrEmEpAGw7mD3sPONaJXYzHrvIh+LBCe7H
-	nPV3c2c0GUwkdgY1ivbYLjyRtJqAEMtVXsmAHsm+sAx+YjiNnwhdHwMSIY0Xoo+kl2nLN3S
-	nFuk66xdUF1zz2OksczmI4GyvClRdfi2KltU9C6Kb+5eFa7Ls5+OlTUWnOWnqBiBmVouz9C
-	meMrBb53nRhKnMDtqVShca2ogEYKIsqf+SnjmWzsf0siv/+CkueOwxpZMK2vZhvDaY+oP+E
-	dEVMRvd4KeSYSkweRzgOl+n29G/QO98TWiGTkxTILBG4fWSRlCL/hBb+xuxGWHxvo3dEESa
-	3rBQ+sNUdD6k1FsWIRypku0FY8hKvZEolDoyLWAuBEZ65cArNcdtLoM0t+WMhSlaJ9zRtwl
-	6Rfz74BEuS2I3fp13zNChRrhpQjYbO45uayNA1clguFMlASjqyXSEa2WOxl9RQwVcY2QfkP
-	W9LbHs2qSRqc0s3d1D4cKDZGSpHDmnXJHst+agjY8zYsC0xsvvplm9wljY16eZJe46t8b4N
-	ayHLIMdz82h3wwCCEqCOiqhki/Vsi1+d7zPk+HRvUKZkUSKJy3Ht4C7Wc9u8fngCq4jO8ec
-	HcGCbzkivgYne9sR6IBNWU3409Jl2pDsvLi15rTsyXJqpF237o4dyrSIvYF2oBHiv1iwbRh
-	/IRSmyOOjnBl5LbDGj8vgLEsTMDmGl/4lUnknf7tgqoyiCh3MPX2dbBbAynN4b+MPXrogIU
-	3v7q2LUfDbMbKucd9AdEvG784K0ofyeAEUCexlkxw+t6HSbJXLhAK0AQyRPFXcozN/CjGwh
-	GUlQ0B8z/MNE0q0IrhTQy3cmqjJ3lUjUM+s4WztXjzHoGL2CzUfdEBchD2qb9VJyb41AN6d
-	nq1FPCwPxWDTzmXRLktwuEpHBQFYI3KDjjyvjxg69ld5ScaoAqYZv8oeNMGFiiRPxIdDPEQ
-	At8QhSqtBWFnfqBwomcsgrQgumRUX43lA4UBwDFsOMS1rCOqiXf+p6j66bsLvCiSmiNMxgf
-	uwfrNXozp9lqKtBXHboAFliHOW3fmJ0bMToJdL3pVgQR6tu6CRv7TQunHwb+5LIe/uqF4gh
-	P1vRvrjAku6bjOwZQ837jA2ltaS264aqLZeAOeZRL7k4d3EVEwgPjpBjcA6f0z9mZ3yp/sm
-	aCVc
-X-QQ-XMRINFO: Nq+8W0+stu50tPAe92KXseR0ZZmBTk3gLg==
+X-QQ-XMAILINFO: MDSqlvH8sYTtuZTZcnr+HJWiyR+sxp+TgJzsL/x2vMh6jzJTrhkegpZ2
+	inKU1jJRWL0uwt2jB71eqVtcsvkhdcuoXpIU8PgBEz7FVAqz2AeRhPtUHTbslsSCTKXXyzY
+	VI6gCD8kKK0gu+D2hG5PqFYZxlZ7J0nU2F3feP42VTpaq9lRPHFVPCmr5qfXKRR05apwN44
+	fqZL3ulE9WuEOJjyErqigMuengJOCclW54D5AzbZ3uW4uzhvrsbvJHHCU/SrvsceoFDZMO6
+	g2fVQ3u8qFgH7joalkBLVXVIp29QijpCmAhBFPhQIb9hX23GthcJY2/ml11z3+1KxaZWNev
+	6CbKKJRAjvFKybQZYJ3xPKQQcSV7lfUWTyHbwwxMyIPTW8J/BgGO9CSrnAdB0HntYOg3s5a
+	BcxqAMT8ge5I3Zu2OsZi0K8ntR0YPbKwOD+kIsQtDVbVp3GuzgJFrTAB/feTweGrgx2VhX/
+	og848FV4a+ac3ykBZmZ3qwX35lTWOyLzd8NcphkO4OKHvrpJMRl37QN1qmBbdP3Qe1a25kr
+	vqpWjqWHsjpqIfh4X2PvVIo4j+fqG88anS1BD+6pO9ZZQt61OYj9thshJXzvM+RwAmTbTmi
+	FdnA6YRr3hs/dYzMmcoPYxKU0KsZjrjPnx0HxFR4vxW1npqzTRIKvtSae9kF7XCcss0OZ3L
+	zH4XVAvmwbCJJ1mif5ejT3WfU/6qmfpTqwtH3UCzQ9pZBOahwzNkfnwhUVD09s3MWpWYt4Z
+	tGaVlsM58PeVS4E1MbSrYYHXUXZ6gVwxu3nbqTKUiTH+yk2zEmqrXJm7GkdIl8TG+PYId0+
+	Gvsgrx5EQVpAXSI4UhvR0oFhMqUQ54LcDqwHUZb8q/edM/ZRJSmqn+HDh7SWzYftATLyqfc
+	v1ikEGNS6XX8suwJzqbNxN+hFkg+nS3Zuh25KFkRQBpKh9hZiy80PocpPE+fp+NElp6s4QN
+	qVSuAlmQzaeooDcaI/D3toQ8MNqFquBBThcxFnjgZki/0L3TG1pr82aRlAZ3fGAgjwLwJt8
+	oZComYuBsf7LTe4kvO392BYqlbu6C2bzUr0ZscZlswlANKsAuOemQQONZWgsoA+obowR1Rh
+	fvA+bVkvWm4befSzprU+1u4CLbM2qRcaR9g2UbaGx+JMFMVVUUw4uvpFGUNsVx/YMhHKVIk
+	DHwe
+X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
 X-QQ-RECHKSPAM: 0
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[uniontech.com,none];
 	R_DKIM_ALLOW(-0.20)[uniontech.com:s=onoh2408];
@@ -105,199 +103,117 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,linuxfoundation.org,gmail.com,queasysnail.net,nvidia.com,kernel.org,uniontech.com];
-	TAGGED_FROM(0.00)[bounces-272608-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-272607-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:sashal@kernel.org,m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:liuhangbin@gmail.com,m:sd@queasysnail.net,m:jiri@nvidia.com,m:kuba@kernel.org,m:guanwentao@uniontech.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:sashal@kernel.org,m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:liuhangbin@gmail.com,m:pabeni@redhat.com,m:guanwentao@uniontech.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,linuxfoundation.org,gmail.com,redhat.com,uniontech.com];
+	DKIM_TRACE(0.00)[uniontech.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[uniontech.com:+];
-	ALIAS_RESOLVED(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	ALIAS_RESOLVED(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[uniontech.com:from_mime,uniontech.com:email,uniontech.com:mid,uniontech.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,msgid.link:url,nvidia.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,uniontech.com:from_mime,uniontech.com:email,uniontech.com:mid,uniontech.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 20214723E8A
+X-Rspamd-Queue-Id: 2EB3B723E7A
 
 From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit d4fde269a970666a30dd3abd0413273a06dd972d ]
+The active-backup bonding mode supports XFRM ESP offload. However, when
+a bond is added using command like `ip link add bond0 type bond mode 1
+miimon 100`, the `ethtool -k` command shows that the XFRM ESP offload is
+disabled. This occurs because, in bond_newlink(), we change bond link
+first and register bond device later. So the XFRM feature update in
+bond_option_mode_set() is not called as the bond device is not yet
+registered, leading to the offload feature not being set successfully.
 
-Use the new functon netdev_compute_master_upper_features() to compute the bonding
-features.
+To resolve this issue, we can modify the code order in bond_newlink() to
+ensure that the bond device is registered first before changing the bond
+link parameters. This change will allow the XFRM ESP offload feature to be
+correctly enabled.
 
-Note that bond_compute_features() currently uses bond_for_each_slave()
-to traverse the lower devices list, and that is just a macro wrapper of
-netdev_for_each_lower_private(). We use similar helper
-netdev_for_each_lower_dev() in netdev_compute_master_upper_features() to
-iterate the slave device, as there is not need to get the private data.
-
-No functional change intended.
-
+Fixes: 007ab5345545 ("bonding: fix feature flag setting at init time")
 Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Link: https://patch.msgid.link/20251017034155.61990-3-liuhangbin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 950803f72547 ("bonding: fix type confusion in bond_setup_by_slave()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://patch.msgid.link/20250925023304.472186-1-liuhangbin@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Conflicts:
-	drivers/net/bonding/bond_main.c
-(cherry picked from commit c8d250e0a8d61af8799ea5494a88ab7714955bf0)
+	drivers/net/bonding/bond_netlink.c
+(cherry picked from commit 5b66169f6be4847008c0aea50885ff0632151479)
 Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
 ---
- drivers/net/bonding/bond_main.c | 99 ++-------------------------------
- 1 file changed, 4 insertions(+), 95 deletions(-)
+ drivers/net/bonding/bond_main.c    |  2 +-
+ drivers/net/bonding/bond_netlink.c | 16 +++++++++-------
+ include/net/bonding.h              |  1 +
+ 3 files changed, 11 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 9ba63cf77cf08..4f2c03f52a310 100644
+index 4f2c03f52a310..8c156f71c7066 100644
 --- a/drivers/net/bonding/bond_main.c
 +++ b/drivers/net/bonding/bond_main.c
-@@ -1468,97 +1468,6 @@ static netdev_features_t bond_fix_features(struct net_device *dev,
- 	return features;
+@@ -4260,7 +4260,7 @@ void bond_work_init_all(struct bonding *bond)
+ 	INIT_DELAYED_WORK(&bond->slave_arr_work, bond_slave_arr_handler);
  }
  
--#define BOND_VLAN_FEATURES	(NETIF_F_HW_CSUM | NETIF_F_SG | \
--				 NETIF_F_FRAGLIST | NETIF_F_GSO_SOFTWARE | \
--				 NETIF_F_GSO_ENCAP_ALL | \
--				 NETIF_F_HIGHDMA | NETIF_F_LRO)
--
--#define BOND_ENC_FEATURES	(NETIF_F_HW_CSUM | NETIF_F_SG | \
--				 NETIF_F_RXCSUM | NETIF_F_GSO_SOFTWARE | \
--				 NETIF_F_GSO_PARTIAL)
--
--#define BOND_MPLS_FEATURES	(NETIF_F_HW_CSUM | NETIF_F_SG | \
--				 NETIF_F_GSO_SOFTWARE)
--
--#define BOND_GSO_PARTIAL_FEATURES (NETIF_F_GSO_ESP)
--
--
--static void bond_compute_features(struct bonding *bond)
--{
--	netdev_features_t gso_partial_features = BOND_GSO_PARTIAL_FEATURES;
--	unsigned int dst_release_flag = IFF_XMIT_DST_RELEASE |
--					IFF_XMIT_DST_RELEASE_PERM;
--	netdev_features_t vlan_features = BOND_VLAN_FEATURES;
--	netdev_features_t enc_features  = BOND_ENC_FEATURES;
--#ifdef CONFIG_XFRM_OFFLOAD
--	netdev_features_t xfrm_features  = BOND_XFRM_FEATURES;
--#endif /* CONFIG_XFRM_OFFLOAD */
--	netdev_features_t mpls_features  = BOND_MPLS_FEATURES;
--	struct net_device *bond_dev = bond->dev;
--	struct list_head *iter;
--	struct slave *slave;
--	unsigned short max_hard_header_len = ETH_HLEN;
--	unsigned int tso_max_size = TSO_MAX_SIZE;
--	u16 tso_max_segs = TSO_MAX_SEGS;
--
--	if (!bond_has_slaves(bond))
--		goto done;
--
--	vlan_features = netdev_base_features(vlan_features);
--	mpls_features = netdev_base_features(mpls_features);
--
--	bond_for_each_slave(bond, slave, iter) {
--		vlan_features = netdev_increment_features(vlan_features,
--			slave->dev->vlan_features, BOND_VLAN_FEATURES);
--
--		enc_features = netdev_increment_features(enc_features,
--							 slave->dev->hw_enc_features,
--							 BOND_ENC_FEATURES);
--
--#ifdef CONFIG_XFRM_OFFLOAD
--		xfrm_features = netdev_increment_features(xfrm_features,
--							  slave->dev->hw_enc_features,
--							  BOND_XFRM_FEATURES);
--#endif /* CONFIG_XFRM_OFFLOAD */
--
--		gso_partial_features = netdev_increment_features(gso_partial_features,
--								 slave->dev->gso_partial_features,
--								 BOND_GSO_PARTIAL_FEATURES);
--
--		mpls_features = netdev_increment_features(mpls_features,
--							  slave->dev->mpls_features,
--							  BOND_MPLS_FEATURES);
--
--		dst_release_flag &= slave->dev->priv_flags;
--		if (slave->dev->hard_header_len > max_hard_header_len)
--			max_hard_header_len = slave->dev->hard_header_len;
--
--		tso_max_size = min(tso_max_size, slave->dev->tso_max_size);
--		tso_max_segs = min(tso_max_segs, slave->dev->tso_max_segs);
--	}
--	bond_dev->hard_header_len = max_hard_header_len;
--
--done:
--	bond_dev->gso_partial_features = gso_partial_features;
--	bond_dev->vlan_features = vlan_features;
--	bond_dev->hw_enc_features = enc_features | NETIF_F_GSO_ENCAP_ALL |
--				    NETIF_F_HW_VLAN_CTAG_TX |
--				    NETIF_F_HW_VLAN_STAG_TX;
--#ifdef CONFIG_XFRM_OFFLOAD
--	bond_dev->hw_enc_features |= xfrm_features;
--#endif /* CONFIG_XFRM_OFFLOAD */
--	bond_dev->mpls_features = mpls_features;
--	netif_set_tso_max_segs(bond_dev, tso_max_segs);
--	netif_set_tso_max_size(bond_dev, tso_max_size);
--
--	bond_dev->priv_flags &= ~IFF_XMIT_DST_RELEASE;
--	if ((bond_dev->priv_flags & IFF_XMIT_DST_RELEASE_PERM) &&
--	    dst_release_flag == (IFF_XMIT_DST_RELEASE | IFF_XMIT_DST_RELEASE_PERM))
--		bond_dev->priv_flags |= IFF_XMIT_DST_RELEASE;
--
--	netdev_change_features(bond_dev);
--}
--
- static void bond_setup_by_slave(struct net_device *bond_dev,
- 				struct net_device *slave_dev)
+-static void bond_work_cancel_all(struct bonding *bond)
++void bond_work_cancel_all(struct bonding *bond)
  {
-@@ -2311,7 +2220,7 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
+ 	cancel_delayed_work_sync(&bond->mii_work);
+ 	cancel_delayed_work_sync(&bond->arp_work);
+diff --git a/drivers/net/bonding/bond_netlink.c b/drivers/net/bonding/bond_netlink.c
+index 0eaf4b0e06ffb..f771d569524f3 100644
+--- a/drivers/net/bonding/bond_netlink.c
++++ b/drivers/net/bonding/bond_netlink.c
+@@ -596,18 +596,20 @@ static int bond_newlink(struct net *src_net, struct net_device *bond_dev,
+ 			struct nlattr *tb[], struct nlattr *data[],
+ 			struct netlink_ext_ack *extack)
+ {
++	struct bonding *bond = netdev_priv(bond_dev);
+ 	int err;
+ 
+-	err = bond_changelink(bond_dev, tb, data, extack);
+-	if (err < 0)
++	err = register_netdevice(bond_dev);
++	if (err)
+ 		return err;
+ 
+-	err = register_netdevice(bond_dev);
+-	if (!err) {
+-		struct bonding *bond = netdev_priv(bond_dev);
++	netif_carrier_off(bond_dev);
++	bond_work_init_all(bond);
+ 
+-		netif_carrier_off(bond_dev);
+-		bond_work_init_all(bond);
++	err = bond_changelink(bond_dev, tb, data, extack);
++	if (err) {
++		bond_work_cancel_all(bond);
++		unregister_netdevice(bond_dev);
  	}
  
- 	bond->slave_cnt++;
--	bond_compute_features(bond);
-+	netdev_compute_master_upper_features(bond->dev, true);
- 	bond_set_carrier(bond);
+ 	return err;
+diff --git a/include/net/bonding.h b/include/net/bonding.h
+index 0d9c1eb40d12b..8f5507ef5c0da 100644
+--- a/include/net/bonding.h
++++ b/include/net/bonding.h
+@@ -713,6 +713,7 @@ struct bond_vlan_tag *bond_verify_device_path(struct net_device *start_dev,
+ int bond_update_slave_arr(struct bonding *bond, struct slave *skipslave);
+ void bond_slave_arr_work_rearm(struct bonding *bond, unsigned long delay);
+ void bond_work_init_all(struct bonding *bond);
++void bond_work_cancel_all(struct bonding *bond);
  
- 	/* Needs to be called before bond_select_active_slave(), which will
-@@ -2563,7 +2472,7 @@ static int __bond_release_one(struct net_device *bond_dev,
- 		call_netdevice_notifiers(NETDEV_RELEASE, bond->dev);
- 	}
- 
--	bond_compute_features(bond);
-+	netdev_compute_master_upper_features(bond->dev, true);
- 	if (!(bond_dev->features & NETIF_F_VLAN_CHALLENGED) &&
- 	    (old_features & NETIF_F_VLAN_CHALLENGED))
- 		slave_info(bond_dev, slave_dev, "last VLAN challenged slave left bond - VLAN blocking is removed\n");
-@@ -4065,7 +3974,7 @@ static int bond_slave_netdev_event(unsigned long event,
- 	case NETDEV_FEAT_CHANGE:
- 		if (!bond->notifier_ctx) {
- 			bond->notifier_ctx = true;
--			bond_compute_features(bond);
-+			netdev_compute_master_upper_features(bond->dev, true);
- 			bond->notifier_ctx = false;
- 		}
- 		break;
-@@ -6081,7 +5990,7 @@ void bond_setup(struct net_device *bond_dev)
- 	/* Don't allow bond devices to change network namespaces. */
- 	bond_dev->features |= NETIF_F_NETNS_LOCAL;
- 
--	bond_dev->hw_features = BOND_VLAN_FEATURES |
-+	bond_dev->hw_features = MASTER_UPPER_DEV_VLAN_FEATURES |
- 				NETIF_F_HW_VLAN_CTAG_RX |
- 				NETIF_F_HW_VLAN_CTAG_FILTER |
- 				NETIF_F_HW_VLAN_STAG_RX |
+ #ifdef CONFIG_PROC_FS
+ void bond_create_proc_entry(struct bonding *bond);
 -- 
 2.30.2
 
