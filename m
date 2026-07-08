@@ -1,231 +1,183 @@
-Return-Path: <stable+bounces-272729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272731-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id lTdkO1KxTmoSSgIAu9opvQ
-	(envelope-from <stable+bounces-272729-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 22:21:38 +0200
+	id Ve9eBU2yTmpMSgIAu9opvQ
+	(envelope-from <stable+bounces-272731-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 22:25:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85DE772A2A7
-	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 22:21:38 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B91D72A303
+	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 22:25:48 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=bsbernd.com header.s=fm3 header.b=Im1xIQ19;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="F Ay+AMO";
-	dmarc=pass (policy=none) header.from=bsbernd.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272729-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-272729-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=fyErrHMx;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272731-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-272731-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 042693017BA4
-	for <lists+stable@lfdr.de>; Wed,  8 Jul 2026 20:21:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 242433030B13
+	for <lists+stable@lfdr.de>; Wed,  8 Jul 2026 20:23:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF0DD2DAFBD;
-	Wed,  8 Jul 2026 20:21:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60C2631CA4E;
+	Wed,  8 Jul 2026 20:23:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from fout-b4-smtp.messagingengine.com (fout-b4-smtp.messagingengine.com [202.12.124.147])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42F492DF126;
-	Wed,  8 Jul 2026 20:21:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABB353822A5
+	for <stable@vger.kernel.org>; Wed,  8 Jul 2026 20:23:14 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783542096; cv=none; b=DDUReG1RYrMkqpcvcY6hq9es2YTSp0UIHJB4hcYq34uzfEsoFg8ICTUvK2DP6yxzPJ/qC/Ak1u4EAE+d1lKrMAM0aiaetAUa2cLhcJPPEoGScu8/BEmGMO9duVOwA3P9KO0YifTfudi4D+P5OYDl2/yeDy3Iiw7PjBLtThRpalE=
+	t=1783542196; cv=none; b=WRHoYTL8O8BSQfuAy1xeMpEl5UAF2APNMBhKU+2ST7InOwwfcXVgsZQfIuiv5GVpZtoTb4qO0jOh0LTR5/oD25OUVE6fbw8bm0YF7lvyoafFEFBk2/EG4hPdy9wO2G7KtsAFvvnV/TL2HzmxxkmjKKOa+r8fD8VYPD1do9YP+bI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783542096; c=relaxed/simple;
-	bh=pBZX2MXgPrP+DizSzhrsxz0yUe1s+W6iOyX7A8TS3Ww=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AYjeNaXRfTJ/5k54dQ1p4JKd7cZ34t8sA0n/tA5H2qDbOgzaDgWdziPtUmtc/jfgLRi4YDbHGjtFtWtHOgbjZJKBsHVqkIZX1dH/hVXlgsu5TLKukKwDH01BzlgufTNDPSy41YQpID3VXsogpksrxvpjx/S6wALs5rx0xva/pNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bsbernd.com; spf=pass smtp.mailfrom=bsbernd.com; dkim=pass (2048-bit key) header.d=bsbernd.com header.i=@bsbernd.com header.b=Im1xIQ19; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=FAy+AMOB; arc=none smtp.client-ip=202.12.124.147
-Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
-	by mailfout.stl.internal (Postfix) with ESMTP id 61FEF1D000EE;
-	Wed,  8 Jul 2026 16:21:34 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-09.internal (MEProxy); Wed, 08 Jul 2026 16:21:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bsbernd.com; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1783542094;
-	 x=1783628494; bh=gmwD3lVeqNYGwo8TjC5oUUDspO+jU5k/ynq2bcdx0/E=; b=
-	Im1xIQ19ElNNBfuqxC2zKu/ivUB+fguXrgM9qgojRk2BjV4SoZDWnOiD1AQCuFsM
-	RQ4+bRiEb6SI+rcqEbly6YaPolalSG0okaUGoa0b+tKXZCbYqU2Sm7ONU1Fka8+k
-	072QgVNIRBIb3F8b2fftFCCG3oKBEL23MFncg+efgYBO0BTzkYpPFPoC1R/H9eH3
-	Z1pTm9FIbRhurF5GJV4dLEwSbPcu4XPBace8cfHUbQTtDR7pw1KigIEaKNyluHaP
-	tpXUSMmoTISOmjK9y8zwDTbWaSJTDPGuWiKkz6jhIUHgMSJ8CblhA3MhohYg0cbp
-	WxiuDm7tHGfn1NP9LgxWuw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1783542094; x=
-	1783628494; bh=gmwD3lVeqNYGwo8TjC5oUUDspO+jU5k/ynq2bcdx0/E=; b=F
-	Ay+AMOBxS4IIqDwlVq23bxVzs8Tn2WamaJ48AvUNNxb9KF4dcDF4UVfl78dXd1uq
-	sJ/UgaHYArNCdLH8Rd253RvE6Ze/VH0GkyaDp43hUZ/F+rqrkdMus57BigUvv0LX
-	7/RA3djbM7cwbbcysE/8fWE+rGU0WZ7ifNVNpjSZfr9JgKoOjrKe6FaSDHKyqYLM
-	PweC0ir10Dj8a8Vd/j0EKce+z6PFOjvroVUdRSnND4nvt6Siyv9Fb+EkTJt6sURG
-	IRbh3G/5MlA2QfJYNEL7/6+WAT1TK+jjFHCtKRADhecHKLL+1djgcG+vQB3BP1BI
-	OWFZXPgoZ61vumKoNI1bQ==
-X-ME-Sender: <xms:TbFOarW1lme6emsLZZh07ShOZ9jNbQfspMLltDAy4R2i_L2tuikA1Q>
-    <xme:TbFOarvNRiZ_WZsbn2sybftTQDEvv-fdVRAHxh_IcbnoFUwuVgxUFLhtzQtba_UR0
-    CPP-PZbHNj4zi7-BT0ufBqxX-et2ibi8eFosdEzrq0ipheh>
-X-ME-Received: <xmr:TbFOam6o-ISOBhFUzK5bn6F8pgDUnQW0bWlesy0Yd1m0B0eJDcfnG8RkuOuRGPhdRmOobwZYurnWmpGlXj5n8ny5tAH_-8TI-ihQtIH6qxJWdchtiw>
-X-ME-Proxy-Cause: dmFkZTF9JJwOluGC1DgqUsN2FBoy2mOwV5+xb4JTtrQg7Pvli1ZpkpnakqJHAVJwFgPvP+
-    A2pDXpnnqQI36vslXxzTcXaBFFBlQnzBtFjuj71d+LUQi0lC0kSMzPN4DbKtPCgkREu0lG
-    YzAAr7f8S0mj90egTUJLAbjCP0e72z6Fey8vDR0uYkYEomzvyaD2mkUJQosgyoCVvcy1wv
-    iDAw6CglUp3VyQ8a40yvmIQzL1QNjzcHGmfwYAjZtyBFWst+fvBvVsdEzSyY5rQEsyTRLp
-    J6+P9oeEB6S8wr4unPC+iHdLuDixcWsIi1ub6zKR5nxxhzpWp7t1T1ArqNWyiHm8QJDBsq
-    Ud5/jYrN748/LOYwVKJneBBYOo8CBU30UiztMCxwI4LPUk7bn9BiXNl6QWy6o6yxcBWmCP
-    mT99Ufir3t9K+sAjcMAcP8VOTqCBYQpy6L58+jlwunWiRSTugh+1ceigZCr6j1gwzoYYP7
-    iZlLt/TaOhBSpDHmly5PET1gjUO7g1sKR0RhT1bdaDJXbbQumwYIUhjgqREvUXylvDng84
-    hyRjh4QuK69GtmH9Fggkjdo7E4HQKb773lbBLb1LrGh5QI9UI1wK3+ma5LPTJCw6YQv5I7
-    3G2deOwrj5seqavRG81sJWHG7XG35pGoK/03gM9Z8X0/l7565kkjdFsPzKNQ
-X-ME-Proxy: <xmx:TbFOamQJBQEBqeiICfRTIva0gZCWZtLNMHT6BBdDp0prw0KeXXGoiQ>
-    <xmx:TbFOahv5tNJa189UgLToHdj5btJ3D1EynqtJJVn5mjBws0lrBZ2UvA>
-    <xmx:TbFOag_yLcPKQL-TkBXuSGXd8PXv-CfDbL3CXGyDtPoW3DMtAGZMPQ>
-    <xmx:TbFOaiyVxyLonqcp-oViF81LMSeXOrSdyT9Be2QnJeLeBHweFPe3Wg>
-    <xmx:TrFOatVLopgBVhjlbS7rXvs4Hixb5rJnR872PB-mJL4tjwBqedG2D2ZW>
-Feedback-ID: i5c2e48a5:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 8 Jul 2026 16:21:31 -0400 (EDT)
-Message-ID: <1227637e-c9b6-4bcb-ba91-dfe896e5c310@bsbernd.com>
-Date: Wed, 8 Jul 2026 22:21:30 +0200
+	s=arc-20240116; t=1783542196; c=relaxed/simple;
+	bh=Dh7op/D6y72KqSKFeOFfXlBif3+8TipGaZ3CMsbhypI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=F8lKLsbF7u+lcvYT4qAI2Ot/CifOssQgAk6+IqqGuJZ0eVszRws9Usuye+0jy6vPeSb+8JVYL+exOphLRCX05IFjxBZPgVa+I+E3ZDoxZO0SbI4n46oQ/vjU+T+eKTNDBBIOBb3v9PZ2RR4Dk9KWOdPmI9a0jzP7UgMdOA0rH4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fyErrHMx; arc=none smtp.client-ip=209.85.128.51
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4921eed3fa2so1707035e9.0
+        for <stable@vger.kernel.org>; Wed, 08 Jul 2026 13:23:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783542193; x=1784146993; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=xGPWKT+T/Sc4FxhkqkRyahjTyPdMRSTRlzX+JKb5mbQ=;
+        b=fyErrHMxq4Nekka2qWxh4nwGe2eFKjiklHThFMSod0MFh/dUoyd6TV+87gR8ChvK2B
+         jmjG+WxbKTWRwHFRVnwuKN6sSLjYmUKMaHwStEh8uK7s4Kzsa2ia9PsV4OGL1brRwIQB
+         PN1MzLyUcUverVODQjrOQtAfRI58TwHG93YVPRNaKe3rbeUilRmiR6K5964p4Th/Fh9p
+         Pphz+eTTWxTQQDs3sj99mkq234xxQGp4aLl70UnTUdMdJWc8MXQO2IYvVF7mg8rC5gJL
+         4Zm84nP6hVPXjMbnx3HGzTH9VAROVSoIRzHNMJiIRaD4r46bgJ2lfh1kCTN26/CaAeJc
+         Ekng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783542193; x=1784146993;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=xGPWKT+T/Sc4FxhkqkRyahjTyPdMRSTRlzX+JKb5mbQ=;
+        b=qiIHhIPBV6QbBAnHWAUcjncxYR6qakE1akyeFXI54NRt+g3o3GVx0HE9U1w5xgEWyF
+         wpyTnYbTREsyklu4qDdniHcvhri8pQQZUu5NskbZX6/WebNEsYqN2oX1h/8+E6YV0vzu
+         10lIXvbePm6yV68n1f7fWTirchf+Zu4MRj0nez5uMLHRXX4x+gwjVbeE08m+ivcFhVyl
+         XPpbZcyqm2tU6ZpiKxz8ykp6YIYppcB4f0TgOnUPoDOBvWtsK7hAcSlYUh2P3HXyaRrP
+         +46/2WZrOlghHywxkTSlinPfSv+ejIQBnr5nBeED1yVIh0ySdALHf3HQZv2hUMmKlN0/
+         vsYA==
+X-Forwarded-Encrypted: i=1; AHgh+Rq0OoWzoWh58FJwenJ+Vtn9xti1ro2G1FT7bT3TIcPGmyfjQ6ei7HxMNCFj43+RegvFCXNkJMk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YypgWB+F//w3dEvhC1BQHWtX2nVSjXlZ/S642toYTOmuhrPM6iP
+	cr7sr8bENJn72S/xNMEsvfJXtOMpraJwQbsoEgHP3qhSiL8a6LIVy94q
+X-Gm-Gg: AfdE7clO+ese0QUqtPR6W21pYBtBFxouu4RartaTCpciO8nUjmHddHVFGQ/OSWCqnCp
+	8YX/bfq0JttbPlb8Tbsf5v2Mr6jBosacxHnQg8s6UshsWx5Qp5bhZIBYFCDjVzQrXqMJ3idsGkQ
+	NGlMqbaE5v98TtOolOh3lEwyccNK/T7dp6WIVnW0JWPxgc8Nkder6I9n4a5gV0cf8xz0ZlTYazM
+	0pIye3SRUbhp2m7V5+mdnZ2LCadDh/vk23DLHo2pLyyMDPqLC4IDY5C6nHBXIk920xIf6GxAht9
+	FivudZrTXOytgr6Cje8Xxdq/8da+a/op9B9re0kYkr9nLiqpzqt5N8aO17ylOP91T0gWU8N/tET
+	LvSroRCrKlgRmQhg7317gk+2nS6Zy2t/EV6P0iiz3XMbuRVOwIW9FmEGQif4/cYGEDLg7Z51af6
+	J6dmFrWedkNkXkOw6r3j8ke3Y5YDE9E/CjtTTi7tKcOraVP6DVYQ==
+X-Received: by 2002:a05:600c:528e:b0:492:4363:e7eb with SMTP id 5b1f17b1804b1-493e68f03damr41743525e9.32.1783542193163;
+        Wed, 08 Jul 2026 13:23:13 -0700 (PDT)
+Received: from osama.. ([2a02:908:1b8:2060:2b86:7192:b44e:9f03])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493e5a5d174sm101663785e9.2.2026.07.08.13.23.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Jul 2026 13:23:12 -0700 (PDT)
+From: Osama Abdelkader <osama.abdelkader@gmail.com>
+To: Philipp Zabel <p.zabel@pengutronix.de>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Dmitry Baryshkov <lumag@kernel.org>,
+	dri-devel@lists.freedesktop.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: Osama Abdelkader <osama.abdelkader@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] drm/imx: check parallel-display drm_bridge_attach
+Date: Wed,  8 Jul 2026 22:23:09 +0200
+Message-ID: <20260708202310.12971-1-osama.abdelkader@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260706142732.49397-1-osama.abdelkader@gmail.com>
+References: <20260706142732.49397-1-osama.abdelkader@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] fuse: copy request headers via a stack buffer for
- io-uring
-To: Xiang Mei <xmei5@asu.edu>, Joanne Koong <joannelkoong@gmail.com>,
- djwong@kernel.org, Miklos Szeredi <miklos@szeredi.hu>,
- Kees Cook <kees@kernel.org>, "Gustavo A . R . Silva" <gustavoars@kernel.org>
-Cc: stable@vger.kernel.org, fuse-devel@lists.linux.dev,
- linux-kernel@vger.kernel.org, Pavel Begunkov <asml.silence@gmail.com>,
- Luis Henriques <luis@igalia.com>, Weiming Shi <bestswngs@gmail.com>
-References: <20260707184417.3682270-1-xmei5@asu.edu>
-From: Bernd Schubert <bernd@bsbernd.com>
-Content-Language: fr, en-US, de-DE, ru-RU
-In-Reply-To: <20260707184417.3682270-1-xmei5@asu.edu>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[bsbernd.com,none];
-	R_DKIM_ALLOW(-0.20)[bsbernd.com:s=fm3,messagingengine.com:s=fm2];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-272729-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:xmei5@asu.edu,m:joannelkoong@gmail.com,m:djwong@kernel.org,m:miklos@szeredi.hu,m:kees@kernel.org,m:gustavoars@kernel.org,m:stable@vger.kernel.org,m:fuse-devel@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:asml.silence@gmail.com,m:luis@igalia.com,m:bestswngs@gmail.com,m:asmlsilence@gmail.com,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[asu.edu,gmail.com,kernel.org,szeredi.hu];
-	FORGED_SENDER(0.00)[bernd@bsbernd.com,stable@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,gmail.com,igalia.com];
-	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-272731-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:p.zabel@pengutronix.de,m:maarten.lankhorst@linux.intel.com,m:mripard@kernel.org,m:tzimmermann@suse.de,m:airlied@gmail.com,m:simona@ffwll.ch,m:Frank.Li@nxp.com,m:s.hauer@pengutronix.de,m:kernel@pengutronix.de,m:festevam@gmail.com,m:lumag@kernel.org,m:dri-devel@lists.freedesktop.org,m:imx@lists.linux.dev,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:osama.abdelkader@gmail.com,m:stable@vger.kernel.org,m:osamaabdelkader@gmail.com,s:lists@lfdr.de];
+	FREEMAIL_TO(0.00)[pengutronix.de,linux.intel.com,kernel.org,suse.de,gmail.com,ffwll.ch,nxp.com,lists.freedesktop.org,lists.linux.dev,lists.infradead.org,vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[osamaabdelkader@gmail.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bernd@bsbernd.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[bsbernd.com:+,messagingengine.com:+];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[osamaabdelkader@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,messagingengine.com:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 85DE772A2A7
+X-Rspamd-Queue-Id: 6B91D72A303
 
+imx_pd_bind() ignored the return value of drm_bridge_attach(), so a
+failed attach could still proceed to drm_bridge_connector_init().
 
+Check the return value, as imx-ldb and dw_hdmi-imx already do.
 
-On 7/7/26 20:44, Xiang Mei wrote:
-> The fuse-io-uring transport copies req->in.h out to the ring in
-> fuse_uring_copy_to_ring() and req->out.h back in fuse_uring_commit().
-> Both headers live inside the fuse_request slab object, whose cache
-> (fuse_req_cachep) is created without a usercopy whitelist, so copying
-> them directly to/from userspace trips CONFIG_HARDENED_USERCOPY and
-> panics:
-> 
->   usercopy: Kernel memory exposure attempt detected from SLUB object
->   'fuse_request' (offset 56, size 40)!
->   kernel BUG at mm/usercopy.c:102!
->   RIP: 0010:usercopy_abort+0x6c/0x80
->   Call Trace:
->    __check_heap_object
->    __check_object_size
->    copy_header_to_ring          fs/fuse/dev_uring.c:618
->    fuse_uring_prepare_send
->    fuse_uring_send_in_task
->    ...
->    __do_sys_io_uring_enter
->    entry_SYSCALL_64_after_hwframe
-> 
-> Bounce both headers through an on-stack copy so the usercopy touches
-> stack memory, not the slab object.
-> 
-> Fixes: c090c8abae4b ("fuse: Add io-uring sqe commit and fetch support")
-> Cc: stable@vger.kernel.org
-> Reported-by: Weiming Shi <bestswngs@gmail.com>
-> Assisted-by: Claude:claude-opus-4-8
-> Signed-off-by: Xiang Mei <xmei5@asu.edu>
-> Reviewed-by: Joanne Koong <joannelkoong@gmail.com>
-> ---
-> v2: add: Cc stable and Reviewed-by tags
-> 
->  fs/fuse/dev_uring.c | 12 ++++++++----
->  1 file changed, 8 insertions(+), 4 deletions(-)
-> 
-> diff --git a/fs/fuse/dev_uring.c b/fs/fuse/dev_uring.c
-> index 77c8cec43d9c..0814681eb04b 100644
-> --- a/fs/fuse/dev_uring.c
-> +++ b/fs/fuse/dev_uring.c
-> @@ -744,6 +744,7 @@ static int fuse_uring_copy_to_ring(struct fuse_ring_ent *ent,
->  {
->  	struct fuse_ring_queue *queue = ent->queue;
->  	struct fuse_ring *ring = queue->ring;
-> +	struct fuse_in_header in_header;
->  	int err;
->  
->  	err = -EIO;
-> @@ -765,8 +766,9 @@ static int fuse_uring_copy_to_ring(struct fuse_ring_ent *ent,
->  	}
->  
->  	/* copy fuse_in_header */
-> -	return copy_header_to_ring(ent, FUSE_URING_HEADER_IN_OUT, &req->in.h,
-> -				   sizeof(req->in.h));
-> +	in_header = req->in.h;
-> +	return copy_header_to_ring(ent, FUSE_URING_HEADER_IN_OUT, &in_header,
-> +				   sizeof(in_header));
->  }
->  
->  static int fuse_uring_prepare_send(struct fuse_ring_ent *ent,
-> @@ -871,11 +873,13 @@ static void fuse_uring_commit(struct fuse_ring_ent *ent, struct fuse_req *req,
->  			      unsigned int issue_flags)
->  {
->  	struct fuse_ring *ring = ent->queue->ring;
-> +	struct fuse_out_header out_header;
->  	ssize_t err = -EFAULT;
->  
-> -	if (copy_header_from_ring(ent, FUSE_URING_HEADER_IN_OUT, &req->out.h,
-> -				  sizeof(req->out.h)))
-> +	if (copy_header_from_ring(ent, FUSE_URING_HEADER_IN_OUT, &out_header,
-> +				  sizeof(out_header)))
->  		goto out;
-> +	req->out.h = out_header;
->  
->  	err = fuse_uring_out_header_has_err(&req->out.h, req);
->  	if (err) {
+Fixes: f94b9707a1c9 ("drm/imx: parallel-display: switch to imx_legacy_bridge / drm_bridge_connector")
+Cc: stable@vger.kernel.org
+Signed-off-by: Osama Abdelkader <osama.abdelkader@gmail.com>
+---
+v2:
+- add Fixes and Cc tags
+---
+ drivers/gpu/drm/imx/ipuv3/parallel-display.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Reviewed-by: Bernd Schubert <bernd@bsbernd.com>
+diff --git a/drivers/gpu/drm/imx/ipuv3/parallel-display.c b/drivers/gpu/drm/imx/ipuv3/parallel-display.c
+index eb75827394f8..fd48845877cc 100644
+--- a/drivers/gpu/drm/imx/ipuv3/parallel-display.c
++++ b/drivers/gpu/drm/imx/ipuv3/parallel-display.c
+@@ -210,7 +210,9 @@ static int imx_pd_bind(struct device *dev, struct device *master, void *data)
+ 	if (ret)
+ 		return ret;
+ 
+-	drm_bridge_attach(encoder, bridge, NULL, DRM_BRIDGE_ATTACH_NO_CONNECTOR);
++	ret = drm_bridge_attach(encoder, bridge, NULL, DRM_BRIDGE_ATTACH_NO_CONNECTOR);
++	if (ret)
++		return ret;
+ 
+ 	connector = drm_bridge_connector_init(drm, encoder);
+ 	if (IS_ERR(connector))
+-- 
+2.43.0
+
 
