@@ -1,67 +1,67 @@
-Return-Path: <stable+bounces-272603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272605-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id x+HqCW0dTmoFDgIAu9opvQ
-	(envelope-from <stable+bounces-272603-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 11:50:37 +0200
+	id /a8zKpgdTmogDgIAu9opvQ
+	(envelope-from <stable+bounces-272605-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 11:51:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89455723E49
-	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 11:50:36 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CD34723E7D
+	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 11:51:20 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=PKV7H0qD;
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=T8urphUQ;
 	dmarc=pass (policy=none) header.from=uniontech.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272603-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272603-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272605-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-272605-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D49FA301B910
-	for <lists+stable@lfdr.de>; Wed,  8 Jul 2026 09:49:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 26567301E99B
+	for <lists+stable@lfdr.de>; Wed,  8 Jul 2026 09:49:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FA1C2F7AD2;
-	Wed,  8 Jul 2026 09:49:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B325A33FE2F;
+	Wed,  8 Jul 2026 09:49:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbgau1.qq.com (smtpbgau1.qq.com [54.206.16.166])
+Received: from smtpbgsg2.qq.com (smtpbgsg2.qq.com [54.254.200.128])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7321292B54
-	for <stable@vger.kernel.org>; Wed,  8 Jul 2026 09:49:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06FD02F693B
+	for <stable@vger.kernel.org>; Wed,  8 Jul 2026 09:49:43 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783504171; cv=none; b=J+uk7ua1vr95/REQ/hpeyNZpMQJ7v8M9BfF3kMVm/aaqRZXJZajA/zFpQfbA/ArfvSKnaPBH2BlxONO9s5UPzkkRF7+rUqe1sE5Ej1V9JBCJfDj2DYxXkWqXniqEZi4bNWPICsGaSfB1hNiiwnYzeCtcCYz1tyOwCHDrG35qjIM=
+	t=1783504186; cv=none; b=jfhnUhBV0QUIK8LHzKGToxbSntjycOWdT4kDB2jCwxP5FzeqrGisNuytk6UaWtbq5TvI8mYEL0aJ/EBvUsC7STpYjP/5i19fbgnk5ojQ5Tp9X9dYY07RgtjMFjSYT7g5rI2X1e75qi0e1Q88Ju0Md8AMPBmJNfYO55gkCgluzZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783504171; c=relaxed/simple;
-	bh=kuFxI6zCr4dVGnzCYou53VWrkVBAA208Iv+yWiSAhc4=;
+	s=arc-20240116; t=1783504186; c=relaxed/simple;
+	bh=6ardkB2xZtZgrf6hxvpHJ6U54MUperY47+IWWbD592k=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Wzj4aj6012aBLe6zz5LZategY1qX8mvni+wbHEsJ1KeoYz1G2A4sCSxbimrhDYic/GxRwBqWTEb5Tg4dPj307ot9q5EyL88/LHkTWR8STRgGdfdoIl8KQe6FryZT/etb069mOZFlatRF9P78t03vsPdmddRAlE8D9Qla2WVJMZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=PKV7H0qD; arc=none smtp.client-ip=54.206.16.166
+	 MIME-Version; b=QjcHP2QvnNYCaVCHXQGuJ6rTlBVBUVLSayt5K5aoY6yBK5y6uMzyWjR9hryC05tW7y1aM5xwkBiWF9hKizJI5MOOqpYidLmuRKrCQzuVpJTf+ceOSXsvZkDJn+d7PZhWpECfLqG5Q6ngrBDhufJNEZFWv4/oHUAzrsZJEmbWer0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=T8urphUQ; arc=none smtp.client-ip=54.254.200.128
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
 	s=onoh2408; t=1783504131;
-	bh=/ddKzM3gMm80IOv2mlqZS7PwC2cFb2QASKOWts7w2TI=;
+	bh=6Y/V4rDpx2JwVZpUvlczIS4MCiT5olwMcMBqB6+EmZs=;
 	h=From:To:Subject:Date:Message-Id:MIME-Version;
-	b=PKV7H0qDZRllCF2EhOE7/L7cyTiXaaQ1TxeA8dEcKqvrnBabSMdnWNzMwiprDRL1m
-	 W5XTo24Lp51wZRZaNE7gc1q3eVO/uWneJQjxNG3u8LXyqO0/6JqZ5mb613rtazMneV
-	 NNhMumET6xaSzDUIvzklwMGS/4slDCgwUl/S7aNw=
-X-QQ-mid: zesmtpgz3t1783504112td99ea5de
-X-QQ-Originating-IP: Yx/VzgTY33xSfla6hLCeVqqRMqX3fielqx8gwo+la2o=
+	b=T8urphUQk2j5sLyK+4ei99zP3B1p6XhjvvEmlYX2tPzqH+/yLMSR5WiDX7TRtAIn1
+	 K0cgyxYUbKntefLjSTr0wjC0pmxMbqw9C7BkbNpMYVj8ImjY+M/PYZsfebXlgALWA3
+	 9jENWt51QLGMgJE9r6+1gPm5a8WAJBwbt5cYqa1w=
+X-QQ-mid: zesmtpgz3t1783504124tf32bfb24
+X-QQ-Originating-IP: HxM5PcJSfsaR2lQrnh7C9rtQMs36S949mGEVUyTJguY=
 Received: from localhost.localdomain ( [113.57.152.160])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Wed, 08 Jul 2026 17:48:20 +0800 (CST)
+	id ; Wed, 08 Jul 2026 17:48:34 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 4816621095025621651
+X-BIZMAIL-ID: 8011343679142257779
 EX-QQ-RecipientCnt: 8
 From: Wentao Guan <guanwentao@uniontech.com>
 To: sashal@kernel.org
 Cc: stable@vger.kernel.org,
 	gregkh@linuxfoundation.org,
-	Jianbo Liu <jianbol@nvidia.com>,
-	Boris Pismenny <borisp@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Jay Vosburgh <jv@jvosburgh.net>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Wentao Guan <guanwentao@uniontech.com>
-Subject: [PATCH 6.6.y 04/11] bonding: add ESP offload features when slaves support
-Date: Wed,  8 Jul 2026 17:47:08 +0800
-Message-Id: <20260708094710.27047-5-guanwentao@uniontech.com>
+Subject: [PATCH 6.6.y 05/11] bonding: Correctly support GSO ESP offload
+Date: Wed,  8 Jul 2026 17:47:10 +0800
+Message-Id: <20260708094710.27047-6-guanwentao@uniontech.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20260708094710.27047-1-guanwentao@uniontech.com>
 References: <20260708094710.27047-1-guanwentao@uniontech.com>
@@ -74,25 +74,24 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: zesmtpgz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
-X-QQ-XMAILINFO: MdW1uYX7ZYF9ZaFC4EFdwcmYMjGOu/G9pykAOJxn/SepUOAsYO9i5NuR
-	axFeLZA1HBc6mAyYKHe+6bs/HBPDXVVy3JzPmoh8pQmsFVT1u16fJclKkfF1rXOrina0yMe
-	Gy7Gr9S1ZSN42sfKjMY0AScmHm4t0ozKhsCFsP358ipD5sz/uGdc2gHs58S1QeoNsKh3gR3
-	c2w+HGy+dq6k8zFcRzHboJN2qk8xMRcB61b144f/GAWLxLxkw9oUmdTfFZMMwcgkaaQyuzd
-	SSEEEhNEvKfDz5ksnRYFARhq3y/+mqPNtvryzeB5hwhxWGNP3zjeYOGK+c1LicQfzu2bEpQ
-	KBhp3HnVMxvqPbr4QX37sSzRnOBfRiTtJOAZjzLoVaFVg61tDFN+GwTTHUxR5/NA6DRMWEp
-	ASWBlrNSbPS6ZN/+8y9Q6Nfrf3X2eETFW/+/NCmHcDNPkSyRVTfKL3dA2pNNmFMEstdSldp
-	JTbJ6tCEtgxI7MDOcjZPrA/TW1hEST8xRXS9YSrC8RqXiMzlqJtG277H/6zdQqYgsAOFVBq
-	1+SJksh1S0PIiaEbA8JYIImtPJ2VfqCyMOrBG6gLzrTdf4LlWTC9V0Lu2GngyNOE7j71Q+M
-	oCsbH28x6W1esECO8XKz5OyfVT4qFMT4wY4MmmPQ+pl/xB8tR2WJj0M7K2mjbRf3e7jJ6T3
-	AJYuI3CMY3SszC30hCF9doaCz7FrPGelrxD1V9O6nNeR/b4A9FF6PJvSC1u2ZewRx8mNiLR
-	u3cfISU5LSviudjlcnE2Q8pXar8nuPD+bcZlpCj8+7sU9dI9zFUcs2ULp3anvhhgtQekpsh
-	S64V+PDOHH+roufMVvwpPTfUk42TSD/XShOml9Rf710ums3bSyJNr3xb6vP2CA+zJgjRQXe
-	gkhokcjY0CtSlJzaye53qR60m0DM8StJTteDHmyp/ctxDAwUM4Pg+5uQGSBjDJ99t+eeLqj
-	pBfE8KeYFhlBAgBuf6/kQ3DrqOsWJBNVPLEvhdEy8hZco4AlL6Anhxt6fTGlfS6zyQBjb4B
-	oil8bFHavMvhaGjL7bnjuka2CV4QLTMv5uWzE4iLBxqDkxDr/UJBlclDJPg7odTtOVWAXJS
-	yCAUkdzrC+IOy8nlUOi+59+dGp1zbsoJRhyFW0qgV1bvSHHZaj+cU/5uGAUToy37LGUNY6E
-	WaAd
-X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
+X-QQ-XMAILINFO: NHGFjaVOIMm2xvh4gMutXNY8qML2oQTjpTxahGumC4RMeyNKo7l38C7G
+	AzZdE566Tdfrq++TvAiW08CqOXqp4taqmvAkR2h4uFRE7HZqvN7Pl5ibGhCM8vyHU6Rjhq4
+	lasEDh4zhDWHHei218D7vFnNYn5JQHz1TejiN1nK1ZDmbj848Fv34OdLCN9ClKwvcF/RLXz
+	WNG+Xx3mgZdbd5HEE3Zfq0RgpTTjITmTDy67gpVlH6DC9iRcNQUIve6OPf6ZPPZaebNaaym
+	tZythIrlELb6t3SEnnQZN2twiVf9g3qm9XnxeXd/scznfrElPEFZmxIZkJRVtHZOapws9Ci
+	ZRsj6EaWiRgr2nLssEpoPS4uzUqOuZuaiQyDnuTDXw515i+7IUVqvOPxsNvwrYhTlMw0qfZ
+	3cqqWdeKhK610oYTfpbMcDr2EldPMX07fOGCIK6OmLw31aYgVOgBh8XTIB5F/1F+A63Cw67
+	cEg5Rl3WK2+I73ZjJnRPbnhY3Sh6cPL1x0fZKH6dmY+eOUYY7QZBskkZtTwQC/xG4bvwJ2Q
+	O9OLCjDpWFxBBS/abNbCmeNnd4DOFsqSRQNhTw3fkHURDvxHBSp8z2nD6OryZcosKcYw26c
+	UXqu/ndeWRKfv/HsZVqcFhXp3OKglLvjTcN06EC2NxlC1M0kCR/iVtUTM4uXU9amgW5VNDr
+	QDlJBg5GMYRR5U/T1l8LgWLPc41YYnSM1/WKJBAUiFEzQhiLsSexehjuvH/n4bBlCdACYon
+	UxtWRWKjrzsn+lt+Q+qmFc4ZcWO8d05gxovF5pRv3gEDVth0B/RUFsOm9iRcECxotjsWAyv
+	04h6vu/CBhGPEgdJfgyKtFhvrXprjqWVWtM8WEWOz/1LwwIsUdaAJlrVDRPtKzsgfOXTkyc
+	BeXSA9vuTY3WlC5vYKFOX/+cb/vY2bR5dSWj/8fbKZYAi/yTIb52MigUuwuJhS4GxvPlyzM
+	3lRuVPnqp6haDZN52jwUJ55SmbEkryFHUrtKWxHWIZKqhMUIeGKYaAcPLeoz6MwrW4q9h3O
+	xFyyLewNOBttWcHxRuIMkfnroxmD+cvelGdulyNIgldlcqjgdqP7riRP00fcSmf5QUb6anD
+	b2RsEBQixx+ggJ8vr4AOhM=
+X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
 X-QQ-RECHKSPAM: 0
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-0.66 / 15.00];
@@ -101,20 +100,21 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[uniontech.com,none];
 	R_DKIM_ALLOW(-0.20)[uniontech.com:s=onoh2408];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-272603-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:sashal@kernel.org,m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:jianbol@nvidia.com,m:borisp@nvidia.com,m:tariqt@nvidia.com,m:kuba@kernel.org,m:guanwentao@uniontech.com,s:lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,linuxfoundation.org,nvidia.com,gmail.com,jvosburgh.net,redhat.com,uniontech.com];
+	TAGGED_FROM(0.00)[bounces-272605-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:sashal@kernel.org,m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:cratiu@nvidia.com,m:liuhangbin@gmail.com,m:jv@jvosburgh.net,m:pabeni@redhat.com,m:guanwentao@uniontech.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
@@ -123,66 +123,114 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[8];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[uniontech.com:from_mime,uniontech.com:email,uniontech.com:mid,uniontech.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nvidia.com:email,vger.kernel.org:from_smtp,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[uniontech.com:from_mime,uniontech.com:email,uniontech.com:mid,uniontech.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nvidia.com:email,msgid.link:url,vger.kernel.org:from_smtp,jvosburgh.net:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 89455723E49
+X-Rspamd-Queue-Id: 1CD34723E7D
 
-From: Jianbo Liu <jianbol@nvidia.com>
+From: Cosmin Ratiu <cratiu@nvidia.com>
 
-[ Upstream commit 4861333b42178fa3d8fd1bb4e2cfb2fedc968dba ]
+[ Upstream commit 9e6c4e6b605c1fa3e24f74ee0b641e95f090188a ]
 
-Add NETIF_F_GSO_ESP bit to bond's gso_partial_features if all slaves
-support it, such that ESP segmentation is handled by hardware if possible.
+The referenced fix is incomplete. It correctly computes
+bond_dev->gso_partial_features across slaves, but unfortunately
+netdev_fix_features discards gso_partial_features from the feature set
+if NETIF_F_GSO_PARTIAL isn't set in bond_dev->features.
 
-Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
-Reviewed-by: Boris Pismenny <borisp@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20241105192721.584822-1-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This is visible with ethtool -k bond0 | grep esp:
+tx-esp-segmentation: off [requested on]
+esp-hw-offload: on
+esp-tx-csum-hw-offload: on
+
+This patch reworks the bonding GSO offload support by:
+- making aggregating gso_partial_features across slaves similar to the
+  other feature sets (this part is a no-op).
+- advertising the default partial gso features on empty bond devs, same
+  as with other feature sets (also a no-op).
+- adding NETIF_F_GSO_PARTIAL to hw_enc_features filtered across slaves.
+- adding NETIF_F_GSO_PARTIAL to features in bond_setup()
+
+With all of these, 'ethtool -k bond0 | grep esp' now reports:
+tx-esp-segmentation: on
+esp-hw-offload: on
+esp-tx-csum-hw-offload: on
+
+Fixes: 4861333b4217 ("bonding: add ESP offload features when slaves support")
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
+Acked-by: Jay Vosburgh <jv@jvosburgh.net>
+Link: https://patch.msgid.link/20250127104147.759658-1-cratiu@nvidia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Stable-dep-of: 950803f72547 ("bonding: fix type confusion in bond_setup_by_slave()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-(cherry picked from commit 999fed0236754ea6efbaa1b5304373e7761c8322)
+(cherry picked from commit 00ed3c3ade696ebff6d6ce191f04d2c82eaf2297)
 Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
 ---
- drivers/net/bonding/bond_main.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/net/bonding/bond_main.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
 diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index d200909a75cfe..ec21958babe7d 100644
+index ec21958babe7d..9ba63cf77cf08 100644
 --- a/drivers/net/bonding/bond_main.c
 +++ b/drivers/net/bonding/bond_main.c
-@@ -1484,6 +1484,7 @@ static void bond_compute_features(struct bonding *bond)
+@@ -1474,17 +1474,20 @@ static netdev_features_t bond_fix_features(struct net_device *dev,
+ 				 NETIF_F_HIGHDMA | NETIF_F_LRO)
+ 
+ #define BOND_ENC_FEATURES	(NETIF_F_HW_CSUM | NETIF_F_SG | \
+-				 NETIF_F_RXCSUM | NETIF_F_GSO_SOFTWARE)
++				 NETIF_F_RXCSUM | NETIF_F_GSO_SOFTWARE | \
++				 NETIF_F_GSO_PARTIAL)
+ 
+ #define BOND_MPLS_FEATURES	(NETIF_F_HW_CSUM | NETIF_F_SG | \
+ 				 NETIF_F_GSO_SOFTWARE)
+ 
++#define BOND_GSO_PARTIAL_FEATURES (NETIF_F_GSO_ESP)
++
+ 
+ static void bond_compute_features(struct bonding *bond)
  {
++	netdev_features_t gso_partial_features = BOND_GSO_PARTIAL_FEATURES;
  	unsigned int dst_release_flag = IFF_XMIT_DST_RELEASE |
  					IFF_XMIT_DST_RELEASE_PERM;
-+	netdev_features_t gso_partial_features = NETIF_F_GSO_ESP;
+-	netdev_features_t gso_partial_features = NETIF_F_GSO_ESP;
  	netdev_features_t vlan_features = BOND_VLAN_FEATURES;
  	netdev_features_t enc_features  = BOND_ENC_FEATURES;
  #ifdef CONFIG_XFRM_OFFLOAD
-@@ -1517,6 +1518,9 @@ static void bond_compute_features(struct bonding *bond)
+@@ -1518,8 +1521,9 @@ static void bond_compute_features(struct bonding *bond)
  							  BOND_XFRM_FEATURES);
  #endif /* CONFIG_XFRM_OFFLOAD */
  
-+		if (slave->dev->hw_enc_features & NETIF_F_GSO_PARTIAL)
-+			gso_partial_features &= slave->dev->gso_partial_features;
-+
+-		if (slave->dev->hw_enc_features & NETIF_F_GSO_PARTIAL)
+-			gso_partial_features &= slave->dev->gso_partial_features;
++		gso_partial_features = netdev_increment_features(gso_partial_features,
++								 slave->dev->gso_partial_features,
++								 BOND_GSO_PARTIAL_FEATURES);
+ 
  		mpls_features = netdev_increment_features(mpls_features,
  							  slave->dev->mpls_features,
- 							  BOND_MPLS_FEATURES);
-@@ -1530,6 +1534,11 @@ static void bond_compute_features(struct bonding *bond)
+@@ -1534,12 +1538,8 @@ static void bond_compute_features(struct bonding *bond)
  	}
  	bond_dev->hard_header_len = max_hard_header_len;
  
-+	if (gso_partial_features & NETIF_F_GSO_ESP)
-+		bond_dev->gso_partial_features |= NETIF_F_GSO_ESP;
-+	else
-+		bond_dev->gso_partial_features &= ~NETIF_F_GSO_ESP;
-+
+-	if (gso_partial_features & NETIF_F_GSO_ESP)
+-		bond_dev->gso_partial_features |= NETIF_F_GSO_ESP;
+-	else
+-		bond_dev->gso_partial_features &= ~NETIF_F_GSO_ESP;
+-
  done:
++	bond_dev->gso_partial_features = gso_partial_features;
  	bond_dev->vlan_features = vlan_features;
  	bond_dev->hw_enc_features = enc_features | NETIF_F_GSO_ENCAP_ALL |
+ 				    NETIF_F_HW_VLAN_CTAG_TX |
+@@ -6090,6 +6090,7 @@ void bond_setup(struct net_device *bond_dev)
+ 	bond_dev->hw_features |= NETIF_F_GSO_ENCAP_ALL;
+ 	bond_dev->features |= bond_dev->hw_features;
+ 	bond_dev->features |= NETIF_F_HW_VLAN_CTAG_TX | NETIF_F_HW_VLAN_STAG_TX;
++	bond_dev->features |= NETIF_F_GSO_PARTIAL;
+ #ifdef CONFIG_XFRM_OFFLOAD
+ 	bond_dev->hw_features |= BOND_XFRM_FEATURES;
+ 	/* Only enable XFRM features if this is an active-backup config */
 -- 
 2.30.2
 
