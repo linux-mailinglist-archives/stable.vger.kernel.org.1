@@ -1,186 +1,172 @@
-Return-Path: <stable+bounces-272576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272577-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 1fj6LwcQTmrICQIAu9opvQ
-	(envelope-from <stable+bounces-272576-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 10:53:27 +0200
+	id 2KerAd0PTmq9CQIAu9opvQ
+	(envelope-from <stable+bounces-272577-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 10:52:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C1877235D2
-	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 10:53:27 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6824E7235BB
+	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 10:52:44 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=UDMBMNOM;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272576-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-272576-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=oME0wYFl;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272577-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272577-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4BB0330D98A1
-	for <lists+stable@lfdr.de>; Wed,  8 Jul 2026 08:43:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CDC33303A640
+	for <lists+stable@lfdr.de>; Wed,  8 Jul 2026 08:46:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74563402BA1;
-	Wed,  8 Jul 2026 08:43:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89D7E403B09;
+	Wed,  8 Jul 2026 08:46:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD9AC4028E8
-	for <stable@vger.kernel.org>; Wed,  8 Jul 2026 08:43:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B9F2403147;
+	Wed,  8 Jul 2026 08:46:44 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783500232; cv=none; b=YkOlfQusV/uEqqMO/X3cRsfPMowh/QjYmcorsHIbtSJ3wLPkiMzfGMcvmJZdUUTkqIrzW0EvB7I6rEsIjkjnxmH0zntu2hLOJk9eNy9zo5FMSTCKoi1tpbJB2OimFepdp10yBtZpcwLMVt3GJFcCyrM9rIQF21n0xtG1s9HWH2U=
+	t=1783500406; cv=none; b=X0GkbfT1uqwKydHk2Zs5mByCR+qmpBv6FAuvNV2hxoW6aklJMjIpTQGJJ8cDChg9YMW16NpPxZV2ZAyhZpBU1qXjZUtNyZPKmVBmynbSHXqBaGq0qh2/pTPdCFs6W2QFGahKNkDtWDEnlLEWtYD6+Zy5hmTMXoYIZQIWQdTlP2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783500232; c=relaxed/simple;
-	bh=coXAOqh54O06cdwsWZhAVX1eDRPqTpuYjLzzbMpMqEg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UqLy15IXuG1yhbLpxwxXNjE0Zjdlwt0efLFcPM85d5iu8VA0aPFtwhXYOl3fZMv8snUaEdiVHOzn87+mUhtzidohNpxopfmUoHBWrNEHWY2WgMVoWX8g5EyXZdF2IKaCSugLlBZ5AmMojP7rjlaBSy1xZxcfBuOyCji3M3Z3SIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UDMBMNOM; arc=none smtp.client-ip=209.85.128.44
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-493c2b3dc8bso2385805e9.2
-        for <stable@vger.kernel.org>; Wed, 08 Jul 2026 01:43:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783500229; x=1784105029; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=b4UxBahBQcan7ix1kOENgrscU0vnxasAiMKDV3UuEs4=;
-        b=UDMBMNOMVnZp3WPAkr/cYqLo1epJ83tnVdBe1RShOGemnASAEvwZyP4YKe9AHAcvC0
-         3w32y1qz6f6jevRkCeKbw5nwF3AgCzzUgqXxsBlomG9UgeA/tbJSjyhEL6tPh2WhEuZ5
-         ZOtwcaKn/p9bCze+ZCc7Ozygsxt8APKMiCHg/56+ClrFex5PSIbeqXqMWp6x3qeT/I7B
-         i10teqGs5FnFKmwz+u+CZXdb44BJAZ6oAaUMDXuuxwopQ0rx32es0g4Ec23LqS04SP9X
-         qhhHIjmDiyvHcc88QCpIyava3eMb/cbm210x8S8nVavvxXlKG3dXo87TAjgU4bdkbZHU
-         gS2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783500229; x=1784105029;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=b4UxBahBQcan7ix1kOENgrscU0vnxasAiMKDV3UuEs4=;
-        b=SfqFUyuIaA8JhZwGNv4JrD+FWb/sFU8wo+pa4yuDeC9RMNPJvNZOcsS6YoPpwJFYIN
-         912+B3UZChKMfV3i/ILfghoumYtBeeEJp+rENm9MEivUGzminV+LeO2oUnIpYqN22k6f
-         R0NVmLkn40OwxtP/z/D3pHBsbX7UHiL1hfHlJbypCckA08Egj2bWYOdZ+FVGoNMPvubs
-         br8PlICWg9yCVpwj/CdiIUEp7+meJ4lmEAzhg+sZpP8FHD73Xy4TRBm5YukI+sCB2id8
-         EkRF2jLfSJ6m6kWZrQdW9Z252IAnlJ0oDsdin3kE0eh9Ah6uRa+qJ0gXVH4iPLsaafqa
-         hZFg==
-X-Forwarded-Encrypted: i=1; AHgh+Ros78veetsu8/zZ8V37SU8y/ucDGMPPtCMXbqzUs4Yjpux5N94Ice34K0p2LkcSKmnr6K5eTzI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw+O6i5jMU8d63lU6Tmy0og6xF114HaQonOldhYOxUsTyLS+dlv
-	nAkTvOJL3jAjZlahqahb7Rl6l6OH4+UKEwZ4V6jWtYohM2MMcsp4YjZV
-X-Gm-Gg: AfdE7clR4M66SS1qkY7oNR+7TMajJTLYtCejjf8eojUd5WgD51tThHdmtighZSIR4QA
-	3Y3V6r+Pc1+7VndqcCQkFdLNTX8aDsV+XWBbWr9dQxfV58fG8Z3aTa/x/ARr7Iky1UV2dpOLgLO
-	qIZUE1Cnhm04rWgJYiqzvqy0qdB5gRLgSyxm4QOLErZfSynCnHuSgLeI0KyTbj7V6gYU4lL/eqq
-	pA2CpBfOY4nb5VRz4KOEMtqVn6X4Sq2znONm8XtDMkn4zBDEb4/TffNh8lmMrFxgq8wPHRYClaz
-	pWGkFsEZBnGqtCQdwRBq02JBVh9eOr4ptI0KC/97ybfiO84RiS9T4v3pYB88O/6NQEz1fC75PXF
-	7xq8148+mCsPKut9yxqujQ2L8wNzpD2C8Glkji5ac2u/DCrZcC02lkqBZu1hIKuU/nSf/rictp1
-	OoCC55VAk/tKIoa/sgm96CvCSUZd9K9Dc6gMnwo6EONZwIfsWxG1UO
-X-Received: by 2002:a05:600c:871a:b0:493:bc4a:e7d3 with SMTP id 5b1f17b1804b1-493e68f14a9mr13221615e9.39.1783500228871;
-        Wed, 08 Jul 2026 01:43:48 -0700 (PDT)
-Received: from fedora ([2a02:586:e223:fc00:8acb:cd0c:11d0:f2d2])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47a9de1d8f1sm41581979f8f.3.2026.07.08.01.43.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Jul 2026 01:43:48 -0700 (PDT)
-From: Panagiotis Petrakopoulos <npetrakopoulos2003@gmail.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-staging@lists.linux.dev,
-	Panagiotis Petrakopoulos <npetrakopoulos2003@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] staging: rtl8723bs: fix missing shared-key auth challenge length check
-Date: Wed,  8 Jul 2026 11:43:42 +0300
-Message-ID: <20260708084342.136878-1-npetrakopoulos2003@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	s=arc-20240116; t=1783500406; c=relaxed/simple;
+	bh=Fbewg8IlSiLIPSnMqcAprLKYEH5XxW0tOK6f4frCueo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GZck8/G/wMlWzVJcPKv6Zzdl+a/EtQO5/gt+SWjQ4nEWzAeX6Fq51yJHs7dxiqAsDz1CE24d205u13jm+YpMWFJk2AHbgopzI/UiXe+pGldh53ZMfjiAoht3ILaKOqShWfUCL21iz2LuzFCy96OqA+BqBwnDpB9xKz168ko00qM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oME0wYFl; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E5971F00A3A;
+	Wed,  8 Jul 2026 08:46:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1783500404;
+	bh=svAK2lZFsU7AsL2p9hQwuXCTvpXaJlVGm7SLfZO2KdI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=oME0wYFlgJIO62tUO5ZY2XrP6dzPI7TbVm0i1zuAgisnYJc16UYY0BSlrvWXoa6lt
+	 MeHdUjOJCaA8oURFvdZZ5X6yfR92SptqpgFSe0rDYTIxpdbXRmGK8XgiPRE5ZlBYkP
+	 Jl3wuGE+/VHEyPEf6Xsr1Hrb8NWTwFVGzygL0Pwg=
+Date: Wed, 8 Jul 2026 10:46:41 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: "Jeremy Erazo (Devel Group)" <mendozayt13@gmail.com>
+Cc: stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Marcel Holtmann <marcel@holtmann.org>,
+	Johan Hedberg <johan.hedberg@gmail.com>,
+	Claudia Draghicescu <claudia.rosu@nxp.com>,
+	linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2 6.6.y] Bluetooth: ISO: Copy BASE if service data
+ matches EIR_BAA_SERVICE_UUID
+Message-ID: <2026070801-reconcile-matchbook-eef9@gregkh>
+References: <20260702144207.320421-1-mendozayt13@gmail.com>
+ <20260707220526.271712-1-mendozayt13@gmail.com>
+ <20260707220526.271712-2-mendozayt13@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260707220526.271712-2-mendozayt13@gmail.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [3.84 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[lists.linux.dev,gmail.com,vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-272576-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[npetrakopoulos2003@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:linux-staging@lists.linux.dev,m:npetrakopoulos2003@gmail.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[npetrakopoulos2003@gmail.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-272577-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS(0.00)[m:mendozayt13@gmail.com,m:stable@vger.kernel.org,m:sashal@kernel.org,m:luiz.von.dentz@intel.com,m:marcel@holtmann.org,m:johan.hedberg@gmail.com,m:claudia.rosu@nxp.com,m:linux-bluetooth@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:johanhedberg@gmail.com,s:lists@lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,intel.com,holtmann.org,gmail.com,nxp.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,nxp.com:email,gregkh:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1C1877235D2
+X-Rspamd-Queue-Id: 6824E7235BB
 
-The WEP shared-key authentication handlers use the challenge-text
-element's attacker-controlled length without checking it against the
-fixed 128-byte chg_txt buffer.
+On Tue, Jul 07, 2026 at 10:05:25PM +0000, Jeremy Erazo (Devel Group) wrote:
+> From: Jeremy Erazo <mendozayt13@gmail.com>
+> 
+> commit f4da3ee15de9944482382181329bb6d7335ca003 upstream.
+> 
+> Copy the content of a Periodic Advertisement Report to BASE only if
+> the service UUID is Basic Audio Announcement Service UUID.
+> 
+> [Stable backport rationale]
+> 
+> This fix landed in mainline v6.7 without a Fixes: tag, so the stable
+> autoselect bot never picked it up.  linux-6.6.y HEAD (v6.6.143) still
+> carries the pre-fix code at net/bluetooth/iso.c:1935:
+> 
+> 	if (sk) {
+> 		memcpy(iso_pi(sk)->base, ev3->data, ev3->length);
+> 		iso_pi(sk)->base_len = ev3->length;
+> 	}
+> 
+> ev3->length is __u8 and iso_pi(sk)->base is __u8[BASE_MAX_LENGTH] where
+> BASE_MAX_LENGTH is HCI_MAX_PER_AD_LENGTH(252) - EIR_SERVICE_DATA_LENGTH(4)
+> = 248.  When an attacker within BLE radio range sends an HCI_EV_LE_PER_ADV_REPORT
+> with ev3->length in [249, 255], the memcpy writes 1 to 7 bytes past the
+> buffer into the trailing fields of struct iso_pinfo, including the low
+> bytes of the iso_pi(sk)->conn pointer.  FORTIFY_SOURCE flags the write
+> with "memcpy: detected field-spanning write" but does not block it.
+> 
+> The upstream refactor addresses this by:
+>   1. Filtering via eir_get_service_data() so only the BASE portion of
+>      the PA payload is copied.
+>   2. Bounding the copy with base_len <= sizeof(iso_pi(sk)->base).
+> 
+> Backport notes for 6.6.y:
+>   * eir_get_service_data() is already declared in net/bluetooth/eir.h.
+>   * The header include for eir.h and the EIR_BAA_SERVICE_UUID define
+>     are added here, matching the upstream commit.
+>   * The put_user() addition in iso_sock_getsockopt() that was part of
+>     the same upstream commit is not included; that hunk is a separate
+>     getsockopt correctness fix and is not required for the OOB write
+>     fix (getsockopt(BT_ISO_BASE) is a controlled path that already
+>     validates optlen against sizeof(iso_pi(sk)->base)).  Applying the
+>     getsockopt hunk here would risk a user-visible ABI change on a
+>     stable branch.
+> 
+> Reachability: any host with an ISO listening socket bound as a
+> broadcast sink (LE Audio / Auracast).  No pairing required.
+> 
+> Fixes: 9c0826310bfb ("Bluetooth: ISO: Add support for periodic adv reports processing")
+> Cc: stable@vger.kernel.org # 6.6.y
+> Signed-off-by: Claudia Draghicescu <claudia.rosu@nxp.com>
+> Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+> [jerazo: backport to 6.6.y; add #include "eir.h" and EIR_BAA_SERVICE_UUID define; drop unrelated getsockopt hunk]
 
-In OnAuthClient() the length from rtw_get_ie() - up to 255 - is used
-to perform memcpy() into the 128-byte pmlmeinfo->chg_txt, so a
-malicious AP sending a malformed WLAN_EID_CHALLENGE element can
-overflow/underfill chg_txt by up to 127 bytes. It is reachable over the
-air, before association, during shared-key authentication. In the case
-of an overflow, the driver can write out of bounds. In the case of an
-underfill, the driver can echo stale buffer memory. In OnAuth() a
-similar issue is observed. The driver compares a full 128 bytes
-regardless of the element's length, reading past a shorter element.
+But eir.h was included in the original commit, you added it in a
+different place from the original, why?  Please try to keep changes as
+close to upstream as possible when backporting.
 
-The challenge text is defined to be exactly 128 octets, which is
-already provided as the WLAN_AUTH_CHALLENGE_LEN define; require the
-element to be exactly that length in both handlers.
+Please fix this up and resend.
 
-Fixes: 554c0a3abf21 ("staging: Add rtl8723bs sdio wifi driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Panagiotis Petrakopoulos <npetrakopoulos2003@gmail.com>
----
-Compile-tested only; I do not have RTL8723BS hardware to test the
-shared-key authentication path at runtime. The change only rejects
-challenge elements whose length differs from the spec-mandated 128
-bytes, so conforming peers are unaffected.
+thanks,
 
- drivers/staging/rtl8723bs/core/rtw_mlme_ext.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c b/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
-index a86d6f97cf02..13634d4e83d1 100644
---- a/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
-+++ b/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
-@@ -787,7 +787,7 @@ unsigned int OnAuth(struct adapter *padapter, union recv_frame *precv_frame)
- 			p = rtw_get_ie(pframe + WLAN_HDR_A3_LEN + 4 + _AUTH_IE_OFFSET_, WLAN_EID_CHALLENGE, (int *)&ie_len,
- 					len - WLAN_HDR_A3_LEN - _AUTH_IE_OFFSET_ - 4);
- 
--			if (!p || ie_len <= 0) {
-+			if (!p || ie_len != WLAN_AUTH_CHALLENGE_LEN) {
- 				status = WLAN_STATUS_CHALLENGE_FAIL;
- 				goto auth_fail;
- 			}
-@@ -873,7 +873,7 @@ unsigned int OnAuthClient(struct adapter *padapter, union recv_frame *precv_fram
- 			p = rtw_get_ie(pframe + WLAN_HDR_A3_LEN + _AUTH_IE_OFFSET_, WLAN_EID_CHALLENGE, (int *)&len,
- 				pkt_len - WLAN_HDR_A3_LEN - _AUTH_IE_OFFSET_);
- 
--			if (!p)
-+			if (!p || len != WLAN_AUTH_CHALLENGE_LEN)
- 				goto authclnt_fail;
- 
- 			memcpy(pmlmeinfo->chg_txt, p + 2, len);
--- 
-2.55.0
-
+greg k-h
 
