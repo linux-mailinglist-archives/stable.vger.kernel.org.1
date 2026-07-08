@@ -1,145 +1,127 @@
-Return-Path: <stable+bounces-272674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272675-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 4Uc0OYRxTmpsMwIAu9opvQ
-	(envelope-from <stable+bounces-272674-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 17:49:24 +0200
+	id zpQVOKBxTmp+MwIAu9opvQ
+	(envelope-from <stable+bounces-272675-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 17:49:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34AA172841F
-	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 17:49:24 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92BB272843E
+	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 17:49:52 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272674-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272674-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OxSmhqmm;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272675-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272675-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E660F32A7B85
-	for <lists+stable@lfdr.de>; Wed,  8 Jul 2026 15:24:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CB76E305BD19
+	for <lists+stable@lfdr.de>; Wed,  8 Jul 2026 15:25:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88CD73DD849;
-	Wed,  8 Jul 2026 15:23:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 128083DD521;
+	Wed,  8 Jul 2026 15:25:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A4CD3451AF;
-	Wed,  8 Jul 2026 15:23:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE0CC3806BD;
+	Wed,  8 Jul 2026 15:25:17 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783524237; cv=none; b=YVhdwiFHcWMW6aZ5wXasd/rPG3j6buzETimV3SzjkzYfGN096rEZgZYSLn/fBNWajRRvEljWOxq/7CKWVZqQ8QgSW4yfzAlStLMN8i6/G8zP90rGPOFVLbEUHPV9gEMWdjJcOYlNEW/yrVYYjXkEZKpDBGCo4yCAZbV9Q2nwRCc=
+	t=1783524318; cv=none; b=WbpRlh7KXVbzJZItvFNHG6hOTacCQXf7skcwZpZJuGCx5FJfGFt7fbl/v5SO9iUJ/5AjdszYVUmiGfzxmAqdzluo2R8+dbCnOFqRUf0YK66FeepGTD9+QxqNdDEKnXx2TByQUQn7ssx8riHaSLn31AvJ8ccimloJs5ecyJzWtuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783524237; c=relaxed/simple;
-	bh=9NlGv7j3wYR2B3bsrFkE0C5K5mAsL2M2Y8LZOX+yPfs=;
+	s=arc-20240116; t=1783524318; c=relaxed/simple;
+	bh=L87jY2l1prKZSPErfDYgeIAB7+PKLGOeH4j0f/2+wBg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pbcqDpKAOsuxzkTBgI16AdrUqN/CWpMb4G/minfOzxuxX5DRq0AlSWJO6g93CzGriwMTnFEUyue3xRiy6lJMkDicMI7cQ3UhxKMbHQInthbucYNuzRajezgxRZyqo/qvjc5D8mzvEtkDCEVPMtE54mLxDvuM/GhRiJyOyBgGK/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=strlen.de; arc=none smtp.client-ip=91.216.245.30
-Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
-	id 1884B60E29; Wed, 08 Jul 2026 17:23:53 +0200 (CEST)
-Date: Wed, 8 Jul 2026 17:23:52 +0200
-From: Florian Westphal <fw@strlen.de>
-To: xietangxin <xietangxin@h-partners.com>
-Cc: Pablo Neira Ayuso <pablo@netfilter.org>, Phil Sutter <phil@nwl.cc>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	gaoxingwang <gaoxingwang1@huawei.com>,
-	huyizhen <huyizhen2@huawei.com>, netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net] netfilter: nf_nat_masquerade: recalculate TCP TS
- offset when port is randomized
-Message-ID: <ak5riPx5d3rSG6MG@strlen.de>
-References: <20260629093408.3927103-1-xietangxin@h-partners.com>
- <akKN4cywAsFRdefX@strlen.de>
- <0ad60f06-387e-49bc-9e26-3dcebf182cb4@h-partners.com>
- <akUhid7_3iHovivd@strlen.de>
- <3620a5a9-9ced-4825-9bc4-6950be205749@h-partners.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=eQ4703TgqAWGFcMKEPfq72nlnJB15Kc/hNraK7+pzw5bMygEeTqptlpPmGijnDnu/wDToTiNpaM01KAf8TBB4vApNaeENUHumm8F1taj3WLR2WW2yQJdSYrHPQq7PiOna1sHImJe0RI7MTmWJOIksMbuCt+v3lLo8w8h0odP22M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OxSmhqmm; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 364FA1F000E9;
+	Wed,  8 Jul 2026 15:25:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783524317;
+	bh=5gGRL4ZLOSsaSjp3pYemlf97g5Viwl8WVY4EQX8Vulo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=OxSmhqmm7IaQlngm2h0JCV8Ovw3/X/ZBrA4r5+LHr/uCPJPD4iax9PgDsi5L/fqpp
+	 H/EJEXc/hXXcbmN/szku1BJAexEBl8VHnAVJc2BoSCdyhtTlB1yV/fie+rPzaapo3O
+	 oZXF8UFTulzh/L53dnDCtE9uYln7dsL2DGFUEQFIx/bTKTRoD7jV54+jpwKw2uqsA2
+	 id15yheicImvb2KljsrIOIiDfUEMsDDLPeNiNgrHSAnbknI9HfVqfqiL1g3SwcKuH/
+	 cTbvpZIXXWr7AHaMTUZyQLsfUiTtYXAC9CeYc6ZrbrgZOUbuM8SVwpZFgzmLHxE/ap
+	 j7CXGATz5xxFQ==
+Date: Wed, 8 Jul 2026 08:25:16 -0700
+From: "Darrick J. Wong" <djwong@kernel.org>
+To: Christoph Hellwig <hch@lst.de>
+Cc: cem@kernel.org, stable@vger.kernel.org, linux-xfs@vger.kernel.org
+Subject: Re: [PATCH 1/6] xfs: don't replace the wrong part of the cow fork
+Message-ID: <20260708152516.GG9392@frogsfrogsfrogs>
+References: <178346726054.1271589.14164163317011378817.stgit@frogsfrogsfrogs>
+ <178346726108.1271589.7681324440256265003.stgit@frogsfrogsfrogs>
+ <20260708091220.GA5902@lst.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <3620a5a9-9ced-4825-9bc4-6950be205749@h-partners.com>
+In-Reply-To: <20260708091220.GA5902@lst.de>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.46 / 15.00];
+X-Spamd-Result: default: False [-4.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DMARC_NA(0.00)[strlen.de];
-	FORGED_RECIPIENTS(0.00)[m:xietangxin@h-partners.com,m:pablo@netfilter.org,m:phil@nwl.cc,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:gaoxingwang1@huawei.com,m:huyizhen2@huawei.com,m:netfilter-devel@vger.kernel.org,m:coreteam@netfilter.org,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:hch@lst.de,m:cem@kernel.org,m:stable@vger.kernel.org,m:linux-xfs@vger.kernel.org,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[fw@strlen.de,stable@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	TAGGED_FROM(0.00)[bounces-272674-lists,stable=lfdr.de];
+	FORGED_SENDER(0.00)[djwong@kernel.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-272675-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[fw@strlen.de,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	R_DKIM_NA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[djwong@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,strlen.de:mid,strlen.de:from_mime,h-partners.com:email]
+	RCPT_COUNT_THREE(0.00)[4];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 34AA172841F
+X-Rspamd-Queue-Id: 92BB272843E
 
-xietangxin <xietangxin@h-partners.com> wrote:
-> Thanks for your guidance. I’ve successfully fix the helper location
-> as you suggested, and it works fine for local traffic.
+On Wed, Jul 08, 2026 at 11:12:20AM +0200, Christoph Hellwig wrote:
+> On Tue, Jul 07, 2026 at 10:03:24PM -0700, Darrick J. Wong wrote:
+> >  static inline void
+> >  xrep_cow_replace_mapping(
+> > +	struct xfs_inode	*ip,
+> > +	struct xfs_iext_cursor	*icur,
+> > +	struct xfs_bmbt_irec	*got,
+> > +	struct xfs_bmbt_irec	*rep)
 > 
-> However, I realized that I had completely overlooked the forwarding scenario
-> (where SNAT acts as a middlebox gateway, e.g. Host A -> Gateway B -> Server C).
-> In this gateway scenario, when random-fully is enabled, the test results show
-> a massive performance degradation: the QPS drops from ~19000 down to ~10000.
-
-I don't think the forwarding case is fixable.
-
-Host S could be another NAT gateway, so it could be possible that
-the connections originate from different physical machines and
-timestamps differ due to different clocks, not per-connection
-randomisation.
-
-> Since skb->sk is NULL on the forwarding gateway, my current approach of
-> updating tp->tsoffset in struct tcp_sock cannot be applied here.
-
-Yes. I think the tp->tsoffset recalc is fine to handle local case.
-
-For local case we do know that we're the end host and ts recalc is fine.
-
-> To be honest, I am currently stuck on how to handle this forwarding scenario
-> within the netfilter architecture without adding redundant overhead to the fast path.
+> This looks like something that should sit in xfs_bmap.c (or at
+> least xfs_bmap_util.c) and not in random scrub code.
 > 
-> Could you please give some advice on how the community would prefer to resolve this?
-> For instance, should we look into extending the Conntrack NAT extension to
-> track and adjust the TCP timestamps?
+> And I really wonder how we can get good test coverage for this, including
+> for the original bug that this tries to address.
 
-If we have some guarantee that internal network isn't doing any
-snat at all, then yes, one could implement some TS adjustment
-scheme similar to seqadj extension we already have to deal with
-tcp sequence number adjustments.
+I'll post the debug patch I made that hijacks the errortag knob to make
+it randomly shrink the range passed to mark_cow_range instead of the
+entire iext record.
 
-We'd have to keep state and subtract the offset to get back the
-right tsecr again on reverse direction.
+The original bug that this tries to address was a pile of bug fixes to
+the xfs cow code that you posted for 5.1 that we neglected to backport
+to 4.14, resulting in corruption of the cow fork mappings.
 
-I'm not keen to have something like this, it would breaks PAWS
-as soon as the originating host is itself a nat gateway.
-
-Is this really a problem to begin with?
+--D
 
