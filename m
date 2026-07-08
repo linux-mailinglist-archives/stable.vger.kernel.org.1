@@ -1,101 +1,147 @@
-Return-Path: <stable+bounces-272587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272595-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id W8EiClUXTmrnCwIAu9opvQ
-	(envelope-from <stable+bounces-272587-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 11:24:37 +0200
+	id JNmQDN8YTmqkDAIAu9opvQ
+	(envelope-from <stable+bounces-272595-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 11:31:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFEEE723AA6
-	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 11:24:36 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36E93723C16
+	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 11:31:10 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=lst.de (policy=none);
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272587-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-272587-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=simonwunderlich.de header.s=09092022 header.b=YxAPM70f;
+	dmarc=pass (policy=none) header.from=simonwunderlich.de;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272595-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-272595-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6CB473018AEF
-	for <lists+stable@lfdr.de>; Wed,  8 Jul 2026 09:16:56 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 82317303EE6C
+	for <lists+stable@lfdr.de>; Wed,  8 Jul 2026 09:25:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D2E240A929;
-	Wed,  8 Jul 2026 09:16:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E59440FD9B;
+	Wed,  8 Jul 2026 09:25:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FA0C40913A;
-	Wed,  8 Jul 2026 09:16:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0032840913C;
+	Wed,  8 Jul 2026 09:25:36 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783502200; cv=none; b=EMuVHsav/HAoipOseeiIozn0VGeIyGNJRY7PzsFa5z9SEf9FjM/FSNGg2HMqbhKIZ7evcCu0s1hZUEqOz9IIa+nkNXygwEVUA1nY2TD0EsyRoXmfDSQZnfnJWXCzpZxCTkmrx078okWA5DIQt9dJCH1a1iiDypLUkCwPu28QJ5M=
+	t=1783502739; cv=none; b=jT4ukVxG1yWc+rCepOVBXyYOjBPV4LZYGcnSv7qfr/qd1jPdxHDOuyaN8gQJdtKyjtCxYLFFv/7tN7kA4zLGSguxxj2/Zqd/tUJMXRkw2YS4qnIjxWz5hKLN0HHAyiTKjZ0OgX3fg2rLOCTuCD/cKQs7PjL7+c1x5FmtY8xo6V8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783502200; c=relaxed/simple;
-	bh=aWoJHM2+vZIo96on1TSCXf3EjwOkuqA/GG6hutk2LKY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZtjsQI3rG+PpSKp7NuoMOwfmRTVsnHeCa5tjZ6s4RsntTWaJdNen3ipsRls/QiLzExvwLWQpODpdTBHQTYQZlun9+TIlFE9B2YdqNnQ/dCJwTlJ4NYVJVCSqFrikR2IvdTYvwCCs/uWmDsQ+Q7u9CbQsiEiRBzYpD7qSak+WSfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de; spf=pass smtp.mailfrom=lst.de; arc=none smtp.client-ip=213.95.11.211
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 93E0568B05; Wed,  8 Jul 2026 11:16:36 +0200 (CEST)
-Date: Wed, 8 Jul 2026 11:16:36 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: "Darrick J. Wong" <djwong@kernel.org>
-Cc: hch@lst.de, cem@kernel.org, stable@vger.kernel.org,
-	linux-xfs@vger.kernel.org
-Subject: Re: [PATCH 6/6] xfs: grab rtrmap btree when checking rgsuper
-Message-ID: <20260708091636.GE5902@lst.de>
-References: <178346726054.1271589.14164163317011378817.stgit@frogsfrogsfrogs> <178346726213.1271589.14188309471369607201.stgit@frogsfrogsfrogs>
+	s=arc-20240116; t=1783502739; c=relaxed/simple;
+	bh=Vh4xyjTCbQ8k7s3KHdoOeDrfN9h+Dzh0l/Pu+qYgBV0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=lvBGypBo92F45ELwqoIxfRJAiOZt4MaC5NXj84mB6sKGbL8iKPHs985oREl+spwxdTIs7mp30DVyfhN51wRLW3jqLjEK4/bMnKJyv5Ke8z2pP9uC/veZcqg0hYY7FiRnLNLiEcp1yxQXmueHOBs5lve/Tm+PYmzO0HAoEs71bRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=YxAPM70f; arc=none smtp.client-ip=23.88.38.48
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
+	s=09092022; t=1783502316;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=J5J+tIbRjyAogUs4+BXpxDdI90HGCo95hYrshku0PZg=;
+	b=YxAPM70fqXr0DJvTU/LwJcskGVz/oMIVqoaWY7+4fsEc5eW1IdEHNQs009Srdfo5Bddyma
+	vKPRC0k097WMBy5omhxm3BpMQHahHSLCKNqDtPTTP5w7bb+HzXosN3fwK1QT6/nHnOykwx
+	tsE5sV2bdIOvSyjoeeK04tY3P3evHRhGBM7Ssq2Pf/IwJjhVRNljEUNPcliweNAeLssvDn
+	Y+k/mboC2wT4S8kmUC3vIeTkr2H0HPcewA6qCxUsKI8xkArfhr5oEqWmZGhpsqcmsw30Qj
+	AzQfeeaPV6bQAs8XQviTGNh4/aX9iEvSgoY5xjDMhpqB6nkSo43y9G/MjE8JCQ==
+From: Simon Wunderlich <sw@simonwunderlich.de>
+To: netdev@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	b.a.t.m.a.n@lists.open-mesh.org,
+	Sven Eckelmann <sven@narfation.org>,
+	stable@vger.kernel.org,
+	Sashiko <sashiko-bot@kernel.org>,
+	Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH net 1/9] batman-adv: ensure minimal ethernet header on TX
+Date: Wed,  8 Jul 2026 11:18:13 +0200
+Message-ID: <20260708091821.314516-2-sw@simonwunderlich.de>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260708091821.314516-1-sw@simonwunderlich.de>
+References: <20260708091821.314516-1-sw@simonwunderlich.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <178346726213.1271589.14188309471369607201.stgit@frogsfrogsfrogs>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.36 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[simonwunderlich.de,none];
+	R_DKIM_ALLOW(-0.20)[simonwunderlich.de:s=09092022];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[lst.de : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:djwong@kernel.org,m:hch@lst.de,m:cem@kernel.org,m:stable@vger.kernel.org,m:linux-xfs@vger.kernel.org,s:lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[hch@lst.de,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-272595-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[3];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:netdev@vger.kernel.org,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:b.a.t.m.a.n@lists.open-mesh.org,m:sven@narfation.org,m:stable@vger.kernel.org,m:sashiko-bot@kernel.org,m:sw@simonwunderlich.de,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-272587-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hch@lst.de,stable@vger.kernel.org];
+	FORGED_SENDER(0.00)[sw@simonwunderlich.de,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sw@simonwunderlich.de,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[simonwunderlich.de:+];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	R_DKIM_NA(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,lst.de:from_mime,lst.de:email,lst.de:mid,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,simonwunderlich.de:from_mime,simonwunderlich.de:email,simonwunderlich.de:mid,simonwunderlich.de:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,narfation.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BFEEE723AA6
+X-Rspamd-Queue-Id: 36E93723C16
 
-On Tue, Jul 07, 2026 at 10:04:42PM -0700, Darrick J. Wong wrote:
-> From: Darrick J. Wong <djwong@kernel.org>
-> 
-> LOLLM noticed that we aren't grabbing the rtrmap btree when we check the
-> realtime group superblock.  As a result, none of the cross-referencing
-> checks have ever run.  Fix this.
+From: Sven Eckelmann <sven@narfation.org>
 
-Looks good:
+As documented in commit 8bd67ebb50c0 ("net: bridge: xmit: make sure we have
+at least eth header len bytes"), it is possible by for a local user with
+eBPF TC hook access to attach a tc filter which truncates the packet and
+redirects to an batadv interface. But the code assumes that at least
+ETH_HLEN bytes are available and thus might read outside of the available
+buffer.
 
-Reviewed-by: Christoph Hellwig <hch@lst.de>
+The batadv_interface_tx() must therefore always check itself if enough data
+is available for the ethernet header and don't rely on min_header_len.
+
+Cc: stable@vger.kernel.org
+Fixes: c6c8fea29769 ("net: Add batman-adv meshing protocol")
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+---
+ net/batman-adv/mesh-interface.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/net/batman-adv/mesh-interface.c b/net/batman-adv/mesh-interface.c
+index 511f70e0706a7..0b75234521b63 100644
+--- a/net/batman-adv/mesh-interface.c
++++ b/net/batman-adv/mesh-interface.c
+@@ -195,6 +195,9 @@ static netdev_tx_t batadv_interface_tx(struct sk_buff *skb,
+ 	if (READ_ONCE(bat_priv->mesh_state) != BATADV_MESH_ACTIVE)
+ 		goto dropped;
+ 
++	if (!pskb_may_pull(skb, ETH_HLEN))
++		goto dropped;
++
+ 	/* reset control block to avoid left overs from previous users */
+ 	memset(skb->cb, 0, sizeof(struct batadv_skb_cb));
+ 
+-- 
+2.47.3
 
 
