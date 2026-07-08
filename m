@@ -1,52 +1,63 @@
-Return-Path: <stable+bounces-272659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272661-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id YJU3KY9dTmpjLQIAu9opvQ
-	(envelope-from <stable+bounces-272659-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 16:24:15 +0200
+	id FIvbDidiTmq6LgIAu9opvQ
+	(envelope-from <stable+bounces-272661-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 16:43:51 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF45872749A
-	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 16:24:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3467727854
+	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 16:43:50 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272659-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-272659-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VLXWU18v;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272661-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-272661-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C376B3071372
-	for <lists+stable@lfdr.de>; Wed,  8 Jul 2026 14:17:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A6DC8305BD27
+	for <lists+stable@lfdr.de>; Wed,  8 Jul 2026 14:32:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AF0C449EB8;
-	Wed,  8 Jul 2026 14:17:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 804C92ED843;
+	Wed,  8 Jul 2026 14:32:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from zg8tmja5ljk3lje4mi4ymjia.icoremail.net (zg8tmja5ljk3lje4mi4ymjia.icoremail.net [209.97.182.222])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DA6644BC92;
-	Wed,  8 Jul 2026 14:17:27 +0000 (UTC)
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 153AA1632DD;
+	Wed,  8 Jul 2026 14:32:24 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783520256; cv=none; b=Y4OsmAshwl5N3VAjodC1vgpqQxpxZFSKa/sJtCfEW8fXgmmCgnc9JlFEv1Zqp9JNJu3fOjpA81yROpVebPdwB6n/JKlKTJdADdHyM7Vcvrq5nUx33fBTj4aEYt5VEKjmtvCBUG9MEO/8gSTd33aHBKLN9mUO73a/NW3E+QAn1O4=
+	t=1783521146; cv=none; b=XAiEt5mQKfTPJ8+WPVc2j9vlK6oLvwk3zIbOelaFkbuxSE0iIUPNYgogNoQmMqzDcDpyJLlp6TBEO8YpByQ8t2l/m7JF4kcyyUf/m4zw6UUPsJlPw/BykW+us/KNNrKJ0iTYhk5rWUCpdx8aSg9xeliiJPdwO3MT+lnaGb0wHUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783520256; c=relaxed/simple;
-	bh=nmLFcrmIJBCQo0MYGrdfkiIK6Al0g/cT/7J2OLj2+EE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=TLFJGknm/3du7FeBYd3sIo3O27j1EfU6TgU1W+tjJzeRWeYLP1HIno+xhUdpRea0U3p72iWNPhSjxaIyb0nadeEvJa4/9Ka80zRVOtDI+MJtoDuJPW8r97bjFAa3Rd/XqDOl+2TLnt0DooDs+BoK/ebgGl9Aqfoo/mCfg956474=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=209.97.182.222
-Received: from zju.edu.cn (unknown [10.98.66.117])
-	by mtasvr (Coremail) with SMTP id _____wD3oBTuW05qgJsjAA--.14020S3;
-	Wed, 08 Jul 2026 22:17:19 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.98.66.117])
-	by mail-app4 (Coremail) with SMTP id zi_KCgDH+TDuW05qzMApAg--.39271S2;
-	Wed, 08 Jul 2026 22:17:18 +0800 (CST)
-From: Fan Wu <fanwu01@zju.edu.cn>
-To: mchehab@kernel.org
-Cc: linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Fan Wu <fanwu01@zju.edu.cn>
-Subject: [PATCH] media: cx231xx-audio: gate wq_trigger on an audio-local teardown flag
-Date: Wed,  8 Jul 2026 14:16:22 +0000
-Message-Id: <20260708141622.3936490-1-fanwu01@zju.edu.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1783521146; c=relaxed/simple;
+	bh=U9w3vBbUFtCRr7V74TjBeG0Ub0+BiHRRY3xEHPSW6Gc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Uxg9G9EQBIeUrZFRfZZSKvWYMd8mbEHavvSRJPefIBKnzu3GGj5YhyT7IGWKWeH1zFsP/rMfdRMrhb4glahho2QuU6Bi9MNjFYgBc1ko6remJYebhRdiTnBgIwLq3odrunzJvgl4hSFoI7JjR1AkE+rjcaPu9xK2ohV9l20p4C8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VLXWU18v; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4B741F000E9;
+	Wed,  8 Jul 2026 14:32:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783521144;
+	bh=AcGbi6GcbL2Ly4SptMLqyaUlu9is1dK/XOQRRPvfuiw=;
+	h=From:To:Cc:Subject:Date;
+	b=VLXWU18vLVxb9NdenyOP9B3ro6bILYXuZF4ps9Sdp9fV4AYWb2I6Rr9x5jPrsjE6S
+	 FDQ4BNwnFWOgAlJX6GrjU7YVZ1HoXuB+nwBybG9cOcRfYAb4f9KocxhztU3t1hDiJM
+	 0nCrZ+cBCYmKZPLNlBFPriSmIipgvCKcXLn9ljC2xuT3tjAD9uJHVvFvdJZczWUf8+
+	 2yueX95IDJD0WGr2llm6MxvlLdWIuNNmyP4XSFbHV+L+NBUS/zb3GCRNIzG6T84pUs
+	 svRbC/EWxTKTFQEdtRk+cSTzf0Rq/UaqIQDcy31x67pj/B2bMAeVKYhakd8eI7NMEN
+	 sSVlIUBoJcTNw==
+Received: from johan by xi.lan with local (Exim 4.99.4)
+	(envelope-from <johan@kernel.org>)
+	id 1whTK2-000000036EZ-1uZR;
+	Wed, 08 Jul 2026 16:32:22 +0200
+From: Johan Hovold <johan@kernel.org>
+To: linux-usb@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Johan Hovold <johan@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH] USB: serial: keyspan_pda: fix data loss on receive throttling
+Date: Wed,  8 Jul 2026 16:31:35 +0200
+Message-ID: <20260708143135.738899-1-johan@kernel.org>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,229 +65,151 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zi_KCgDH+TDuW05qzMApAg--.39271S2
-X-CM-SenderInfo: qrstjiaswqq6lmxovvfxof0/
-X-CM-DELIVERINFO: =?B?+7646wXKKxbFmtjJiESix3B1w3vZ3A9ovKVTomAyoQazvoRs/NHSP8GI2EvgeEEW7R
-	sfnXz+g1OQfMo27QHy5TwQyZzo5cbFrir2M8XDhP8w/SFwD5FlG7u2q/6dT3oGcduNxjlG
-	stkPrON9NZL78exfTAXN5RPxYw6l01w8CbPzC/8w
-X-Coremail-Antispam: 1Uk129KBj93XoWxKr1UKF15JFyDAFWkXF43Jwc_yoWxJry7pa
-	4kKa4rKFW7Ja4UZrsrXw1rWF13Cws7ta1DG3y7u3Wqqwn5tr1rGF43AryxuryruF97ua17
-	ur4UX3yjvws2vagCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUU9Gb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AK
-	xVW0oVCq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc804V
-	CY07AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AK
-	xVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48Icx
-	kI7VAKI48JM4x0Y48IcxkI7VAKI48G6xCjnVAKz4kxMxAIw28IcxkI7VAKI48JMxC20s02
-	6xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_Jr
-	I_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v2
-	6r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj4
-	0_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8
-	JrUvcSsGvfC2KfnxnUUI43ZEXa7IU8Tv3UUUUUU==
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.04 / 15.00];
+X-Spamd-Result: default: False [-3.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DMARC_NA(0.00)[zju.edu.cn];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:mchehab@kernel.org,m:linux-media@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:fanwu01@zju.edu.cn,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-272659-lists,stable=lfdr.de];
-	FORGED_SENDER(0.00)[fanwu01@zju.edu.cn,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[fanwu01@zju.edu.cn,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-272661-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[johan@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:linux-usb@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:johan@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	RCVD_COUNT_FIVE(0.00)[5];
-	R_DKIM_NA(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FROM_HAS_DN(0.00)[]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DF45872749A
+X-Rspamd-Queue-Id: C3467727854
 
-audio_trigger() is deferred work (dev->wq_trigger) armed from
-snd_cx231xx_capture_trigger() on every PCM START/STOP; it dereferences
-dev->adev state and may free the URBs via cx231xx_isoc_audio_deinit().
-cx231xx_audio_fini() tore down that state (snd_card_free_when_closed,
-alt_max_pkt_size) without draining wq_trigger, so work armed before or
-racing fini ran against freed state.
+Killing the interrupt-in urb when the line disciple requests throttling
+may lead to data loss if an ongoing transfer is cancelled.
 
-Adding cancel_work_sync() alone is insufficient: in capture_trigger() the
-DEV_DISCONNECTED test and schedule_work() were not atomic, and
-DEV_DISCONNECTED is only set on USB disconnect, but fini also runs on
-cx231xx-alsa module unload (cx231xx_unregister_extension()), which never
-sets it.  A trigger that passed the check could still queue work after
-fini's cancel returned an empty queue.
+Instead set a flag to prevent the completion handler from resubmitting
+the urb until the port is unthrottled.
 
-Add an audio-local teardown gate (dev->adev.teardown): fini raises it under
-adev.slock, releases the lock, then calls cancel_work_sync() outside the
-spinlock.  Both arm sites perform the teardown check and schedule_work()
-inside one adev.slock section, so once the gate is visible no new work can
-arm after cancel returns.  Initialize the lock, work and gate at the top of
-cx231xx_audio_init(), before any fallible allocation, and clear the
-partially-built audio state on its error path, so fini is safe even if a
-later step fails.
-
-This issue was found by an in-house static analysis tool.
-
-Fixes: 61b04cb24a12 ("[media] cx231xx-audio: fix some locking issues")
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
-Assisted-by: Codex:gpt-5.5
-Signed-off-by: Fan Wu <fanwu01@zju.edu.cn>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/media/usb/cx231xx/cx231xx-audio.c | 42 +++++++++++++++++++----
- drivers/media/usb/cx231xx/cx231xx.h       |  1 +
- 2 files changed, 36 insertions(+), 7 deletions(-)
+ drivers/usb/serial/keyspan_pda.c | 44 +++++++++++++++++++++++++-------
+ 1 file changed, 35 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/media/usb/cx231xx/cx231xx-audio.c b/drivers/media/usb/cx231xx/cx231xx-audio.c
-index 9c71b32552df..44ca75b18a5d 100644
---- a/drivers/media/usb/cx231xx/cx231xx-audio.c
-+++ b/drivers/media/usb/cx231xx/cx231xx-audio.c
-@@ -441,6 +441,7 @@ static int snd_cx231xx_capture_open(struct snd_pcm_substream *substream)
- static int snd_cx231xx_pcm_close(struct snd_pcm_substream *substream)
- {
- 	int ret;
-+	unsigned long flags;
- 	struct cx231xx *dev = snd_pcm_substream_chip(substream);
+diff --git a/drivers/usb/serial/keyspan_pda.c b/drivers/usb/serial/keyspan_pda.c
+index f05bcce60600..dd4cfd17f7ad 100644
+--- a/drivers/usb/serial/keyspan_pda.c
++++ b/drivers/usb/serial/keyspan_pda.c
+@@ -33,6 +33,8 @@ struct keyspan_pda_private {
+ 	struct work_struct	unthrottle_work;
+ 	struct usb_serial	*serial;
+ 	struct usb_serial_port	*port;
++	bool			throttled;
++	bool			throttle_req;
+ };
  
- 	dev_dbg(dev->dev, "closing device\n");
-@@ -470,7 +471,11 @@ static int snd_cx231xx_pcm_close(struct snd_pcm_substream *substream)
- 		dev_dbg(dev->dev, "released lock\n");
- 		if (atomic_read(&dev->stream_started) > 0) {
- 			atomic_set(&dev->stream_started, 0);
--			schedule_work(&dev->wq_trigger);
-+
-+			spin_lock_irqsave(&dev->adev.slock, flags);
-+			if (!dev->adev.teardown)
-+				schedule_work(&dev->wq_trigger);
-+			spin_unlock_irqrestore(&dev->adev.slock, flags);
- 		}
+ static int keyspan_pda_write_start(struct usb_serial_port *port);
+@@ -148,6 +150,7 @@ static void keyspan_pda_rx_interrupt(struct urb *urb)
+ 	int retval;
+ 	int status = urb->status;
+ 	struct keyspan_pda_private *priv;
++	bool throttled = false;
+ 	unsigned long flags;
+ 
+ 	priv = usb_get_serial_port_data(port);
+@@ -209,16 +212,24 @@ static void keyspan_pda_rx_interrupt(struct urb *urb)
  	}
- 	return 0;
-@@ -509,11 +514,14 @@ static int snd_cx231xx_capture_trigger(struct snd_pcm_substream *substream,
- {
- 	struct cx231xx *dev = snd_pcm_substream_chip(substream);
- 	int retval = 0;
-+	unsigned long flags;
  
--	if (dev->state & DEV_DISCONNECTED)
-+	spin_lock_irqsave(&dev->adev.slock, flags);
-+	if (dev->adev.teardown || (dev->state & DEV_DISCONNECTED)) {
-+		spin_unlock_irqrestore(&dev->adev.slock, flags);
- 		return -ENODEV;
+ exit:
+-	retval = usb_submit_urb(urb, GFP_ATOMIC);
+-	if (retval)
+-		dev_err(&port->dev,
+-			"%s - usb_submit_urb failed with result %d\n",
+-			__func__, retval);
++	spin_lock_irqsave(&port->lock, flags);
++	if (priv->throttle_req) {
++		priv->throttled = true;
++		throttled = true;
 +	}
- 
--	spin_lock(&dev->adev.slock);
- 	switch (cmd) {
- 	case SNDRV_PCM_TRIGGER_START:
- 		atomic_set(&dev->stream_started, 1);
-@@ -525,10 +533,10 @@ static int snd_cx231xx_capture_trigger(struct snd_pcm_substream *substream,
- 		retval = -EINVAL;
- 		break;
- 	}
--	spin_unlock(&dev->adev.slock);
- 
- 	schedule_work(&dev->wq_trigger);
- 
-+	spin_unlock_irqrestore(&dev->adev.slock, flags);
- 	return retval;
- }
- 
-@@ -576,12 +584,20 @@ static int cx231xx_audio_init(struct cx231xx *dev)
- 	dev_dbg(dev->dev,
- 		"probing for cx231xx non standard usbaudio\n");
- 
-+	/*
-+	 * Extension init errors are ignored by the cx231xx core, so fini()
-+	 * must be safe even if initialization fails part way through.
-+	 */
-+	spin_lock_init(&adev->slock);
-+	INIT_WORK(&dev->wq_trigger, audio_trigger);
-+	adev->teardown = false;
-+	atomic_set(&dev->stream_started, 0);
++	spin_unlock_irqrestore(&port->lock, flags);
 +
- 	err = snd_card_new(dev->dev, index[devnr], "Cx231xx Audio",
- 			   THIS_MODULE, 0, &card);
- 	if (err < 0)
- 		return err;
- 
--	spin_lock_init(&adev->slock);
- 	err = snd_pcm_new(card, "Cx231xx Audio", 0, 0, 1, &pcm);
- 	if (err < 0)
- 		goto err_free_card;
-@@ -596,8 +612,6 @@ static int cx231xx_audio_init(struct cx231xx *dev)
- 	strscpy(card->shortname, "Cx231xx Audio", sizeof(card->shortname));
- 	strscpy(card->longname, "Conexant cx231xx Audio", sizeof(card->longname));
- 
--	INIT_WORK(&dev->wq_trigger, audio_trigger);
--
- 	err = snd_card_register(card);
- 	if (err < 0)
- 		goto err_free_card;
-@@ -651,14 +665,18 @@ static int cx231xx_audio_init(struct cx231xx *dev)
- 
- err_free_pkt_size:
- 	kfree(adev->alt_max_pkt_size);
-+	adev->alt_max_pkt_size = NULL;
- err_free_card:
- 	snd_card_free(card);
-+	adev->sndcard = NULL;
- 
- 	return err;
++	if (!throttled) {
++		retval = usb_submit_urb(urb, GFP_ATOMIC);
++		if (retval)
++			dev_err(&port->dev, "failed to resubmit in urb: %d\n", retval);
++	}
  }
  
- static int cx231xx_audio_fini(struct cx231xx *dev)
+ static void keyspan_pda_rx_throttle(struct tty_struct *tty)
  {
-+	unsigned long flags;
+ 	struct usb_serial_port *port = tty->driver_data;
++	struct keyspan_pda_private *priv = usb_get_serial_port_data(port);
+ 
+ 	/*
+ 	 * Stop receiving characters. We just turn off the URB request, and
+@@ -228,16 +239,29 @@ static void keyspan_pda_rx_throttle(struct tty_struct *tty)
+ 	 * send an XOFF, although it might make sense to foist that off upon
+ 	 * the device too.
+ 	 */
+-	usb_kill_urb(port->interrupt_in_urb);
++	spin_lock_irq(&port->lock);
++	priv->throttle_req = true;
++	spin_unlock_irq(&port->lock);
+ }
+ 
+ static void keyspan_pda_rx_unthrottle(struct tty_struct *tty)
+ {
+ 	struct usb_serial_port *port = tty->driver_data;
++	struct keyspan_pda_private *priv = usb_get_serial_port_data(port);
++	bool throttled;
++	int ret;
+ 
+-	/* just restart the receive interrupt URB */
+-	if (usb_submit_urb(port->interrupt_in_urb, GFP_KERNEL))
+-		dev_dbg(&port->dev, "usb_submit_urb(read urb) failed\n");
++	spin_lock_irq(&port->lock);
++	throttled = priv->throttled;
++	priv->throttled = false;
++	priv->throttle_req = false;
++	spin_unlock_irq(&port->lock);
 +
- 	if (dev == NULL)
- 		return 0;
++	if (throttled) {
++		ret = usb_submit_urb(port->interrupt_in_urb, GFP_KERNEL);
++		if (ret)
++			dev_err(&port->dev, "failed to submit in urb: %d\n", ret);
++	}
+ }
  
-@@ -669,6 +687,16 @@ static int cx231xx_audio_fini(struct cx231xx *dev)
- 		return 0;
- 	}
+ static speed_t keyspan_pda_setbaud(struct usb_serial *serial, speed_t baud)
+@@ -577,6 +601,8 @@ static int keyspan_pda_open(struct tty_struct *tty,
  
-+	/*
-+	 * Block new trigger work before draining already queued work.
-+	 * cancel_work_sync() may sleep, so it must run after dropping slock.
-+	 */
-+	spin_lock_irqsave(&dev->adev.slock, flags);
-+	dev->adev.teardown = true;
-+	spin_unlock_irqrestore(&dev->adev.slock, flags);
-+
-+	cancel_work_sync(&dev->wq_trigger);
-+
- 	if (dev->adev.sndcard) {
- 		snd_card_free_when_closed(dev->adev.sndcard);
- 		kfree(dev->adev.alt_max_pkt_size);
-diff --git a/drivers/media/usb/cx231xx/cx231xx.h b/drivers/media/usb/cx231xx/cx231xx.h
-index 19f5036a78d7..99c6a279944f 100644
---- a/drivers/media/usb/cx231xx/cx231xx.h
-+++ b/drivers/media/usb/cx231xx/cx231xx.h
-@@ -418,6 +418,7 @@ struct cx231xx_audio {
- 	struct snd_card *sndcard;
+ 	spin_lock_irq(&port->lock);
+ 	priv->tx_room = rc;
++	priv->throttled = false;
++	priv->throttle_req = false;
+ 	spin_unlock_irq(&port->lock);
  
- 	int users, shutdown;
-+	bool teardown;		/* audio fini in progress; set under slock */
- 	/* locks */
- 	spinlock_t slock;
- 
+ 	rc = usb_submit_urb(port->interrupt_in_urb, GFP_KERNEL);
 -- 
-2.34.1
+2.54.0
 
 
