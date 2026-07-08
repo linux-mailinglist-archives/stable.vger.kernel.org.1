@@ -1,81 +1,81 @@
-Return-Path: <stable+bounces-272726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272727-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id QTtsOGWsTmrASAIAu9opvQ
-	(envelope-from <stable+bounces-272726-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 22:00:37 +0200
+	id DfwmJUytTmr+SAIAu9opvQ
+	(envelope-from <stable+bounces-272727-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 22:04:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3A6172A0C1
-	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 22:00:36 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6D3C72A13E
+	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 22:04:27 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=FfZuvjNS;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=JjL0JHQk;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272726-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-272726-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272727-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272727-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B79B830151D7
-	for <lists+stable@lfdr.de>; Wed,  8 Jul 2026 20:00:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DE197307FC95
+	for <lists+stable@lfdr.de>; Wed,  8 Jul 2026 20:00:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F5A33E4C87;
-	Wed,  8 Jul 2026 20:00:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C85A3E44E7;
+	Wed,  8 Jul 2026 20:00:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23D803E317F
-	for <stable@vger.kernel.org>; Wed,  8 Jul 2026 20:00:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 739823AA4FA
+	for <stable@vger.kernel.org>; Wed,  8 Jul 2026 20:00:24 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783540820; cv=none; b=rHqVIogbc/pL6XlEkvlmbWiz0KR4SnIdObz5/2moOZoCkhSIM6FtgSQT+ERsnnJR8V5YZ2zu6xUo2dgy4GRr5DzQxhCU5gT6X3JnQwpgNJ46uAkS9GLBN+pupAks2B8E8l5snz8bVtwuE6OGmeT5h7dHB0XkHQPUQZh7x1OyiPM=
+	t=1783540828; cv=none; b=Se+YWm+hM61Ivwgq/+FrFwRLB/yyE6dWitPhVT3WdeRCuJPYA66dbNFMpYR6rHv6P7p9RHb2t3eliScJxNrz2zRKcf1g8oGlbC6q6GnMaBk+LnHwiSFGPEA6J/zPjYuhUKjj3MgpQi05D0g6QaQ06aSekGlRriMMAp0GmNzJgLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783540820; c=relaxed/simple;
-	bh=F+lBVtCc74FW2bXar4DlVxLIlEpJjq5enJoyfnmLVMc=;
+	s=arc-20240116; t=1783540828; c=relaxed/simple;
+	bh=/SAxxMsThDq0O9UGIQ5XY3LxNEdloDeHiKs04VUJlxY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H0itfnhq2z9lIuSEQLSmXf9UkfMFUq2PkYgQOhxNP+MeWD1f82k5c+kJ9YqNwAyvIqsgj0c0DefrST3zHI7iXiCNawym0KCjftiODyIK09i4HKIZtSQ1o5A2LczxXB9qIKeKmiug1NLGu2PXYqK/5TNr6bS7aHzXuYSix8VrX1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FfZuvjNS; arc=none smtp.client-ip=209.85.214.177
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2c7c61b5292so20906465ad.0
-        for <stable@vger.kernel.org>; Wed, 08 Jul 2026 13:00:15 -0700 (PDT)
+	 MIME-Version; b=r2XqK8zdgslyl/BKoZw0arhy6qu1LoNpRpI285tRY5R7KNEsPZZtv17rtc7KhINQgNBFX7sY0KKGFN2hFopwXSM1plhMgosWtU6ZWVZ62ue00Ilwev4bQG/xdPI4UU4liVd0AWJ4RKDO1+j17oupkxkm/ZBuWIZH/PDUCScVOW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JjL0JHQk; arc=none smtp.client-ip=209.85.216.44
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-37e0a189b0bso950303a91.1
+        for <stable@vger.kernel.org>; Wed, 08 Jul 2026 13:00:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783540815; x=1784145615; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1783540822; x=1784145622; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=gqxvN87Cdysjugpj1e36xLbJ27hsww7lojnM1d760QA=;
-        b=FfZuvjNS5UfNo8BbbsYZLQoihaICnxxKNQv8eyeHpo7bSeov3QZ9641JvSSsQs+hSF
-         f3kHqzvm2ddZBdlo6bojRgzeLkVNdkxjuaHjM9FUsrxFU9RgkiEDAr8pc9gD2lW/MuHq
-         fjRriNAaiTeJlPAmrZFGOzIuj18yiblqnUiF1hcui/iTpcnUIqkCba68pJgKtHCfKy3k
-         h93rGiOoyEIQEFaoyBO4r39vVWbwTp9/LJMXCbgt7Sd+D0n3GdqWWk5ifQ2lwinhHHb3
-         jAqDhZHVRaZjMNRtME724UU/VMipqbyQKxX9iMUq8lUdzRmx4Yto0Zc4IvOSIp+ylfAZ
-         6Q5w==
+        bh=A/bLDuoO7MLFyiV+1ELXwNRC5hxUInQv9JgucXzus9M=;
+        b=JjL0JHQkr6ZSgGezlP/uJApZSanXGuYHGZR9v92JeaJvRma9PSPeLwlRgiolyvAqIa
+         guGTG2kcSii5X8nFQdyynEkTk0KNwNzs9XcUJHgP0CmKr+tEPKrAIbYbn97jC7E1/Dw9
+         Z1T3snpXPJ6Rf65hRnWrAgyAFZw/mz3RblGS5FjDrDutuTlkerehtkxnuPO9PNPEUljb
+         mBaNR6Bw7fOmmsIYFw1z9lg4vv1KExsmG18g2GYoT3aZazQoCwZT1Sry9rpCyaNn3ooM
+         +Yyb11J0YG5hbQdJy3N4XOqbgtBtlzHsdq/cXiaspv3h5PlNSm229vWVEsxGGzomrzZZ
+         LomA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783540815; x=1784145615;
+        d=1e100.net; s=20251104; t=1783540822; x=1784145622;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=gqxvN87Cdysjugpj1e36xLbJ27hsww7lojnM1d760QA=;
-        b=NXX7Q8eYPiwJIcIgk6CaxkzIgSYmyyoDxjx2Q/WaUwmvwgrPUxj4Bm3yi7J/Bg/1r9
-         5azWWYnvHGS1LMdycAmY1jCE3EOtESL3KHxUBYpLcWb+YydVL9on42kkdsUxHthRQBLS
-         t/6DkexZshr6Zsx4IUfyPHgVwvHfFNG615GfW9M4Y0/b72LPnv995+U6d9O+hc96uU7F
-         xKWNl8tBGZyIzhGC/NTgmIjmzYNzfT9+nn4J7U1/Ds/+YBMP9F9hoy6rJdXMnA5/SGfv
-         yekRNhAyxn9naOanwIs4Pg94NgAmL6W12SsjElCmdrYArdWT3bmb8WkOOrtt9zbg2tKU
-         vDKw==
-X-Forwarded-Encrypted: i=1; AHgh+RqT1Hy1SYTM0RanwzYc9CFATooXWk9fFiqNQUIkDOazwqZ6mJxhpkK9Q1E1kvE9i1TmH171fvI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz+lwWF/uptlDSjCmpmtVNJCDVf62rEmMuZGzgJGxJmo77O6WFp
-	2snpzqdhDJoSzzhONYSRP/XiEOBx+LjDO4MolU8mgrBvCi72aEpbIxYe
-X-Gm-Gg: AfdE7cm3wtZ54ZzCko0SmCI2ge6qJK9rzLzFUivWfCPUgQSjj175FhaIzu4F8Ygk0R+
-	U+cQ+TaFgBp//VMuN0XuwWxaA+UNWhF6KLcaA6/TRstyIy3PxyaNbAtN4QLEoPeS6FSYqQoXpva
-	95lxaELsMlgsfhkX7ArlhG3GxfA5qh42Rl7MXltY2uerfYihnCcZwzJ+rmCbsVEONoksCqNSf+F
-	Xfh9si3f7A0nj3emapP0o1MqMCd7zte+W1MBzfTajjUea/FuqQ0JEGL3w2yPyW02Nv7pdOx8eYG
-	s40INjagqXQBA1Mdz1NBYlxdBHCfVjuiKNE4CcQPxHBoUlAJTrabKLBq0SJwf9eLM4wxtRhg1Q6
-	gaocwPvv/Yaglk1A+tK7nL+ieIoJ2q4EFfHfXdOQNXeRxL1Ry0ltzwGSsw1/RwOjHR30L5VJh6f
-	MADkAly2+iu9k7uUoDci8TmRx++go3tIo6mW1RyfM9LClCSCp0t9g5+fbE+gm2BmU=
-X-Received: by 2002:a05:6a20:6f04:b0:3c0:b4f8:bbfb with SMTP id adf61e73a8af0-3c0bcfea571mr5202502637.22.1783540814358;
-        Wed, 08 Jul 2026 13:00:14 -0700 (PDT)
+        bh=A/bLDuoO7MLFyiV+1ELXwNRC5hxUInQv9JgucXzus9M=;
+        b=BeeCWxIaAhrb+bdpx8eZrvOBFORzUz5ZU8A1kEWJJ6+oeyqqDWhOg0wYxLNdcHUf79
+         UJ36x0UJDu+ugvtaNJB1jACtsIBPLUHqBd/sAms5EKhuWe+jepyFYPcoX5ZU5cxtFfDj
+         v2C6/BpP4z2DKiGo689iVwAWFTdMtUc5/gE4LZMj6N/By1ASHbMJZuU8zOHB4PyvEPAK
+         QZk0Clxg4vFkQVdCa7cOo/ZbBaX9+wdFysC9Q6cjtt5PEVpqZOpjAPvLTysbGLfM6MEd
+         o3xGd+WynqmGIz2IUNZ1EycaqAao/7iU57LmM9SxHY24T+qDtPAbI+7JlSZKFXv9Vucq
+         A2rA==
+X-Forwarded-Encrypted: i=1; AHgh+RpvYLVxQ3K68AHxaoZsFbmLFFMd+qYN1tbGOg+o+KBl//xhkgrjF9fpn0Uni/PUJxyHPIrxhMU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxaJYFijhCuBQWqQwp1xEUMZy6N/jUg/j8cpVrBirfRqm0iWujP
+	6RWddDnCz28tpHD79ZvJGQHxQzLDaNYg7rlyoZg2dvUV1h9fTKUEBwod
+X-Gm-Gg: AfdE7cn8vG3xaiQCaguShawsKJzE5VtCsTHUtmPkFJrVDWdtdl9HDZSHkcxjA8LMD1f
+	Oz0XShLEoPZi0QrBuTPkmjROEvAO1fx9e9WA+iqwoTbu8NMk1mXHkLiR4+o9CTKja4kXhZ49rdI
+	QiEjzHIqexbTRSPJupKwO/6aftF03IZZ+EbLKOCTP8Js9VgCZonG/TZu5TQxal/APWH88sSdM+F
+	HgyfKitShaxbp/0e1woPT1wOfy7Z0NAKjwMF78G0LywrSyt3GkFDHJqLZe+YjJRzPq2Z92YYEmq
+	8VAeRzeON7JXdQq568BfD4D0ksqV8zF2qbzMW7WH8oSqHMXTgakPy0kfk7Ji6loMOoK4+WUf2hd
+	OtGXdbtZ8UrJE1oL8bCDlunRhsTlxmpQpyPiJxO/7oeNgWz0Q4S9MRw6K5rWHPelM4j1TdWk/pA
+	peCPtpsTaaLczscMptM3OPhTVebzXmKRM/u8SctU0jPoRmoQsJaIRR
+X-Received: by 2002:a05:6a21:6e43:b0:3c0:adec:b3bd with SMTP id adf61e73a8af0-3c0bd19ef91mr4672746637.49.1783540822437;
+        Wed, 08 Jul 2026 13:00:22 -0700 (PDT)
 Received: from KRHW1CJW23.bytedance.net ([139.177.225.228])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-31174a8f521sm22585395eec.22.2026.07.08.13.00.06
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-31174a8f521sm22585395eec.22.2026.07.08.13.00.14
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 08 Jul 2026 13:00:14 -0700 (PDT)
+        Wed, 08 Jul 2026 13:00:21 -0700 (PDT)
 From: Zhao Li <enderaoelyther@gmail.com>
 To: linux-wireless@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -97,9 +97,9 @@ Cc: linux-kernel@vger.kernel.org,
 	Aloka Dixit <quic_alokad@quicinc.com>,
 	Zhao Li <enderaoelyther@gmail.com>,
 	stable@vger.kernel.org
-Subject: [PATCH 6/8] wifi: mac80211: validate S1G TWT params before driver setup
-Date: Thu,  9 Jul 2026 03:59:09 +0800
-Message-ID: <20260708195911.84365-7-enderaoelyther@gmail.com>
+Subject: [PATCH 7/8] wifi: mwifiex: validate action frame fixed fields
+Date: Thu,  9 Jul 2026 03:59:10 +0800
+Message-ID: <20260708195911.84365-8-enderaoelyther@gmail.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20260708195911.84365-1-enderaoelyther@gmail.com>
 References: <20260708195911.84365-1-enderaoelyther@gmail.com>
@@ -117,14 +117,14 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	FREEMAIL_CC(0.00)[vger.kernel.org,intel.com,chromium.org,dolcini.it,sipsolutions.net,google.com,oss.qualcomm.com,kernel.org,phrozen.org,marvell.com,tuxdriver.com,quicinc.com,gmail.com];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-272726-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-272727-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:miriam.rachel.korenblit@intel.com,m:briannorris@chromium.org,m:francesco@dolcini.it,m:johannes@sipsolutions.net,m:jaewan@google.com,m:daniel.gabay@intel.com,m:emmanuel.grumbach@intel.com,m:benjamin.berg@intel.com,m:pagadala.yesu.anjaneyulu@intel.com,m:peddolla.reddy@oss.qualcomm.com,m:lorenzo@kernel.org,m:john@phrozen.org,m:patila@marvell.com,m:cluo@marvell.com,m:linville@tuxdriver.com,m:quic_alokad@quicinc.com,m:enderaoelyther@gmail.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
@@ -140,62 +140,67 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	DKIM_TRACE(0.00)[gmail.com:+];
 	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	ALIAS_RESOLVED(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sipsolutions.net:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D3A6172A0C1
+X-Rspamd-Queue-Id: E6D3C72A13E
 
-A received S1G TWT setup frame is length-checked in
-ieee80211_process_rx_twt_action() before it is queued: it requires
+mwifiex_process_mgmt_packet() accepts an rx_pkt_length as small as a
+4-address struct ieee80211_hdr plus the 2-byte firmware length prefix.
+After the prefix is stripped, mwifiex_parse_mgmt_packet() can be called
+with len equal to sizeof(struct ieee80211_hdr).
 
-  skb->len >= IEEE80211_MIN_ACTION_SIZE + sizeof(twt_setup) + 2
+For an action frame the parser then reads the category byte just past
+that header, and for a public action frame the action code at the next
+byte, without checking that len covers them. A minimal-length action
+frame therefore causes a one- or two-byte read past the end of the RX
+buffer.
 
-and then skb->len >= IEEE80211_MIN_ACTION_SIZE + 3 + twt->length, where
-twt->length is attacker-controlled. twt->length can be as small as 3
-(the control byte plus the 2-byte req_type) and the frame still passes,
-so only those bytes are guaranteed present.
+Reject frames shorter than the header, and require the category and
+(for public action frames) action-code bytes to be present before
+reading them.
 
-For an individual (non-broadcast) agreement, ieee80211_s1g_rx_twt_setup()
-calls drv_add_twt_setup(), and both trace_drv_add_twt_setup() and the
-driver ->add_twt_setup() callback read the full struct
-ieee80211_twt_params via twt->params (req_type, twt, min_twt_dur,
-mantissa, channel). That needs twt->length >= sizeof(twt->control) +
-sizeof(struct ieee80211_twt_params) = 15, so with the minimal 3-byte
-element they read up to 12 bytes past the end of the frame.
-
-The broadcast path only rejects the agreement and touches req_type,
-which is always present, so it is unaffected. For the individual path,
-require twt->length to cover the control byte plus a full
-ieee80211_twt_params block before calling drv_add_twt_setup(), and drop
-the frame otherwise.
-
-Fixes: f5a4c24e689f ("mac80211: introduce individual TWT support in AP mode")
+Suggested-by: Johannes Berg <johannes@sipsolutions.net>
+Fixes: 72e5aa8d2a6d ("mwifiex: support for parsing TDLS discovery frames")
 Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/66f148d83eb9f0970b9abbccc85d1b61244e54ad.camel@sipsolutions.net/
 Assisted-by: Codex:gpt-5
 Assisted-by: Claude:opus-4.8
 Signed-off-by: Zhao Li <enderaoelyther@gmail.com>
 ---
- net/mac80211/s1g.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/wireless/marvell/mwifiex/util.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/net/mac80211/s1g.c b/net/mac80211/s1g.c
-index 5af4a0c6c6424..abc338e22e59c 100644
---- a/net/mac80211/s1g.c
-+++ b/net/mac80211/s1g.c
-@@ -101,6 +101,10 @@ ieee80211_s1g_rx_twt_setup(struct ieee80211_sub_if_data *sdata,
- 	struct ieee80211_twt_setup *twt = (void *)mgmt->u.action.s1g.variable;
- 	struct ieee80211_twt_params *twt_agrt = (void *)twt->params;
+diff --git a/drivers/net/wireless/marvell/mwifiex/util.c b/drivers/net/wireless/marvell/mwifiex/util.c
+index 7d3631d212236..e2d76c2d9b05b 100644
+--- a/drivers/net/wireless/marvell/mwifiex/util.c
++++ b/drivers/net/wireless/marvell/mwifiex/util.c
+@@ -313,13 +313,22 @@ mwifiex_parse_mgmt_packet(struct mwifiex_private *priv, u8 *payload, u16 len,
+ 	u8 category, action_code, *addr2;
+ 	struct ieee80211_hdr *ieee_hdr = (void *)payload;
  
-+	if (!(twt->control & IEEE80211_TWT_CONTROL_NEG_TYPE_BROADCAST) &&
-+	    twt->length < sizeof(twt->control) + sizeof(*twt_agrt))
-+		return;
++	if (len < sizeof(*ieee_hdr))
++		return -1;
 +
- 	twt_agrt->req_type &= cpu_to_le16(~IEEE80211_TWT_REQTYPE_REQUEST);
+ 	stype = (le16_to_cpu(ieee_hdr->frame_control) & IEEE80211_FCTL_STYPE);
  
- 	/* broadcast TWT not supported yet */
+ 	switch (stype) {
+ 	case IEEE80211_STYPE_ACTION:
++		if (len < sizeof(*ieee_hdr) + 1)
++			return -1;
++
+ 		category = *(payload + sizeof(struct ieee80211_hdr));
+ 		switch (category) {
+ 		case WLAN_CATEGORY_PUBLIC:
++			if (len < sizeof(*ieee_hdr) + 2)
++				return -1;
++
+ 			action_code = *(payload + sizeof(struct ieee80211_hdr)
+ 					+ 1);
+ 			if (action_code == WLAN_PUB_ACTION_TDLS_DISCOVER_RES) {
 -- 
 2.50.1 (Apple Git-155)
 
