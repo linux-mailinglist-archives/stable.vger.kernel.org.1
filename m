@@ -1,176 +1,123 @@
-Return-Path: <stable+bounces-272628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272629-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id tkKzKzQsTmo5EgIAu9opvQ
-	(envelope-from <stable+bounces-272628-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 12:53:40 +0200
+	id 2BJhA2wtTmqhEgIAu9opvQ
+	(envelope-from <stable+bounces-272629-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 12:58:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 296007248C7
-	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 12:53:40 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66E3672496F
+	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 12:58:51 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Havy4MoB;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=RcZfaZ9d;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Havy4MoB;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=RcZfaZ9d;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272628-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272628-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hBPUW6KM;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272629-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-272629-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5E2C33056679
-	for <lists+stable@lfdr.de>; Wed,  8 Jul 2026 10:47:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D995F30557AA
+	for <lists+stable@lfdr.de>; Wed,  8 Jul 2026 10:52:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 714AE426407;
-	Wed,  8 Jul 2026 10:47:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F4DC434E5A;
+	Wed,  8 Jul 2026 10:50:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 439AB42CB14
-	for <stable@vger.kernel.org>; Wed,  8 Jul 2026 10:46:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85FA040803C;
+	Wed,  8 Jul 2026 10:50:26 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783507621; cv=none; b=Ty1z3FTj/YMU/ws5Jrl+wmwN2RBgpSx6YdorQ4rZckUBgIHQPyBaWvMj5B3BdyMDgIqY09zqdUHCzrzsf9AKF1UnlC6w7EpS5fVYdPbEanMTiLw8k9QlYgz16FooAsKqQb2MfDcqXyLS+iW7DU3hDTO6zzZaitRCDMQIIA3X36U=
+	t=1783507834; cv=none; b=stSDxqwbXHfmfraCyYuwkLp97aqnzCwjqkzRcR/Uy9337uTsvHw96SAeJABBaYmI18b/E8fTrxhVPEmHrzG13H0omz/fEEjMt0rmyhx1PkfFVHZ56IWZEq3lPsatK2RJrLivf35Ujpi59p8plu/AlYtAeoOQgWpO1P5CUwU1geY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783507621; c=relaxed/simple;
-	bh=bOMa4EkdEh5fxeRl3p+0yOtckORaywH63k4IC//kDCo=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HXKMZGjAlq2yUYSCaCOi+UlW1Bov6j9pzuU/EOUGvrXj7OCzEOZJKkxntSES4e8lQ7BCAt7H5zwD44R+19Ih1amj7/XNE1b8ubui8lWv8+2mn3wLC9RbE8nLo2wlp5p5G3vS67YcC0Wohz4ZDgvUCC20zJVmnoB/DCLdRctmlWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Havy4MoB; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=RcZfaZ9d; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Havy4MoB; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=RcZfaZ9d; arc=none smtp.client-ip=195.135.223.130
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 0247375FE2;
-	Wed,  8 Jul 2026 10:46:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1783507608; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LtLbUIp99s/i/aLzEwtBFaL1dX0tk56cyLN9FLY9s2w=;
-	b=Havy4MoBmDJEX7Ba35/FQDy7+j6cDbMYZJbSBzLuatdSMA2Ph4ISBARt2V0c+A9x26CXY7
-	Q7cV39iUZtbL/1VvbZwpbqQPAS3vJn/X6VqT5A+cUPBiMr1OV5rycwM4iiLieafnWtT1mx
-	wNHLL1odeAolY+JfnyFqIR364+IghaE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1783507608;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LtLbUIp99s/i/aLzEwtBFaL1dX0tk56cyLN9FLY9s2w=;
-	b=RcZfaZ9dKYPgyiNwdKfSi6nl7ih0pz9DZKn514rEwsWTUxY9g4VtUwHGonFpS4WavRhArA
-	3nclMVjHbndkTpBA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1783507608; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LtLbUIp99s/i/aLzEwtBFaL1dX0tk56cyLN9FLY9s2w=;
-	b=Havy4MoBmDJEX7Ba35/FQDy7+j6cDbMYZJbSBzLuatdSMA2Ph4ISBARt2V0c+A9x26CXY7
-	Q7cV39iUZtbL/1VvbZwpbqQPAS3vJn/X6VqT5A+cUPBiMr1OV5rycwM4iiLieafnWtT1mx
-	wNHLL1odeAolY+JfnyFqIR364+IghaE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1783507608;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LtLbUIp99s/i/aLzEwtBFaL1dX0tk56cyLN9FLY9s2w=;
-	b=RcZfaZ9dKYPgyiNwdKfSi6nl7ih0pz9DZKn514rEwsWTUxY9g4VtUwHGonFpS4WavRhArA
-	3nclMVjHbndkTpBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AFB1D779AE;
-	Wed,  8 Jul 2026 10:46:47 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id cSrUKJcqTmpEJAAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Wed, 08 Jul 2026 10:46:47 +0000
-Date: Wed, 08 Jul 2026 12:46:47 +0200
-Message-ID: <87zf014v3c.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: Evgenii Burenchev <evg28bur@yandex.ru>
-Cc: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	perex@perex.cz,
-	tiwai@suse.com,
-	kees@kernel.org,
-	eblennerhassett@audioscience.com,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org
-Subject: Re: [PATCH] ALSA: hpi: Check transport errors during HPI6000 adapter initialization
-In-Reply-To: <20260707151400.16437-1-evg28bur@yandex.ru>
-References: <20260707151400.16437-1-evg28bur@yandex.ru>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/30.2 Mule/6.0
+	s=arc-20240116; t=1783507834; c=relaxed/simple;
+	bh=H2J1gT3QNH8L6vwnlyMh8QSYC/bZKCr8nlU0sz+H24U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Gb9pHeJLqI0VunzmJYXxedgb6Ep9hqUQ+bo/RRESvGJEdLRefpo+/tt9K/e1NH2YYVjCwmxTDOXsKoq/asMJWNEf7eZF58lS0QX4eAYPz82rb2iwPjE9WOfuTNH0XIDqgYkzdXR7YKdiggy9lgBw6uhjyBgFrixmoWID4DSMbK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hBPUW6KM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A84E1F000E9;
+	Wed,  8 Jul 2026 10:50:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783507823;
+	bh=2CLcg3H7lDvVCt+p3j2pdMu36gi94T5nvB/ND1tSy+4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=hBPUW6KMeFoFZGuuSZVcnNK8SGmww0sxtlLAZyp9+JZtpodhvYy4otCnti8Lh2cxg
+	 tYujRVNRB2BrF+0dY5fakbgE+IDHx3suC2oTA6KQsct48mAjl8x74XLqBRv4aFL1br
+	 SNKHM0IX/p/1BHOPyNvxvcG/S0NDCa1qYfyf+7b15XC5+0B/Wub/OxODY8WLh6E80a
+	 gQQJaiHFsL1+7DOFZedNn60aXxUKESGylh/7Ry8p94oo2aJHcKF3HEarQ7c92UZNXE
+	 OPfdN/ZVg++tAY3WY3XvVQ7/BI6lQS6WXqlKyVB50ZzMT5fwLVYmNQeyZqi+KZDTuP
+	 H5MrNEpHRHdLg==
+Date: Wed, 8 Jul 2026 13:50:18 +0300
+From: Leon Romanovsky <leon@kernel.org>
+To: Dawei Feng <dawei.feng@seu.edu.cn>
+Cc: dennis.dalessandro@cornelisnetworks.com, jgg@ziepe.ca,
+	jianhao.xu@seu.edu.cn, linux-kernel@vger.kernel.org,
+	linux-rdma@vger.kernel.org, stable@vger.kernel.org,
+	zilin@seu.edu.cn
+Subject: Re: [PATCH] RDMA/hfi1: fix init_one() probe failure cleanup
+Message-ID: <20260708105018.GN15188@unreal>
+References: <20260705122328.GD15188@unreal>
+ <20260706143424.145935-1-dawei.feng@seu.edu.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Flag: NO
-X-Spam-Level: 
-X-Spam-Score: -3.29
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260706143424.145935-1-dawei.feng@seu.edu.cn>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-4.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-272628-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[yandex.ru];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:evg28bur@yandex.ru,m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:perex@perex.cz,m:tiwai@suse.com,m:kees@kernel.org,m:eblennerhassett@audioscience.com,m:linux-sound@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:lvc-project@linuxtesting.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[tiwai@suse.de,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:dawei.feng@seu.edu.cn,m:dennis.dalessandro@cornelisnetworks.com,m:jgg@ziepe.ca,m:jianhao.xu@seu.edu.cn,m:linux-kernel@vger.kernel.org,m:linux-rdma@vger.kernel.org,m:stable@vger.kernel.org,m:zilin@seu.edu.cn,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tiwai@suse.de,stable@vger.kernel.org];
+	FORGED_SENDER(0.00)[leon@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-272629-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[leon@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.de:from_mime,suse.de:dkim,suse.de:mid,vger.kernel.org:from_smtp]
+	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 296007248C7
+X-Rspamd-Queue-Id: 66E3672496F
 
-On Tue, 07 Jul 2026 17:13:58 +0200,
-Evgenii Burenchev wrote:
+On Mon, Jul 06, 2026 at 10:34:24PM +0800, Dawei Feng wrote:
+> On Sun, 5 Jul 2026 15:23:28 +0300, Leon Romanovsky wrote:
+> >Just move hfi1_validate_rcvhdrcnt() to be before hfi1_alloc_devdata()
+> >and remove error prints.
 > 
-> create_adapter_obj() retrieves adapter information by calling
-> hpi6000_message_response_sequence(). This function reports transport-level
-> errors through its return value and DSP-reported errors via hr0.error.
+> Hi, Leon,
 > 
-> The current code only checks hr0.error, causing transport-level errors to
-> be ignored. As a result, adapter initialization may continue with an
-> invalid response.
-> 
-> Check the return value of hpi6000_message_response_sequence() before
-> examining hr0.error.
-> 
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
-> 
-> Fixes: 3285ea10e9b0 ("ALSA: hpi: Add AudioScience HPI driver")
+> I agree that this approach is suitable for the hfi1_validate_rcvhdrcnt()
+> failure path. However, it is not generally applicable to the other failure
+> paths. The later failures still occur after hfi1_alloc_devdata(), so they
+> still need proper cleanup handling to avoid leaking the allocated devdata.
+> Therefore, I think the current approach may be more appropriate for this
+> fix.
 
-This Fixes commit ID and the commit subject don't match.
-Please correct and resubmit.
+https://lore.kernel.org/all/20260708-clean-init-one-hfi1-v1-0-b9e9641268a5@nvidia.com/
 
-
-thanks,
-
-Takashi
+Thanks
 
