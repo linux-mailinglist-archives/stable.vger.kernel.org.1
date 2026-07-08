@@ -1,221 +1,159 @@
-Return-Path: <stable+bounces-272647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272649-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id tlpUOMRETmq6JwIAu9opvQ
-	(envelope-from <stable+bounces-272647-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 14:38:28 +0200
+	id sEj6ArBKTmo2KQIAu9opvQ
+	(envelope-from <stable+bounces-272649-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 15:03:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BBA77265D6
-	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 14:38:28 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E795726962
+	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 15:03:43 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=intel.com header.s=Intel header.b=g0JswxX7;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272647-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272647-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=qq.com header.s=s201512 header.b=rnZLsPSf;
+	dmarc=pass (policy=quarantine) header.from=qq.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272649-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-272649-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1D7AC3032BF2
-	for <lists+stable@lfdr.de>; Wed,  8 Jul 2026 12:38:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0EFE13066B4A
+	for <lists+stable@lfdr.de>; Wed,  8 Jul 2026 12:57:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59C6343E492;
-	Wed,  8 Jul 2026 12:37:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CB244657D7;
+	Wed,  8 Jul 2026 12:57:53 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from out162-62-57-64.mail.qq.com (out162-62-57-64.mail.qq.com [162.62.57.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18B3A43C057
-	for <stable@vger.kernel.org>; Wed,  8 Jul 2026 12:37:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1811D44A730;
+	Wed,  8 Jul 2026 12:57:48 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783514278; cv=none; b=HKkL1vygtIc2uYnKlWefeQw5ZQqR83Os0fuXHLUxfj3ZGR7iVAMNdzk3S4b6IZXnQjanOtw+rmmEOWJvVn101CjaV0zja+M69OLiJ+xLLQUWrfA8ZkGel2ttayqQhvW0tcPObVQYACoZGXQgxs6kM5ZSQsFirpArs8+t2nNt+f0=
+	t=1783515473; cv=none; b=OS7qSHxeztliCJFP7lXX8Mse2EInjYAhjB8ky0sPSx+lUjzbWnp8KBgXN3wIc5fPencwBaAbI0qJwdd1sbVDTSQbtXFAVx0kPePxuhHLfJJw1XGNNt1wWzF2HqFVLJI71R26wA5uzB0VBALN5p5L9pU8KQ2A6RRkJyvqHw/M2Mw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783514278; c=relaxed/simple;
-	bh=HmWZcnjkxjwGShMAnKpvXCWgZavbXkBjdSkiakMAU/Q=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=tLG1btiF06DK6jM6xZDDth2F56R/NgD6kNE7LDXYukJGGALMQrmGKffli9UF4Vc6MgtqG6DM43ZMn6i3GtpxgGN+c+tfGPkd+lpDb9saO8D+qiFd37lEImwQEJdfrfJa63H43bPWQHJcR5DFz0pzhZ4s/EFRHSOMDKjqVxVLyU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=g0JswxX7; arc=none smtp.client-ip=192.198.163.14
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1783514276; x=1815050276;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=HmWZcnjkxjwGShMAnKpvXCWgZavbXkBjdSkiakMAU/Q=;
-  b=g0JswxX7r1MKOr1DYry6PfKbqTczOOTSSq9N4r+Q3laGsz90efCFymxm
-   PKHQC8Jhz6COLnin9MSBlA22vvfDn1Ol8INtpm2cR02mBaNekSd5fSuIi
-   8YgEdVWzV2VV9cCerv2ZKKRAibTsqGmzEQgO+FUYtxH3id2JkJgT0zUc+
-   ACGSqPL/TbYGAQd1RVU5HqiX0s6mHb/LYPHHnjGfr5/f3aMqOEBdE4Anu
-   s2nJW5AgblWDCqllFUYm6w+l/oQH20mNFynLnDC19QEm77I7vt3NJ6rpY
-   sVeK6ocAWBJ/1AHICPCTj4Hwdnp9Tw6WSVhJD+6q4fa6EGldvR8IGQaN4
-   g==;
-X-CSE-ConnectionGUID: Pe5jl7/uR1S+F69YhIpxDw==
-X-CSE-MsgGUID: aoST8LdoSIKqYdGzvykRHw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11840"; a="84231337"
-X-IronPort-AV: E=Sophos;i="6.25,153,1779174000"; 
-   d="scan'208";a="84231337"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2026 05:37:55 -0700
-X-CSE-ConnectionGUID: WBSaY9xqSqCFIACNmCYwdw==
-X-CSE-MsgGUID: jH2hvz0qSBqoZnPHGrYL4Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,153,1779174000"; 
-   d="scan'208";a="249831970"
-Received: from vpanait-mobl.ger.corp.intel.com (HELO [10.245.245.113]) ([10.245.245.113])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2026 05:37:54 -0700
-Message-ID: <df72ae4a41d526c3db1577532d13260bbe331869.camel@linux.intel.com>
-Subject: Re: [PATCH v5 1/2] drm/ttm: Fix UAF on dma-buf attach failure for
- sg BOs
-From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
-To: Nitin Gote <nitin.r.gote@intel.com>, intel-xe@lists.freedesktop.org
-Cc: stable@vger.kernel.org, Christian Konig <christian.koenig@amd.com>, 
- Matthew Auld <matthew.auld@intel.com>
-Date: Wed, 08 Jul 2026 14:37:51 +0200
-In-Reply-To: <20260708091512.205482-5-nitin.r.gote@intel.com>
-References: <20260708091512.205482-4-nitin.r.gote@intel.com>
-	 <20260708091512.205482-5-nitin.r.gote@intel.com>
-Organization: Intel Sweden AB, Registration Number: 556189-6027
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	s=arc-20240116; t=1783515473; c=relaxed/simple;
+	bh=TiKzRJ8RNRuRP+na3GAk3iRiue5Rtif3hPJhjgyhPKY=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=QmWIi5q1U6zZdL5Xp9SAD2Se3E0w8/qCM6LBpSsQ0uXax3yPLFaHrBm1pDnCbi8AtwSVA+v7FV2/pBHiciYTP4kMCNLhcpY6PQOgvHWF6IVGUakZdoz9V290DpMV97xCp4fspHzJG4osIBq5c8gHvSeyOlalS0EwF8KPsc2gG1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=rnZLsPSf; arc=none smtp.client-ip=162.62.57.64
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1783515459; bh=cz/Y3hOKbAXkKO1xXEKWfY4bB5PM8G0cZD2p9trRJgU=;
+	h=From:To:Cc:Subject:Date;
+	b=rnZLsPSfD/SyNFsC0mXGJ2upvic7IInyczFTrExkAorhx3L73mns7u9uaN7OK0Un8
+	 hK3YhQj3XFwDeLFAA5THJ/Drjv8M+4VUukxNCs1kq0LaMYPDADH2Pyzx61xCpJ9mle
+	 6ltOqEKZeXHPmeUzHbOzaTlFNu3f4InsF0ukE7BM=
+Received: from ubuntu.. ([218.196.207.7])
+	by newxmesmtplogicsvrszc43-0.qq.com (NewEsmtp) with SMTP
+	id E59B867B; Wed, 08 Jul 2026 20:57:25 +0800
+X-QQ-mid: xmsmtpt1783515445t88dlaecy
+Message-ID: <tencent_192F8A699EFD21126E02101131C9546F3C08@qq.com>
+X-QQ-XMAILINFO: M1rD3f8svNzn6R6CDNdZdzVbn6TP/hxkd1QIZrpTUUw304PbR8N7CQOZbtWIFQ
+	 S5wYVoURJ52hTUJ2qjFWdVlR2P9UKqBkA0WAIaoD06fXlsvhqmC30Pbm216egpoEx4ll9h7kHUH9
+	 gtLG0HJV9bXZUODahrB2htWM2FPEsOksFKsZj2SxbFoC4Cja5UDRkXaaC2dJEu3OX5T8WH1MjldQ
+	 QDqNQcEGP1xGId6NZzfQaia0X+c5iinw492ROWmHHBEY49Oj7PfXggXVHqmHwn8ygJEuZRQ/sINg
+	 PVlApL1G8cHjWhbytKpUNBdK3nberlVi2XSwoBIT9RUMZvDvAkeyURudlQ+Ekt4BItGA8IzJfv8r
+	 RG4f72ZEXS3TgbT2fIKf1lvvEYYEDokhlrd4WByUCPtv4dno4AAlPkuXHKnsDgd4wscMmPQx9Av4
+	 7YMOpUI1lgWcBfGQPmwXJk9BJbP5aoICetqIxpWJ7sYc10eudljueE5dIbAQoabLYCdQmHj+BpiO
+	 doh3aMzuzc3LBWTM7LSmd3sxbwxLaOG8DaXtCPNVREkGumpS/tE9NhT5x2NoQ9TvhjIB0trEVsXL
+	 TWnZFLvs4yuWBVwanmmgkH+bD1fjHH4M6SwNKHRgV4FRgMn6RZDzdFpzeHREg2dJZPlwmKogoCZ3
+	 9Z7YzRuvyRcHAFHfE1e7UFLba15hs0Xno+wxZKNQ1fbVFRisWcPRPViPdPPgVImUGtyPVQfTkyef
+	 klKzIsES+C9XJGiFoMxDqKJXALMw7JZhth5uZnTBlzBM4Jr2/njYocN56OxiP/Pwe+iSzL/CxZvz
+	 iDVZLBmex0pAUujzf7Jfra6rTmb4L/HK67AOcf9cpEpYpMrcgx0VGY52KGJy3maydyV/sS6RFUMt
+	 3OHutJ0yH8+H++aY98UJmi//kecU9VBiRe3kYIoZnWE6b+BDjCB73+LwZdiqQEZSlWvVyOsM1zKe
+	 4hTj9f9VhCHFUVZFimOObhidhuU8aT37YjqmkKU3XAtBOKu7yrmz7syE2OdKu6cJj4+bTL3cO2/g
+	 QV2GdlyZhd3OU8OtHs6ltzR6iL04JEvYbjeQ+Wv7t/e1KSW4hZc6bAlKb/HgNcim/zK1Z4Dg==
+X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
+From: Guanghui Yang <3497809730@qq.com>
+To: Theodore Ts'o <tytso@mit.edu>
+Cc: Andreas Dilger <adilger.kernel@dilger.ca>,
+	Baokun Li <libaokun@linux.alibaba.com>,
+	Jan Kara <jack@suse.cz>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Ritesh Harjani <ritesh.list@gmail.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	linux-ext4@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Guanghui Yang <3497809730@qq.com>
+Subject: [PATCH] ext4: clear error before retrying inode xattr space fallback
+Date: Wed,  8 Jul 2026 12:57:19 +0000
+X-OQ-MSGID: <20260708125719.1031857-1-3497809730@qq.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-5.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[qq.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[qq.com:s=s201512];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-272649-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[3497809730@qq.com,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:tytso@mit.edu,m:adilger.kernel@dilger.ca,m:libaokun@linux.alibaba.com,m:jack@suse.cz,m:ojaswin@linux.ibm.com,m:ritesh.list@gmail.com,m:yi.zhang@huawei.com,m:linux-ext4@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:3497809730@qq.com,m:riteshlist@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:nitin.r.gote@intel.com,m:intel-xe@lists.freedesktop.org,m:stable@vger.kernel.org,m:christian.koenig@amd.com,m:matthew.auld@intel.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[thomas.hellstrom@linux.intel.com,stable@vger.kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	HAS_ORG_HEADER(0.00)[];
-	TAGGED_FROM(0.00)[bounces-272647-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[dilger.ca,linux.alibaba.com,suse.cz,linux.ibm.com,gmail.com,huawei.com,vger.kernel.org,qq.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FREEMAIL_FROM(0.00)[qq.com];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[thomas.hellstrom@linux.intel.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[intel.com:+];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[3497809730@qq.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[qq.com:+];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_HAS_DN(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5BBA77265D6
+X-Rspamd-Queue-Id: 9E795726962
 
-Hi, Nitin,
+When ext4_xattr_make_inode_space() returns -ENOSPC,
+ext4_expand_extra_isize_ea() can retry the expansion with
+s_min_extra_isize.  If that retry succeeds by finding enough ibody free
+space, control jumps directly to the shift label.
 
-On Wed, 2026-07-08 at 14:45 +0530, Nitin Gote wrote:
-> When a dma-buf importer creates a ttm_bo_type_sg BO with bo-
-> >base.resv
-> pointing at the exporter's dma_buf->resv and dma_buf_dynamic_attach()
-> fails, no dma_buf reference is held. The exporter can be freed before
-> the delayed_delete worker calls dma_resv_lock(bo->base.resv), causing
-> a
-> use-after-free:
->=20
-> =C2=A0 Oops: general protection fault, probably for non-canonical address
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0x6b6b6b6b6b6b6b9c
-> =C2=A0 Workqueue: ttm ttm_bo_delayed_delete [ttm]
-> =C2=A0 RIP: 0010:mutex_can_spin_on_owner+0x3f/0xc0
->=20
-> ttm_bo_individualize_resv() skips the resv swap for all sg BOs to
-> keep
-> the shared resv available for delayed_delete to release the dma-buf
-> mapping. A BO whose attach never succeeded has no mapping to release,
-> yet it keeps bo->base.resv pointing at the exporter resv that
-> delayed_delete later locks once the exporter is gone.
->=20
-> Fix this by checking bo->base.import_attach, which is set only after
-> a
-> successful attach. The check is placed after dma_resv_copy_fences()
-> so
-> successful imports still copy fences to _resv before returning,
-> keeping
-> the shared resv for delayed_delete. Failed imports fall through to
-> swap
-> resv to _resv, so delayed_delete never locks the stale exporter resv.
->=20
-> Closes:
-> https://gitlab.freedesktop.org/drm/xe/kernel/-/work_items/8023
-> Fixes: d99fbd9aab62 ("drm/ttm: Always take the bo delayed cleanup
-> path for imported bos")
-> Cc: stable@vger.kernel.org=C2=A0# v6.8+
-> Cc: Thomas Hellstrom <thomas.hellstrom@linux.intel.com>
-> Cc: Christian Konig <christian.koenig@amd.com>
-> Cc: Matthew Auld <matthew.auld@intel.com>
-> Assisted-by: GitHub_Copilot:claude-sonnet-4.6
-> Reviewed-by: Christian K=C3=B6nig <christian.koenig@amd.com>
-> Signed-off-by: Nitin Gote <nitin.r.gote@intel.com>
+The previous -ENOSPC is still stored in error in that path, so the
+function can update i_extra_isize but still return -ENOSPC to the
+caller.  Clear error before retrying so a successful fallback expansion
+returns success.
 
-It seems you dropped the patch changelog?
+Reproduced with an ext4 image using 1 KiB blocks, project quota support,
+256-byte inodes, and min_extra_isize/want_extra_isize set to 32.
+FS_IOC_FSSETXATTR failures dropped from 802 to 86 after the fix.
 
-Also the WARN_ON_ONCE() we discussed for last version?
+Fixes: 69f3a3039b0d ("ext4: introduce ITAIL helper")
+Cc: stable@vger.kernel.org
+Signed-off-by: Guanghui Yang <3497809730@qq.com>
+---
+ fs/ext4/xattr.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-/Thomas
+diff --git a/fs/ext4/xattr.c b/fs/ext4/xattr.c
+index 982a1f831e22..9da5dfcea7b8 100644
+--- a/fs/ext4/xattr.c
++++ b/fs/ext4/xattr.c
+@@ -2839,6 +2839,7 @@ int ext4_expand_extra_isize_ea(struct inode *inode, int new_extra_isize,
+ 		    s_min_extra_isize) {
+ 			tried_min_extra_isize++;
+ 			new_extra_isize = s_min_extra_isize;
++			error = 0;
+ 			goto retry;
+ 		}
+ 		goto cleanup;
+-- 
+2.34.1
 
-
-
-> ---
-> =C2=A0drivers/gpu/drm/ttm/ttm_bo.c | 24 +++++++++++++++---------
-> =C2=A01 file changed, 15 insertions(+), 9 deletions(-)
->=20
-> diff --git a/drivers/gpu/drm/ttm/ttm_bo.c
-> b/drivers/gpu/drm/ttm/ttm_bo.c
-> index 3980f376e3ba..f157e259dd5f 100644
-> --- a/drivers/gpu/drm/ttm/ttm_bo.c
-> +++ b/drivers/gpu/drm/ttm/ttm_bo.c
-> @@ -203,15 +203,21 @@ static int ttm_bo_individualize_resv(struct
-> ttm_buffer_object *bo)
-> =C2=A0	if (r)
-> =C2=A0		return r;
-> =C2=A0
-> -	if (bo->type !=3D ttm_bo_type_sg) {
-> -		/* This works because the BO is about to be
-> destroyed and nobody
-> -		 * reference it any more. The only tricky case is
-> the trylock on
-> -		 * the resv object while holding the lru_lock.
-> -		 */
-> -		spin_lock(&bo->bdev->lru_lock);
-> -		bo->base.resv =3D &bo->base._resv;
-> -		spin_unlock(&bo->bdev->lru_lock);
-> -	}
-> +	/*
-> +	 * Successfully imported sg BOs need the shared resv for
-> dma-buf
-> +	 * cleanup. Failed imports have no attachment or mapping and
-> can
-> +	 * use the private _resv.
-> +	 */
-> +	if (bo->type =3D=3D ttm_bo_type_sg && bo->base.import_attach)
-> +		return 0;
-> +
-> +	/* This works because the BO is about to be destroyed and
-> nobody
-> +	 * references it any more. The only tricky case is the
-> trylock on
-> +	 * the resv object while holding the lru_lock.
-> +	 */
-> +	spin_lock(&bo->bdev->lru_lock);
-> +	bo->base.resv =3D &bo->base._resv;
-> +	spin_unlock(&bo->bdev->lru_lock);
-> =C2=A0
-> =C2=A0	return r;
-> =C2=A0}
 
