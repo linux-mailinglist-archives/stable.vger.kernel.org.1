@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-272592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272589-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id iwAEERYWTmpJCwIAu9opvQ
-	(envelope-from <stable+bounces-272592-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 11:19:18 +0200
+	id U//WHgAWTmpDCwIAu9opvQ
+	(envelope-from <stable+bounces-272589-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 11:18:56 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF1EB723945
-	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 11:19:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35BFE723937
+	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 11:18:56 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=simonwunderlich.de header.s=09092022 header.b=HUkddEM8;
+	dkim=pass header.d=simonwunderlich.de header.s=09092022 header.b=AGBDHvgk;
 	dmarc=pass (policy=none) header.from=simonwunderlich.de;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272592-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-272592-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272589-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-272589-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id ADFF43020E3B
-	for <lists+stable@lfdr.de>; Wed,  8 Jul 2026 09:19:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2D1EE3015847
+	for <lists+stable@lfdr.de>; Wed,  8 Jul 2026 09:18:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE96440E8D7;
-	Wed,  8 Jul 2026 09:18:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A052840B6D9;
+	Wed,  8 Jul 2026 09:18:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82A7F40910A;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2036409629;
 	Wed,  8 Jul 2026 09:18:46 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783502329; cv=none; b=jcKECJLJO9H2cuKUdA2a468UQexJ/JtIWbw23almkIQkZ9VYZYbQXD4MUbWbfvrp2u+ipLGCWKpS93/DK0PeVc4iOU65L5N+Ve7K3k49VoXhpPCntNHQhXob64J6b3TcXrg1mwCmqiRsAt93m0XWWdqeNkr4noY9B2XabdBFwms=
+	t=1783502328; cv=none; b=mWwXzfCVVagfsmWjkXqAHDHTk2CbSRWQtg1m8BOjeiHU2FQ+0NSgIdwzBe9SkQ07A8y4KEN91PA6FAz+MG3CQdYyRnS8bQMIFqsrB0M9+FXh3RBqoVxcQskN9oEQgK9Qh8DhmrAm67QathByNH2jT2jDFrRAzudsYHbTktO9/NU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783502329; c=relaxed/simple;
-	bh=+uBP9PtDhwXEi7TsSznUgZBVMjhLfvVFuXzlaIOWAVo=;
+	s=arc-20240116; t=1783502328; c=relaxed/simple;
+	bh=2/KTGQFLECcRsrA6RbYWbSgCdgNrI6yF8x9qSnLNCqc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UwHNbtJseqmOvGvde3w8tNZ/Ot6tgHPXa7e33T2Tbjmhj9zPrxOtYVP4ZZPn/FvWWRe3Ut2zKw2VZQKtFnp+eOj0xfvB8j0bthFGTR0g3IJSSTXCNXbKHKGMtNAZOnQWhH1SYVjuoDSvLCMygyww2+oaijV1663qkskS47n/2JY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=HUkddEM8; arc=none smtp.client-ip=23.88.38.48
+	 MIME-Version; b=h9gw5cXu2h2iYSIfMvQBxXowASf/906evc1EQU252gMBK1WcVRF6lgekPsBOpm2BWL5sxalAMck8C4XBRDeF79LXZdOxdX8fiSt+NBEO0d7zyjRNYJZ0WnklE2P9LPRQO/ptE+czmFu9blVyF+rOKEWNVzkWYRfI58fAUjt8kwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=AGBDHvgk; arc=none smtp.client-ip=23.88.38.48
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
-	s=09092022; t=1783502322;
+	s=09092022; t=1783502323;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=GKgYyF6RXM0vULAsGu0pR6G/eWYQjyyVfdhlWFhcPgw=;
-	b=HUkddEM8pEutJmcLkpywE8+mpQeIi/PvNIrVE8Upos6kAjOAWvwWfatriY4PCC8kdqNOak
-	V56lj8QMFitkVs/13GOAPIdB6wUcNidS9EZAmH1LR8XLuIEKukrqShJEM37iCqihTCcrOB
-	PgrtdFlGRVAeu8qrefZv+FOorz7FiGM3sFtfki5fOoTHOunJRVDxV0ZInahNR5xyJHXCT9
-	pBXyk4KgZ0gRDf8vXymiZ5L3CFn9E3wvwyx3RsbMoGseGq5RJhk9JJwN7cwQjFxcNoPp88
-	IoTAsX4AIDx9WIaPY7PvG39LUiGssE2ihF3MXQVWLv/f/352pe6xL784l/lurQ==
+	bh=XoHitXwXZodRmHC2FnwvG2SXUd+kAGWLzeuLItlrFgE=;
+	b=AGBDHvgkTOUH5WKelMcNP+01Dx9OGyFk+Z/Rvq4jQVEd2zvAPfEhjD/dAi6jlDAq5dWpnR
+	KFDsB3IxDzm4j1QdJVBuKEdn9v4up6mM0mg0cpjPeULywOSz48bX58h/R1g+DcQelB3Qi1
+	w7dvLNuIHVc3S5OAX0iPSmKxCdFCXIZT2/L1Zh1hn/ig0RoqrDVcremTjX3Ged9GSu+M/A
+	dNHLpyIPkveySCs5kbZaatBYm+K4x3TzxLUC9mbsuTifpyaVQW8ccB3YL2p3053uvZS8U9
+	NUr8cpSNiGltfqziUDuj4aLn11feyblxUfSJv0KU6NGCOCo1+nRx6OtKxfKg6A==
 From: Simon Wunderlich <sw@simonwunderlich.de>
 To: netdev@vger.kernel.org
 Cc: "David S. Miller" <davem@davemloft.net>,
@@ -56,10 +56,11 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	b.a.t.m.a.n@lists.open-mesh.org,
 	Sven Eckelmann <sven@narfation.org>,
 	stable@vger.kernel.org,
+	Sashiko <sashiko-bot@kernel.org>,
 	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH net 6/9] batman-adv: frag: free unfragmentable packet
-Date: Wed,  8 Jul 2026 11:18:18 +0200
-Message-ID: <20260708091821.314516-7-sw@simonwunderlich.de>
+Subject: [PATCH net 7/9] batman-adv: frag: fix primary_if leak on failed linearization
+Date: Wed,  8 Jul 2026 11:18:19 +0200
+Message-ID: <20260708091821.314516-8-sw@simonwunderlich.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260708091821.314516-1-sw@simonwunderlich.de>
 References: <20260708091821.314516-1-sw@simonwunderlich.de>
@@ -82,10 +83,10 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-272592-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-272589-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[3];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:netdev@vger.kernel.org,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:b.a.t.m.a.n@lists.open-mesh.org,m:sven@narfation.org,m:stable@vger.kernel.org,m:sw@simonwunderlich.de,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:netdev@vger.kernel.org,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:b.a.t.m.a.n@lists.open-mesh.org,m:sven@narfation.org,m:stable@vger.kernel.org,m:sashiko-bot@kernel.org,m:sw@simonwunderlich.de,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[sw@simonwunderlich.de,stable@vger.kernel.org];
@@ -98,47 +99,41 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	DKIM_TRACE(0.00)[simonwunderlich.de:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[simonwunderlich.de:from_mime,simonwunderlich.de:email,simonwunderlich.de:mid,simonwunderlich.de:dkim,narfation.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CF1EB723945
+X-Rspamd-Queue-Id: 35BFE723937
 
 From: Sven Eckelmann <sven@narfation.org>
 
-The caller of batadv_frag_send_packet() assume that the skb provided to the
-function are always consumed. But the pre-check for an empty payload or the
-zero fragment size returned an error without any further actions.
-
-A failed pre-check must use the same error handling code as the rest of the
-function.
+If the skb has a frag_list, it must be linearized before it can be split
+using skb_split(). But when this step failed, it must not only free the skb
+but also take care of the reference to the already found primary_if.
 
 Cc: stable@vger.kernel.org
-Fixes: ee75ed88879a ("batman-adv: Fragment and send skbs larger than mtu")
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Fixes: a063f2fba3fa ("batman-adv: Don't skb_split skbuffs with frag_list")
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 ---
- net/batman-adv/fragmentation.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/batman-adv/fragmentation.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/net/batman-adv/fragmentation.c b/net/batman-adv/fragmentation.c
-index 8a006a0473a87..13d4689d332dc 100644
+index 13d4689d332dc..2e20a2cb64cbf 100644
 --- a/net/batman-adv/fragmentation.c
 +++ b/net/batman-adv/fragmentation.c
-@@ -518,8 +518,10 @@ int batadv_frag_send_packet(struct sk_buff *skb,
- 	mtu = min_t(unsigned int, mtu, BATADV_FRAG_MAX_FRAG_SIZE);
- 	max_fragment_size = mtu - header_size;
+@@ -547,7 +547,7 @@ int batadv_frag_send_packet(struct sk_buff *skb,
+ 	 */
+ 	if (skb_has_frag_list(skb) && __skb_linearize(skb)) {
+ 		ret = -ENOMEM;
+-		goto free_skb;
++		goto put_primary_if;
+ 	}
  
--	if (skb->len == 0 || max_fragment_size == 0)
--		return -EINVAL;
-+	if (skb->len == 0 || max_fragment_size == 0) {
-+		ret = -EINVAL;
-+		goto free_skb;
-+	}
- 
- 	num_fragments = (skb->len - 1) / max_fragment_size + 1;
- 	max_fragment_size = (skb->len - 1) / num_fragments + 1;
+ 	/* Create one header to be copied to all fragments */
 -- 
 2.47.3
 
