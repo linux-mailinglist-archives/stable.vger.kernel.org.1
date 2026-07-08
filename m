@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-272643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272644-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id XeRHJdVBTmo3JwIAu9opvQ
-	(envelope-from <stable+bounces-272643-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 14:25:57 +0200
+	id ANFJKgBCTmo9JwIAu9opvQ
+	(envelope-from <stable+bounces-272644-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 14:26:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0405F7264AF
-	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 14:25:57 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45D2F7264C0
+	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 14:26:40 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=klKLKaKp;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=CtaObjrd;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272643-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272643-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272644-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-272644-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4DA783079522
-	for <lists+stable@lfdr.de>; Wed,  8 Jul 2026 12:20:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E5D80309B45E
+	for <lists+stable@lfdr.de>; Wed,  8 Jul 2026 12:21:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C36C43DA55;
-	Wed,  8 Jul 2026 12:20:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7E9E43D50C;
+	Wed,  8 Jul 2026 12:21:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EE4B43C7BC
-	for <stable@vger.kernel.org>; Wed,  8 Jul 2026 12:20:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B67643C7BC
+	for <stable@vger.kernel.org>; Wed,  8 Jul 2026 12:20:59 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783513256; cv=none; b=fZ67I1UhuLqVy8a9fxaee1pmEjC541fLs4W6ngK0biU8KK7Qc9La8EroUrCZ/YDyPA26lUkgd9f2QmztCc8jlfTHW4XOTOYFWAfjFnAExTg4RVgWkIfl4rah0NHq2P4N9GjekUKpfaw1FNdEpkviWNFQ831Pr2xXgNy7qp6HIoA=
+	t=1783513261; cv=none; b=ZLi5DZDRNIBxb/V14fsBm9oNDMdOLyBd2jLk0RGonw4RqFB2eGlRu9XL/hCRitlTj5/i4YYCYdhjGPeyoDbOK5I66d0Ys8WSL0U/eBByNVRJMiRcmHShdLl4dK9Vk+HeJ7dw9BEHO5UaQvS28O1XkCmoMANUYa9gGtiuZDZ3oJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783513256; c=relaxed/simple;
-	bh=Wc2fyKWQGbPIlOiW6rC7gNOssOxY/9XvX7eni+gRYm8=;
+	s=arc-20240116; t=1783513261; c=relaxed/simple;
+	bh=hcfXO1FwHvS4lII212fe7K/4042LkzgU7vpSSEXp+Dg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SANiuLo45bfuNv5b4jvZNkrc3jtuGADT9wGtnqW+YLZ7lv/nE+dwLjBXuOryWEhqnbDKgRLV2icQ21567sSHxw+Bs/W6nBUg81u+9C9bS3/Tm3fGREoM+oEX7Z90Lppej/b3e4UhbiB78OPORaZWnFuGhF1QLCfpKp8h1kaLpLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=klKLKaKp; arc=none smtp.client-ip=91.218.175.184
+	 MIME-Version; b=MPIbtAlGuMVLu7GBqESypL2UJ8NPbLlj0FARLAiMU7/S8EpvzgSspHTo7QhA4FMFHwbuIkLJY3h7vuU+iwxDtnI46wvQBTWhC1X4bBqLOc7SpIpSnfsvTVOwl6fZIX4xIGk/f8cALI94HDKMxBYUnPMQFM2MucPc1+L996z2ZOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=CtaObjrd; arc=none smtp.client-ip=91.218.175.173
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783513252;
+	t=1783513257;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=pLR4NTdd81YwHMva27KFRdPfSNha1yNVphS6scVIA8Y=;
-	b=klKLKaKplweSEQGqTSBhvVQKqIE/wZDOFqmqFojo/YESsUhqb8YNMex/lxIBX+G7/lD9SD
-	W+K/4Kz5m9z+IKgKIIJx+u11F0X5XEv5iPIIfBDd64Z0U01DH7+k0MRgMmT21SDLSipEYD
-	TTmx4fKshMqLGdALX4PfGjY6QRogNLU=
+	bh=2Fn1VOZHGCiDZaYCm98LuGj7iddLxiK8xDaGMUh3nqA=;
+	b=CtaObjrdR977XBk5Te7aEsP20O9ZZ1icNmNajWdyd2wpUY/OdU9o0CqFpIc2L3g1OKXtBF
+	o5Vy+Rv/QkfN+NdURZyX6kVlf1nGAIIzF4AmBh24KQVSICX6gerC569Cb0Etg4f3HmitjY
+	+rF24lBH4avmkC6JF2hd2DODvXvECAc=
 From: Usama Arif <usama.arif@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	apopple@nvidia.com,
@@ -74,9 +74,9 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 	hannes@cmpxchg.org
 Cc: sashiko-bot <sashiko-bot@kernel.org>,
 	stable@vger.kernel.org
-Subject: [PATCH v2 1/3] mm/mempolicy: skip non-present PMDs when queueing folios
-Date: Wed,  8 Jul 2026 05:20:07 -0700
-Message-ID: <20260708122040.861335-2-usama.arif@linux.dev>
+Subject: [PATCH v2 2/3] mm/madvise: skip device-private PMDs in cold and pageout walks
+Date: Wed,  8 Jul 2026 05:20:08 -0700
+Message-ID: <20260708122040.861335-3-usama.arif@linux.dev>
 In-Reply-To: <20260708122040.861335-1-usama.arif@linux.dev>
 References: <20260708122040.861335-1-usama.arif@linux.dev>
 Precedence: bulk
@@ -94,13 +94,13 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-272643-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-272644-lists,stable=lfdr.de];
 	RCPT_COUNT_TWELVE(0.00)[28];
 	RCVD_COUNT_THREE(0.00)[3];
 	MIME_TRACE(0.00)[0:+];
@@ -120,57 +120,52 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.dev:from_mime,linux.dev:email,linux.dev:mid,linux.dev:dkim,vger.kernel.org:from_smtp]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:from_mime,linux.dev:email,linux.dev:mid,linux.dev:dkim,nvidia.com:email,sashiko.dev:url,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0405F7264AF
+X-Rspamd-Queue-Id: 45D2F7264C0
 
-queue_folios_pmd() is called under pmd_trans_huge_lock(), whose
-pmd_is_huge() check returns true for any non-present, non-none PMD
-softleaf. Passing such a PMD to pmd_folio() treats the softleaf encoding
-as a hardware PFN and can return a bogus folio pointer.
+madvise_cold_or_pageout_pte_range() takes pmd_trans_huge_lock(), whose
+pmd_is_huge() check returns true for a device-private PMD. The subsequent
+!pmd_present() branch has a VM_BUG_ON() asserting migration is the only
+allowed non-present case; a device-private PMD trips it.
 
-Mirror queue_folios_pte_range(): handle non-present entries before
-looking up a folio. Keep migration entries counted as failures, but skip
-other non-present PMDs such as device-private entries.
+Allow device-private PMDs in that non-present assertion and continue to
+huge_unlock before calling pmd_folio(). This keeps the assertion for
+unexpected PMD softleafs while skipping device-private PMDs like other
+non-present PMDs in this path.
 
-Potential trigger: an HMM-based GPU driver migrates an anonymous THP
-folio to device memory via migrate_vma_pages(), leaving a device-private
-PMD. Userspace then calls mbind(), migrate_pages() or
-set_mempolicy_home_node() on that range.
+Potential trigger: an HMM-based GPU driver races with
+madvise(MADV_COLD)/MADV_PAGEOUT: pmd_trans_huge(*pmd) reads true, then
+migrate_vma_pages() flips the PMD to a device-private entry before the
+PMD lock is acquired.
 
 Reported-by: sashiko-bot <sashiko-bot@kernel.org>
 Link: https://sashiko.dev/#/patchset/20260703173903.3789516-1-usama.arif%40linux.dev?part=6
 Fixes: 368076f52ebe ("mm/huge_memory: add device-private THP support to PMD operations")
 Cc: <stable@vger.kernel.org>
 Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: Balbir Singh <balbirs@nvidia.com>
 Signed-off-by: Usama Arif <usama.arif@linux.dev>
 ---
- mm/mempolicy.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ mm/madvise.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-index 914f81863db5..4785b55c02da 100644
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -654,12 +654,14 @@ static void queue_folios_pmd(pmd_t *pmd, struct mm_walk *walk)
- {
- 	struct folio *folio;
- 	struct queue_pages *qp = walk->private;
-+	pmd_t pmdval = *pmd;
+diff --git a/mm/madvise.c b/mm/madvise.c
+index 9292f60b19aa..1065b5a84ea7 100644
+--- a/mm/madvise.c
++++ b/mm/madvise.c
+@@ -389,7 +389,8 @@ static int madvise_cold_or_pageout_pte_range(pmd_t *pmd,
  
--	if (unlikely(pmd_is_migration_entry(*pmd))) {
--		qp->nr_failed++;
-+	if (unlikely(!pmd_present(pmdval))) {
-+		if (pmd_is_migration_entry(pmdval))
-+			qp->nr_failed++;
- 		return;
- 	}
--	folio = pmd_folio(*pmd);
-+	folio = pmd_folio(pmdval);
- 	if (is_huge_zero_folio(folio)) {
- 		walk->action = ACTION_CONTINUE;
- 		return;
+ 		if (unlikely(!pmd_present(orig_pmd))) {
+ 			VM_BUG_ON(thp_migration_supported() &&
+-					!pmd_is_migration_entry(orig_pmd));
++					!pmd_is_migration_entry(orig_pmd) &&
++					!pmd_is_device_private_entry(orig_pmd));
+ 			goto huge_unlock;
+ 		}
+ 
 -- 
 2.53.0-Meta
 
