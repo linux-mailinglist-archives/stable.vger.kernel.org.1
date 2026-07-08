@@ -1,65 +1,89 @@
-Return-Path: <stable+bounces-272541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272543-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id tfu1LHvOTWqd+QEAu9opvQ
-	(envelope-from <stable+bounces-272541-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 06:13:47 +0200
+	id rF8YE4jXTWrk+wEAu9opvQ
+	(envelope-from <stable+bounces-272543-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 06:52:24 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 184E47218DF
-	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 06:13:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E7C0721A3A
+	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 06:52:23 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=XisPliXw;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272541-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272541-lists+stable=lfdr.de@vger.kernel.org";
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=amd.com header.s=selector1 header.b=eYFpy75f;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272543-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272543-lists+stable=lfdr.de@vger.kernel.org";
+	arc=reject ("cv is fail on i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6E4D23036D40
-	for <lists+stable@lfdr.de>; Wed,  8 Jul 2026 04:13:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DBC74301F9D0
+	for <lists+stable@lfdr.de>; Wed,  8 Jul 2026 04:52:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 403853A3E73;
-	Wed,  8 Jul 2026 04:13:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27553375F96;
+	Wed,  8 Jul 2026 04:52:17 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012031.outbound.protection.outlook.com [52.101.43.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AC653A5E9F
-	for <stable@vger.kernel.org>; Wed,  8 Jul 2026 04:13:06 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783483988; cv=none; b=myURBhPU9sfleQIj1WR6A0Mfx57zG03I9JHpaVgu7cP45PExSw30KPYZdsfeaFSs7syEKBT7M83mufZf/346AVsM0SsnGaZhNOfWXpbv5HloGYUia9fL/giA58kDrAafcJheuhzA1CYzCaVRLvbmGxptBw3fVWKBMwW0ba6dNjY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783483988; c=relaxed/simple;
-	bh=jWw+aAZ1Xdf8v0sBvBbMi0reFRXGyYyRf0eUbjNV5dM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DkGsjw/6K+PHwnTYz/1qRVEf+7GZ10auLphUm0KRS8PNNZSLtYp6d7xs5xWP087BhjOn1BTbloch3kSxgJBLj/No4PHsYg3f3C4VsAmPrewmk/CuD+e9NOwxDx/Pi8+dy1/oxi9+XCBPpOmUbv/8KUwuxLUSjkRkbCMZ6IglhM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=XisPliXw; arc=none smtp.client-ip=91.218.175.172
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783483984;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fZiJokuQxVfAJpsiEey7YS1EwQOtYiv53Kf+q+DJltM=;
-	b=XisPliXwGD7r66MNwvPo8dSl731WjYnm5BjYbglvCteLzzHzH5d1qjVh9eQS4X15YMjBhM
-	64gnefgI5wpz5YxhmYkD5x1FyM+ODovvIXiDd2n7JN7P6wXidzuCR0znVXjuL7xkg86x+W
-	xeBYOSsVL6joY35x6HATZ7OiThyCsV8=
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-To: stable@vger.kernel.org,
-	linux-mm@kvack.org
-Cc: jiayuan.chen@shopee.com,
-	jiayuan.chen@linux.dev,
-	yingfu.zhou@shopee.com,
-	willy@infradead.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Huang Ying <ying.huang@intel.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 5.15.y 6.1.y 6.6.y 1/1] mm/vmscan: flush deferred TLB before freeing large folios
-Date: Wed,  8 Jul 2026 12:12:36 +0800
-Message-ID: <20260708041237.289026-2-jiayuan.chen@linux.dev>
-In-Reply-To: <20260708041237.289026-1-jiayuan.chen@linux.dev>
-References: <20260708041237.289026-1-jiayuan.chen@linux.dev>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EA3D23BD06;
+	Wed,  8 Jul 2026 04:52:15 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783486336; cv=fail; b=Otcp8UH8Hi0OlcKaLpWqEh0bIknM0udiRlZi2X+OMtRDmSgaRXugTDiMU/6U7jTJsatjgPQplnuK8Dmiq/uZP0+k7YBxKjwpSeyILpoHgad1gqxBg6VVWWgnKc+5yX3FjPlXvtnGQGRU43txJsVWeVrPw26clcdfAurl44rkC28=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783486336; c=relaxed/simple;
+	bh=1QjRd43kfIonZgwCdzUwLi0VnR5OvPJENJCjFLguH7o=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=WPQRiqFr5dSq4qGjyG+88JwAn0Vbyns/LdKzOJZiawJZBiHaLJmBXm3dEDjBrvehZCdYUbKH0yAHXh6EDiEIM4jgVJ6NtZpRh16Hl1mQY0HUAFnui6zWTkLnCEXeUjCmX/Q70NRFJAQWAMTuLDO0Hu6xB08G3cyBi4VPtx8x1Ck=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=eYFpy75f; arc=fail smtp.client-ip=52.101.43.31
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PXsPm1YAsjjIFSfvxmTeMnC4XEb7RZX4IOyUpRD2Q0+eccL4+lSlG/HKfcwrTHNG2meD3o6PIDUrmh4cVgM74CeVCXclfHLe9xZ4H+B6QDXiFNafkWRhj2htXYgXsQ4bjFINlkNYxw2+qur16KjKl29UzABt+yOkfGShVf2EJjyXgCEPB2suRxTZCIsLW7hOzSzaOzDSoo/M4JSR2GIiPxHSB3tonjcX7wEwQc+j8/5l5EFKO554Ou4jE4KVQtwdy1Nt6kDvcaKpY7futzfxFR0MjJ/4G7hTzmyf0bVNbo/gY/9ueqUeEYXRpWAyZVfyzJqtn8xhSIgUmz42jBs8Uw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Uxc46giceCsQq9aCw7dDBCyh/GA72pz0bS+Mp872new=;
+ b=LiUuHo21xYjw50lsOeNe9iKrAiWTOr8SfLNqtRoVgt+ekSb9/kMKFu2/UWA2MEyyBpu+H8OsqhYwbs0ox8rAmWFFgkrH2BxZ6AnBiu9tnwgS/I6vas79IjPiEjb5vU0l3tjuI1163tFbrwK6hfUPE9aXh515Q65yqjhmY2WsfPGd3CBux+ZXakqTo7wuiijcRQaXzoHJ17Si7HXGnEqwqCJO1FZ/IluN7q568uNR29iYySSvONKuTHKCQV7F2Ni0ROz37Jn/RkBKIY/+0MEgsKCYjkW1fp0GiKB6gUY1oOp58q2o2Fv0mO5xgKSIpoYkvwo5ascbMwS6qRv/WyEIxg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Uxc46giceCsQq9aCw7dDBCyh/GA72pz0bS+Mp872new=;
+ b=eYFpy75fIuLJ43O9luiMOcuKC0EymN/bc6iyH+7qTvBqIcs/muW3hpFQdiOiypRLDcz99GhdX1LPFuqq2Z111o7adi/arbfDUoap3Oiv7KzXTADat2KTjsHulvuO5lBhYawAV4XPCfddGRCQ/vIfaoqV3KRorGP0WPSv/fzGwZs=
+Received: from CH0PR03CA0053.namprd03.prod.outlook.com (2603:10b6:610:b3::28)
+ by DM4PR12MB6424.namprd12.prod.outlook.com (2603:10b6:8:be::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.10; Wed, 8 Jul
+ 2026 04:52:11 +0000
+Received: from CH2PEPF00000145.namprd02.prod.outlook.com
+ (2603:10b6:610:b3:cafe::99) by CH0PR03CA0053.outlook.office365.com
+ (2603:10b6:610:b3::28) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.202.9 via Frontend Transport; Wed, 8
+ Jul 2026 04:52:11 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ CH2PEPF00000145.mail.protection.outlook.com (10.167.244.102) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.181.6 via Frontend Transport; Wed, 8 Jul 2026 04:52:11 +0000
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Tue, 7 Jul
+ 2026 23:52:10 -0500
+Received: from xhdakumarma40.xilinx.com (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
+ Transport; Tue, 7 Jul 2026 23:52:08 -0500
+From: Srikanth Boyapally <srikanth.boyapally@amd.com>
+To: Mark Brown <broonie@kernel.org>, <linux-spi@vger.kernel.org>
+CC: <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>, Miquel Raynal
+	<miquel.raynal@bootlin.com>, Pratyush Yadav <pratyush@kernel.org>,
+	<git@amd.com>, Srikanth Boyapally <srikanth.boyapally@amd.com>
+Subject: [PATCH] spi: cadence-quadspi: Fix indirect write timeout when DMA read mode is enabled
+Date: Wed, 8 Jul 2026 10:21:48 +0530
+Message-ID: <20260708045148.2993313-1-srikanth.boyapally@amd.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,97 +91,114 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PEPF00000145:EE_|DM4PR12MB6424:EE_
+X-MS-Office365-Filtering-Correlation-Id: 47d41d49-af17-4c9c-66a8-08dedcacac27
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|36860700016|23010399003|82310400026|11063799006|56012099006|18002099003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	43y3CRsKZiW3UsHGApSgSNqqb5G4Xz1nWkIkzADg2VOCH4I2lrRmqzIE1eMCoC9q8yn4RAWp1yL2z8Zp/hlMB4TZUkJlAUDYmVibUQYUxF+7Edlw7ui2WGgKuERAGYvY38yGxVzScnLSOB71aXIbUzdTChA3tKZxKlakwFFbNAzIizy2QHLiafztM08nmN8eYOS/KdyX6PoGo6lUdh2SvupiWB+AkYAq/5tMzeX/OhUQIlO4yphqe+yIrKmlBnPo1DXNi8aLIWAE7+MH3Y2bWTpAqhQ0JoJrIek/NU8NcuAuexRCKbbZDLcDYYct0l55IaG6L9E4rJuLonp3JIPNTOKb5Up8/wnlmGhkeglWTrgCpfNCi219OuEpu28awYWJZGQ0f35bdtc7U7cM2x2i80nY4xOGKPnZ0ceKtjSS7Wwa5Oo4wWfuCoXQpbLJf9VAO9CkIKSGV78EVjfDQaufklZ8m5ghwaMpUarrXeA5CLDCBeg8xOE+gRFOdyDP35NiEHFBbbgpPl27qyfWPc/h0HfLtZcMUQfJ71naDvCbxQ/04XRybRXisaz6DC+vl5dgfVyKkgrhudNuh1o+P8UL6TLEZjKJmVq+mNeBzLBPYI6Y2weUU+5HP6AUpfzWMsIzLGaJa0is7O1yzigF35bX2Lxn9J5eBRYs19WOBtvgtLmsiGcoFhcYwt8gcK2Cvo7+4tZDjiIejpk03aTv7NizpQ==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(376014)(36860700016)(23010399003)(82310400026)(11063799006)(56012099006)(18002099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	1K+OHPC8ocAF9lGxTvWM5DgeuTUOdL4+oCmO5dQIpnYMYkaHLvgjoCf3EFAiTxaMfcsfYVB+3lAAIBXKpQBKcGYZ69HKh7jN4fNN4vihf41w/qG7JxS5yWR9DltTfX0/htZfYz0Ce0/MY2GDEqABNvEusFh+mHyEDLWxXasxRm/iwUlD4h7+U7yaJtLF1he1Ti/rAeO8ffxZ2/4FTsrd3TAe0HSdcgMWOHB8+hIf+Qut/IgU2GIps4Qq8kTudqlUgNIJNrJVSnqRFSnlKoTrBYA89bE+8syd2CBrqxhZqMSBuPGi3yzydfmpQ+Djv2eSS0y1B4odT0+PQMzbRvfgkGGLi/DIRuI3bx2KbNLQoiLuvwPgFlxWUMOMI4XU6J8+vMAJV1W37EQnlYX18HYSHUv5rtXwJjFuE6D6X373/BN3uB0yFkfg3T2mN7rwIoc9
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jul 2026 04:52:11.3388
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 47d41d49-af17-4c9c-66a8-08dedcacac27
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH2PEPF00000145.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6424
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [1.34 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	DMARC_POLICY_ALLOW(-0.50)[amd.com,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[amd.com:s=selector1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-272541-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:linux-mm@kvack.org,m:jiayuan.chen@shopee.com,m:jiayuan.chen@linux.dev,m:yingfu.zhou@shopee.com,m:willy@infradead.org,m:akpm@linux-foundation.org,m:ying.huang@intel.com,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[jiayuan.chen@linux.dev,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-272543-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	DKIM_TRACE(0.00)[linux.dev:+];
-	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:broonie@kernel.org,m:linux-spi@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:miquel.raynal@bootlin.com,m:pratyush@kernel.org,m:git@amd.com,m:srikanth.boyapally@amd.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[srikanth.boyapally@amd.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[amd.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jiayuan.chen@linux.dev,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[srikanth.boyapally@amd.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:from_mime,amd.com:email,amd.com:mid,amd.com:dkim,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:from_mime,linux.dev:email,linux.dev:mid,linux.dev:dkim]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[8]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 184E47218DF
+X-Rspamd-Queue-Id: 8E7C0721A3A
 
-From: Jiayuan Chen <jiayuan.chen@shopee.com>
+When use_dma_read is enabled, the IRQ handler unconditionally overwrites
+irq_status with the return value of get_dma_status(). For write operations,
+DMA status returns 0 since no DMA read is in progress, causing irq_status
+to become 0. The subsequent completion signal is never triggered and the
+write operation times out with -ETIMEDOUT:
 
-In reclaim, shrink_folio_list() unmaps PTEs with a deferred, batched TLB
-flush. The batch is only flushed by try_to_unmap_flush() near the end of
-the function, just before the order-0 folios collected in @free_folios are
-handed back to the allocator.
+  cadence-qspi f1010000.spi: Indirect write timeout
+  spi-nor spi0.1: operation failed with -110
 
-Large folios don't go through @free_folios -- they're freed inline at the
-free_it label via destroy_large_folio(), which runs before that flush. So
-a large folio's pages can be returned to the buddy allocator and reused
-while another CPU still holds a stale TLB entry for them, and that CPU then
-reads or executes through the stale translation into the reused page. For
-file-backed large folios (e.g. executable text) this shows up as random
-SIGSEGV/SIGILL in user space, with fault addresses that don't match the
-code being run.
+Fix this by separating the DMA completion path from the write interrupt
+path. If get_dma_status() indicates DMA read completion, signal completion
+and return immediately. Otherwise, preserve the original irq_status so that
+write completion interrupts are correctly recognized and signalled.
 
-Flush the deferred batch before freeing a large folio inline, the same way
-the order-0 path already waits for the flush.
-
-Upstream this is fixed as a side effect of commit bc2ff4cbc329 ("mm: free
-folios in a batch in shrink_folio_list()"), which is a larger change; this
-is the minimal fix for -stable.
-
-Reported-by: Yingfu Zhou <yingfu.zhou@shopee.com>
-Fixes: bd4c82c22c36 ("mm, THP, swap: delay splitting THP after swapped out")
-Cc: Jiayuan Chen <jiayuan.chen@linux.dev>
-Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+Fixes: aac733a96636 ("spi: cadence-qspi: Fix style and improve readability")
+Signed-off-by: Srikanth Boyapally <srikanth.boyapally@amd.com>
 ---
-destroy_compound_page was recently renamed to destroy_large_folio.
-So it would be conflict when this patch was applied to 5.15/6.1
----
- mm/vmscan.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/spi/spi-cadence-quadspi.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index aba757e5c597..8eb498351d9b 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -2123,10 +2123,12 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
- 		 * Is there need to periodically free_folio_list? It would
- 		 * appear not as the counts should be low
- 		 */
--		if (unlikely(folio_test_large(folio)))
-+		if (unlikely(folio_test_large(folio))) {
-+			try_to_unmap_flush();
- 			destroy_large_folio(folio);
--		else
-+		} else {
- 			list_add(&folio->lru, &free_folios);
-+		}
- 		continue;
+diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
+index 65aff2e70265..89873f8b3f21 100644
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -382,12 +382,16 @@ static irqreturn_t cqspi_irq_handler(int this_irq, void *dev)
+ 	/* Clear interrupt */
+ 	writel(irq_status, cqspi->iobase + CQSPI_REG_IRQSTATUS);
  
- activate_locked_split:
+-	if (cqspi->use_dma_read && ddata && ddata->get_dma_status)
+-		irq_status = ddata->get_dma_status(cqspi);
+-	else if (cqspi->slow_sram)
++	if (cqspi->use_dma_read && ddata && ddata->get_dma_status) {
++		if (ddata->get_dma_status(cqspi)) {
++			complete(&cqspi->transfer_complete);
++			return IRQ_HANDLED;
++		}
++	} else if (cqspi->slow_sram) {
+ 		irq_status &= CQSPI_IRQ_MASK_RD_SLOW_SRAM | CQSPI_IRQ_MASK_WR;
+-	else
++	} else {
+ 		irq_status &= CQSPI_IRQ_MASK_RD | CQSPI_IRQ_MASK_WR;
++	}
+ 
+ 	if (irq_status)
+ 		complete(&cqspi->transfer_complete);
 -- 
-2.43.0
+2.34.1
 
 
