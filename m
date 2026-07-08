@@ -1,223 +1,189 @@
-Return-Path: <stable+bounces-272613-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272615-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 1yQRBHshTmonDwIAu9opvQ
-	(envelope-from <stable+bounces-272613-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 12:07:55 +0200
+	id qUJ8IdcgTmoIDwIAu9opvQ
+	(envelope-from <stable+bounces-272615-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 12:05:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78DD07240BA
-	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 12:07:54 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0954724059
+	for <lists+stable@lfdr.de>; Wed, 08 Jul 2026 12:05:10 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=OQpU+uQX;
-	dkim=pass header.d=redhat.com header.s=google header.b="I/duXRwU";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272613-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-272613-lists+stable=lfdr.de@vger.kernel.org";
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
+	dkim=pass header.d=bootlin.com header.s=dkim header.b=MESKkIMf;
+	dmarc=pass (policy=reject) header.from=bootlin.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272615-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-272615-lists+stable=lfdr.de@vger.kernel.org";
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8B7C4306DC00
-	for <lists+stable@lfdr.de>; Wed,  8 Jul 2026 10:00:54 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5445D30148EC
+	for <lists+stable@lfdr.de>; Wed,  8 Jul 2026 10:04:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42D6B3876BE;
-	Wed,  8 Jul 2026 10:00:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EEF638C2C3;
+	Wed,  8 Jul 2026 10:04:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD25D38757B
-	for <stable@vger.kernel.org>; Wed,  8 Jul 2026 10:00:52 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783504854; cv=pass; b=XB2GDs/LoMMUu6LqnYuep2MYp0B4brSmBDTyvAa9aCY5Z1VA4QCqgs1eYG+urZhMyWnIiXDLLuTMdG+l+CbN/5Dv4WvNkPoMAuF42QqSndSGJ5yYhbagDCTAohSr7fSIJ296wmWTrhMGGVYK+n4VjPyyTE4hpINifxVC89BsQYs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783504854; c=relaxed/simple;
-	bh=zMb4vGxKg5zXPjuNFFDp0IQHLFIs00h4Ggo7w7Y/6K8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dJ3r718QTR5M5q0r691jvTtf2kULg3zUaVSWkYvU1S9rdcAzGpkSCLYDyS/PoA/30nbthBehDypwjA2nUsaJ+sSP9IwbIJp9fvUBdwI58vKS6R+PopzimdN84Ck8kRSLH/cshXzaep+h/iZgFfQgb4kfAf6TAjdqH4T+RddsKmI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OQpU+uQX; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=I/duXRwU; arc=pass smtp.client-ip=170.10.133.124
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1783504852;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yE7SABVDqZevBVFAhiLXSdt8sJh3auncorNJpdn2UKg=;
-	b=OQpU+uQXZAeU6KMN5D8P3eKyf5sMKBdZEc5E0F6/jeqQK3McVYrmJODNvF8NDIjoOZG08E
-	rfMCvjMm+iQn/E/U1EDqfurN0U23W1Qtkq6gEMl/E6i2jutjbHgsPi2H17KT7b2auEb7JC
-	yuIdlfIKfOKrSpRg+p1EKNIFaDFTZ4E=
-Received: from mail-yw1-f200.google.com (mail-yw1-f200.google.com
- [209.85.128.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-126-CSYrQhu3NIyVnYda1uAIVA-1; Wed, 08 Jul 2026 06:00:50 -0400
-X-MC-Unique: CSYrQhu3NIyVnYda1uAIVA-1
-X-Mimecast-MFC-AGG-ID: CSYrQhu3NIyVnYda1uAIVA_1783504850
-Received: by mail-yw1-f200.google.com with SMTP id 00721157ae682-80a11e0ffc2so19797157b3.0
-        for <stable@vger.kernel.org>; Wed, 08 Jul 2026 03:00:50 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783504850; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Alj4p5bRvBs96j3tSoYMdYKHPIafpI7tNW31jIjyNMOb0V+vkRmRvmru1Qr2p+imJd
-         21pm3JvztYsg3ngH4+Dn2VuyVRu+HVvdP0YdzDHoq2SOS0NDJtrlrSyfJZzpYJRLGDu3
-         jDIbRwhOAplvdP7Rpqge/oPHlVlFCe6xSnRh09V8hlgIfGCEtI4lDezhqtwhmSGLq8es
-         i4tP+IP56fI+cQzXqUX6FKahkQ9v2C04vemuZK7SSFAdRVnMnG2tnRvbjEqAbV0bBWW7
-         0FD5oM1fgWRLTDIOyoEx7jAvMVtMKW/DK7sNqccJvDmB+lJ3HZsIYdAaG954Bt/Ng/7z
-         2FUA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=yE7SABVDqZevBVFAhiLXSdt8sJh3auncorNJpdn2UKg=;
-        fh=QZsSAyNxcYz0zQE0mVbFhb6CpgWqeTef6z1iG2P2FdY=;
-        b=S1TzXGFbcOjd/H9yEva3l01M8UWNchX0cCFCLzNDB4nkSy1sWNj7qfYeuMOVsJyoxJ
-         MtB8iVKRBnyeGEld4EGrEZ9Xepvh0wPOWE6iKgNLSvZ/20LfFvuXHwwfy10m8Z6Co9du
-         nSfMUruZxPVt5bZ7vn2DBHOU4epACsF2DCi02pRzX+wo8T8j73uNIxK3KY7Zvam+ZD6+
-         hTr9bKHLTq7hfOHOV9sOkRW797fD1bgaks5kAiNos3FIwoYa+qi9JOvZCmFlUUA0vwAm
-         b0eTBXa54HyAPJMgJcFf25lxQPHWKqCtm2xGhVLOWIahx8waespcJ9G5D+9YHIHBJ2zv
-         RqNA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1783504850; x=1784109650; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=yE7SABVDqZevBVFAhiLXSdt8sJh3auncorNJpdn2UKg=;
-        b=I/duXRwUdUkeaMJKZBTpJ4n2NG7T+DceBmmAIc65qRP6SLGiVIc7cYWgHnoCfI7ZIR
-         CUNbAsZtXDsXw9Wykq01TMAK1Lmj/n++tcNWoH6AtUvJ9ATHSmTOvxTMgCHGVBTPICx2
-         A7YKixdQXmGp2o3YWL4nZQX3i9DBFNF/AQcwraQKfwSnCodsao5dc9uuNVTVJU8azSlt
-         ILlLfIpbDo3TKKIRUFZicGMnCb9tXtLDDA4honz2ZGDDj2JKW1bvPL5UBKbgPFWF5Z+R
-         T8vfzzGpQLL0SRabtdqvSkQkj743mwR/9l95y9YriQNeZ2KHliKCvCRw9K7lcY9FUkwo
-         nDhg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783504850; x=1784109650;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=yE7SABVDqZevBVFAhiLXSdt8sJh3auncorNJpdn2UKg=;
-        b=XrTNvMo9xZoYvGoXOMjo8LFtWUm1BLOObP95hypMIXZLy0HdLCIl60CQhKLUJvbe9g
-         eVM60mCr7ilav+etaUd6/EeLiHRL0P0CI44p6gop//aQ3Qsjz1/64SBYhrnKq/ABdmIY
-         4ljAHRyaMqYrmMkLplPNIMPgU0C9Snpixp8owxWCuLFJHwSrar/J9Sby4QadkFtrN2mB
-         uVjXDIW7DLBuWhorKOuHWe7Qs4ChcASqnoPO/U+wkInyPuEyWz90apBf1NEXTPk4ApOU
-         FaO1inFNuQ1shbefb6uPaD7pHqw0y7OoD70eeRj6LeKEGFgSp9yIc4fL+OL8DRuu/2ug
-         eFkA==
-X-Forwarded-Encrypted: i=1; AHgh+RpFyWDmZsx/6inWeIm949Je0+sXxMMHlglWnwBFAmGOv6sV32lYN1QMUqYigc4OldCbvgHhTGg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxrYUtKh8jlzyzG7mT+kbLyoFX4Y/mtuRvKLQFnP5fxsuvNlyGa
-	ocNybHjfbfze1kLisDrcrCy51ZMf5og9g/gN5SUaPuLbwoZ+AfNX6aeQFHmlit6+MReUsduIExu
-	r8WRUD7lRvVZlcRkXSn3h+c+idXTQmS4KK8/lRI5wxiqJ+sPyaSTk8webFEgEUYEoG0XRkxdO79
-	+XByUt1e2bSHPofnb17kLk8zDkWkQcIPKw
-X-Gm-Gg: AfdE7cl1eaOEpVMUWYriJ1xJ/iuNf3Nvj/bxOaE598y22C7g8rMGDztbpMDSF/3URBv
-	Dg6ehJ1z5/lGWaua3+RLWRD/99NPfptRPV24dbhWlys/yexKo464PwySOizonLiDgYK2/lubX9v
-	RaXoQIvlhGUvFgzywVGy6wZfYNjemssbkohTh0FQXgwx1O+SWNvx/Yox/2udALdH4eP9Q=
-X-Received: by 2002:a05:690c:e14e:b0:7e9:ea36:f256 with SMTP id 00721157ae682-81c5e30d111mr44250537b3.17.1783504850115;
-        Wed, 08 Jul 2026 03:00:50 -0700 (PDT)
-X-Received: by 2002:a05:690c:e14e:b0:7e9:ea36:f256 with SMTP id
- 00721157ae682-81c5e30d111mr44249947b3.17.1783504849163; Wed, 08 Jul 2026
- 03:00:49 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2263D38B12E;
+	Wed,  8 Jul 2026 10:04:31 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783505072; cv=none; b=YUSAXRXrgNyK2iAUZdHXygDradrZhVuNc0gfsh0Zuu8yJ1yaJmJOYIxRwQ/i7p/XT7Y9zg5Fs9H01ccEkWEtjTstEy+k+e3vP/eAA96jld5YQWM3zD2kqtA/cq/XmAESKdQTdHXWtS6QYKT/iD+HtotoEYXc+bF4r1UxuXNP0UQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783505072; c=relaxed/simple;
+	bh=Dr7yY5XLV8e/9e5N9FOL+bV4EWOSxszyyOnFOIzQXrs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=gWkxwMgMEs/WZS5A+3gehu7IuZymwoL8Ie3f4rZr4BfPbSmBfmFRFsm+8K0w4YjYJoCBa5lE+6YlJb/2p42viJeaIIPry9XVZ59RKNv0wsOfLpx9mQAkLtX8bSDVablOdzWIXhD76mR2bWJRbpQ03QTIoksLx08qRbS/5BWrkJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=MESKkIMf; arc=none smtp.client-ip=185.246.84.56
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id DCDE31A0EDA;
+	Wed,  8 Jul 2026 10:04:29 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id A8B7860337;
+	Wed,  8 Jul 2026 10:04:29 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D911511BC33D6;
+	Wed,  8 Jul 2026 12:04:22 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1783505067; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=N5mQBROnrDBEAwginXZzryOTa1g0CZWIynlCLymzLoo=;
+	b=MESKkIMf7M9PljdQihORQF2hfIL8Vpu6e/+i3mujJWBQrGBD+U3R6lG0xoUc0S5JTeaTfy
+	Y+XPW7+0QuF5cWNdb3Vm12uzY4wCaheRs2gDcrX9VlFC2zby0Zgzf5i7MLoH2THSx50Xbg
+	t88Rl4892Cdkt7FPFM3viEGz/Jwe2grrf7QX7pRq7CufXZzdIzY13hdpZVRO/VvJWr2eSQ
+	VBuVr8VRM0SjzF1iwPL1KANlQqwGJCBGi8k8m6Ug6o5k8GReX4riK6EGjsseoxpdI5yvcw
+	T6R+utUAoYSBWQz7wVeFuusd8UrKymfWQ/ARJryDKXfa0WVYyEJFsZzUN1e8ww==
+From: Herve Codina <herve.codina@bootlin.com>
+To: Richard Cheng <icheng@nvidia.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	David Rhodes <david.rhodes@cirrus.com>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Linus Walleij <linusw@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Dan Williams <djbw@kernel.org>,
+	Ira Weiny <iweiny@kernel.org>,
+	Li Ming <ming.li@zohomail.com>,
+	Lizhi Hou <lizhi.hou@amd.com>,
+	Herve Codina <herve.codina@bootlin.com>
+Cc: driver-core@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	linux-sound@vger.kernel.org,
+	patches@opensource.cirrus.com,
+	linux-gpio@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-cxl@vger.kernel.org,
+	Allan Nielsen <allan.nielsen@microchip.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Daniel Machon <daniel.machon@microchip.com>,
+	Steen Hegelund <steen.hegelund@microchip.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	stable@vger.kernel.org,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH v9 1/9] driver core: fw_devlink: Introduce fw_devlink_set_device()
+Date: Wed,  8 Jul 2026 12:02:51 +0200
+Message-ID: <20260708100302.517792-2-herve.codina@bootlin.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260708100302.517792-1-herve.codina@bootlin.com>
+References: <20260708100302.517792-1-herve.codina@bootlin.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260708095459.12111-1-bartosz.golaszewski@oss.qualcomm.com>
-In-Reply-To: <20260708095459.12111-1-bartosz.golaszewski@oss.qualcomm.com>
-From: Albert Esteve <aesteve@redhat.com>
-Date: Wed, 8 Jul 2026 12:00:38 +0200
-X-Gm-Features: AUfX_myplwdTWk12ZF-d1YhVEM7RbTmMzfkKP0RwsoDr62uWCGQBm8ctL06w_no
-Message-ID: <CADSE00Kt0rnC6bOsLDodpfvpdUC=KBk7reJ=NC2wo_y7w4iNUg@mail.gmail.com>
-Subject: Re: [PATCH v2] bug: fix warning suppressions with kunit built as module
-To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Cc: Shuah Khan <skhan@linuxfoundation.org>, Guenter Roeck <linux@roeck-us.net>, 
-	Kees Cook <kees@kernel.org>, Alessandro Carminati <acarmina@redhat.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Brendan Higgins <brendan.higgins@linux.dev>, 
-	David Gow <david@davidgow.net>, Rae Moar <raemoar63@gmail.com>, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, brgl@kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCPT_COUNT_TWELVE(0.00)[43];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-272613-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-272615-lists,stable=lfdr.de];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:icheng@nvidia.com,m:andrew@lunn.ch,m:robh@kernel.org,m:saravanak@kernel.org,m:gregkh@linuxfoundation.org,m:rafael@kernel.org,m:dakr@kernel.org,m:bhelgaas@google.com,m:david.rhodes@cirrus.com,m:rf@opensource.cirrus.com,m:ckeepax@opensource.cirrus.com,m:linusw@kernel.org,m:lenb@kernel.org,m:andriy.shevchenko@linux.intel.com,m:djrscally@gmail.com,m:heikki.krogerus@linux.intel.com,m:sakari.ailus@linux.intel.com,m:dave@stgolabs.net,m:jic23@kernel.org,m:dave.jiang@intel.com,m:alison.schofield@intel.com,m:vishal.l.verma@intel.com,m:djbw@kernel.org,m:iweiny@kernel.org,m:ming.li@zohomail.com,m:lizhi.hou@amd.com,m:herve.codina@bootlin.com,m:driver-core@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:linux-pci@vger.kernel.org,m:linux-sound@vger.kernel.org,m:patches@opensource.cirrus.com,m:linux-gpio@vger.kernel.org,m:linux-acpi@vger.kernel.org,m:linux-cxl@vger.kernel.org,m:allan.nielsen@microchip.com,m:horatiu.vultur@microchip.com,m:daniel.machon@microchip.com,m:stee
+ n.hegelund@microchip.com,m:luca.ceresoli@bootlin.com,m:thomas.petazzoni@bootlin.com,m:stable@vger.kernel.org,m:ulf.hansson@linaro.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[herve.codina@bootlin.com,stable@vger.kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:bartosz.golaszewski@oss.qualcomm.com,m:skhan@linuxfoundation.org,m:linux@roeck-us.net,m:kees@kernel.org,m:acarmina@redhat.com,m:akpm@linux-foundation.org,m:brendan.higgins@linux.dev,m:david@davidgow.net,m:raemoar63@gmail.com,m:linux-kernel@vger.kernel.org,m:linux-kselftest@vger.kernel.org,m:brgl@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FREEMAIL_TO(0.00)[nvidia.com,lunn.ch,kernel.org,linuxfoundation.org,google.com,cirrus.com,opensource.cirrus.com,linux.intel.com,gmail.com,stgolabs.net,intel.com,zohomail.com,amd.com,bootlin.com];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[aesteve@redhat.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,roeck-us.net,kernel.org,redhat.com,linux-foundation.org,linux.dev,davidgow.net,gmail.com,vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[aesteve@redhat.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[redhat.com:+];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid,vger.kernel.org:from_smtp]
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[herve.codina@bootlin.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[bootlin.com:+];
+	RCVD_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ALIAS_RESOLVED(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email,bootlin.com:from_mime,bootlin.com:email,bootlin.com:mid,bootlin.com:dkim,cirrus.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 78DD07240BA
+X-Rspamd-Queue-Id: C0954724059
 
-On Wed, Jul 8, 2026 at 11:55=E2=80=AFAM Bartosz Golaszewski
-<bartosz.golaszewski@oss.qualcomm.com> wrote:
->
-> CONFIG_KUNIT is a tristate symbol but the warning suppression code in
-> lib/bug.c is only built if it's built-in due to it using a plain #ifdef,
-> rendering warning suppressions broken for kunit build as loadable module.
->
-> kunit_is_suppressed_warning() already has a stub for when kunit is
-> disabled so drop that guard entirely.
->
-> Suggested-by: Albert Esteve <aesteve@redhat.com>
-> Cc: stable@vger.kernel.org
-> Fixes: 85347718ab0d ("bug/kunit: Core support for suppressing warning bac=
-ktraces")
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Setting fwnode->dev is specific to fw_devlink.
 
-Reviewed-by: Albert Esteve <aesteve@redhat.com>
+In order to avoid having a direct 'fwnode->dev = dev;' in several
+place in the kernel, introduce fw_devlink_set_device() helper to perform
+this operation.
 
-Thanks!
+Having this helper allows to hide the fwnode devlink related stuff
+behind the helper.
 
+Cc: stable@vger.kernel.org
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+---
+Cc stable because used by other patches with Fixes + Cc stable
+---
+ include/linux/fwnode.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-> ---
-> Changes in v2:
-> - drop the guard entirely instead of switching to IS_ENABLED()
->
->  lib/bug.c | 2 --
->  1 file changed, 2 deletions(-)
->
-> diff --git a/lib/bug.c b/lib/bug.c
-> index 292420f45811..7c1c2c27f58e 100644
-> --- a/lib/bug.c
-> +++ b/lib/bug.c
-> @@ -219,14 +219,12 @@ static enum bug_trap_type __report_bug(struct bug_e=
-ntry *bug, unsigned long buga
->         no_cut   =3D bug->flags & BUGFLAG_NO_CUT_HERE;
->         has_args =3D bug->flags & BUGFLAG_ARGS;
->
-> -#ifdef CONFIG_KUNIT
->         /*
->          * Before the once logic so suppressed warnings do not consume
->          * the single-fire budget of WARN_ON_ONCE().
->          */
->         if (warning && kunit_is_suppressed_warning(true))
->                 return BUG_TRAP_TYPE_WARN;
-> -#endif
->
->         disable_trace_on_warning();
->
-> --
-> 2.47.3
->
+diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
+index 4e86e6990d28..31538f54b1ca 100644
+--- a/include/linux/fwnode.h
++++ b/include/linux/fwnode.h
+@@ -256,4 +256,10 @@ void fw_devlink_purge_absent_suppliers(struct fwnode_handle *fwnode);
+ void fw_devlink_refresh_fwnode(struct fwnode_handle *fwnode);
+ bool fw_devlink_is_strict(void);
+ 
++static inline void fw_devlink_set_device(struct fwnode_handle *fwnode,
++					 struct device *dev)
++{
++	fwnode->dev = dev;
++}
++
+ #endif
+-- 
+2.54.0
 
 
