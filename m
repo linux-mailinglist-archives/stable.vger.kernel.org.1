@@ -1,141 +1,216 @@
-Return-Path: <stable+bounces-272848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272849-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id JJs3Oy5hT2onfgIAu9opvQ
-	(envelope-from <stable+bounces-272848-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 10:51:58 +0200
+	id ruK7E+RjT2o+fwIAu9opvQ
+	(envelope-from <stable+bounces-272849-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 11:03:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 547B872E7F3
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 10:51:58 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D60D272EA4B
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 11:03:31 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20260515 header.b=KZFeq5Ih;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272848-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-272848-lists+stable=lfdr.de@vger.kernel.org";
-	arc=reject ("signature check failed: fail, {[1] = sig:subspace.kernel.org:reject}")
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BlAyjAbL;
+	dkim=pass header.d=redhat.com header.s=google header.b=VRfyHjBN;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272849-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272849-lists+stable=lfdr.de@vger.kernel.org";
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 30E8A3004618
-	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 08:50:30 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BF444314B804
+	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 08:56:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8089B3E4C94;
-	Thu,  9 Jul 2026 08:50:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 834B23FDC14;
+	Thu,  9 Jul 2026 08:54:47 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52E002853E9;
-	Thu,  9 Jul 2026 08:50:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0CC13ED100
+	for <stable@vger.kernel.org>; Thu,  9 Jul 2026 08:54:45 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783587028; cv=none; b=Q1RjIOBxOhPsHJq7Uog4Q2rwsoLsfvxu4GLBmEeMoMJ9h5d5gQ+bOoaNdCH7wfTPBMoZG1QPN+3qnD4C6vxn/JUTqwVsLxVxvPbyNY6BONIuy26xq0TAsgOGk+TbZrSl9HFp7AglAkKd+2jKvNB7bgd3aHb/HsXCUXbjLTISIxQ=
+	t=1783587287; cv=none; b=iSSoWLo2J538AN2fugKrg+ynrjAt5HIl4pI4DcMgkJJTA/pF/V6FVT1GhcduTEjvd2m2cW/ku7RiFJg2DQDZMBcLeVIADIp6I965Rxk/j1M+5bvNL3XTwiagSkuCr+lBYJaLZa9DKFFbEPW+/BmgPQPwsBMarHz+HvDiSOVZiwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783587028; c=relaxed/simple;
-	bh=L8LJua1DxqqFV9UY+8irAffMMey+0OoAu9uwDEy2f2k=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=cn11meTVVIX9h0bv3yxgT7WpuyvVsOW+0unrT0p6Husf9yzDbXwzfwruFY7DlaRmNyebKRjIpr9bCJ7ut29q09rpEYbps90AE4tPe35HQ+75FA9+N1N8L7/6sNzNA+X6UmyPwvBUGxuhOjm1dyB+A7WSjxNNKueN2HAMAbuvPos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KZFeq5Ih; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9E9B1F00A3F;
-	Thu,  9 Jul 2026 08:50:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783587027;
-	bh=+ZKhXsAhdtilMoK2puuWkLVqsDWjK3+/5l6BtNqzwb0=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=KZFeq5Ihsw0R5Rcn7scrOK1rfBrl2JX86ReGBjqJH2ssop+zzyw1A3pTwCKQ3tYmY
-	 R5XlvblzMscpz/Tj0Aonemmt7kwNg21qsK+iTMCJhgqIzkA6L3QqWwFZDs3zJZxUTp
-	 WhEGawuTehSQBXuPhG35VtXwg6jP5A9EujBFjrd2eBt2KfJzpCNc9t/f55kr/8X/qb
-	 og4VJSxc4Oy589p7YyrDc5cCiuIpFQV4cJA8ws6CNLL/x3j0DuVu+5dzS/XmULTfnf
-	 cFwtX4hSCZpJ+gRc/r7pX4vwrWgcT/YpgIXYJeD1fy2o3CUHPF17ecFkpKBhcLATJT
-	 mvfcqM6xCFmTQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D09893939F14;
-	Thu,  9 Jul 2026 08:50:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1783587287; c=relaxed/simple;
+	bh=wRRaBds4GutgazHTelDLWoEKQjUD+qekfGeab8oKIas=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=u/1k1A9UosB7iliCA1U9FlaBZFTQwZoQOeJZokgWhIu3guZrLqiE5LZXfKmNd8VfY2++jjOblre+Mwy5Jff4rSU/OPzojE/Zal7hxCykOP0OAVyqshsylDx4scVHn10vepc/bS0Eq0ryMUn+TXJI2Bq4Tu7oQ+VCmQRZMmuDafc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BlAyjAbL; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=VRfyHjBN; arc=none smtp.client-ip=170.10.133.124
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1783587284;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jKBatJUUTBddrBcocZDnsS1t1LpIJaEaNIf3BrEu4hE=;
+	b=BlAyjAbLykGVnxtSiIUcYYke3Ot7vTQth/cP4NWIv/m6yme76bTdo9jqpsi3IYY+qSWdvD
+	SKW+4Du4VQksNJlpdpoG0V2F1lHYKZGzb9QLREV/M3l1h9mJ0K4HFkiHgR3ii7CKsWXGyS
+	7EePKe9LQiCImxRy38vrkBO56kdltGw=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-680-63YfB9_6OgaCUM5Maek61A-1; Thu, 09 Jul 2026 04:54:43 -0400
+X-MC-Unique: 63YfB9_6OgaCUM5Maek61A-1
+X-Mimecast-MFC-AGG-ID: 63YfB9_6OgaCUM5Maek61A_1783587282
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-4629f312a67so1414030f8f.2
+        for <stable@vger.kernel.org>; Thu, 09 Jul 2026 01:54:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1783587282; x=1784192082; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=jKBatJUUTBddrBcocZDnsS1t1LpIJaEaNIf3BrEu4hE=;
+        b=VRfyHjBNh75myXSj6eNN9uojHY/fPLF/k/3P9YZXppPcS7iBiRZqeTWfibSaIP70v6
+         XGR8dPfKKBQF9kBq9xpuF42VD6BcpktQA7kWflvLltjUTxAocimpGwiAX00jK6WNBwkl
+         vwKNXNuj8dCSYzNRfPjR9A99k7L1oUpHYF9utMTVxIEU7TatuRs5RNPNDDTJLxi8K0Gd
+         OxEEogW7gkOBtgHO4BZpFOD4z5IYpLXMm6WsdhziMWAs3Ua7lgVYlbPEurPN9YgR7QJF
+         PZ16ptZigP6FjrVoVuAZDd8hY/eODzEveoxkPZ7hnjG+aOgR9yT5IUJADM990A/bNhJK
+         3B8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783587282; x=1784192082;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=jKBatJUUTBddrBcocZDnsS1t1LpIJaEaNIf3BrEu4hE=;
+        b=L9rLYDIsTgECaoPG3O+RyQcjqHapbqS1fct0/ag6pKx0FZKEtv+HRU7k/cPBqllLTS
+         nelx3k+p8bFRYmj6l9rGZtCm7HCxyfMSbY5J+LOXhlh8wBlnXU+CK9kOqqOzqUnAdsci
+         prl03ZiCHYB+6oz2oU6fo/gpul568l6s5LwuBcxtqHzGFvxMOOgFDDCipzlvY4W50JPi
+         QZteMCZglDKbCWYvRmfGTAhUwipAHyl/8Jw6yO0QZhUVevvC3LvWtMjqrKSAFSFFZs3n
+         S8T4I3hNM2Ab5HRPXgHFFp/LBgHFBG4EGQNXM/vJHSFsbHSAc5H9sp8rtCpsECYb7sVy
+         tnoQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rrzj9eVuYcMZ6JPO95XGt9IVQs0CpWwoTRgK19vCe780kExN9HVs1BiMYXzV3fEZ3Onb2mkysk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywly7V2+u3AsfH8mlqejutFZF1ETmvV+3LpFoMmKUeQBsQaVIx8
+	47zvCYE8bb06rY3PgFwUkefan/u3qp6HlBZOwTFi+dw791QcFnkcTINDaiWu/i3FwIXLlQgUn1q
+	4SxOeQM6UUlLoy5umIGhQdEKffbq4ehHwgULCL4v/4Ro+hJAlZ0/l4ZZkRQ==
+X-Gm-Gg: AfdE7cmOtMg9fdAn6M7pPg8PHBDVMaMNiMo66g7wTRnDuuCWBL4yg0ZkqoIZMII8nHU
+	q/y902jVWae+lNZtbnzLaUi2X7w+XntFY4TiyVYKX3lP1Pp1XAPejRxESj8Y36TXsoeDaLdjQvU
+	pTkf7GNGbpU9aARbCUUOWBKj8fOiwYi5+OTyP+4BJVV/G98zS6R60lW+3MHIFs6QzTo2F+xHTIU
+	dfo/G0o5yuLgb/EFt+qt5lxVwMaF9KTYlSDmP2OrQATcFX8+IO/nE9SX13JOSYEmO/vBYklcknR
+	nQoHDmSw14H6+sD9KMsRevkOckDI/u3XgwokAXJtNP/ME5u+aK1T5cCBWVnBEM8IxpsJYb3YXYl
+	dUfQLnQFdK0UPVqsc5onf1nIk9nNr2DCjQEdqqF6wYn4Laqwe4fOyNc31Zp3A
+X-Received: by 2002:a05:600c:1993:b0:48a:906b:14ca with SMTP id 5b1f17b1804b1-493e68c6c98mr55722845e9.20.1783587282381;
+        Thu, 09 Jul 2026 01:54:42 -0700 (PDT)
+X-Received: by 2002:a05:600c:1993:b0:48a:906b:14ca with SMTP id 5b1f17b1804b1-493e68c6c98mr55722455e9.20.1783587281922;
+        Thu, 09 Jul 2026 01:54:41 -0700 (PDT)
+Received: from sgarzare-redhat (host-79-34-22-35.business.telecomitalia.it. [79.34.22.35])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493eb6df6d9sm54564705e9.7.2026.07.09.01.54.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Jul 2026 01:54:41 -0700 (PDT)
+Date: Thu, 9 Jul 2026 10:54:34 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: netdev@vger.kernel.org, Jason Wang <jasowangio@gmail.com>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eric Dumazet <edumazet@google.com>, 
+	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Stefan Hajnoczi <stefanha@redhat.com>, "David S. Miller" <davem@davemloft.net>, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>, 
+	virtualization@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>, 
+	Jason Wang <jasowang@redhat.com>, stable@vger.kernel.org, Brien Oberstein <brienpub@gmail.com>
+Subject: Re: [PATCH net v2 1/2] vsock/virtio: collapse receive queue under
+ memory pressure
+Message-ID: <ak9fGNnW7gdqVXie@sgarzare-redhat>
+References: <20260708102904.50732-1-sgarzare@redhat.com>
+ <20260708102904.50732-2-sgarzare@redhat.com>
+ <20260708065947-mutt-send-email-mst@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v4] net: macb: drop in-flight Tx SKBs on close
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178358700564.3339064.13535033370383188443.git-patchwork-notify@kernel.org>
-Date: Thu, 09 Jul 2026 08:50:05 +0000
-References: <20260702-macb-drop-tx-v4-1-1c833eebdbc8@bootlin.com>
-In-Reply-To: <20260702-macb-drop-tx-v4-1-1c833eebdbc8@bootlin.com>
-To: =?utf-8?q?Th=C3=A9o_Lebrun_=3Ctheo=2Elebrun=40bootlin=2Ecom=3E?=@codeaurora.org
-Cc: nicolas.ferre@microchip.com, claudiu.beznea@tuxon.dev,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, jeff@garzik.org,
- conor.dooley@microchip.com, pvalerio@redhat.com, nb@tipi-net.de,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- vladimir.kondratiev@mobileye.com, gregory.clement@bootlin.com,
- benoit.monin@bootlin.com, tawfik.bayouk@mobileye.com,
- thomas.petazzoni@bootlin.com, maxime.chevallier@bootlin.com,
- stable@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260708065947-mutt-send-email-mst@kernel.org>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [1.54 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_REJECT(1.00)[signature check failed: fail, {[1] = sig:subspace.kernel.org:reject}];
-	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
-	R_DKIM_REJECT(0.00)[kernel.org:s=k20260515];
-	DKIM_TRACE(0.00)[kernel.org:-];
-	FROM_NEQ_ENVFROM(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:=?utf-8?q?Th=C3=A9o_Lebrun_=3Ctheo=2Elebrun=40bootlin=2Ecom=3E?=@codeaurora.org,m:nicolas.ferre@microchip.com,m:claudiu.beznea@tuxon.dev,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:jeff@garzik.org,m:conor.dooley@microchip.com,m:pvalerio@redhat.com,m:nb@tipi-net.de,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:vladimir.kondratiev@mobileye.com,m:gregory.clement@bootlin.com,m:benoit.monin@bootlin.com,m:tawfik.bayouk@mobileye.com,m:thomas.petazzoni@bootlin.com,m:maxime.chevallier@bootlin.com,m:stable@vger.kernel.org,m:andrew@lunn.ch,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-272848-lists,stable=lfdr.de,netdevbpf];
+	TAGGED_FROM(0.00)[bounces-272849-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	RCVD_TLS_LAST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:mst@redhat.com,m:netdev@vger.kernel.org,m:jasowangio@gmail.com,m:xuanzhuo@linux.alibaba.com,m:edumazet@google.com,m:eperezma@redhat.com,m:horms@kernel.org,m:stefanha@redhat.com,m:davem@davemloft.net,m:linux-kernel@vger.kernel.org,m:kvm@vger.kernel.org,m:pabeni@redhat.com,m:virtualization@lists.linux.dev,m:kuba@kernel.org,m:jasowang@redhat.com,m:stable@vger.kernel.org,m:brienpub@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[sgarzare@redhat.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,linux.alibaba.com,google.com,redhat.com,kernel.org,davemloft.net,lists.linux.dev];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	FROM_NO_DN(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TO_DN_NONE(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[21];
+	FROM_NEQ_ENVFROM(0.00)[sgarzare@redhat.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[redhat.com:+];
 	ALIAS_RESOLVED(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,sgarzare-redhat:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 547B872E7F3
+X-Rspamd-Queue-Id: D60D272EA4B
 
-Hello:
+On Wed, Jul 08, 2026 at 07:00:00AM -0400, Michael S. Tsirkin wrote:
+>On Wed, Jul 08, 2026 at 12:29:03PM +0200, Stefano Garzarella wrote:
+>> From: Stefano Garzarella <sgarzare@redhat.com>
+>>
+>> When many small packets accumulate in the receive queue, the skb overhead
+>> can exceed buf_alloc even while the payload is within bounds. This causes
+>> virtio_transport_inc_rx_pkt() to reject packets, leading to connection
+>> resets during large transfers under backpressure.
+>>
+>> The issue was reported by Brien, who has a reproducer, but it is also
+>> easily reproducible with iperf-vsock [1] using a small packet size:
+>>
+>>   iperf3 --vsock -c $CID -l 129
+>>
+>> which fails immediately without this patch but with commit 059b7dbd20a6
+>> ("vsock/virtio: fix potential unbounded skb queue").
+>>
+>> Inspired by TCP's tcp_collapse() which solves a similar problem, add
+>> virtio_transport_collapse_rx_queue() that walks the receive queue and
+>> re-copies data into compact linear skbs to reduce the overhead.
+>>
+>> The collapse is triggered proactively from when the number of skb queued
+>> is close to exceeding the overhead budget.
+>>
+>> A pre-scan counts the eligible bytes to size each allocation precisely,
+>> avoiding waste for isolated small packets. Partially consumed skbs are
+>> kept as-is to preserve buf_used/fwd_cnt accounting, EOM-marked skbs to
+>> maintain SEQPACKET message boundaries, and skbs already larger than the
+>> collapse target because they already have a good data-to-overhead ratio.
+>>
+>> Walking a large queue may take a significant amount of time and cache
+>> misses, causing traffic burstiness. To limit this, the collapse stops
+>> once enough room is freed for this packet and the next one, but may
+>> opportunistically free more to fill each collapsed skb to capacity.
+>>
+>> [1] https://github.com/stefano-garzarella/iperf-vsock
+>>
+>> Fixes: 059b7dbd20a6 ("vsock/virtio: fix potential unbounded skb queue")
+>> Cc: stable@vger.kernel.org
+>> Reported-by: Brien Oberstein <brienpub@gmail.com>
+>> Closes: https://lore.kernel.org/netdev/618701dd023e$063de350$12b9a9f0$@gmail.com/
+>> Tested-by: Brien Oberstein <brienpub@gmail.com>
+>> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+>
+>
+>this is the right approach
 
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+Yeah, I have a follow up to start to use skb->truesize, etc. but I guess 
+more net-next material.
 
-On Thu, 02 Jul 2026 17:37:02 +0200 you wrote:
-> The MACB driver has since forever leaked the outgoing SKBs that
-> have not yet been marked as completed. They live in queue->tx_skb
-> which gets freed without remorse nor checking.
-> 
-> macb_free_consistent() gets called in a few codepaths, but only close will
-> trigger the added expressions. In macb_open() and macb_alloc_consistent()
-> failure cases, queues' tx_skb just got allocated and are empty.
-> 
-> [...]
+>
+>Acked-by: Michael S. Tsirkin <mst@redhat.com>
 
-Here is the summary with links:
-  - [net,v4] net: macb: drop in-flight Tx SKBs on close
-    https://git.kernel.org/netdev/net/c/27f575836cfe
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+Thanks,
+Stefano
 
 
