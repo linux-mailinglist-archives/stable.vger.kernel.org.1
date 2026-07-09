@@ -1,191 +1,173 @@
-Return-Path: <stable+bounces-272794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272795-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id GSjPF/sYT2r7aQIAu9opvQ
-	(envelope-from <stable+bounces-272794-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 05:43:55 +0200
+	id FLEgDuUgT2rWawIAu9opvQ
+	(envelope-from <stable+bounces-272795-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 06:17:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36E2F72C647
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 05:43:55 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C961172C881
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 06:17:40 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=h-partners.com header.s=dkim header.b=P0QpaQ35;
-	dmarc=pass (policy=quarantine) header.from=h-partners.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272794-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272794-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linux.dev header.s=key1 header.b=icLsN4oX;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272795-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-272795-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1817D30C5B67
-	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 03:40:33 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3F05A300CB11
+	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 04:17:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74511392821;
-	Thu,  9 Jul 2026 03:38:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8965B32BF5C;
+	Thu,  9 Jul 2026 04:17:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from canpmsgout10.his.huawei.com (canpmsgout10.his.huawei.com [113.46.200.225])
+Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A3F8393DC8;
-	Thu,  9 Jul 2026 03:37:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B21838E8BB
+	for <stable@vger.kernel.org>; Thu,  9 Jul 2026 04:17:34 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783568280; cv=none; b=WdsyiNpc31QaBbrGi+PZp2d1o8SJg5B/HxF7f6b80U/h+kogcjiNjLOk9GfSTvNhosWXkI/C1dgc4JuJ0XFHO/ziIEYo0hKUrQkuPZ61Ks3+8jGT09Tmi4SQ3EzPMrh7/aYIb/e6s46wswwRwR1hjT43SpqnXAlUw2Z6llhs4Z4=
+	t=1783570657; cv=none; b=d8Q22xvc0GhwCxT83EORzbgUcpX7zi7ZCpGfXMAn0Kxz1tFlErAiJoCxOAuRNs1A/cuYkyBP7kUze4xNflXmDezS8deswdN5baDOM0SJHLv27u3R3IG5VzrUMqXxH6XUUGd9fbDaav20bfzHs3VVustjymKP0AFbNHkdnpmTlgI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783568280; c=relaxed/simple;
-	bh=eunZhR6efw09yHGWlxpUw7s7IHYXvw3HFUp4g/Sqfs4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=uj2EqetNrmJ8eIvR6v3JNA8fWOet2s5PoHZtvrUprDSYZslw+dL5cE5Z5JJw4ooIr1IkP6oVCxYafEy6xj6mwTs0TTi+SadEU5jkidLQlWq+j9/+UJnOS1PzmrNNfzzKBdUrwsEW1VgELhEIJf7xjCPkBzW7hIe8//2JN7jJqCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=h-partners.com; spf=pass smtp.mailfrom=h-partners.com; dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b=P0QpaQ35; arc=none smtp.client-ip=113.46.200.225
-dkim-signature: v=1; a=rsa-sha256; d=h-partners.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=3usAFxvBnQSrtlEyPuj8Dfm5zlE7XgPSwefjV7zsIHk=;
-	b=P0QpaQ35sARZ3tjtHh2+/C0+cZwFEP9O++LrQqS1Nvbi9nMy1XmkemJnC0ckQq4rPbU9BHqOV
-	XNi3BJ05OTYdVS7mw3Q+yBCzBWLSSfMFoPuV4ltvpcBKw91KHT9uJC9ZJljV5IutgJjmHpfr/Lp
-	Mc/xEYsBUMKLHB0fDzMRXuI=
-Received: from mail.maildlp.com (unknown [172.19.163.15])
-	by canpmsgout10.his.huawei.com (SkyGuard) with ESMTPS id 4gwgRD3n0Vz1K9Ck;
-	Thu,  9 Jul 2026 11:28:40 +0800 (CST)
-Received: from kwepemr100001.china.huawei.com (unknown [7.202.195.168])
-	by mail.maildlp.com (Postfix) with ESMTPS id C2ED840578;
-	Thu,  9 Jul 2026 11:37:53 +0800 (CST)
-Received: from [10.136.112.147] (10.136.112.147) by
- kwepemr100001.china.huawei.com (7.202.195.168) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Thu, 9 Jul 2026 11:37:52 +0800
-Message-ID: <e55d6327-78a9-41dc-9627-4414f408774b@h-partners.com>
-Date: Thu, 9 Jul 2026 11:37:51 +0800
+	s=arc-20240116; t=1783570657; c=relaxed/simple;
+	bh=aOdWUvlzAgvC5OCsq7N+HUUyKZx0APKH7Z2sNls4Csw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XgYhtCgl0rwKBja9SVzFlBNrRxiSDkGT8/Rmjb8SYifaf7t8uU0f0gvSB2KTE2vaQHlBrlkXZ9Kn46jda3iKpxiZNJC1OvSLw5CfiPT6aQy55Oj5+j0KZZsGv4MHh5e65PGqEcN4MI9TRgL8dsvbOEKCh+G7bZY33J88Ou4iTRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=icLsN4oX; arc=none smtp.client-ip=95.215.58.180
+Message-ID: <e90d3476-01aa-4037-91b5-bc35394b488c@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783570642;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UBqGUL0+KiK1FMBVGSLXqyXS9/Lja6xJ1/PzEqDDCFY=;
+	b=icLsN4oXxOuREtLzUD4RXdMBccXd3DogAuZu4P1fEGCT4JgDFQZq7H9tzLzb0F0iYq0bME
+	bOQp8MNv4Xq5eO+wuHws9itPdkw19ohX6bpcS859IzbhmKMOrEMHmLCIGXPSamjlWfuvpY
+	De4KCJBJwUMom/iyle/je2BeLnQsmEQ=
+Date: Thu, 9 Jul 2026 12:17:10 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] netfilter: nf_nat_masquerade: recalculate TCP TS
- offset when port is randomized
-To: Florian Westphal <fw@strlen.de>
-CC: Pablo Neira Ayuso <pablo@netfilter.org>, Phil Sutter <phil@nwl.cc>, "David
- S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
- Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
-	<horms@kernel.org>, gaoxingwang <gaoxingwang1@huawei.com>, huyizhen
-	<huyizhen2@huawei.com>, <netfilter-devel@vger.kernel.org>,
-	<coreteam@netfilter.org>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
-References: <20260629093408.3927103-1-xietangxin@h-partners.com>
- <akKN4cywAsFRdefX@strlen.de>
- <0ad60f06-387e-49bc-9e26-3dcebf182cb4@h-partners.com>
- <akUhid7_3iHovivd@strlen.de>
- <3620a5a9-9ced-4825-9bc4-6950be205749@h-partners.com>
- <ak5riPx5d3rSG6MG@strlen.de>
-Content-Language: en-US
-From: xietangxin <xietangxin@h-partners.com>
-In-Reply-To: <ak5riPx5d3rSG6MG@strlen.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- kwepemr100001.china.huawei.com (7.202.195.168)
+Subject: Re: [PATCH v4] mm: mglru: fix stale batch updates after memcg
+ reparenting
+To: akpm@linux-foundation.org, david@kernel.org
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Qi Zheng <zhengqi.arch@bytedance.com>, stable@vger.kernel.org,
+ kasong@tencent.com, shakeel.butt@linux.dev, baohua@kernel.org,
+ axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+ hannes@cmpxchg.org, harry@kernel.org, muchun.song@linux.dev,
+ peiyang_he@smail.nju.edu.cn, mhocko@kernel.org, roman.gushchin@linux.dev,
+ ljs@kernel.org
+References: <20260701075251.56413-1-qi.zheng@linux.dev>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <20260701075251.56413-1-qi.zheng@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[h-partners.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[h-partners.com:s=dkim];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-272794-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:fw@strlen.de,m:pablo@netfilter.org,m:phil@nwl.cc,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:gaoxingwang1@huawei.com,m:huyizhen2@huawei.com,m:netfilter-devel@vger.kernel.org,m:coreteam@netfilter.org,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:akpm@linux-foundation.org,m:david@kernel.org,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:zhengqi.arch@bytedance.com,m:stable@vger.kernel.org,m:kasong@tencent.com,m:shakeel.butt@linux.dev,m:baohua@kernel.org,m:axelrasmussen@google.com,m:yuanchu@google.com,m:weixugc@google.com,m:hannes@cmpxchg.org,m:harry@kernel.org,m:muchun.song@linux.dev,m:peiyang_he@smail.nju.edu.cn,m:mhocko@kernel.org,m:roman.gushchin@linux.dev,m:ljs@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[3];
+	FORGED_SENDER(0.00)[qi.zheng@linux.dev,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	FORGED_SENDER(0.00)[xietangxin@h-partners.com,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	TAGGED_FROM(0.00)[bounces-272795-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[h-partners.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[xietangxin@h-partners.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[qi.zheng@linux.dev,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux.dev:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[h-partners.com:from_mime,h-partners.com:email,h-partners.com:mid,h-partners.com:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nju.edu.cn:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 36E2F72C647
+X-Rspamd-Queue-Id: C961172C881
 
+Hi Andrew and David,
 
+Gentle ping.
 
-On 7/8/2026 11:23 PM, Florian Westphal wrote:
-> xietangxin <xietangxin@h-partners.com> wrote:
->> Thanks for your guidance. I’ve successfully fix the helper location
->> as you suggested, and it works fine for local traffic.
->>
->> However, I realized that I had completely overlooked the forwarding scenario
->> (where SNAT acts as a middlebox gateway, e.g. Host A -> Gateway B -> Server C).
->> In this gateway scenario, when random-fully is enabled, the test results show
->> a massive performance degradation: the QPS drops from ~19000 down to ~10000.
-> 
-> I don't think the forwarding case is fixable.
-> 
-> Host S could be another NAT gateway, so it could be possible that
-> the connections originate from different physical machines and
-> timestamps differ due to different clocks, not per-connection
-> randomisation.
-> 
->> Since skb->sk is NULL on the forwarding gateway, my current approach of
->> updating tp->tsoffset in struct tcp_sock cannot be applied here.
-> 
-> Yes. I think the tp->tsoffset recalc is fine to handle local case.
-> 
-> For local case we do know that we're the end host and ts recalc is fine.
-> 
->> To be honest, I am currently stuck on how to handle this forwarding scenario
->> within the netfilter architecture without adding redundant overhead to the fast path.
->>
->> Could you please give some advice on how the community would prefer to resolve this?
->> For instance, should we look into extending the Conntrack NAT extension to
->> track and adjust the TCP timestamps?
-> 
-> If we have some guarantee that internal network isn't doing any
-> snat at all, then yes, one could implement some TS adjustment
-> scheme similar to seqadj extension we already have to deal with
-> tcp sequence number adjustments.
-> 
-> We'd have to keep state and subtract the offset to get back the
-> right tsecr again on reverse direction.
-> 
-> I'm not keen to have something like this, it would breaks PAWS
-> as soon as the originating host is itself a nat gateway.
-> 
-> Is this really a problem to begin with?
-Hi Florian,
+Is this patch good to be applied?
 
-Thanks for your precise analysis. I completely agree with you that
-the forwarding case is theoretically unfixable due to the multi-tier NAT risks.
+Thanks,
+Qi
 
-This is a real and severe problem for us, but the actual issue we encountered
-is in the local case, not the forwarding case:
-
-1.Laboratory Test Case Failure:
-We noticed a severe HTTP performance regression in our automated Kubernetes testing,
-where wrk was used to benchmark Pod client http performance. Through git bisect,
-we successfully pinned the commit 165573e41f2f ("tcp: secure_seq: add back ports to TS offset").
-The trigger was the default MASQUERADE --random-fully rule configured by kube-proxy on the k8s node.
-
-2.Downstream Production Impact (AI Inference Cluster on Kubernetes):
-Shortly after, one of our major downstream product teams reported a massive performance degradation.
-After they upgraded their kernel to a version containing commit 165573e41f2f,
-they suffered a 40% AI inference performance drop. They confirmed that simply
-removing the random-fully flag instantly restored the performance back to normal.
-
-Would it be acceptable to a V2 patch that targets the local case?
-
--- 
-Best regards,
-Tangxin Xie
-
+On 7/1/26 3:52 PM, Qi Zheng wrote:
+> From: Qi Zheng <zhengqi.arch@bytedance.com>
+> 
+> The mglru page table walker batches per-generation size deltas in
+> walk->nr_pages while walking page tables without holding the lruvec lock.
+> The reset_batch_size() later folds those deltas into walk->lruvec under
+> the lruvec lock.
+> 
+> The page table walker can run concurrently with the memcg reparenting path
+> as follows:
+> 
+> CPU0                           CPU1
+> ====                           ====
+> 
+> walk_mm
+> --> walk_page_range
+>      --> update_batch_size
+>          --> walk->nr_pages += delta
+> 
+>                                mem_cgroup_css_offline
+>                                --> memcg_reparent_objcgs
+>                                    --> lock lruvec
+>                                        lru_gen_reparent_memcg
+>                                        --> reparent child folios to parent
+>                                        unlock lruvec
+> 
+>      lock lruvec
+>      reset_batch_size
+>      --> child lrugen->nr_pages += delta
+> 
+> This will trigger the following warning in lru_gen_exit_memcg():
+> 
+> 	VM_WARN_ON_ONCE(memchr_inv(lruvec->lrugen.nr_pages, 0,
+> 				   sizeof(lruvec->lrugen.nr_pages)));
+> 
+> And the user-visible impact of underestimated nr_pages in MGLRU was
+> premature OOMs because MGLRU does not try to reclaim memory when nr_pages
+> reaches zero, but there are still more pages.
+> 
+> To fix it, make reset_batch_size() check CSS_DYING under RCU before
+> flushing the pending batch. A non-dying memcg keeps the original lruvec
+> stable against RCU-delayed offlining; a dying memcg redirects the deltas
+> to the first non-dying ancestor.
+> 
+> Reported-by: Peiyang He <peiyang_he@smail.nju.edu.cn>
+> Closes: https://lore.kernel.org/all/5A9E929D82717101+12fcf643-efb8-4b9a-a53a-1e28cc894f0b@smail.nju.edu.cn
+> Fixes: f304652609ea ("mm: vmscan: prepare for reparenting MGLRU folios")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+> Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
+> ---
+> Changes in v4:
+>   - re-implement lock_batch_lruvec() in a simpler way
+>     (suggested by Johannes and Harry)
+>   - collect Reviewed-by
+>   - rebase onto the next-20260630
+> 
 
