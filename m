@@ -1,113 +1,137 @@
-Return-Path: <stable+bounces-272881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272882-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 9V8LJiaGT2oRiwIAu9opvQ
-	(envelope-from <stable+bounces-272881-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 13:29:42 +0200
+	id z+WMLMWBT2pxiQIAu9opvQ
+	(envelope-from <stable+bounces-272882-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 13:11:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23F3973056F
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 13:29:42 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B6B873010A
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 13:11:01 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=E+uxAvFa;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272881-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-272881-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="a4kqZ6/R";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272882-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272882-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 50F9E302DF97
-	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 11:04:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E96AC3040D9B
+	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 11:10:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D98563F927E;
-	Thu,  9 Jul 2026 11:04:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B0AC40F8DD;
+	Thu,  9 Jul 2026 11:10:30 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFC4931ED83
-	for <stable@vger.kernel.org>; Thu,  9 Jul 2026 11:04:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD0F540E8E8;
+	Thu,  9 Jul 2026 11:10:28 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783595095; cv=none; b=AIDKRWknjYIcNyo1HdReXfDr6pmZbcapYAX+V9a/i6/D5MTe9nRvEx7VQtwDXtBOkek/rDqbMI/5ay8F75BZ9K8CqmFdA86DA8gfg3924Fa/TIWDdVl5MyGiDmu28Hzr93k1uLJseqcw6uJrBeCaRl47+DqsHHQfeGLJj7vDRo4=
+	t=1783595429; cv=none; b=NK1WTPI/w4VAtLftBvths6ktjZeKWhhcu5/11mBPv7deOKU8quvfUdCUds1ypb4L9C9YaH1s8ZIRP24lnPwfaNOb9azjHFYTbibLeyo9nRc9ApVeso6bNACk/AlUhuD0Mc6iar/YWF9wZqgM9O39x09W+ZKWejGT/z40gEXMVas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783595095; c=relaxed/simple;
-	bh=JTDecRpwrYAS6GptqK6+EPctzrsq8DcXNhTT/K+21yM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L70y7XPdz/IRjxtBKvIx4ZkYiBJYll061GijN/oqI87QREv+xeehZRz7h6CpO1o9DiZ9GiwB5UpbW4GVNiKEb+VSR7GZlDQYI6ryOBP03xRrdjF2SxpiduHD57xPDyYTlZ0zE5LD/YMjOZxQMD0v2Mkm0IXnh+93CMRrbbPbQDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E+uxAvFa; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2F021F000E9;
-	Thu,  9 Jul 2026 11:04:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783595094;
-	bh=5ylhwXeOPpfc7u6cPcoTXBBg2b7DLONZ3BXF8VdjG8k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=E+uxAvFaQu7j9nNdYj/hF4EUVZGbahCKCwNK3Zo157OIrKUDCyh4B+uS6ooy3hqXa
-	 cZN7fbhbubKP16jsGA7qLTRIu3hUR/9XriOpCtTt/YnrvLMeRDW+cKaljfGd7+qape
-	 H7OQcxDM+LVt3BxMPd2TufXtl+peb19mTqcZNdLg=
-Date: Thu, 9 Jul 2026 13:04:50 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: jiucheng.xu@amlogic.com
-Cc: stable@vger.kernel.org, jianxin.pan@amlogic.com, tuan.zhang@amlogic.com,
-	JY <JY.Ho@mediatek.com>, Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: Re: [PATCH] f2fs: fix UAF issue in f2fs_merge_page_bio()
-Message-ID: <2026070937-unveiling-atlantic-b798@gregkh>
-References: <20260709-origin-5-15-y-v1-1-5ac64636d2e8@amlogic.com>
+	s=arc-20240116; t=1783595429; c=relaxed/simple;
+	bh=Rw2BKhBNPfDnflYVZK/NR3FWW0puEUgSEaq9wKcCVfA=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=PI5fsg1dWNnwCrXRW7mevdamf+EsmdZunoaGisjPtlNe68WkZYfkbkUS5K9li/B7DxZ6B/oVctpF4l24Qk4b6+RXXWnjJhX8T4faufRHFzgGXmCOKoG00pIaBNNbrzoXR0JE/VN/0/Zoy93vdur9WgfRJAqqARrgLZxp+jvunW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a4kqZ6/R; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD07B1F000E9;
+	Thu,  9 Jul 2026 11:10:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783595428;
+	bh=76xRzWRSgOQF+7inDrTGUaUfL0VORDXioVujCWMgDUM=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=a4kqZ6/RAUYCCrOjhxpWP3ir13//0nsRoUlE+Zb7C8Iuqm72hf5JMGzBCttCWezuy
+	 CGosJYYPz5oEm53ETMTHH2jji0gAVhrIny14p1LQVcj6aVNUXEbzVhEypjonfhCGQE
+	 lYFHbII2dc6Wve9xIQrVnQLDrHjId8VzvEJvOY5t5roXedoEjy07tH4Ik5vhytlTEK
+	 m7lYgR2kbiKVeckcBXyy+vxp5N2A69nRdIzMYgf/1OBBeHXFtZy2HREKr760vQf+NF
+	 XY/ZfeX2CobR8uUi8aYt05V8uMyFRx6kC3jo/aX0FQgSvnuAMYKZauiHIHRIIyep0U
+	 Ur+Shs0S+7rtw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93DD139EDE30;
+	Thu,  9 Jul 2026 11:10:08 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260709-origin-5-15-y-v1-1-5ac64636d2e8@amlogic.com>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] dibs: loopback: validate offset and size in
+ move_data()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178359540740.3416587.11524899532321320638.git-patchwork-notify@kernel.org>
+Date: Thu, 09 Jul 2026 11:10:07 +0000
+References: <20260707074318.1448662-1-dust.li@linux.alibaba.com>
+In-Reply-To: <20260707074318.1448662-1-dust.li@linux.alibaba.com>
+To: Dust Li <dust.li@linux.alibaba.com>
+Cc: wintera@linux.ibm.com, wenjia@linux.ibm.com, guwen@linux.alibaba.com,
+ pabeni@redhat.com, mjambigi@linux.ibm.com, alibuda@linux.alibaba.com,
+ sidraya@linux.ibm.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, federico.kirschbaum@xbow.com
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-5.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-272881-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:jiucheng.xu@amlogic.com,m:stable@vger.kernel.org,m:jianxin.pan@amlogic.com,m:tuan.zhang@amlogic.com,m:JY.Ho@mediatek.com,m:chao@kernel.org,m:jaegeuk@kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-272882-lists,stable=lfdr.de,netdevbpf];
+	FROM_NEQ_ENVFROM(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
+	FORGED_SENDER(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	FORGED_RECIPIENTS(0.00)[m:dust.li@linux.alibaba.com,m:wintera@linux.ibm.com,m:wenjia@linux.ibm.com,m:guwen@linux.alibaba.com,m:pabeni@redhat.com,m:mjambigi@linux.ibm.com,m:alibuda@linux.alibaba.com,m:sidraya@linux.ibm.com,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:federico.kirschbaum@xbow.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,gregkh:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amlogic.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 23F3973056F
+X-Rspamd-Queue-Id: 1B6B873010A
 
-On Thu, Jul 09, 2026 at 05:35:40PM +0800, Jiucheng Xu via B4 Relay wrote:
-> From: Jiucheng Xu <jiucheng.xu@amlogic.com>
+Hello:
+
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
+
+On Tue,  7 Jul 2026 15:43:18 +0800 you wrote:
+> The loopback move_data() performs a memcpy into the registered DMB
+> without checking whether offset + size exceeds the DMB length.  Unlike
+> real ISM hardware, which enforces memory region bounds natively, the
+> software loopback has no such protection.
 > 
-> commit edf7e9040fc52c922db947f9c6c36f07377c52ea upstream.
+> A peer-supplied out-of-bounds offset or oversized write would result in
+> an OOB write past the allocated kernel buffer.  Add an explicit bounds
+> check before the memcpy to reject such requests with -EINVAL.
 > 
-> As JY reported in bugzilla [1],
+> [...]
 
-What kernel(s) is this for?
+Here is the summary with links:
+  - [net] dibs: loopback: validate offset and size in move_data()
+    https://git.kernel.org/netdev/net/c/78237e3c0720
 
-thanks,
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-greg k-h
+
 
