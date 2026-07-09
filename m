@@ -1,140 +1,278 @@
-Return-Path: <stable+bounces-272948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272949-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id D1ZmCji6T2p9nQIAu9opvQ
-	(envelope-from <stable+bounces-272948-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 17:11:52 +0200
+	id Z9wLMMGxT2qBmwIAu9opvQ
+	(envelope-from <stable+bounces-272949-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 16:35:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BCB4732ABD
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 17:11:51 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45CA873250C
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 16:35:45 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=google.com header.s=20251104 header.b=wm6gsbTu;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272948-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-272948-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bbI2aYWl;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272949-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-272949-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 910E93038FB3
-	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 14:28:31 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 267E1300D1E6
+	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 14:29:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8A7233343B;
-	Thu,  9 Jul 2026 14:28:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8E563375C3;
+	Thu,  9 Jul 2026 14:29:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C06D331EBA
-	for <stable@vger.kernel.org>; Thu,  9 Jul 2026 14:28:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B971F33067F;
+	Thu,  9 Jul 2026 14:29:02 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783607309; cv=none; b=Ih9OerLLIwXmBvnHrU53naGSthfL4Km5vwqLyaEOp8XLDI2HbasEOs3bI88lrDfYll66CcswmXczOEuSnFkGC8G/n8NZ8DaeXnRuo35qhemZ3DkQ0WefsLV0iffDtrwdDAFPfxc//CEw5R2VbxeXPb/2vxz9uK8IhKtINcIc6AQ=
+	t=1783607345; cv=none; b=QMvvbsQdAw7yZwidcf4yaQxgzKJiQ7Xcy36VvPqbIoRTWn/NoR2m6HMljRZbnG3WRQ0hR6AfLr4Y3ZfymdxVcodiR+2pcxiOmvzSSA4gW26+YfEDPE53ETmIcumnn30wWJ9hFH2JhVrqGdl8RevpLmKYfbxlziwDYaKG0FLx+/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783607309; c=relaxed/simple;
-	bh=4UGvmcJWO+vF4ijE0i9D6ZUUiRa1XDumSYloGfIKakI=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=D6nDSmg3QPV1/PvYqR/6u+vU+CAeSht1Yhn69up+PNRGgIGr2If+ph1SvNIiiYZ3MhAqz/UeJ6rEzIZQJvU9aYd2MhkZqOh7io8XGoRCJEwM15++UC1bV3WQT7bkHJPWm+FL13D4nMbrXZaK3V/h68062jvWTaa4VoVmHHtfH4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wm6gsbTu; arc=none smtp.client-ip=209.85.216.74
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-37d4f23eb37so1776090a91.0
-        for <stable@vger.kernel.org>; Thu, 09 Jul 2026 07:28:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783607308; x=1784212108; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=g8eThvaBRatBKc4k9DT72V3nfTJdvxG/RsPvyVMBgw4=;
-        b=wm6gsbTux7p3qJCv0awUjauTBi2lvqeTkI5W3yo8nDpK7nnqnJ9xbPOUIivY+MZdgJ
-         L1P6HhJyqjGfBRoTY1cs19+9JQhhWbXGp7QmzTDXXwLBRMR1E2S9b+4ypts4XM1Tbbiv
-         buHj6m+z2lXLthZX5yZGLP06+sDFATFEP5FBTNo33i376mqOpefRBS0lmF01txBbMh5B
-         ysR9bmZdOcmWArFT3Kexz3RhmEAalcrjcDEd7iQ1kEKUhARDrWgbl7rz9gubFrWeU4tq
-         BWpkjYQkLFTOdW6QXqi+QbNI7B3b/gf9kKPk95E9oVYhnGhGhialqvjmUp2srnRbP4x8
-         5bEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783607308; x=1784212108;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=g8eThvaBRatBKc4k9DT72V3nfTJdvxG/RsPvyVMBgw4=;
-        b=JMcre+5mcPZ2AxFEG+jCMDC6lMqO2Il1qxOE5RDsKPQb9YtlmWzdysrzQlM+VE4dmB
-         ZSo4i4uvDLktc5uBbd4HGRe/pkqa3VIvAK+BtRh4QdqbzF9nID4Ifg7AJMrcc/Q+29G8
-         yU6sSb5NpmT5NDph5SNGROYdLoG5d+/ofTwDgyCPY4DCOpr1ynkhsx8gRWHEJ14ZyOAy
-         eY8dKFK/c/AsgTjatdBcJPpfpsVH5lq741M+OWlm3jAH4pXiElaotqyMnbKfElF+J40R
-         R/P9RE4PXAAo3G16cOoyfHlw+FCYjrTLpDTYnVJ91Jm685ylRVT/miTVC0mMDBYRiDJT
-         lcwQ==
-X-Gm-Message-State: AOJu0YyH/wSFm8ECHBGN9cNZIxP+XP8X2XUqeJhPIZEM5AEjRGweuHZk
-	XdLjWP1x8lsjB5zeloOLMRPqNeweInDGgG8KuApwawqeTxac47xMm0XpZxFoXdPCst+QKYSeU7s
-	M/f3m0w==
-X-Received: from pjbbt4.prod.google.com ([2002:a17:90a:f004:b0:381:9321:9051])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:e184:b0:37f:e8d6:72c0
- with SMTP id 98e67ed59e1d1-3893f694ae8mr6844986a91.1.1783607307420; Thu, 09
- Jul 2026 07:28:27 -0700 (PDT)
-Date: Thu, 9 Jul 2026 07:28:26 -0700
-In-Reply-To: <20260709072247.3305784-2-clopez@suse.de>
+	s=arc-20240116; t=1783607345; c=relaxed/simple;
+	bh=Qa6XvdJy4RYyLyva7is9k/EpxSz+QC7auucxvL6CKgU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Vr3HqVu7No/NZeBorcRJhWXBAaFLU2NN+qb6em/wUoTScV7VyLYGx/D8RcPjxtZujoSpciS19u+ZSaW6vZ9ZIFXHPm7Y8vxqGh4fPjIZmV7QTD0MXtS51FEKwirSoEkxe91i9zy4w1MdRRCde8Xc/2SU58x5/8lNnuWRHF32bcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bbI2aYWl; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3E6B1F000E9;
+	Thu,  9 Jul 2026 14:28:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783607342;
+	bh=DZOt/KMB6Z3oOVzvvL5XZpd9gC6mwYec1Ed3vbdl3V4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=bbI2aYWl3gmAuRWAgdimVVvKoYrMi42iZW1Erb5lB6o6hxukCboS62J5DWPvgLRFu
+	 4myWIHXBZkbD36W8D7ZYgHcnq909pF1cVEkf3hg9dEPDhmAF7xYCpNMQ+lktrls4Gp
+	 9P35hMTkzdgt1vFAxqhONHUr3Qkqpjq41kQFZE/UJX2a/qZeltFW8aoOCc8Rkcll7O
+	 OdDz3nmG0YQv2c+ah5uiIx3O+cgNAL1RVXwaR5pmj4twesQiQcX5Tyag8VUD9MM58p
+	 IYugtpMHpRDRqTv3Pg0C07S/yhjkipMEcBd3ako38o9bev1xsz7vrnJAC+KITVrDcz
+	 JnOfNLd/sjhPA==
+Date: Thu, 9 Jul 2026 15:28:50 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: "Gupta, Pankaj" <pankaj.gupta@amd.com>, seanjc@google.com, 
+	pbonzini@redhat.com, tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com, 
+	bp@alien8.de, x86@kernel.org, thomas.lendacky@amd.com, hpa@zytor.com, 
+	yangge1116@126.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH] KVM: SEV: drop FOLL_LONGTERM for encrypted region
+ registration
+Message-ID: <ak-uER-RndpksnhR@lucifer>
+References: <20260701144543.39582-1-pankaj.gupta@amd.com>
+ <1cc159b9-5f94-4524-8e03-efe91601ccfc@kernel.org>
+ <db303a0c-98e3-4967-9b61-ccb711b776c8@amd.com>
+ <46f19bd8-0d43-4b0e-a8ab-0ef9d3b8bd1a@kernel.org>
+ <2bd89e95-9c15-4a3a-916d-0d71a92d8b02@amd.com>
+ <27ebe8f0-78b6-402a-a2e7-4e807251d20a@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260709072247.3305784-2-clopez@suse.de>
-Message-ID: <ak-wCrZ0J-s0d27A@google.com>
-Subject: Re: [PATCH RESEND 6.18.y 0/3] KVM: x86: Backports for VM entry
- failure due to stale CR8 intercept
-From: Sean Christopherson <seanjc@google.com>
-To: "Carlos =?utf-8?B?TMOzcGV6?=" <clopez@suse.de>
-Cc: stable@vger.kernel.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <27ebe8f0-78b6-402a-a2e7-4e807251d20a@kernel.org>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-4.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	MV_CASE(0.50)[];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[seanjc@google.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:david@kernel.org,m:pankaj.gupta@amd.com,m:seanjc@google.com,m:pbonzini@redhat.com,m:tglx@kernel.org,m:mingo@redhat.com,m:dave.hansen@linux.intel.com,m:bp@alien8.de,m:x86@kernel.org,m:thomas.lendacky@amd.com,m:hpa@zytor.com,m:yangge1116@126.com,m:kvm@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-272948-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:clopez@suse.de,m:stable@vger.kernel.org,m:kvm@vger.kernel.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	FORGED_SENDER(0.00)[ljs@kernel.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-272949-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[seanjc@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[ljs@kernel.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[amd.com,google.com,redhat.com,kernel.org,linux.intel.com,alien8.de,zytor.com,126.com,vger.kernel.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,lucifer:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1BCB4732ABD
+X-Rspamd-Queue-Id: 45CA873250C
 
-On Thu, Jul 09, 2026, Carlos L=C3=B3pez wrote:
-> Backport for bb365a506b1e ("KVM: x86: Unconditionally recompute CR8
-> intercept on PPR update") with two prerequisite patches.
->=20
-> Resend: fix destination emails (did not properly send first version to
-> stable@)
->=20
-> Carlos L=C3=B3pez (1):
->   KVM: x86: Unconditionally recompute CR8 intercept on PPR update
->=20
-> Sean Christopherson (2):
->   KVM: x86: Move update_cr8_intercept() to lapic.c
->   KVM: VMX: Grab vmcs12 on CR8 interception update iff vCPU is in guest
->     mode
+On Tue, Jul 07, 2026 at 04:58:39PM +0200, David Hildenbrand (Arm) wrote:
+> On 7/7/26 15:45, Gupta, Pankaj wrote:
+> >
+> >>> Hi David,
+> >>>
+> >>> Yes, it fails in this path but for file backed mapping, vma_is_fsdax() returns
+> >>> false because
+> >>>
+> >>> vma_is_dax() returns false:
+> >> Ah, okay, so fsdax is not involved and we really only fail because of the
+> >> writable_file_mapping_allowed() check.
+> >>
+> >> I was for a second thinking in terms of nested virt :)
+> >>
+> >>> Host side backend is regular file backed memory (no fsdax).
+> >> Okay, so we'll end up mapping an ordinary file into VM memory, and expose that
+> >> to the VM as part of virtio-pmem device.
+> >>
+> >> That also means that vfio etc. won't be able to longterm-pin such device memory.
+> >> So this is not a problem isolated to SEV.
+> >>
+> >> Forbidding to longterm pin is actually the right thing to do if the filesystem
+> >> relies on writenotify, as spelled out by Lorenzo's commit:
+> >>
+> >> "
+> >>      Writing to file-backed mappings which require folio dirty tracking using
+> >>      GUP is a fundamentally broken operation, as kernel write access to GUP
+> >>      mappings do not adhere to the semantics expected by a file system.
+> >>
+> >>      A GUP caller uses the direct mapping to access the folio, which does not
+> >>      cause write notify to trigger, nor does it enforce that the caller marks
+> >>      the folio dirty.
+> >>
+> >>      The problem arises when, after an initial write to the folio, writeback
+> >>      results in the folio being cleaned and then the caller, via the GUP
+> >>      interface, writes to the folio again.
+> >> "
+> >>
+> >> Hmmm
+> >
+> > Yes. For file based mapping we don't allow long term pinning.
+> >
+> > If we take into account the fragmentation concerns for MIGRATE_CMA and
+> > ZONE_MOVABLE allocations
+> >
+> > solvable with FOLL_LONGTERM, I can think of two options(tested) to allow file
+> > based mappings as well:
+> >
+> > 1. Fallback on FOLL_WRITE when FOLL_LONGTERM fails as suggested by Sean.
+>
+> That is just not acceptable, as it breaks random other stuff (MIGRATE_CMA, as
+> one example) besides the file-pinning problems that Lorenzo added.
+>
+> If we're going to hack something in, then that we bypass the file writeback check.
+> Not that we don't use FOLL_LONGTERM.
+>
+> I'd hate to use a GUP flag to indicate "this is a legacy hack", but it clearly isolates the
+> issue (needs a better name obviously):
 
-Acked-by: Sean Christopherson <seanjc@google.com>
+So under what circumstances are we happy with totally breaking dirty tracking?
+:/ seems iffy, and exposing this to drivers generally is a bit worrysome.
+
+>
+>
+> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+> index ae9bca4eda5ca..e2c531f914d44 100644
+> --- a/include/linux/mm_types.h
+> +++ b/include/linux/mm_types.h
+> @@ -1912,6 +1912,9 @@ enum {
+>          */
+>         FOLL_HONOR_NUMA_FAULT = 1 << 12,
+>
+> +       /* TODO */
+> +       FOLL_LONGTERM = 1 << 13,
+> +
+>         /* See also internal only FOLL flags in mm/internal.h */
+>  };
+>
+> diff --git a/mm/gup.c b/mm/gup.c
+> index 0692119b79043..1fa0aa0cdc99d 100644
+> --- a/mm/gup.c
+> +++ b/mm/gup.c
+> @@ -1186,8 +1186,8 @@ static bool writable_file_mapping_allowed(struct vm_area_struct *vma,
+>          * If we aren't pinning then no problematic write can occur. A long term
+>          * pin is the most egregious case so this is the case we disallow.
+>          */
+> -       if ((gup_flags & (FOLL_PIN | FOLL_LONGTERM)) !=
+> -           (FOLL_PIN | FOLL_LONGTERM))
+> +       if ((gup_flags & (FOLL_PIN | FOLL_LONGTERM | FOLL_LONGTERM_HACK)) !=
+> +           (FOLL_PIN | FOLL_LONGTERM | FOLL_LONGTERM_HACK))
+>                 return true;
+
+Hmm I'm confused, you're then allowing FOLL_PIN | FOLL_LONGTERM, but disallowing
+FOLL_PIN | FOLL_LONGTERM | FOLL_LONGTERM_HACK?
+
+By the way I think this should be expressed better if I criticise myself here :)
+
+So like:
+
+	if ((gup_flags & FOLL_PIN) && (gup_flags & FOLL_LONGTERM))
+
+Or even:
+
+	/* Only an issue if we pin... */
+	if (!(gup_flags & FOLL_PIN))
+		return false;
+	/* ...and that pin is longterm... */
+	if (!(gup_flags & FOLL_LONGTERM))
+		return false;
+
+But I'm confused as to why we are suddenly allowing something broken and what
+this hack flag is supposed to achieve?
+
+Shouldn't this rather be:
+
+	/* Only an issue if we pin... */
+	if (!(gup_flags & FOLL_PIN))
+		return true;
+	/* ...and that pin is longterm... */
+	if (!(gup_flags & FOLL_LONGTERM))
+		return true;
+	/* ...and not overridden... */
+	if (gup_flags & FOLL_LONGTERM_HACK)
+		return true;
+	/* ...and dirty tracking is required. */
+	return !vma_needs_dirty_tracking(vma);
+}
+
+>
+>         /*
+> @@ -2746,7 +2746,7 @@ static bool gup_fast_folio_allowed(struct folio *folio, unsigned int flags)
+>          * If we aren't pinning then no problematic write can occur. A long term
+>          * pin is the most egregious case so this is the one we disallow.
+>          */
+> -       if ((flags & (FOLL_PIN | FOLL_LONGTERM | FOLL_WRITE)) ==
+> +       if ((flags & (FOLL_PIN | FOLL_LONGTERM | FOLL_WRITE | FOLL_LONGTERM_HACK)) ==
+>             (FOLL_PIN | FOLL_LONGTERM | FOLL_WRITE))
+
+Yeah this is just a bit horrid having to stare at a this a while... So
+FOLL_LONGTERM_HACK would enable here.
+
+Be nice to avoid this form of it as it's difficult to understand, do something
+like above or a clearer version anyway (probably best abstracted to a small
+function).
+
+>                 reject_file_backed = true;
+>
+> @@ -3180,7 +3180,7 @@ static int gup_fast_fallback(unsigned long start, unsigned long nr_pages,
+>         int locked = 0;
+>         int ret;
+>
+> -       if (WARN_ON_ONCE(gup_flags & ~(FOLL_WRITE | FOLL_LONGTERM |
+> +       if (WARN_ON_ONCE(gup_flags & ~(FOLL_WRITE | FOLL_LONGTERM | FOLL_LONGTERM_HACK |
+>                                        FOLL_FORCE | FOLL_PIN | FOLL_GET |
+>                                        FOLL_FAST_ONLY | FOLL_NOFAULT |
+>                                        FOLL_PCI_P2PDMA | FOLL_HONOR_NUMA_FAULT)))
+>
+>
+> --
+> Cheers,
+>
+> David
+
+Thanks, Lorenzo
 
