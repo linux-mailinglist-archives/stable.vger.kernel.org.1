@@ -1,179 +1,229 @@
-Return-Path: <stable+bounces-272854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272856-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id YQ9jAptrT2qsgQIAu9opvQ
-	(envelope-from <stable+bounces-272854-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 11:36:27 +0200
+	id vsQjLgluT2paggIAu9opvQ
+	(envelope-from <stable+bounces-272856-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 11:46:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F4D272F049
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 11:36:26 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B82872F1BF
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 11:46:49 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=YhVa7mxM;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272854-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-272854-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=eIRongIA;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272856-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-272856-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2BCC6303A73B
-	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 09:36:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3309B304653D
+	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 09:39:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FD163F0A92;
-	Thu,  9 Jul 2026 09:36:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BB983EF643;
+	Thu,  9 Jul 2026 09:39:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BBE73EF643
-	for <stable@vger.kernel.org>; Thu,  9 Jul 2026 09:36:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 336643E47B;
+	Thu,  9 Jul 2026 09:39:41 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783589767; cv=none; b=bTJN8bBKyuuMKGlyQ8DwZGlXX8qqxNiR2IEya3L252wuZwGGBBJozuSebJnrAsJV6c3hGe3OP8CclyIWxuM+364h4VeLnTcbTvWuof6Df5URHOjeSaOy9JaCnejtdviFsMvrmDhmsGgX+zwx6clzD4YEK6Ur36Ed4ncDbE0C6Vg=
+	t=1783589983; cv=none; b=uFGKEYXI4PUd/YuuRggL3nLjbwk/+WOJORJ9l+OQx1GuwchhgziGRn7AMRQ/3QPPnxWNbt/sXsjLNx1x+stnpBPQRzTRRO/1FzTpY0o8Ytgase2+2Z+zxU0/wnG0dhIC7ffBqoT8FRGYUcdJdNjp9IY2VmYXe57LwHIzzeiT00o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783589767; c=relaxed/simple;
-	bh=dwacK58PZYD/fisEELQvD1XNGY/AUHVcRTeEXysE7x4=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=V+PfngMnBALApqh+6R+0xFgto/gpLTwSwvGQVEzalOlyuwVRynEEamXBEhp+wvpGWqu1Eb5ba/ZAFAKzEtMQf6XP26Bik8+AK3enpYAoiokK0aC1aa7PUUGyIx6J9zn3POcnLFoTeyj+UlYcbtcBDQQyevBKPUX4Qm6dEYRB3yI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YhVa7mxM; arc=none smtp.client-ip=209.85.221.51
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-47d70879764so1144713f8f.2
-        for <stable@vger.kernel.org>; Thu, 09 Jul 2026 02:36:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783589764; x=1784194564; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :references:cc:to:subject:from:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=GvQrm5Ns49lCPx3T22+ey6qMomLJzKoL27egFokIkhY=;
-        b=YhVa7mxMlmUJVYRO87a8r+q2cIkPAHW5k9AQRPLy0HMuoUDdzIWQy5KPOrImJbDhsM
-         mtO8ddVMN9MlakHcVIBN6P4eS0Ru/l/lywKp+cJH0VWlAv72+EiP6eAY5xNspw/EGQbi
-         IQHkM2iWmiNjoSEMpT//Y/HS05ZBamd854l+0iSU8j2MD5mW2daByB/+FxIZccBaup0c
-         fReeWXmwfpsCaj6Yw9VO43jqU9PF2L5unba6p6FA5nY/Sn1ONsQpo7zOzYEtnoLwP7TU
-         U9nyOmvtKCxfRMppKzhiAE+wbRm2lJnqDMXjKh+FioJV8D0FOttkeyP+rEh0cPEXDU5q
-         2Ynw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783589764; x=1784194564;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :references:cc:to:subject:from:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=GvQrm5Ns49lCPx3T22+ey6qMomLJzKoL27egFokIkhY=;
-        b=Pv82uyqLFWqwqTPknjLdkVDiZfqktI6C5RMR2QQRh8NySLQFdJ1VdsGaLg4UJqEZdj
-         3C/4dGFbntY7SFTKCO80/P0yyOfQp3WbGO2ErYw3cqnfFlXQS4GBTo/dJMcXbG1kpgWu
-         2MmhDxNFHdrLi6Z/ODKdy4fEyTOK4TGAokIQifhJnaqBixRTRCOqW2SaRhV4n2h0dQxI
-         KBEDhUomdnglVkrQuNbPt+oOjAPTlX2h+zXW2PwdOGGXjN6IeU7ZjaK0s0+AFa+/FCE9
-         wl3X6d/LRDc5x3/o+5HUrAqllp95E6P2y5KTquvWE8edDkFEtjM4nUc0mfZ74ksUgogK
-         ThnQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqPhld1JFeG5kQZZylpIxEkX9XpFC/drz2Q6rYMmNU57sW4fkN8vMo4S4gETkDCbMjZV2Hhg0Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yym0OnKvB+jElFDTftybNu1Y4EIY2HySfCVbinjc4ANlHBuhBuh
-	15xvYAJO+uNZT+N4GPHD3z7Lmt8tjpPpuH/p3frXPIVUFXeBk2xQxyyi
-X-Gm-Gg: AfdE7cm627VE9ck3dzvah/EBD5vJKj6aSAaaYDHyxbmL43nBx53Ty1Pw/6FmXj0MfTL
-	Com9+bKC8bCvfEh8Rw2ib43fKXokD/JijwPTz3Eiv4Nj2N0CRCugV8UZWs/CuijODyQZBj30n7w
-	OkKA7e6wWlGb3HeZRjoQrlE12iahsGhtWti7XzCjklksUzu9g419xYMfNi+4JZOQcQMqr2/bLYB
-	+9gbu2sVJ67dAmp+0zA/QZz1IPg3LTJ3EDO3Kmz6VttBOrRLg0Djn87+1eucZVRTTpE6J8h4q/+
-	nqnM24MfljRND+vtsF3YQjw7Ck5sGzT3DXTPNcVMfauMxfNThWS68dklH1VtTJBGP8QYyptyxmI
-	49xZRkD6fMjs0cV2dFV2smMPQv6y704EyjfOL0NT/+RnTbfcjY8VQkIAIbF93FKt6J5HkY4pvJ3
-	9k/FH3HcLTneMSAR4IsT8G8u2lVeyL8xWS+WyJWr+J4VeUUW/4DgJmTGVkixOsPylU/zNcNLf/
-X-Received: by 2002:a5d:6f0d:0:b0:475:3a97:8e47 with SMTP id ffacd0b85a97d-47df07f5453mr7632216f8f.29.1783589763769;
-        Thu, 09 Jul 2026 02:36:03 -0700 (PDT)
-Received: from [192.168.0.105] (88-187-52-200.subs.proxad.net. [88.187.52.200])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47aa039bcdasm51655410f8f.21.2026.07.09.02.36.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 09 Jul 2026 02:36:01 -0700 (PDT)
-Message-ID: <a8f8eac0-2332-4f8d-8b4a-c13570fa5a0e@gmail.com>
-Date: Thu, 9 Jul 2026 11:35:56 +0200
+	s=arc-20240116; t=1783589983; c=relaxed/simple;
+	bh=7GA2pZHLuihFzNC5suVPNdeb2rgyYNSlTVmoPdc1Jnc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NV2fzTbzrkAri85ewPbLmOIkdrth7VdCYOLkPE4tdfyqi6xwJAfP26+eOClmP57brkVM8rZoih6g6yvCg9EMDt7PxhIcBzibmTDoyHIaa39Ai6V0kzJng3Tfbf6bxbPXuGmZDQ8mSRPEz+tY35NuCnHhfPK9gs2OvN9B6wNw7Iw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=eIRongIA; arc=none smtp.client-ip=148.163.156.1
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6696IWr21897392;
+	Thu, 9 Jul 2026 09:39:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=M05QQu
+	2AhxhlfwVGw0snPzMy6XvSIYRk6m4W88pP9io=; b=eIRongIAq53MmskZdIMHqN
+	VE37M89HblCDzG+p6Ccgmmmed6tnA8+VCmvn+X0nean+8csGmJcftc1tJzT29Yzq
+	6Z4y/I1aQnvWbIxaC2NHaixr+wKOaRrf1thIqBMg8Q69MRKKwYvVcT6Va9GjWId6
+	NmDqI24kOfkBKP8+BI9WHwhyUCeaN3whHV+6AJG6afkWTITqge4Q4mVE88UB1fO9
+	bUMnqbf9ZLPiLAEHZZL48xnoUz9jhknBEOP0pZiSiNGAUgrpyuT4DDGKC1RRK/KD
+	JcotwNWYjvyHfqHFPHcN6lFJEqEOij9EIhjaM+aHYgz7L6NRSV0vPPs9vPqlYHEw
+	==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4f6sur0rfp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 09 Jul 2026 09:39:16 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6699YfLV020115;
+	Thu, 9 Jul 2026 09:39:15 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4f7dgkch4j-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 09 Jul 2026 09:39:15 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6699dD3S52953366
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 9 Jul 2026 09:39:13 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 09E302004F;
+	Thu,  9 Jul 2026 09:39:13 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 817442004B;
+	Thu,  9 Jul 2026 09:39:10 +0000 (GMT)
+Received: from fedora (unknown [9.5.7.39])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu,  9 Jul 2026 09:39:10 +0000 (GMT)
+Date: Thu, 9 Jul 2026 15:09:33 +0530
+From: Amit Machhiwal <amachhiw@linux.ibm.com>
+To: leixiang <leixiang@kylinos.cn>
+Cc: seanjc@google.com, pbonzini@redhat.com, stable@vger.kernel.org,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+        Suresh Warrier <warrier@linux.vnet.ibm.com>,
+        Paul Mackerras <paulus@ozlabs.org>, linuxppc-dev@lists.ozlabs.org,
+        kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] KVM: PPC: Book3S HV: Set irqfd->producer only on success
+Message-ID: <20260709150215.e5b5af63-43-amachhiw@linux.ibm.com>
+Mail-Followup-To: leixiang <leixiang@kylinos.cn>, seanjc@google.com, 
+	pbonzini@redhat.com, stable@vger.kernel.org, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
+	Suresh Warrier <warrier@linux.vnet.ibm.com>, Paul Mackerras <paulus@ozlabs.org>, 
+	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <ak59frQUBl9Gs3Qn@google.com>
+ <20260709055755.31297-1-leixiang@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Florian Fainelli <f.fainelli@gmail.com>
-Subject: Re: [PATCH 6.1 000/129] 6.1.177-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
- hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
- sr@sladewatkins.com
-References: <20260702155112.163984240@linuxfoundation.org>
-Content-Language: en-US
-In-Reply-To: <20260702155112.163984240@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260709055755.31297-1-leixiang@kylinos.cn>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA5MDA4OSBTYWx0ZWRfX0J8Kx25YbE25
+ gEKF/7pooXdZT5w2Ana836uEphAVHc51zuQyuiCckgLkullwvVqhD27s5+O3jxr7yjsLJ1qEWto
+ M/TFd5KcrnU6ZCNi6yjlkXo/uY2KLdo=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA5MDA4OSBTYWx0ZWRfX/tF6QwN3C+Hu
+ ELnzvTFlZW8BmZAF6YGV1s97Nt8NYWU12kEb39Q9ZeR6FCKPMw2XJINZ14fht5Xkv1+9oiLe7zN
+ RXNuCfQ+1XidblYy5gwGTZVwGIydiMcPu/HW3uWcHiMdP0svvYUk9WmtCy82fRCJAliLMuNCS98
+ nxkk5ZNwf1/OpwollX5I3+eFdtYGKyUDzZtukCUpTZ7xxYU8G82Fpwq6j6aZIjkYpAbVxaA5zKT
+ u6L/CZ/1aourPoRhz8Qd5Jt4WOYJRhBdLIR/fGzFKuzv/n4fXMDedCznPte2bzqcX5YlYAQjBru
+ NOpqgLVbKMact4TdZaBOrq4ZyAOeLd2rjWz8qEI8MAh0iR+GUqjP0WDVzYYQIaCxagYHh75ZEu/
+ UXDi37wkNFQBEv6yKJIkm/ODzINhu63c7ICiZuBB9kuZ0pg6IxgMyYKqtIvoOM5myqRCf2iu7OC
+ NIklSjUVC1BR1Z1HvQA==
+X-Proofpoint-GUID: ZJlaxRQCVLZf1W0xgI-7SUYf5knbDxjI
+X-Authority-Analysis: v=2.4 cv=Oot/DS/t c=1 sm=1 tr=0 ts=6a4f6c44 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=1XWaLZrsAAAA:8
+ a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=aQTDHXOw4a3q5qQiMUEA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: 3PrTwKRV1brcDspQTSDzvnlPTg6EvwHR
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-09_01,2026-07-08_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 lowpriorityscore=0 clxscore=1011 impostorscore=0 phishscore=0
+ malwarescore=0 suspectscore=0 spamscore=0 adultscore=0 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607090089
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-272854-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	FREEMAIL_CC(0.00)[google.com,redhat.com,vger.kernel.org,linux.ibm.com,gmail.com,ellerman.id.au,kernel.org,linux.vnet.ibm.com,ozlabs.org,lists.ozlabs.org];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:torvalds@linux-foundation.org,m:akpm@linux-foundation.org,m:linux@roeck-us.net,m:shuah@kernel.org,m:patches@kernelci.org,m:lkft-triage@lists.linaro.org,m:pavel@nabladev.com,m:jonathanh@nvidia.com,m:sudipm.mukherjee@gmail.com,m:rwarsow@gmx.de,m:conor@kernel.org,m:hargar@microsoft.com,m:broonie@kernel.org,m:achill@achill.org,m:sr@sladewatkins.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[ffainelli@gmail.com,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-272856-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:leixiang@kylinos.cn,m:seanjc@google.com,m:pbonzini@redhat.com,m:stable@vger.kernel.org,m:maddy@linux.ibm.com,m:npiggin@gmail.com,m:mpe@ellerman.id.au,m:chleroy@kernel.org,m:warrier@linux.vnet.ibm.com,m:paulus@ozlabs.org,m:linuxppc-dev@lists.ozlabs.org,m:kvm@vger.kernel.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[amachhiw@linux.ibm.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linux.ibm.com:mid,linux.ibm.com:from_mime,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kylinos.cn:email];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ffainelli@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[amachhiw@linux.ibm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[ibm.com:+];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[broadcom.com:email,vger.kernel.org:from_smtp]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_COUNT_SEVEN(0.00)[11]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6F4D272F049
+X-Rspamd-Queue-Id: 1B82872F1BF
 
-
-
-On 7/2/2026 6:18 PM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.177 release.
-> There are 129 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On 2026/07/09 01:57 PM, leixiang wrote:
+> Set irqfd->producer only after kvmppc_set_passthru_irq() succeeds to
+> avoid leaving a dangling pointer on failure. The bypass manager does
+> not register a failed producer, so the pointer is never cleared.
 > 
-> Responses should be made by Sat, 04 Jul 2026 15:50:58 +0000.
-> Anything received after that time might be too late.
+> Fixes: c57875f5f9be ("KVM: PPC: Book3S HV: Enable IRQ bypass")
+> Suggested-by: Sean Christopherson <seanjc@google.com>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: leixiang <leixiang@kylinos.cn>
+> ---
+>  arch/powerpc/kvm/book3s_hv.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.177-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+> index 61dbeea317f3..ff7b25629125 100644
+> --- a/arch/powerpc/kvm/book3s_hv.c
+> +++ b/arch/powerpc/kvm/book3s_hv.c
+> @@ -6111,12 +6111,12 @@ static int kvmppc_irq_bypass_add_producer_hv(struct irq_bypass_consumer *cons,
+>  	struct kvm_kernel_irqfd *irqfd =
+>  		container_of(cons, struct kvm_kernel_irqfd, consumer);
+>  
+> -	irqfd->producer = prod;
+> -
+>  	ret = kvmppc_set_passthru_irq(irqfd->kvm, prod->irq, irqfd->gsi);
+>  	if (ret)
+>  		pr_info("kvmppc_set_passthru_irq (irq %d, gsi %d) fails: %d\n",
+>  			prod->irq, irqfd->gsi, ret);
+> +	else
+> +		irqfd->producer = prod;
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build fails on MIPS 
-with:
+cons->add_producer is invoked by __connect() in virt/lib/irqbypass.c,
+which itself is called from either irq_bypass_register_consumer() or
+irq_bypass_register_producer(). __connect() only records the pairing —
+setting cons->producer and prod->consumer — if add_producer returns 0.
 
-arch/mips/kernel/smp.c: In function 'stop_this_cpu':
-arch/mips/kernel/smp.c:396:2: error: implicit declaration of function 
-'rcutree_report_cpu_dead'; did you mean 'rcutree_prepare_cpu'? 
-[-Werror=implicit-function-declaration]
-   rcutree_report_cpu_dead();
-   ^~~~~~~~~~~~~~~~~~~~~~~
-   rcutree_prepare_cpu
+  static int __connect(struct irq_bypass_producer *prod,
+  		     struct irq_bypass_consumer *cons)
+  {
+  	[...]
+  
+  	if (!ret) {
+  		prod->consumer = cons;
+  		cons->producer = prod;
+  	}
 
+On failure, no pairing is recorded, so __disconnect() is never called,
+and del_producer is never invoked to clear irqfd->producer. The old
+unconditional assignment indeed left a dangling pointer on any
+kvmppc_set_passthru_irq() failure.
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
+Reviewed-by: Amit Machhiwal <amachhiw@linux.ibm.com>
 
+~Amit
+
+>  
+>  	return ret;
+>  }
+> -- 
+> 2.45.0
 
