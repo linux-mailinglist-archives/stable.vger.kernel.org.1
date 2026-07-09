@@ -1,84 +1,84 @@
-Return-Path: <stable+bounces-272950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272951-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id x9lQBii4T2oRnQIAu9opvQ
-	(envelope-from <stable+bounces-272950-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 17:03:04 +0200
+	id 22FxON+xT2qJmwIAu9opvQ
+	(envelope-from <stable+bounces-272951-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 16:36:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C69F7732986
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 17:03:01 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2ED1E732520
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 16:36:15 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=theori.io header.s=google header.b=AYXGiFum;
+	dkim=pass header.d=theori.io header.s=google header.b=BZDSTi6W;
 	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272950-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-272950-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272951-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272951-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D6D573065136
-	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 14:29:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 822CF30160D4
+	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 14:30:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 574E921E098;
-	Thu,  9 Jul 2026 14:29:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EB992C11E8;
+	Thu,  9 Jul 2026 14:30:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C52CA2C237E
-	for <stable@vger.kernel.org>; Thu,  9 Jul 2026 14:29:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9289131715B
+	for <stable@vger.kernel.org>; Thu,  9 Jul 2026 14:30:04 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783607357; cv=none; b=jbgHQxBPRo6fumfaewHEem/sdHMhwLOu365N9Rguj+2A2pM1Tl240idXTq6YSTVIN/c5gUlt5XghdfbzXUV6ZTZBIUr6sWf1Ukp6AjLzxzaLSKVI+kosSZv2iax8AjXk4sa+1cvW68p2KBDEL0wT7RwN/+2VVMC1ai27lBD+XNg=
+	t=1783607406; cv=none; b=JuQcdKsJ7byVeF+1Auv7tuqrDsBqp27Javl8hNA9/BkK0bztNv1a9jwQ3X/i0tBlCbGtvcb2nQtLbIPut1NbL52YfYZyPQDLJvkCtJhrRgQtKmd69D8VpNb85mpyF2Pv2m4HIMrxHpr2VnFy2TjJ7SFmk0FvM36DbWCLTHDyngQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783607357; c=relaxed/simple;
-	bh=Iu4eOmW5OFTlfmcZ4j5QOVxyD0LZCCHmxCVEYvjFGS8=;
+	s=arc-20240116; t=1783607406; c=relaxed/simple;
+	bh=EX96KbAAlvGiO07dFoY1eGvM813//hjk3jOsJGyQMy8=;
 	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=Ig5p/eQPhJzvPhJS+RCb2RACJ8BHSRParnawK07rBJbbicyn2C/tFFdMyQvGXEDCgV9KUnMgMVB8pSt9zTzYQbz0oD90nOo8nsjxct6+6o/opm6TraM02NajrEjYhlJGmP2NbVSq30mVw/8gvuoGP+Yu69utwL+yU3JXq/Xo27A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=theori.io; spf=pass smtp.mailfrom=theori.io; dkim=pass (1024-bit key) header.d=theori.io header.i=@theori.io header.b=AYXGiFum; arc=none smtp.client-ip=209.85.216.48
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-38175907a56so846272a91.0
-        for <stable@vger.kernel.org>; Thu, 09 Jul 2026 07:29:15 -0700 (PDT)
+	 Content-Disposition; b=dsWJ5pw5WlzW3/aiVcBdyIW+6Mjnm1BHBc1vlk1nVmpzgLHnN3d2PZxnZNsBavM9+NNix7hKSad66cz9xDLruCiml6A6xcVe7dinS7v0WiG7Re3fIdlqbx3QgSVXiniJhRmDC7l+r592GJjE3xndhdRXQGB+uzp4/YNXcZ+n9hU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=theori.io; spf=pass smtp.mailfrom=theori.io; dkim=pass (1024-bit key) header.d=theori.io header.i=@theori.io header.b=BZDSTi6W; arc=none smtp.client-ip=209.85.214.175
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2ca70925c25so26821415ad.1
+        for <stable@vger.kernel.org>; Thu, 09 Jul 2026 07:30:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=theori.io; s=google; t=1783607355; x=1784212155; darn=vger.kernel.org;
+        d=theori.io; s=google; t=1783607404; x=1784212204; darn=vger.kernel.org;
         h=content-disposition:content-type:mime-version:message-id:subject:cc
          :to:from:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=aJ0aTaxiRIikqsBWv5Uf4B9z1s0BEHGFjpFfafk8OH8=;
-        b=AYXGiFumVXgLvxcYYC/to/K77os7YsmNwyXvt1DW460h83ZOZ8Qfiy8HCM3Q6V4TM4
-         HeACubI7TRG/nPILczU1+foNiYJRqiS4urDu3DVir3OUf5mj6Mfu2YJdyT9n9xzyXVJq
-         Pc4qPG/ax8L+IR2HF53iGz53RwjhHqUCR3NgI=
+        bh=N2EVzBOjNg/Bnd68FOAqniWlfmqjL7EQnrstt79DR3M=;
+        b=BZDSTi6WjHx3FcEPeTIR9Ap/ej2EeiqP0ktYlE3EvsfMel7dCXLtUX8/vniG5Qvypk
+         CoK3xgR6dL6JnZTbaSSYJZ5fwj5m7ipR7YM14FKoy0vDUlEJGuTLaa5gVUH9YjeRnQV2
+         hkqotgDUlf5JvUQFjaq3F8fqA8J0nVIKQgKp0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783607355; x=1784212155;
+        d=1e100.net; s=20251104; t=1783607404; x=1784212204;
         h=content-disposition:content-type:mime-version:message-id:subject:cc
          :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=aJ0aTaxiRIikqsBWv5Uf4B9z1s0BEHGFjpFfafk8OH8=;
-        b=pyfiWIeQvAk+ZRMrgJ4uzm8RULZ2aHFy0rzPZ9L3A8lioBdnMAl2Dyna0eZq1I8iiP
-         6+1bSrTuTkjntmNqbtDu9KXXsxW/TGzZDdGLvvkECyRTKtS2A6uT46dAZ/BY7j+ESsoy
-         bCNo8Ets72aOOy8zTZYzE7LLzofoDHcG4BxUynPClJKA+lUzczemPDJGAofK2eeZYXJq
-         qW4lzEkpUyL9Plml/TC95kMjttX3OHtpypTOUqT0tVcOxjNSsmAQIWYSq121seg1vUEI
-         ENihGxUs6lV5KK6gnNK3smgeIyWWEjzNEOV4m5DWjbXZF3pnKXVuU7gBDe6+PrXcopZV
-         OAIg==
-X-Gm-Message-State: AOJu0YwIV8DLsWoKmQtL1/8RfaGh7yGa8wS1jjK0HH8UQWouYokodivY
-	6jR4+VUtwC6DG9jHgcjyU4VtR7QGwGtkJXGGvwJ8Is/8ckZwuxbRByE7BAwyaO3mfyazWLtRBuv
-	9oqDa
-X-Gm-Gg: AfdE7cknjih61kiBPM0oC8b6dgwtogw13lN1YMzxqFHt6/IhnsKoMaImPynEdilXOaj
-	H5v8DtdgypuA6zPe3YFBJ69zC4R8SrAFFzDoyokrU3PSaSOocC9F7YyjDzhEdkxjAYtiOO090pF
-	dH7MVHlKM5h1P+yxD+nZCBXuhDjLD74s0LJQo2C5PVeUybs03r7UKrStWk3oCLERW99ZzGdfAeh
-	9DHuLphTsiUP8NoW3cCA95WMAcvf+filWfEH6ULbiapqp/HkBq/6/SrnM9vZChoUOcMgu74Wbxe
-	SlKs5EK0loVvnM0nVmMk0vPl3hS62GiZlREukwKAcFNWVM6x49ckdmEBHYpGgqy4Y9OmHGhj6YK
-	AzXLpo4zf+gFeXCkQkhBs/IcSrB0GqsPT3dbD8fsSIn23rWbTUu1QbHA9J/VE/7lYaYJG2cKuK0
-	UNrHxs0im+fh6hX0owUAajWzmJ77ihe4ikOH37n/pjN3FsBvffDEyQM05x1XYmkmhiwv8=
-X-Received: by 2002:a17:90b:384b:b0:387:d5bd:622f with SMTP id 98e67ed59e1d1-38b74d2dcd9mr2733193a91.18.1783607355053;
-        Thu, 09 Jul 2026 07:29:15 -0700 (PDT)
+        bh=N2EVzBOjNg/Bnd68FOAqniWlfmqjL7EQnrstt79DR3M=;
+        b=FfBhbaZTEyX3rT7CS7pfmvponqOsdoLTYmsvYpbZLn8nE8OnpaHJWO9nf4Smy1URb4
+         RQlnF6EzEG7Go1YeGbKM9sz5+7s2r0yU2rcMXXKQ4k3uhIJKx9GPJHNH4MDmnZKUp+hw
+         uMZVC0F3U9L+cDdTRMq2BCMhartistIdCUBizUET0CviyXPFUtusRygSt5ZQa2d7wxAQ
+         j32yUBQ2xyd5nO3JYeroyfhR4duu2X6MJdMBqJ70v3v588Ov5Fpr6uHJ3CFd9C1B1f4d
+         cLWXJkCuImjaJH4RUYGamdfkwx2Gm4dpryzBdXyzTNoQiyuoTkxxv5gPnXrJ9oc5kyri
+         v3lA==
+X-Gm-Message-State: AOJu0YzSUfYnzauqJwT5BveQJf34OhglSblsPg2tAR7TIPLfNOYrMudR
+	dcaFat+yfnoGFJ6EG5yrSTTfWuvsMj79/oEe2AYg4FcGwVdkntOM2xML0v40oTryvpI24Qet1IP
+	Z+A22
+X-Gm-Gg: AfdE7cnt/Ci6e/vfGEujArq+0hkj1NQkZGcKP9nyezsUUn7hwqJrlWsTSFSriWn3dvr
+	JBeBXSgYYOz0lkA/6hmc3H1Cv2NpeHx7pXl7bbpFlbW3bB1/Tu8LCstz06h2cTNE5/+mIsgE73x
+	jHItRwqGFpdAqxmyp8GVeUVpCzapTVzC+q/MrEdT3QuFlEL2/iAl/+LHBHlUVeqGQkHJI7p7R7U
+	Ud77HeNUP9DdnC/sPNeSjE7ai70ruIRY203WEwMvMSGx2XsZ/qf+x1qv5TGQ89D2CpY6WeLqUuN
+	E9FIFTJ6p9Gd443smblXmiq/WXMtsKoYHp7d4JD2pmV3fwUWe0E5qEsSWgFrS3/WeEmh5g2B9m8
+	W/9/AM/9DsxRgDA1J6vvJ10CL7A568WUl/8N6S6hjLAr0vbT7WDHWVGfCn/PNderRcFk2+gMEwu
+	EJMgBadYX01f3CR5Y+YaCC1qhkQ4OL4WJE4Tr7dKNHwrSweZLjI7d3xAPMTw8Ea4LHV8I=
+X-Received: by 2002:a17:903:3c30:b0:2c9:e9c4:82c1 with SMTP id d9443c01a7336-2ccea348b05mr80555255ad.26.1783607403713;
+        Thu, 09 Jul 2026 07:30:03 -0700 (PDT)
 Received: from Taeyangs-MacBook-Pro.local ([59.6.107.15])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38a5213f28csm1313907a91.0.2026.07.09.07.29.13
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccf797ebc4sm19121075ad.83.2026.07.09.07.30.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jul 2026 07:29:14 -0700 (PDT)
-Date: Thu, 9 Jul 2026 23:29:08 +0900
+        Thu, 09 Jul 2026 07:30:03 -0700 (PDT)
+Date: Thu, 9 Jul 2026 23:29:58 +0900
 From: Taeyang Lee <0wn@theori.io>
 To: stable@vger.kernel.org
 Cc: Peter Zijlstra <peterz@infradead.org>
-Subject: [PATCH 6.12.y] perf/core: Detach event groups during remove_on_exec
-Message-ID: <ak-wNFDs7hzmggnp@Taeyangs-MacBook-Pro.local>
+Subject: [PATCH 6.6.y] perf/core: Detach event groups during remove_on_exec
+Message-ID: <ak-wZqvIG4SxKA_2@Taeyangs-MacBook-Pro.local>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -91,7 +91,7 @@ X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_DKIM_ALLOW(-0.20)[theori.io:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -101,12 +101,12 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	DMARC_NA(0.00)[theori.io];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-272950-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-272951-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[0wn@theori.io,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[theori.io:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MISSING_XM_UA(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
@@ -118,9 +118,9 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,theori.io:from_mime,theori.io:email,theori.io:dkim,vger.kernel.org:from_smtp,Taeyangs-MacBook-Pro.local:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,infradead.org:email,vger.kernel.org:from_smtp,msgid.link:url,theori.io:from_mime,theori.io:email,theori.io:dkim,Taeyangs-MacBook-Pro.local:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C69F7732986
+X-Rspamd-Queue-Id: 2ED1E732520
 
 [ Upstream commit 037a3c43edfb597665dd34457cd22b14692f2ba3 ]
 
@@ -156,10 +156,10 @@ Link: https://patch.msgid.link/ai65GgZcC0LAlWLG@Taeyangs-MacBook-Pro.local
  1 file changed, 8 insertions(+), 6 deletions(-)
 
 diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 9099c0cc933b..482ac3f636fb 100644
+index a4187dea6402..d1f6f37ce0ec 100644
 --- a/kernel/events/core.c
 +++ b/kernel/events/core.c
-@@ -4537,7 +4537,8 @@ static void perf_event_enable_on_exec(struct perf_event_context *ctx)
+@@ -4450,7 +4450,8 @@ static void perf_event_enable_on_exec(struct perf_event_context *ctx)
  
  static void perf_remove_from_owner(struct perf_event *event);
  static void perf_event_exit_event(struct perf_event *event,
@@ -169,7 +169,7 @@ index 9099c0cc933b..482ac3f636fb 100644
  
  /*
   * Removes all events from the current task that have been marked
-@@ -4564,7 +4565,7 @@ static void perf_event_remove_on_exec(struct perf_event_context *ctx)
+@@ -4477,7 +4478,7 @@ static void perf_event_remove_on_exec(struct perf_event_context *ctx)
  
  		modified = true;
  
@@ -178,7 +178,7 @@ index 9099c0cc933b..482ac3f636fb 100644
  	}
  
  	raw_spin_lock_irqsave(&ctx->lock, flags);
-@@ -13478,10 +13479,11 @@ static void sync_child_event(struct perf_event *child_event)
+@@ -13231,10 +13232,11 @@ static void sync_child_event(struct perf_event *child_event)
  }
  
  static void
@@ -192,7 +192,7 @@ index 9099c0cc933b..482ac3f636fb 100644
  
  	if (parent_event) {
  		/*
-@@ -13496,7 +13498,7 @@ perf_event_exit_event(struct perf_event *event, struct perf_event_context *ctx)
+@@ -13249,7 +13251,7 @@ perf_event_exit_event(struct perf_event *event, struct perf_event_context *ctx)
  		 * Do destroy all inherited groups, we don't care about those
  		 * and being thorough is better.
  		 */
@@ -201,7 +201,7 @@ index 9099c0cc933b..482ac3f636fb 100644
  		mutex_lock(&parent_event->child_mutex);
  	}
  
-@@ -13575,7 +13577,7 @@ static void perf_event_exit_task_context(struct task_struct *child)
+@@ -13329,7 +13331,7 @@ static void perf_event_exit_task_context(struct task_struct *child)
  	perf_event_task(child, child_ctx, 0);
  
  	list_for_each_entry_safe(child_event, next, &child_ctx->event_list, event_entry)
