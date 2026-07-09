@@ -1,74 +1,73 @@
-Return-Path: <stable+bounces-272927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272926-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id OifOL/WjT2omlgIAu9opvQ
-	(envelope-from <stable+bounces-272927-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 15:36:53 +0200
+	id DYo+MM+jT2oYlgIAu9opvQ
+	(envelope-from <stable+bounces-272926-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 15:36:15 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45504731A36
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 15:36:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C3E7731A23
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 15:36:15 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
 	dkim=none;
 	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=suse.de (policy=none);
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272927-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-272927-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272926-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-272926-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 14F4930F3A6E
-	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 13:29:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8671130ED670
+	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 13:29:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99C112DCF74;
-	Thu,  9 Jul 2026 13:29:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAF042DAFDF;
+	Thu,  9 Jul 2026 13:28:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E96072BD02A
-	for <stable@vger.kernel.org>; Thu,  9 Jul 2026 13:29:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9BA627AC31
+	for <stable@vger.kernel.org>; Thu,  9 Jul 2026 13:28:57 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783603743; cv=none; b=R+H65qyEBq1X8or0JGwf26srL/nPlEeuSSndo9v6yyEmWaKbQeEF7NjZVLujL7LPC0KQQIpB6to+FqjN2EAPctWhg8yP2gD0cMZQLIhws8sH/WlUcv5tapkVwE9ptVKVtG+yFugSPJNsh7nO63us1j9tCSV7VOTD82g4r4BB8FE=
+	t=1783603739; cv=none; b=pQGF/lDakxCeVEB7c6yeAPE1SbCD62UPwGijzSnx4NfyRZ5OGqllqX5XjgfP1oMfoOYHPgL4ipuCEo8B51/rCqSz8K73zk/1AqKvdLkckSgJaqgO3tJmBUGk8sRgp4KPhP4UfsxaQRzFpLT1gje8lXzw9Sl0JuKlMsF0hYtWiWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783603743; c=relaxed/simple;
-	bh=5/gPzXzHRrR5wuimet/AvR4i+XR6lL/+iDDG7w0gAYY=;
+	s=arc-20240116; t=1783603739; c=relaxed/simple;
+	bh=yaAZ7DYR9S6GeDUetun2xQChkMdzzopKXYNCYnbAA8M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=INSIG6RIs2zVcNw+bzveLNz7N+CeXdvrIBRy7kubbNeuDhfTC3erxpJQOtSUjnDgYFIdSK48OvjkOzuh4ftbBKCOE/c1hKe1L85UOkK4DR9A6HpHzufyWv7lzfOM/X1VZGR581Typ7gLs9cmSpA5QcRbHS1t+TmEG1v3k/ALVAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; arc=none smtp.client-ip=195.135.223.130
+	 MIME-Version:Content-Type; b=Abv1qebIt6mHW2B3e8GYk9GR8W2wYAcQ0OuhunHXavQdBfC1/pRY70JiDUzynkZCq5V+vgFkX12i56AUycXTJYG8zsqguaX6LyOpI08glJrWIzL83Jk8N89twCmF0vdlFXFz3fDCa0LO+3rBz2enP3exzBucM2ONGGh8uv0xxkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; arc=none smtp.client-ip=195.135.223.131
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 43B127620F;
-	Thu,  9 Jul 2026 13:28:55 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 3DC6375EF2;
+	Thu,  9 Jul 2026 13:28:56 +0000 (UTC)
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 75033779AA;
-	Thu,  9 Jul 2026 13:28:54 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7C6E7779AA;
+	Thu,  9 Jul 2026 13:28:55 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id sIPpGRaiT2qaMQAAD6G6ig
-	(envelope-from <clopez@suse.de>); Thu, 09 Jul 2026 13:28:54 +0000
+	id iBq/GxeiT2qaMQAAD6G6ig
+	(envelope-from <clopez@suse.de>); Thu, 09 Jul 2026 13:28:55 +0000
 From: =?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>
 To: stable@vger.kernel.org
 Cc: kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	gregkh@linuxfoundation.org,
 	Sean Christopherson <seanjc@google.com>,
-	Kai Huang <kai.huang@intel.com>,
-	Yosry Ahmed <yosry@kernel.org>,
-	=?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>,
+	syzbot ci <syzbot+ci493c6d734b63e050@syzkaller.appspotmail.com>,
 	Paolo Bonzini <pbonzini@redhat.com>,
+	=?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>,
 	Thomas Gleixner <tglx@kernel.org>,
 	Ingo Molnar <mingo@redhat.com>,
 	Borislav Petkov <bp@alien8.de>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
 	x86@kernel.org (maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)),
 	"H. Peter Anvin" <hpa@zytor.com>
-Subject: [PATCH 7.1.y 1/3] KVM: x86: Move update_cr8_intercept() to lapic.c
-Date: Thu,  9 Jul 2026 15:21:07 +0200
-Message-ID: <20260709132109.3423488-3-clopez@suse.de>
+Subject: [PATCH 7.1.y 2/3] KVM: VMX: Grab vmcs12 on CR8 interception update iff vCPU is in guest mode
+Date: Thu,  9 Jul 2026 15:21:08 +0200
+Message-ID: <20260709132109.3423488-4-clopez@suse.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260709132109.3423488-2-clopez@suse.de>
 References: <20260709132109.3423488-2-clopez@suse.de>
@@ -83,190 +82,110 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Pre-Result: action=no action;
 	module=replies;
 	Message is reply to one we originated
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
 X-Spam-Flag: NO
 X-Spam-Score: -4.00
 X-Spam-Level: 
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.36 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [1.14 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	DMARC_POLICY_SOFTFAIL(0.10)[suse.de : SPF not aligned (relaxed), No valid DKIM,none];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-272927-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:kvm@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:gregkh@linuxfoundation.org,m:seanjc@google.com,m:kai.huang@intel.com,m:yosry@kernel.org,m:clopez@suse.de,m:pbonzini@redhat.com,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-272926-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:kvm@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:gregkh@linuxfoundation.org,m:seanjc@google.com,m:syzbot+ci493c6d734b63e050@syzkaller.appspotmail.com,m:pbonzini@redhat.com,m:clopez@suse.de,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	FORGED_SENDER(0.00)[clopez@suse.de,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[clopez@suse.de,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[6];
-	R_DKIM_NA(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	TAGGED_RCPT(0.00)[stable,ci493c6d734b63e050];
+	R_DKIM_NA(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,suse.de:from_mime,suse.de:email,suse.de:mid,intel.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,suse.de:from_mime,suse.de:email,suse.de:mid,appspotmail.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 45504731A36
+X-Rspamd-Queue-Id: 0C3E7731A23
 
 From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream Commit c7722e5e1daeeabbd9f969554d52bb7158120b27 ]
+[ Upstream commit 7ef78d71ca713d8c00f7c34ddcf276c808143f77 ]
 
-Move update_cr8_intercept() to lapic.c so that it's globally visible
-in anticipation of extracting most of the register-specific code out of
-x86.c and into a new compilation unit.  Opportunistically prefix the
-helper kvm_lapic_ to make its role/scope more obvious.
+When updating CR8 intercepts, get vmcs12 if and only if the vCPU is in
+guest mode so that a future change can have update CR8 intercepts during
+vCPU creation, without running afoul of get_vmcs12()'s lockdep assertion.
+
+  ------------[ cut here ]------------
+  debug_locks && !(lock_is_held(&(&vcpu->mutex)->dep_map) || !refcount_read(&vcpu->kvm->users_count))
+  WARNING: arch/x86/kvm/vmx/nested.h:61 at get_vmcs12 arch/x86/kvm/vmx/nested.h:60 [inline], CPU#0: syz.2.19/5879
+  WARNING: arch/x86/kvm/vmx/nested.h:61 at vmx_update_cr8_intercept+0x3de/0x4e0 arch/x86/kvm/vmx/vmx.c:6879, CPU#0: syz.2.19/5879
+  Modules linked in:
+  CPU: 0 UID: 0 PID: 5879 Comm: syz.2.19 Not tainted syzkaller #0 PREEMPT(full)
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+  RIP: 0010:get_vmcs12 arch/x86/kvm/vmx/nested.h:60 [inline]
+  RIP: 0010:vmx_update_cr8_intercept+0x3de/0x4e0 arch/x86/kvm/vmx/vmx.c:6879
+  Call Trace:
+   <TASK>
+   apic_update_ppr arch/x86/kvm/lapic.c:984 [inline]
+   kvm_lapic_reset+0x1c24/0x2980 arch/x86/kvm/lapic.c:3023
+   kvm_vcpu_reset+0x44c/0x1bf0 arch/x86/kvm/x86.c:12986
+   kvm_arch_vcpu_create+0x746/0x8b0 arch/x86/kvm/x86.c:12847
+   kvm_vm_ioctl_create_vcpu+0x428/0x930 virt/kvm/kvm_main.c:4201
+   kvm_vm_ioctl+0x893/0xd50 virt/kvm/kvm_main.c:5159
+   vfs_ioctl fs/ioctl.c:51 [inline]
+   __do_sys_ioctl fs/ioctl.c:597 [inline]
+   __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
+   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+   do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+   </TASK>
 
 No functional change intended.
 
-Reviewed-by: Kai Huang <kai.huang@intel.com>
-Reviewed-by: Yosry Ahmed <yosry@kernel.org>
-Link: https://patch.msgid.link/20260529222223.870923-14-seanjc@google.com
+Reported-by: syzbot ci <syzbot+ci493c6d734b63e050@syzkaller.appspotmail.com>
+Closes: https://lore.kernel.org/all/6a2adf3b.3b0a2d4e.8c8d1.0012.GAE@google.com
+Cc: stable@vger.kernel.org
 Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20260618174347.1981064-2-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Carlos López <clopez@suse.de>
 ---
- arch/x86/kvm/lapic.c | 26 ++++++++++++++++++++++++++
- arch/x86/kvm/lapic.h |  1 +
- arch/x86/kvm/x86.c   | 34 +++-------------------------------
- 3 files changed, 30 insertions(+), 31 deletions(-)
+ arch/x86/kvm/vmx/vmx.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
-index 4078e624ca66..f4574b5a16d8 100644
---- a/arch/x86/kvm/lapic.c
-+++ b/arch/x86/kvm/lapic.c
-@@ -2744,6 +2744,32 @@ u64 kvm_lapic_get_cr8(struct kvm_vcpu *vcpu)
- 	return (tpr & 0xf0) >> 4;
- }
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index b9103de01428..719dfa6b780f 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -6855,11 +6855,10 @@ int vmx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath)
  
-+void kvm_lapic_update_cr8_intercept(struct kvm_vcpu *vcpu)
-+{
-+	int max_irr, tpr;
-+
-+	if (!kvm_x86_ops.update_cr8_intercept)
-+		return;
-+
-+	if (!lapic_in_kernel(vcpu))
-+		return;
-+
-+	if (vcpu->arch.apic->apicv_active)
-+		return;
-+
-+	if (!vcpu->arch.apic->vapic_addr)
-+		max_irr = kvm_lapic_find_highest_irr(vcpu);
-+	else
-+		max_irr = -1;
-+
-+	if (max_irr != -1)
-+		max_irr >>= 4;
-+
-+	tpr = kvm_lapic_get_cr8(vcpu);
-+
-+	kvm_x86_call(update_cr8_intercept)(vcpu, tpr, max_irr);
-+}
-+
- static void __kvm_apic_set_base(struct kvm_vcpu *vcpu, u64 value)
+ void vmx_update_cr8_intercept(struct kvm_vcpu *vcpu, int tpr, int irr)
  {
- 	u64 old_value = vcpu->arch.apic_base;
-diff --git a/arch/x86/kvm/lapic.h b/arch/x86/kvm/lapic.h
-index 274885af4ebc..533581d06151 100644
---- a/arch/x86/kvm/lapic.h
-+++ b/arch/x86/kvm/lapic.h
-@@ -100,6 +100,7 @@ int kvm_apic_accept_events(struct kvm_vcpu *vcpu);
- void kvm_lapic_reset(struct kvm_vcpu *vcpu, bool init_event);
- u64 kvm_lapic_get_cr8(struct kvm_vcpu *vcpu);
- void kvm_lapic_set_tpr(struct kvm_vcpu *vcpu, unsigned long cr8);
-+void kvm_lapic_update_cr8_intercept(struct kvm_vcpu *vcpu);
- void kvm_lapic_set_eoi(struct kvm_vcpu *vcpu);
- void kvm_apic_set_version(struct kvm_vcpu *vcpu);
- void kvm_apic_after_set_mcg_cap(struct kvm_vcpu *vcpu);
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 0550359ed798..2c5bc03292e3 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -128,7 +128,6 @@ static u64 __read_mostly efer_reserved_bits = ~((u64)EFER_SCE);
- 				    KVM_X2APIC_ENABLE_SUPPRESS_EOI_BROADCAST	| \
- 				    KVM_X2APIC_DISABLE_SUPPRESS_EOI_BROADCAST)
+-	struct vmcs12 *vmcs12 = get_vmcs12(vcpu);
+ 	int tpr_threshold;
  
--static void update_cr8_intercept(struct kvm_vcpu *vcpu);
- static void process_nmi(struct kvm_vcpu *vcpu);
- static void __kvm_set_rflags(struct kvm_vcpu *vcpu, unsigned long rflags);
- static void store_regs(struct kvm_vcpu *vcpu);
-@@ -5340,7 +5339,7 @@ static int kvm_vcpu_ioctl_set_lapic(struct kvm_vcpu *vcpu,
- 	r = kvm_apic_set_state(vcpu, s);
- 	if (r)
- 		return r;
--	update_cr8_intercept(vcpu);
-+	kvm_lapic_update_cr8_intercept(vcpu);
+ 	if (is_guest_mode(vcpu) &&
+-		nested_cpu_has(vmcs12, CPU_BASED_TPR_SHADOW))
++	    nested_cpu_has(get_vmcs12(vcpu), CPU_BASED_TPR_SHADOW))
+ 		return;
  
- 	return 0;
- }
-@@ -10595,33 +10594,6 @@ static void post_kvm_run_save(struct kvm_vcpu *vcpu)
- 		kvm_run->flags |= KVM_RUN_X86_GUEST_MODE;
- }
- 
--static void update_cr8_intercept(struct kvm_vcpu *vcpu)
--{
--	int max_irr, tpr;
--
--	if (!kvm_x86_ops.update_cr8_intercept)
--		return;
--
--	if (!lapic_in_kernel(vcpu))
--		return;
--
--	if (vcpu->arch.apic->apicv_active)
--		return;
--
--	if (!vcpu->arch.apic->vapic_addr)
--		max_irr = kvm_lapic_find_highest_irr(vcpu);
--	else
--		max_irr = -1;
--
--	if (max_irr != -1)
--		max_irr >>= 4;
--
--	tpr = kvm_lapic_get_cr8(vcpu);
--
--	kvm_x86_call(update_cr8_intercept)(vcpu, tpr, max_irr);
--}
--
--
- int kvm_check_nested_events(struct kvm_vcpu *vcpu)
- {
- 	if (kvm_test_request(KVM_REQ_TRIPLE_FAULT, vcpu)) {
-@@ -11362,7 +11334,7 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
- 			kvm_x86_call(enable_irq_window)(vcpu);
- 
- 		if (kvm_lapic_enabled(vcpu)) {
--			update_cr8_intercept(vcpu);
-+			kvm_lapic_update_cr8_intercept(vcpu);
- 			kvm_lapic_sync_to_vapic(vcpu);
- 		}
- 	}
-@@ -12511,7 +12483,7 @@ static int __set_sregs_common(struct kvm_vcpu *vcpu, struct kvm_sregs *sregs,
- 	kvm_set_segment(vcpu, &sregs->tr, VCPU_SREG_TR);
- 	kvm_set_segment(vcpu, &sregs->ldt, VCPU_SREG_LDTR);
- 
--	update_cr8_intercept(vcpu);
-+	kvm_lapic_update_cr8_intercept(vcpu);
- 
- 	/* Older userspace won't unhalt the vcpu on reset. */
- 	if (kvm_vcpu_is_bsp(vcpu) && kvm_rip_read(vcpu) == 0xfff0 &&
+ 	guard(vmx_vmcs01)(vcpu);
 -- 
 2.51.0
 
