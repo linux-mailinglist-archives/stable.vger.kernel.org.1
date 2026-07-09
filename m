@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-272811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272813-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id hooNGn01T2qWcAIAu9opvQ
-	(envelope-from <stable+bounces-272811-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 07:45:33 +0200
+	id 5HajMt01T2q2cAIAu9opvQ
+	(envelope-from <stable+bounces-272813-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 07:47:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C63FC72CD84
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 07:45:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42B4972CDD1
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 07:47:09 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=zx2K+kjr;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=qIviK5VQ;
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272811-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272811-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272813-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272813-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AF860302D317
-	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 05:45:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 323D93037BBF
+	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 05:45:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E6313A9616;
-	Thu,  9 Jul 2026 05:45:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D26A34BA42;
+	Thu,  9 Jul 2026 05:45:06 +0000 (UTC)
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49DB443932C
-	for <Stable@vger.kernel.org>; Thu,  9 Jul 2026 05:44:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FFBE37DAA9
+	for <Stable@vger.kernel.org>; Thu,  9 Jul 2026 05:45:05 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783575901; cv=none; b=sutpAwrbcyJ8YrTXph+kxtCycvx4+XU7ghRlcqQRpG2EW1TRwiJlL6PzgFDkAfci7ytz0lcdkxYgRGmtpQ3VOUdDK6520lz+Dx6b+XwF+FWd4ttQ/VlLAIE8LUi/NpMzUyqU28tNXRbsG8t50gdU0rOK8VIG7oNmroGLpL6Ydqw=
+	t=1783575906; cv=none; b=Aj0G3avDjEif09c7Zdljo3sGgvn8hNX6epg+NxTNMN9h8GiRodnS6ia6rzLmI/MJyOILT/Gxha2idgZ18c+R5K6r6zitxYvIT3qg/ZMQ1EGHbQvgCw0WGHMn03PyNyRgZbaJALwYIur+DWHPmtGzZOb2nO7WTDcCHtl35TuQkc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783575901; c=relaxed/simple;
-	bh=dlw/ZFzYtGKHZ28FEFSJNRw28M+u6Rmc5OO106sTr2E=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=CTl3Ed4tiCWkqx00ps6L9o5bCd1mUW9Tohacj10I5LvfhC+HRsIJ+V7ha/ZR0Z813Gh8KzwHGiId389lHPo0dq7HAVI8iYtaowMe6cbIwoywvAUC77/tbYjVeFJUos3A23dxLPXsqATZpq0qeEVwgzNSmWMorBo7DaEgFJyCd/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zx2K+kjr; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CA0D1F000E9;
-	Thu,  9 Jul 2026 05:44:59 +0000 (UTC)
+	s=arc-20240116; t=1783575906; c=relaxed/simple;
+	bh=8sdImcqfeJKi0y5y4+EyWY+UlYC84gq0RWZdG4R7lL0=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=odxNJFtQ4cwBZ0rgwGa05eeTlh3gafszONU5MskGJwRPgojjgqv2jcqIe/nvj5C6RwFQkFNwNLosrAbuiDPxi1Q9EGVmSZQOmJxYMvL/+OBOZx1srl5Khl8KgqSS0hFEil2zOBON3Kv4CXti1VBYTeGJ5vgwHsGAiVxywTf4RL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qIviK5VQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A47421F000E9;
+	Thu,  9 Jul 2026 05:45:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783575899;
-	bh=S4mSWXkVYTNDZJGpzQmMtpOGkwbWC1hATW0bYNCzhNc=;
+	s=korg; t=1783575905;
+	bh=Zd5EJjLzKOJl4zr6Fgxe1L69FEZ4O11WIA0lxP9Ot8w=;
 	h=Subject:To:From:Date;
-	b=zx2K+kjrHA/3Vu3TyE1z/dOx9DxdSKQ86sVwxqs1chu+2l8q5BWcuIzujM/W+gNu1
-	 Wldr9y2ZmXydm/00VLHNuxQsCeJ4pM42w2dSw6GRXiCHySB1HcJaLtie3YgTT2uXPn
-	 FDxYmYaNfqMqWr7andwsV0ODeCorFGPvonXo+7ew=
-Subject: patch "iio: pressure: mpl115: fix runtime PM leak on read error" added to char-misc-linus
+	b=qIviK5VQaovlVSa/g0/NH39ZVID9VUScVlKI35IDejuIT1XecWgnev+aFI4tThH1t
+	 TpJRc1ryCqirjyxW6bksgkZOZrMj/W1a1OFXioZbCSY+j1EL+jcWI1ezurBgDr0uXJ
+	 jyGNZjHHQdllVSFbAr8UjF+c6TZwAvYlfMZ20qyk=
+Subject: patch "iio: accel: kxsd9: fix runtime PM imbalance on write_raw() error" added to char-misc-linus
 To: birenpandya@gmail.com,Stable@vger.kernel.org,jic23@kernel.org
 From: <gregkh@linuxfoundation.org>
 Date: Thu, 09 Jul 2026 07:44:47 +0200
-Message-ID: <2026070947-reward-sandpaper-9bac@gregkh>
+Message-ID: <2026070947-granite-omit-19ea@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,16 +62,16 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-272811-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-272813-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:birenpandya@gmail.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:birenpandya@gmail.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org,kernel.org];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -88,15 +88,15 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	TAGGED_RCPT(0.00)[stable];
 	FROM_NO_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:from_mime,linuxfoundation.org:dkim,gregkh:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:from_mime,linuxfoundation.org:dkim,gregkh:mid,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C63FC72CD84
+X-Rspamd-Queue-Id: 42B4972CDD1
 
 
 This is a note to let you know that I've just added the patch titled
 
-    iio: pressure: mpl115: fix runtime PM leak on read error
+    iio: accel: kxsd9: fix runtime PM imbalance on write_raw() error
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
@@ -111,54 +111,45 @@ next -rc kernel release.
 If you have any questions about this process, please let me know.
 
 
-From fbe67ff37a6fd855a6c097f84f3738bd13d0a898 Mon Sep 17 00:00:00 2001
+From 44a5fd874bb6873bdaec59f722c1d57832fbc9df Mon Sep 17 00:00:00 2001
 From: Biren Pandya <birenpandya@gmail.com>
-Date: Sun, 14 Jun 2026 12:45:48 +0530
-Subject: iio: pressure: mpl115: fix runtime PM leak on read error
+Date: Sun, 14 Jun 2026 12:45:46 +0530
+Subject: iio: accel: kxsd9: fix runtime PM imbalance on write_raw() error
 
-mpl115_read_raw() takes a runtime PM reference with pm_runtime_get_sync()
-before reading the processed pressure or raw temperature, but on the read
-error path it returns without calling pm_runtime_put_autosuspend(). Each
-failed read therefore leaks a runtime PM reference and prevents the device
-from autosuspending.
+kxsd9_write_raw() takes a runtime PM reference with pm_runtime_get_sync()
+but returns -EINVAL directly when a scale with a non-zero integer part is
+requested, skipping the matching pm_runtime_put_autosuspend(). This leaks
+a runtime PM usage-counter reference on every such write, after which the
+device can no longer autosuspend.
 
-Drop the reference before checking the return value so both the success
-and error paths are balanced.
+Set the error code and fall through to the existing put instead of
+returning early.
 
-Fixes: 0c3a333524a3 ("iio: pressure: mpl115: Implementing low power mode by shutdown gpio")
+Fixes: 9a9a369d6178 ("iio: accel: kxsd9: Deploy system and runtime PM")
 Signed-off-by: Biren Pandya <birenpandya@gmail.com>
 Assisted-by: Claude:claude-opus-4-8 coccinelle
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <jic23@kernel.org>
 ---
- drivers/iio/pressure/mpl115.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iio/accel/kxsd9.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/pressure/mpl115.c b/drivers/iio/pressure/mpl115.c
-index 830a5065c008..16e112b796ba 100644
---- a/drivers/iio/pressure/mpl115.c
-+++ b/drivers/iio/pressure/mpl115.c
-@@ -106,18 +106,18 @@ static int mpl115_read_raw(struct iio_dev *indio_dev,
- 	case IIO_CHAN_INFO_PROCESSED:
- 		pm_runtime_get_sync(data->dev);
- 		ret = mpl115_comp_pressure(data, val, val2);
-+		pm_runtime_put_autosuspend(data->dev);
- 		if (ret < 0)
- 			return ret;
--		pm_runtime_put_autosuspend(data->dev);
+diff --git a/drivers/iio/accel/kxsd9.c b/drivers/iio/accel/kxsd9.c
+index 4717d80fc24a..7ac885d94d7f 100644
+--- a/drivers/iio/accel/kxsd9.c
++++ b/drivers/iio/accel/kxsd9.c
+@@ -147,8 +147,9 @@ static int kxsd9_write_raw(struct iio_dev *indio_dev,
+ 	if (mask == IIO_CHAN_INFO_SCALE) {
+ 		/* Check no integer component */
+ 		if (val)
+-			return -EINVAL;
+-		ret = kxsd9_write_scale(indio_dev, val2);
++			ret = -EINVAL;
++		else
++			ret = kxsd9_write_scale(indio_dev, val2);
+ 	}
  
- 		return IIO_VAL_INT_PLUS_MICRO;
- 	case IIO_CHAN_INFO_RAW:
- 		pm_runtime_get_sync(data->dev);
- 		/* temperature -5.35 C / LSB, 472 LSB is 25 C */
- 		ret = mpl115_read_temp(data);
-+		pm_runtime_put_autosuspend(data->dev);
- 		if (ret < 0)
- 			return ret;
--		pm_runtime_put_autosuspend(data->dev);
- 		*val = ret >> 6;
- 
- 		return IIO_VAL_INT;
+ 	pm_runtime_put_autosuspend(st->dev);
 -- 
 2.55.0
 
