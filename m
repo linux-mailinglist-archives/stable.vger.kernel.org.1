@@ -1,214 +1,298 @@
-Return-Path: <stable+bounces-273046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273048-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id d+3QKg0LUGp0sQIAu9opvQ
-	(envelope-from <stable+bounces-273046-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 22:56:45 +0200
+	id dFymMVENUGp7sgIAu9opvQ
+	(envelope-from <stable+bounces-273048-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 23:06:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A3EC7359A4
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 22:56:45 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDBC5735BC0
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 23:06:24 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ECXp4Z38;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273046-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273046-lists+stable=lfdr.de@vger.kernel.org";
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=fail ("headers rsa verify failed") header.d=0sec.ai header.s=google header.b="W5so3R0/";
+	dmarc=none;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273048-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-273048-lists+stable=lfdr.de@vger.kernel.org";
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 84FB13040C9F
-	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 20:56:32 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A4AF03003723
+	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 21:06:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03D2D3E1233;
-	Thu,  9 Jul 2026 20:56:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF5523AB293;
+	Thu,  9 Jul 2026 21:05:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84E433E024E
-	for <stable@vger.kernel.org>; Thu,  9 Jul 2026 20:56:27 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783630589; cv=none; b=b3XdYPrzp8OmzMzQJedtJOjUC0lHbY61/ZHaibKOjDCgixgVHhjrI3Cdlze8kck6Uk3u0lULyfaipZWQWBNJ2tMVMBkban6eS4+5AyX6EtkSoAKYE7NfToOXEB7pZ4dK47Yesybs5qadYDMFGsiRHjuW8g5cxacvapHkJkWUTPg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783630589; c=relaxed/simple;
-	bh=3j4syLrTH3ss+LT1uFL+xIlIo+tKkPs2LMGlAzDqXgU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=scuxxaxNr5seJDXy94lnqDEVQIbgb7i+HJp7vE7HUhBN1Me0fpH1b341ryV3SNCgGU9901YmftaFXSA6v9EAouLtYkG6QgFl991/Wz8I/pECxSLR834sJN0z43Wtdtht+AgK3lvilbHMN2ZMlid5NSWV2wgXj22yobGGidjmZV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ECXp4Z38; arc=none smtp.client-ip=209.85.221.46
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-47d6c634f45so194173f8f.3
-        for <stable@vger.kernel.org>; Thu, 09 Jul 2026 13:56:27 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81EA836E48E
+	for <stable@vger.kernel.org>; Thu,  9 Jul 2026 21:05:56 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783631158; cv=pass; b=Qp/+JOOA+WqV4neH5mYTNb3W2eTDyWmIKGjorW6SPZj0KXl9qdTGyXD+xrB9ChkWFnAd4bnt9uWdLabeRghokGIZwWj4SMMRaNFdTXyYzNztGAbkd0ZVKyRpcHd8cdm3cJrd/3kNDiHOIxBsHjGaMnKJDLKiMtJfdEupfdmftmQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783631158; c=relaxed/simple;
+	bh=/C41jxtKenll5BIssYP09zDrWutfkprHkOjpO9rpivU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RnQQzyFmFqUSnL6irLn2SUQ4QyqJWcunTgxbo8G6FzJ+qIG3q8xJjxPCQQ7gGLkWMmfmxnkGFjowVDyZ7vtDtkYmw6R5AR1xuXFbcK0Vm92aBUCqMC8VWHN2IBQMiZ3AJC6Pi4/MZq6QGHSIP7kkZ/9kZx4TeukxjI97OAcpM/o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai; spf=pass smtp.mailfrom=0sec.ai; dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b=W5so3R0/; arc=pass smtp.client-ip=209.85.214.179
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2caed617615so1927605ad.3
+        for <stable@vger.kernel.org>; Thu, 09 Jul 2026 14:05:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783631156; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Jl0jX+EBv/sMAVd1U+7pZz0NgyGBE4JXy1mnFgs3eXCSrBpgZY+4grz2LHBLvdXrMP
+         ftG97/jQmIITNxmV8yJ+sbAJ/eO1J5cTPF90sHvsm21boaqXE0iQGeggejy2y8MpvgGR
+         cl9FyroTXy9NMe3Ptnchb4uOyqasiL7VG33yLY50ZzQT3ETAsCjh45f5C+5OnM08cLBb
+         khOP6e5/qJe9r9Fqszf46U6W4Elpv9a1NUKIDWpz1J+bY0YmQRnGs51gMz7KjAstkiZX
+         Wv1U/v/h/iLeBQSiQuPtXDqRePBnnRZPLa0Ifta7OIzInoI4vESX8ii8XOB7udyKb353
+         rSdQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=2Mbytc2f5T/npbdUHn7lZOFk/XSgQNmPUoq1DJdzknM=;
+        fh=Haao1AKiCrkSt8mTlNw8EqJUCRbnq1xDn+21gIWW4yk=;
+        b=T7C/GIrWKm86fAVhVq4KyehhxCRu/A4Kz+ZNNnIHJGmZye//O1JNejPrO6B0NR+BRq
+         1WnwembCmE5hCTRh87febo90iGsATdqiI3VjStL/DsyCSpkfpwIxEJYQ7SUAsDj6Bye0
+         //cG5T2cK9D8C+oiSyzPzt8T1bUssNd1gfJVH868NF4F/ovSkhYXtZwO/A+LsTtYDoqa
+         zHKlRIi1SdEHZSMEwzJEjDuWlbbf4uJcniBnw7aKcO5fcHOjfsxIVn6zeVE6vw2EC+D4
+         iHIW9C4jmERV/Lpvw5OWeMvah3hb0/ZklqdY2x0/2FALEnIBo7Fx8smvR/DGOhKD0itm
+         pkoQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783630586; x=1784235386; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=FyQ2SYryPffIKXgX/hPe6feFKCE/nZgCPpWlF8Eq6IM=;
-        b=ECXp4Z38357s8n3YE3StUPVwlIm8EOi8+0zbJD2MCl4ucPQpK0bdeUpYOYUSn1y5FW
-         xy5/XsNWdXVvElOKSoAMZJ9AZmV0meLuQfm9b2NJWbxelCaXs/8VcsiXalU/XbqjmbTJ
-         sgsthA0PS3lw8VkRnG8LHZ0toWj1VW/G1h+q/TEDeH2w2LfUgF8OIJQwQyMaaDajg27N
-         pMQXvjxF9E6OQKGm+GH1nIdHNyI9HEyWJ8X5//YoP1dGbruz4S1KDG0Qb3u9/KdBdyIP
-         Vh8cxJhEMRFl1GFLIhXcuN44SB8RuiKt8xwLEkeb6KXZ+O0ArDiiROMCs5sXh8oF7+7G
-         V1SQ==
+        d=0sec.ai; s=google; t=1783631156; x=1784235956; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=2Mbytc2f5T/npbdUHn7lZOFk/XSgQNmPUoq1DJdzknM=;
+        b=W5so3R0/pMOk2CFOMEC6wN34ehUOCZVp6hXEvhk0/N43+J18I+6ulEe9v4u4NXtlsJ
+         DM55k4ON8ZUUcXedmuEZmWfrB4Z66ro54xZVkPvGQsar9jPuOZpqmmlALCyFOUoUZkrS
+         kkB4CsdFyMqIYcdFZH9E9ZbXbdYSTN25e5ZgJckB4yqj5TPZW9NQqfnXrmvFbUB9oeJz
+         BKZ1gi+6hFqio/lXqNoqNEVaqk81vnAtm5KDxwgmORtQNscVSIgHaGS85k6A79bdT8wn
+         l36RxaP+i3Ljj9+ZOebxrXh9C1zJcT7xTAmS8fkKp9kLU2r+gVIqgFKnDslVnGuBYsyO
+         b+0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783630586; x=1784235386;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=FyQ2SYryPffIKXgX/hPe6feFKCE/nZgCPpWlF8Eq6IM=;
-        b=Wcyfd6M/gBlLxI7YiUxqwL7rRxEGT3YLvaoyTsZXaCiN/ZsmX/i1YT4x5NfP7j3ikl
-         8yMDLDRb7dnvHpvZ/WjD1mDLAZyI2t3lL6HNopUzPDIJLInZvUmqrkngWml/8Ts40/Qv
-         6VIgGp241wnmeuLMXxRtom9Ap/MfdEGWox7vCXPk1pPIEnnM4XqsWINjPWjHiJMArfwZ
-         W+hLy7Lv5fSphpoOVzodF3FH/YF7Wa3ZjIpOnrlPUHaglFbvOPcuyYcSZ1Wg1jhT6L96
-         23JPfVaU8sg6/y5ekK9JioF5JmiYE/H6KL4IxiCWV/xouS5e1rGg1pQHzLLiBt+8pqx9
-         MXHw==
-X-Forwarded-Encrypted: i=1; AHgh+RpRQL3/MwoSoJ4gca9Laombucf+rRrR4tQ8JUicrmOi7+nOMg+zW5Wus0pcNLxB139mPBW2FeE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwUD0FZGyJCGeE4TngoB4fWiVZzBUcbLG5opVqr+Py0Ik8m4q+P
-	/n/SUP2xFIQN0yvx7/Mer8R0uornzTD0P+eX44HlCj6bb1FHWKwhwB3a
-X-Gm-Gg: AfdE7clAaQ7Ys2ht3/j0N2lyIbbxbhd337oNSpbOPtKCM5A9l5prn1vlllgW4GcgDCU
-	S2tt3FYNTManVPA+BdXan+50ojyJdrhestzk/jW/eMqoG3YsJNPxmpmSi57J8GRRTVNzq9xweB+
-	82DujmvxZ5dMHOfJyhfEl5tUCOJCgqwN2Lj9h8dSaZ4iceIpGsWGSFOaYPWeYI7P5cVKKl1r/GP
-	G9ptIjHmygXTxSELyYlYp4jrcweDO8EPPNYmEADsZwX5mWsCjll073p8pOs0ETeMDJOj+5UsQHn
-	Xe/OaUjFw9IWWFVMO+1dieejYCz16D/DZM+zu45wnQbG2vxIdjeeQB6kpGtkaLIgrzFq2iFTrXk
-	5Smz2VXA3dv8gigrxC9J3OCh8fOs+YJwQYKQKPteFjeKVyb0qWD1bq9Tr4XWcL2eDVJ3XiwyfM2
-	zAZJTVcPEglRbgpMjSB85A9HGfWt/DBZHOzvsovFfe4KR21dvbvBM06RwQPKuHBTEvey0TNzi7K
-	JLcjfvzCgar3lDYdbYx++u/r+FsOIEIx9Uyf4wy
-X-Received: by 2002:a05:6000:24c5:b0:46e:8f0e:2f02 with SMTP id ffacd0b85a97d-47df075e410mr9661610f8f.33.1783630585822;
-        Thu, 09 Jul 2026 13:56:25 -0700 (PDT)
-Received: from DESKTOP-O40ECIK (108.228-30-62.static.virginmediabusiness.co.uk. [62.30.228.108])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47aa039b0cesm55210785f8f.22.2026.07.09.13.56.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jul 2026 13:56:25 -0700 (PDT)
-From: Melbin K Mathew <mlbnkm1@gmail.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-usb@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Peter Chen <peter.chen@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH v3] usb: gadget: printer: fix infinite loop in printer_read()
-Date: Thu,  9 Jul 2026 21:56:22 +0100
-Message-ID: <20260709205622.55700-1-mlbnkm1@gmail.com>
-X-Mailer: git-send-email 2.52.0.windows.1
-In-Reply-To: <20260703075429.302687-1-mlbnkm1@gmail.com>
-References: <20260703075429.302687-1-mlbnkm1@gmail.com>
+        d=1e100.net; s=20251104; t=1783631156; x=1784235956;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=2Mbytc2f5T/npbdUHn7lZOFk/XSgQNmPUoq1DJdzknM=;
+        b=GDuNw4nObRcg+rUcohtQMW5ucfBqPp49qtS7hNfQIZXrIQPIOP03CHNr9ZBqSbg4NX
+         OgHPwk1nDdB49iazPW1y3hjJ+8SE0dEPUq9tAT+rd9bq9cuAsVfKIojVEcerYidBPJr/
+         ISKx8g7hLjwAlAJtUTjcHmLSKyQ8OfUQW5jnssaWevsfGHWNQ8XFbCE7qaprNuPheR7U
+         BLx+3TH6RSnLiWmgpp4iOFHRQPwYj/6jyxewDdvz9YHm674sgePWxSBtUKcjfJMcT3Ue
+         +ELtQjkH740omPMH5el8wcBR1NLYbZb2XP7e9rD7+nLHvvqcrua9Uc90mwa4r9nbnN2X
+         IdbQ==
+X-Forwarded-Encrypted: i=1; AHgh+RperaA+3XmOjbDx7yxoPhOGZ405QOBG6RS/hcDvYumtZmUwnCS0NVg/GpvXslVaA2AThxkAryg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzjjeU82xIyrXhgxrIgnkCm5Ziasoxi8XDmu5OqLxZSX8Cnrz+m
+	ydGRw/Qa04DIshmiyT5nijmcu2nf/WyGk8AMAYHpPTodCzLIZf76icI6tzTusR9jR+PLOZyejwi
+	oPIpXq2ChPQZoz/+haihAd2KXWfYFFV7Ol/k/YQQAm8Y=
+X-Gm-Gg: AfdE7cm7u0XVGkWbZPxFZ53r6RpEW6MURiX96q0HmteAwb00hPdqBG52sUhi6QkzQhf
+	dC13ZUaOXv7LY+Kn66hB3RKsrXhdy3rSENDhJUHs4X9DsBtcX72u02QodUIp7ms2zdCIpQDs0eL
+	X4vbEQjD3qj17IbojFOQwDMRwsM6bOlfO6NnEHT0+Qf/74IzwOwW80pIcr2/601nHWrKRQUxJbs
+	xfALEzrEBp62tOhDaIk2nCQvtMcLR0Wb3peVLRDBcExvjh1hb9fxd6NsrJEWEIYWY9DozEyIFMm
+	pVC8N+Kul6hmrJpJJdxys1UAfaTf00ZpwHypDkZJ9CDzt9gjttkiNFuHjxy5D+zRc/ipKAM=
+X-Received: by 2002:a17:903:2a83:b0:2c7:ef3b:e17f with SMTP id
+ d9443c01a7336-2ccea489320mr98226595ad.36.1783631155734; Thu, 09 Jul 2026
+ 14:05:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260705115650.81724-1-doruk@0sec.ai> <f28eea1f-80da-4def-b11f-33a531a1b595@molgen.mpg.de>
+ <AS4PR04MB9692E00192B16910C3F3C011E7F12@AS4PR04MB9692.eurprd04.prod.outlook.com>
+In-Reply-To: <AS4PR04MB9692E00192B16910C3F3C011E7F12@AS4PR04MB9692.eurprd04.prod.outlook.com>
+From: "Doruk (0sec)" <doruk@0sec.ai>
+Date: Thu, 9 Jul 2026 23:05:43 +0200
+X-Gm-Features: AVVi8Cdkzqa-f-Il9d6LSREN7qAcZCWeuHYqDS6LpZWVeqr8yyG_4lzRg21oYkA
+Message-ID: <CAPdMp1pcsmnnH9vXKfhxSo5q0Dr+TiLL+0ZrN=Pz-eZtWQjutg@mail.gmail.com>
+Subject: Re: [PATCH] Bluetooth: btnxpuart: Fix out-of-bounds firmware read in nxp_recv_fw_req_v1()
+To: Neeraj Sanjay Kale <neeraj.sanjaykale@nxp.com>
+Cc: Paul Menzel <pmenzel@molgen.mpg.de>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
+	Marcel Holtmann <marcel@holtmann.org>, Amitkumar Karwar <amitkumar.karwar@nxp.com>, 
+	"linux-bluetooth@vger.kernel.org" <linux-bluetooth@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+X-Spamd-Result: default: False [1.04 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	R_DKIM_REJECT(1.00)[0sec.ai:s=google];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	DMARC_NA(0.00)[0sec.ai];
+	TAGGED_FROM(0.00)[bounces-273048-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-273046-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:linux-usb@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:peter.chen@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:neeraj.sanjaykale@nxp.com,m:pmenzel@molgen.mpg.de,m:luiz.dentz@gmail.com,m:marcel@holtmann.org,m:amitkumar.karwar@nxp.com,m:linux-bluetooth@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:luizdentz@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[doruk@0sec.ai,stable@vger.kernel.org];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[mlbnkm1@gmail.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mlbnkm1@gmail.com,stable@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[0sec.ai:-];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[doruk@0sec.ai,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	FREEMAIL_CC(0.00)[molgen.mpg.de,gmail.com,holtmann.org,nxp.com,vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,vger.kernel.org:from_smtp,mail.gmail.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1A3EC7359A4
+X-Rspamd-Queue-Id: BDBC5735BC0
 
-printer_read() uses the same variable for the requested copy size and
-the number of bytes actually copied to user space. copy_to_user()
-returns the number of bytes not copied, so when it fails to copy
-anything, the computed copied length becomes zero.
+Hi Neeraj,
 
-In that case len, buf, current_rx_bytes and current_rx_buf are left
-unchanged. If RX data is available and the user buffer remains
-unwritable, the read loop can repeat indefinitely.
+Thank you, and sorry if I'm missing sth!
 
-Track the copied length separately and return -EFAULT, or the number of
-bytes already copied, if an iteration makes no progress.
+That patchwork link points to Zhao
+Dongdong's "Fix use-after-free in probe error path" patch, which addresses
+the probe-path use-after-free rather than the firmware-download read.
 
-Fixes: b185f01a9ab7 ("usb: gadget: printer: factor out f_printer")
-Cc: stable@vger.kernel.org
-Reviewed-by: Peter Chen <peter.chen@kernel.org>
-Signed-off-by: Melbin K Mathew <mlbnkm1@gmail.com>
----
-Changes in v3:
-- Regenerate the patch to fix the corrupted v2 diff.
+On the firmware-read side: commit 25c286d75821 ("Bluetooth: btnxpuart: Fix
+out-of-bounds firmware read in nxp_recv_fw_req_v3()") bounded the v3 handler.
+My patch targets the v1 handler, nxp_recv_fw_req_v1(), where (at least in
+today's bluetooth-next) the header length is still read at
+nxp_get_data_len(nxpdev->fw->data + nxpdev->fw_dnld_v1_offset)
 
-Changes in v2:
-- Drop unrelated comment wording change.
-- Add Reviewed-by tag from Peter Chen.
+with no bound on fw_dnld_v1_offset, and the payload write still uses the
+non-overflow-safe "fw_dnld_v1_offset + len <= fw->size" form
+(fw_dnld_v1_offset is u32, so the sum can wrap).
 
- drivers/usb/gadget/function/f_printer.c | 23 ++++++++++++++++++-----
- 1 file changed, 18 insertions(+), 5 deletions(-)
+If it's still open, I'm happy to send a v2 that also logs the
+offset/size values,
+as Paul suggested. Either way, thanks very much for taking the time,
+and I'm happy to defer to whatever you have queued.
 
-diff --git a/drivers/usb/gadget/function/f_printer.c b/drivers/usb/gadget/function/f_printer.c
-index e4f7828ae75d..a22e2a6ea14b 100644
---- a/drivers/usb/gadget/function/f_printer.c
-+++ b/drivers/usb/gadget/function/f_printer.c
-@@ -432,7 +432,7 @@ printer_read(struct file *fd, char __user *buf, size_t len, loff_t *ptr)
- {
- 	struct printer_dev		*dev = fd->private_data;
- 	unsigned long			flags;
--	size_t				size;
-+	size_t				size, not_copied, copied;
- 	size_t				bytes_copied;
- 	struct usb_request		*req;
- 	/* This is a pointer to the current USB rx request. */
-@@ -525,10 +525,12 @@ printer_read(struct file *fd, char __user *buf, size_t len, loff_t *ptr)
- 		else
- 			size = len;
- 
--		size -= copy_to_user(buf, current_rx_buf, size);
--		bytes_copied += size;
--		len -= size;
--		buf += size;
-+		not_copied = copy_to_user(buf, current_rx_buf, size);
-+		copied = size - not_copied;
-+
-+		bytes_copied += copied;
-+		len -= copied;
-+		buf += copied;
- 
- 		spin_lock_irqsave(&dev->lock, flags);
- 
-@@ -543,6 +545,17 @@ printer_read(struct file *fd, char __user *buf, size_t len, loff_t *ptr)
- 		if (dev->interface < 0)
- 			goto out_disabled;
- 
-+		if (!copied) {
-+			dev->current_rx_req = current_rx_req;
-+			dev->current_rx_bytes = current_rx_bytes;
-+			dev->current_rx_buf = current_rx_buf;
-+			spin_unlock_irqrestore(&dev->lock, flags);
-+			mutex_unlock(&dev->lock_printer_io);
-+			return bytes_copied ? bytes_copied : -EFAULT;
-+		}
-+
-+		size = copied;
-+
- 		/* If we not returning all the data left in this RX request
- 		 * buffer then adjust the amount of data left in the buffer.
- 		 * Othewise if we are done with this RX request buffer then
--- 
-2.43.0
+Best,
+Doruk
 
+
+
+On Mon, 6 Jul 2026 at 06:20, Neeraj Sanjay Kale
+<neeraj.sanjaykale@nxp.com> wrote:
+>
+> Hi Doruk,
+>
+> Thank you for submitting this patch.
+>
+> However, a similar patch is already in review and approved by me:
+> https://patchwork.kernel.org/project/bluetooth/patch/tencent_F2E2AF1B6F510577B10C6897ED768BBBAF07@qq.com/
+> It's awaiting Luiz's review and/or merge.
+>
+>
+> Hi Luiz,
+>
+> Can you please review the patch mentioned in the URL above, from Zhao Dongdong? I have answered your review comment.
+> Thank you for your time and review.
+>
+> Thanks,
+> Neeraj
+>
+>
+> > Dear Doruk,
+> >
+> >
+> > Thank you for the patch.
+> >
+> > Am 05.07.26 um 13:56 schrieb Doruk Tan Ozturk:
+> > > Commit 25c286d75821 ("Bluetooth: btnxpuart: Fix out-of-bounds firmware
+> > > read in nxp_recv_fw_req_v3()") bounded the v3 firmware download offset
+> > > but left an unbounded read in the v1 handler.
+> > >
+> > > nxp_recv_fw_req_v1() advances a device-driven download offset
+> > > (fw_dnld_v1_offset) by fw_v1_sent_bytes on every request, and that
+> > > bookkeeping runs even when the payload write is skipped, so the offset
+> > > can walk past nxpdev->fw->size. When the controller then requests a
+> > > header (len == HDR_LEN), the driver reads the 16-byte bootloader
+> > > header at
+> > >
+> > >    nxp_get_data_len(nxpdev->fw->data + nxpdev->fw_dnld_v1_offset)
+> > >
+> > > with no bound on the offset, reading past the end of the firmware image.
+> > > A malicious or malfunctioning NXP UART controller can drive this to
+> > > read out-of-bounds kernel memory during firmware download.
+> > >
+> > > Bound the offset before the header read, and convert the payload write
+> > > guard to the overflow-safe form used by the v3 path (fw_dnld_v1_offset
+> > > is u32, so fw_dnld_v1_offset + len can wrap).
+> > >
+> > > This was found by 0sec automated security-research tooling
+> > >
+> > (https://0sec.a/
+> > i%2F&data=05%7C02%7Cneeraj.sanjaykale%40nxp.com%7Cc82fdb86e33f476
+> > 570ed08dedad83110%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%7C0%7
+> > C639188819230990815%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiO
+> > nRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyf
+> > Q%3D%3D%7C0%7C%7C%7C&sdata=z6YC4OGfeSW45U2PbFFlFz13DG3%2FSr
+> > qYeFKMSNTiMBI%3D&reserved=0).
+> > >
+> > > Fixes: 689ca16e5232 ("Bluetooth: NXP: Add protocol support for NXP
+> > > Bluetooth chipsets")
+> > > Cc: stable@vger.kernel.org
+> > > Assisted-by: 0sec:claude-opus-4-8
+> > > Signed-off-by: Doruk Tan Ozturk <doruk@0sec.ai>
+> > > ---
+> > >   drivers/bluetooth/btnxpuart.c | 13 ++++++++++---
+> > >   1 file changed, 10 insertions(+), 3 deletions(-)
+> > >
+> > > diff --git a/drivers/bluetooth/btnxpuart.c
+> > > b/drivers/bluetooth/btnxpuart.c index 6a1cffe08d5f..88d9ebf25a8f
+> > > 100644
+> > > --- a/drivers/bluetooth/btnxpuart.c
+> > > +++ b/drivers/bluetooth/btnxpuart.c
+> > > @@ -1041,11 +1041,17 @@ static int nxp_recv_fw_req_v1(struct hci_dev
+> > *hdev, struct sk_buff *skb)
+> > >                * and we need to re-send the previous header again.
+> > >                */
+> > >               if (len == nxpdev->fw_v1_expected_len) {
+> > > -                     if (len == HDR_LEN)
+> > > +                     if (len == HDR_LEN) {
+> > > +                             if (nxpdev->fw_dnld_v1_offset >= nxpdev->fw->size ||
+> > > +                                 nxpdev->fw->size - nxpdev->fw_dnld_v1_offset <
+> > HDR_LEN) {
+> > > +                                     bt_dev_err(hdev, "FW request
+> > > + offset out of bounds");
+> >
+> > Would it make sense to log all the values, as I'd think, such an issue might be
+> > hard to reproduce and gathering the values miht be difficult?
+> >
+> > > +                                     goto free_skb;
+> > > +                             }
+> > >                               nxpdev->fw_v1_expected_len = nxp_get_data_len(nxpdev-
+> > >fw->data +
+> > >                                                                       nxpdev->fw_dnld_v1_offset);
+> > > -                     else
+> > > +                     } else {
+> > >                               nxpdev->fw_v1_expected_len = HDR_LEN;
+> > > +                     }
+> > >               } else if (len == HDR_LEN) {
+> > >                       /* FW download out of sync. Send previous chunk again */
+> > >                       nxpdev->fw_dnld_v1_offset -=
+> > > nxpdev->fw_v1_sent_bytes; @@ -1053,7 +1059,8 @@ static int
+> > nxp_recv_fw_req_v1(struct hci_dev *hdev, struct sk_buff *skb)
+> > >               }
+> > >       }
+> > >
+> > > -     if (nxpdev->fw_dnld_v1_offset + len <= nxpdev->fw->size)
+> > > +     if (nxpdev->fw_dnld_v1_offset < nxpdev->fw->size &&
+> > > +         len <= nxpdev->fw->size - nxpdev->fw_dnld_v1_offset)
+> > >               serdev_device_write_buf(nxpdev->serdev, nxpdev->fw->data +
+> > >                                       nxpdev->fw_dnld_v1_offset, len);
+> > >       nxpdev->fw_v1_sent_bytes = len;
+> >
+> >
+> > Kind regards,
+> >
+> > Paul
 
