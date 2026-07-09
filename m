@@ -1,163 +1,145 @@
-Return-Path: <stable+bounces-272886-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272887-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id JB4rONCJT2qMjAIAu9opvQ
-	(envelope-from <stable+bounces-272886-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 13:45:20 +0200
+	id 57E+OxqLT2r4jAIAu9opvQ
+	(envelope-from <stable+bounces-272887-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 13:50:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id D93107308BD
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 13:45:19 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EF997309A1
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 13:50:50 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=yandex.ru header.s=mail header.b=JJnxkTph;
-	dmarc=pass (policy=none) header.from=yandex.ru;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272886-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-272886-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=none;
+	dmarc=none;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272887-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272887-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0346D30015B6
-	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 11:45:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 505CA300CE60
+	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 11:46:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67DE6409631;
-	Thu,  9 Jul 2026 11:45:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C923840E8E1;
+	Thu,  9 Jul 2026 11:46:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from forward101a.mail.yandex.net (forward101a.mail.yandex.net [178.154.239.84])
+Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A143D3B5306;
-	Thu,  9 Jul 2026 11:45:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F5AF18C008;
+	Thu,  9 Jul 2026 11:46:36 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783597514; cv=none; b=nHhX/QExKfRurancBgpcgz5TrOlREywLOS3Mrjsq8zpYbfR9LQTZRkNYiao3S2pLY3htnINBVvfvI9lY5+5YYmAn0l+0PbKWzpegjECEBzFm6afVXjB5ZxWtYjdHW2xER7X24OVMICFj5C4TL/qohPds8aHSGhenAz7UUxX0zjA=
+	t=1783597599; cv=none; b=g21eSbd40AJwLihlDYuriau2LkbngWvWnrSw8RVQg8q3XZQQtUUXkyKmBMTQaaOX7bkMD2Dys9gfwr2DpWq4Ej485SxlMowuJUGyC39ZFXf8Xaw1DGzghI72IjkvwdLgdBl2+IRCIt1ZVNS4fyn/tiBjQnXg+GF1sGOL2zpciUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783597514; c=relaxed/simple;
-	bh=0KDZiaZVZAXpVc7F5zji7D3nRwQNJdLeKoH5O3io19I=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZiZt/EyVLgsBE2+iwQgSwxZWmQ5C6GbVTBFMPXUCuyAEhznQW446jFBCcAb78KiOXjSHhxbHxZCB3RsywWGd6DzLCCbd/mTCeSAhX/MLRF9qbV34qt1VcKWjM3UnHRo95IA9c8sKprmfgZfGOUvvx5ZhsEkKRo6Tm8JjrPqUvKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=JJnxkTph; arc=none smtp.client-ip=178.154.239.84
-Received: from mail-nwsmtp-smtp-production-main-95.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-95.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:8912:0:640:42ab:0])
-	by forward101a.mail.yandex.net (postfix) with ESMTPS id 636D7813A0;
-	Thu, 09 Jul 2026 14:45:01 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-95.iva.yp-c.yandex.net (smtp) with ESMTPSA id XiINBd2oAW20-NotBx8gv;
-	Thu, 09 Jul 2026 14:45:00 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-	t=1783597500; bh=Sn4PDwvqECVmn5QwC9xACIgixKNG02XVFvorw97wcag=;
-	h=Message-ID:Date:Cc:Subject:To:From;
-	b=JJnxkTphY1wk1F4GdglB+oVxK6nm6kat67MZhXzU92v1HXvTMkB89MzWaByUEMk+b
-	 u5aJTsnbq1+5/10mSOWSLrCzHl1x2OVQUEsXzLJbOy2xbccr43Dx/mB3Vtm8skyJrg
-	 0phQWfe2l5xRr6kFZvbxXEQyK2yFtdlr+BT3yBIg=
-From: Evgenii Burenchev <evg28bur@yandex.ru>
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Evgenii Burenchev <evg28bur@yandex.ru>,
-	alexander.deucher@amd.com,
-	christian.koenig@amd.com,
-	Xinhui.Pan@amd.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	sashal@kernel.org,
-	michael.chen@amd.com,
-	Jack.Xiao@amd.com,
-	Hawking.Zhang@amd.com,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org
-Subject: [PATCH 6.12] drm/amdgpu: Use scnprintf() in amdgpu_mes_add_ring()
-Date: Thu,  9 Jul 2026 14:44:26 +0300
-Message-ID: <20260709114427.41013-1-evg28bur@yandex.ru>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1783597599; c=relaxed/simple;
+	bh=twmEzHea4QAYe+6lVhj7Zqe+nc0w7Ixcq9xJL1Mm1WI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bE4l8EVOhtds8cZLkMfbU3g3dOAwYK8P72wVLhR0/XH+OEv1nEYl47Zo+mNtLU8RxWP2l3o6I++0WZvH0tFLDqD+PEnyFT+JMkZAjy0yy0tQfwEclD0//EJJ9JQQf0Vlj8J2KP7UrRwBOI8/1R3eXNU6oVacLOdJwLKbpz1Eszo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=strlen.de; arc=none smtp.client-ip=91.216.245.30
+Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
+	id 0F4F260293; Thu, 09 Jul 2026 13:46:27 +0200 (CEST)
+Date: Thu, 9 Jul 2026 13:46:26 +0200
+From: Florian Westphal <fw@strlen.de>
+To: Julian Anastasov <ja@ssi.bg>
+Cc: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
+	Simon Horman <horms@verge.net.au>, David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>, Phil Sutter <phil@nwl.cc>,
+	Alexander Frolkin <avf@eldamar.org.uk>, netdev@vger.kernel.org,
+	lvs-devel@vger.kernel.org,
+	linux-kernel <linux-kernel@vger.kernel.org>,
+	netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+	stable@vger.kernel.org,
+	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
+	Ao Wang <wangao@seu.edu.cn>, Xuewei Feng <fengxw06@126.com>,
+	Qi Li <qli01@tsinghua.edu.cn>, Ke Xu <xuke@tsinghua.edu.cn>
+Subject: Re: [PATCH nf] ipvs: make destination flags atomic
+Message-ID: <ak-KErd1a0NHGN-D@strlen.de>
+References: <20260707085706.96322-1-zhaoyz24@mails.tsinghua.edu.cn>
+ <41c3d792-af7d-5582-5057-ac3df5f7bfd6@ssi.bg>
+ <91509A0C-9E4A-4F0E-A45C-ABD29396067E@mails.tsinghua.edu.cn>
+ <afcdb34c-ec10-de8e-083c-624bcedca90e@ssi.bg>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <afcdb34c-ec10-de8e-083c-624bcedca90e@ssi.bg>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[yandex.ru,none];
-	R_DKIM_ALLOW(-0.20)[yandex.ru:s=mail];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	DMARC_NA(0.00)[strlen.de];
+	FORGED_RECIPIENTS(0.00)[m:ja@ssi.bg,m:zhaoyz24@mails.tsinghua.edu.cn,m:horms@verge.net.au,m:dsahern@kernel.org,m:idosch@nvidia.com,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:pablo@netfilter.org,m:phil@nwl.cc,m:avf@eldamar.org.uk,m:netdev@vger.kernel.org,m:lvs-devel@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:netfilter-devel@vger.kernel.org,m:coreteam@netfilter.org,m:stable@vger.kernel.org,m:yangyx22@mails.tsinghua.edu.cn,m:wangao@seu.edu.cn,m:fengxw06@126.com,m:qli01@tsinghua.edu.cn,m:xuke@tsinghua.edu.cn,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[yandex.ru,amd.com,gmail.com,ffwll.ch,kernel.org,lists.freedesktop.org,vger.kernel.org,linuxtesting.org];
-	FREEMAIL_FROM(0.00)[yandex.ru];
-	TAGGED_FROM(0.00)[bounces-272886-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:evg28bur@yandex.ru,m:alexander.deucher@amd.com,m:christian.koenig@amd.com,m:Xinhui.Pan@amd.com,m:airlied@gmail.com,m:simona@ffwll.ch,m:sashal@kernel.org,m:michael.chen@amd.com,m:Jack.Xiao@amd.com,m:Hawking.Zhang@amd.com,m:amd-gfx@lists.freedesktop.org,m:dri-devel@lists.freedesktop.org,m:linux-kernel@vger.kernel.org,m:lvc-project@linuxtesting.org,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[evg28bur@yandex.ru,stable@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[evg28bur@yandex.ru,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[yandex.ru:+];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[fw@strlen.de,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[23];
+	TAGGED_FROM(0.00)[bounces-272887-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[mails.tsinghua.edu.cn,verge.net.au,kernel.org,nvidia.com,davemloft.net,google.com,redhat.com,netfilter.org,nwl.cc,eldamar.org.uk,vger.kernel.org,seu.edu.cn,126.com,tsinghua.edu.cn];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[fw@strlen.de,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	R_DKIM_NA(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp,linuxtesting.org:url]
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,ssi.bg:email,vger.kernel.org:from_smtp,strlen.de:mid,strlen.de:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D93107308BD
+X-Rspamd-Queue-Id: 7EF997309A1
 
-Replace sprintf() with scnprintf() to prevent a potential buffer overflow
-when writing to ring->name. The buffer size is 16 bytes. For compute rings,
-the string format "compute_%d.%d.%d" can exceed this limit when the total
-number of digits in the three numbers is greater than 5 (e.g., pasid=1234,
-gang_id=0, queue_id=0). This can lead to memory corruption.
+Julian Anastasov <ja@ssi.bg> wrote:
+> 	After looking again at the code, I think we can
+> do it in different way:
+> 
+> - IP_VS_DEST_F_AVAILABLE and IP_VS_DEST_F_OVERLOAD are defined
+> in include/uapi/linux/ip_vs.h but we never export them to user
+> space. So, we are free to change them. We can move them to 
+> include/net/ip_vs.h, see below...
+> 
+> - IP_VS_DEST_F_AVAILABLE is changed only under service_mutex,
+> so we can keep its usage
+> 
+> - IP_VS_DEST_F_OVERLOAD needs different access methods.
+> We can add 'unsigned long flags2;', may be after l_threshold.
+> And to switch to such usage (F_OVERLOAD -> FL_OVERLOAD):
+> 
+> 	- test_bit(IP_VS_DEST_FL_OVERLOAD, &dest->flags2)
+> 	- set_bit(IP_VS_DEST_FL_OVERLOAD, &dest->flags2)
+> 
+> 		Sometimes if (test_bit()) clear_bit() can avoid
+> 		full memory barrier in ip_vs_dest_update_overload()
+> 
+> 	- clear_bit(IP_VS_DEST_FL_OVERLOAD, &dest->flags2)
+> 		test_bit() guard can help here too
+> 
+> 	As there are other races involved, something like
+> this can be a starting point for such change. It tries harder
+> to update the overload flag on dest edit/add but it does not
+> include the proposed bitops:
+>
+> diff --git a/include/net/ip_vs.h b/include/net/ip_vs.h
+> index 49297fec448a..b34631270e24 100644
 
-Using scnprintf() guarantees that the buffer is not overflowed, even if the
-string is truncated. This is a minimal fix for the issue; the BUG() for
-unknown queue types is left unchanged to avoid additional risk.
+Who is supposed to do what?
 
-This code is only present in LTS kernels v6.12, v6.6, and v6.1, as it was
-completely refactored in upstream. Therefore, this patch is specifically
-intended for stable trees.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: d0c423b64765 ("drm/amdgpu/mes: use ring for kernel queue submission")
-Signed-off-by: Evgenii Burenchev <evg28bur@yandex.ru>
----
- drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c
-index 41b88e0ea98b..746cb0c71fb3 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c
-@@ -1236,13 +1236,14 @@ int amdgpu_mes_add_ring(struct amdgpu_device *adev, int gang_id,
- 	ring->doorbell_index = qprops.doorbell_off;
- 
- 	if (queue_type == AMDGPU_RING_TYPE_GFX)
--		sprintf(ring->name, "gfx_%d.%d.%d", pasid, gang_id, queue_id);
-+		scnprintf(ring->name, sizeof(ring->name), "gfx_%d.%d.%d",
-+			pasid, gang_id, queue_id);
- 	else if (queue_type == AMDGPU_RING_TYPE_COMPUTE)
--		sprintf(ring->name, "compute_%d.%d.%d", pasid, gang_id,
--			queue_id);
-+		scnprintf(ring->name, sizeof(ring->name), "compute_%d.%d.%d",
-+			pasid, gang_id, queue_id);
- 	else if (queue_type == AMDGPU_RING_TYPE_SDMA)
--		sprintf(ring->name, "sdma_%d.%d.%d", pasid, gang_id,
--			queue_id);
-+		scnprintf(ring->name, sizeof(ring->name), "sdma_%d.%d.%d",
-+			pasid, gang_id, queue_id);
- 	else
- 		BUG();
- 
--- 
-2.43.0
-
+I.e., are you going to submit this officially as replacement
+for the v2 of this patch or do you expect the sumbitters of
+this patch to rework their v2 along these lines?
 
