@@ -1,170 +1,232 @@
-Return-Path: <stable+bounces-272853-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272855-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id T5vdJ+drT2rXgQIAu9opvQ
-	(envelope-from <stable+bounces-272853-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 11:37:43 +0200
+	id JECWIrVrT2q9gQIAu9opvQ
+	(envelope-from <stable+bounces-272855-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 11:36:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10AE672F079
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 11:37:43 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07EBF72F056
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 11:36:53 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=c79Fuzju;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272853-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272853-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FmwIRd3P;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272855-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272855-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 16A9A30179D0
-	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 09:24:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7B97F30498F2
+	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 09:36:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28F1D3FFFA5;
-	Thu,  9 Jul 2026 09:24:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFE123EF67D;
+	Thu,  9 Jul 2026 09:36:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9269F3AD52D
-	for <stable@vger.kernel.org>; Thu,  9 Jul 2026 09:24:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82B453ED5C3
+	for <stable@vger.kernel.org>; Thu,  9 Jul 2026 09:36:15 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783589087; cv=none; b=psnPsW6JMudj3HEKF7NmTrKnzvRgV+Wj7eqdjvUsxHGijdB142VqPvIPL6J+sEwt8hVCHQWcpkgTTA3FjQl09tLYMu3FOYxoEi2B3ZQroBqo8PaG0km660Us+SARvibCaGKH4VnM+ioaa1uRAE87FI6O7KZaqw+wRn3mr8gSOQE=
+	t=1783589775; cv=none; b=P8UV54wo4BwHEMMWJb4qUE7eLr3Nb8GJgk/zKnbKuhfhgknw5SnhA+TZFo2S9ixw8uPOz9nAd+VQ8RXCrWFrUwXfoD/7XzBYg8L+ceJXwbLLFqvbJXDEYTBYUUKLA9RuLYbj/rDHIMcDH3n/8/7yL1/k6fKyJ5WtvA1VX/x36uI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783589087; c=relaxed/simple;
-	bh=CyRGUnL/glmmjF33KlopSetVt16IiT5LwvVSGVv4SJI=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=sGdLXKNhjD4Y8Kmrp9Yb16SOjIvhHktSm65rZIkiv7uyUEWNkE6fcjQDIAsKC4ZwjfWxV8VeRl3fmG02YOcdkFIwoD4xrSvJcn4PR83NvPw5+1oyn58M1fv8f3cvGPv01eNhNTJ2aRoCeeRiY3LpB4SE/52WZhABzs0q26qSQ0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c79Fuzju; arc=none smtp.client-ip=209.85.128.48
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-493c1950518so4307385e9.1
-        for <stable@vger.kernel.org>; Thu, 09 Jul 2026 02:24:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783589085; x=1784193885; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :references:cc:to:subject:from:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=MKZMe0/wt8dPAc36BMO9qSsLEtJCrLevE84kprfUPEc=;
-        b=c79FuzjudHErQxgIlmlbXJKzql0xP1ELb82YTaJTp8QXU4WVUOys3UDy4VNNio2DQq
-         AXr8oGxtzpSJIsS89cjZ4isjLdH2RtgyvTZ29S+HbGcFAiP+Oe38FKe6bKr37lfqyYy+
-         cgxblxlImGETQ/rOudJrmCRATSdBJRV0NMwP1AGOctHgodPL7DquXfP0vBfqZqbZXwX7
-         5JTT7NfONOT0C4WLlsXocqEx+BLb5OAh107+rFchpPBEVMmCi5mxvpY3xC1QBnuXO0mA
-         BQ1v91t9nsiqQJ8ZoGZA/hlK2xY2VL7+BM7vM2fMKrzoe33g84n0rPSD3OIcgen2DiB8
-         Wnbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783589085; x=1784193885;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :references:cc:to:subject:from:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=MKZMe0/wt8dPAc36BMO9qSsLEtJCrLevE84kprfUPEc=;
-        b=VWCzmyPC2jxhYrGv8rudZ7mjSSJJFqkD/TN71D+fCeZjdeqSvGCcunRW7lVnaE6fP0
-         DqJmYfVeiIZIM5c/d+lMwKDC9bwumKF1f7dExEuF7ElqA9rMqUGjiuuic072Wxbt3UGl
-         PEAsvknD+6/EdNoBrQWZjSAKLrYOABL2ru5KrMHHnwfXxne8ZzDQOYdVOOkVsDA6uAGC
-         tGphp+d5yr6ya4z7QeoD895Jcc9pAPZLXEPkPjqqZ9exhyhSDX+BR16gsEsykJmg1MhI
-         +NLObXm5+CevMnQikyHr/tu5x/+j0LvgkKyth9keON1j/5Hd213q9NuoqkFejPHiwtAH
-         XN3g==
-X-Forwarded-Encrypted: i=1; AHgh+Ro/CjQpCWZRIvrteby8OifPCUzC30jFNhGEuSyXGEB/N8gRedKgMS04HMe01ex8WXuHUTc4oMw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzW+yHNwewM+CJRUQ9SDFhMFaADfyaioNAzHtaeDmTXwdFfwy3U
-	0gfUgpOonzHEaaFT9fppz7CbU2BkjdY+q22RoHjDFVfH0La92ugiOVNG
-X-Gm-Gg: AfdE7clad+KaORwc+4hCxZI5Tl+fmLfvqlaav+/XOiYbOr+EQBJnjlgix56JOjy8x1N
-	0jtI0CewXGkxMX80cYkqKWcxMnIEQIpVrXNwIQLsaJ0pnupDM/XrtE4YwEROY3zJiQy1kcK3BOr
-	NVdjjiFhoN3qxnocwpQCJVy82WfN4DZy3l2cFUlHjYRQeZFhv8aH3ZUx8MN1vi/PVS0FKibkZ/x
-	aoSXpxkx8C46wUt5zWq4xRgwwAk2SytDmpEMnU0plwB/KrDWj8XicNug/mvPlIP/HTI7hqdiSyc
-	SiXPNX5aQiVU39cWkBx70H2cdkQ8TORTxwh2Sq7zxIfUonDvzAY7wB5YFrwHoIUS7jOzw1HNlOg
-	HSGAMlPOZGx/YNf0xqKMhm/mlMlGDqtuPLmJDEtNTWCh3x3uujbMYA3atSHCOJD7rD3rRQPgzac
-	6bfC1msBhaLtn7CEIkNvBuA+uegqyLFqY1q4FcepJt6mR/STVjq+dAfyHqYk0now==
-X-Received: by 2002:a05:600c:8885:b0:492:7025:13fd with SMTP id 5b1f17b1804b1-493ec32a1a9mr14033375e9.0.1783589084775;
-        Thu, 09 Jul 2026 02:24:44 -0700 (PDT)
-Received: from [192.168.0.105] (88-187-52-200.subs.proxad.net. [88.187.52.200])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493e580cc6asm101789795e9.1.2026.07.09.02.24.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 09 Jul 2026 02:24:43 -0700 (PDT)
-Message-ID: <5110c357-45db-4a5b-9498-5f5607d0b37c@gmail.com>
-Date: Thu, 9 Jul 2026 11:24:34 +0200
+	s=arc-20240116; t=1783589775; c=relaxed/simple;
+	bh=wDy+3fAYCxEsDxFN71Hv76FVce7eoNDaDJCEtljHw2E=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=uhs7TiH5z0Ptdb9xmAyzTVOIQol2O2kPeDy054ayK86f54zntPK6ikCOJ4fPDEBaRcHv4vvBMHpBEK6+V9Vj7Yp0PNlYG7srqbT4P/f/TWaraB5fPHZ1lapwp/f42k9df5FIPzzgLldH4GNeWGXKBgw46f9V0hpzpjb96YuzEhA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FmwIRd3P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 03C9AC2BCC7;
+	Thu,  9 Jul 2026 09:36:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1783589775;
+	bh=wDy+3fAYCxEsDxFN71Hv76FVce7eoNDaDJCEtljHw2E=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=FmwIRd3P429mgtiml7IVks/hGap/7lUE+1x5fv1kF9E3tDbs8WAtMdzqjkBiNwC9X
+	 9115rRksT8p/7PK4uZusN7lXjRKFYTYRWN+LqCezZxNvlAEVdlqgOE/lZtqOBPPZJf
+	 8n3mm2CWn8zHDzwm/jpRwqAR3XC/RKglmV5C6aWPdNdXG6S+41/uW1hmyNt9SQ7Xis
+	 YvufSonJBgvhIQas6s3rTZZiFkqCYVx2PYoGVr3h2Dq4vrJ7mWSIKUWdnXwGiSWSXD
+	 VeREcGNibapszxYY6gLeI74hjdqY4BhlF4hHp/Ko669LB2FB9LU59/apY6MMlhifvw
+	 WLyo4lffR+DXw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D61A1C43458;
+	Thu,  9 Jul 2026 09:36:14 +0000 (UTC)
+From: Jiucheng Xu via B4 Relay <devnull+jiucheng.xu.amlogic.com@kernel.org>
+Date: Thu, 09 Jul 2026 17:35:40 +0800
+Subject: [PATCH] f2fs: fix UAF issue in f2fs_merge_page_bio()
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Florian Fainelli <f.fainelli@gmail.com>
-Subject: Re: [PATCH 5.15 00/95] 5.15.211-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
- hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
- sr@sladewatkins.com
-References: <20260702155109.196223802@linuxfoundation.org>
-Content-Language: en-US
-In-Reply-To: <20260702155109.196223802@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260709-origin-5-15-y-v1-1-5ac64636d2e8@amlogic.com>
+X-B4-Tracking: v=1; b=H4sIAGtrT2oC/x3MQQqAIBBA0avIrBtQQcOuEi2sJpuNhkIU4t2Tl
+ m/xf4VCmanAJCpkurlwih1qELCdPgZC3rtBS23lKB2mzIEjGlQGXySy3mqrV+UIenNlOvj5f/P
+ S2gcg4q7wXwAAAA==
+X-Change-ID: 20260709-origin-5-15-y-ee6a6262b19e
+To: stable@vger.kernel.org
+Cc: jianxin.pan@amlogic.com, tuan.zhang@amlogic.com, 
+ JY <JY.Ho@mediatek.com>, Chao Yu <chao@kernel.org>, 
+ Jaegeuk Kim <jaegeuk@kernel.org>, Jiucheng Xu <jiucheng.xu@amlogic.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783589773; l=3685;
+ i=jiucheng.xu@amlogic.com; s=20250821; h=from:subject:message-id;
+ bh=Y80knOMzKeNW/PZLEEe8ghYSmyQKS+tfEks+gc7lvw8=;
+ b=c7O5W41FDmUw/QsZgV+syBCuS9tdz4/xL5rMVkbfm+heESkcgywsZPNhGp58lOj7lCv5gzCMR
+ /hn8hXpHR+DBia54Uj3zgDViEhtdGkFSpSW8vjsY/t3edrF+RBx2HER
+X-Developer-Key: i=jiucheng.xu@amlogic.com; a=ed25519;
+ pk=Q18IjkdWCCuncSplyu+dYqIrm+n42glvoLFJTQqpb2o=
+X-Endpoint-Received: by B4 Relay for jiucheng.xu@amlogic.com/20250821 with
+ auth_id=498
+X-Original-From: Jiucheng Xu <jiucheng.xu@amlogic.com>
+Reply-To: jiucheng.xu@amlogic.com
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-5.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-272853-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-272855-lists,stable=lfdr.de,jiucheng.xu.amlogic.com];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:torvalds@linux-foundation.org,m:akpm@linux-foundation.org,m:linux@roeck-us.net,m:shuah@kernel.org,m:patches@kernelci.org,m:lkft-triage@lists.linaro.org,m:pavel@nabladev.com,m:jonathanh@nvidia.com,m:sudipm.mukherjee@gmail.com,m:rwarsow@gmx.de,m:conor@kernel.org,m:hargar@microsoft.com,m:broonie@kernel.org,m:achill@achill.org,m:sr@sladewatkins.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[ffainelli@gmail.com,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	FORWARDED(0.00)[lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:jianxin.pan@amlogic.com,m:tuan.zhang@amlogic.com,m:JY.Ho@mediatek.com,m:chao@kernel.org,m:jaegeuk@kernel.org,m:jiucheng.xu@amlogic.com,s:lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER(0.00)[devnull@kernel.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ffainelli@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,stable@vger.kernel.org];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	HAS_REPLYTO(0.00)[jiucheng.xu@amlogic.com];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,broadcom.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,amlogic.com:replyto,amlogic.com:mid,amlogic.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 10AE672F079
+X-Rspamd-Queue-Id: 07EBF72F056
 
+From: Jiucheng Xu <jiucheng.xu@amlogic.com>
 
+commit edf7e9040fc52c922db947f9c6c36f07377c52ea upstream.
 
-On 7/2/2026 6:19 PM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.211 release.
-> There are 95 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Sat, 04 Jul 2026 15:50:58 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.211-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+As JY reported in bugzilla [1],
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
+pc : [0xffffffe51d249484] f2fs_is_cp_guaranteed+0x70/0x98
+lr : [0xffffffe51d24adbc] f2fs_merge_page_bio+0x520/0x6d4
+CPU: 3 UID: 0 PID: 6790 Comm: kworker/u16:3 Tainted: P    B   W  OE      6.12.30-android16-5-maybe-dirty-4k #1 5f7701c9cbf727d1eebe77c89bbbeb3371e895e5
+Tainted: [P]=PROPRIETARY_MODULE, [B]=BAD_PAGE, [W]=WARN, [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
+Workqueue: writeback wb_workfn (flush-254:49)
+Call trace:
+ f2fs_is_cp_guaranteed+0x70/0x98
+ f2fs_inplace_write_data+0x174/0x2f4
+ f2fs_do_write_data_page+0x214/0x81c
+ f2fs_write_single_data_page+0x28c/0x764
+ f2fs_write_data_pages+0x78c/0xce4
+ do_writepages+0xe8/0x2fc
+ __writeback_single_inode+0x4c/0x4b4
+ writeback_sb_inodes+0x314/0x540
+ __writeback_inodes_wb+0xa4/0xf4
+ wb_writeback+0x160/0x448
+ wb_workfn+0x2f0/0x5dc
+ process_scheduled_works+0x1c8/0x458
+ worker_thread+0x334/0x3f0
+ kthread+0x118/0x1ac
+ ret_from_fork+0x10/0x20
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+[1] https://bugzilla.kernel.org/show_bug.cgi?id=220575
+
+The panic was caused by UAF issue w/ below race condition:
+
+kworker
+- writepages
+ - f2fs_write_cache_pages
+  - f2fs_write_single_data_page
+   - f2fs_do_write_data_page
+    - f2fs_inplace_write_data
+     - f2fs_merge_page_bio
+      - add_inu_page
+      : cache page #1 into bio & cache bio in
+        io->bio_list
+  - f2fs_write_single_data_page
+   - f2fs_do_write_data_page
+    - f2fs_inplace_write_data
+     - f2fs_merge_page_bio
+      - add_inu_page
+      : cache page #2 into bio which is linked
+        in io->bio_list
+						write
+						- f2fs_write_begin
+						: write page #1
+						 - f2fs_folio_wait_writeback
+						  - f2fs_submit_merged_ipu_write
+						   - f2fs_submit_write_bio
+						   : submit bio which inclues page #1 and #2
+
+						software IRQ
+						- f2fs_write_end_io
+						 - fscrypt_free_bounce_page
+						 : freed bounced page which belongs to page #2
+      - inc_page_count( , WB_DATA_TYPE(data_folio), false)
+      : data_folio points to fio->encrypted_page
+        the bounced page can be freed before
+        accessing it in f2fs_is_cp_guarantee()
+
+It can reproduce w/ below testcase:
+Run below script in shell #1:
+for ((i=1;i>0;i++)) do xfs_io -f /mnt/f2fs/enc/file \
+-c "pwrite 0 32k" -c "fdatasync"
+
+Run below script in shell #2:
+for ((i=1;i>0;i++)) do xfs_io -f /mnt/f2fs/enc/file \
+-c "pwrite 0 32k" -c "fdatasync"
+
+So, in f2fs_merge_page_bio(), let's avoid using fio->encrypted_page after
+commit page into internal ipu cache.
+
+Fixes: 0b20fcec8651 ("f2fs: cache global IPU bio")
+Reported-by: JY <JY.Ho@mediatek.com>
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+[Mark: backport to v5.15.y]
+Signed-off-by: Jiucheng Xu <jiucheng.xu@amlogic.com>
+---
+ fs/f2fs/data.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
+index 9d1d0c9d924c0cf3831b383f272309c093bcd354..b35886e9b9948ca9889798fac1388e2abdeb003d 100644
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -897,7 +897,7 @@ int f2fs_merge_page_bio(struct f2fs_io_info *fio)
+ 	if (fio->io_wbc)
+ 		wbc_account_cgroup_owner(fio->io_wbc, fio->page, PAGE_SIZE);
+ 
+-	inc_page_count(fio->sbi, WB_DATA_TYPE(page));
++	inc_page_count(fio->sbi, WB_DATA_TYPE(fio->page));
+ 
+ 	*fio->last_block = fio->new_blkaddr;
+ 	*fio->bio = bio;
+
+---
+base-commit: c86c4726e7f044ab73b493c6f00527aafef640cd
+change-id: 20260709-origin-5-15-y-ee6a6262b19e
+
+Best regards,
 -- 
-Florian
+Jiucheng Xu <jiucheng.xu@amlogic.com>
+
 
 
