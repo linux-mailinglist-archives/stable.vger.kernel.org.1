@@ -1,133 +1,178 @@
-Return-Path: <stable+bounces-272788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272789-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id xEzSF2cLT2q7ZgIAu9opvQ
-	(envelope-from <stable+bounces-272788-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 04:45:59 +0200
+	id 3HY9CE0NT2o1ZwIAu9opvQ
+	(envelope-from <stable+bounces-272789-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 04:54:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED1D572C1F7
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 04:45:58 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70E2772C2B7
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 04:54:04 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FUaxzpFJ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272788-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272788-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=google.com header.s=20251104 header.b=ZiWwTSVw;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272789-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-272789-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1D280304351A
-	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 02:45:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BFB76301ABA7
+	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 02:53:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18E373382E5;
-	Thu,  9 Jul 2026 02:45:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A06B370AE7;
+	Thu,  9 Jul 2026 02:53:23 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBAAAEEC0;
-	Thu,  9 Jul 2026 02:45:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D50973368A4
+	for <stable@vger.kernel.org>; Thu,  9 Jul 2026 02:53:21 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783565137; cv=none; b=I/qIoY799w/nnYFhEHlB8+0WczaABcyllZWyuOl2R9wHkUjR6I/M/a7oILgqagNA7TlN4Ptmxwk7PVxWKPuAiHXLmBqmqYSTmkJCTbxCqp1ozKkgJRezkfK8kzm+iVCLuCMz85iVdUyPelC77GwAaFyByuLKaewm09M5zxMUEOg=
+	t=1783565603; cv=none; b=MrsZwNFxweadRMBrbVDxIqG+a1dMlGepcgbJyFPDEBsQuGVjowtPsN8H1WbY87xlAQ3XfauH1mU7VJvK3pu44LVdLJd5oGGyYcK9nMMnVzPwVK2De8txux4zS2kdgF0MaUSpv/HyWxuT+W5RbHp3l0Q4C1rc1ittZw11emN0k6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783565137; c=relaxed/simple;
-	bh=B4sB5XWE7cSAeuarIdTc/s0UhzdgTJZD73Hdg4hcUKA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mrlw0MbAsOueEMKieirE/urHfjcWuNi8tLJYhTZPVTaLMRYH9ZGjnmUC1NI1f5fzHTDObA34ES3H1FVI4RMYkR6aDMZIhpZjtWlVB56mSfLzG9VxkGh7GCrPRrCo0y8vO7Q+nkrWPmm3LujUCi61IjzmC1KjVweWHzffx3MgVNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FUaxzpFJ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDCF51F000E9;
-	Thu,  9 Jul 2026 02:45:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783565136;
-	bh=jSlk9Z/FGzf1qqoSCxsV+iIQUjW/+mexmFdaAGfOUTc=;
-	h=From:To:Cc:Subject:Date;
-	b=FUaxzpFJdPh4gbaS+L+AaLHlCVKSiuVk3QeLkYeYXaHqXJutrCZWPFYj1HdKQi0cR
-	 MT4HrZRPLluA4G9RcVeMFuI26fo7j3V61J1z6U6sg6ulTXjJPSwxl8I6kBwcNbWPbu
-	 iGFcAE8lTBh/VCxXwFvAkLTw79pr2z0zvO3pWda1xfDxfE7WlVNwtAUrQesZmWdHBx
-	 w1Kdiimz9u261mxfn87wJlPvIQwFXeHSYTAX6DNQ3VHnGDwfbPZeSpRvLZtlA1o2mY
-	 P9NFSDfub1eOfuTi6isHmwOaHQEwf9XgrCQuzKDx7MZTSj80SrOkNj9a06YItzWpkH
-	 CwKG0+Cm8u1bg==
-From: Eric Biggers <ebiggers@kernel.org>
-To: linux-wireless@vger.kernel.org,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Jouni Malinen <jouni.malinen@oss.qualcomm.com>
-Cc: linux-crypto@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Eric Biggers <ebiggers@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH] wifi: mac80211: Fix cryptographic MAC comparison to be constant-time
-Date: Wed,  8 Jul 2026 22:44:43 -0400
-Message-ID: <20260709024443.58132-1-ebiggers@kernel.org>
-X-Mailer: git-send-email 2.55.0
+	s=arc-20240116; t=1783565603; c=relaxed/simple;
+	bh=5pZ+YuyuM7Yjk+r19WhuLEs5UFb6GJ58XFUaujmihhM=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=pmVADHejU1ozFcBwzkJ7DA8hOwprhJAYby0h9OIGdruLpOwrQc+xq0I0jMm5IekKkNuM1H84WedI37RWTZ4IsCey3QXHZ+4IhONN41RLqGwVPaRVh7Cp95QFJ1IygdhG82VTSfZnZx25DfFsDdk+nn9S60ceIgzNvEfrMhMAK+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--mattbobrowski.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZiWwTSVw; arc=none smtp.client-ip=209.85.208.74
+Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-698accdb6beso1238656a12.0
+        for <stable@vger.kernel.org>; Wed, 08 Jul 2026 19:53:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1783565600; x=1784170400; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=wGxX7t30+eOuWF7lBVPJq4zfidhv7pByizuoriYai6Y=;
+        b=ZiWwTSVwxt7P4i+73qdCxJisA9PPCWkY+ca5yklVJDUbzC87Qusx+U94/JJhYWOCAP
+         GnLh6dMvW991dkeJA9gFfjZyn4yZ91LMrjYMhX6rVDf2RtR0xMwmteaHnG/+gWVJ6Vj/
+         UbRkNnokQXnSOm2VYPTTPkjU1bsg845gZ/da8CHy8zTvmNRFGEmwvatQisYylnDeK29G
+         D56XFLCL/2ry90hvsnvxhseEW1JwOc8GniqSDByBk0neIgoOonWs4GK49jSQwe1YYjxJ
+         kESkb6I2ET61JeI+BN/rTYWLH2dPFJrT+sAguk/1I/HoOPxAtvzUN4hHoVUj49xNKn27
+         /8Vg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783565600; x=1784170400;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=wGxX7t30+eOuWF7lBVPJq4zfidhv7pByizuoriYai6Y=;
+        b=la9M4D9YdJfsHP5yWLkwUZUofcmDJR8nl3ONV8spD3+38wNUhl3mTfzCyjPFU5B3bl
+         XopPx7J38R9P4RxfGz236xbFlwUXMxSGgEYMyojy1L9l0ba91xkyr8ffOFicquqkFgcK
+         8TSoqLQg+QVcvwa/yNH6WH3vhPBh4slWW00PAWgdNpu61UFWBZvPtoluSv5KOv6ZGnCc
+         KVIso260b8cmmKjZweLv2gB2IoRx0jmQ/BeMEMkdYCsFhTfyfyB509MaZpfXAUteWhJq
+         RDj2MKTlAUlpbbMiQexhhNoHg55fKkBm3E9I+DE0TYdQvX5gMEM06JeBIVL9ZvHJdKH1
+         +Y5w==
+X-Forwarded-Encrypted: i=1; AHgh+RqWVKkQOjHebHvNAtN4NNcs+osvvg9045OAUEi5MU4upGcvTk+AsC3K630xXCL5FSFCAq8YRAc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywfi218BdcMewZ4BSQadZBj87ITjuC/r4G093QLqOk15y9vfLGO
+	QTdm0uj7hKWtGjAuL1hVxObRqYsfvr1yJ8KD/v5+Am3AtWYXLGOrYnFIavlz48VVcFUP9uiy8KJ
+	M2xckVGhlOdA+Jm9CY3EikF7PqFXh/F79iA==
+X-Received: from edk3-n1.prod.google.com ([2002:a05:6402:4043:10b0:692:efc2:c022])
+ (user=mattbobrowski job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6402:2b8a:b0:698:351c:97a4 with SMTP id 4fb4d7f45d1cf-69ab44614b6mr1959474a12.14.1783565600046;
+ Wed, 08 Jul 2026 19:53:20 -0700 (PDT)
+Date: Thu,  9 Jul 2026 02:53:16 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.795.g602f6c329a-goog
+Message-ID: <20260709025316.999913-1-mattbobrowski@google.com>
+Subject: [PATCH bpf] bpf: fix UAF in sock clone early bailouts
+From: Matt Bobrowski <mattbobrowski@google.com>
+To: bpf@vger.kernel.org
+Cc: Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
+	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, jannh@google.com, 
+	Matt Bobrowski <mattbobrowski@google.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	MV_CASE(0.50)[];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:linux-wireless@vger.kernel.org,m:johannes@sipsolutions.net,m:jouni.malinen@oss.qualcomm.com,m:linux-crypto@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:ebiggers@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-272788-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:bpf@vger.kernel.org,m:ast@kernel.org,m:daniel@iogearbox.net,m:andrii@kernel.org,m:martin.lau@linux.dev,m:eddyz87@gmail.com,m:song@kernel.org,m:yonghong.song@linux.dev,m:jolsa@kernel.org,m:jannh@google.com,m:mattbobrowski@google.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER(0.00)[ebiggers@kernel.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ebiggers@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER(0.00)[mattbobrowski@google.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-272789-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[google.com:+];
 	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mattbobrowski@google.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[kernel.org,iogearbox.net,linux.dev,gmail.com,google.com,vger.kernel.org];
+	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: ED1D572C1F7
+X-Rspamd-Queue-Id: 70E2772C2B7
 
-To prevent timing attacks, the comparison of cryptographic message
-authentication codes (MACs) needs to have data-independent timing.
-Replace the memcmp() with the correct function, crypto_memneq().
+Similar to recent commit 9b51a6155d14 ("bpf,fork: wipe ->bpf_storage
+before bailouts that access it"), sk_clone() performs an initial
+shallow copy of the socket field ->sk_bpf_storage via sock_copy() for
+the cloned socket newsk.
 
-Fixes: 39404feee691 ("mac80211: FILS AEAD protection for station mode association frames")
+If sk_clone() bails out early (e.g. if sk_filter_charge() fails) prior
+to calling bpf_sk_storage_clone(), newsk->sk_bpf_storage still points
+to the parent socket's BPF local storage. When newsk is subsequently
+freed via sk_free(), the deallocation path (__sk_destruct() ->
+bpf_sk_storage_free()) destroys the parent socket's BPF local storage,
+leading to a use-after-free (UAF) on the parent socket.
+
+Fix this by resetting newsk->sk_bpf_storage to NULL immediately after
+sock_copy() in sk_clone(), and remove the now redundant initialization
+from bpf_sk_storage_clone().
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Fixes: 6ac99e8f23d4 ("bpf: Introduce bpf sk local storage")
+Fixes: f12dd75959b0 ("bpf: net: Set sk_bpf_storage back to NULL for cloned sk")
+Signed-off-by: Matt Bobrowski <mattbobrowski@google.com>
 ---
- net/mac80211/fils_aead.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/core/bpf_sk_storage.c | 2 --
+ net/core/sock.c           | 3 +++
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/net/mac80211/fils_aead.c b/net/mac80211/fils_aead.c
-index d2f4a17eab99..00b91e6ed994 100644
---- a/net/mac80211/fils_aead.c
-+++ b/net/mac80211/fils_aead.c
-@@ -195,7 +195,7 @@ static int aes_siv_decrypt(const u8 *key, size_t key_len,
- 	res = aes_s2v(key /* K1 */, key_len, num_elem, addr, len, check);
- 	if (res)
- 		return res;
--	if (memcmp(check, frame_iv, AES_BLOCK_SIZE) != 0)
-+	if (crypto_memneq(check, frame_iv, AES_BLOCK_SIZE))
- 		return -EINVAL;
- 	return 0;
- }
-
-base-commit: 8cdeaa50eae8dad34885515f62559ee83e7e8dda
+diff --git a/net/core/bpf_sk_storage.c b/net/core/bpf_sk_storage.c
+index ecd659f79fd4..1d295a8769fa 100644
+--- a/net/core/bpf_sk_storage.c
++++ b/net/core/bpf_sk_storage.c
+@@ -158,8 +158,6 @@ int bpf_sk_storage_clone(const struct sock *sk, struct sock *newsk)
+ 	struct bpf_local_storage_elem *selem;
+ 	int ret = 0;
+ 
+-	RCU_INIT_POINTER(newsk->sk_bpf_storage, NULL);
+-
+ 	rcu_read_lock_dont_migrate();
+ 	sk_storage = rcu_dereference(sk->sk_bpf_storage);
+ 
+diff --git a/net/core/sock.c b/net/core/sock.c
+index 8a59bfaa8096..498a57f34f5b 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -2492,6 +2492,9 @@ struct sock *sk_clone(const struct sock *sk, const gfp_t priority,
+ 	sock_copy(newsk, sk);
+ 
+ 	newsk->sk_prot_creator = prot;
++#ifdef CONFIG_BPF_SYSCALL
++	RCU_INIT_POINTER(newsk->sk_bpf_storage, NULL);
++#endif
+ 
+ 	/* SANITY */
+ 	if (likely(newsk->sk_net_refcnt)) {
 -- 
-2.55.0
+2.55.0.795.g602f6c329a-goog
 
 
