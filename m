@@ -1,117 +1,140 @@
-Return-Path: <stable+bounces-272947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272948-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 2Ew5KHixT2p0mwIAu9opvQ
-	(envelope-from <stable+bounces-272947-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 16:34:32 +0200
+	id D1ZmCji6T2p9nQIAu9opvQ
+	(envelope-from <stable+bounces-272948-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 17:11:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AC7A7324DC
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 16:34:32 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BCB4732ABD
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 17:11:51 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=VBQ9t4F5;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272947-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272947-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=google.com header.s=20251104 header.b=wm6gsbTu;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272948-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-272948-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 817A330041E1
-	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 14:27:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 910E93038FB3
+	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 14:28:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CC8B331EDB;
-	Thu,  9 Jul 2026 14:27:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8A7233343B;
+	Thu,  9 Jul 2026 14:28:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64F541AA780;
-	Thu,  9 Jul 2026 14:27:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C06D331EBA
+	for <stable@vger.kernel.org>; Thu,  9 Jul 2026 14:28:28 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783607258; cv=none; b=Wvn315z10cWYCxvQ4APGyNe4KzXoTml1qEQ8g+BEmh3/7vfP/kfBcvwfKLvfJG/nvQ6WZz9UEms6v87LcvJdqS4e/h0Ci1VOwG7cJId+J+4Fb0o6nbDA8XSFBfbnacXE686ilU9iyo0kSZA6VArH7XWrCrk/I/NaRvQ4DeINuwg=
+	t=1783607309; cv=none; b=Ih9OerLLIwXmBvnHrU53naGSthfL4Km5vwqLyaEOp8XLDI2HbasEOs3bI88lrDfYll66CcswmXczOEuSnFkGC8G/n8NZ8DaeXnRuo35qhemZ3DkQ0WefsLV0iffDtrwdDAFPfxc//CEw5R2VbxeXPb/2vxz9uK8IhKtINcIc6AQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783607258; c=relaxed/simple;
-	bh=XgcPfTh9E+25t08NFhk2qKYKRxiIW0zesYLtJEAOtbM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oegZJXKmee4QrL7s+Y0VRVBVEVFdx4lJLxGJh1rGzejxsd7JeQNXat6T8P8jYYTTpJjbc5wBmwRbRWL7QGx4LMoZJpEGC23xJ9iCKvkp52616aB5J4QThyY9DwvL1HEBFSCdNHeFg/mXYW8tb0mkfik99hQN+/tvLFY26IfA30w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VBQ9t4F5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 771231F000E9;
-	Thu,  9 Jul 2026 14:27:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783607256;
-	bh=XgcPfTh9E+25t08NFhk2qKYKRxiIW0zesYLtJEAOtbM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=VBQ9t4F5pEbEKNt60Qv669QNKzVt19DHjVXQ2NGngjPPwbXT+MvCi4SzoQQRNIL0z
-	 fBRxw5nAIF6blJ1hLGvRL+VbpPPa2rN9bew0Mywug3kLzU3rkjbp4uqSIQNBEfTWAA
-	 GrSMu7LrrjxkYYoaNI85a7OQLIRM5Ce52TDnwpSo=
-Date: Thu, 9 Jul 2026 16:27:33 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Goetz Goerisch <ggoerisch@gmail.com>
-Cc: herbert@gondor.apana.org.au, herve.codina@bootlin.com,
-	linux-crypto@vger.kernel.org, miquel.raynal@bootlin.com,
-	paul.louvel@bootlin.com, sashal@kernel.org, stable@vger.kernel.org,
-	thomas.petazzoni@bootlin.com
-Subject: Re: [PATCH 1/5] Revert "crypto: talitos - rename first/last to
- first_desc/last_desc"
-Message-ID: <2026070912-pluck-bagful-2a71@gregkh>
-References: <2026052212-aged-amply-7bd8@gregkh>
- <20260523151048.14914-1-ggoerisch@gmail.com>
- <20260523151048.14914-2-ggoerisch@gmail.com>
+	s=arc-20240116; t=1783607309; c=relaxed/simple;
+	bh=4UGvmcJWO+vF4ijE0i9D6ZUUiRa1XDumSYloGfIKakI=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=D6nDSmg3QPV1/PvYqR/6u+vU+CAeSht1Yhn69up+PNRGgIGr2If+ph1SvNIiiYZ3MhAqz/UeJ6rEzIZQJvU9aYd2MhkZqOh7io8XGoRCJEwM15++UC1bV3WQT7bkHJPWm+FL13D4nMbrXZaK3V/h68062jvWTaa4VoVmHHtfH4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wm6gsbTu; arc=none smtp.client-ip=209.85.216.74
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-37d4f23eb37so1776090a91.0
+        for <stable@vger.kernel.org>; Thu, 09 Jul 2026 07:28:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1783607308; x=1784212108; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=g8eThvaBRatBKc4k9DT72V3nfTJdvxG/RsPvyVMBgw4=;
+        b=wm6gsbTux7p3qJCv0awUjauTBi2lvqeTkI5W3yo8nDpK7nnqnJ9xbPOUIivY+MZdgJ
+         L1P6HhJyqjGfBRoTY1cs19+9JQhhWbXGp7QmzTDXXwLBRMR1E2S9b+4ypts4XM1Tbbiv
+         buHj6m+z2lXLthZX5yZGLP06+sDFATFEP5FBTNo33i376mqOpefRBS0lmF01txBbMh5B
+         ysR9bmZdOcmWArFT3Kexz3RhmEAalcrjcDEd7iQ1kEKUhARDrWgbl7rz9gubFrWeU4tq
+         BWpkjYQkLFTOdW6QXqi+QbNI7B3b/gf9kKPk95E9oVYhnGhGhialqvjmUp2srnRbP4x8
+         5bEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783607308; x=1784212108;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=g8eThvaBRatBKc4k9DT72V3nfTJdvxG/RsPvyVMBgw4=;
+        b=JMcre+5mcPZ2AxFEG+jCMDC6lMqO2Il1qxOE5RDsKPQb9YtlmWzdysrzQlM+VE4dmB
+         ZSo4i4uvDLktc5uBbd4HGRe/pkqa3VIvAK+BtRh4QdqbzF9nID4Ifg7AJMrcc/Q+29G8
+         yU6sSb5NpmT5NDph5SNGROYdLoG5d+/ofTwDgyCPY4DCOpr1ynkhsx8gRWHEJ14ZyOAy
+         eY8dKFK/c/AsgTjatdBcJPpfpsVH5lq741M+OWlm3jAH4pXiElaotqyMnbKfElF+J40R
+         R/P9RE4PXAAo3G16cOoyfHlw+FCYjrTLpDTYnVJ91Jm685ylRVT/miTVC0mMDBYRiDJT
+         lcwQ==
+X-Gm-Message-State: AOJu0YyH/wSFm8ECHBGN9cNZIxP+XP8X2XUqeJhPIZEM5AEjRGweuHZk
+	XdLjWP1x8lsjB5zeloOLMRPqNeweInDGgG8KuApwawqeTxac47xMm0XpZxFoXdPCst+QKYSeU7s
+	M/f3m0w==
+X-Received: from pjbbt4.prod.google.com ([2002:a17:90a:f004:b0:381:9321:9051])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:e184:b0:37f:e8d6:72c0
+ with SMTP id 98e67ed59e1d1-3893f694ae8mr6844986a91.1.1783607307420; Thu, 09
+ Jul 2026 07:28:27 -0700 (PDT)
+Date: Thu, 9 Jul 2026 07:28:26 -0700
+In-Reply-To: <20260709072247.3305784-2-clopez@suse.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260523151048.14914-2-ggoerisch@gmail.com>
+Mime-Version: 1.0
+References: <20260709072247.3305784-2-clopez@suse.de>
+Message-ID: <ak-wCrZ0J-s0d27A@google.com>
+Subject: Re: [PATCH RESEND 6.18.y 0/3] KVM: x86: Backports for VM entry
+ failure due to stale CR8 intercept
+From: Sean Christopherson <seanjc@google.com>
+To: "Carlos =?utf-8?B?TMOzcGV6?=" <clopez@suse.de>
+Cc: stable@vger.kernel.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	MV_CASE(0.50)[];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:ggoerisch@gmail.com,m:herbert@gondor.apana.org.au,m:herve.codina@bootlin.com,m:linux-crypto@vger.kernel.org,m:miquel.raynal@bootlin.com,m:paul.louvel@bootlin.com,m:sashal@kernel.org,m:stable@vger.kernel.org,m:thomas.petazzoni@bootlin.com,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-272947-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[seanjc@google.com,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-272948-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:clopez@suse.de,m:stable@vger.kernel.org,m:kvm@vger.kernel.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FROM_NEQ_ENVFROM(0.00)[seanjc@google.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[google.com:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,vger.kernel.org:from_smtp]
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8AC7A7324DC
+X-Rspamd-Queue-Id: 1BCB4732ABD
 
-On Sat, May 23, 2026 at 05:10:44PM +0200, Goetz Goerisch wrote:
-> This reverts commit a866e2b1c65edaee2e1bb1024ee2c761ced335f8.
-> ---
+On Thu, Jul 09, 2026, Carlos L=C3=B3pez wrote:
+> Backport for bb365a506b1e ("KVM: x86: Unconditionally recompute CR8
+> intercept on PPR update") with two prerequisite patches.
+>=20
+> Resend: fix destination emails (did not properly send first version to
+> stable@)
+>=20
+> Carlos L=C3=B3pez (1):
+>   KVM: x86: Unconditionally recompute CR8 intercept on PPR update
+>=20
+> Sean Christopherson (2):
+>   KVM: x86: Move update_cr8_intercept() to lapic.c
+>   KVM: VMX: Grab vmcs12 on CR8 interception update iff vCPU is in guest
+>     mode
 
-We need a reason for a revert, AND a signed off-by line :(
-
-Please fix that up for the other revert in this series and resend.
-
-thanks,
-
-greg k-h
+Acked-by: Sean Christopherson <seanjc@google.com>
 
