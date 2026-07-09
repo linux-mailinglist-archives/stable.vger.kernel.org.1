@@ -1,101 +1,103 @@
-Return-Path: <stable+bounces-272824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272825-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 57OOFsY2T2r9cAIAu9opvQ
-	(envelope-from <stable+bounces-272824-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 07:51:02 +0200
+	id VoqQG8s2T2r+cAIAu9opvQ
+	(envelope-from <stable+bounces-272825-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 07:51:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B237572CE4A
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 07:51:01 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEDD872CE4D
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 07:51:06 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=eVN08M7y;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=nbdzJ+At;
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272824-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-272824-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272825-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272825-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D2986305091E
-	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 05:46:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B8A5230512BB
+	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 05:46:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 254323AA9CA;
-	Thu,  9 Jul 2026 05:46:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25B8A3A872D;
+	Thu,  9 Jul 2026 05:46:05 +0000 (UTC)
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF0162E11C7
-	for <Stable@vger.kernel.org>; Thu,  9 Jul 2026 05:46:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAB291F91E3
+	for <Stable@vger.kernel.org>; Thu,  9 Jul 2026 05:46:03 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783575961; cv=none; b=Putub+wqzoc6s3J5TWYxNLsoBvs6NsAA/xKs/EITt+na5pIgA2c7PS9ThdWY7uT8BTSX1Z9/sPCiz/582KoyXIfzC54abtH8giQkmK3FobkGIbyfrfQekl8RmlD80JVDoLDW8swVmzha0tkl7MviDPrWyHxop+z480XfZVdUiA4=
+	t=1783575964; cv=none; b=MYGex36qRdIVDQhudaLakqjkidHK83a8QK15RRFoEx6CpfLH52XfL0xOAlwZTGnOO2Rg8EY+sV7e1A8Exezn9Bidkv05bpc2YGogMwChz9/qMR2FTXiSGNq/YprniVGfq632PsMC5Kx1y27tzP4aACKG+uwsrHRRCYhElFkdSPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783575961; c=relaxed/simple;
-	bh=8X7/3MejPNIQw3K2vYW/4916/Adqd5gm3gAI+KRKLbM=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=hPbZz1IDQRmnm0djpmu8sNw1kjUjpuCWN2TK8Fh2DVr6TaPVbbsff5nrQrCGQ3VvwCJVYOVNBpBp2C+mJlCKPWCOqD3EHM8LeCAo5aY2Rgk8FZx4i44ZQh5Rx8R5+XU1OshVbk72rE4FJ1t+dgHscX/+qkoNdacwvv2U4PU+eJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eVN08M7y; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FB381F000E9;
-	Thu,  9 Jul 2026 05:46:00 +0000 (UTC)
+	s=arc-20240116; t=1783575964; c=relaxed/simple;
+	bh=4ElvRs99T5XHtXNX+0keCfSpUjk+GF9PTuhdFATrP6Y=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=sNmJkTQ/AHyuDe+1Wfj6xPy+7fVTR+gZMbksRgtOE3l+JAfpFXtzqBpEKg6hycTyD9bYAkssyOV5XR9QQW6oFnxwA45ZoGP0yl5VsJ2lY/OuQK+gLQ+LyYOf0Ok07uf1s+KCXhYRsUkkPdWWJYNrRNDmZZhSu9KAYmPomEXLsmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nbdzJ+At; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD4BA1F000E9;
+	Thu,  9 Jul 2026 05:46:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783575960;
-	bh=Ku2nKr8yHEh459UCw54HoRXeHAtlkAIab6SQ85CIQt0=;
+	s=korg; t=1783575963;
+	bh=G9jrIQ2IVt+Zs9FQJITSr3ndGqea/26FGAiLEMJL1jM=;
 	h=Subject:To:From:Date;
-	b=eVN08M7yf8RJLWq2SlBxxr8J7IvmG/QL6Y9rc78IcVRet/65Hrv3ToKr6DN6OxP4j
-	 pyLHV5HOB58R8A6ZOS9epNjEAKZUTC0UdIeGm2vNTLv31DXE6CLNUbhj3qfEzN4bGO
-	 hqvZZ4a3P2vZBCvcyZ5c8yALQLNlYzjYqzcuq9ps=
-Subject: patch "iio: event: Fix event FIFO reset race" added to char-misc-linus
-To: lars@metafoo.de,Stable@vger.kernel.org,jic23@kernel.org,nuno.sa@analog.com
+	b=nbdzJ+AtyzpkAXthmVrTa6Dgx0WGqgEtBocBpE9/CDpEww/H/v3CX1aHtjl6q6hFf
+	 WUCR0JbDt5puF9N80GgzsKLwDL2CGbBhkvV4B5Vrd353sE+FpH7xZW4xJ2XrrnC3iI
+	 ZML/MdMoR/MgWnD+swN2dXBqT2fV8LyYFx8GORK4=
+Subject: patch "iio: light: al3010: fix incorrect scale for the highest gain range" added to char-misc-linus
+To: vidhu.linux@gmail.com,Stable@vger.kernel.org,andriy.shevchenko@intel.com,jic23@kernel.org
 From: <gregkh@linuxfoundation.org>
 Date: Thu, 09 Jul 2026 07:44:53 +0200
-Message-ID: <2026070953-sloping-unmanaged-f842@gregkh>
+Message-ID: <2026070953-laurel-defacing-d628@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [2.34 / 15.00];
+X-Spamd-Result: default: False [3.84 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-272825-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:vidhu.linux@gmail.com,m:Stable@vger.kernel.org,m:andriy.shevchenko@intel.com,m:jic23@kernel.org,m:vidhulinux@gmail.com,s:lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-272824-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:lars@metafoo.de,m:Stable@vger.kernel.org,m:jic23@kernel.org,m:nuno.sa@analog.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org,intel.com,kernel.org];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	TO_DN_NONE(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,analog.com:email,metafoo.de:email]
+	TAGGED_RCPT(0.00)[stable];
+	FROM_NO_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B237572CE4A
+X-Rspamd-Queue-Id: AEDD872CE4D
 
 
 This is a note to let you know that I've just added the patch titled
 
-    iio: event: Fix event FIFO reset race
+    iio: light: al3010: fix incorrect scale for the highest gain range
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
@@ -110,79 +112,44 @@ next -rc kernel release.
 If you have any questions about this process, please let me know.
 
 
-From af791d295737ea6b6ff2c8d8488462a49c14af01 Mon Sep 17 00:00:00 2001
-From: Lars-Peter Clausen <lars@metafoo.de>
-Date: Mon, 6 Jul 2026 21:48:26 -0700
-Subject: iio: event: Fix event FIFO reset race
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From aa411adc6ce40ad1a55ebc965f255a4cfc0005f8 Mon Sep 17 00:00:00 2001
+From: Vidhu Sarwal <vidhu.linux@gmail.com>
+Date: Sat, 4 Jul 2026 17:22:45 +0530
+Subject: iio: light: al3010: fix incorrect scale for the highest gain range
 
-`iio_event_getfd()` creates the event file descriptor with
-`anon_inode_getfd()`, which allocates a new fd, creates the anonymous
-file and installs it in the process fd table before returning to the
-caller.
+al3010_scales[] encodes the highest gain range as {0, 1187200}.
+For IIO_VAL_INT_PLUS_MICRO, the fractional part must be less than
+1000000, so the scale 1.1872 should instead be represented as
+{ 1, 187200 }.
 
-The IIO code resets the event FIFO after `anon_inode_getfd()` has returned,
-but before `IIO_GET_EVENT_FD_IOCTL` has copied the fd number to userspace.
-But since fd tables are shared between threads, another thread can guess
-the newly allocated fd number and issue a `read()` on it as soon as the fd
-has been installed.
+Since write_raw() compares the value from userspace against this
+table, writing the advertised 1.1872 scale never matches the malformed
+entry and returns -EINVAL. As a result, the highest gain range cannot
+be selected. Reading the scale in that state also reports the malformed
+value.
 
-This means the `kfifo_to_user()` in `iio_event_chrdev_read()` can run in
-parallel with the `kfifo_reset_out()` in `iio_event_getfd()`.
-
-The kfifo documentation says that `kfifo_reset_out()` is only safe when it
-is called from the reader thread and there is only one concurrent reader.
-Otherwise it is dangerous and must be handled in the same way as
-`kfifo_reset()`.
-
-If that happens, `kfifo_to_user()` can advance the FIFO `out` index based
-on state from before the reset, after the reset has already moved the `out`
-index to the current `in` index. That can leave the FIFO with an `out`
-index past the `in` index. A later `read()` can then see an underflowed
-FIFO length and copy more data than the event FIFO buffer contains. This
-can result in an out-of-bounds read and leak adjacent kernel memory to
-userspace.
-
-Move the FIFO reset before `anon_inode_getfd()`. At that point the event fd is
-marked busy, but the new fd has not been installed yet, so userspace cannot
-access it while the FIFO is reset.
-
-Fixes: b91accafbb10 ("iio:event: Fix and cleanup locking")
-Reported-by: Codex:gpt-5.5
-Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Fixes: c36b5195ab70 ("iio: light: add Dyna-Image AL3010 driver")
+Signed-off-by: Vidhu Sarwal <vidhu.linux@gmail.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <jic23@kernel.org>
 ---
- drivers/iio/industrialio-event.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/iio/light/al3010.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/industrialio-event.c b/drivers/iio/industrialio-event.c
-index a0d6fcf2a9c9..e6730f52262a 100644
---- a/drivers/iio/industrialio-event.c
-+++ b/drivers/iio/industrialio-event.c
-@@ -207,6 +207,8 @@ static int iio_event_getfd(struct iio_dev *indio_dev)
- 		goto unlock;
- 	}
+diff --git a/drivers/iio/light/al3010.c b/drivers/iio/light/al3010.c
+index d603b4a6b8e8..ca1d7fd6defb 100644
+--- a/drivers/iio/light/al3010.c
++++ b/drivers/iio/light/al3010.c
+@@ -42,7 +42,7 @@ enum al3xxxx_range {
+ };
  
-+	kfifo_reset_out(&ev_int->det_events);
-+
- 	iio_device_get(indio_dev);
+ static const int al3010_scales[][2] = {
+-	{0, 1187200}, {0, 296800}, {0, 74200}, {0, 18600}
++	{ 1, 187200 }, { 0, 296800 }, { 0, 74200 }, { 0, 18600 },
+ };
  
- 	fd = anon_inode_getfd("iio:event", &iio_event_chrdev_fileops,
-@@ -214,10 +216,7 @@ static int iio_event_getfd(struct iio_dev *indio_dev)
- 	if (fd < 0) {
- 		clear_bit(IIO_BUSY_BIT_POS, &ev_int->flags);
- 		iio_device_put(indio_dev);
--	} else {
--		kfifo_reset_out(&ev_int->det_events);
- 	}
--
- unlock:
- 	mutex_unlock(&iio_dev_opaque->mlock);
- 	return fd;
+ static const struct regmap_config al3010_regmap_config = {
 -- 
 2.55.0
 
