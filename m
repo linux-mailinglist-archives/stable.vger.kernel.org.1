@@ -1,240 +1,203 @@
-Return-Path: <stable+bounces-273047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273044-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id bwtXItYNUGqmsgIAu9opvQ
-	(envelope-from <stable+bounces-273047-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 23:08:38 +0200
+	id MOwZCZwMUGpTsgIAu9opvQ
+	(envelope-from <stable+bounces-273044-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 23:03:24 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAFAC735BFF
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 23:08:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7276B735B6C
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 23:03:23 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=UfucjNiR;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273047-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-273047-lists+stable=lfdr.de@vger.kernel.org";
-	arc=reject ("cv is fail on i=2")
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=rZtxIq3u;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273044-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-273044-lists+stable=lfdr.de@vger.kernel.org";
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 620D0300A3AE
-	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 21:02:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 77844301C155
+	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 20:54:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5FCC352006;
-	Thu,  9 Jul 2026 21:02:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 732A43E0223;
+	Thu,  9 Jul 2026 20:54:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010013.outbound.protection.outlook.com [52.101.193.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF56136E48E
-	for <stable@vger.kernel.org>; Thu,  9 Jul 2026 21:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA2254499AF
+	for <stable@vger.kernel.org>; Thu,  9 Jul 2026 20:54:05 +0000 (UTC)
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783630959; cv=fail; b=XOJkBJR2uByxBVLakYM2QrfbvgXMIgxf6u6ct4jylrONYa69VVEaj+ms/RlPKdx1YNoRGxxyMd/a97tWQ8GLSsyjB2qZ9zjIqsXGyrVtXZFH1tjTpbhXh25Ds8/6NSGozaSG0S85bDGZNJAsVJ2+ixFVkisMrHlJExw99bSddA0=
+	t=1783630447; cv=pass; b=eQYFNM6MHjyxkSvnqoc7AA7fLJmF6TArmlXGm9rPD4p42TRltOYToBqOSby6olhL1gNdffoF7ZYJ5BET1kuSW7c4f80dUNsXFj3gr3IcK2tPFleVuvuItVlVUBLQPkc5rXkU7i8oKM+5GEqFEzhb++HbghJcVnNN9WojzgSTYj8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783630959; c=relaxed/simple;
-	bh=jqACvV14O6aS7JoPCSZl4MMy0nrQJfCC6owo7ePNp5s=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oURwyuHELZvsrmq5ebd6LKbbDB0fp3V5x09icdM/y4qYsSaCEcAzOjwBlQwAEJvtXwjNAUD3tlRBuqIzJYnSJQZfmWLA47T4y9qy2hIAoPRkCfqkGWBY0gsFZASfLd7rfjFJhppOlzEp3f3POw14YXDYlamG++uGfeOmXGDJYnw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=UfucjNiR; arc=fail smtp.client-ip=52.101.193.13
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ZkYaDOZgM5/NI4wt3laXlVQi5upJF903M5X/VISonro5MTZiFvWapOudZUlMfkzOy4+nOEhQlv0dtME9Pr8q8OZe6zHybu4uQqfwQhp0rVI4dF5y7jA/1JrFQ1WzdlVkzZLgk61hRuF8yjiuNWj3G418YpkWZeAuybY+lFHMImkedDDqEEs6kNEPoOiBuIrxRx5/xX6GDPgZn+V0ckpgFaEnmHZ0Iwv/OHNSHtcYeuPlc09lAdwbD+J7hC/6OKaIEdJ4thvZfiCxsxhr5bWCbE2F/0Cqu/l51SYMKDXoHa21HWJbbLv0yT6f19HnkwXLO7nW0kDy7j16WlcUf+TTgw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Lx9Z42h5LKVHqJDbDftIZjR+DthBc9uUgcCrCroQHhM=;
- b=iM1vX5311citL+zLzJEfCAVFi9YD17Ell5+fjRw4ccvCaWKbDGYqjizbOk6JaGAdodxCMyH9zt10EvWx77SRIl4+6tPQDD4fRbSK5uTjwFoRSK0H8IQpt/DJLejqCmrdLbgRO4RFgA04OgaOetKm77fRI7BqKJ0NjoQ4nr1+hted51hhWrX9Fyngiim1S/zglc4K/TYNYzgSNH7WUaukaWUsEknY8UxOmVmFg5BXSU0L7OQHfFU+ukKpkIljOxjLnC8/UoACmPiJEu/JQQk1w4w2+R9qh2u27uuUZhtPgGeuQhXKOuDxp5OBOQZNMRhvT81tdPOuKQyfAgs/cmOs4g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Lx9Z42h5LKVHqJDbDftIZjR+DthBc9uUgcCrCroQHhM=;
- b=UfucjNiRWjLNH7+UcWC2Cba9509vorCEseTmQ6k1j9pZOSex3BsU2K09Gzj2oZP1q0FguOVWmSPtShk5XQI/CEEfBGpOlyH4ZCOeOlT17PR/urIh8FhO9UucD/bHUtEfH84XAGv+buKM5ZiFiS3YplX/BoO7XX+jujaRnqj+WkE=
-Received: from MN2PR01CA0056.prod.exchangelabs.com (2603:10b6:208:23f::25) by
- SA0PR12MB4479.namprd12.prod.outlook.com (2603:10b6:806:95::24) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.181.14; Thu, 9 Jul 2026 21:02:35 +0000
-Received: from BL02EPF0001A0FE.namprd03.prod.outlook.com
- (2603:10b6:208:23f:cafe::40) by MN2PR01CA0056.outlook.office365.com
- (2603:10b6:208:23f::25) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.202.10 via Frontend Transport; Thu, 9
- Jul 2026 21:02:34 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- BL02EPF0001A0FE.mail.protection.outlook.com (10.167.242.105) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.181.6 via Frontend Transport; Thu, 9 Jul 2026 21:02:34 +0000
-Received: from georzhanmkm.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Thu, 9 Jul
- 2026 16:02:21 -0500
-From: George Zhang <george.zhang@amd.com>
-To: <amd-gfx@lists.freedesktop.org>
-CC: Harry Wentland <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>, Roman Li <roman.li@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>, Tom Chung <chiahsuan.chung@amd.com>, "Fangzhi
- Zuo" <jerry.zuo@amd.com>, Dan Wheeler <daniel.wheeler@amd.com>, Ray Wu
-	<Ray.Wu@amd.com>, Ivan Lipski <ivan.lipski@amd.com>, Alex Hung
-	<alex.hung@amd.com>, James Lin <PingLei.Lin@amd.com>, Chenyu Chen
-	<Chen-Yu.Chen@amd.com>, Mario Limonciello <mario.limonciello@amd.com>,
-	<stable@vger.kernel.org>, George Zhang <george.zhang@amd.com>
-Subject: [PATCH 59/80] drm/amd/display: Fix backlight max_brightness to match exported range
-Date: Thu, 9 Jul 2026 16:48:27 -0400
-Message-ID: <20260709205936.5719-60-george.zhang@amd.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260709205936.5719-1-george.zhang@amd.com>
-References: <20260709205936.5719-1-george.zhang@amd.com>
+	s=arc-20240116; t=1783630447; c=relaxed/simple;
+	bh=6CpaLGU5EUy0vMVHx3KnNb4rh6my4kZN9Yxb54V1PDI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ko2lxx3RjNeLu4giNJnWGBLtgd/arnK2fU+c+/TdZjk4BdDQT/KLIXYr8ieqsv7PV7F+1z3zzkYBNkcI9toEGXm5mancXzWOyFo7BQFpdh/GxRihoSl6Dc68s+U6oj0paCKIJV6vHQK/DXNg0STKzblbzhN7ZU05GMbVay3MgCw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rZtxIq3u; arc=pass smtp.client-ip=209.85.160.174
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-51c2a449c57so1361691cf.1
+        for <stable@vger.kernel.org>; Thu, 09 Jul 2026 13:54:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783630445; cv=none;
+        d=google.com; s=arc-20260327;
+        b=aTNS7gxmQhikOwCI0aH7lxHkG2gvmpomxOnxykTyoGu1Y2KF1Hw2JS/naOP8eG6jSv
+         Sijt45+000fC/CSarP7c24j/ApwJOfI+vdWhoUuGx0hlSwG4leZ/4sq1LnG66kbWuX8C
+         AffeFAotgwJmz6grukudisKCr4nUAGj6LvMYAMXQyQMxWCS18ybuF0gRvqyeZFqRTLXF
+         PRth5zZWfdse4hzXubjh7wWB9gjZJihSN6AsVORtnXuCdCy/2f5aHmfODmiJSktkxHwo
+         K/f97mSmDZYj4LRbrvCZfDN0H8Yajo3Qnzg87lIOJvWtrE04ablhVTjBEia325j24ohD
+         MzRw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=x5evxCKgLnEs0QTFditB/MvAAlaTMW3SCAomkp6FBCA=;
+        fh=qkhYLtT70AvcSAx3d5nOE221/2mXz+ZeAoRBU3MdIDQ=;
+        b=W+I75SqV1AvEnBmLEqF5qb+wgvfDKLVAYPcbqOtw+c6E5r6glSOotWNMZVtf851k6h
+         t1ov93HpvV1J1TN/NMs5zvkeTQ3FRG1LUHq+76tu6bpr2iPIkn9amQWXYsCcG1OTH9zR
+         p62bmjFlKbPTpxQ+EkSZtKnsTSMpE30l5zgiqFqb2uzbMf+BtEYFpFVeX9ktl1PwHQ0v
+         DHn5IIclDPDY0kmdG3YCimvzmZLftamto+I3Kbn4dmn7IBiFXvNIE7zggeA1OJd44Alr
+         yiaOfFc6PFSCETIHaGGzlX4OWP1i8jXqzjxTYOgTrFZhKpcBsdFWns5BxrOOym91pb9b
+         FWVA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783630445; x=1784235245; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=x5evxCKgLnEs0QTFditB/MvAAlaTMW3SCAomkp6FBCA=;
+        b=rZtxIq3ucANik3O6tyHtVpY3ik9fVH0fvBT4g2sfeKyXnH5FGpn/CZAtH8O6wU9ywk
+         E5742fXSo0Zr+VEiqyPWRTUkujF4/hK/Rg2/FJi/GD9hPiHLuTp0Ede1OoWculBEsUtG
+         Z/OBROWxtThsbwncLzq9OEUGI3aqHMySO+gbup0foDTiHAHcG4hxKldx8/q/Gq1BMAyb
+         E4wBO5hQJxIVCyYfxP9sFWZwEQiirKMq0f2dL5gN0T+y6LOvmlaeAMxLe/9MSEPH0aSH
+         8eW7deSw2st2Xf3KXHRKSOapxDaQZHN1sqQ3utQlozkQsZUSzf1MzWIP8LZKI/RuePtD
+         yelg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783630445; x=1784235245;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=x5evxCKgLnEs0QTFditB/MvAAlaTMW3SCAomkp6FBCA=;
+        b=Vnmqpxo0eenZ0Gm8xhTPdpI7cPCecjdUNriUbCJO5fYyq3u9EcQY9ylfqhk7M/Mevs
+         om+otQ06xZbeyBiQkToozX5kefaTwRFYvJcqYqf6SzQvqXgC3+Ys86+cICsOFSvXv7YB
+         mxP1Ss5ZBBmgjazoEhHSHb3qSe0GB6mg3nv/o7npJ8ddIJtdtE7OgmD0SQGI4bnY9BPI
+         H8PoFMi4Tnh//Ov5LL3Qr1Ye1r0R1zvt2fGJ+wJ+aj70l2lN+mu8jNvQmzkVnXnop6Qp
+         lR4TGYqWTZuLXOv0kGLC3E6aj0PMlDKMSOm2qlxbakSIbJo6WgfJ6VRr1xxHG3v/2QU2
+         7VHw==
+X-Forwarded-Encrypted: i=1; AHgh+RrUiDJnwh314JuLrUR3UaSobmmu4Zg/bC50zW8aUEiA6BFrlYLWz7fcw8OCGIum7gG0Rp3dosw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzF9cbzVRrVk0ZbaYvCWrYRRnMFrHhq5xHeD6dX+hZp7QeP59NF
+	DRJUX9ZEifMz77WOzoOCNLG1rNmY/UN59zY+vzGljoNrp6x+VKRGw63k9Q7tfCTUDyWoqzTUKjh
+	w+kSp0gsoRKJC3T6PTnHJ+lyzfZCPMZw=
+X-Gm-Gg: AfdE7cnpfVOaQidxdOjTBw1DAwPYOQVedRSxF0d0R6IxEPUSfaj+tj5yRLkH8Cbc/im
+	VtfyHalKSOyM6+HQttdNb6xRjA6TcPDTC37dqqyU4ll069FQTIbmVigPGi+KjuWSPku4UDDMEwk
+	flDcCSIkl0kgfGXS49dRT0fgOd4hdEoZtuBMURss+7Px1LYnLYezPQf7L+n6hl7YKElqcDtBNBs
+	dbdAqaklBfec6y+WfmEPEOvK1DSnxT/Mfx/9s6r36ytlqw4HHte+co6vBv7eer3JN3m0QHFVYMw
+	0LpnRYW6J1tuegvPZaQ0xe1FQqKq1qIbo9GAeL0Xm1SkM/dvhPZc/czSLwXc92xzjGFho7SOsS6
+	Ryh6uy/u97J5Qcl1vRj7kRHci96kt/+gRhQfMsJxMVKwD2iRVdIN2g5GS0ImO9daa6mR3x3xnlh
+	FSzAmSpF8J52Q=
+X-Received: by 2002:a05:622a:4d86:b0:517:906b:c043 with SMTP id
+ d75a77b69052e-51c8b30194dmr112033741cf.36.1783630444769; Thu, 09 Jul 2026
+ 13:54:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF0001A0FE:EE_|SA0PR12MB4479:EE_
-X-MS-Office365-Filtering-Correlation-Id: c742b571-e764-4e23-ae19-08deddfd667b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|36860700016|82310400026|376014|23010399003|22082099003|18002099003|6133799003|56012099006|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	lCTuRedHA5qvkKyxJAq2QXAKbawf6ldSgnSwT757pJjv3EfmZaneD2lM+hf5nd+58cHj6qlOPaztNOUqGbw80+4/LKH18WOiD3SUlMAJbH8ln1eguYzdjQZkUi5jVP9TlRU2EvtJ4NPNKFGQN8+nU5Yxxv6CrvjaeG6BiqniPoidGXp7p7G4CRmswWQ0rbBzHvlzXOK20QDOUmHIB1bUmPCQ1/qcFI+X4ySByOpX+k9NJjI7XXz6IbDgBlN13J1VyIN4rpk/3PtgqhYMzX3tdFNiZYEP0LDcF0sbvTemanMVzuIzRxRuOHKXJQ/jsDW/6mhqoowzgcf7iXvkJ8sVgv0jtO/xz9M6jPUV6h1a5gmIr6iaZIxF0S3w5L0Pp9/0p0/v5xRg/M3BwYuPyTfeNssZZt/CRqeI7vHG5VzFqq+c5pvEUkp8rq1WLJr5rn512wb4oTznzWm+adP7mOeT1M0Ts4vfmlelJsNV0C1YDD6Be9/lhxqBLnZOC7akzOmfCnEIdEQXfnCC5ddzpIfahb+F4DZCiN7WOY+4YhDgVh2XzMzd9msIEq1K+krmTicWpH9KZ+/zUuyAJVl9hqSt0xLjIA2vNHht39IsLt/ACTfUUhjWKSNdgBrt7lbkqhttFi5uXJa8eWtQPRJovMaOJjNvA1tb10dmU0c6hkV4Sw1z+wh1P3hZKEzN75tV7S2bjPP4Vtgj+bNDX6m5k+tJ/Q==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700016)(82310400026)(376014)(23010399003)(22082099003)(18002099003)(6133799003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	3m8HCB3Fojy0CKqghusGarOeNjbSgSF0RbunF2qQBDzCGPIgXcxlek2YoF3Wb4PxXdP6t5zlPtUoHKADm2H+jmCiiAaok2QM4oomaoCyc4tKzeSmTrNIoXJ9x3QQ7PUNDATOSitIDbpeAU0vjsGaCz0IK9iI8vk7MHVdY6m6QCjHnyyCabHDOfSyva3ZcQvebul6fdQ5XTeT/Lv3PIIYC3osimcZD8taeLuzh3DP8DlZGk7AhlnU/PQO0dSbeD698WYZKb7yrvLNCeoRDq3dod9i0w3NVWM3AmLm0u1twmd9LNZQRUNXldboNj5xec2EhRjEJYDN5XXU2KslqmS8N87MPwpbHO62c22UNVEYfSHZVX/vR5rs/864lPO6N299efOoa0/eF6R+52bl1MI6O1C7E7s5LSIk0jtjISrUKczB/QNc1vG9h+pt7JWaGWgC
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jul 2026 21:02:34.8668
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: c742b571-e764-4e23-ae19-08deddfd667b
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL02EPF0001A0FE.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4479
+References: <20260709155440.2132459-2-doebel@amazon.de>
+In-Reply-To: <20260709155440.2132459-2-doebel@amazon.de>
+From: Steve French <smfrench@gmail.com>
+Date: Thu, 9 Jul 2026 15:53:51 -0500
+X-Gm-Features: AUfX_mywyJw7Jb2CzVjlGHcEYnBTz-s8FGewaFQhIIMmJBSp0jiEvTm8UOBbBuo
+Message-ID: <CAH2r5mtg=Ko8FMO0dkTw72wu8rVJuC312bQ9QKUyNaL3gf_wbA@mail.gmail.com>
+Subject: Re: [PATCH] smb: client: mask server-provided mode to 07777 in modefromsid
+To: Bjoern Doebel <doebel@amazon.de>
+Cc: Paulo Alcantara <pc@manguebit.org>, Ronnie Sahlberg <ronniesahlberg@gmail.com>, 
+	Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>, 
+	Bharath SM <bharathsm@microsoft.com>, linux-cifs@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, samba-technical@lists.samba.org, 
+	stable@vger.kernel.org, nmanthey@amazon.de
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [1.34 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[amd.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[amd.com:s=selector1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-273047-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[17];
+	FORGED_RECIPIENTS(0.00)[m:doebel@amazon.de,m:pc@manguebit.org,m:ronniesahlberg@gmail.com,m:sprasad@microsoft.com,m:tom@talpey.com,m:bharathsm@microsoft.com,m:linux-cifs@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:samba-technical@lists.samba.org,m:stable@vger.kernel.org,m:nmanthey@amazon.de,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[george.zhang@amd.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:amd-gfx@lists.freedesktop.org,m:harry.wentland@amd.com,m:sunpeng.li@amd.com,m:aurabindo.pillai@amd.com,m:roman.li@amd.com,m:wayne.lin@amd.com,m:chiahsuan.chung@amd.com,m:jerry.zuo@amd.com,m:daniel.wheeler@amd.com,m:Ray.Wu@amd.com,m:ivan.lipski@amd.com,m:alex.hung@amd.com,m:PingLei.Lin@amd.com,m:Chen-Yu.Chen@amd.com,m:mario.limonciello@amd.com,m:stable@vger.kernel.org,m:george.zhang@amd.com,s:lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-273044-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[smfrench@gmail.com,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[george.zhang@amd.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[manguebit.org,gmail.com,microsoft.com,talpey.com,vger.kernel.org,lists.samba.org,amazon.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[amd.com:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,amd.com:from_mime,amd.com:email,amd.com:mid,amd.com:dkim];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[smfrench@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,mail.gmail.com:mid,amazon.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CAFAC735BFF
+X-Rspamd-Queue-Id: 7276B735B6C
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+merged into cifs-2.6.git for-next
 
-[Why]
-FWTS autobrightness fails on eDP panels because actual_brightness can
-read higher than the advertised max_brightness (e.g. 63576 vs 62451).
+On Thu, Jul 9, 2026 at 10:55=E2=80=AFAM Bjoern Doebel <doebel@amazon.de> wr=
+ote:
+>
+> From: Norbert Manthey <nmanthey@amazon.de>
+>
+> When modefromsid is active, parse_dacl() applies the server-provided
+> sub_auth[2] value from the NFS mode SID to cf_mode without masking to
+> 07777. Apply the correct masking, same as in the read path.
+>
+> Fixes: e2f8fbfb8d09c ("cifs: get mode bits from special sid on stat")
+> Signed-off-by: Norbert Manthey <nmanthey@amazon.de>
+> Assisted-by: Kiro:claude-opus-4.6
+> Cc: stable@vger.kernel.org
+> ---
+>  fs/smb/client/cifsacl.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/fs/smb/client/cifsacl.c b/fs/smb/client/cifsacl.c
+> index 6d572dd995d79..a0a68404fbff7 100644
+> --- a/fs/smb/client/cifsacl.c
+> +++ b/fs/smb/client/cifsacl.c
+> @@ -962,7 +962,7 @@ static void parse_dacl(struct smb_acl *pdacl, char *e=
+nd_of_acl,
+>                                  */
+>                                 fattr->cf_mode &=3D ~07777;
+>                                 fattr->cf_mode |=3D
+> -                                       le32_to_cpu(ppace[i]->sid.sub_aut=
+h[2]);
+> +                                       le32_to_cpu(ppace[i]->sid.sub_aut=
+h[2]) & 07777;
+>                                 break;
+>                         } else {
+>                                 if (compare_sids(&(ppace[i]->sid), powner=
+sid) =3D=3D 0) {
+> --
+> 2.50.1
+>
+>
 
-The conversion helpers expose the firmware PWM range to userspace as
-[0..max].  But max_brightness is advertised as (max - min), which is
-smaller.  So reading the level can return a value above max_brightness.
 
-This regressed in commit 4b61b8a39051 ("drm/amd/display: Add debugging
-message for brightness caps"), which changed max_brightness to
-(max - min) and undid commit 8dbd72cb7900 ("drm/amd/display: Export full
-brightness range to userspace").
+--=20
+Thanks,
 
-[How]
-Advertise max_brightness as max, and scale the initial AC/DC brightness
-against max too.  Update the KUnit expectations to match.
-
-Fixes: 4b61b8a39051 ("drm/amd/display: Add debugging message for brightness caps")
-Cc: stable@vger.kernel.org
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: George Zhang <george.zhang@amd.com>
----
- .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_backlight.c   | 6 +++---
- .../display/amdgpu_dm/tests/amdgpu_dm_backlight_test.c    | 8 ++++----
- 2 files changed, 7 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_backlight.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_backlight.c
-index 11d54897a894..ca60c72855fd 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_backlight.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_backlight.c
-@@ -407,12 +407,12 @@ void amdgpu_dm_backlight_fill_props(const struct amdgpu_dm_backlight_caps *caps,
- 
- 	if (get_brightness_range(caps, &min, &max)) {
- 		if (is_system_supplied)
--			props->brightness = DIV_ROUND_CLOSEST((max - min) * caps->ac_level,
-+			props->brightness = DIV_ROUND_CLOSEST(max * caps->ac_level,
- 							       100);
- 		else
--			props->brightness = DIV_ROUND_CLOSEST((max - min) * caps->dc_level,
-+			props->brightness = DIV_ROUND_CLOSEST(max * caps->dc_level,
- 							       100);
--		props->max_brightness = max - min;
-+		props->max_brightness = max;
- 	} else {
- 		props->brightness = MAX_BACKLIGHT_LEVEL;
- 		props->max_brightness = MAX_BACKLIGHT_LEVEL;
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/tests/amdgpu_dm_backlight_test.c b/drivers/gpu/drm/amd/display/amdgpu_dm/tests/amdgpu_dm_backlight_test.c
-index adb896022a27..8ebc0f263e3e 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/tests/amdgpu_dm_backlight_test.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/tests/amdgpu_dm_backlight_test.c
-@@ -799,8 +799,8 @@ static void dm_test_backlight_fill_props_ac_linear(struct kunit *test)
- 	amdgpu_dm_backlight_fill_props(&caps, true, false, &props);
- 
- 	KUNIT_EXPECT_EQ(test, props.brightness,
--			 DIV_ROUND_CLOSEST((max - min) * caps.ac_level, 100));
--	KUNIT_EXPECT_EQ(test, props.max_brightness, max - min);
-+			 DIV_ROUND_CLOSEST(max * caps.ac_level, 100));
-+	KUNIT_EXPECT_EQ(test, props.max_brightness, max);
- 	KUNIT_EXPECT_EQ(test, props.scale, BACKLIGHT_SCALE_LINEAR);
- 	KUNIT_EXPECT_EQ(test, props.type, BACKLIGHT_RAW);
- }
-@@ -825,8 +825,8 @@ static void dm_test_backlight_fill_props_dc_nonlinear(struct kunit *test)
- 	amdgpu_dm_backlight_fill_props(&caps, false, true, &props);
- 
- 	KUNIT_EXPECT_EQ(test, props.brightness,
--			 DIV_ROUND_CLOSEST((max - min) * caps.dc_level, 100));
--	KUNIT_EXPECT_EQ(test, props.max_brightness, max - min);
-+			 DIV_ROUND_CLOSEST(max * caps.dc_level, 100));
-+	KUNIT_EXPECT_EQ(test, props.max_brightness, max);
- 	KUNIT_EXPECT_EQ(test, props.scale, BACKLIGHT_SCALE_NON_LINEAR);
- 	KUNIT_EXPECT_EQ(test, props.type, BACKLIGHT_RAW);
- }
--- 
-2.55.0
-
+Steve
 
