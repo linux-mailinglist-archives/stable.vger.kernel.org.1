@@ -1,273 +1,165 @@
-Return-Path: <stable+bounces-272919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272925-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id p68yI+uhT2qXlQIAu9opvQ
-	(envelope-from <stable+bounces-272919-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 15:28:11 +0200
+	id GTORM8CjT2oXlgIAu9opvQ
+	(envelope-from <stable+bounces-272925-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 15:36:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E05F73191F
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 15:28:11 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42240731A1C
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 15:36:00 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="l6/Mznt+";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272919-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272919-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=e2jFa6Az;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=QkLnFrLI;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=e2jFa6Az;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=QkLnFrLI;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272925-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272925-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B516730D39BF
-	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 13:19:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8382F30E65CC
+	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 13:29:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 600D0270ED7;
-	Thu,  9 Jul 2026 13:19:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 371B12D0C9D;
+	Thu,  9 Jul 2026 13:28:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB5622727FD
-	for <stable@vger.kernel.org>; Thu,  9 Jul 2026 13:19:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8E47296BCC
+	for <stable@vger.kernel.org>; Thu,  9 Jul 2026 13:28:55 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783603157; cv=none; b=KfnRBPRvqMbocfTYlioKAelLXYKMYOI31rFS2Zb18l72YJCkG5p8kY9MZF1lRJJjVc7n5VpNgET2lRbyIlVlIWz+ii5sWHpr0kpLBN20wrvjEQIMCLcjLWlm5mHiH9J/zTku1U0PPwveBBSD7VfryQ0Ntdl4uEPv7A1Y5SgpvTQ=
+	t=1783603737; cv=none; b=P4JHU/B3w5nDSzx3bHtR4kAzlEQ650M098je4ccSVgsSuhARA2xSxho/cdAc98Fbf5cjaPvXuzqfoLv3MdRnOTeUI3jcWsbzVaKTL8AT3/E1ojFvVjEAtgAUJBeVvl0DOiZZ7Fd/SFufVIMVC5TTd/2w4XQ5zbu11rieSZBZrWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783603157; c=relaxed/simple;
-	bh=T2u541qQ+z0RnOgRw7bMFV+eieAFDFj+xTZQdyN6NUA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rvH0kPej4bd0WBm2im5X2trg2/mpqEkJ49chpY/4vJ6k4gXTG1KQfs86GEH9L2dWOV8JQytjreBzjQvVGau1uCBtSJg5xmYAsknWHHL638XvjP+/fDqYXHX4j73nU4/s47+yvCiYaZWGGr3qqKLhmvzB70Gnx7BebR2USY0UemU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l6/Mznt+; arc=none smtp.client-ip=209.85.215.179
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-c96cb024ee0so570084a12.1
-        for <stable@vger.kernel.org>; Thu, 09 Jul 2026 06:19:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783603155; x=1784207955; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=m7teN60MU+Gp3txyOBv3fyoxyVU/6erlMzYso9Y2plQ=;
-        b=l6/Mznt+FGL/bWtEUKO3r2NizjJJevQ9Gq1H+lIT6FNmQnaeu2CWVEkqlBjNwuvtRR
-         WLR177Hmquwc/TxwcEPyetBSK0LW6CECzJns0Esh6bKEKmjXYOFjAzG8IQ9PDASO/vrE
-         TScS64zKMi7ulSP3SKjQ2AddN1vkvFvQzJwbSZwPsvN4HaBVl4KxubwaVeiBCSd+hgKM
-         SFYKssapZldO4tXcsvNaUl6UTb/phZwv147+ZtfvGGsPtgYttBR46uB/yBleqs48gwl2
-         haPdH2SdVbly/aFPdvHW7Boojp2itGJwpFb+dZb5QaPsy4jLqOUnb6RU8OKzrXN3YQ/B
-         k4Zg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783603155; x=1784207955;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=m7teN60MU+Gp3txyOBv3fyoxyVU/6erlMzYso9Y2plQ=;
-        b=eZEY9VNdlwykNew/PYAKGOt7CcG9gCMcKDRXKmgrN1HKEP16kpOgXCNutIYEJxmItQ
-         hlRvb2GqvVHVepVGEvf9mcz8aVCI4qGmUOE1DTu420LfazyR3WPYsSjsz3bOZdDKo/h8
-         O0H2OCEw1FRn0aG2E7ehMM6g6rletYbMIP8QX9Di9L0J6zE5DkMNuo0anjgb7Xh/nhgx
-         MRKj5hTWGA9IpEf6Z6z9BVjR247pPAVCbtegHPgBJ5DZZmtVD1ZIHykyAbnAuWnOWZVf
-         0QI2ydYhLhpEnP/Vk1r5ZxYKhrS7P0WtEWuO8ySV0ARMe+yuuSuZiHML4c3Zd3r2ehY6
-         lTPA==
-X-Forwarded-Encrypted: i=1; AHgh+RqZlnokCNSDghUjQb7zB2lcYpY5GOUFbR62p0bgUxRcU0SAof2TAukTy642g99QZ7/WC0f0sZU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx/UPjWX0sQIflcmeDFYe8zG6GfjIpuu5to9heUusyeptWJpnAy
-	KnDcRoSZR92oAs+8JrOfUCreX/oYzqmuXmcDUKzghcZAbjrSCLlxX9ixZ3/4qpr/hQ==
-X-Gm-Gg: AfdE7cmSE4ewtvRioIaf0Bnjl80mXdXEQ8FOh8f4uOUTKkzuJ1Q1P0ApdM9Pz5/1/Jc
-	EQrIsTvx62MuF8Aeg5kiD2mAOrbiBCSJbmM17XcPywCYLnxHj9lEMDskWVs5p/+5c8p57fre1av
-	3aihcleSn2iTtDJbu0bIe4eZ51SztXLqyGasUZSS+WhGy1ZerYa8QJCQR8ggkfREPCypDIeVWMT
-	nk3MFcP8725At/T6ggTnKOQmmna5x/1QIC3aNZywpjtMZjueQicvn6ENEvluclqpAv6jW0j5fpI
-	2kdI69TNRaSSW0vhit7i8AEOSW/wBExvOb3AvtatrXwdPjmbwhX9cljGyH/pb9SXbrHfTIgq1zi
-	bTTzBP9NqCgGeOWjG3Vl+Xy89oFJCBhKr6VqFnY/n+A53Cci7F3/VzC9EwcwVxe16mOaq+6SLH0
-	imqaYx1iUCgUd5rqqeC7Z85NgoSST/HeC5//se577Ykbzjn8mWb23xrlvXMbCDCbJo
-X-Received: by 2002:a05:6a21:3a85:b0:3c0:9c18:d5ae with SMTP id adf61e73a8af0-3c0bd23f657mr8729454637.75.1783603155192;
-        Thu, 09 Jul 2026 06:19:15 -0700 (PDT)
-Received: from coe.tail83f5bd.ts.net ([58.146.106.120])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-31174ae6cd9sm33960852eec.31.2026.07.09.06.19.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jul 2026 06:19:14 -0700 (PDT)
-From: Ramesh Adhikari <adhikari.resume@gmail.com>
-To: colyli@fygo.io,
-	axboe@kernel.dk
-Cc: gregkh@linuxfoundation.org,
-	linux-block@vger.kernel.org,
-	stable@vger.kernel.org,
-	Ramesh Adhikari <adhikari.resume@gmail.com>
-Subject: [PATCH v6 2/2] badblocks: validate sector range and shift before rounding
-Date: Thu,  9 Jul 2026 18:49:04 +0530
-Message-ID: <20260709131904.596684-3-adhikari.resume@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260709131904.596684-1-adhikari.resume@gmail.com>
-References: <ak9CC591ivuQ4BP1@studio.local>
- <20260709131904.596684-1-adhikari.resume@gmail.com>
+	s=arc-20240116; t=1783603737; c=relaxed/simple;
+	bh=/zYeT0KdD3zKJAfr9LeThMHhDSmbPOHMEgQBTCGOzTw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=EmrFCPaXihp3oMtaf9D56XUqhJnxUB3zz9K1XDKfrCMi9hJ1KUBes2AfqwdhK+9Sw+/ySm13GqMGC8oI7U57iJM38aAX3rW2RM8be4I7j0lbxO+pu0jag42d04MWcSu3WQB4aBI+JRZrT9WzgJ2hrrrTWPPwu+jKtdWvKjM6Tpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=e2jFa6Az; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=QkLnFrLI; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=e2jFa6Az; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=QkLnFrLI; arc=none smtp.client-ip=195.135.223.130
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 1CEE874E08;
+	Thu,  9 Jul 2026 13:28:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1783603734; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Uy1/x5hxq476QX+TCjtaIN6O479+bX6YVH8RpGgjd6s=;
+	b=e2jFa6AzfcJbLg7saWj28aDHQc7MnlG+RHPrWPsb/0WvMtyHDTU76V52BVS607ESKrp7QR
+	5Lw7B8R0SErY2OcnzAqi5odDDN5JF0yQ7Qfh6lQgRYIrhvnRYwddN/sOaqfaFMadBYZ962
+	rac0CyujV7A0VTOS/Q0WvC9hvldOLIc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1783603734;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Uy1/x5hxq476QX+TCjtaIN6O479+bX6YVH8RpGgjd6s=;
+	b=QkLnFrLIl8qIZ1NA0B5BC/raEhnxX+KNFukEqMUMzJhsGo6Nfumclc7IFv1HSbHP6Y2B1g
+	wuFVTgefrkcVCvCQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1783603734; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Uy1/x5hxq476QX+TCjtaIN6O479+bX6YVH8RpGgjd6s=;
+	b=e2jFa6AzfcJbLg7saWj28aDHQc7MnlG+RHPrWPsb/0WvMtyHDTU76V52BVS607ESKrp7QR
+	5Lw7B8R0SErY2OcnzAqi5odDDN5JF0yQ7Qfh6lQgRYIrhvnRYwddN/sOaqfaFMadBYZ962
+	rac0CyujV7A0VTOS/Q0WvC9hvldOLIc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1783603734;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Uy1/x5hxq476QX+TCjtaIN6O479+bX6YVH8RpGgjd6s=;
+	b=QkLnFrLIl8qIZ1NA0B5BC/raEhnxX+KNFukEqMUMzJhsGo6Nfumclc7IFv1HSbHP6Y2B1g
+	wuFVTgefrkcVCvCQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B20C2779AA;
+	Thu,  9 Jul 2026 13:28:53 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id ybTNKBWiT2qaMQAAD6G6ig
+	(envelope-from <clopez@suse.de>); Thu, 09 Jul 2026 13:28:53 +0000
+From: =?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>
+To: stable@vger.kernel.org
+Cc: kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	gregkh@linuxfoundation.org,
+	=?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>
+Subject: [PATCH 7.1.y 0/3] KVM: x86: Backports for VM entry failure due to stale CR8 intercept
+Date: Thu,  9 Jul 2026 15:21:06 +0200
+Message-ID: <20260709132109.3423488-2-clopez@suse.de>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Spam-Flag: NO
+X-Spam-Level: 
+X-Spam-Score: -3.30
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-272919-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:colyli@fygo.io,m:axboe@kernel.dk,m:gregkh@linuxfoundation.org,m:linux-block@vger.kernel.org,m:stable@vger.kernel.org,m:adhikari.resume@gmail.com,m:adhikariresume@gmail.com,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-272925-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[adhikariresume@gmail.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,vger.kernel.org,gmail.com];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:kvm@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:gregkh@linuxfoundation.org,m:clopez@suse.de,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_SENDER(0.00)[clopez@suse.de,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[adhikariresume@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FROM_NEQ_ENVFROM(0.00)[clopez@suse.de,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[suse.de:+];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,suse.de:from_mime,suse.de:dkim,suse.de:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2E05F73191F
+X-Rspamd-Queue-Id: 42240731A1C
 
-_badblocks_set(), _badblocks_clear() and badblocks_check() round
-the caller-supplied [s, s+sectors) range to the current bb->shift
-block size before touching the bad block table. That rounding
-was not defensive against a few cases:
+Backport for bb365a506b1e ("KVM: x86: Unconditionally recompute CR8
+intercept on PPR update") with two prerequisite patches.
 
-- s + sectors can overflow sector_t (u64), wrapping the range
-  end before it is ever compared against s.
+Carlos López (1):
+  KVM: x86: Unconditionally recompute CR8 intercept on PPR update
 
-- bb->shift is a plain 'int' field, populated in one case
-  (drivers/md/md.c, from the on-disk superblock's bblog_shift)
-  straight from an unvalidated byte with no upper bound. Shifting
-  by an amount >= the width of the shifted type is undefined
-  behaviour in C; "1 << bb->shift" was shifting an int literal,
-  so this was already undefined for bb->shift >= 32, let alone
-  the full 0-255 range bblog_shift allows.
+Sean Christopherson (2):
+  KVM: x86: Move update_cr8_intercept() to lapic.c
+  KVM: VMX: Grab vmcs12 on CR8 interception update iff vCPU is in guest
+    mode
 
-- round_up()/round_down() rounding a value near ULLONG_MAX can
-  itself wrap back to a small value, so even with a valid shift
-  the rounded end of the range could end up smaller than the
-  rounded start, silently turning a small range into a huge one
-  (in _badblocks_clear()/badblocks_check(), which round the end
-  up) or losing the range entirely.
+ arch/x86/kvm/lapic.c   | 28 ++++++++++++++++++++++++++++
+ arch/x86/kvm/lapic.h   |  1 +
+ arch/x86/kvm/vmx/vmx.c |  3 +--
+ arch/x86/kvm/x86.c     | 35 ++---------------------------------
+ 4 files changed, 32 insertions(+), 35 deletions(-)
 
-Add an explicit s+sectors overflow check, reject any bb->shift
-that is too large to shift a sector_t by, cast the shift operand
-to sector_t so the shift itself is never performed on a 32-bit
-int, and detect post-rounding wrap by comparing the rounded
-result back against the pre-rounding value.
 
-Suggested-by: Coly Li <colyli@fygo.io>
-Fixes: aa511ff8218b ("badblocks: switch to the improved badblock handling code")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ramesh Adhikari <adhikari.resume@gmail.com>
----
- block/badblocks.c | 52 ++++++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 45 insertions(+), 7 deletions(-)
-
-diff --git a/block/badblocks.c b/block/badblocks.c
-index 1f786b193fb..00a59729600 100644
---- a/block/badblocks.c
-+++ b/block/badblocks.c
-@@ -853,12 +853,23 @@ static bool _badblocks_set(struct badblocks *bb, sector_t s, sector_t sectors,
- 		/* Invalid sectors number */
- 		return false;
- 
-+	if (s > ULLONG_MAX - sectors)
-+		/* Range wraps past the end of sector_t */
-+		return false;
-+
- 	if (bb->shift) {
- 		/* round the start down, and the end up */
- 		sector_t next = s + sectors;
- 
--		s = round_down(s, 1 << bb->shift);
--		next = round_up(next, 1 << bb->shift);
-+		if (bb->shift >= BITS_PER_LONG_LONG)
-+			/* Corrupt/unsanitised shift value */
-+			return false;
-+
-+		s = round_down(s, (sector_t)1 << bb->shift);
-+		next = round_up(next, (sector_t)1 << bb->shift);
-+		if (next <= s)
-+			/* Rounding wrapped past the end of sector_t */
-+			return false;
- 		sectors = next - s;
- 	}
- 
-@@ -1061,7 +1072,12 @@ static bool _badblocks_clear(struct badblocks *bb, sector_t s, sector_t sectors)
- 		/* Invalid sectors number */
- 		return false;
- 
-+	if (s > ULLONG_MAX - sectors)
-+		/* Range wraps past the end of sector_t */
-+		return false;
-+
- 	if (bb->shift) {
-+		sector_t orig_s = s;
- 		sector_t target;
- 
- 		/* When clearing we round the start up and the end down.
-@@ -1070,10 +1086,21 @@ static bool _badblocks_clear(struct badblocks *bb, sector_t s, sector_t sectors)
- 		 * However it is better the think a block is bad when it
- 		 * isn't than to think a block is not bad when it is.
- 		 */
-+		if (bb->shift >= BITS_PER_LONG_LONG)
-+			/* Corrupt/unsanitised shift value */
-+			return false;
-+
- 		target = s + sectors;
--		s = round_up(s, 1 << bb->shift);
--		target = round_down(target, 1 << bb->shift);
--		sectors = target - s;
-+		s = round_up(s, (sector_t)1 << bb->shift);
-+		target = round_down(target, (sector_t)1 << bb->shift);
-+		if (s < orig_s || target < s)
-+			/* Rounding wrapped, or range collapsed */
-+			sectors = 0;
-+		else
-+			sectors = target - s;
-+
-+		if (sectors == 0)
-+			return false;
- 	}
- 
- 	write_seqlock_irq(&bb->lock);
-@@ -1303,12 +1330,23 @@ int badblocks_check(struct badblocks *bb, sector_t s, sector_t sectors,
- 
- 	WARN_ON(bb->shift < 0 || sectors == 0);
- 
-+	if (s > ULLONG_MAX - sectors)
-+		/* Range wraps past the end of sector_t */
-+		return -EINVAL;
-+
- 	if (bb->shift > 0) {
- 		/* round the start down, and the end up */
- 		sector_t target = s + sectors;
- 
--		s = round_down(s, 1 << bb->shift);
--		target = round_up(target, 1 << bb->shift);
-+		if (bb->shift >= BITS_PER_LONG_LONG)
-+			/* Corrupt/unsanitised shift value */
-+			return -EINVAL;
-+
-+		s = round_down(s, (sector_t)1 << bb->shift);
-+		target = round_up(target, (sector_t)1 << bb->shift);
-+		if (target <= s)
-+			/* Rounding wrapped past the end of sector_t */
-+			return 0;
- 		sectors = target - s;
- 	}
- 
+base-commit: 199c9959d3a9b53f346c221757fc7ac507fbac50
 -- 
-2.43.0
+2.51.0
 
 
