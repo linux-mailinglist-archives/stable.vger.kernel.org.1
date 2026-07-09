@@ -1,168 +1,184 @@
-Return-Path: <stable+bounces-272850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272851-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id IlC9HWhjT2oEfwIAu9opvQ
-	(envelope-from <stable+bounces-272850-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 11:01:28 +0200
+	id nQPECIdoT2rOgAIAu9opvQ
+	(envelope-from <stable+bounces-272851-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 11:23:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2504E72E9B8
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 11:01:23 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0229F72EE68
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 11:23:19 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="VPT/Q03Q";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=+1LxuDQL;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="VPT/Q03Q";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=+1LxuDQL;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272850-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272850-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=ideasonboard.com header.s=mail header.b=TWXZTFYP;
+	dmarc=pass (policy=none) header.from=ideasonboard.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272851-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-272851-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C99A5302A7F2
-	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 09:00:46 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 378513048C87
+	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 09:21:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E576C3E5591;
-	Thu,  9 Jul 2026 09:00:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6488A403AF5;
+	Thu,  9 Jul 2026 09:19:24 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E75A2877C3
-	for <stable@vger.kernel.org>; Thu,  9 Jul 2026 09:00:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD6573EFD00;
+	Thu,  9 Jul 2026 09:19:22 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783587645; cv=none; b=lIgEXfkwbL58gsU/yW3zNqYLwgYgGnc0VYQWVqrCUEMxoluDVNmCOIAZN/sxUMZTej/gDnoNVPnWOZDVLoXOsXUzitteo0pF7g5cBhZ4B5N4R+ABBydP3zb0Wlf7x0wzty9ZBuwL3TyKzXUKxrSK3JerxqAO67zlomvLLWgCKc0=
+	t=1783588764; cv=none; b=jPvAURElufPYKTE19ZZonOh9CwXB+Fa9CelKGf0/WTHekUJGWfrXL9G7DVQeZZnhsodWB8H+w0Ltuod9QkriJ1VawcF6R0IYUS1jgGsJCk+DYIAvU9MincrQvlDVo+vsARdMXTxQxI4z8c02a50gUxGSxM6GdwGc/25RMi5RkJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783587645; c=relaxed/simple;
-	bh=Zh2ODTV1GBYlf+nNnwzS1qXQqZZgdHw16xwwqEfzPiI=;
+	s=arc-20240116; t=1783588764; c=relaxed/simple;
+	bh=ObYn3QHNk0BaSBgjNqJ4Ke8AwT1WjdDdSK5Cm7ewbMk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z5GUH2AVXQBx4JhhQVKV+4vPECWuchNRKjBRG3Z0GfhqiBGCzQ66gYB7b/GCTAP79kCWPtll7csR1d3F/gTu5v21HKh3WeNepJ90MWiVGhpUWvvEzzi+6Pzbiwk0KdBekGl/IUZry7t/JIya2SLe1jRb728S5dx1UKvdgP1CTi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=VPT/Q03Q; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=+1LxuDQL; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=VPT/Q03Q; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=+1LxuDQL; arc=none smtp.client-ip=195.135.223.131
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id BA2F475DBB;
-	Thu,  9 Jul 2026 09:00:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1783587636; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TMqAUkpkMB0zcq7EfUKr5JKV2cULMeskN1jU9swNwfU=;
-	b=VPT/Q03QTMdyHo1eR62O1cWSXtz4a286keH716ZIccJgAnJMSUeZ7WUmcGsQW1yKoM1Rwu
-	lhFODurFsSliYcZ+h5VmsagGhJxk3yUUcd9CkZa78qCzcNeF4mc03OdlsoDHPchMCuYO3K
-	9MCOfV062eJiDSpyWw+wcpCLsQmssXg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1783587636;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TMqAUkpkMB0zcq7EfUKr5JKV2cULMeskN1jU9swNwfU=;
-	b=+1LxuDQLiibD7APAmQn+44eCQhsrqG2CV0O47JtYVV77gG1ZdC2sJUVw4Ee3Dd/i+sW8A7
-	sR7CesdAmb0qO4Dw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1783587636; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TMqAUkpkMB0zcq7EfUKr5JKV2cULMeskN1jU9swNwfU=;
-	b=VPT/Q03QTMdyHo1eR62O1cWSXtz4a286keH716ZIccJgAnJMSUeZ7WUmcGsQW1yKoM1Rwu
-	lhFODurFsSliYcZ+h5VmsagGhJxk3yUUcd9CkZa78qCzcNeF4mc03OdlsoDHPchMCuYO3K
-	9MCOfV062eJiDSpyWw+wcpCLsQmssXg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1783587636;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TMqAUkpkMB0zcq7EfUKr5JKV2cULMeskN1jU9swNwfU=;
-	b=+1LxuDQLiibD7APAmQn+44eCQhsrqG2CV0O47JtYVV77gG1ZdC2sJUVw4Ee3Dd/i+sW8A7
-	sR7CesdAmb0qO4Dw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CD0E6779AA;
-	Thu,  9 Jul 2026 09:00:35 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 7wC9LjNjT2pnJAAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Thu, 09 Jul 2026 09:00:35 +0000
-Date: Thu, 9 Jul 2026 10:00:34 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Sasha Levin <sashal@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, stable@vger.kernel.org, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Matthew Wilcox <willy@infradead.org>, Song Liu <song@kernel.org>, 
-	Eric Hagberg <ehagberg@janestreet.com>, Zi Yan <ziy@nvidia.com>, 
-	Gregg Leventhal <gleventhal@janestreet.com>, Lance Yang <lance.yang@linux.dev>
-Subject: Re: [PATCH stable v2] mm/khugepaged: write all dirty file folios
- when collapsing
-Message-ID: <ak9hKFnS8uQj1Yqb@pedro-suse.lan>
-References: <20260708151357.353173-1-pfalcato@suse.de>
- <20260708194323.agent5-0003@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=digSwj2mOc0X7QzI3x9WW15F7qKZqznUfqJH3L+324CwQwBIqmJ24Ib9D0XjFK6T8n1COQsUMIe1RmeIOUaWAIXw1ODkRLme1CAwVgbL29+uZFM1Z33esRsj8RGcaDCnmUdVnCoMVkgWtFTGU8y2hDwwikSZN2jg9LsD5hNn5Wk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=TWXZTFYP; arc=none smtp.client-ip=213.167.242.64
+Received: from ideasonboard.com (net-93-65-100-155.cust.vodafonedsl.it [93.65.100.155])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 44D62448;
+	Thu,  9 Jul 2026 11:18:30 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1783588710;
+	bh=ObYn3QHNk0BaSBgjNqJ4Ke8AwT1WjdDdSK5Cm7ewbMk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TWXZTFYPaBXjQhPavjeqnF9OsD7IM88r6HZmdfWhXZUTIa0+/eD8tYqMnTe+j6Ajq
+	 oaxyI+p0ZksndRta+8EAcojz7V9bYCraCxPKXQxBwVQa/fThhKKemaN402ty5JoyxT
+	 MAaiM+/H64K2W+3lqIj0AUuIpoHfGuKCjoK7XRcg=
+Date: Thu, 9 Jul 2026 11:19:17 +0200
+From: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+To: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
+Cc: tomm.merciai@gmail.com, linux-renesas-soc@vger.kernel.org, 
+	biju.das.jz@bp.renesas.com, Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, 
+	Jacopo Mondi <jacopo.mondi@ideasonboard.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	Hans Verkuil <hverkuil+cisco@kernel.org>, Nicolas Dufresne <nicolas.dufresne@collabora.com>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+	Mehdi Djait <mehdi.djait@linux.intel.com>, Sven =?utf-8?Q?P=C3=BCschel?= <s.pueschel@pengutronix.de>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, Isaac Scott <isaac.scott@ideasonboard.com>, 
+	Paul Cercueil <paul@crapouillou.net>, Daniel Scally <dan.scally+renesas@ideasonboard.com>, 
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v3 4/4] media: rzg2l-cru: Align bytesperline to hardware
+ DMA stride requirement
+Message-ID: <ak9l33lrocjxj1Gd@zed>
+References: <20260708161406.396183-1-tommaso.merciai.xr@bp.renesas.com>
+ <20260708161406.396183-5-tommaso.merciai.xr@bp.renesas.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260708194323.agent5-0003@kernel.org>
-X-Spam-Flag: NO
-X-Spam-Score: -4.30
-X-Spam-Level: 
+In-Reply-To: <20260708161406.396183-5-tommaso.merciai.xr@bp.renesas.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[ideasonboard.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[ideasonboard.com:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-272850-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:sashal@kernel.org,m:akpm@linux-foundation.org,m:david@kernel.org,m:ljs@kernel.org,m:stable@vger.kernel.org,m:viro@zeniv.linux.org.uk,m:brauner@kernel.org,m:jack@suse.cz,m:willy@infradead.org,m:song@kernel.org,m:ehagberg@janestreet.com,m:ziy@nvidia.com,m:gleventhal@janestreet.com,m:lance.yang@linux.dev,s:lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[pfalcato@suse.de,stable@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	RSPAMD_URIBL_FAIL(0.00)[suse.de:query timed out,pedro-suse.lan:query timed out];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-272851-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:tommaso.merciai.xr@bp.renesas.com,m:tomm.merciai@gmail.com,m:linux-renesas-soc@vger.kernel.org,m:biju.das.jz@bp.renesas.com,m:prabhakar.mahadev-lad.rj@bp.renesas.com,m:jacopo.mondi@ideasonboard.com,m:mchehab@kernel.org,m:hverkuil+cisco@kernel.org,m:nicolas.dufresne@collabora.com,m:sakari.ailus@linux.intel.com,m:laurent.pinchart@ideasonboard.com,m:mehdi.djait@linux.intel.com,m:s.pueschel@pengutronix.de,m:m.szyprowski@samsung.com,m:isaac.scott@ideasonboard.com,m:paul@crapouillou.net,m:dan.scally+renesas@ideasonboard.com,m:linux-media@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:laurent.pinchart+renesas@ideasonboard.com,m:stable@vger.kernel.org,m:tommmerciai@gmail.com,m:hverkuil@kernel.org,m:dan.scally@ideasonboard.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	FORGED_SENDER(0.00)[jacopo.mondi@ideasonboard.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[suse.de:+];
-	MISSING_XM_UA(0.00)[];
-	RSPAMD_EMAILBL_FAIL(0.00)[stable@vger.kernel.org:query timed out,pfalcato@suse.de:query timed out];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pfalcato@suse.de,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[ideasonboard.com:+];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jacopo.mondi@ideasonboard.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,bp.renesas.com,ideasonboard.com,kernel.org,collabora.com,linux.intel.com,pengutronix.de,samsung.com,crapouillou.net];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,suse.de:from_mime,suse.de:dkim]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[stable,cisco,renesas];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,zed:mid,ideasonboard.com:from_mime,ideasonboard.com:email,ideasonboard.com:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2504E72E9B8
+X-Rspamd-Queue-Id: 0229F72EE68
 
-On Wed, Jul 08, 2026 at 09:04:47PM -0400, Sasha Levin wrote:
-> > Fix it by fully writing back the page cache (and waiting) when collapsing
-> > file THPs. Doing so provides the guarantee that no dirty folio will be
-> > observed while there are active THPs. To fully ensure this is safe, the
-> > invalidate_lock needs to be held while doing the writeout, so that
-> > do_dentry_open()'s page cache truncation excludes this write-and-wait.
-> 
-> Queued for 7.1, 6.18, and 6.12 (with Willy's Reviewed-by and David's
-> Acked-by from this thread), thanks.
+Hi Tommaso
 
-Thanks Sasha! FTR this also needs to be queued to the rest of the LTS
-branches (5.10, 5.15, 6.1 and 6.6).
+On Wed, Jul 08, 2026 at 06:14:05PM +0200, Tommaso Merciai wrote:
+> The RZ/G3E CRU programs the line stride via the AMnIS register, whose
+> IS field encodes the value in units of 128 bytes. If bytesperline is
 
-(for 5.10 it looks like it might need some good massaging...)
+Unrelated, it seems for RGB888 the alignemtn requirement is 384 bytes,
+something that doesn't seem handled at the moment ?
 
--- 
-Pedro
+> not a multiple of 128, the division truncates and the hardware uses a
+> wrong stride, causing horizontal banding.
+>
+> Commit ace92ccef0c9 ("media: platform: rzg2l-cru: Use v4l2_fill_pixfmt()")
+> replaced the open-coded aligned calculation with v4l2_fill_pixfmt(),
+> which sets no alignment, reintroducing the issue.
+>
+> Switch to v4l2_fill_pixfmt_aligned() with RZG2L_CRU_STRIDE_ALIGN when
+> info->has_stride is set. RZ/G2L has no AMnIS register and keeps using
+> v4l2_fill_pixfmt() unchanged.
+>
+> Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+> Cc: stable@vger.kernel.org
+> Fixes: ace92ccef0c9 ("media: platform: rzg2l-cru: Use v4l2_fill_pixfmt()")
+> Signed-off-by: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
+> ---
+> v2->v3:
+>  - No changes.
+>
+> v1->v2:
+>  - Collected tag
+>  - Add missing Cc stable
+>  - Fix s/commit/Commit/ into commit body
+>
+>  drivers/media/platform/renesas/rzg2l-cru/rzg2l-video.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/media/platform/renesas/rzg2l-cru/rzg2l-video.c b/drivers/media/platform/renesas/rzg2l-cru/rzg2l-video.c
+> index 69346a585f9f..478264f26466 100644
+> --- a/drivers/media/platform/renesas/rzg2l-cru/rzg2l-video.c
+> +++ b/drivers/media/platform/renesas/rzg2l-cru/rzg2l-video.c
+> @@ -860,7 +860,8 @@ static void rzg2l_cru_format_align(struct rzg2l_cru_dev *cru,
+>  	v4l_bound_align_image(&pix->width, 320, info->max_width, 1,
+>  			      &pix->height, 240, info->max_height, 0, 0);
+
+This doesn't apply on media-committers/next which has
+
+	v4l_bound_align_image(&pix->width, 320, info->max_width, 1,
+			      &pix->height, 240, info->max_height, 2, 0);
+
+in this line.
+
+What have I missed ?
+
+>
+> -	v4l2_fill_pixfmt(pix, pix->pixelformat, pix->width, pix->height);
+> +	v4l2_fill_pixfmt_aligned(pix, pix->pixelformat, pix->width, pix->height,
+> +				 info->has_stride ? RZG2L_CRU_STRIDE_ALIGN : 1);
+
+Rebasing apart, this seems correct
+
+Reviewed-by: Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>
+
+Thanks
+  j
+
+>
+>  	dev_dbg(cru->dev, "Format %ux%u bpl: %u size: %u\n",
+>  		pix->width, pix->height, pix->bytesperline, pix->sizeimage);
+> --
+> 2.54.0
+>
+>
 
