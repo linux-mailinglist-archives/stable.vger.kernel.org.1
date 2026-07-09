@@ -1,208 +1,220 @@
-Return-Path: <stable+bounces-273057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273058-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id IMHXFPccUGoAtgIAu9opvQ
-	(envelope-from <stable+bounces-273057-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 00:13:11 +0200
+	id oihHMhceUGo0tgIAu9opvQ
+	(envelope-from <stable+bounces-273058-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 00:17:59 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D46A735F35
-	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 00:13:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61FA8735FA3
+	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 00:17:59 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=OqvJPZhI;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=DHl5iHBZ;
-	dmarc=pass (policy=reject) header.from=mailbox.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273057-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-273057-lists+stable=lfdr.de@vger.kernel.org";
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=WRZO5o6B;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273058-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-273058-lists+stable=lfdr.de@vger.kernel.org";
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 28ADA302658A
-	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 22:13:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D6D23304BD8F
+	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 22:15:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C97703D75BC;
-	Thu,  9 Jul 2026 22:13:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66CF63E0C58;
+	Thu,  9 Jul 2026 22:15:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F4C3449997;
-	Thu,  9 Jul 2026 22:12:59 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783635181; cv=none; b=UB5pE1xiMdiR1Ljy46UnKe2tsIoq2i02pIxV70z6ylTEiqq9HG8LBj7Bn8pLcptI1+18PIsjpelmJ4PsHwqswg3kIKHV/yydIroZA6+HSIONxy7rIRlVN+lXvGuow7kZUq0BWkzAVLWwAYV/C84gBgx+ueyd614t+ARW4zRf6aU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783635181; c=relaxed/simple;
-	bh=5/rCRI3UZ45EfEwK6TTp7JRSRgCGf2m9q/mNeRMDj1o=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SHyLVemS1eTsirf4NwHpKqS+0xXv3TbEH53W+noq176vgorVRYT1pcnVe4qj89G6MED1UYwR2/U5TtiJLDekkS0dnq7+SRBs2PKlrVRrmWCQ+yznLjHZKpwPshz6HIDafAT3rhv7XBY1gLqy7u/ZeZ59003ZGBA7JmLl2crq1bA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=OqvJPZhI; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=DHl5iHBZ; arc=none smtp.client-ip=80.241.56.161
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA512)
-	(No client certificate requested)
-	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4gx8NS4jDdzKnR7;
-	Fri, 10 Jul 2026 00:12:56 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1783635176;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=laLRk3O1bPDNGHI/gc/k6EDjwMB+P9jDPSaWLIRQBbw=;
-	b=OqvJPZhIiakwtCop6MXeEMt/soVSIahHllBwACDTaxN+2QwcFt2Wh6NafVwkj6QxTTdFR7
-	uq7ex/AKbTFMye2Le8u31XmMtt+l5pWdWILFQoaWhCD3FL3Ss4hovXj5VQCoCaL5CorxVj
-	r51VM2FT52f59V/54rYVwWFpJzRLPnWutP1RHAyPxMKQWEW1eZXcHN41uOs1xePiEXAcOa
-	xsYjXNCPoA6wzO90KsSiulqw4YqGWKChGUyKe3rxgKPM34IzEQBqw2frKjpgxXMxdrFupO
-	J0WSHSTGO53Ka7sL1IgbTVnLUlbXb7F7dzboWyXCvlBzRdfe3jWsuuRIZSYloQ==
-From: Marek Vasut <marek.vasut+renesas@mailbox.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1783635175;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=laLRk3O1bPDNGHI/gc/k6EDjwMB+P9jDPSaWLIRQBbw=;
-	b=DHl5iHBZuPMJ33GHGleJrtpeJzBwFkFvJztFvwlkPGoyPQpEE9E4SLab+fzrQVyd0MDknn
-	4gsxYj2Zudf1S+pprtoDwjKNjUJvsjfLETZclIk3CJlev33PclRiWsjVybn0tJsQMl83Cc
-	nj3zxRLIKrJjMlF8Jqv9XfhoyxrOBZxvGZcnSLV9c6QqB5FIhPA0/kpHuPgZ91GIvtzywB
-	mLEOhbvwUt6LJ670o5Ro+hEkTwGmelvoJ15dg9ChTK7HgTR4pDyjjR3p6ObVXWFS4oH2pM
-	hxr5BjymqQpGtehVhnCC/p0M5QQG9HsihuUaUOSbyWQgxHOzopooOpI4PHs9NA==
-To: linux-arm-kernel@lists.infradead.org
-Cc: Marek Vasut <marek.vasut+renesas@mailbox.org>,
-	stable@vger.kernel.org,
-	Conor Dooley <conor+dt@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Rob Herring <robh@kernel.org>,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org
-Subject: [PATCH] arm64: dts: renesas: ironhide: Describe inline ECC carveouts
-Date: Fri, 10 Jul 2026 00:12:16 +0200
-Message-ID: <20260709221245.146406-1-marek.vasut+renesas@mailbox.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D72232FA0C6
+	for <stable@vger.kernel.org>; Thu,  9 Jul 2026 22:15:52 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783635354; cv=pass; b=GeMameebqxonEBW1UnSYeJRvZJzxDDVE0XhnQsjMxk+UiArtKK14TEWLgIfMHjDPgmJLsZlzBcGUpmtzGMZOuEvvZ0cgDFivVY8lYhLW0sGLJKwf8dl+cEcb4Yxwsy04KdDUAN4jp98HToCPhhXYMtItX6ogJckwUOkRuy0thq4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783635354; c=relaxed/simple;
+	bh=jWjYzkNsjJZH5yGWvGBiZ+VdzbjgCvhdfeVBWM3yb1c=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dtffKb6TIKZa0tlUXrO5yJzJ1UTYRXRLKUTEeabvMjU+ofeKn+Lr344e/wiHsmBby8eCvSH8+IChy2vEgyVGjIx/I98LTJ13hmPZ1ApVQEoSHotZai9R8EeXXxg3jT5b1fkX38zq85DTwBjiCI+9gGmpqQQ6yp7hPXWaJ6sWFG8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WRZO5o6B; arc=pass smtp.client-ip=209.85.219.54
+Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-8f0079614b2so4027086d6.1
+        for <stable@vger.kernel.org>; Thu, 09 Jul 2026 15:15:52 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783635352; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ZI2BJ0mKn6WvBueWgdKGQfWq1ivAoo9vLPNIdM9rv+30YsHjWDYxA/xN87PVp5faOq
+         po8Wo9iK5RW2pQFOZ+3MjwShLgHCIDgTv9M63mIFkz9gJNAwWKP4BfuTD80rMqt5s4ow
+         xQGZZ3fdP2RvUshW66KGXP7UuURRv6dt3+makaUojutvI2PRAIpiGsAtLnwMMx+RgPOK
+         G+UVhwL711LAmuw0jNZMS8TZC1DUgdXD/aDkRb3vXGRvnJdIlMQALOtpj/C9QCPFmrpa
+         iVdJS+F1sPw1XEqxO7oS/TmBM7V83kNbGUyg3YavOTl85VexZ14IAaLvtygOLUBNH5Pd
+         UA6A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=/DCoOGjB3t2yqI8PL2v0s5UjSbFRMsQqTYSs+Ahyr1M=;
+        fh=4Yo1DHnrGgqyNOLV6R/M02JnjVXkmzA8zePFmotGt6I=;
+        b=b+w8o/tjHRnTo7BhAfOlhDtqjFfutLWrmGYTBIdxwCVMq5aDDTPQvJ+jzpVzH7PvCV
+         UAXlBaQx8lkRHJnHXnI/EyMRDrSnHFeCilqBzPqbxr3KaahcdaVSF3EEP7n5g7MSprar
+         BYa2y6vDd4Jbvw4A9BpISuc1cv+gvuugKbv4bn54P0woaN/y18jh/vKXJNDXyghprdG1
+         cYlpO9Q3+zEfPC4c4siq/rUJ9gKdBpnOK2XD0BtPA4Piwe+LuN6sHMeMyOgFMS4QlVrg
+         rOuPCpcXxbLxfqp+fCPmt23zMycW19TMk6kvt8hB14j7VPYQOYvlR+821F2exK93R2+o
+         UlrQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783635352; x=1784240152; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=/DCoOGjB3t2yqI8PL2v0s5UjSbFRMsQqTYSs+Ahyr1M=;
+        b=WRZO5o6BySSdSS+OUVab5zEBMfpdLUFH6XELkOsYBvkNAdctvOlxatdqVsYsXBB3Yw
+         Wgy/wKCnMOQdO1OvURaNezwAmhXYLa01JgdafwxDN5izAiXK+Zfvva4Nw4Nnct5gHGZT
+         wowHvIuUQGqafaVxEbcW3Awwa2dv3JDppX82qB9+uZU4ap7Y9Je0GGp9gulM4wQiE//y
+         Io/4VGng39XDWOgj2oO5NuNpbHbcYil6fflukPMMhhAOrEkWNKVdZy51n1KQ66USbd17
+         fDUv33H2QFkNH6TR7fVsa/sjFw5/TyjRU5WFbcqclIQJWikA7+Mobfkaba3nQSxz9lxW
+         LYjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783635352; x=1784240152;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=/DCoOGjB3t2yqI8PL2v0s5UjSbFRMsQqTYSs+Ahyr1M=;
+        b=KL6OVNlSVzXMSdXQzKIiciBAa+wChjuEr/OR9f5tCsT+zs3A0TSAAlNn35dh5iXCxc
+         cstJGiRZoyQYUn4+cLar3B6C1TWpX7Pve3m9uc1TnmmSinY9yvSt4+kj6LC0nBIT+CMQ
+         2K0UkpIZHaPvA49Qa+pRXDH0Q1Ozyp9H9qabTM/TCQHhDJkx0y6TIVaSRXhnMP1Dhqdu
+         Xwo7tJwvBcK/DKFlE0SvKkcgS3vCwwDVOmF1zOuWggg38BhnqJPer0IU4jlPBrcHGJJz
+         6eFiyrX+POYSsEPMel1nuMVVmQIx79M4xqe8i2C3KlFePEQccWsfUNso/wOHQGabOkKr
+         xyRg==
+X-Forwarded-Encrypted: i=1; AHgh+Rrf5SwZuosxELG82oGANq1DEYz+woi9F0YnxO9s+x03Q6UtTBAskHt+PcFzs/4oI1VQyTunJ24=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwSB4Gwipi64gu+leQ6SPO1SKb/vr3Bcrl/gOjY9oJjGFANboWZ
+	ODvLvcIKAigxEz4YFFFe2v8pALefFOV2PAT0ZT9eUPSsu/yGObpmrGzPfrAveaiMSIw0CaNKxca
+	bDbVMKaZtS3MY7QNWDFbQuaQpMNW+Arw=
+X-Gm-Gg: AfdE7cn6sxoUeSfIFeA4ZKYNHdZSu9yjWg9aBKLZAXFDCpIwWliPGNxlRUFM37RiSRa
+	zPAIk5P2Q/YIyAUWgxgZ4FU9LBZXkIQFbjDMDF54IXk9EDwseO/ZSk7ClCulQ+kexFOIatx2sU8
+	4T93BKisSjy1D4vhSB04N6nTEuVNNEYIlrKi1yL7gtBEGt3XW7kDR7BMz/OY7MMaV+bA3jOiCXy
+	9EACSRyfRMf7t5bWw3RMo+UYBM/IIJEfCYOzf2rSuwVbXDZ32wPmCzPZqgQydRGU8a9SIsWEr6H
+	ypKtrbqx38rT6yMZ2N7WKnk+YoO+zYVjgv471Uq+Kg21+xBin4MCt0f22VJtmbZobz9Su60v33Z
+	xatISZwcaSb41wKEF/L3/isRcAu07TyqJagbkU5pLIf7ohqp4pY2k8avozr77uZA13XvtcxE9iz
+	iOTg1SqEV2iA==
+X-Received: by 2002:a05:6214:410:b0:8ee:d9e7:be2d with SMTP id
+ 6a1803df08f44-8fec04e89f8mr112612426d6.7.1783635351816; Thu, 09 Jul 2026
+ 15:15:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-MBO-RS-ID: 64a105b4cf20af77a8f
-X-MBO-RS-META: gte15z866jw5dyzru7hp41k38a9ssom7
+References: <20260709155440.2132459-1-doebel@amazon.de>
+In-Reply-To: <20260709155440.2132459-1-doebel@amazon.de>
+From: Steve French <smfrench@gmail.com>
+Date: Thu, 9 Jul 2026 17:15:40 -0500
+X-Gm-Features: AUfX_myw31UoHX4SuoiHG9s00c7k_AK6flUf0AJ6VGinZ_8FPM7X0vQl2j6Y5eU
+Message-ID: <CAH2r5mt_Pd=wd-pXdaYkNpWE9NfeM0bhnEy-LKuhgOZchVPTJA@mail.gmail.com>
+Subject: Re: [PATCH] smb: client: fix DACL-rewrite heap overflow in id_mode_to_cifs_acl()
+To: Bjoern Doebel <doebel@amazon.de>
+Cc: Steve French <sfrench@samba.org>, Paulo Alcantara <pc@manguebit.org>, 
+	Ronnie Sahlberg <ronniesahlberg@gmail.com>, Shyam Prasad N <sprasad@microsoft.com>, 
+	Tom Talpey <tom@talpey.com>, Bharath SM <bharathsm@microsoft.com>, linux-cifs@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, samba-technical@lists.samba.org, 
+	stable@vger.kernel.org, nmanthey@amazon.de
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[mailbox.org,reject];
-	R_DKIM_ALLOW(-0.20)[mailbox.org:s=mail20150812];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[mailbox.org,vger.kernel.org,kernel.org,glider.be,gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-273057-lists,stable=lfdr.de,renesas];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:linux-arm-kernel@lists.infradead.org,m:marek.vasut+renesas@mailbox.org,m:stable@vger.kernel.org,m:conor+dt@kernel.org,m:geert+renesas@glider.be,m:krzk+dt@kernel.org,m:magnus.damm@gmail.com,m:robh@kernel.org,m:devicetree@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-renesas-soc@vger.kernel.org,m:marek.vasut@mailbox.org,m:conor@kernel.org,m:geert@glider.be,m:krzk@kernel.org,m:magnusdamm@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-273058-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:doebel@amazon.de,m:sfrench@samba.org,m:pc@manguebit.org,m:ronniesahlberg@gmail.com,m:sprasad@microsoft.com,m:tom@talpey.com,m:bharathsm@microsoft.com,m:linux-cifs@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:samba-technical@lists.samba.org,m:stable@vger.kernel.org,m:nmanthey@amazon.de,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[marek.vasut@mailbox.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[mailbox.org:+];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[marek.vasut@mailbox.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER(0.00)[smfrench@gmail.com,stable@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[samba.org,manguebit.org,gmail.com,microsoft.com,talpey.com,vger.kernel.org,lists.samba.org,amazon.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[smfrench@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable,renesas,dt];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,glider.be:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amazon.de:email,mail.gmail.com:mid,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8D46A735F35
+X-Rspamd-Queue-Id: 61FA8735FA3
 
-The DBSC5 DRAM controller protects DRAM content using inline ECC.
-The inline ECC utilizes areas of DRAM for its operation, which are
-in the DRAM address range, but must not be accessed or modified.
-Describe the inline ECC carveout areas used by the DBSC5 controller
-on this hardware as reserved-memory, which must not be accessed.
+When I tried this it changed the length used (for chown with cifsacl
+mount option) from 88 bytes to 236 bytes
+which seems suspicious.  Have you been able to reproduce the bug this
+patch is supposed to fix?
 
-In case of high DRAM utilization, unless the inline ECC carveouts
-are properly reserved, Linux may use and corrupt the memory used
-by the DBSC5 DRAM controller for inline ECC, which would lead to
-the system becoming unstable.
+On Thu, Jul 9, 2026 at 10:55=E2=80=AFAM Bjoern Doebel <doebel@amazon.de> wr=
+ote:
+>
+> Budget the destination buffer for the worst case in both branches:
+> every rewritten ACE may take sizeof(struct smb_ace) bytes (which
+> already accounts for an smb_sid with SID_MAX_SUB_AUTHORITIES
+> sub-authorities), plus the smb_acl header that
+> replace_sids_and_copy_aces() emits.
+>
+> Fixes: bc3e9dd9d104 ("cifs: Change SIDs in ACEs while transferring file o=
+wnership.")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Bjoern Doebel <doebel@amazon.de>
+> Assisted-by: Kiro:claude-opus-4.6
+> ---
+>  fs/smb/client/cifsacl.c | 12 +++++++-----
+>  1 file changed, 7 insertions(+), 5 deletions(-)
+>
+> diff --git a/fs/smb/client/cifsacl.c b/fs/smb/client/cifsacl.c
+> index 07cf0e5782337..6d572dd995d79 100644
+> --- a/fs/smb/client/cifsacl.c
+> +++ b/fs/smb/client/cifsacl.c
+> @@ -1812,11 +1812,13 @@ id_mode_to_cifs_acl(struct inode *inode, const ch=
+ar *path, __u64 *pnmode,
+>                                 cifs_put_tlink(tlink);
+>                                 return rc;
+>                         }
+> -                       if (mode_from_sid)
+> -                               nsecdesclen +=3D
+> -                                       le16_to_cpu(dacl_ptr->num_aces) *=
+ sizeof(struct smb_ace);
+> -                       else /* cifsacl */
+> -                               nsecdesclen +=3D le16_to_cpu(dacl_ptr->si=
+ze);
+> +                       /*
+> +                        * Worst case: every ACE is rewritten with a new =
+SID of
+> +                        * SID_MAX_SUB_AUTHORITIES sub-auths -> sizeof(sm=
+b_ace) each,
+> +                        * plus the smb_acl header replace_sids_and_copy_=
+aces() emits.
+> +                        */
+> +                       nsecdesclen +=3D sizeof(struct smb_acl) +
+> +                               le16_to_cpu(dacl_ptr->num_aces) * sizeof(=
+struct smb_ace);
+>                 }
+>         }
+>
+> --
+> 2.50.1
+>
+>
 
-Fixes: ad142a4ef710 ("arm64: dts: renesas: r8a78000: Add initial Ironhide board support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
----
-Cc: Conor Dooley <conor+dt@kernel.org>
-Cc: Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
-Cc: Magnus Damm <magnus.damm@gmail.com>
-Cc: Rob Herring <robh@kernel.org>
-Cc: devicetree@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-renesas-soc@vger.kernel.org
----
- .../boot/dts/renesas/r8a78000-ironhide.dts    | 41 +++++++++++++++++++
- 1 file changed, 41 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/renesas/r8a78000-ironhide.dts b/arch/arm64/boot/dts/renesas/r8a78000-ironhide.dts
-index d2b3fc08954a1..f073145a682bf 100644
---- a/arch/arm64/boot/dts/renesas/r8a78000-ironhide.dts
-+++ b/arch/arm64/boot/dts/renesas/r8a78000-ironhide.dts
-@@ -107,6 +107,47 @@ tee@8c400000 {
- 			reg = <0x0 0x8c400000 0x0 0x02000000>;
- 			no-map;
- 		};
-+
-+		/* DRAM controller inline ECC areas */
-+		ecc@10cccd0000 {
-+			reg = <0x10 0xcccd0000 0x0 0x33330000>;
-+			no-map;
-+		};
-+
-+		ecc@12cccd0000 {
-+			reg = <0x12 0xcccd0000 0x0 0x33330000>;
-+			no-map;
-+		};
-+
-+		ecc@14cccd0000 {
-+			reg = <0x14 0xcccd0000 0x0 0x33330000>;
-+			no-map;
-+		};
-+
-+		ecc@16cccd0000 {
-+			reg = <0x16 0xcccd0000 0x0 0x33330000>;
-+			no-map;
-+		};
-+
-+		ecc@18cccd0000 {
-+			reg = <0x18 0xcccd0000 0x0 0x33330000>;
-+			no-map;
-+		};
-+
-+		ecc@1acccd0000 {
-+			reg = <0x1a 0xcccd0000 0x0 0x33330000>;
-+			no-map;
-+		};
-+
-+		ecc@1ccccd0000 {
-+			reg = <0x1c 0xcccd0000 0x0 0x33330000>;
-+			no-map;
-+		};
-+
-+		ecc@1ecccd0000 {
-+			reg = <0x1e 0xcccd0000 0x0 0x33330000>;
-+			no-map;
-+		};
- 	};
- };
- 
--- 
-2.53.0
+--=20
+Thanks,
 
+Steve
 
