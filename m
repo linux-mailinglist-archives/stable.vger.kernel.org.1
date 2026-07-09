@@ -1,102 +1,101 @@
-Return-Path: <stable+bounces-272822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272824-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Umo/LLk1T2qmcAIAu9opvQ
-	(envelope-from <stable+bounces-272822-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 07:46:33 +0200
+	id 57OOFsY2T2r9cAIAu9opvQ
+	(envelope-from <stable+bounces-272824-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 07:51:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21A2872CDAC
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 07:46:33 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B237572CE4A
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 07:51:01 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=DMy1uVZB;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=eVN08M7y;
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272822-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-272822-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272824-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-272824-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AF9ED302C7BB
-	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 05:45:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D2986305091E
+	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 05:46:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DED603A872D;
-	Thu,  9 Jul 2026 05:45:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 254323AA9CA;
+	Thu,  9 Jul 2026 05:46:02 +0000 (UTC)
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F9263A381C
-	for <Stable@vger.kernel.org>; Thu,  9 Jul 2026 05:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF0162E11C7
+	for <Stable@vger.kernel.org>; Thu,  9 Jul 2026 05:46:00 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783575951; cv=none; b=Y1WROftXXGaRDQwgCfCAzkyjbFDTWfYur1ddxkYrLm8X93/TgF4kvYBBvEbYIvxcJD6eyyP8TN2eoArprP7BMcXLhSTEFEQW29EDBOturttIFLYBrm2cjmZZqHGQaltBJW98Lzk5hhNhtT7jsY+m/mQsFS2vGFYii85IwE6s3S8=
+	t=1783575961; cv=none; b=Putub+wqzoc6s3J5TWYxNLsoBvs6NsAA/xKs/EITt+na5pIgA2c7PS9ThdWY7uT8BTSX1Z9/sPCiz/582KoyXIfzC54abtH8giQkmK3FobkGIbyfrfQekl8RmlD80JVDoLDW8swVmzha0tkl7MviDPrWyHxop+z480XfZVdUiA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783575951; c=relaxed/simple;
-	bh=5QBSUym2p8qcEu81J5k1JeIc2teFNnhOKNTpTEZupck=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=WDbi4ilHVA7WmpfuZr6pcz0El/Lt8Cq95hdKSjVAhPJiKvcrCOW9L1WkaHqX27xKk7yBKLFme9zW3FaFFM3ZmDREa8hERt46/EDkSRrrOepgiZgvRctQY1xMrTWWLBqZnT4S8O6S4DNrnCa1q+jD6vOp3xfSFTIAs54miUrz9JE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DMy1uVZB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB0401F000E9;
-	Thu,  9 Jul 2026 05:45:49 +0000 (UTC)
+	s=arc-20240116; t=1783575961; c=relaxed/simple;
+	bh=8X7/3MejPNIQw3K2vYW/4916/Adqd5gm3gAI+KRKLbM=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=hPbZz1IDQRmnm0djpmu8sNw1kjUjpuCWN2TK8Fh2DVr6TaPVbbsff5nrQrCGQ3VvwCJVYOVNBpBp2C+mJlCKPWCOqD3EHM8LeCAo5aY2Rgk8FZx4i44ZQh5Rx8R5+XU1OshVbk72rE4FJ1t+dgHscX/+qkoNdacwvv2U4PU+eJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eVN08M7y; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FB381F000E9;
+	Thu,  9 Jul 2026 05:46:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783575950;
-	bh=bFNBB9Z5GaA982HtmnfTOQJoOKbY0EYAPaSOJCrdFpg=;
+	s=korg; t=1783575960;
+	bh=Ku2nKr8yHEh459UCw54HoRXeHAtlkAIab6SQ85CIQt0=;
 	h=Subject:To:From:Date;
-	b=DMy1uVZB8o5OG/Bd/jvbTbB6tj3v4jlVtv23RioFo+qVB7gzJxNCJw3yuWw63Hvvw
-	 +0QNFhXp4Q5fy/esCTj3CwR8LfVLyHQf1kqfZQrP1THN3gJkwIrMxHDCDttwFVBYo2
-	 u3RLY+Bvl8NSrZ5t7F7U+5bheL/g/LIx/hZEQ9RA=
-Subject: patch "iio: adc: nxp-sar-adc: Fix the delay calculation in" added to char-misc-linus
-To: andriy.shevchenko@linux.intel.com,Stable@vger.kernel.org,daniel.lezcano@oss.qualcomm.com,jic23@kernel.org,sashiko-bot@kernel.org,sozdayvek@gmail.com
+	b=eVN08M7yf8RJLWq2SlBxxr8J7IvmG/QL6Y9rc78IcVRet/65Hrv3ToKr6DN6OxP4j
+	 pyLHV5HOB58R8A6ZOS9epNjEAKZUTC0UdIeGm2vNTLv31DXE6CLNUbhj3qfEzN4bGO
+	 hqvZZ4a3P2vZBCvcyZ5c8yALQLNlYzjYqzcuq9ps=
+Subject: patch "iio: event: Fix event FIFO reset race" added to char-misc-linus
+To: lars@metafoo.de,Stable@vger.kernel.org,jic23@kernel.org,nuno.sa@analog.com
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 09 Jul 2026 07:44:52 +0200
-Message-ID: <2026070952-campsite-diffusive-0ba9@gregkh>
+Date: Thu, 09 Jul 2026 07:44:53 +0200
+Message-ID: <2026070953-sloping-unmanaged-f842@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[linux.intel.com,vger.kernel.org,oss.qualcomm.com,kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-272822-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:andriy.shevchenko@linux.intel.com,m:Stable@vger.kernel.org,m:daniel.lezcano@oss.qualcomm.com,m:jic23@kernel.org,m:sashiko-bot@kernel.org,m:sozdayvek@gmail.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-272824-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:lars@metafoo.de,m:Stable@vger.kernel.org,m:jic23@kernel.org,m:nuno.sa@analog.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	TO_DN_NONE(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	TAGGED_RCPT(0.00)[stable];
-	FROM_NO_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qualcomm.com:email,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,vger.kernel.org:from_smtp,intel.com:email,sashiko.dev:url]
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,analog.com:email,metafoo.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 21A2872CDAC
+X-Rspamd-Queue-Id: B237572CE4A
 
 
 This is a note to let you know that I've just added the patch titled
 
-    iio: adc: nxp-sar-adc: Fix the delay calculation in
+    iio: event: Fix event FIFO reset race
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
@@ -111,53 +110,79 @@ next -rc kernel release.
 If you have any questions about this process, please let me know.
 
 
-From a9f41809bf1bd8e5c1bc4b6a1052adac58eb7ab6 Mon Sep 17 00:00:00 2001
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Date: Tue, 19 May 2026 23:56:06 +0200
-Subject: iio: adc: nxp-sar-adc: Fix the delay calculation in
- nxp_sar_adc_wait_for()
+From af791d295737ea6b6ff2c8d8488462a49c14af01 Mon Sep 17 00:00:00 2001
+From: Lars-Peter Clausen <lars@metafoo.de>
+Date: Mon, 6 Jul 2026 21:48:26 -0700
+Subject: iio: event: Fix event FIFO reset race
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-The original code was using ndelay() twice. In one case the delay
-is calculated as 1/3 of ADC clock and in the other as 80 ADC clocks.
-But according to the comments in all cases it should be a multiplier
-of the ADC clock, and not a fraction of it. Inadvertently
-nxp_sar_adc_wait_for() takes the wrong case and spread it over
-the code make it wrong in all places. Fix this by modifying a helper
-to correctly use the multiplier.
+`iio_event_getfd()` creates the event file descriptor with
+`anon_inode_getfd()`, which allocates a new fd, creates the anonymous
+file and installs it in the process fd table before returning to the
+caller.
 
-Fixes: 7e5c0f97c66a ("iio: adc: nxp-sar-adc: Avoid division by zero")
-Fixes: 4434072a893e ("iio: adc: Add the NXP SAR ADC support for the s32g2/3 platforms")
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Closes: https://sashiko.dev/#/patchset/20260416090122.758990-1-andriy.shevchenko%40linux.intel.com
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Stepan Ionichev <sozdayvek@gmail.com>
-Acked-by: Daniel Lezcano <daniel.lezcano@oss.qualcomm.com>
+The IIO code resets the event FIFO after `anon_inode_getfd()` has returned,
+but before `IIO_GET_EVENT_FD_IOCTL` has copied the fd number to userspace.
+But since fd tables are shared between threads, another thread can guess
+the newly allocated fd number and issue a `read()` on it as soon as the fd
+has been installed.
+
+This means the `kfifo_to_user()` in `iio_event_chrdev_read()` can run in
+parallel with the `kfifo_reset_out()` in `iio_event_getfd()`.
+
+The kfifo documentation says that `kfifo_reset_out()` is only safe when it
+is called from the reader thread and there is only one concurrent reader.
+Otherwise it is dangerous and must be handled in the same way as
+`kfifo_reset()`.
+
+If that happens, `kfifo_to_user()` can advance the FIFO `out` index based
+on state from before the reset, after the reset has already moved the `out`
+index to the current `in` index. That can leave the FIFO with an `out`
+index past the `in` index. A later `read()` can then see an underflowed
+FIFO length and copy more data than the event FIFO buffer contains. This
+can result in an out-of-bounds read and leak adjacent kernel memory to
+userspace.
+
+Move the FIFO reset before `anon_inode_getfd()`. At that point the event fd is
+marked busy, but the new fd has not been installed yet, so userspace cannot
+access it while the FIFO is reset.
+
+Fixes: b91accafbb10 ("iio:event: Fix and cleanup locking")
+Reported-by: Codex:gpt-5.5
+Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <jic23@kernel.org>
 ---
- drivers/iio/adc/nxp-sar-adc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iio/industrialio-event.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/adc/nxp-sar-adc.c b/drivers/iio/adc/nxp-sar-adc.c
-index 15c7432808f4..6bf896915788 100644
---- a/drivers/iio/adc/nxp-sar-adc.c
-+++ b/drivers/iio/adc/nxp-sar-adc.c
-@@ -198,13 +198,13 @@ static void nxp_sar_adc_irq_cfg(struct nxp_sar_adc *info, bool enable)
- 		writel(0, NXP_SAR_ADC_IMR(info->regs));
- }
+diff --git a/drivers/iio/industrialio-event.c b/drivers/iio/industrialio-event.c
+index a0d6fcf2a9c9..e6730f52262a 100644
+--- a/drivers/iio/industrialio-event.c
++++ b/drivers/iio/industrialio-event.c
+@@ -207,6 +207,8 @@ static int iio_event_getfd(struct iio_dev *indio_dev)
+ 		goto unlock;
+ 	}
  
--static void nxp_sar_adc_wait_for(struct nxp_sar_adc *info, unsigned int cycles)
-+static void nxp_sar_adc_wait_for(struct nxp_sar_adc *info, u64 cycles)
- {
- 	u64 rate;
++	kfifo_reset_out(&ev_int->det_events);
++
+ 	iio_device_get(indio_dev);
  
- 	rate = clk_get_rate(info->clk);
- 	if (rate)
--		ndelay(div64_u64(NSEC_PER_SEC, rate * cycles));
-+		ndelay(div64_u64(NSEC_PER_SEC * cycles, rate));
- }
- 
- static bool nxp_sar_adc_set_enabled(struct nxp_sar_adc *info, bool enable)
+ 	fd = anon_inode_getfd("iio:event", &iio_event_chrdev_fileops,
+@@ -214,10 +216,7 @@ static int iio_event_getfd(struct iio_dev *indio_dev)
+ 	if (fd < 0) {
+ 		clear_bit(IIO_BUSY_BIT_POS, &ev_int->flags);
+ 		iio_device_put(indio_dev);
+-	} else {
+-		kfifo_reset_out(&ev_int->det_events);
+ 	}
+-
+ unlock:
+ 	mutex_unlock(&iio_dev_opaque->mlock);
+ 	return fd;
 -- 
 2.55.0
 
