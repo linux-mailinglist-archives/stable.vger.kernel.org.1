@@ -1,224 +1,293 @@
-Return-Path: <stable+bounces-272907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272912-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id /pptOq2bT2rckwIAu9opvQ
-	(envelope-from <stable+bounces-272907-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 15:01:33 +0200
+	id CXobI8+eT2rJlAIAu9opvQ
+	(envelope-from <stable+bounces-272912-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 15:14:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D93173156B
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 15:01:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9421731775
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 15:14:54 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=w7h4aSts;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272907-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-272907-lists+stable=lfdr.de@vger.kernel.org";
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=amd.com header.s=selector1 header.b="vCTIgY/L";
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272912-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272912-lists+stable=lfdr.de@vger.kernel.org";
+	arc=reject ("cv is fail on i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 65AE1302DB43
-	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 12:58:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 10459302E7A7
+	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 13:11:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8561235BE2;
-	Thu,  9 Jul 2026 12:58:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA5C3265CC2;
+	Thu,  9 Jul 2026 13:11:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010017.outbound.protection.outlook.com [52.101.56.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D89BE1A9FAB;
-	Thu,  9 Jul 2026 12:58:19 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783601903; cv=none; b=DTlQqb48ewP2v6Yx9UzLOwsW4+R0nrlPB74EgZ+r06zk8WUCUPKDEYC7LMhOIVMogvIA71vL5iWPTIyTJhf9+ElIs5vEZZN6Z04QzOffQjo0NhwryLntn0EwCUXyfdoOzUcd7HYchzZEcapOMGONyFil7bxpT9B4YI8o0CMXX+U=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783601903; c=relaxed/simple;
-	bh=Zh4R3yWJH807apFQ9uM2oEfV+8R4oL3tieXTel/20Wg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Al32Dd5rlB6W47at/z+uncq7gpU/QHkvMMqEvhtmqbps37U2ebdU9dchcSFGlnPcMLpkTpnWH0vaLMKZCyA060GZg3sSEJNmpzepSUIDoNt/Zwua4xtWTtira/DYoRwzHjB+Vm7Q//nJ9WicnfXDRhS92NTXxP6YY5icOXX3W/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=w7h4aSts; arc=none smtp.client-ip=115.124.30.119
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1783601897; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=GORAQ+6aUKZ7q2GoegDwlPQMfphbTVbJV2PH9DeStr8=;
-	b=w7h4aSts0e8gB8olA9I7DJUtCCFmIVth6cJTL5BqxxdzunDvqRxB6rSzVuKk4LZdwnjW910+nbYtUJfeMcjQLEDvRSLXtU/btBPrc5N7yqgm1ebeWsq54PYDCjCY0YgIy5HAniRJt+6g58aRajgJHXXlrJTX7w9DG/oEFTig7c0=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R141e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=lulie@linux.alibaba.com;NM=1;PH=DS;RN=13;SR=0;TI=SMTPD_---0X6kzzBo_1783601896;
-Received: from localhost(mailfrom:lulie@linux.alibaba.com fp:SMTPD_---0X6kzzBo_1783601896 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 09 Jul 2026 20:58:17 +0800
-From: Philo Lu <lulie@linux.alibaba.com>
-To: stable@vger.kernel.org
-Cc: bigeasy@linutronix.de,
-	willemb@google.com,
-	kerneljasonxing@gmail.com,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	lulie@linux.alibaba.com,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	dust.li@linux.alibaba.com,
-	heiko.stuebner@cherry.de
-Subject: [PATCH 6.6.y] net: Drop the lock in skb_may_tx_timestamp()
-Date: Thu,  9 Jul 2026 20:58:16 +0800
-Message-Id: <20260709125816.86769-1-lulie@linux.alibaba.com>
-X-Mailer: git-send-email 2.32.0.3.g01195cf9f
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C011B266565
+	for <stable@vger.kernel.org>; Thu,  9 Jul 2026 13:11:38 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783602701; cv=fail; b=eSXgUciMq8mG4lujtdK5wHQhgsM7MXiX1r0hz37kvhJAO3gT8uT05s/80jHMCAahDv9wc8vVfFGWmGNdhM83Hz63JnfKfZ61tsR5HrmNlu4qC/bVEFzb8IHhySYhbYsHT/qIzt1lykrjec4JDThNevOgmfH/FdEiDngvzGl3maA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783602701; c=relaxed/simple;
+	bh=H9DeLwBTIVB6oLDnyfdYTVwxxw1UwhnPaRpoBylgOdM=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=nIZHogdTUrdaZdAPCuw7obotx7m/pC+CbYCFejsq4yS+FTmTISzhxmEAcx8Dk2fNRFR7OD6kq/i/rfYmEXKpOmKwxzVar6TxXCB+UDJceZDiD+iuwOVTMqDHPZ5xG6NvEpUkICo+1feSDBzGIRUmVmqA1/jvaKPB38Id6cUsZT0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=vCTIgY/L; arc=fail smtp.client-ip=52.101.56.17
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=qxhX+8bMRlF23c+YEKcdouGpdd6a4cSmBgKSIwvnbz2Kzv6T5pEbWht1rYW+gBA2YnP54Bk80yOwFBCNZQlQvwFrzZBA5Fnu9z7w8Xn8oAVmYvps+boTnIYjagciwo4+vRp6sSyYqWcR14StyhLGT/10UJmchSakSu55nQpYA772chBJbj9YSCsvRmoljRNkdxJNHMwYXr6otnrtlNGI0pJ7PsSIf7d/EySknDPwrTcB+NSuY4Y6w6kRtpkoFgkyKTKpsGayjjMQoc6fv8YpE902dK0skrcoPq1sCWfxCMZVZTv+zY+TJLybfFfBTxQHEb3f6tHh72fAgLgVssIlhQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=H6XBTH+cLgG6VtDeHNZYCQYGBwiZdE7d+6kkXhwcMls=;
+ b=X9GAfGmAijGE2PF4QSNu7th7MQnIhauJaix0jNO49+ls0IQc9N5nxWe4J7RSB1k3gDMEKr1w+N/vPyDfR0/sW3zu5NxQmWqSRlQX/PK3Xg3GF2+Nd+uMabH2YMAU7132+Jo3oBQrnut7PSgql2ukEaKUR0aFdIP8C4X+pmFrkzqUmu7UQBr1NtFCHYz7GIft9/c8Of7uIaVkyAAYoj1+BWeRDYxqXHs8TERRAKi1GOAeVFPNgS7QtUM95E5+T9s6XlXG+Pb78Hei0Eoz+g3vVkh52ZF8XYN0zszyHzKaqQfeOdjkLre371qtZujisHZ1C0T8H1cLwETyr7Oj5GFwXQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=intel.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=H6XBTH+cLgG6VtDeHNZYCQYGBwiZdE7d+6kkXhwcMls=;
+ b=vCTIgY/LpZh0OPQpD11kfZQKpFJIXAR6TpR16ZW60OPHjSTEO0pCbzt8qeWF8WFxVWW4jPqGoMZwaJ6OaCqJeKwuGilYpdyYhz5l4DcW7D5BiX2iEPj+KJYr+bMMYd4nA+2oO5IenUST7FVIFmPxhccwRyGZvK1gnpc0elkiXgg=
+Received: from DS7P220CA0049.NAMP220.PROD.OUTLOOK.COM (2603:10b6:8:224::13) by
+ DS0PR12MB6656.namprd12.prod.outlook.com (2603:10b6:8:d2::10) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.181.16; Thu, 9 Jul 2026 13:11:33 +0000
+Received: from DS2PEPF000061C5.namprd02.prod.outlook.com
+ (2603:10b6:8:224:cafe::20) by DS7P220CA0049.outlook.office365.com
+ (2603:10b6:8:224::13) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.202.11 via Frontend Transport; Thu, 9
+ Jul 2026 13:11:33 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ DS2PEPF000061C5.mail.protection.outlook.com (10.167.23.72) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.181.6 via Frontend Transport; Thu, 9 Jul 2026 13:11:33 +0000
+Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Thu, 9 Jul
+ 2026 08:11:25 -0500
+Received: from arun-nv33.amd.com (10.180.168.240) by satlexmb09.amd.com
+ (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Thu, 9 Jul
+ 2026 06:02:47 -0700
+From: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
+To: <matthew.auld@intel.com>, <christian.koenig@amd.com>,
+	<dri-devel@lists.freedesktop.org>, <intel-gfx@lists.freedesktop.org>,
+	<intel-xe@lists.freedesktop.org>, <amd-gfx@lists.freedesktop.org>
+CC: <alexander.deucher@amd.com>, Arunpravin Paneer Selvam
+	<Arunpravin.PaneerSelvam@amd.com>, =?UTF-8?q?Timur=20Krist=C3=B3f?=
+	<timur.kristof@gmail.com>, <stable@vger.kernel.org>, John Olender
+	<john.olender@gmail.com>
+Subject: [PATCH v2] gpu/buddy: bail out of try_harder when alignment cannot be honoured
+Date: Thu, 9 Jul 2026 18:32:21 +0530
+Message-ID: <20260709130221.1021376-1-Arunpravin.PaneerSelvam@amd.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb09.amd.com
+ (10.181.42.218)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS2PEPF000061C5:EE_|DS0PR12MB6656:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2f371e9d-ab42-4b3b-ccf1-08deddbb993c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|82310400026|23010399003|36860700016|18002099003|6133799003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	xOSoII0ITMmU3c9l0aNKK+ubiecPJNEDD15q1ijsNRzpoM1/dBzwLC9nTGXiw2KRK2xY4KWkOS5nlPR6+qcZYD9jgkPcGaVrxkbvgfUUUehG3JmMBN3N+gXmL4xnwAKhgxh5AvB1aPo/Lk0eo3swPX0tbviQGkEAwgJwfABRW2K+kQub7KBt3fnGIYv4XSHjmZApAOs+yLw7cM4e1FVOiq+jh9edQ4f4v8nIppESRtRljuhM4BrvcOip/9Vw+3IYtrLhR5hZg8wsfSWcaTX3TLLsO2/kRSI2DSZpO3lJwt9HBhAYliEB889CwGWn8u1S1Tr8W8nwv+FShoHJnwx8DZoUT+QaxD+7vatP64TYgumeHAsjF3jU68mAT/VhyVgY3OY4VR+dHAcNgVwcMMmZj5gi+NKXkWH3l6AmMSBwCXGlIkj6YVfm6QTPTacx2rj3y8ki6x6nBM+HzMAhruLDJOs41NMU05X5hbAHTe82fUxNdDn1WwnqZBDmsGbLshR4H8TZHwHdctq65kUJdeurWLtk3beI6bLquWkK42QTrjI+ediOYhxHNsXgJ9OG7wVY+WHXgaDkQrQFl/eew84sfJIyZYArMKhSO9QBHmX416AqzhN2FgtL4fOK9yrTg1mOwjDD/YNpATi4lcjUO2PqTM4hZP0c/YWAR61h0XfdQ9SwlYQC6OEXi+a2gyyLcaBgpDJKgkUT0LsOsO5iI5Okpg==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(376014)(82310400026)(23010399003)(36860700016)(18002099003)(6133799003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	Mu5oSFEyk/nvDL3OuqmJCdTGsjlP0ZflJGoDl0ndex/lqii2s8RVFSgfW++CYMSdAJ505yNmmzifG4zVeIgrDWwkwsWlkTVwTzCo4cXN/vBUeqhDzRRBrWm9idcjDp9gZZsvIhHPN0A42RbqkYpSC+fDC/pYh5D5dTOBMbqiQg2r3mPzAxyxSHhgj2sff2qe/f7uO+U4qUhhYOj/rBpb9qqacie9ii2BIbtql3Lg5nsY1Zw12qmx5rCbjgRDkaKNZ/jcFaSIf3bKh1tD38oO+NxXPgXUwKtx6AIEqeaL6RKLGNteJm6yfsgJLlWPq05XsAEXvBA9ukIRAdBstEhZGIgE33AmqUug/gFIemjBe0IFoJxx2BvewkhMUqV5T3DNhTrbITOw9TCqOzqNyWpcFNQCd0pj8a81fg4BPFumjUpz2IM04dWMOO+sSyFb5+Eo
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jul 2026 13:11:33.2132
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2f371e9d-ab42-4b3b-ccf1-08deddbb993c
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DS2PEPF000061C5.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6656
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-10.66 / 15.00];
-	WHITELIST_DMARC(-7.00)[alibaba.com:D:+];
-	WHITELIST_SPF_DKIM(-3.00)[alibaba.com:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.alibaba.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linux.alibaba.com:s=default];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[amd.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[amd.com:s=selector1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-272907-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linutronix.de,google.com,gmail.com,redhat.com,linux.alibaba.com,davemloft.net,kernel.org,vger.kernel.org,cherry.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:bigeasy@linutronix.de,m:willemb@google.com,m:kerneljasonxing@gmail.com,m:edumazet@google.com,m:pabeni@redhat.com,m:lulie@linux.alibaba.com,m:davem@davemloft.net,m:kuba@kernel.org,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:dust.li@linux.alibaba.com,m:heiko.stuebner@cherry.de,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[lulie@linux.alibaba.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[amd.com,gmail.com,vger.kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:matthew.auld@intel.com,m:christian.koenig@amd.com,m:dri-devel@lists.freedesktop.org,m:intel-gfx@lists.freedesktop.org,m:intel-xe@lists.freedesktop.org,m:amd-gfx@lists.freedesktop.org,m:alexander.deucher@amd.com,m:Arunpravin.PaneerSelvam@amd.com,m:timur.kristof@gmail.com,m:stable@vger.kernel.org,m:john.olender@gmail.com,m:timurkristof@gmail.com,m:johnolender@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-272912-lists,stable=lfdr.de];
+	FORGED_SENDER(0.00)[Arunpravin.PaneerSelvam@amd.com,stable@vger.kernel.org];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:from_mime,amd.com:email,amd.com:mid,amd.com:dkim,vger.kernel.org:from_smtp,intel.com:email];
+	DKIM_TRACE(0.00)[amd.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lulie@linux.alibaba.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[Arunpravin.PaneerSelvam@amd.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linux.alibaba.com:+];
-	TO_DN_NONE(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[alibaba.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,linux.alibaba.com:from_mime,linux.alibaba.com:dkim,linux.alibaba.com:mid,linutronix.de:email]
+	RCVD_COUNT_SEVEN(0.00)[8]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8D93173156B
+X-Rspamd-Queue-Id: D9421731775
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+The try_harder contiguous fallback could return a range whose start
+offset did not match the caller's min_block_size. When a candidate's
+start is misaligned, realign it: free the misaligned run and reallocate
+exactly @size at the next lower min_block_size boundary. This keeps the
+returned size unchanged with no surplus to trim, and rejects the request
+only when no aligned candidate fits.
 
-commit 983512f3a87fd8dc4c94dfa6b596b6e57df5aad7 upstream.
+v2: align misaligned candidates down to min_block_size instead of
+    bailing out, for both the RHS and LHS paths (Matthew).
 
-skb_may_tx_timestamp() may acquire sock::sk_callback_lock. The lock must
-not be taken in IRQ context, only softirq is okay. A few drivers receive
-the timestamp via a dedicated interrupt and complete the TX timestamp
-from that handler. This will lead to a deadlock if the lock is already
-write-locked on the same CPU.
-
-Taking the lock can be avoided. The socket (pointed by the skb) will
-remain valid until the skb is released. The ->sk_socket and ->file
-member will be set to NULL once the user closes the socket which may
-happen before the timestamp arrives.
-If we happen to observe the pointer while the socket is closing but
-before the pointer is set to NULL then we may use it because both
-pointer (and the file's cred member) are RCU freed.
-
-Drop the lock. Use READ_ONCE() to obtain the individual pointer. Add a
-matching WRITE_ONCE() where the pointer are cleared.
-
-Link: https://lore.kernel.org/all/20260205145104.iWinkXHv@linutronix.de
-Fixes: b245be1f4db1a ("net-timestamp: no-payload only sysctl")
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260220183858.N4ERjFW6@linutronix.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[ adapted sk_set_socket() in include/net/sock.h to fix the conflict from
- not having commit 5d6b58c932ec ("net: lockless sock_i_ino()") and the
- additional previous changes required by it.
- It comes down to just now having the lines of
-    if (sock) {
-            WRITE_ONCE(sk->sk_uid, SOCK_INODE(sock)->i_uid);
-            WRITE_ONCE(sk->sk_ino, SOCK_INODE(sock)->i_ino);
-    }
- below the changed line. ]
-Signed-off-by: Philo Lu <lulie@linux.alibaba.com>
+Fixes: 0a1844bf0b53 ("drm/buddy: Improve contiguous memory allocation")
+Suggested-by: Christian König <christian.koenig@amd.com>
+Cc: Matthew Auld <matthew.auld@intel.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Timur Kristóf <timur.kristof@gmail.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+Tested-by: John Olender <john.olender@gmail.com>
+Signed-off-by: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
 ---
-This patch is same as that in 6.12 (c770217044d9), and it can be also applied
-to 6.1/5.15/5.10 except for line number differences. I'll send patches for the
-other versions if this one looks good.
----
- include/net/sock.h |  2 +-
- net/core/skbuff.c  | 23 ++++++++++++++++++-----
- net/socket.c       |  2 +-
- 3 files changed, 20 insertions(+), 7 deletions(-)
+ drivers/gpu/buddy.c | 63 +++++++++++++++++++++++++++++++--------------
+ 1 file changed, 44 insertions(+), 19 deletions(-)
 
-diff --git a/include/net/sock.h b/include/net/sock.h
-index a6944844553af..c1f129a532b20 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -2155,7 +2155,7 @@ static inline int sk_rx_queue_get(const struct sock *sk)
-
- static inline void sk_set_socket(struct sock *sk, struct socket *sock)
- {
--	sk->sk_socket = sock;
-+	WRITE_ONCE(sk->sk_socket, sock);
+diff --git a/drivers/gpu/buddy.c b/drivers/gpu/buddy.c
+index dc81fe0301ce..3c73ae87f3c5 100644
+--- a/drivers/gpu/buddy.c
++++ b/drivers/gpu/buddy.c
+@@ -1118,22 +1118,30 @@ static int __gpu_buddy_alloc_range(struct gpu_buddy *mm,
+ 			     blocks, total_allocated_on_err);
  }
-
- static inline wait_queue_head_t *sk_sleep(struct sock *sk)
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index c5e2ae6d0406b..732204d99822a 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -5258,15 +5258,28 @@ static void __skb_complete_tx_timestamp(struct sk_buff *skb,
-
- static bool skb_may_tx_timestamp(struct sock *sk, bool tsonly)
+ 
++static int __alloc_contig_aligned_retry(struct gpu_buddy *mm,
++					u64 unaligned_offset,
++					u64 size,
++					u64 min_block_size,
++					struct list_head *blocks)
++{
++	u64 aligned_offset = round_down(unaligned_offset, min_block_size);
++
++	return __gpu_buddy_alloc_range(mm, aligned_offset, size, NULL, blocks);
++}
++
+ static int __alloc_contig_try_harder(struct gpu_buddy *mm,
+ 				     u64 size,
+ 				     u64 min_block_size,
+ 				     struct list_head *blocks)
  {
--	bool ret;
-+	struct socket *sock;
-+	struct file *file;
-+	bool ret = false;
-
- 	if (likely(READ_ONCE(sysctl_tstamp_allow_data) || tsonly))
- 		return true;
-
--	read_lock_bh(&sk->sk_callback_lock);
--	ret = sk->sk_socket && sk->sk_socket->file &&
--	      file_ns_capable(sk->sk_socket->file, &init_user_ns, CAP_NET_RAW);
--	read_unlock_bh(&sk->sk_callback_lock);
-+	/* The sk pointer remains valid as long as the skb is. The sk_socket and
-+	 * file pointer may become NULL if the socket is closed. Both structures
-+	 * (including file->cred) are RCU freed which means they can be accessed
-+	 * within a RCU read section.
-+	 */
-+	rcu_read_lock();
-+	sock = READ_ONCE(sk->sk_socket);
-+	if (!sock)
-+		goto out;
-+	file = READ_ONCE(sock->file);
-+	if (!file)
-+		goto out;
-+	ret = file_ns_capable(file, &init_user_ns, CAP_NET_RAW);
-+out:
-+	rcu_read_unlock();
- 	return ret;
- }
-
-diff --git a/net/socket.c b/net/socket.c
-index fa242d7e51c79..ae31c54664632 100644
---- a/net/socket.c
-+++ b/net/socket.c
-@@ -671,7 +671,7 @@ static void __sock_release(struct socket *sock, struct inode *inode)
- 		iput(SOCK_INODE(sock));
- 		return;
+-	u64 rhs_offset, lhs_offset, lhs_size, filled;
++	u64 rhs_offset, lhs_offset, filled;
+ 	struct gpu_buddy_block *block;
+ 	unsigned int tree, order;
+-	LIST_HEAD(blocks_lhs);
+-	unsigned long pages;
+ 	u64 modify_size;
+ 	int err;
+ 
+ 	modify_size = rounddown_pow_of_two(size);
+-	pages = modify_size >> ilog2(mm->chunk_size);
+-	order = fls(pages) - 1;
++	order = ilog2(modify_size) - ilog2(mm->chunk_size);
+ 	if (order == 0)
+ 		return -ENOSPC;
+ 
+@@ -1149,31 +1157,48 @@ static int __alloc_contig_try_harder(struct gpu_buddy *mm,
+ 		while (iter) {
+ 			block = rbtree_get_free_block(iter);
+ 
+-			/* Allocate blocks traversing RHS */
+ 			rhs_offset = gpu_buddy_block_offset(block);
++
++			/* Allocate blocks traversing RHS */
+ 			err =  __gpu_buddy_alloc_range(mm, rhs_offset, size,
+ 						       &filled, blocks);
+-			if (!err || err != -ENOSPC)
++			if (err && err != -ENOSPC)
+ 				return err;
++			if (!err && IS_ALIGNED(rhs_offset, min_block_size))
++				return 0;
++			if (!err) {
++				/* Allocate the unaligned RHS offset using round_down */
++				gpu_buddy_free_list_internal(mm, blocks);
++				err = __alloc_contig_aligned_retry(mm, rhs_offset,
++								   size,
++								   min_block_size,
++								   blocks);
++				if (!err)
++					return 0;
++				if (err != -ENOSPC) {
++					gpu_buddy_free_list_internal(mm, blocks);
++					return err;
++				}
++				goto next;
++			}
+ 
+-			lhs_size = max((size - filled), min_block_size);
+-			if (!IS_ALIGNED(lhs_size, min_block_size))
+-				lhs_size = round_up(lhs_size, min_block_size);
++			if (size - filled > rhs_offset)
++				goto next;
+ 
+-			/* Allocate blocks traversing LHS */
+-			lhs_offset = gpu_buddy_block_offset(block) - lhs_size;
+-			err =  __gpu_buddy_alloc_range(mm, lhs_offset, lhs_size,
+-						       NULL, &blocks_lhs);
+-			if (!err) {
+-				list_splice(&blocks_lhs, blocks);
++			lhs_offset = rhs_offset - (size - filled);
++
++			/* Allocate the unaligned LHS offset using round_down */
++			gpu_buddy_free_list_internal(mm, blocks);
++			err = __alloc_contig_aligned_retry(mm, lhs_offset, size,
++							   min_block_size, blocks);
++			if (!err)
+ 				return 0;
+-			} else if (err != -ENOSPC) {
++			if (err != -ENOSPC) {
+ 				gpu_buddy_free_list_internal(mm, blocks);
+ 				return err;
+ 			}
+-			/* Free blocks for the next iteration */
++next:
+ 			gpu_buddy_free_list_internal(mm, blocks);
+-
+ 			iter = rb_prev(iter);
+ 		}
  	}
--	sock->file = NULL;
-+	WRITE_ONCE(sock->file, NULL);
- }
 
- /**
---
-2.47.3
+base-commit: 104c00917264c5b9571072471e3a8689cd1a2c4d
+-- 
+2.34.1
 
 
