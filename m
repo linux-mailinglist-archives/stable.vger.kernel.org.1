@@ -1,94 +1,97 @@
-Return-Path: <stable+bounces-272916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272918-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 4SmJNr2hT2qKlQIAu9opvQ
-	(envelope-from <stable+bounces-272916-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 15:27:25 +0200
+	id QfRlGhSgT2oOlQIAu9opvQ
+	(envelope-from <stable+bounces-272918-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 15:20:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21075731907
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 15:27:25 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC5B27317F3
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 15:20:19 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=gPidSYWT;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=rZnsLOCf;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272916-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272916-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272918-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272918-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E082230C152D
-	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 13:19:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EF012301AAB2
+	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 13:19:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13F78279903;
-	Thu,  9 Jul 2026 13:19:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE7C1273D8F;
+	Thu,  9 Jul 2026 13:19:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B843273D8F
-	for <stable@vger.kernel.org>; Thu,  9 Jul 2026 13:19:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 696A2274B5C
+	for <stable@vger.kernel.org>; Thu,  9 Jul 2026 13:19:13 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783603151; cv=none; b=Yc+sOG4g5ohyC0dUloBtjBzOXsYPvBTxemoVIXQmBHEl2I1Lif5sAIFexPIIFD6FeTAqOcnLKqppFCmfFD8hAy7gn01CytoMsLRYw5CTD8gnjfeTEmxHCRq87qqJQpuMpq63fnSylhVdC22I8kXtLoQJ/RIMpXGKz9zQQRD49F8=
+	t=1783603154; cv=none; b=tSdMrkZiYy5Uwy0AoA+l7q1iRY4I56DjHgNzajBzntAAZTz0YzQ4avitrQmGyDaIJxy9oJMJhNckTRrdezzbh/g92w9iWKmgN53OudhL5ZpYFyGGrgEZaDOOIUvLtyHog1BZWyOPI9zo1KMhibF2yYp6X4DB7rOLzPZLaS1m0xw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783603151; c=relaxed/simple;
-	bh=F9vDf47ixbnznasLGKzTkoh3Mf021Menp2X4kQr5Gw4=;
+	s=arc-20240116; t=1783603154; c=relaxed/simple;
+	bh=L3tVVf0AI+vZH2xeekSOCR1AqlvFzrrEBc8HeZ2OXR8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dtls8sBOQflPiJcQp9GhuHLjHOfgGz8gjKaJp+a9xCbFSeuHqgc5KLBgaZfFgLBaNHbjIrnopNZkbhkMtjkS11/uoYuqtMsbSHNIpCWIlsdah82hNITaVOTNHf+L5C8izCkpu+mnI5KcbTohU1zJNFhYF+dGfVHnMznsRo1NGgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gPidSYWT; arc=none smtp.client-ip=209.85.216.42
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-38511175ad3so793642a91.2
-        for <stable@vger.kernel.org>; Thu, 09 Jul 2026 06:19:10 -0700 (PDT)
+	 MIME-Version; b=bPYbEazY5ZiiynvbJMssSLjjgxXNgtxsntTD6X6XGMBpBvznTSsXb6IBiDauiQr0dpD6ODPn35Apce2fsoAdYASl2zHYoVAaJhLn71d2suzUEvZ8nfnBmU5teBnYnimJ+8U0m2eeO3RDMaCO5ctghuYk112l0SCXHufBNPCKFzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rZnsLOCf; arc=none smtp.client-ip=209.85.216.43
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-381c51fde6bso1938687a91.2
+        for <stable@vger.kernel.org>; Thu, 09 Jul 2026 06:19:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783603150; x=1784207950; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1783603153; x=1784207953; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=UcJGxgmDnR38OVaHjck8+5Pv/cW2l1vuCnw3aV8D/74=;
-        b=gPidSYWTZv0yEdN1qbgWka+yzjA3twD9jqvHxJWoutL6wP3NZTZxdELEbFMDyh4poc
-         Lq6zDpB2oKLX3m5Z2OwAB5vJhZgz7hFx/VHZpx85ywIwVfsSMIHvXskm1KmHjsDeckdA
-         1hLQyFPoRKXZjuBRwQm0MEu1t3Zrs278VMIRcTBhpR4A+A2HM0zq4DSnrGkw85CFdqCe
-         kcpZxQVrJNofBQQWnMLocS9B566B7Tzf3vh0nLeVAVRyp1bPhMJ4dgTg2vyASelmJTwo
-         pBHtVtaez63TpgY6pxhD9sf0XQgtBzUm2apvAyW0/5645yakWALro1rRbC80P4m80Tfm
-         SMuw==
+        bh=CUlFlzpXFW4Tu4Nj2yptSBR0grcherDl48iid+RrU3k=;
+        b=rZnsLOCf/cnaQEBH228qTO26hWF3dx3z5cp8+JMd4nlgi9ljLAVMs7vMI2Mxo3uDgP
+         duguG/ggIzO9Ze22BCD0ikg4AjJrzydNsBMvvr1Q3ciRPnV5kJPbl7FG+AxUT+V6HCYk
+         IqJ/f1tONAvlUEgbExpmsaxmnic19N+QY7y//kNS+qx0XnJ57KDt3JbPA/wiKrkX3n42
+         sc0RLQ0PTQtsagg1LMSjeb08mTS0Xq54QpLYg38ayZF9gmYWWttrWZcUqYznEj33Y0TX
+         hE0FqQuy3x2nqZnKbZIg9o+bpzHrNCDzUr7dIQ85VRhAQ4bm2bCFethMnQEzbQ+zujxV
+         25vw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783603150; x=1784207950;
+        d=1e100.net; s=20251104; t=1783603153; x=1784207953;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=UcJGxgmDnR38OVaHjck8+5Pv/cW2l1vuCnw3aV8D/74=;
-        b=m7NYBRpKwB//AU2cJHxP1wqfuuH/4+07pNZeKcZrEwuq/Ef5A/xH4JHi/m0zBBDOlq
-         q0Iroiy1UokWr/+tzlYGwN4fFLYqtP7tdZJbbNwyC4K80jWWst8MqnxML24hj+tHVQLm
-         2eqwSGbJjVtmICA7idvIMHtboTMDrXAU7p+stC+wUgEdnGgiviYSpRZnlL4Qzd+yhPqS
-         1ULfXMtH2+laH24rv3M1HdQJWgB/uxlygoyQNVjlUIJryDRGXmndIHmVaZcQoojmV/C5
-         kzlDdIVe3QGXKMK8wCY8S4hnJr/3K9AhkcISjwbg+TmStOcQGkszAyZZ8i9Rm83Jkb6B
-         JAkw==
-X-Forwarded-Encrypted: i=1; AHgh+RpTIYhvlP9scbiEE4W5LysP8Jgbaj96ZES/SEi2590j2Mtn/xX6n/rn9QQ8I/kIwMIVMtXn3uQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx+Vx9gmPhIE4B8+LYeQekegAWOMNXFzGfk5KJhdJWQp30EqIhg
-	U+NHPMV0JXZcepl2qxfDsItSayr2qKTDc9cth33zD8Mv2XN07odoizPint3E4M23Gw==
-X-Gm-Gg: AfdE7cmIs95N8e9C67b9RPzpaZddcOHqeD2JY9gid/TUdO/26DWSeJrgVtpT2BXL+kB
-	Uyu16g0toFfWfg4QCrKzp7WAHlV6YAaOvqX77Vx18xRuIZORRfiMlS5oxmxqpidLQH2+dz+LYv9
-	785OgCaTZqhJVUEg7Ehbw2C6Nd/nNg27nqxhvUyXQiheJx6SCtFXOA/PiVAUQzbeMzOKeRAouy1
-	0w4KAPBYwnUPYINLM3hnmuGCrZ/ugh6vHS9StpMc3BaxhfS2tJgeCVV1beS4R10hn+1UAvU2SrE
-	1ZoR8ae1K3h0AY64jabMkBvpYLYOU/UcjCtdrPVMBmkTpWylIwjspRKMQoCcfhPeyrVqY7LJ2O2
-	Gh2ExfvvAJyaDP4swOtlNtOZIdjG0R3+bhIr9D48R1QAWr9X3heuBuuH5vCIlb/rht4s/8r/Vfa
-	saqv6hyCDpLYVUJA1v5pG5UCf9y6bk0vdjgTVVVXu/iz85cTA2KA84p9hqSw6KKhG0
-X-Received: by 2002:a17:90b:510b:b0:381:b1ad:c9e4 with SMTP id 98e67ed59e1d1-389416e7d75mr7203452a91.26.1783603149803;
-        Thu, 09 Jul 2026 06:19:09 -0700 (PDT)
+        bh=CUlFlzpXFW4Tu4Nj2yptSBR0grcherDl48iid+RrU3k=;
+        b=VthyZyxUzEvHpBweozXPHsT1bit1tDqcWrOxbmTbUakT1J35S4etLi9tttkbGvkLnS
+         YMA/va3MH+D6RlKOZh89X1EceL0vVpJYjYkvdtX2JnXESbCJOIBO232TrbDbCI6Aidk0
+         A5kxIpID9YxKAOnEEF1sMPmt1L8FbIkEMW4m86dEQvPPHjZdOMZ0vGLUPWjR8+fYE4XD
+         cd2iFw1g9q72oF+eJDO6xjcPH10sYlnm5zyGH5r7XRRl1a2pkeqnJbgOtPNgG6DBK55w
+         ObbM6neUzuGbbK8pRvlzubKHz2zJjXs4amcc5evwZPgHpferNKik0pNxrDgMM1zuzyZh
+         QuUQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqGugmCam9QhGyTyOjbxKpnWnwpSvFrjprwPWooBn+oae1paby4Ap5MtmcbtbD3nPlmSERA02k=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx53UPoYobWyLNgllIqt4QV9RlnCreHhIgizs5rdvuu+r4V7ih8
+	5x1DQ6wHUxWBDvgQiumL0Tklys4eMrBORw+PWVaUQpYoIRE/MCmpuXU=
+X-Gm-Gg: AfdE7ckrWjyDJ4wYZaUNeo+oSBTf/Ma6ju+EYglH6gI/KKsbM5y30TK+4MOSMytxRog
+	9hi8LTISI3PnGNJI0IwAmcZJxL8tcOdfl/VxB2Oxe/XBZhHiSVyOxoWx/CN2/AkDX4Hxcqst/od
+	UdQ9pTGCut9guyJu1dvzP0STWuHiK1CEEYWX3918xrgj7dLzMSGB8LLmFLQ4vLZRW8tjFP50SFd
+	5+TBewBFnhFxakw0m0LURL0YMd9gO0n0XFar8RwPsTgyVmfphY7u/P3ND7y3ijBaK5IT4meHmZE
+	OM+23WA2tRPjnZjaAwhvPn/MxtCeMyvhw/kjNSq4Ko8Upyhgmm9YLDY3mCjJBLAf17ooMy8eNt6
+	ZqIcTfClFaTYwMkxFcYyvuxB1w28Q9/C9i0upshkLS+iwd75FZ0+0mfGCVpQT55PHfyP5dEeyvZ
+	canSR2kFhQrFh5siYX1A+0Ijdizifc61wNMvsRhNYZqH4GmSvKc4gJB/n3yGekZwFlfY8R+0691
+	Mk=
+X-Received: by 2002:a17:90b:5384:b0:381:c500:b0d1 with SMTP id 98e67ed59e1d1-389421ae13emr7846863a91.20.1783603152578;
+        Thu, 09 Jul 2026 06:19:12 -0700 (PDT)
 Received: from coe.tail83f5bd.ts.net ([58.146.106.120])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-31174ae6cd9sm33960852eec.31.2026.07.09.06.19.07
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-31174ae6cd9sm33960852eec.31.2026.07.09.06.19.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jul 2026 06:19:09 -0700 (PDT)
+        Thu, 09 Jul 2026 06:19:12 -0700 (PDT)
 From: Ramesh Adhikari <adhikari.resume@gmail.com>
 To: colyli@fygo.io,
 	axboe@kernel.dk
 Cc: gregkh@linuxfoundation.org,
 	linux-block@vger.kernel.org,
 	stable@vger.kernel.org,
-	Ramesh Adhikari <adhikari.resume@gmail.com>
-Subject: [PATCH v6 0/2] badblocks: fix infinite loop and validate sector range/shift
-Date: Thu,  9 Jul 2026 18:49:02 +0530
-Message-ID: <20260709131904.596684-1-adhikari.resume@gmail.com>
+	Ramesh Adhikari <adhikari.resume@gmail.com>,
+	kernel test robot <lkp@intel.com>
+Subject: [PATCH v6 1/2] badblocks: fix in-place round_up/round_down usage bug
+Date: Thu,  9 Jul 2026 18:49:03 +0530
+Message-ID: <20260709131904.596684-2-adhikari.resume@gmail.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <ak9CC591ivuQ4BP1@studio.local>
+In-Reply-To: <20260709131904.596684-1-adhikari.resume@gmail.com>
 References: <ak9CC591ivuQ4BP1@studio.local>
+ <20260709131904.596684-1-adhikari.resume@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -103,84 +106,106 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-272916-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:colyli@fygo.io,m:axboe@kernel.dk,m:gregkh@linuxfoundation.org,m:linux-block@vger.kernel.org,m:stable@vger.kernel.org,m:adhikari.resume@gmail.com,m:adhikariresume@gmail.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[adhikariresume@gmail.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,vger.kernel.org,gmail.com];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,vger.kernel.org,gmail.com,intel.com];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-272918-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:colyli@fygo.io,m:axboe@kernel.dk,m:gregkh@linuxfoundation.org,m:linux-block@vger.kernel.org,m:stable@vger.kernel.org,m:adhikari.resume@gmail.com,m:lkp@intel.com,m:adhikariresume@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[adhikariresume@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[adhikariresume@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 21075731907
+X-Rspamd-Queue-Id: CC5B27317F3
 
-This replaces the single-patch v5 with a two-patch series, per Coly's
-review.
+rounddown() and roundup() do not modify their first argument in
+place; they return the rounded value. _badblocks_set(),
+_badblocks_clear() and badblocks_check() were calling them as
+bare statements and discarding the result, so 's' (and 'next'/
+'target') were never actually rounded. Depending on the caller's
+alignment this can leave 'sectors' unchanged or, in the reported
+case, produce a range whose end never advances, causing
+_badblocks_check()/badblocks_check() to loop with a non-advancing
+cursor and stall the CPU (RCU stall) when called through the
+nvdimm ioctl path via nvdimm_clear_badblocks_region().
 
-v1-v4 chased symptoms of the same underlying bug (an RCU stall found
-by syzkaller through the nvdimm ioctl path, in _badblocks_check() /
-badblocks_check() looping with a non-advancing range) before landing
-on the root cause in v4: rounddown()/roundup() don't modify their
-argument in place, so 's'/'next'/'target' were never actually
-rounded.
+rounddown()/roundup() also do division/modulo on the sector_t
+(u64) operand, which requires libgcc helpers (__aeabi_uldivmod,
+__umoddi3) that are not linked into the kernel on 32-bit builds,
+breaking the build on arm/i386 (reported by kernel test robot).
 
-v5 folded the round_down()/round_up() fix together with overflow and
-zero-length guards into one patch. Coly's review on v5 pointed out
-that:
+Switch to round_down()/round_up() (include/linux/math.h), which
+are mask-based, assign their result back to the variable being
+rounded, and require no 64-bit division, fixing both the
+non-rounding bug and the 32-bit build breakage.
 
-  - the overflow check that was there wasn't sufficient on its own
-    (only one of several range-validity conditions), and
-  - the round fix and the validation should be separate patches,
-    since they're independently useful and one is safe to backport
-    on its own.
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202604301231.IpPh4AiH-lkp@intel.com/
+Fixes: aa511ff8218b ("badblocks: switch to the improved badblock handling code")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ramesh Adhikari <adhikari.resume@gmail.com>
+---
+ block/badblocks.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-This series:
-
-  1/2 is exactly the round_down()/round_up() fix, nothing else. This
-      is what actually stops the infinite loop and also fixes the
-      32-bit build breakage kernel test robot reported on v1
-      (rounddown()/roundup() do 64-bit division/modulo on sector_t,
-      requiring libgcc helpers not linked into the kernel).
-
-  2/2 adds the range/shift validation Coly asked for: s+sectors
-      overflow, bb->shift too large to shift a sector_t by (bb->shift
-      is populated in drivers/md/md.c straight from an unvalidated
-      on-disk superblock byte), and detecting when round_up()/
-      round_down() themselves wrap near ULLONG_MAX.
-
-Both are tagged Fixes: aa511ff8218b ("badblocks: switch to the
-improved badblock handling code") and Cc: stable, since that's the
-commit that introduced this code path.
-
-Ramesh Adhikari (2):
-  badblocks: fix in-place round_up/round_down usage bug
-  badblocks: validate sector range and shift before rounding
-
- block/badblocks.c | 52 ++++++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 45 insertions(+), 7 deletions(-)
-
---
+diff --git a/block/badblocks.c b/block/badblocks.c
+index ece64e76fe8..1f786b193fb 100644
+--- a/block/badblocks.c
++++ b/block/badblocks.c
+@@ -857,8 +857,8 @@ static bool _badblocks_set(struct badblocks *bb, sector_t s, sector_t sectors,
+ 		/* round the start down, and the end up */
+ 		sector_t next = s + sectors;
+ 
+-		rounddown(s, 1 << bb->shift);
+-		roundup(next, 1 << bb->shift);
++		s = round_down(s, 1 << bb->shift);
++		next = round_up(next, 1 << bb->shift);
+ 		sectors = next - s;
+ 	}
+ 
+@@ -1071,8 +1071,8 @@ static bool _badblocks_clear(struct badblocks *bb, sector_t s, sector_t sectors)
+ 		 * isn't than to think a block is not bad when it is.
+ 		 */
+ 		target = s + sectors;
+-		roundup(s, 1 << bb->shift);
+-		rounddown(target, 1 << bb->shift);
++		s = round_up(s, 1 << bb->shift);
++		target = round_down(target, 1 << bb->shift);
+ 		sectors = target - s;
+ 	}
+ 
+@@ -1307,8 +1307,8 @@ int badblocks_check(struct badblocks *bb, sector_t s, sector_t sectors,
+ 		/* round the start down, and the end up */
+ 		sector_t target = s + sectors;
+ 
+-		rounddown(s, 1 << bb->shift);
+-		roundup(target, 1 << bb->shift);
++		s = round_down(s, 1 << bb->shift);
++		target = round_up(target, 1 << bb->shift);
+ 		sectors = target - s;
+ 	}
+ 
+-- 
 2.43.0
 
 
