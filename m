@@ -1,160 +1,190 @@
-Return-Path: <stable+bounces-272863-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272866-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ifJyKlF5T2rOhgIAu9opvQ
-	(envelope-from <stable+bounces-272863-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 12:34:57 +0200
+	id e5NGMP57T2qxhwIAu9opvQ
+	(envelope-from <stable+bounces-272866-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 12:46:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25EE072FAA7
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 12:34:57 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0653972FD26
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 12:46:22 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Hj2yD2TO;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272863-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272863-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=XMmKUPyL;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272866-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272866-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 043DD31442DB
-	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 10:16:30 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5402C30542CA
+	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 10:27:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB94C40BCA8;
-	Thu,  9 Jul 2026 10:15:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F137405844;
+	Thu,  9 Jul 2026 10:27:23 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com [209.85.161.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 207684071F2;
-	Thu,  9 Jul 2026 10:15:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21FF731A7EA
+	for <stable@vger.kernel.org>; Thu,  9 Jul 2026 10:27:20 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783592109; cv=none; b=MBqaV+tkpf58TRAiH7YVqBPelPP0kX15NqGnoVHlnuQkpeHqiAMt9GGsihY7isyQRkbD/0AcNpAfhB+t8OdXp0HEyU7anObpQPVHco26qNy1vtZipT87lpYXizoAd3bvgdYSgW6eqrfz5IOxrjGTozXIrxEH89hYl675RKj3qls=
+	t=1783592842; cv=none; b=O22up9c6PY74z+Vsk0FJPGiHaFQgUtyx/G4AA6lw/8Kti6YQZbBn9Buybzaw1zVXGXsdHwU4k3vFYp+uzTjUKm1ZxxhozXWNPDGFtK5JAbUAp48eJj3Uy3n/LOUqR7Ogk6DVNnAuygcE88zlFSEgktCPUaRH81810ACRjUbu+ww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783592109; c=relaxed/simple;
-	bh=iRNmyl0uZFg9GGzcYY2mInIz+v/Q6dZ549PnB7ss4r0=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LNRp23zfS9BU7CpW/bolJaCL8Kn4p8a/1E/vRDRdZS9uB6HctBIwxSkIVC2MxQ7Su8iljNB7eOtQj4RDQD271PZ8n8Ey7yY1Z13zKYhS3WZgF10h1Uevc5P/SHrd0kC22+jEuiwv853LdB40jic3OOLPcGRhZkIuGEZa1Ab6GJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hj2yD2TO; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98BF51F000E9;
-	Thu,  9 Jul 2026 10:15:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783592107;
-	bh=6MZ389cEc2lyiKpJAWuYgikhhXSP3O53lnQuS0Sbe10=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Hj2yD2TON4H60q7yeJBLImX0WTnGyyxdz6ETx39jHmIe/VohCrrioyzKjcuUGLgKT
-	 X4aB9HGFP1wNVTZNDNDQYQoY4OnHqZnx39ie5tYKX7ynvhDP9MusfWTGUdPVftBwu5
-	 6/inVAwwLiJDm7IL1WxrItlc13a+Wvcul/6XoDTmR0mn6wLBwpwZAXrtMjqwTK5av8
-	 PZRXuquPNyNJInw5V7gmxJuaXPdD61HNt+d+NTZcGAHCqI5+gKT6MCiYDHIxxl5bWJ
-	 d2uDr2k25FmOQdGt5uGXDLCFqEXRPf+8uOHK/HAf2nKvkxDpCpEESB6Ax2JKFc/Cj+
-	 0MsvDVqxEn8MA==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1whlma-00000003ChL-3Ed9;
-	Thu, 09 Jul 2026 10:15:05 +0000
-Date: Thu, 09 Jul 2026 11:16:37 +0100
-Message-ID: <87y0fk5uyi.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Colton Lewis <coltonlewis@google.com>
-Cc: stable@vger.kernel.org,
-	oliver.upton@linux.dev,
-	sashal@kernel.org,
-	gregkh@linuxfoundation.org,
-	mizhang@google.com,
-	catalin.marinas@arm.com,
-	will@kernel.org,
-	james.morse@arm.com,
-	suzuki.poulose@arm.com,
-	yuzenghui@huawei.com,
-	mark.rutland@arm.com,
-	ahmed.genidi@arm.com,
-	leo.yan@arm.com,
-	miguel.luis@oracle.com,
-	dbrazdil@google.com,
-	kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 6.6 v2 1/6] arm64: sysreg: Add layout for ID_AA64MMFR4_EL1
-In-Reply-To: <20260708225124.4130846-2-coltonlewis@google.com>
-References: <20260708225124.4130846-1-coltonlewis@google.com>
-	<20260708225124.4130846-2-coltonlewis@google.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=arc-20240116; t=1783592842; c=relaxed/simple;
+	bh=L2WCr6taxGkTOVHzUf3RYCQ2nUSH6l8pW3+moY7GGhw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gckS4v2oXc4F3jy/pd4L4UTm0BjGXiNXwOGXZDCNCMWxhCOqRkGa/VfCsQsJlEHyztRDo8Wrr4qZOpEzvaIbDHVtmcmFi5ufKwnP/qJA+aibyA+k0WN/E9qpSqOveK07jgznZ9yLNNA9MMkQUgInlB4HvKpQ3Gdtr6UHUHRy8eY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XMmKUPyL; arc=none smtp.client-ip=209.85.161.51
+Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-6a168dc590cso1195017eaf.0
+        for <stable@vger.kernel.org>; Thu, 09 Jul 2026 03:27:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783592839; x=1784197639; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=yTHA/HAGmx+6vLyILbr+Ji6px3cTIRCKaDC8NslzL3E=;
+        b=XMmKUPyL5cepxfvC1sytDE50rvwWz0WpmOPoZt0EQZc5uHqin6aH5olO9ekZzFKeZm
+         kKgr3UHr2zIC+oTZNiGV+UbfvmI+yEfvz1JesK5Gn4j3wHGVvb5Hik3UxL8/P+tSd5hB
+         5/Mhz6p0ZL6KMb1d0A6aDLqF7SnxQgD67P8eD8b6BMrqWZm3w1r3fZIaLPLlu1+WnHHJ
+         QKnZuSfJrduak1B8fs5asfugeS7eOFsK0bqAtjLMiL+AOG4wHLY6KjoeS7c5+BJpBMLa
+         khwlcdMeDphFSyhbQKNi57VpPi8A/FamsuhqKZW0Yg+D+dWjNmqlY/Jfx4DmWXfL8D36
+         Y85A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783592839; x=1784197639;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=yTHA/HAGmx+6vLyILbr+Ji6px3cTIRCKaDC8NslzL3E=;
+        b=gS2fsWHQD1JyE4TgjL8m4YzoeXn8ypZyXEZVYgqwzDwMvmuyGTVcC+Cmqf3UMhuYtV
+         46LMQy6A7Bh8dr8GAMgFwC8AGzfbUyKdnvIn7avv7sTT8gICrzjsWwh+kvJCrG9zMFNk
+         HKlXZOPd456gNxEkLwQNVn3qwQ23YA+c3otCVuDtuSYaT3ZCFG4dL7Y+Hl+vISzrgLLd
+         lFlSg8wWjsBbNNOzs1z1bCJW7f3XgEeQST3yzkx5QIn8tdLgq6KmrtAZNjNSKvDX4jx8
+         TMdkUhEWBSNtXgSFm9aQDuTgXwWM1/kapdiFupNsZW2VuTxGcwS/ARoQvDbG9poOmMoH
+         z/5g==
+X-Forwarded-Encrypted: i=1; AFNElJ+SeviDCjFrsz7eBiODMZHjnlJ91cTxwO5r0pQ8tSjR1QNar5eosiFhVhoa1zCVrNXLCgwxREI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy9jxktiwTLIk5UuH5N/RzaJ7ANmxIS6DEh3taikOLqKxpbh36P
+	vdQl0oGleAi8BY4/RGI3NYbzYZ9+t1MuhN2sT+QOLRpTUU5zeF6vl+L5
+X-Gm-Gg: AfdE7ckNJQi+NN0rEjlRC4V2kW1aDv37u3V7elPCQBruuiGLOLjjEevXrCWQA4hpF4S
+	ygggrZYMqYUo+Qn/1sU0ZK/vvyMk/VgR9lkNLU9mxg1qBwYWTYCmbZEHrfNGNfLzk4xeNxm6+x6
+	sLCQ+beCgRa7V4nMG+WZedN+J6X300LdKtixbowHyH5yH6ZcEiKK5nWL4dez80Hz+wFfPXDLwbm
+	ggR02ttjFSWBi/jixDh2Sc+oOYYaUvIr7y8J837z+PjEcFa1XYX/QP5GJXHf/dS0ZN2wJTcGE2/
+	8ceLKBOdefZ8SZlIaF3aaSBJMtgoyCzp3RJ4JUWMwx3cnb4UqLJjziGN7MoHK7vVajWCWITRe7f
+	38mySRNSqm6XvfBaJxeePmoqcC2q7czjIigdd7trF4KkRBLoT7X3t5CuPQnhGNaiaEWIFv3RGx6
+	0dzXfVNOmKE4zkYk8=
+X-Received: by 2002:a05:6820:189a:b0:6a3:15c3:e60d with SMTP id 006d021491bc7-6a36da65eaamr5053920eaf.71.1783592839034;
+        Thu, 09 Jul 2026 03:27:19 -0700 (PDT)
+Received: from localhost ([74.80.182.70])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6a37b58f98csm1338565eaf.13.2026.07.09.03.27.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Jul 2026 03:27:17 -0700 (PDT)
+Date: Thu, 9 Jul 2026 13:27:11 +0300
+From: Dan Carpenter <error27@gmail.com>
+To: christian.taedcke@weidmueller.com
+Cc: Vinod Koul <vkoul@kernel.org>, Frank Li <Frank.Li@kernel.org>,
+	christian.taedcke-oss@weidmueller.com, dmaengine@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] dmaengine: nbpfaxi: Fix setting channel irqs in probe()
+Message-ID: <ak93fxRvw9UvxJLJ@stanley.mountain>
+References: <20260702-upstreaming-nbpfaxi-v1-v1-1-fd8ea8830cea@weidmueller.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: coltonlewis@google.com, stable@vger.kernel.org, oliver.upton@linux.dev, sashal@kernel.org, gregkh@linuxfoundation.org, mizhang@google.com, catalin.marinas@arm.com, will@kernel.org, james.morse@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, mark.rutland@arm.com, ahmed.genidi@arm.com, leo.yan@arm.com, miguel.luis@oracle.com, dbrazdil@google.com, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260702-upstreaming-nbpfaxi-v1-v1-1-fd8ea8830cea@weidmueller.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-272863-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	FORGED_SENDER(0.00)[maz@kernel.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:coltonlewis@google.com,m:stable@vger.kernel.org,m:oliver.upton@linux.dev,m:sashal@kernel.org,m:gregkh@linuxfoundation.org,m:mizhang@google.com,m:catalin.marinas@arm.com,m:will@kernel.org,m:james.morse@arm.com,m:suzuki.poulose@arm.com,m:yuzenghui@huawei.com,m:mark.rutland@arm.com,m:ahmed.genidi@arm.com,m:leo.yan@arm.com,m:miguel.luis@oracle.com,m:dbrazdil@google.com,m:kvmarm@lists.linux.dev,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-272866-lists,stable=lfdr.de];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[error27@gmail.com,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:christian.taedcke@weidmueller.com,m:vkoul@kernel.org,m:Frank.Li@kernel.org,m:christian.taedcke-oss@weidmueller.com,m:dmaengine@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[maz@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_NEQ_ENVFROM(0.00)[error27@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,arm.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[stanley.mountain:mid,weidmueller.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 25EE072FAA7
+X-Rspamd-Queue-Id: 0653972FD26
 
-On Wed, 08 Jul 2026 23:51:19 +0100,
-Colton Lewis <coltonlewis@google.com> wrote:
+On Thu, Jul 02, 2026 at 03:43:29PM +0200, Christian Taedcke via B4 Relay wrote:
+> From: Christian Taedcke <christian.taedcke@weidmueller.com>
 > 
-> From: Marc Zyngier <maz@kernel.org>
+> When one irq is used for errors and each channel gets a dedicated irq,
+> the total number of irqs is num_channels + 1. If the error irq is not
+> the last entry in irqbuf[] but an earlier one, the loop assigning
+> per-channel irqs terminates one iteration too early and the last
+> channel is left without an irq.
 > 
-> [ Upstream commit cfc680bb04c54e61faa51a34d8383a0aa25b583f ]
+> Iterate over all collected irqs instead of num_channels so the
+> error-irq skip does not shorten the effective channel count.
 > 
-> ARMv9.5 has infroduced ID_AA64MMFR4_EL1 with a bunch of new features.
-> Add the corresponding layout.
+> Fixes: 188c6ba1dd92 ("dmaengine: nbpfaxi: Fix memory corruption in probe()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Christian Taedcke <christian.taedcke@weidmueller.com>
+> ---
+>  drivers/dma/nbpfaxi.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> This is extracted from the public ARM SysReg_xml_A_profile-2023-09
-> delivery, timestamped d55f5af8e09052abe92a02adf820deea2eaed717.
+> diff --git a/drivers/dma/nbpfaxi.c b/drivers/dma/nbpfaxi.c
+> index 05d7321629cc..74ff7bd979e2 100644
+> --- a/drivers/dma/nbpfaxi.c
+> +++ b/drivers/dma/nbpfaxi.c
+> @@ -1374,7 +1374,7 @@ static int nbpf_probe(struct platform_device *pdev)
+>  		if (irqs == num_channels + 1) {
+>  			struct nbpf_channel *chan;
+>  
+> -			for (i = 0, chan = nbpf->chan; i < num_channels;
+> +			for (i = 0, chan = nbpf->chan; i < irqs;
+>  			     i++, chan++) {
+>  				/* Skip the error IRQ */
+>  				if (irqbuf[i] == eirq)
 > 
-> Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-> Signed-off-by: Marc Zyngier <maz@kernel.org>
-> Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-> Reviewed-by: Miguel Luis <miguel.luis@oracle.com>
-> Link: https://lore.kernel.org/r/20240122181344.258974-5-maz@kernel.org
-> Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+> ---
 
-Please read Documentation/process/backporting.rst, and in particular
-the section indicating the requirement for your own SoB.
+Ah.  Thanks.  I feel like it would make sense to change the other
+condition as well to:
 
-None of these patches can be merged if this is missing.
+-                       for (i = 0, chan = nbpf->chan; i < num_channels;
++                       for (i = 0, chan = nbpf->chan; i < irqs;
+                             i++, chan++) {
+                                /* Skip the error IRQ */
+                                if (irqbuf[i] == eirq)
+                                        i++;
+-                               if (i >= ARRAY_SIZE(irqbuf))
++                               if (i >= num_channels)
+                                        return -EINVAL;
+                                chan->irq = irqbuf[i];
 
-	M.
+If we don't find the error IRQ then it would be possible to go out of
+bounds of the chan->irq.  It's not likely to happen in real life but it
+sort of makes the code make more sense?
 
--- 
-Jazz isn't dead. It just smells funny.
+regards,
+dan carpenter
 
