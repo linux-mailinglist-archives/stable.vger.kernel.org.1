@@ -1,154 +1,146 @@
-Return-Path: <stable+bounces-273086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273087-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id OVs7JuolUGpkuQIAu9opvQ
-	(envelope-from <stable+bounces-273086-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 00:51:22 +0200
+	id PvwqLAUoUGrVuQIAu9opvQ
+	(envelope-from <stable+bounces-273087-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 01:00:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEE08736242
-	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 00:51:21 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1B847362D6
+	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 01:00:20 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=yhX5Z0v8;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273086-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-273086-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=casgykTh;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273087-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-273087-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E6800304D745
-	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 22:50:06 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9D1033024E33
+	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 22:53:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E914C3B14D0;
-	Thu,  9 Jul 2026 22:50:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B71AB3B27E7;
+	Thu,  9 Jul 2026 22:52:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EA9E379C3C;
-	Thu,  9 Jul 2026 22:50:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2958C3AFD08;
+	Thu,  9 Jul 2026 22:52:04 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783637405; cv=none; b=H/3Abl0CtqBzD94rldWiGRzqCVfJh786zoq/O2etplxcCwrK09POstVlythbcD19wm/P0jvB9bA0+zI/2cE4tUvCjbG/kj/bNzedVJwtWK9vP76HqhU0n/xZ2AOz2thdfL2TdH/4nK8O6wCGBWx6SYfqA2dYcvbrdXYQpSuybFE=
+	t=1783637527; cv=none; b=kmXyJAKrihYBT82ouOJCHgRljwcY5yo9gnarNird0PmQavcuKCG84kBkf73uqOy8x+Fd8vYwzPtRzs1mgAvvbphgdtMTSoeFd+QPnScgpRi+KeVyyUUWkDtAvr7TM94akqcOD/9szsdr5XSK9w2B1si+AIDPIYbrV9ws4k+p6Nk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783637405; c=relaxed/simple;
-	bh=8+iHs92c7Hm4zjQKRmyjwa3pbf7Bm6ChHdHovxoRJKE=;
-	h=Date:To:From:Subject:Message-Id; b=SkfxdKZrBpaVtzUSfnaefAYmiCDxApwlGD46wnvo9r3Q8nVqO24eWU2L1tqlV7uKHuQuliiF1+tW/fDpm+Q0FZhizVWhruTbgMg+385b6RkNyEg9sddZlafrPcXwxd2pDVyY9+jrYUCKF+PxglOcDJJdm3CWuAuzBN20s+3ur7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=yhX5Z0v8; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 466691F000E9;
-	Thu,  9 Jul 2026 22:50:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1783637404;
-	bh=rnlSBTLSUGsHJ53Y5Xp2RJwfNLDJuqeP0TrX+awToTY=;
-	h=Date:To:From:Subject;
-	b=yhX5Z0v8UCpFWgk5H5kpfJ3fcSor76GUHHeGvxZO8tQkwmd2mKBQNTz6FgaSxdGXb
-	 2Pf2H4YUSmcRiftvIa3E+RFdAElZnKC3vLA2mQA7HjYlmbc0BOAiuHWzYR0H9Oo2AG
-	 +Q8OgXQb1KQhyTt6jAekEEbRCyZ54NJRkEvpOAAw=
-Date: Thu, 09 Jul 2026 15:50:03 -0700
-To: mm-commits@vger.kernel.org,yi1.lai@intel.com,stable@vger.kernel.org,rostedt@goodmis.org,qiuxu.zhuo@intel.com,linmiaohe@huawei.com,lance.yang@linux.dev,david@kernel.org,bp@alien8.de,xieyuanbin1@huawei.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-memory-failure-trace-change-memory_failure_event-to-ras-subsystem.patch removed from -mm tree
-Message-Id: <20260709225004.466691F000E9@smtp.kernel.org>
+	s=arc-20240116; t=1783637527; c=relaxed/simple;
+	bh=gBaIPN33LfmDg4hHIaBoNItQlZ83Bm6USbEWS9KyhIY=;
+	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
+	 Subject:From:To:Cc:Date; b=i3Z9tKAi7XOwYz4w2dZDmrJnd4ZzdViE8PTL3Y2KKXQJkjkO1F3zmceT03ZlBJOw+o0JszkpLf0M4q18Se/Q+kaiffE27ftMWvDUCOeEQE8FR9VUx04Im6h8m42UViPtL/r4/GDvew+yJsopmhlcOnkTivcr5tjJHWflbP0b0t4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=casgykTh; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 791EE1F000E9;
+	Thu,  9 Jul 2026 22:52:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783637524;
+	bh=Hw0YEWuasSELzyN3iJrE8ZYwT4ynNuVYIAHj0t2PlKA=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=casgykThI4O4unGWnXTN9WG4KF/VKUV9GE6wYwIRge1Tt+l0NfI/WlVJnsZzjY+Dn
+	 FPytoxw9GkCKjWGqUuHcEuDMu38yUmPcrSFXSAYAG08vHsPut/iQvlgqLzQeRpqunK
+	 SlYYhv7OobZIYv4bhXb/mK9KVFa9Ff/2fMi9UEXHWUSzBlq1xGLr0LpXT5uqy5Ap73
+	 WyILKIFInr0hVE29AWhzb1PjGfL0WBJmPtIctAzxitq98MJ/5Cg/lHePzfoxYtyZtI
+	 sCf+/tG8zIvS8yNKLqRZ0VImJ4H+4D7g0gp0P2dE6i/524P30v40jS/HNxRPNe2Akd
+	 twoEoZCkL4JWA==
+Content-Type: multipart/mixed; boundary="===============2104876237906351994=="
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Message-Id: <de3ebfe684f280473617b560a9dcf501df07833f835a08eb6e75720cd03662b4@mail.kernel.org>
+In-Reply-To: <20260709-cbpf-jit-spray-hardening-7-1-y-v1-1-5ac5a2d6797f@linux.intel.com>
+References: <20260709-cbpf-jit-spray-hardening-7-1-y-v1-1-5ac5a2d6797f@linux.intel.com>
+Subject: Re: [PATCH 7.1.y 1/6] bpf: Support for hardening against JIT spraying
+From: bot+bpf-ci@kernel.org
+To: pawan.kumar.gupta@linux.intel.com,stable@vger.kernel.org,gregkh@linuxfoundation.org,sashal@kernel.org
+Cc: bpf@vger.kernel.org,linux-arm-kernel@lists.infradead.org,loongarch@lists.linux.dev,linuxppc-dev@lists.ozlabs.org,linux-riscv@lists.infradead.org,x86@kernel.org,ast@kernel.org,daniel@iogearbox.net,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Thu,  9 Jul 2026 22:52:04 +0000 (UTC)
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-2.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+	SUSPICIOUS_RECIPS(1.50)[];
+	CTYPE_MIXED_BOGUS(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
+	MIME_GOOD(-0.10)[multipart/mixed,text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.infradead.org,lists.linux.dev,lists.ozlabs.org,kernel.org,iogearbox.net,gmail.com,linux.dev,meta.com];
+	TAGGED_FROM(0.00)[bounces-273087-lists,stable=lfdr.de,bpf-ci];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:pawan.kumar.gupta@linux.intel.com,m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:sashal@kernel.org,m:bpf@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:loongarch@lists.linux.dev,m:linuxppc-dev@lists.ozlabs.org,m:linux-riscv@lists.infradead.org,m:x86@kernel.org,m:ast@kernel.org,m:daniel@iogearbox.net,m:andrii@kernel.org,m:martin.lau@kernel.org,m:eddyz87@gmail.com,m:yonghong.song@linux.dev,m:clm@meta.com,m:ihor.solodrai@linux.dev,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[bot@kernel.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+,1:+];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-273086-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:mm-commits@vger.kernel.org,m:yi1.lai@intel.com,m:stable@vger.kernel.org,m:rostedt@goodmis.org,m:qiuxu.zhuo@intel.com,m:linmiaohe@huawei.com,m:lance.yang@linux.dev,m:david@kernel.org,m:bp@alien8.de,m:xieyuanbin1@huawei.com,m:akpm@linux-foundation.org,s:lists@lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	DMARC_NA(0.00)[linux-foundation.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_NONE(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_NEQ_ENVFROM(0.00)[bot@kernel.org,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[20];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FROM_NO_DN(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.kernel.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp,intel.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BEE08736242
+X-Rspamd-Queue-Id: B1B847362D6
+
+--===============2104876237906351994==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+> commit 96cce16e26dd02a8678f1e87f88a4b5cdb63b995 upstream.
+> The BPF JIT allocator packs many small programs into larger executable
+> allocations and reuses space within those allocations as programs are
+> loaded and freed. When fresh code is written into space that a previous
+> program occupied, an indirect jump into the new program can reuse a branch
+> prediction left behind by the old one.
+> Flush the indirect branch predictors before reusing JIT memory so that
+> indirect jumps into a newly written program don't reuse predictions from an
+> old program that occupied the same space.
+> Introduce bpf_arch_pred_flush_enabled static key and bpf_arch_pred_flush
+> static call for flushing the branch predictors on JIT memory reuse.
+> Architectures that need a flush, can update it to a predictor flush
+> function. By default, its a NOP and does not emit any CALL.
+> Allocations larger than a pack are not covered by this flush. That is safe
+> because cBPF programs (the unprivileged attack surface) are bounded well
+> below a pack size. Issue a warning if this assumption is ever violated
+> while the flush is active.
+> Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+> Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+> Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+
+The reuse path this patch hardens (bpf_prog_pack_alloc() finding a free
+area within a pack, and the size > BPF_PROG_PACK_SIZE branch) comes from
+the pack allocator that first packed many programs into shared executable
+allocations and reused freed space within a pack.
+
+Should this carry a Fixes: tag pointing at that commit?
+
+  Fixes: 57631054fae6 ("bpf: Introduce bpf_prog_pack allocator")
 
 
-The quilt patch titled
-     Subject: mm/memory-failure: trace: change memory_failure_event to ras subsystem
-has been removed from the -mm tree.  Its filename was
-     mm-memory-failure-trace-change-memory_failure_event-to-ras-subsystem.patch
-
-This patch was dropped because it was merged into the mm-hotfixes-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-------------------------------------------------------
-From: Xie Yuanbin <xieyuanbin1@huawei.com>
-Subject: mm/memory-failure: trace: change memory_failure_event to ras subsystem
-Date: Fri, 5 Jun 2026 16:12:13 +0800
-
-Commit 97f0b1345219 ("tracing: add trace event for memory-failure")
-introduced memory_failure_event in ras subsystem.  commit 31807483d395
-("mm/memory-failure: remove the selection of RAS") changed
-memory_failure_event to memory_failure subsystem.  This breaks the
-backward compatibility, some user programs rely on it.
-
-Change memory_failure_event to ras subsystem to keep backward
-compatibility.
-
-Link: https://lore.kernel.org/20260605081213.154660-1-xieyuanbin1@huawei.com
-Fixes: 31807483d395 ("mm/memory-failure: remove the selection of RAS")
-Signed-off-by: Xie Yuanbin <xieyuanbin1@huawei.com>
-Reported-by: Yi Lai <yi1.lai@intel.com>
-Reported-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Closes: https://lore.kernel.org/linux-mm/CY8PR11MB7134346A3E4BB28ECA28D6E989132@CY8PR11MB7134.namprd11.prod.outlook.com
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
-Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
-Tested-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
 
- include/trace/events/memory-failure.h |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
---- a/include/trace/events/memory-failure.h~mm-memory-failure-trace-change-memory_failure_event-to-ras-subsystem
-+++ a/include/trace/events/memory-failure.h
-@@ -1,6 +1,10 @@
- /* SPDX-License-Identifier: GPL-2.0 */
- #undef TRACE_SYSTEM
--#define TRACE_SYSTEM memory_failure
-+/*
-+ * For historical versions, memory_failure_event is in ras subsystem,
-+ * some user programs depend on it.
-+ */
-+#define TRACE_SYSTEM ras
- #define TRACE_INCLUDE_FILE memory-failure
- 
- #if !defined(_TRACE_MEMORY_FAILURE_H) || defined(TRACE_HEADER_MULTI_READ)
-_
-
-Patches currently in -mm which might be from xieyuanbin1@huawei.com are
-
-
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/29054648899
+--===============2104876237906351994==--
 
