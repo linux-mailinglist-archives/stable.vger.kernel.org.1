@@ -1,216 +1,171 @@
-Return-Path: <stable+bounces-272821-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272826-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id pTG1N2o2T2rdcAIAu9opvQ
-	(envelope-from <stable+bounces-272821-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 07:49:30 +0200
+	id 4/rJBf81T2rIcAIAu9opvQ
+	(envelope-from <stable+bounces-272826-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 07:47:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33FAE72CE22
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 07:49:30 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03E5B72CDF9
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 07:47:42 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="b+/b1Msi";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272821-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272821-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=rKXGtt6L;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272826-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-272826-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EFDE5304C60D
-	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 05:45:36 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 23C5B3010F10
+	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 05:47:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F3133ACEED;
-	Thu,  9 Jul 2026 05:45:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 310A83A6B8E;
+	Thu,  9 Jul 2026 05:47:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 735E73ACA5A
-	for <stable@vger.kernel.org>; Thu,  9 Jul 2026 05:45:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C3F5288D0;
+	Thu,  9 Jul 2026 05:47:30 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783575935; cv=none; b=X0ZgCDVIIYN4Ya1irn1TCrfpMV0pSindkYJ9PWxA56E1me98o7QfnX/5nduNxNMGSL+oO6IkkQs9+JcgNlFhR+uthB01mHC9pWNH5O8Um5s8ISwBkM81FcndyQLS8GRbsxM7/m7khZMMqHYWvRBXr3rgyWOMjKMrOZfEAZtXIbs=
+	t=1783576054; cv=none; b=Xow9kbPhLcN8SYE7PwAuD/7X3gDnhwfs6VCxXZcvk0/GLEyc7in18X8RXKQkWpdIaMg61sPaP5B/F0kdtR6W2Dtqxpn2K4zwAlp973HkkXVbalelk9JYHnGxGuX7ALHhp7D3lOLhQupkCO6vugRtrGsoMOV20pKm6GdYx7NsRUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783575935; c=relaxed/simple;
-	bh=mC3oLMXWAbMD/8ggRenIHpAwU32uiCLRqrKbrmFUo/M=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=iUXJ7UpRRMnZnzRXSGuznYtx1Y4Xyl2nGrtVu6BYqSy9K672dp2vV5foSKYrBj+3nhREvC3isL30IaI3MEWiFbb44Eqbb3Nsa03NFDrzpH4ZPt1wgqgNyOL1Cn3NT7aIlA+aEMwWO/UztXdE8MBsgmksaR7/MQw9g9SWxK/M9J4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b+/b1Msi; arc=none smtp.client-ip=209.85.214.169
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2cc80b585bfso4246415ad.0
-        for <stable@vger.kernel.org>; Wed, 08 Jul 2026 22:45:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783575934; x=1784180734; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :references:cc:to:subject:from:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=yNOQxL4FXDmHyD0Kjq23REAu9LFdCtb3Pm7cOHC959s=;
-        b=b+/b1MsiXghrnUV3jqlmzuR/k6mUQp0JeeNf+pMXneovULfK1MmbMw9Pav8g4QyA3s
-         SUk72b7KiLJjspcYlpJGiAFIUTNv8uSLFrpo38MNo7NFDioiBLVqBqTR3K1nUs55dQO6
-         x/aJ4qN3auxmyhY0KtTQjjLyDw5F9L4tfdcTUvQfNgFCIOJGQO1m8XZ86GHJBefMPa/1
-         rkRqpDf4CvA41z0NQA/+Mcrg1YpsYpehU7+WiA/GKmoltRuHVT9XQUs2wUoy+t0FX0Qi
-         QOs8yf0Bmr/+5ukmOGlwc5V3X8j6/VKVnHn1Ule6cQtX26m9KwiBwV+IiPQo7hOe/1cx
-         BIMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783575934; x=1784180734;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :references:cc:to:subject:from:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=yNOQxL4FXDmHyD0Kjq23REAu9LFdCtb3Pm7cOHC959s=;
-        b=rYgt71btXfYaCoI7IVTFU4N1hdBmpwsg0hnspyYDJSbHuNI5GtQwpapWsZ1NUbGZ30
-         H9YD4xn6OGrO4MKeEWm1S6cgJHTPDIJ0bivWvY75KixrFNwCdMqJb/UsoqgEEHFjTf9x
-         eB71pPxfDpB2yDzzGGXw78d/yCnMJ16nkKyN3iuBURYv19xF+GrxmKFVeVzWLn/RD4IL
-         E7oRu/A0bvVbP3znRUSvFSdp4QyfunP7g9Vp9csnJIl+uqeof3bolGLMSI1Yk7AzpD//
-         Wp9qjqEaXI29uffC18i855HOjrSSjIvSIvGI87yrSJrtRKNscMIuEvk9eFC61SjLBBWq
-         cf6g==
-X-Gm-Message-State: AOJu0YxNErdSaHTHDmY96P/M1L6tWYqMItb0EsyTlTRMuK2DAGWhjn5W
-	iIJjB5ZrZT44ZQxwbIY12g52rO8WXqv1GheKrzHgFYvAH6qNV9Z/fPc8
-X-Gm-Gg: AfdE7cnLQ3c0/ucqc9iAT0hFavyFE0MgfplcJoTN6fuJK9Zo33IG2jk9PnAk19HkJSh
-	UZb66YE0uYksT/jGqbslkqAgbILth+DIf6b4v5v+9DBMAvx+WdraqC+jA81feuqa4MrIIHQ+2yt
-	FX0vPC8Sg0suvontZt61RqbmpeYkxlWnI2QjKMaAwPE03HJZRtPSabq61lAvctkP3DlGGW9WRf3
-	IEMEH/zjPU0Uv4uu62J/LwJtqB4YBv+kwfG/jlwMG7mwoO0vEQ0DNtlWIiMN6Rizk7Ys5+mcQ5b
-	eyDsEkf+VDzwrWrEMoz/8P07F+uU1Asw88TsDli3QysG8M49nNF+ZcFdniIQ7m5zBojqzCinOzZ
-	Q+6a6Keix/PETgtqL5qa8tbvGAdKOFBeSvUCCQarskEuZvdInFfxjVsgSdWLGKKzY8EwZbONv67
-	mMq7iq1wOYFHpeayHF
-X-Received: by 2002:a17:903:3903:b0:2cb:14b3:4cfe with SMTP id d9443c01a7336-2ccea582ae2mr60334915ad.45.1783575933576;
-        Wed, 08 Jul 2026 22:45:33 -0700 (PDT)
-Received: from [10.42.12.77] ([116.128.244.169])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc99cc5aasm38156905ad.0.2026.07.08.22.45.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 Jul 2026 22:45:32 -0700 (PDT)
-Message-ID: <c12700ab-7f0c-452d-b8de-8e23ca48f1bd@gmail.com>
-Date: Thu, 9 Jul 2026 13:45:23 +0800
+	s=arc-20240116; t=1783576054; c=relaxed/simple;
+	bh=ulT0R8zHT2oSgW02qyca/sRSVMAA8oUVdAKiA3crOvY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=QAAc8BiTHbNYLGr+4ngWUsFXbNoSoaU2cq6jXWYd3vZ2tAqeOAzz/s+l+1vhesddYP8VfBcNaw/VKCbsPZR/FHU50UAY0Y4NwzFHIopc4vET+w16Sy+4WtCnh8JNm6VO9LqDBoWTkcj5FzjXSDp4TRBucXkfSHxCrAvkQsrjMWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=rKXGtt6L; arc=none smtp.client-ip=198.137.202.133
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=S60EzECEIRXkgmqwnVqvijepjwRrX4+UczV6eSLKP8s=; b=rKXGtt6L91jep2t+IrHE5V1mY3
+	u0R4PQcnK1g3o0A7mIFZdBWblYga1jvCKTol1Y+0K+qv4OV5suEVcIpOeAq2aK1qAfl9dcT94AOO+
+	Tk8KOJIa/gnUBM7oRQuhVSHijaRwwtdXQX9Vr+oYY3pXy0S32EIhLr9ipqd1lohxUcCXR+mgr8vbr
+	l5VHjYcTaBhFxnyqYlLAy0o4nAm1PrSWJJjKgdF4299BhVnReipeXe3bqt/THhztI8UtVjz6rkJih
+	iGbRZrcmHEv6ORtNaAlXRkK6kVzAZQduC8rjuXIEfnKndiFT9Sq8OZnAjVOfEqs2HW99wPMT83xyj
+	P6iq9kuw==;
+Received: from [50.53.43.113] (helo=bombadil.infradead.org)
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1whhbc-000000015Vn-3ZpA;
+	Thu, 09 Jul 2026 05:47:28 +0000
+From: Randy Dunlap <rdunlap@infradead.org>
+To: linux-kernel@vger.kernel.org
+Cc: Randy Dunlap <rdunlap@infradead.org>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	linux-media@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] dma-buf: fix some kernel-doc warnings
+Date: Wed,  8 Jul 2026 22:47:24 -0700
+Message-ID: <20260709054728.528152-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: leixiang <leenollei@gmail.com>
-Subject: Re: [PATCH] KVM: Nullify irqfd->producer when add_producer() fails
-To: Sean Christopherson <seanjc@google.com>
-Cc: stable@vger.kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Paul Mackerras <paulus@ozlabs.org>,
- Suresh Warrier <warrier@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- leixiang <leixiang@kylinos.cn>
-References: <1782119051448443.14545.seg@mailgw.kylinos.cn>
- <ak59frQUBl9Gs3Qn@google.com>
-Content-Language: en-US
-In-Reply-To: <ak59frQUBl9Gs3Qn@google.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[infradead.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[infradead.org:s=bombadil.20210309];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-272826-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-272821-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[rdunlap@infradead.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[leenollei@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:seanjc@google.com,m:stable@vger.kernel.org,m:maddy@linux.ibm.com,m:npiggin@gmail.com,m:mpe@ellerman.id.au,m:chleroy@kernel.org,m:pbonzini@redhat.com,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:x86@kernel.org,m:hpa@zytor.com,m:paulus@ozlabs.org,m:warrier@linux.vnet.ibm.com,m:linuxppc-dev@lists.ozlabs.org,m:kvm@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:leixiang@kylinos.cn,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:linux-kernel@vger.kernel.org,m:rdunlap@infradead.org,m:sumit.semwal@linaro.org,m:linux-media@vger.kernel.org,m:dri-devel@lists.freedesktop.org,m:christian.koenig@amd.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,linux.ibm.com,gmail.com,ellerman.id.au,kernel.org,redhat.com,alien8.de,linux.intel.com,zytor.com,ozlabs.org,linux.vnet.ibm.com,lists.ozlabs.org,kylinos.cn];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[leenollei@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rdunlap@infradead.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[infradead.org:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,vger.kernel.org:from_smtp,amd.com:email,infradead.org:from_mime,infradead.org:email,infradead.org:mid,infradead.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,lists.freedesktop.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 33FAE72CE22
+X-Rspamd-Queue-Id: 03E5B72CDF9
 
+- drop Excess description of @lock from kernel-doc
+- add missing function/macro short descriptions
 
+WARNING: include/linux/dma-fence-array.h:47 Excess struct member 'lock' description in 'dma_fence_array'
+WARNING: include/linux/dma-fence-chain.h:48 Excess struct member 'lock' description in 'dma_fence_chain'
+Warning: include/linux/dma-fence-chain.h:82 missing initial short description on line:
+ * dma_fence_chain_alloc
+Warning: include/linux/dma-fence-chain.h:94 missing initial short description on line:
+ * dma_fence_chain_free
 
-On 7/9/26 00:40, Sean Christopherson wrote:
-> On Mon, Jun 22, 2026, leixiang wrote:
->> The x86 and powerpc add_producer() callbacks set irqfd->producer before the
->> fallible setup and never clear it on error.  The bypass manager doesn't
->> register a producer whose add_producer() failed -- producer->eventfd is
->> left NULL, so the later unregister early-returns and del_producer() is
->> never called -- so nothing ever drops the pointer.
->>
->> For VFIO PCI the producer is embedded in struct vfio_pci_irq_ctx and freed
->> when the vector is disabled, after which a routing update dereferences the
->> dangling pointer via kvm_arch_update_irqfd_routing().
->>
->> Nullify irqfd->producer on the error paths.
->>
->> Fixes: 77e1b8332d1d ("KVM: x86: Decouple device assignment from IRQ bypass")
->> Fixes: c57875f5f9be ("KVM: PPC: Book3S HV: Enable IRQ bypass")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: leixiang <leixiang@kylinos.cn>
-> 
-> Please post the PPC patch as a separate patch.  x86 and PPC are separate maintainer
-> domains and the backports will likely need to go to different LTS kernels.
-> 
-> I'll grab/extract the x86 change from here (and I'll massage the changelog as
-> appropriate).
+Fixes: 5943243914b9 ("dma-buf: use inline lock for the dma-fence-array")
+Fixes: a408c0ca0c41 ("dma-buf: use inline lock for the dma-fence-chain")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+---
+Cc: Sumit Semwal <sumit.semwal@linaro.org>
+Cc: linux-media@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: Christian König <christian.koenig@amd.com>
+Cc: stable@vger.kernel.org
 
-Thank you for the review and guidance.  I will submit a separate PPC patch.
+ include/linux/dma-fence-array.h |    1 -
+ include/linux/dma-fence-chain.h |    9 ++++-----
+ 2 files changed, 4 insertions(+), 6 deletions(-)
 
->> ---
->>  arch/powerpc/kvm/book3s_hv.c | 4 +++-
->>  arch/x86/kvm/irq.c           | 4 +++-
->>  2 files changed, 6 insertions(+), 2 deletions(-)
->>
->> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
->> index 61dbeea317f3..14919b76fb32 100644
->> --- a/arch/powerpc/kvm/book3s_hv.c
->> +++ b/arch/powerpc/kvm/book3s_hv.c
->> @@ -6114,9 +6114,11 @@ static int kvmppc_irq_bypass_add_producer_hv(struct irq_bypass_consumer *cons,
->>  	irqfd->producer = prod;
->>
->>  	ret = kvmppc_set_passthru_irq(irqfd->kvm, prod->irq, irqfd->gsi);
->> -	if (ret)
->> +	if (ret) {
->>  		pr_info("kvmppc_set_passthru_irq (irq %d, gsi %d) fails: %d\n",
->>  			prod->irq, irqfd->gsi, ret);
->> +		irqfd->producer = NULL;
->> +	}
-> 
-> Unlike x86, AFAICT there's no need to set irqfd->producer before configuring
-> the passthru/bypass stuff.  So I think that fix could be this?
-> 
-> diff --git arch/powerpc/kvm/book3s_hv.c arch/powerpc/kvm/book3s_hv.c
-> index 61dbeea317f3..ff7b25629125 100644
-> --- arch/powerpc/kvm/book3s_hv.c
-> +++ arch/powerpc/kvm/book3s_hv.c
-> @@ -6111,12 +6111,12 @@ static int kvmppc_irq_bypass_add_producer_hv(struct irq_bypass_consumer *cons,
->         struct kvm_kernel_irqfd *irqfd =
->                 container_of(cons, struct kvm_kernel_irqfd, consumer);
->  
-> -       irqfd->producer = prod;
-> -
->         ret = kvmppc_set_passthru_irq(irqfd->kvm, prod->irq, irqfd->gsi);
->         if (ret)
->                 pr_info("kvmppc_set_passthru_irq (irq %d, gsi %d) fails: %d\n",
->                         prod->irq, irqfd->gsi, ret);
-> +       else
-> +               irqfd->producer = prod;
->  
->         return ret;
->  }
-Agreed. Your approach is cleaner.
+--- linext-2026-0708.orig/include/linux/dma-fence-array.h
++++ linext-2026-0708/include/linux/dma-fence-array.h
+@@ -28,7 +28,6 @@ struct dma_fence_array_cb {
+ /**
+  * struct dma_fence_array - fence to represent an array of fences
+  * @base: fence base class
+- * @lock: spinlock for fence handling
+  * @num_fences: number of fences in the array
+  * @num_pending: fences in the array still pending
+  * @fences: array of the fences
+--- linext-2026-0708.orig/include/linux/dma-fence-chain.h
++++ linext-2026-0708/include/linux/dma-fence-chain.h
+@@ -20,7 +20,6 @@
+  * @prev: previous fence of the chain
+  * @prev_seqno: original previous seqno before garbage collection
+  * @fence: encapsulated fence
+- * @lock: spinlock for fence handling
+  */
+ struct dma_fence_chain {
+ 	struct dma_fence base;
+@@ -81,9 +80,8 @@ dma_fence_chain_contained(struct dma_fen
+ }
+ 
+ /**
+- * dma_fence_chain_alloc
+- *
+- * Returns a new struct dma_fence_chain object or NULL on failure.
++ * dma_fence_chain_alloc - Returns a new &struct dma_fence_chain object or
++ * %NULL on failure.
+  *
+  * This specialized allocator has to be a macro for its allocations to be
+  * accounted separately (to have a separate alloc_tag). The typecast is
+@@ -93,7 +91,8 @@ dma_fence_chain_contained(struct dma_fen
+ 		kmalloc_obj(struct dma_fence_chain)
+ 
+ /**
+- * dma_fence_chain_free
++ * dma_fence_chain_free - Frees an allocated but not used
++ * &struct dma_fence_chain object.
+  * @chain: chain node to free
+  *
+  * Frees up an allocated but not used struct dma_fence_chain object. This
 
