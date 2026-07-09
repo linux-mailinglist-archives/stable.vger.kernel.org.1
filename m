@@ -1,146 +1,137 @@
-Return-Path: <stable+bounces-272831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272832-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id RHVGOKpFT2o0dQIAu9opvQ
-	(envelope-from <stable+bounces-272831-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 08:54:34 +0200
+	id XQ3iJZJFT2ordQIAu9opvQ
+	(envelope-from <stable+bounces-272832-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 08:54:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5816272D61C
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 08:54:34 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D234D72D60B
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 08:54:09 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=sipsolutions.net header.s=mail header.b=SUqbHg27;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272831-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-272831-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Hniihd0w;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272832-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272832-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 07F7E31117BE
-	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 06:47:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D366B3011860
+	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 06:53:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F2F53D7D94;
-	Thu,  9 Jul 2026 06:45:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 763953D3CF2;
+	Thu,  9 Jul 2026 06:53:11 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B00323C945B;
-	Thu,  9 Jul 2026 06:45:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DE4D3382C3
+	for <stable@vger.kernel.org>; Thu,  9 Jul 2026 06:53:10 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783579548; cv=none; b=YW0y3/sEqZ56uuyW8J2xVUyJyUH4aCF508cquwbwAnYdbG1MMwBosSJDNLUaugQI2bXh1+KcfrLql49G1qTBfNuJhnyhysFfADMCrzFRw8x5pCnhr4rtRWuVM2iWBerTZzT2GcuXd53V125sbU3AdG1DYnY6TaM+EkFpdHF0lcs=
+	t=1783579991; cv=none; b=PDufp6gmgUN33t4k+/O3IWEP1VvhM988bRXlWFcDVY1zQWiuLonY70S+bo13lNndK4hcq4THkWATIHfJQ0E2OvTxHMlXTKZQ4koqIIDdqU0lZ8j1Q8c6hlFBzR7XHSfrdGp6YV+HKFhKWArsTyas0Soeqby/WosbJkbfVUkBlXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783579548; c=relaxed/simple;
-	bh=ePf3TLUk8IumGoGVKjttBlVSijbu8aI5m/BkEk7IM+I=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=aRNvYWo7kWEwx/WFWQycHWIBs9vDDQ2T8ZuZrzyL7RyQRRmRrTlPb6HiNNTzkD1+px/xwk5J2nDimDKEpk04+AZqAPIJFu7Fix+thV8eG533Udjbc2wAuoGMjCPt4hcjiQLE8rr+3LQpEIOdBCfKbl6IloleW9G7A6OyYC8+9KI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=SUqbHg27; arc=none smtp.client-ip=168.119.38.16
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=ePf3TLUk8IumGoGVKjttBlVSijbu8aI5m/BkEk7IM+I=;
-	t=1783579545; x=1784789145; b=SUqbHg272XU4+SOI0UZu9ywr3j2iCbrqNDM+5YLtz+R7vV4
-	gIpgYgtnFT7vW6MvdFR8QQctljDcR7ZnhIM0tBAMUqihdhdVxlz5l9EEbzeykvXJt4XhxAElQYkEU
-	ONHWLRjY+ASc8gHtYCjit+ZwDQvaQ2AYicmbRo45NgqQFLaKAfHTee2vr3+voHtyIVCOtlvjWsqpj
-	M8KBEAn46TDQHMPeE0XES1K/uDN9qENvfAUU0lHcI3yrdji9WUFmwSkGhmuzDeni6+Eia6uliPW3R
-	kJXsfISMloMQrRXjzbv61pJAXXT/higachtw61O8WGulU3gQnxCVCfkrLE5GVLkA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__ECDSA_SECP256R1_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1whiVr-00000007P9J-36CL;
-	Thu, 09 Jul 2026 08:45:35 +0200
-Message-ID: <3e8e6ff58a0809b0346d133c01eda720367eb511.camel@sipsolutions.net>
-Subject: Re: [PATCH] wifi: mac80211: Fix cryptographic MAC comparison to be
- constant-time
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Eric Biggers <ebiggers@kernel.org>, linux-wireless@vger.kernel.org, 
- Jouni Malinen <jouni.malinen@oss.qualcomm.com>
-Cc: linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Date: Thu, 09 Jul 2026 08:45:35 +0200
-In-Reply-To: <20260709024443.58132-1-ebiggers@kernel.org>
-References: <20260709024443.58132-1-ebiggers@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	s=arc-20240116; t=1783579991; c=relaxed/simple;
+	bh=e0PUo8fkABkwfo3rdO1IluywSZEkFXkYFS9PC+NfW60=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=gAaL3q4yWj7l0cm5o2FG4OmxbF2CzoMyX7mwblWG9mNcAZBzL7dzRWVQuePKS7eU3Bz6DZRQpF3A36QXiY527b5o+EmUGDh6k0oKAjPWyqYelmf+LZTN1huAjS0EN4T9vI6KbIqTZMzuKlT9mL+ifBFYTVQFVyUqFNn/1W67yws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hniihd0w; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92FFD1F000E9;
+	Thu,  9 Jul 2026 06:53:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783579990;
+	bh=z05ytVQA+TaywaNzi9kCD/IAW6ociprds8p1fLLuodo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=Hniihd0wBG99LMCQX/gInOOysYvPMVmZWJ3p1BhAsVwBp9XqfHNdGYB9b3eS52jrD
+	 sa5MQnGMH1aHSzVlVrc435qEqMXenRpFQIJBAwZVOO/ugfexMyqU4iZanrYHa/wice
+	 fK7no07D9Dk+baJo0kgJ2yLh8SJcHtjVhT/eaOUuNpfvIPL7pTbfLCStTeHn1G0SIM
+	 +JUwe70QCJ6a//gzvT+wgtaeuO7BioHSdeb/8euW694/9vZsZSoo4mMEi9IM+K/ND3
+	 V/Z+NMdT++HMVrGdpidcYc6UH+HGz8yUbgLbYpDIXWRPR+Atk5C4KUFzWJ6g/vMtYe
+	 DgGgEqexrRDqA==
+From: Thomas Gleixner <tglx@kernel.org>
+To: Wu Frank <yifanwucs@gmail.com>, Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org, Keenan Dong <keenanat2000@gmail.com>, Yuan Tan
+ <yuantan098@gmail.com>, Juefei Pu <tomapufckgml@gmail.com>, Xin Liu
+ <bird@lzu.edu.cn>, Sid Kumar <sidkumar1@gmail.com>
+Subject: Re: [PATCH 5.15.y] rtmutex: Use waiter::task instead of current in
+ remove_waiter()
+In-Reply-To: <CAPw-QwdiQnbxiwrivx8HthquyQef4herojq15ozy2JgWa8sAAA@mail.gmail.com>
+References: <20260708150527.3212183-1-sidkumar1@gmail.com>
+ <20260708194323.agent5-0004@kernel.org>
+ <CAPw-QwdiQnbxiwrivx8HthquyQef4herojq15ozy2JgWa8sAAA@mail.gmail.com>
+Date: Thu, 09 Jul 2026 08:53:07 +0200
+Message-ID: <87fr1sr6wc.ffs@fw13>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-4.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:ebiggers@kernel.org,m:linux-wireless@vger.kernel.org,m:jouni.malinen@oss.qualcomm.com,m:linux-crypto@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	DMARC_NA(0.00)[sipsolutions.net: no valid DMARC record];
-	FORGED_SENDER(0.00)[johannes@sipsolutions.net,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-272832-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[gmail.com,kernel.org];
+	FORGED_SENDER(0.00)[tglx@kernel.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:yifanwucs@gmail.com,m:sashal@kernel.org,m:stable@vger.kernel.org,m:keenanat2000@gmail.com,m:yuantan098@gmail.com,m:tomapufckgml@gmail.com,m:bird@lzu.edu.cn,m:sidkumar1@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-272831-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,lzu.edu.cn];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tglx@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sipsolutions.net:from_mime,sipsolutions.net:dkim,sipsolutions.net:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5816272D61C
+X-Rspamd-Queue-Id: D234D72D60B
 
-On Wed, 2026-07-08 at 22:44 -0400, Eric Biggers wrote:
-> To prevent timing attacks, the comparison of cryptographic message
-> authentication codes (MACs) needs to have data-independent timing.
-> Replace the memcmp() with the correct function, crypto_memneq().
->=20
-> Fixes: 39404feee691 ("mac80211: FILS AEAD protection for station mode ass=
-ociation frames")
-> Cc: stable@vger.kernel.org
+On Wed, Jul 08 2026 at 18:53, Wu Frank wrote:
+> On Wed, Jul 8, 2026 at 6:04=E2=80=AFPM Sasha Levin <sashal@kernel.org> wr=
+ote:
+>> Could you resend this as a two-patch series: this patch plus a 5.15.y
+>> adaptation of 40a25d59e85b3c? Also worth considering as a third patch is
+>> 74e144274af399 ("futex/requeue: Prevent NULL pointer dereference in
+>> remove_waiter() on self-deadlock").
+>
+> For completeness, we also reviewed the related patches yesterday.
+>
+> Our understanding is that the correct backport set is this patch plus
+> 40a25d59e85b3c. This patch fixes the original issue, while
+> 40a25d59e85b3c fixes the NULL-pointer dereference. We also noticed
+> that 40a25d59e85b3c appears to cover a separate
+> use-before-initialization case, although that case is not relevant to
+> this backport.
+>
+> I do not think 74e144274af399 should be included. It was later
+> reverted by 39def6d250d3, and the revert changelog says that the issue
+> was already handled by 40a25d59e85b3c. It also notes that
+> 74e144274af399 introduced new problems.
 
-I guess I'll apply (a variant of) this patch for -next, but that commit
-log really makes it sound like something is actually broken and needs
-fixing, and I don't think that's true in this specific context.
+Only 40a25d59e85b3c needs to be backported. 74e144274af399 is not
+required and buggy and got reverted upstream.
 
-What happens is that the frame is validated and then we associate
-successfully (upon success) or drop the frame (upon failure). Only the
-failure case is relevant for the timing issue, but in that case we
-simply drop the frame and there isn't really an observable signal -
-nothing else happens, at least not immediately, we may retry the request
-later after a timer.
+Thanks,
 
-So sure, it looks better to have a crypto_memneq() in AES-SIV related
-code, but in practice I don't see how it would make a difference now,
-and it's even unlikely this code will ever matter for anything else in
-the future, given that things are moving more and more towards full
-frame encryption, including association request/response now.
-
-I saw you originally had this in the "use libraries" patch [1], I'm also
-good with you just keeping the change there. This might even be better
-if you're planning to have this in -next soon, where it would otherwise
-conflict if I keep this to -next.
-
-[1] https://lore.kernel.org/linux-crypto/20260707053503.209874-24-ebiggers@=
-kernel.org/
-
-(The whole feature is also fairly much unused anyway in practice as far
-as I can tell.)
-
-johannes
+        tglx
 
