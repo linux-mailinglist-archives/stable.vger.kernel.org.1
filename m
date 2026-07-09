@@ -1,227 +1,202 @@
-Return-Path: <stable+bounces-272778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272779-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id YETBB0T4TmoTYAIAu9opvQ
-	(envelope-from <stable+bounces-272778-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 03:24:20 +0200
+	id LeZhEHz4TmouYAIAu9opvQ
+	(envelope-from <stable+bounces-272779-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 03:25:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B57072BAAB
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 03:24:19 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 900AC72BAD0
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 03:25:15 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=w28TomuM;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272778-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272778-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=QggIFKPx;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272779-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-272779-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D99B830134B2
-	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 01:22:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 23F25302DB4B
+	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 01:24:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 731EB38E8AC;
-	Thu,  9 Jul 2026 01:22:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C8E7392C57;
+	Thu,  9 Jul 2026 01:24:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 156A2389DF0
-	for <stable@vger.kernel.org>; Thu,  9 Jul 2026 01:22:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2DCC38D401
+	for <stable@vger.kernel.org>; Thu,  9 Jul 2026 01:24:37 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783560166; cv=none; b=AJteQwPh77L7k6uhyMk3SR9ALykJ1c2/vdHNt/ZrX6FoaUYFHq/lHqAxEK5w0ys9DRuPnfc443uaz210ofOvkLiRalzCt0+fXf0HLvnFQo7TMG2e1vjNxq+C+/lLeDKkMfAktbkg21SVCQI5ibuyDfUBB7L3sA605eQKfCvcvo8=
+	t=1783560279; cv=none; b=oVcpxeSpRGwQk2bDH4VzBPCCPFU/NVtvo4fjyD9rLv639FB7zo89Q3SMLHjRYCDo3DVQyijA2FwsPwaQk2RvLLSIUKuRA+9XkcEsxnEAimQ/sMESSbCvGtg8khwAMDnXkcTjoXrAHlbcMm17gi6N1j5T8IQCdtYa06b72++37Aw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783560166; c=relaxed/simple;
-	bh=M9tQ59gdCIMG5lI+Fdf2WAqDr2TWJKOqyav1e5ga+o8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SkoQb77oeliTdylFYinORazwynq3cf4sdXv2PyXKZAulm5yb3x+sERXLwZTtxhK2imOlvzzpfHPnZh6/fS6z/bnYwsofJG7R3cBvufKGTE/R7YSeiia3XnKbB33xQfpJVoGsZ8Yd59Gd1m8ylvoanU4LyZX3yWIl20dPq7vRkZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=w28TomuM; arc=none smtp.client-ip=91.218.175.184
-Message-ID: <d4af0c54-3bd6-401c-905a-ce546f2da475@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783560162;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WP5VJ41f/odwMRot0Mx2KzzrsSJNLef7CDVaENhJTWc=;
-	b=w28TomuMW/Yp4z6VgP+9xOE0Zm1dG0n+iN6z9+o1mdlhwJHgFL43HE9PJYYAROJmLTXogJ
-	wt7bqRbYeywVudFFakBghqpbDB40d8rZDSewbuwHq0QeKGMzA0rNmr10R5xNxAjXZ0Q8rc
-	u05rfzdyT7YNE1LSq/CumVyIFYQ/kdw=
-Date: Wed, 8 Jul 2026 18:22:32 -0700
+	s=arc-20240116; t=1783560279; c=relaxed/simple;
+	bh=l7eHw/raYhzCKyoQvZO5b5gtYbr1anwl7xluE4HEstQ=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=d3k5eLCuHTrzv+zx0uW7XBn0Q22CInEkL0FdQqwx/+G1YCQLG8YlRS7Yu7Mbq+rUkIqAgbU3vsQQQh8n/XSphyzqHYc7gcq2nQ8PmnNWkGb0SRwva8C9p5+rirs7ezRbvB62A7XaJjH/tY1tj3X9CbQUBs1pLsZohbrfHzhs2iQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QggIFKPx; arc=none smtp.client-ip=209.85.128.179
+Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-80bb578d58bso13987677b3.0
+        for <stable@vger.kernel.org>; Wed, 08 Jul 2026 18:24:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783560277; x=1784165077; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=l7eHw/raYhzCKyoQvZO5b5gtYbr1anwl7xluE4HEstQ=;
+        b=QggIFKPxJXqU+hgCDM8CbHi6qty1kxvO+hDKATtwDl0ALTj0vuyF3wyaS2piKuxSz3
+         KpkBHSIPtmpA8MGK7+G/wu+KjXcey9BeSNJ+zixcDTNeoK9CKNFZFCCtkw010krVemtP
+         ZzLjyUeqBTbOIQPQlmE7e8/rxp54IPeEi1dFJro9oyoARm2QoMAezUrNeacurygnd0nw
+         KDP21kf/GEW+w0WCS+XDi8mwqAGNNAbTIqNzGhMEC8lr53bFwwaLGWYGCAHfaZx6SBng
+         O25F6CjKlI+y/V5Deic0wMCn1/l7AvaROyw5aCa9uXZTPLRk/ZH/TE4c/Wauz35vRcHQ
+         j7jA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783560277; x=1784165077;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=l7eHw/raYhzCKyoQvZO5b5gtYbr1anwl7xluE4HEstQ=;
+        b=L+ragXtqfB0SU4NzLylDVdCZylFXoCRWJ+wLyZad0/caEae67PEEgEtvnsoRLAqWFZ
+         WtCsZvFw/+YjdhGBxEDO93jd609MCqRqhrW57mIjMPsOnSUcAL/pgZUmn1MQVBzI3dyu
+         bukkehlXsUophMpUYCsU6A/ScNF4jNT2hvsrPWNc0WMQ8r3WO90woeIROBbpjBl8DoG/
+         O4MO4pjnFgtwAF5fbao+94G3HKGCBc7xN1mnl87hqMREIHIYhO+qC/enAA4wSZnkCde2
+         JxvzmGdo7r0OqsZU9cKJkqyOGpqe07rjwPnTpmCZLGO/YaXczDPV2wjZ7ARyuOfQAlzJ
+         I3LA==
+X-Forwarded-Encrypted: i=1; AHgh+RqlcxP1gIkizdCCSTAF+eOFIMQONQj5OAw6qr3n3mgcjG6gOyxuPbnPhVF1LCzxAM9eJ5ZTCIU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw4bBr86kkAr1Pj97jSf1NjLOVduOKvnrusgVrUiqeN7dpjdm9x
+	m4Q+Q8BFUZKiwuj/syHvFLbYaWxIKDcY6BhDNj9wQlHVnsrv6e4wC0Vz
+X-Gm-Gg: AfdE7cm1uS8wqijEZbQPrldmLmRp9p/BoZbqjXav17XOiavAT1bVNzML6cgm7vnXTu8
+	QAw53tnBPeTYF+kDh0iCNHItnK8OU+wOWmcNm3VA6eANWwrYJkLwMxb6hExU6MP4QnTeWNrqaYk
+	3Tkrz3rZPKYm87NUgAbhR9RRrlnbbRBWF/yZwrtgk5nSpiX2bW1hYtW2woJJj9JT+C1Og5K3eIp
+	S7lW3DDjHwsEhZVUZQjyrVLPdPshH11Q+aoMRnJvP06pIGey0hZvimpPDFzS8cGUdGu4oc8XA8r
+	aozAgAhURDz9qRY5v+n6GUpNC+yhA3V/8FNl7ThfSjIkkfeU+2MbVB4ho1D3f+5PDCzCNxdvJ0p
+	R+mGh/hwFqptA4kq6sjFqwRziMbLNGv5gMcUOEg1vT1WK5KtsBWrK4/RtLHc+/ezQXxT2eTFY/I
+	M6T+eMLzauCeogNh3n5rWg3tk5ec9aYvgLi0x7DiGgKJsgc7KOe7Prz6JRL8hQe9ErSA==
+X-Received: by 2002:a05:690c:12:b0:81d:4f4b:94be with SMTP id 00721157ae682-81dbd41c1a7mr37863157b3.32.1783560276655;
+        Wed, 08 Jul 2026 18:24:36 -0700 (PDT)
+Received: from gmail.com (172.235.85.34.bc.googleusercontent.com. [34.85.235.172])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-81e6be99124sm6315537b3.4.2026.07.08.18.24.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Jul 2026 18:24:36 -0700 (PDT)
+Date: Wed, 08 Jul 2026 21:24:35 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: =?UTF-8?B?U2hpbWluZyBDaGVuZyAo5oiQ6K+X5piOKQ==?= <Shiming.Cheng@mediatek.com>, 
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+ "dsahern@kernel.org" <dsahern@kernel.org>, 
+ "imv4bel@gmail.com" <imv4bel@gmail.com>, 
+ "linux-mediatek@lists.infradead.org" <linux-mediatek@lists.infradead.org>, 
+ "alice@isovalent.com" <alice@isovalent.com>, 
+ "daniel.zahka@gmail.com" <daniel.zahka@gmail.com>, 
+ "eilaimemedsnaimel@gmail.com" <eilaimemedsnaimel@gmail.com>, 
+ "nbd@nbd.name" <nbd@nbd.name>, 
+ "horms@kernel.org" <horms@kernel.org>, 
+ "kuba@kernel.org" <kuba@kernel.org>, 
+ "pabeni@redhat.com" <pabeni@redhat.com>, 
+ "edumazet@google.com" <edumazet@google.com>, 
+ "willemdebruijn.kernel@gmail.com" <willemdebruijn.kernel@gmail.com>, 
+ "willemb@google.com" <willemb@google.com>, 
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
+ "matthias.bgg@gmail.com" <matthias.bgg@gmail.com>, 
+ "davem@davemloft.net" <davem@davemloft.net>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+ "sd@queasysnail.net" <sd@queasysnail.net>
+Cc: "steffen.klassert@secunet.com" <steffen.klassert@secunet.com>, 
+ "stable@vger.kernel.org" <stable@vger.kernel.org>, 
+ =?UTF-8?B?TGVuYSBXYW5nICjnjovlqJwp?= <Lena.Wang@mediatek.com>
+Message-ID: <willemdebruijn.kernel.31a5346f5d77e@gmail.com>
+In-Reply-To: <2d71af40897d73dbd9e243ce5e25bbd3f99acc5d.camel@mediatek.com>
+References: <20260707021425.483-1-shiming.cheng@mediatek.com>
+ <willemdebruijn.kernel.39a3b0237ed2@gmail.com>
+ <2d71af40897d73dbd9e243ce5e25bbd3f99acc5d.camel@mediatek.com>
+Subject: Re: [PATCH v6] net: gro: fix double aggregation of flush-marked skbs
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Subject: Re: [PATCH] RDMA/rxe: fix responder UAF on IB_QP_MAX_DEST_RD_ATOMIC
- modify_qp
-To: Ibrahim Hashimov <security@auditcode.ai>,
- Zhu Yanjun <zyjzyj2000@gmail.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Leon Romanovsky <leon@kernel.org>, Zhu Yanjun <yanjun.zhu@linux.dev>
-Cc: linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260708224550.1281-1-security@auditcode.ai>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "yanjun.zhu" <yanjun.zhu@linux.dev>
-In-Reply-To: <20260708224550.1281-1-security@auditcode.ai>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	MV_CASE(0.50)[];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-272778-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-272779-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	FREEMAIL_TO(0.00)[auditcode.ai,gmail.com,ziepe.ca,kernel.org,linux.dev];
-	FORGED_SENDER(0.00)[yanjun.zhu@linux.dev,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:security@auditcode.ai,m:zyjzyj2000@gmail.com,m:jgg@ziepe.ca,m:leon@kernel.org,m:yanjun.zhu@linux.dev,m:linux-rdma@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:Shiming.Cheng@mediatek.com,m:linux-kernel@vger.kernel.org,m:dsahern@kernel.org,m:imv4bel@gmail.com,m:linux-mediatek@lists.infradead.org,m:alice@isovalent.com,m:daniel.zahka@gmail.com,m:eilaimemedsnaimel@gmail.com,m:nbd@nbd.name,m:horms@kernel.org,m:kuba@kernel.org,m:pabeni@redhat.com,m:edumazet@google.com,m:willemdebruijn.kernel@gmail.com,m:willemb@google.com,m:netdev@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:matthias.bgg@gmail.com,m:davem@davemloft.net,m:angelogioacchino.delregno@collabora.com,m:sd@queasysnail.net,m:steffen.klassert@secunet.com,m:stable@vger.kernel.org,m:Lena.Wang@mediatek.com,m:danielzahka@gmail.com,m:willemdebruijnkernel@gmail.com,m:matthiasbgg@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linux.dev:+];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[24];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FREEMAIL_TO(0.00)[mediatek.com,vger.kernel.org,kernel.org,gmail.com,lists.infradead.org,isovalent.com,nbd.name,redhat.com,google.com,davemloft.net,collabora.com,queasysnail.net];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[willemdebruijnkernel@gmail.com,stable@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[willemdebruijnkernel@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[yanjun.zhu@linux.dev,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:from_mime,linux.dev:dkim,linux.dev:mid,auditcode.ai:email]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6B57072BAAB
+X-Rspamd-Queue-Id: 900AC72BAD0
 
-On 7/8/26 3:45 PM, Ibrahim Hashimov wrote:
-> rxe_qp_from_attr()'s IB_QP_MAX_DEST_RD_ATOMIC branch frees and
-> reallocates qp->resp.resources[] (the rd_atomic resource array used by
-> the responder to track in-flight RDMA READ/ATOMIC/FLUSH requests)
-> completely outside of the IB_QP_STATE handling above it. Unlike every
-> other place that tears this array down -- rxe_qp_reset(), reached only
-> under IB_QP_STATE, always calls rxe_disable_task(&qp->recv_task) /
-> rxe_disable_task(&qp->send_task) to drain the responder and requester
-> tasks before touching per-QP state, then re-enables them -- this branch
-> runs with the responder task (rxe_receiver(), scheduled as recv_task on
-> the rxe_wq workqueue) fully live and unlocked. A userspace modify_qp()
-> that sets only IB_QP_MAX_DEST_RD_ATOMIC (no state change, so
-> __qp_chk_state()/ib_modify_qp_is_ok() never runs and qp->state_lock is
-> never taken here) can therefore race the responder in two ways:
-> 
->   1. free_rd_atomic_resources() calls kfree(qp->resp.resources) and
->      alloc_rd_atomic_resources() kzalloc_objs()'s a new array while
->      rxe_prepare_res()/find_resource() in rxe_resp.c are concurrently
->      walking &qp->resp.resources[i] with no lock held -- a straight
->      free-vs-read race on the array itself.
-> 
->   2. free_rd_atomic_resources() only NULLs qp->resp.resources; it never
->      clears qp->resp.res, the raw pointer *into* that array that
->      rxe_resp.c caches across a multi-packet RDMA READ/ATOMIC/FLUSH
->      reply (set at rxe_resp.c read/atomic/flush-reply sites, cleared
->      only on the normal completion paths). If a modify_qp() races a
->      resource still referenced by qp->resp.res, the array is freed out
->      from under the cached pointer and the next reply packet dereferences
->      it -- independent of the kfree/kzalloc_objs() window in (1).
-> 
-> Reproduced with KASAN: a single process driving one RC QP pair in rxe
-> loopback, one thread pumping large multi-packet IBV_WR_RDMA_READs
-> against qpB while a second thread hammers
-> ibv_modify_qp(qpB, IB_QP_MAX_DEST_RD_ATOMIC), reliably (~11s) produces
-> 
->    BUG: KASAN: slab-use-after-free in rxe_receiver+0x4f78/0x89e0 [rdma_rxe]
->    Workqueue: rxe_wq do_work [rdma_rxe]
+Shiming Cheng (=E6=88=90=E8=AF=97=E6=98=8E) wrote:
+> On Tue, 2026-07-07 at 11:16 -0400, Willem de Bruijn wrote:
+> > External email : Please do not click links or open attachments until
+> > you have verified the sender or the content.
+> > =
 
-Can you share all the stack trace with us? Thanks a lot.
+> > =
 
-> 
-> with the freed kmalloc-1k object being the rd_atomic resource array
-> freed by the modify_qp() thread while the recv_task kworker reads it.
-> An identical run modifying only IB_QP_MIN_RNR_TIMER (no resource free)
-> is clean.
-> 
-> Fix both races the same way rxe_qp_reset() already handles tearing down
-> this exact array: quiesce the responder task around the free/realloc by
-> calling rxe_disable_task(&qp->recv_task) before free_rd_atomic_resources()
-> and rxe_enable_task(&qp->recv_task) after alloc_rd_atomic_resources(),
-> so rxe_receiver() cannot observe the array mid-free/mid-realloc. And
-> close the still-open window for (2) at the source: have
-> free_rd_atomic_resources() clear qp->resp.res along with
-> qp->resp.resources, exactly like the existing completion paths in
-> rxe_resp.c (check_rkey()/duplicate_request()/RESPST_CLEANUP) already do
-> when a resource's lifetime ends, so a drained-and-resumed responder
-> restarts at RESPST_CHK_PSN against the fresh array instead of replaying
-> a stale reference into the old one.
-> 
-> Only qp->recv_task is drained: qp->resp.resources / qp->resp.res are
-> touched exclusively by the responder (rxe_resp.c); the requester
-> (send_task / rxe_sender()) never reads them, so there is no need to
-> widen this beyond what rxe_qp_reset() would drain for the equivalent
-> state.
-> 
-> Verified on the same v6.19 KASAN stand: with this fix applied, the
-> identical differential reproducer drives sustained MAX_DEST_RD_ATOMIC
-> storms against qpB well past the ~11s pre-fix time-to-first-splat with
-> zero KASAN reports, versus reliably tripping the slab-use-after-free in
-> rxe_receiver() described above before the fix.
-> 
-> Fixes: 8700e3e7c485 ("Soft RoCE driver")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Ibrahim Hashimov <security@auditcode.ai>
-> Assisted-by: AuditCode-AI:2026.07
-> ---
->   drivers/infiniband/sw/rxe/rxe_qp.c | 9 ++++++++-
->   1 file changed, 8 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/infiniband/sw/rxe/rxe_qp.c b/drivers/infiniband/sw/rxe/rxe_qp.c
-> index f3dff1aea96a..646957707765 100644
-> --- a/drivers/infiniband/sw/rxe/rxe_qp.c
-> +++ b/drivers/infiniband/sw/rxe/rxe_qp.c
-> @@ -172,6 +172,7 @@ static void free_rd_atomic_resources(struct rxe_qp *qp)
->   		}
->   		kfree(qp->resp.resources);
->   		qp->resp.resources = NULL;
-> +		qp->resp.res = NULL;
->   	}
->   }
->   
-> @@ -709,9 +710,15 @@ int rxe_qp_from_attr(struct rxe_qp *qp, struct ib_qp_attr *attr, int mask,
->   
->   		qp->attr.max_dest_rd_atomic = max_dest_rd_atomic;
->   
-> +		/*
-> +		 * Not gated by IB_QP_STATE above: quiesce the responder task
-> +		 * the same way rxe_qp_reset() does before touching this
-> +		 * array, so rxe_receiver() can't race the free/realloc.
-> +		 */
-> +		rxe_disable_task(&qp->recv_task);
->   		free_rd_atomic_resources(qp);
-> -
->   		err = alloc_rd_atomic_resources(qp, max_dest_rd_atomic);
-> +		rxe_enable_task(&qp->recv_task);
+> > Shiming Cheng wrote:
+> > > The skb_gro_receive_list() function is missing a critical safety
+> > > check
+> > > that exists in the skb_gro_receive() implementation. Specifically,
+> > > it
+> > > does not validate NAPI_GRO_CB(skb)->flush before allowing packet
+> > > aggregation, as of commit 0ab03f353d36 ("net-gro: Fix GRO flush
+> > > when receiving a GSO packet.").
+> > =
 
-If alloc_rd_atomic_resources fails, that is, qp->resp.resources is NULL.
-After rxe_enable_task(&qp->recv_task);  qp->resp.resources(NULL) will be 
-used in resp. This will cause problems.
+> > It does not check .. as of commit .. ?
+> > =
 
-drivers/infiniband/sw/rxe/rxe_resp.c:656:	res = 
-&qp->resp.resources[qp->resp.res_head];
-drivers/infiniband/sw/rxe/rxe_resp.c:1325:		struct resp_res *res = 
-&qp->resp.resources[i];
+> > No, skb_gro_receive checkos NAP_GRO_CB(skb)->flush as of that commit.=
 
-Zhu Yanjun
+> > =
 
->   		if (err)
->   			return err;
->   	}
+> =
+
+> Is this wording okay?
+> =
+
+> Commit 0ab03f353d36 ("net-gro: Fix GRO flush when receiving a GSO
+> packet.") added a flush check to skb_gro_receive(), but
+> skb_gro_receive_list() lacks the same validation.
+> =
+
+> As a result, packets marked with NAPI_GRO_CB(skb)->flush may still be
+> re-aggregated.
+
+That sounds good to me, thanks. =
 
 
