@@ -1,256 +1,279 @@
-Return-Path: <stable+bounces-273017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273018-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id qQXpKIbqT2reqAIAu9opvQ
-	(envelope-from <stable+bounces-273017-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 20:37:58 +0200
+	id woxUGXrvT2qmqgIAu9opvQ
+	(envelope-from <stable+bounces-273018-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 20:59:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2419F734563
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 20:37:58 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B31B6734A72
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 20:59:05 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Ry497XDY;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273017-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273017-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=i8X0I0Uo;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273018-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-273018-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 92BE73037BBF
-	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 18:37:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3713130A6B32
+	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 18:55:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F77E4DBD95;
-	Thu,  9 Jul 2026 18:37:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 790B94499AB;
+	Thu,  9 Jul 2026 18:55:03 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 189D84DBD60
-	for <stable@vger.kernel.org>; Thu,  9 Jul 2026 18:37:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83DDD4499AD
+	for <stable@vger.kernel.org>; Thu,  9 Jul 2026 18:54:59 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783622253; cv=none; b=MP6i4PEDguFQx6W2gV28+3jwusOPMJe75hbie/BDZTYfnYTYmMaovX5gn8DR5tWimQ2cSb0WmPXYznPjECnvRldkoQfxgluU/ifCsFqzFJqlePayBzJ0XMNadZEsD7t650WXvVtbfayCcs5syscskj1wslRlzQB6g+l2+geD/yo=
+	t=1783623303; cv=none; b=FTptCfMJunYzfZw6wPIAVnX8khaxPUOxMx7jLliYwbAGHnCxrxJbz2J67vSzN9O4E3IG6BIpgqnjQ4XHSuacWiFcjsOa62R5hNwt2m5tseYi4/QNj+j0maK09kGK2yq75yB19w9oUoC8ozS1BydFLz5MHH9bcUqU1GCRfX15wwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783622253; c=relaxed/simple;
-	bh=hPON6rdlsK6qogJ8M57JeOTmmKD2AXgVYFZaBT5fhB0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MMHIPuQnomyLzA0FRavFsmEjTPtbTDEFAEqgc7+ias8J0umB+L2j2WvvcOIhPg+JOO6faWdewZ26GaQscA6milO8B7OGydTdfoDpl+gMJ/c85DLxVXylbAfJMDxaYuSqyEQCq0vj+B8awtyd0FHXYGyHu5OUykYZWA1uuBF/htg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Ry497XDY; arc=none smtp.client-ip=95.215.58.176
-Message-ID: <3f5b2bfb-9ca0-4ece-aae6-177e7c845e08@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783622239;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hTGRpd5XR3qZvQOxUVhMyy6tNzwyK8gZeBNAdQOz/8g=;
-	b=Ry497XDYc1Wp+nl06h0j6od+zPtCjpLw6ULiWPX62CZCiYeOLKlwRgiFoZUBJXBxE5ZFjZ
-	ROpswGdC/KJPctGNj6BpfIsh8FotfcGAUrr7vzQIOseeoleiVzlspD0TNX2nm/WFY6C0/c
-	Gez2gIOxXb1Pv+iQe4vJMMXmHdd7fFw=
-Date: Thu, 9 Jul 2026 11:37:08 -0700
+	s=arc-20240116; t=1783623303; c=relaxed/simple;
+	bh=yEH1Th0SMln4nRxcxBbel/RZvr2c6M5YqAH272qGUfs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=MDukVQZvgpliUxGVM8C82TxWzTV6hC/Syj9WX9lKPzuCZbI/PIwA77gpH84lKFQbQNkaWtHFcjVXHZKYWc/QlFi/hTGcrnuA2IuyLuGGm0Nw1CZ9I0V/7yLANyVBl0wMoQTOCtiZwkHho2RMj55Sb1rnxf9gEUxZbTYF3CTgn6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i8X0I0Uo; arc=none smtp.client-ip=209.85.210.42
+Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-7ea9c6ea7deso175253a34.3
+        for <stable@vger.kernel.org>; Thu, 09 Jul 2026 11:54:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783623298; x=1784228098; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Wf2mCygj2V3MtxPOIjhT5RGqf+/9JXlGVheo76S1fao=;
+        b=i8X0I0UoR4MJs8iyzeTDh+RnR9NxndvVSYo9xZUgeZY1zBMl8W/HuesVO/cmXMip6P
+         hd73orXixvA+vVLz0ySGONIayPxuIBAwCxWLdHofmBv8xlloHyLe+lNrzL1kS2prQZGP
+         CI6ywlH27qEkr0a5yuVMF21w4t/JtrguLEXhh8EKr26tH3Ljk8H/5pclbTKXTM/+XhuM
+         56bUMM8XYvS466LZ+fb99hdTrGQMjAGQ6JuVsRW0VSucMj10DFS9fu73Lp8bzyi8Tue+
+         nLLevn6hqvLV1iWgWQxnQNmecbFKmQJyWlQBATTgopJpFV8H7sm4vjUAWwA0AJBKwUj8
+         gTXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783623298; x=1784228098;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Wf2mCygj2V3MtxPOIjhT5RGqf+/9JXlGVheo76S1fao=;
+        b=rUt9Wv9sGb5P7j8K5Gmr0aUkJF65KetR2E1hYwga6ovFCik5+Q+Vz2h6rAfIZmqI+Z
+         LFs8eO/fgOuLJ4VTpKa8rT4rNp5kHNIjhRZHjuzlCRoCEJXwF4MgGhUeNUA0YnREqGUB
+         muUn3JLKxOp2TdaITECpnamWPhH3wY1qt9r41dkb6dHH5HyFAEGY/3nWZUSshgR+u/WM
+         AyPODXOd+PRper+K9DLYR7yL2NXucZ45YSJNT/lkAPSaxHXY78bJgaziSoPYCdHAshfj
+         Angb+OGxClTp0a4sLPyrbmXDFFZITV8ZAzbCk3JNP18u4gJFtLUcLTGOA+JPGoIv5x1f
+         FsKA==
+X-Forwarded-Encrypted: i=1; AFNElJ+wFu1etbdzSJ86KdcUaYZSP9fxQ4AsXlQMjdHobh2XOa+o4ikfKkhKHQM+QNli01SJLRETZGY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz0dLmUZz4GEGzv8rsRbd93iOg6laHJSK4zyamTNxmZJlvxTnds
+	knLld0wjXX9uUV7t80OVo6SKHoBvPGXFeE0XqzXMRnIbwirvnMbgduCv
+X-Gm-Gg: AfdE7cmSvMqyIdvOvs3YNpneXCIvOlhiXrmPwhClnm+9ioEQeMHl9uEaZSfJKwMAab4
+	9+6lobulOW31ko9RbL4mUxbw3qO0bnjcBWCYrOTyYd11jd1pTlSA+ySL2K5pMd9SF0YfZxDJ3nS
+	cwzbXZIsU0APCx/vRMiAB1djdd+p/Y13zCEWpMIhB7QPCAehPN+pnFRAW/DTB/eBnYHOQmIa1Nh
+	uhxW0k5NPIUMaCwBXM2E9GNCIycyUhQXoor4vcX+arlB+DlOyy0ZLB/2Sdaq4WVVNXujbMgnSHD
+	PgUP3fqXCbMtVeNTzC5RHrZtFYr3Dxqek8LlcVCMWyRXvrC5KqJVSxf8+JNbIt7JzGQtG29bIGj
+	nunt1EWAuMMfGRAjWYWRp92ZPjhQGhY7RbjnZ8gocz29uzKVzBca3ymAFYdT4pcoP1uQUtbjXfB
+	Q90x07xUb0jVwYS9PE0AFUau7JLgRJV4yZdWqxKhtqOdQ=
+X-Received: by 2002:a05:6830:2b08:b0:7e9:b537:102e with SMTP id 46e09a7af769-7ebcff9e14cmr5905427a34.27.1783623298042;
+        Thu, 09 Jul 2026 11:54:58 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:40::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7ebcb2630casm5108633a34.18.2026.07.09.11.54.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Jul 2026 11:54:57 -0700 (PDT)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Peter Xu <peterx@redhat.com>,
+	Wupeng Ma <mawupeng1@huawei.com>,
+	fvdl@google.com,
+	rientjes@google.com,
+	jthoughton@google.com,
+	vannapurve@google.com,
+	erdemaktas@google.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Ackerley Tng <ackerleytng@google.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 3/5] mm: hugetlb: Fix folio refcount mismatch on memcg charge failure
+Date: Thu,  9 Jul 2026 11:54:55 -0700
+Message-ID: <20260709185456.1854151-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260708-hugetlb-alloc-failure-fixes-v2-3-c7f27cbb462b@google.com>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v2] RDMA/rxe: validate num_sge/cur_sge before indexing
- wqe->dma.sge[]
-To: Ibrahim Hashimov <security@auditcode.ai>, zyjzyj2000@gmail.com,
- jgg@ziepe.ca, leon@kernel.org, Zhu Yanjun <yanjun.zhu@linux.dev>
-Cc: linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260708224534.1206-1-security@auditcode.ai>
- <20260709072656.9074-1-security@auditcode.ai>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "yanjun.zhu" <yanjun.zhu@linux.dev>
-In-Reply-To: <20260709072656.9074-1-security@auditcode.ai>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-273017-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:security@auditcode.ai,m:zyjzyj2000@gmail.com,m:jgg@ziepe.ca,m:leon@kernel.org,m:yanjun.zhu@linux.dev,m:linux-rdma@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[auditcode.ai,gmail.com,ziepe.ca,kernel.org,linux.dev];
-	FORGED_SENDER(0.00)[yanjun.zhu@linux.dev,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORWARDED(0.00)[lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-273018-lists,stable=lfdr.de];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:devnull+ackerleytng.google.com@kernel.org,m:muchun.song@linux.dev,m:osalvador@suse.de,m:david@kernel.org,m:shakeel.butt@linux.dev,m:nphamcs@gmail.com,m:akpm@linux-foundation.org,m:peterx@redhat.com,m:mawupeng1@huawei.com,m:fvdl@google.com,m:rientjes@google.com,m:jthoughton@google.com,m:vannapurve@google.com,m:erdemaktas@google.com,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:ackerleytng@google.com,m:stable@vger.kernel.org,m:devnull@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linux.dev:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[joshuahahnjy@gmail.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linux.dev,suse.de,kernel.org,gmail.com,linux-foundation.org,redhat.com,huawei.com,google.com,kvack.org,vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[yanjun.zhu@linux.dev,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[joshuahahnjy@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,auditcode.ai:email,linux.dev:from_mime,linux.dev:email,linux.dev:mid,linux.dev:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,ackerleytng.google.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,linux.dev:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2419F734563
+X-Rspamd-Queue-Id: B31B6734A72
 
-On 7/9/26 12:26 AM, Ibrahim Hashimov wrote:
-> A user QP's send queue (qp->sq.queue) is a shared ring the userspace
-> application writes to directly via mmap (vmalloc_user(), see
-> rxe_queue.c). For such a QP, rxe_post_send() takes the qp->is_user
-> branch and only schedules the requester task -- it never validates or
-> copies the posted WQE:
+On Wed, 08 Jul 2026 15:12:51 -0700 Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org> wrote:
+
+Hi Ackerley, 
+
+Thanks again for the fix. Thank you also for adding the reproducers,
+they made testing this really easy for me! : -D
+
+> From: Ackerley Tng <ackerleytng@google.com>
 > 
-> 	drivers/infiniband/sw/rxe/rxe_verbs.c:
-> 		if (qp->is_user) {
-> 			rxe_sched_task(&qp->send_task);
-> 			...
-> 		}
+> When mem_cgroup_charge_hugetlb(folio, gfp) returns -ENOMEM, the folio has
+> its refcount set to 1 via folio_ref_unfreeze(folio, 1).
 > 
-> The requester then consumes the WQE in place straight out of that
-> mmap'd ring:
+> The error path calls free_huge_folio(folio) directly, which expects a
+> refcount of 0. Hence, VM_BUG_ON_FOLIO(folio_ref_count(folio), folio) is
+> triggered.
+
+So yeah, I built mm-new (with your hugetlb open code series) and ran
+reproducer #3, and got the following output:
+
+...
+[   23.855813] Call Trace:
+[   23.855838]  <TASK>
+[   23.855877]  hugetlb_alloc_folio+0x190/0x360
+[   23.855930]  alloc_hugetlb_folio+0xf9/0x310
+[   23.855972]  hugetlb_no_page+0x590/0xa00
+[   23.856016]  hugetlb_fault+0x194/0x770
+[   23.856060]  handle_mm_fault+0x29b/0x2c0
+[   23.856103]  do_user_addr_fault+0x208/0x6e0
+[   23.856146]  exc_page_fault+0x67/0x140
+[   23.856191]  asm_exc_page_fault+0x22/0x30
+[   23.856234] RIP: 0033:0x401734
+...
+
+Running it with your fix, I don't get a kernel crash. So this change
+looks good to me, please feel free to add:
+
+Tested-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+
+But.....
+
+It seems like fixing this bug actually surfaces a different bug.
+I don't see a kernel crash anymore, but my kernel gets stuck in a 
+different loop:
+
+...
+[   42.526726] pagefault_out_of_memory: 120780 callbacks suppressed
+[   42.526732] Huh VM_FAULT_OOM leaked out to the #PF handler. Retrying PF
+[   42.526955] Huh VM_FAULT_OOM leaked out to the #PF handler. Retrying PF
+[   42.527084] Huh VM_FAULT_OOM leaked out to the #PF handler. Retrying PF
+[   42.527192] Huh VM_FAULT_OOM leaked out to the #PF handler. Retrying PF
+[   42.527288] Huh VM_FAULT_OOM leaked out to the #PF handler. Retrying PF
+[   42.527382] Huh VM_FAULT_OOM leaked out to the #PF handler. Retrying PF
+[   42.527476] Huh VM_FAULT_OOM leaked out to the #PF handler. Retrying PF
+...
+
+mem_cgroup_charge_hugetlb() fails
+--> hugetlb_alloc_folio() returns ERR_PTR(-ENOMEM)
+--> propagated to alloc_hugetlb_folio()
+--> hugetlb_no_page converts it to vmf_error(PTR_ERROR(folio))
+--> propagates up to the pagefault handler..
+
+But there's no OOM handler to resolve, I think. So it just keeps retrying
+the fault and cycling over and over and over again... I think we need
+to be returning ENOSPC instead of ENOMEM like the other failure paths
+in alloc_hugetlb_folio (or hugetlb_alloc_folio... I think we should
+change this name, it's a bit confusing).
+
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 288535838a48b..05214b1cd491a 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -2903,7 +2903,7 @@ struct folio *hugetlb_alloc_folio(struct hstate *h,
+                 * were committed to the folio and freeing the folio
+                 * would have cleared those up.
+                 */
+-               return ERR_PTR(ret);
++               return ERR_PTR(-ENOSPC);
+        }
+
+        return folio;
+
+This gives me the following result from your reproducer, which I think
+is the expected behavior:
+
+attempting to remount cgroup2 with memory_hugetlb_accounting...
+Successfully enabled memory_hugetlb_accounting
+Child: Attempting to allocate and touch 2MB hugepage...
+Child: mmap succeeded at 0x7f0023600000, touching it now (should trigger fault)...
+Parent: Child exited. Cleaning up.
+Parent: Child killed by signal 7 (Bus error)
+Parent: Child got SIGBUS as expected (if kernel didn't crash).
+
+What do you think? Happy to send it out as a separate fix or feel free
+to fold it into your series / fix, whatever you prefer.
+
+Thanks Ackerley!
+
+> Even with CONFIG_DEBUG_VM disabled, returning a folio with refcount 1 to
+> the freelist can corrupt allocator state later.
 > 
-> 	rxe_req.c:	wqe = req_next_wqe(qp);
-> 	rxe_req.c:	err = copy_data(qp->pd, 0, &wqe->dma,
-> 					payload_addr(pkt), payload,
-> 					RXE_FROM_MR_OBJ);
-> 
-> copy_data() indexes the per-WQE sge array with the attacker-controlled
-> cur_sge field and dereferences it (once there is payload to copy):
-> 
-> 	rxe_mr.c:	struct rxe_sge *sge = &dma->sge[dma->cur_sge];
-> 	rxe_mr.c:	...
-> 	rxe_mr.c:	if (sge->length && (offset < sge->length)) {
-> 
-> dma->sge[] is a flex array whose real backing storage is exactly
-> qp->sq.max_sge entries per WQE slot (see rxe_qp.c, wqe_size computed
-> from max_sge at QP create time). Since a user QP's WQE bytes are
-> entirely attacker-supplied, both wqe->dma.num_sge and wqe->dma.cur_sge
-> can be set to arbitrary values independent of each other and of
-> max_sge. Only the *kernel*-QP post path bounds num_sge:
-> 
-> 	rxe_verbs.c: validate_send_wr()
-> 		if (num_sge > sq->max_sge) {
-> 			rxe_err_qp(qp, "num_sge > max_sge\n");
-> 
-> but that function is only reachable from rxe_post_one_send() for
-> kernel-owned QPs; it is never consulted for a user QP's raw WQE.
-> 
-> The sibling receive path already has the equivalent guard, with the
-> literal comment documenting exactly why it is required:
-> 
-> 	rxe_resp.c: get_srq_wqe()
-> 		/* don't trust user space data */
-> 		if (unlikely(wqe->dma.num_sge > srq->rq.max_sge)) {
-> 			...
-> 			rxe_dbg_qp(qp, "invalid num_sge in SRQ entry\n");
-> 			return RESPST_ERR_MALFORMED_WQE;
-> 		}
-> 
-> The send/requester path has no analogous check, so a local,
-> unprivileged user who can open /dev/infiniband/uverbs* and create a
-> user QP on a soft-RoCE (rxe) link can hand-craft a WQE in the shared
-> send queue with an out-of-range wqe->dma.cur_sge (or an oversized
-> wqe->dma.num_sge) and ring the send doorbell. rxe_requester() then
-> calls copy_data(), which dereferences &dma->sge[cur_sge] out of the
-> bounds of the per-WQE sge array -- a vmalloc out-of-bounds *read*
-> (confirmed via KASAN: "KASAN: vmalloc-out-of-bounds in copy_data"),
-> reliably panicking the kernel (local DoS). sge->addr itself is still
-> bounds-checked later by lookup_mr()/rxe_mr_copy(), so the primitive is
-> an OOB read of sge metadata, not an arbitrary read/write primitive.
-> 
-> Fix this the same way get_srq_wqe() already does for SRQ entries:
-> bound the fields pulled from the (possibly user-mapped) send queue
-> entry before they are used to index wqe->dma.sge[], right where the
-> requester fetches the next WQE off the ring in rxe_requester(). num_sge
-> is capped at qp->sq.max_sge (matching the sibling SRQ check and the
-> kernel-QP validate_send_wr() check). cur_sge is bounded only when the
-> WQE actually carries payload (wqe->dma.resid): copy_data() dereferences
-> dma->sge[cur_sge] only after its own length == 0 early return, so a
-> zero-payload WQE never touches the sge array and must not be rejected
-> -- notably that is the only kind of WQE a max_sge == 0 QP can post
-> (qp->sq.max_sge is itself derived from user-supplied max_send_sge /
-> max_inline_data and may be 0). Gating on resid rather than num_sge is
-> deliberate: payload is wqe->dma.resid, which is independent of num_sge,
-> so a WQE with num_sge == 0 but a large resid and an out-of-range
-> cur_sge would still reach the sge dereference.
-> 
-> This is a long-standing bug in the rxe (soft-RoCE) driver: the
-> qp->is_user bypass in rxe_post_send() and the unbounded
-> &dma->sge[dma->cur_sge] indexing in copy_data() have been present
-> since the driver was introduced.
-> 
-> Runtime-verified on a v6.19 KASAN (CONFIG_KASAN_VMALLOC=y) stand: a
-> reproducer that posts a user QP send WQE with an out-of-range cur_sge
-> reliably tripped "KASAN: vmalloc-out-of-bounds in copy_data" (an
-> out-of-bounds read) before this patch, and no longer triggers that
-> report with the patch applied.
-> 
-> Fixes: 8700e3e7c485 ("Soft RoCE driver")
+> Use folio_put(folio) instead of free_huge_folio(folio) to properly drop the
+> reference before freeing it.
+> Fixes: 991135774c0e0 ("memcg/hugetlb: introduce mem_cgroup_charge_hugetlb")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Ibrahim Hashimov <security@auditcode.ai>
-> Assisted-by: AuditCode-AI:2026.07
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> Reviewed-by: Muchun Song <muchun.song@linux.dev>
 > ---
-> v2: address Zhu Yanjun's review of v1
->      (https://lore.kernel.org/linux-rdma/20260708224534.1206-1-security@auditcode.ai/):
->      qp->sq.max_sge can legitimately be 0, and v1's unconditional
->      "cur_sge >= max_sge" check then wrongly rejected a valid zero-payload
->      WQE. Gate the cur_sge bound on wqe->dma.resid instead (copy_data()
->      dereferences dma->sge[] only when there is payload), so zero-payload
->      WQEs -- the only kind a max_sge == 0 QP can post -- are accepted while
->      the out-of-range cur_sge OOB is still rejected. Commit message fixed.
-
-Thanks a lot. I am fine with this. Please Leon and Jason comment on this.
-
-Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-
-Zhu Yanjun
-
+>  mm/hugetlb.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
->   drivers/infiniband/sw/rxe/rxe_req.c | 22 ++++++++++++++++++++++
->   1 file changed, 22 insertions(+)
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index 4093c1c0a4a1d..1f3f4b964b153 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -2990,7 +2990,7 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
+>  	lruvec_stat_mod_folio(folio, NR_HUGETLB, pages_per_huge_page(h));
+>  
+>  	if (ret == -ENOMEM) {
+> -		free_huge_folio(folio);
+> +		folio_put(folio);
+>  		return ERR_PTR(-ENOMEM);
+>  	}
+>  
 > 
-> diff --git a/drivers/infiniband/sw/rxe/rxe_req.c b/drivers/infiniband/sw/rxe/rxe_req.c
-> index 12d03f390b09..363c56a1edbb 100644
-> --- a/drivers/infiniband/sw/rxe/rxe_req.c
-> +++ b/drivers/infiniband/sw/rxe/rxe_req.c
-> @@ -701,6 +701,28 @@ int rxe_requester(struct rxe_qp *qp)
->   	if (unlikely(!wqe))
->   		goto exit;
->   
-> +	/*
-> +	 * Don't trust user space data: for a user QP, qp->sq.queue is a
-> +	 * raw ring the application writes directly, so this WQE's num_sge
-> +	 * and cur_sge are attacker-controlled. copy_data() dereferences
-> +	 * dma->sge[cur_sge] without bounding the initial cur_sge against
-> +	 * the per-WQE sge array, whose capacity is qp->sq.max_sge (the
-> +	 * loop there only bounds subsequent increments, against num_sge).
-> +	 * Bound num_sge to that capacity, the way get_srq_wqe() and
-> +	 * validate_send_wr() already do, and bound cur_sge only when the
-> +	 * WQE actually carries payload (dma.resid): copy_data() returns
-> +	 * early on a zero-length copy before it ever touches dma->sge[],
-> +	 * so a zero-payload WQE -- the only valid WQE on a max_sge == 0
-> +	 * QP -- must not be rejected here.
-> +	 */
-> +	if (unlikely(wqe->dma.num_sge > qp->sq.max_sge ||
-> +		     (wqe->dma.resid &&
-> +		      wqe->dma.cur_sge >= qp->sq.max_sge))) {
-> +		rxe_dbg_qp(qp, "invalid num_sge/cur_sge in send wqe\n");
-> +		wqe->status = IB_WC_LOC_QP_OP_ERR;
-> +		goto err;
-> +	}
-> +
->   	if (rxe_wqe_is_fenced(qp, wqe)) {
->   		qp->req.wait_fence = 1;
->   		goto exit;
+> -- 
+> 2.55.0.795.g602f6c329a-goog
 
 
