@@ -1,81 +1,81 @@
-Return-Path: <stable+bounces-273035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273037-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id n2YcARP6T2qdrQIAu9opvQ
-	(envelope-from <stable+bounces-273035-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 21:44:19 +0200
+	id b/9UIiT6T2qirQIAu9opvQ
+	(envelope-from <stable+bounces-273037-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 21:44:36 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D4A2735228
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 21:44:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2BDC73523E
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 21:44:35 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=LCd77N5C;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=rOa+OVl9;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273035-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-273035-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273037-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-273037-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8C12E301E23C
-	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 19:41:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9424D302BE15
+	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 19:41:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A26A3C197C;
-	Thu,  9 Jul 2026 19:41:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 659ED3BFE34;
+	Thu,  9 Jul 2026 19:41:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 449DB3C1413
-	for <stable@vger.kernel.org>; Thu,  9 Jul 2026 19:40:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1871E3C10A8
+	for <stable@vger.kernel.org>; Thu,  9 Jul 2026 19:41:00 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783626061; cv=none; b=PX1lcBrvDLwy0tLRFdtiidsABezvARJ9afI/H0FyKQ/I2+KExPlOdE36Hk0BCIFjkn5ikbypq/0BImVbI8Iv5pGH4h1dHteRH7ZqGWTxEfZMHt6jyBfjCoHtYz9wU+o/jvXKcz0YT63NMXaEqVZLbvAki8hvmBihUbrLRg02vig=
+	t=1783626064; cv=none; b=kZbaxyP94PmF4F0tIBELu/xbtevgcM3jpc9+XSL2iQhMC+Z7CCsjs4hANYisF2LFsB/Bb5BPxcZfqT4RmRPZMNtd2A2RGnAJJ4UxAvHLzsO66wME0tKDm3jlE848HM04mejPVGvDqNA7BttJ149u2+gDx4/mmzD/cPhnvIixdq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783626061; c=relaxed/simple;
-	bh=65Idyz1sDs9eWG2wgPYu7Qcgmm8fUR/7vH9Y0/N6jM8=;
+	s=arc-20240116; t=1783626064; c=relaxed/simple;
+	bh=+FeyHYR66Z7bpjGuT2x9pHj5osVMZL/wGBE8dzFYWsQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ODXMYdOkxt1Lquke3UPurs6Z0SfujZRm1UsTJS5wrJc+D55RtwIoMXDfl2g0tAClpCeN9NbXfydNHmapuciXfctwqA1qNeqk7IP//ZseLoMgBSWLbcUOAA7JS3wlkdOlYHUkGPAZGrfmCo/r6krGY+1jnaog7B9Ku1nsPuQ4EwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LCd77N5C; arc=none smtp.client-ip=209.85.221.49
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-47de008b020so96317f8f.1
-        for <stable@vger.kernel.org>; Thu, 09 Jul 2026 12:40:59 -0700 (PDT)
+	 MIME-Version; b=JddpfGuv0/mtF/4PEqSiuOqTc3ykl6VdURbc4ZmGjOxd6v/uClvvw41foIZrH1hRx+U3bAhXaj5Pgmo60MQfZzwfpjLC+S/gax9Ca/Ym43m39zkWu7Yw9HPwsmHhgL/QFc7KIGZSY6F2VdXqUkHnAoCitf2ry6pfcGuDv0lFQig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rOa+OVl9; arc=none smtp.client-ip=209.85.221.52
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-47df6a5202bso133568f8f.0
+        for <stable@vger.kernel.org>; Thu, 09 Jul 2026 12:41:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783626058; x=1784230858; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1783626059; x=1784230859; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=4x0XMO7ZOolpmBLxmTy2H2GAqq0zcQmA38pNAG6AsLI=;
-        b=LCd77N5CIvdkHfctwufaX5ziHRIczsJnStcnRFZS1t3LgspBj4fKT4TUnpUnlcbH9C
-         nRZh9aAyu/vPcFlv5dGh4hxJyYLgQqfNXGgQvrBnAzRE2lZAEo8UxQ3XHju+1qdb0dSK
-         mkyfshatvKyG8uXG3cAxzsPUZSi5qzv6EmFCwhqsR2mQuXSp0ywqyI3zHoOw99dbzD2i
-         Cn++tgqbpF/6PNUrbgbTBrgOpSC1lXF0hkfeTDQ3Xf1dFJJgrZUfZL4GCWqwLCEZb3CN
-         e0ejhINUdZjw9zAh1Qm6vmj+B7tMrP8NQGCLGCE6xmHlZGX1+Z7j6/hAzewIlUQ4l4vM
-         ZZhg==
+        bh=ztg01EFixW/WryuPANCROuvgYOhU1yIL8O6c48zLGQc=;
+        b=rOa+OVl9X8d8aNCgy+YgTp9OnA+yb1Fltk0G8+dJALC0+MD9RYoJmjl7WtPr1x8e8c
+         R1F9AV6tS6mZ9bHCiLm+Iby/dTELB7MCx/Yj1grM6MVTgfwYenbaiFFk5n9IKLqvAxvp
+         UqOX+YqJB7n3jQHzdZXL3FxTmHIqUEYFC+wL+QcTIhWCFZHGGLCypNgmdtIVEb6Aomkw
+         iBMnY3+6UigzC9Y+9aI4KXsc5KoQGYtUaS4+SraPUA9oJORlZS8E6zC0SAhHxPY3eStZ
+         dYbf5LR3HXppueF7hCHH/1lHaAPqof6w4ou3Uc2x9l7e3j6+8RecA7RRB0umZiY7MGuT
+         SkZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783626058; x=1784230858;
+        d=1e100.net; s=20251104; t=1783626059; x=1784230859;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=4x0XMO7ZOolpmBLxmTy2H2GAqq0zcQmA38pNAG6AsLI=;
-        b=A/rPGCchIj1gopB/41PwlYNK/4j7b+7dtPkOfoq1G4VWeE9T5A2Fxno4S6ELI1ZXpA
-         HLAEBXRXOlwpWVJ9r/YNuo8ddSEDAOB+UTqht3VsTj+HqkP6l09VqGYcMMXoFIYwtP4E
-         0TG05Mt0goL17aIU9TWox3YqcGV548HozG7o3flVDAoDxYW+29W2BwQUC40L//VhxkxE
-         WoOHaruU7yJoDV0iPCOqIQ6jrIRWcD/fzu2ct5hxuhwKhbO9zwOKbnbbniAOHv4oB+N1
-         AqiTZzwwqt5tBxPFhkGFkY6H2YXPxdaYMazJse4siU9lTs/r2oSI6EW69GHUUoFqp7OB
-         f/mQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpTj59A51hv+i0M3tSersuczbPwFxBK0AUaHaK+goGhfRqFyeNHesaFHADx0GXvGnLxgcw+8zg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxnq1xISB2iiXFuAA2KUZwmMzixQZE/PLghqS7Q7Gzn/rP5vKrr
-	2+Dd9YmqNqgAmSLaZraeY7pZHomBDd2iImcP3TWyCXc8yeub5uw3KVDD
-X-Gm-Gg: AfdE7clLQO+bW/svfCYxzYntoox0k6JtiSvaEae14srTwXuZSetUMhC00PHoyPpzw9R
-	eSvW1rIzNejxdmKfxLnfZM7kz0nZnRwrclYhBqrclvRNmfEO8rpc2uSPJCOdyXQH9MR1Fi32a/y
-	NeQsL3/uhoUSF1qX2bMVBvX63P1E1Yh+xHoDEvO91QTAaSl7pxmgVKb6Kk3YT0ofpEvv6IVytKw
-	o0h260PRL16tkPVAUnLOjQFNL+/nRoeWsph09kpV5Hc+dL2/R7iMcDb0e0yBDuTYunBG+YK+7zV
-	w/NsopYYPTFoAaVOxgPweiQl6o1AGv229hPzbGS/v4ZfYKjZz/gMcPoaguvdlu7JH314sYyZvKZ
-	FkfOArOtb/x+upkPXExmgSfeSEtedFcJDbOINeRR1YP2Ek3Y60rX2UhrYXPt43f/q+pwDZnwONK
-	Ur6YfbfsicGNEG2qr86B7rG1GA
-X-Received: by 2002:a05:6000:40e0:b0:470:8e2b:9c84 with SMTP id ffacd0b85a97d-47ef695b55dmr753432f8f.7.1783626057578;
-        Thu, 09 Jul 2026 12:40:57 -0700 (PDT)
+        bh=ztg01EFixW/WryuPANCROuvgYOhU1yIL8O6c48zLGQc=;
+        b=q8eROOvpU9W7wwWjCL2QO68ZM864RNWvhRMdf8914G5o0zp1canpNG4ue6QMoFtogO
+         d+ilMXhYriNRymWbMmBM6W/vnoBO1UQZpb5JheCA0FcZsG6hdCDKG+59sT1QUkQVRqV/
+         frYFODnOE/z2hs6pb/adoHCdqFdNmvKvmOuX3Cgu4sdtKR+x18MZ504OIND5UXR+FYt2
+         KLM81p4LfW2lsS/dQTc69huNlGsMJiF1AiXV4cd2WSetRJExQBCNNqAcCp60GU9BKMDD
+         Woi7oGQ7F9gHLe/g8wCG6Gab6e+DYOUfWA0CxBqXtVsfDQdT00OM4YZgvvUs5d0EZu5F
+         L/8Q==
+X-Forwarded-Encrypted: i=1; AHgh+Ro6tVugy80LBALjMw+g80rkQ2oo8H0GiOCzSKfJQhTlFfGzSdsn5JOFglucy69l/hY2imuAQMQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxxHrDwi/GQjfbxHlCsLo8uRWWsoOkGkIPtWZ8j8vP09cm7ZksR
+	RGwSUF3bOF2T0l0eKaVZtV/76WbvPiQdPNi17cny5lF6MGmXNHmcmu44
+X-Gm-Gg: AfdE7cmogBEoTvz0Yp80d36Lbt7FL6j9/s3FnR4TF5D2NU4Dxj1lOKYQJOaICV9WLqr
+	l8btlYPRKaiN7192qJRW2IOW07bZEWJLriZWD2J6cPcplhEaPLbysHaos8/R3vKHjJmc92yCTzb
+	roztx5QvVzrGTajzQy7xvkEgy+hoZ8+mGHFr14NGpnB50UHqcXk9Q2NilhBb/F7FAq0fOEYgfzY
+	pbvTCly8pIYI5EuIhmV+IlIEckwq05XWjCEZQc3uvTWE3hEaqSR5q6H3BUSXl6sPTyWMnTXvBp2
+	eHXprL9Newp3QtiCpLGFpxj2Mypef3hwiKXYMjGsce214BvpQ/Fh7/T6zxneDeLl9qwfRKluCRD
+	QRAloqI183sll7B8qo35PVCVw4tPVZHOnQO5pineazeODiuNT6nCq5G50dJjvaDNN2ASQSa+/NQ
+	scRXeQ5lGcpByiucItZrvHH+2d
+X-Received: by 2002:a05:6000:1ac7:b0:46f:ce0c:f1f3 with SMTP id ffacd0b85a97d-47df07a9916mr9190183f8f.6.1783626059411;
+        Thu, 09 Jul 2026 12:40:59 -0700 (PDT)
 Received: from mini.main.internal ([2a02:908:c211:cd18:d9f3:ab2b:ac6e:fc84])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47aa0a558easm53986441f8f.27.2026.07.09.12.40.56
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47aa0a558easm53986441f8f.27.2026.07.09.12.40.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jul 2026 12:40:56 -0700 (PDT)
+        Thu, 09 Jul 2026 12:40:58 -0700 (PDT)
 From: Goetz Goerisch <ggoerisch@gmail.com>
 To: gregkh@linuxfoundation.org
 Cc: ggoerisch@gmail.com,
@@ -86,11 +86,10 @@ Cc: ggoerisch@gmail.com,
 	paul.louvel@bootlin.com,
 	sashal@kernel.org,
 	stable@vger.kernel.org,
-	thomas.petazzoni@bootlin.com,
-	Eric Biggers <ebiggers@google.com>
-Subject: [PATCH 3/5] crypto: talitos - stop using crypto_ahash::init
-Date: Thu,  9 Jul 2026 21:39:54 +0200
-Message-ID: <20260709193956.15619-4-ggoerisch@gmail.com>
+	thomas.petazzoni@bootlin.com
+Subject: [PATCH 4/5] crypto: talitos - fix SEC1 32k ahash request limitation
+Date: Thu,  9 Jul 2026 21:39:55 +0200
+Message-ID: <20260709193956.15619-5-ggoerisch@gmail.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260709193956.15619-1-ggoerisch@gmail.com>
 References: <2026070912-pluck-bagful-2a71@gregkh>
@@ -106,93 +105,393 @@ X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,gondor.apana.org.au,bootlin.com,vger.kernel.org,kernel.org,google.com];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-273035-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-273037-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,gondor.apana.org.au,bootlin.com,vger.kernel.org,kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:ggoerisch@gmail.com,m:herbert@gondor.apana.org.au,m:herve.codina@bootlin.com,m:linux-crypto@vger.kernel.org,m:miquel.raynal@bootlin.com,m:paul.louvel@bootlin.com,m:sashal@kernel.org,m:stable@vger.kernel.org,m:thomas.petazzoni@bootlin.com,m:ebiggers@google.com,s:lists@lfdr.de];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FORGED_SENDER(0.00)[ggoerisch@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:ggoerisch@gmail.com,m:herbert@gondor.apana.org.au,m:herve.codina@bootlin.com,m:linux-crypto@vger.kernel.org,m:miquel.raynal@bootlin.com,m:paul.louvel@bootlin.com,m:sashal@kernel.org,m:stable@vger.kernel.org,m:thomas.petazzoni@bootlin.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ggoerisch@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	TO_DN_NONE(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	DKIM_TRACE(0.00)[gmail.com:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ggoerisch@gmail.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,bootlin.com:email,apana.org.au:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4D4A2735228
+X-Rspamd-Queue-Id: F2BDC73523E
 
-From: Eric Biggers <ebiggers@google.com>
+From: Paul Louvel <paul.louvel@bootlin.com>
 
-commit 9826d1d6ed5f86cb3d61610b3b1fe31e96a40418 upstream.
+commit 655ef638a2bc3cd0a9eff99a02f83cab94a3a917 upstream.
 
-The function pointer crypto_ahash::init is an internal implementation
-detail of the ahash API that exists to help it support both ahash and
-shash algorithms.  With an upcoming refactoring of how the ahash API
-supports shash algorithms, this field will be removed.
+Since commit c662b043cdca ("crypto: af_alg/hash: Support
+MSG_SPLICE_PAGES"), the crypto core may pass large scatterlists spanning
+multiple pages to drivers supporting ahash operations. As a result, a
+driver can now receive large ahash requests.
 
-Some drivers are invoking crypto_ahash::init to call into their own
-code, which is unnecessary and inefficient.  The talitos driver is one
-of those drivers.  Make it just call its own code directly.
+The SEC1 engine has a limitation where a single descriptor cannot
+process more than 32k of data. The current implementation attempts to
+handle the entire request within a single descriptor, which leads to
+failures raised by the driver:
 
-Signed-off-by: Eric Biggers <ebiggers@google.com>
+  "length exceeds h/w max limit"
+
+Address this limitation by splitting large ahash requests into multiple
+descriptors, each respecting the 32k hardware limit. This allows
+processing arbitrarily large requests.
+
+Cc: stable@vger.kernel.org
+Fixes: c662b043cdca ("crypto: af_alg/hash: Support MSG_SPLICE_PAGES")
+Signed-off-by: Paul Louvel <paul.louvel@bootlin.com>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 ---
- drivers/crypto/talitos.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ drivers/crypto/talitos.c | 216 ++++++++++++++++++++++++++-------------
+ 1 file changed, 147 insertions(+), 69 deletions(-)
 
 diff --git a/drivers/crypto/talitos.c b/drivers/crypto/talitos.c
-index 4ca4fbd227bc..a941ec08817e 100644
+index a941ec08817e..ea6ae72c71ad 100644
 --- a/drivers/crypto/talitos.c
 +++ b/drivers/crypto/talitos.c
-@@ -2119,13 +2119,14 @@ static int ahash_finup(struct ahash_request *areq)
+@@ -12,6 +12,7 @@
+  * All rights reserved.
+  */
  
- static int ahash_digest(struct ahash_request *areq)
- {
--	struct talitos_ahash_req_ctx *req_ctx = ahash_request_ctx(areq);
--	struct crypto_ahash *ahash = crypto_ahash_reqtfm(areq);
--
--	ahash->init(areq);
--	req_ctx->last = 1;
-+	ahash_init(areq);
-+	return ahash_finup(areq);
-+}
++#include <linux/workqueue.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/mod_devicetable.h>
+@@ -870,10 +871,18 @@ struct talitos_ahash_req_ctx {
+ 	unsigned int swinit;
+ 	unsigned int first;
+ 	unsigned int last;
++	unsigned int last_request;
+ 	unsigned int to_hash_later;
+ 	unsigned int nbuf;
+ 	struct scatterlist bufsl[2];
+ 	struct scatterlist *psrc;
++
++	struct scatterlist request_bufsl[2];
++	struct ahash_request *areq;
++	struct scatterlist *request_sl;
++	unsigned int remaining_ahash_request_bytes;
++	unsigned int current_ahash_request_bytes;
++	struct work_struct sec1_ahash_process_remaining;
+ };
  
--	return ahash_process_req(areq, areq->nbytes);
-+static int ahash_digest_sha224_swinit(struct ahash_request *areq)
-+{
-+	ahash_init_sha224_swinit(areq);
-+	return ahash_finup(areq);
+ struct talitos_export_state {
+@@ -1759,7 +1768,20 @@ static void ahash_done(struct device *dev,
+ 
+ 	kfree(edesc);
+ 
+-	ahash_request_complete(areq, err);
++	if (err) {
++		ahash_request_complete(areq, err);
++		return;
++	}
++
++	req_ctx->remaining_ahash_request_bytes -=
++		req_ctx->current_ahash_request_bytes;
++
++	if (!req_ctx->remaining_ahash_request_bytes) {
++		ahash_request_complete(areq, 0);
++		return;
++	}
++
++	schedule_work(&req_ctx->sec1_ahash_process_remaining);
  }
  
- static int ahash_export(struct ahash_request *areq, void *out)
-@@ -3242,6 +3243,8 @@ static struct talitos_crypto_alg *talitos_alg_alloc(struct device *dev,
- 		    (!strcmp(alg->cra_name, "sha224") ||
- 		     !strcmp(alg->cra_name, "hmac(sha224)"))) {
- 			t_alg->algt.alg.hash.init = ahash_init_sha224_swinit;
-+			t_alg->algt.alg.hash.digest =
-+				ahash_digest_sha224_swinit;
- 			t_alg->algt.desc_hdr_template =
- 					DESC_HDR_TYPE_COMMON_NONSNOOP_NO_AFEU |
- 					DESC_HDR_SEL0_MDEUA |
+ /*
+@@ -1925,60 +1947,7 @@ static struct talitos_edesc *ahash_edesc_alloc(struct ahash_request *areq,
+ 				   nbytes, 0, 0, 0, areq->base.flags, false);
+ }
+ 
+-static int ahash_init(struct ahash_request *areq)
+-{
+-	struct crypto_ahash *tfm = crypto_ahash_reqtfm(areq);
+-	struct talitos_ctx *ctx = crypto_ahash_ctx(tfm);
+-	struct device *dev = ctx->dev;
+-	struct talitos_ahash_req_ctx *req_ctx = ahash_request_ctx(areq);
+-	unsigned int size;
+-	dma_addr_t dma;
+-
+-	/* Initialize the context */
+-	req_ctx->buf_idx = 0;
+-	req_ctx->nbuf = 0;
+-	req_ctx->first = 1; /* first indicates h/w must init its context */
+-	req_ctx->swinit = 0; /* assume h/w init of context */
+-	size =	(crypto_ahash_digestsize(tfm) <= SHA256_DIGEST_SIZE)
+-			? TALITOS_MDEU_CONTEXT_SIZE_MD5_SHA1_SHA256
+-			: TALITOS_MDEU_CONTEXT_SIZE_SHA384_SHA512;
+-	req_ctx->hw_context_size = size;
+-
+-	dma = dma_map_single(dev, req_ctx->hw_context, req_ctx->hw_context_size,
+-			     DMA_TO_DEVICE);
+-	dma_unmap_single(dev, dma, req_ctx->hw_context_size, DMA_TO_DEVICE);
+-
+-	return 0;
+-}
+-
+-/*
+- * on h/w without explicit sha224 support, we initialize h/w context
+- * manually with sha224 constants, and tell it to run sha256.
+- */
+-static int ahash_init_sha224_swinit(struct ahash_request *areq)
+-{
+-	struct talitos_ahash_req_ctx *req_ctx = ahash_request_ctx(areq);
+-
+-	req_ctx->hw_context[0] = SHA224_H0;
+-	req_ctx->hw_context[1] = SHA224_H1;
+-	req_ctx->hw_context[2] = SHA224_H2;
+-	req_ctx->hw_context[3] = SHA224_H3;
+-	req_ctx->hw_context[4] = SHA224_H4;
+-	req_ctx->hw_context[5] = SHA224_H5;
+-	req_ctx->hw_context[6] = SHA224_H6;
+-	req_ctx->hw_context[7] = SHA224_H7;
+-
+-	/* init 64-bit count */
+-	req_ctx->hw_context[8] = 0;
+-	req_ctx->hw_context[9] = 0;
+-
+-	ahash_init(areq);
+-	req_ctx->swinit = 1;/* prevent h/w initting context with sha256 values*/
+-
+-	return 0;
+-}
+-
+-static int ahash_process_req(struct ahash_request *areq, unsigned int nbytes)
++static int ahash_process_req_one(struct ahash_request *areq, unsigned int nbytes)
+ {
+ 	struct crypto_ahash *tfm = crypto_ahash_reqtfm(areq);
+ 	struct talitos_ctx *ctx = crypto_ahash_ctx(tfm);
+@@ -1997,12 +1966,12 @@ static int ahash_process_req(struct ahash_request *areq, unsigned int nbytes)
+ 
+ 	if (!req_ctx->last && (nbytes + req_ctx->nbuf <= blocksize)) {
+ 		/* Buffer up to one whole block */
+-		nents = sg_nents_for_len(areq->src, nbytes);
++		nents = sg_nents_for_len(req_ctx->request_sl, nbytes);
+ 		if (nents < 0) {
+ 			dev_err(dev, "Invalid number of src SG.\n");
+ 			return nents;
+ 		}
+-		sg_copy_to_buffer(areq->src, nents,
++		sg_copy_to_buffer(req_ctx->request_sl, nents,
+ 				  ctx_buf + req_ctx->nbuf, nbytes);
+ 		req_ctx->nbuf += nbytes;
+ 		return 0;
+@@ -2029,7 +1998,7 @@ static int ahash_process_req(struct ahash_request *areq, unsigned int nbytes)
+ 		sg_init_table(req_ctx->bufsl, nsg);
+ 		sg_set_buf(req_ctx->bufsl, ctx_buf, req_ctx->nbuf);
+ 		if (nsg > 1)
+-			sg_chain(req_ctx->bufsl, 2, areq->src);
++			sg_chain(req_ctx->bufsl, 2, req_ctx->request_sl);
+ 		req_ctx->psrc = req_ctx->bufsl;
+ 	} else if (is_sec1 && req_ctx->nbuf && req_ctx->nbuf < blocksize) {
+ 		int offset;
+@@ -2038,26 +2007,26 @@ static int ahash_process_req(struct ahash_request *areq, unsigned int nbytes)
+ 			offset = blocksize - req_ctx->nbuf;
+ 		else
+ 			offset = nbytes_to_hash - req_ctx->nbuf;
+-		nents = sg_nents_for_len(areq->src, offset);
++		nents = sg_nents_for_len(req_ctx->request_sl, offset);
+ 		if (nents < 0) {
+ 			dev_err(dev, "Invalid number of src SG.\n");
+ 			return nents;
+ 		}
+-		sg_copy_to_buffer(areq->src, nents,
++		sg_copy_to_buffer(req_ctx->request_sl, nents,
+ 				  ctx_buf + req_ctx->nbuf, offset);
+ 		req_ctx->nbuf += offset;
+-		req_ctx->psrc = scatterwalk_ffwd(req_ctx->bufsl, areq->src,
++		req_ctx->psrc = scatterwalk_ffwd(req_ctx->bufsl, req_ctx->request_sl,
+ 						 offset);
+ 	} else
+-		req_ctx->psrc = areq->src;
++		req_ctx->psrc = req_ctx->request_sl;
+ 
+ 	if (to_hash_later) {
+-		nents = sg_nents_for_len(areq->src, nbytes);
++		nents = sg_nents_for_len(req_ctx->request_sl, nbytes);
+ 		if (nents < 0) {
+ 			dev_err(dev, "Invalid number of src SG.\n");
+ 			return nents;
+ 		}
+-		sg_pcopy_to_buffer(areq->src, nents,
++		sg_pcopy_to_buffer(req_ctx->request_sl, nents,
+ 				   req_ctx->buf[(req_ctx->buf_idx + 1) & 1],
+ 				      to_hash_later,
+ 				      nbytes - to_hash_later);
+@@ -2065,7 +2034,7 @@ static int ahash_process_req(struct ahash_request *areq, unsigned int nbytes)
+ 	req_ctx->to_hash_later = to_hash_later;
+ 
+ 	/* Allocate extended descriptor */
+-	edesc = ahash_edesc_alloc(areq, nbytes_to_hash);
++	edesc = ahash_edesc_alloc(req_ctx->areq, nbytes_to_hash);
+ 	if (IS_ERR(edesc))
+ 		return PTR_ERR(edesc);
+ 
+@@ -2087,14 +2056,123 @@ static int ahash_process_req(struct ahash_request *areq, unsigned int nbytes)
+ 	if (ctx->keylen && (req_ctx->first || req_ctx->last))
+ 		edesc->desc.hdr |= DESC_HDR_MODE0_MDEU_HMAC;
+ 
+-	return common_nonsnoop_hash(edesc, areq, nbytes_to_hash, ahash_done);
++	return common_nonsnoop_hash(edesc, req_ctx->areq, nbytes_to_hash, ahash_done);
+ }
+ 
+-static int ahash_update(struct ahash_request *areq)
++static void sec1_ahash_process_remaining(struct work_struct *work)
++{
++	struct talitos_ahash_req_ctx *req_ctx =
++		container_of(work, struct talitos_ahash_req_ctx,
++			     sec1_ahash_process_remaining);
++	int err = 0;
++
++	req_ctx->request_sl = scatterwalk_ffwd(req_ctx->request_bufsl,
++					       req_ctx->request_sl, TALITOS1_MAX_DATA_LEN);
++
++	if (req_ctx->remaining_ahash_request_bytes > TALITOS1_MAX_DATA_LEN)
++		req_ctx->current_ahash_request_bytes = TALITOS1_MAX_DATA_LEN;
++	else {
++		req_ctx->current_ahash_request_bytes =
++			req_ctx->remaining_ahash_request_bytes;
++
++		if (req_ctx->last_request)
++			req_ctx->last = 1;
++	}
++
++	err = ahash_process_req_one(req_ctx->areq,
++				    req_ctx->current_ahash_request_bytes);
++
++	if (err != -EINPROGRESS)
++		ahash_request_complete(req_ctx->areq, err);
++}
++
++static int ahash_process_req(struct ahash_request *areq, unsigned int nbytes)
++{
++	struct crypto_ahash *tfm = crypto_ahash_reqtfm(areq);
++	struct talitos_ctx *ctx = crypto_ahash_ctx(tfm);
++	struct device *dev = ctx->dev;
++	struct talitos_ahash_req_ctx *req_ctx = ahash_request_ctx(areq);
++	struct talitos_private *priv = dev_get_drvdata(dev);
++	bool is_sec1 = has_ftr_sec1(priv);
++
++	req_ctx->areq = areq;
++	req_ctx->request_sl = areq->src;
++	req_ctx->remaining_ahash_request_bytes = nbytes;
++
++	if (is_sec1) {
++		if (nbytes > TALITOS1_MAX_DATA_LEN)
++			nbytes = TALITOS1_MAX_DATA_LEN;
++		else if (req_ctx->last_request)
++			req_ctx->last = 1;
++	}
++
++	req_ctx->current_ahash_request_bytes = nbytes;
++
++	return ahash_process_req_one(req_ctx->areq,
++				     req_ctx->current_ahash_request_bytes);
++}
++
++static int ahash_init(struct ahash_request *areq)
+ {
++	struct crypto_ahash *tfm = crypto_ahash_reqtfm(areq);
++	struct talitos_ctx *ctx = crypto_ahash_ctx(tfm);
++	struct device *dev = ctx->dev;
+ 	struct talitos_ahash_req_ctx *req_ctx = ahash_request_ctx(areq);
++	unsigned int size;
++	dma_addr_t dma;
+ 
++	/* Initialize the context */
++	req_ctx->buf_idx = 0;
++	req_ctx->nbuf = 0;
++	req_ctx->first = 1; /* first indicates h/w must init its context */
++	req_ctx->swinit = 0; /* assume h/w init of context */
++	size =	(crypto_ahash_digestsize(tfm) <= SHA256_DIGEST_SIZE)
++			? TALITOS_MDEU_CONTEXT_SIZE_MD5_SHA1_SHA256
++			: TALITOS_MDEU_CONTEXT_SIZE_SHA384_SHA512;
++	req_ctx->hw_context_size = size;
++	req_ctx->last_request = 0;
+ 	req_ctx->last = 0;
++	INIT_WORK(&req_ctx->sec1_ahash_process_remaining, sec1_ahash_process_remaining);
++
++	dma = dma_map_single(dev, req_ctx->hw_context, req_ctx->hw_context_size,
++			     DMA_TO_DEVICE);
++	dma_unmap_single(dev, dma, req_ctx->hw_context_size, DMA_TO_DEVICE);
++
++	return 0;
++}
++
++/*
++ * on h/w without explicit sha224 support, we initialize h/w context
++ * manually with sha224 constants, and tell it to run sha256.
++ */
++static int ahash_init_sha224_swinit(struct ahash_request *areq)
++{
++	struct talitos_ahash_req_ctx *req_ctx = ahash_request_ctx(areq);
++
++	req_ctx->hw_context[0] = SHA224_H0;
++	req_ctx->hw_context[1] = SHA224_H1;
++	req_ctx->hw_context[2] = SHA224_H2;
++	req_ctx->hw_context[3] = SHA224_H3;
++	req_ctx->hw_context[4] = SHA224_H4;
++	req_ctx->hw_context[5] = SHA224_H5;
++	req_ctx->hw_context[6] = SHA224_H6;
++	req_ctx->hw_context[7] = SHA224_H7;
++
++	/* init 64-bit count */
++	req_ctx->hw_context[8] = 0;
++	req_ctx->hw_context[9] = 0;
++
++	ahash_init(areq);
++	req_ctx->swinit = 1;/* prevent h/w initting context with sha256 values*/
++
++	return 0;
++}
++
++static int ahash_update(struct ahash_request *areq)
++{
++	struct talitos_ahash_req_ctx *req_ctx = ahash_request_ctx(areq);
++
++	req_ctx->last_request = 0;
+ 
+ 	return ahash_process_req(areq, areq->nbytes);
+ }
+@@ -2103,7 +2181,7 @@ static int ahash_final(struct ahash_request *areq)
+ {
+ 	struct talitos_ahash_req_ctx *req_ctx = ahash_request_ctx(areq);
+ 
+-	req_ctx->last = 1;
++	req_ctx->last_request = 1;
+ 
+ 	return ahash_process_req(areq, 0);
+ }
+@@ -2112,7 +2190,7 @@ static int ahash_finup(struct ahash_request *areq)
+ {
+ 	struct talitos_ahash_req_ctx *req_ctx = ahash_request_ctx(areq);
+ 
+-	req_ctx->last = 1;
++	req_ctx->last_request = 1;
+ 
+ 	return ahash_process_req(areq, areq->nbytes);
+ }
 -- 
 2.55.0
 
