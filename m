@@ -1,288 +1,197 @@
-Return-Path: <stable+bounces-272987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272983-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 4ayPAATUT2p8owIAu9opvQ
-	(envelope-from <stable+bounces-272987-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 19:01:56 +0200
+	id 0amcFPnOT2qKogIAu9opvQ
+	(envelope-from <stable+bounces-272983-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 18:40:25 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83199733A80
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 19:01:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0C317338C3
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 18:40:24 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="TLSwpJU/";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=rQ6zC61f;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272987-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272987-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272983-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272983-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F292330131DE
-	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 16:56:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 051BA303D4F7
+	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 16:36:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65CF43655F1;
-	Thu,  9 Jul 2026 16:56:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE05739658D;
+	Thu,  9 Jul 2026 16:36:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD5AD2D3A60
-	for <stable@vger.kernel.org>; Thu,  9 Jul 2026 16:56:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92305396587
+	for <stable@vger.kernel.org>; Thu,  9 Jul 2026 16:36:32 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783616184; cv=none; b=LqrgNiQchkxDXEghKms6JaRA6BBlKzwQ3HL0P3AOoVlPlUSlxtQqazz6lDC3+976/RKsWomiIo5VOSEfz4zkb561+g96ZU7lk4aLfxiZ3HGWu2vP8bbbTD7N/Bma9qikrQ8dtBVYCff+rOYHlRKo8o90BygwuBCJcLdSUMj1mC0=
+	t=1783614995; cv=none; b=OYfk3UNvD1vPzQKSrTfq3cPKPT6u63Czn/TI9FOLDwqs+0cgfDjaweS3CramKcnFB98S07aVZxVUHstjq4DC/AVImca1nsO++h4D8RbgjPHspEhYXYlILVYmtINaoZ/nV7eaQAiYEstnrQnkbpAZQOb+/4B399FuxFSEQ5svDfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783616184; c=relaxed/simple;
-	bh=mJENbzgctRGn35af/XgacrGkfki9wBVujHBixMSaqf8=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=gsOfIa9cilCv7VAkso87vBCsA3KevdYVzZUImgCtU86NpY6GZgEuWwkjh7AQ8+hsBWfoiwmTkkn0esoF7xQJZnD4DBAJeIQjvvwTE5JjKOGA73T77SgEAHXDAHw98FuXGOF52T1gNaAFN6bC6onF3h6ieikkvZcwG389n3jv1gM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TLSwpJU/; arc=none smtp.client-ip=209.85.214.175
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2c7c61b5292so38435815ad.0
-        for <stable@vger.kernel.org>; Thu, 09 Jul 2026 09:56:22 -0700 (PDT)
+	s=arc-20240116; t=1783614995; c=relaxed/simple;
+	bh=UsbaNrmIn63ARuAebfUPXUmtATO3t4qV3jGnIvUWHz0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=p2ceRUtk3Sb/L8FGoRFT7vD227msqEUyL0aeIwZKP2Z5E4GHi5EP5ScYaUO1MN+p/JexczVL9SUhFHSKkk2EzFY+ZKcDUTdLPeqiMkDO5VcBMWxujHSPrL9QF4p63SaE3RfAyYHoG5I/aK1WUgyc+DXQ1P/vn06bfJMSUB8YPts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rQ6zC61f; arc=none smtp.client-ip=209.85.128.46
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-493b779003fso6125145e9.3
+        for <stable@vger.kernel.org>; Thu, 09 Jul 2026 09:36:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783616182; x=1784220982; darn=vger.kernel.org;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=LxRJKp6D1ptC4y5YnQZ3DSiE42VBKKscZdC4o85YzcU=;
-        b=TLSwpJU/7gh7MtgxFW9FKC937zHoma/csrV6QsxDMm00B5Wvo+6ad9jMR435hzeYyz
-         cv5wdYNZ8E3YztLNT4JY6EIwzoTkvoBXTZ1U0A7Ar2nQBmijXPsJe6+rvRdOp/RjYoKs
-         AkQvIQwL0AUgzAI/iUGxNc5SeIsDTTPRStznKvfOvI+04uZobebgf44v8hzMf3MvJEwt
-         nfLwuG3I9WiVD/4JCrwqVgR1uHeWSO0iWaPaxW1XEFlZwGTnAfQdHdSe8VoYhZOlF8a8
-         DEfJ3Cf8xx/UiUYnChnha4r2zBQ43m/evMw6M6LHu5JLR7SbeNbVy9SFdwG5knfd7FM+
-         bKDg==
+        d=gmail.com; s=20251104; t=1783614991; x=1784219791; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=XpHK7z6dsHMMY8QknSXEZPqq3A8a/T0iO7+AZZEhDvk=;
+        b=rQ6zC61fV7LeVAKVwVH9oG2GLeUbHYDTIP94zEfcNbV0ZSbLscsrapE+FtOAyokL49
+         vQD0VcRe3nfiSFMG/eWYbRk6DFMZK7ckZ62KWHUI0XTFxS2SxL7GMHh3jJKC1+6INCQ1
+         XUryu8rDCHgNOZk3sXemNeyh1+w0+sMHZZ4ribsblXP4LUroDqS3JLesSDL1voUZoUra
+         8NiAUIR5xVIW/aEajV0Hr21bQzErLNDqf0e7RTnTZ6kBQFJ3KAhpxTxHdghBNplMQny5
+         LX2k+HtUvgvIU0YRa8IaJEqKj7pkudn2gD3tl5nk3yhg8pN2r5dhXYuC9JkgCIUap6op
+         eE6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783616182; x=1784220982;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
+        d=1e100.net; s=20251104; t=1783614991; x=1784219791;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=LxRJKp6D1ptC4y5YnQZ3DSiE42VBKKscZdC4o85YzcU=;
-        b=Sbz+ef31y4/fOQ3oGWzbwYJHwY8bjyWUP64kwLdS0r62Mm2MArLPNYmeKD7S0yHEcE
-         20W4CiZ/ySAt15tI/HK4QDFTd3qPzFQg4YpFyKd7e+Hqq96r+UrPRg9fA9A42vt44NHU
-         Fo1xUiqXZg2N5Ldh5o/RX7H0toZOoTZDnK53az/N5jdV46OJYT/VB2KWE3R9tPIV273E
-         pOk1K2oaH1dYPBHWDm6ZAb5fTIr3ulCaeVqgTSgmXEcp5li1ttYw7bW7PlhazWRgudKE
-         JOzsRCzxmaVOEJIzKHiyw3R6beEvRm2q9a8yFu0yurMEyT7IitRyqSwTSE4d5H2pcrJU
-         AgcQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqZs9w6RT3LUX2AhE9Vn/zlk9FTfbd6dM2366jv8aOU9RHyHzX3kEKqYVEqtogCygK3foeX/Eg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw0vjugf5SR4SZ+ef/G+6/njxLGlVoPSQTWKnFMRF1htkCBwk/e
-	HTAThKK+8q1Ge3P3TnrY4F6gsVUHSc6xQik0puDkEMr+c3Hr+CEuUAda
-X-Gm-Gg: AfdE7ckhgaREqdfAJEWgIKqOcj230wiP/I92yZ0NVf3J+TOZmE6sBCgb8pf281Gwn3/
-	1K/IMVZYWJm3H0O7XBogIkRMX9+H7S8aUr5m6/2Tw1cnkCM6LgnfUkfSLGxK9DavS2sEEUQ3Hi1
-	1Y+TKXYLdQiIigpcsYhGF3jmCgtjRwey2cNJQNDBjJjVQP6BHCwAOlodEOaAKo3PMLQma7YKBLa
-	4QjiRfmOqVwJUQ8fKOcmWAg/bIQqov4RMzXN4kIH1VsZjURBQpLCsimny5S8aOeix4Imyc8mcNv
-	R6JgPHLTAM/77lfa1oXh1x6LXk/oQWWZR8HEBjng4ewggoMGJicylrlsQXuYf7o2n4pwa9T5jxX
-	QD0k18rKni/VQkV7sxhc83xTM6nFwZqRmylo8EoN14fBpOAGw1jKlH5Cl3LP0ltTX9MVrYVVaOL
-	XPHP7aIBn6IPI=
-X-Received: by 2002:a05:6a21:512:b0:39c:126c:93b5 with SMTP id adf61e73a8af0-3c0bcfea433mr9860874637.21.1783616181907;
-        Thu, 09 Jul 2026 09:56:21 -0700 (PDT)
-Received: from pve-server ([49.205.216.49])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13b658a99afsm32344548c88.0.2026.07.09.09.56.16
+        bh=XpHK7z6dsHMMY8QknSXEZPqq3A8a/T0iO7+AZZEhDvk=;
+        b=K7NrttAVYbTvs2zBu6Yfx1hIeSa5IjZS6varkzuOqKz6TVvLG4LHjPBS++Nz9YxYcj
+         rCKKbgkNi5EGNnUwJYZbjuyscB9ZeMU67X2ZRTD4PZ2rQ5XFXDTwyjjzsGCvZwjUCDMr
+         jy4uuAfK7Ra7apuAJTZDkj6GF5Zs/pYQ+7/ltlZSgaA5N+MkUf41PVrJj6xP/wzmTyyd
+         VGYVv7ZMHi/7zoZi6J9eGYUJFzVwdAwREtn3MUB/oJSHKxwLGWO8zuYUKUtPDvegF4I9
+         +dELATAlN6i7wVOmKKZMks19ocR+FDsZXJP0DC6WGhY7CFpMvYL04cMes+076nLpb7jB
+         36/A==
+X-Forwarded-Encrypted: i=1; AHgh+Rrs/Kq4sl7kqI26bl8ilNyNbxmMy2O93HeoYJ/loVZo2w7cQrbZzEeWsF/8qR+OdtiF74PD2q8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyAqtN+/gaNZSV+gXYHvkFzlkrVTykL5cNe09C/2yyUfnXm1J+h
+	M6l4KZKXgXlmrWqZk7LAEaW3mBnmNPOjlprsJQC24uPaQARwdIikQBpi
+X-Gm-Gg: AfdE7cmTV9AqT6zk7uk3I4mgkaUojjyjavQ9HP3+IyDiE5aonw3ibf0o0mdyL0UubS2
+	z7dFpXTHw8owjn/+abI4MXoYmWrDpwwMgPwWlyTpEFLKmYymo3ZWqQ2poHmMj5WCY7KhL+jHNe6
+	irIYtJJq6HeDe936codk5XYw9c+cidSCrMdSy1L2Ohy6qqXQoOKho38uwugpSBx3MC5c+cUXNNO
+	agy7mudf/LHnNmonS8l+vGyWTkHj4JHL84d4KorRkKwciMR3asKvAtf4HBer8MxcuWtXw/ij+aN
+	WC2gwgkc9JMpRvw0KrWrs57rHi4I/NhRbrieF4lP77aD7QA7oFFNfridbIJ+joPQ9FuNwR31TpL
+	ZmDMK4XZ8lCbX7Htb8CbWydhBKRPY5dl2wKTL5V5YQ4BW/Fem5OjXoSG2x+/pLg3yFPOshVVfsn
+	Iso1qFmK1ICEEsh919Fl/mxPklBwX55nLFalE1TqngZLVxPA==
+X-Received: by 2002:a05:600c:310f:b0:493:d1e0:a4f1 with SMTP id 5b1f17b1804b1-493e6c05de0mr72385005e9.0.1783614990763;
+        Thu, 09 Jul 2026 09:36:30 -0700 (PDT)
+Received: from pumpkin (host-92-21-50-228.as13285.net. [92.21.50.228])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493e5a5d174sm174062095e9.2.2026.07.09.09.36.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jul 2026 09:56:21 -0700 (PDT)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Sourabh Jain <sourabhjain@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com, mpe@ellerman.id.au
-Cc: npiggin@gmail.com, chleroy@kernel.org, shivangu@linux.ibm.com, hbathini@linux.ibm.com, mahesh@linux.ibm.com, adityag@linux.ibm.com, venkat88@linux.ibm.com, sourabhjain@linux.ibm.com, stable@vger.kernel.org, Mahesh Kumar G <mahe657@linux.ibm.com>
-Subject: Re: [PATCH 1/1] powerpc/crash: stop watchdogs before booting kdump kernel
-In-Reply-To: <20260603070217.483696-2-sourabhjain@linux.ibm.com>
-Date: Thu, 09 Jul 2026 22:01:02 +0530
-Message-ID: <4ii8w2ex.ritesh.list@gmail.com>
-References: <20260603070217.483696-1-sourabhjain@linux.ibm.com> <20260603070217.483696-2-sourabhjain@linux.ibm.com>
+        Thu, 09 Jul 2026 09:36:30 -0700 (PDT)
+Date: Thu, 9 Jul 2026 17:36:28 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: raoxu <raoxu@uniontech.com>
+Cc: sfrench@samba.org, pc@manguebit.org, ronniesahlberg@gmail.com,
+ sprasad@microsoft.com, tom@talpey.com, bharathsm@microsoft.com,
+ linux-cifs@vger.kernel.org, samba-technical@lists.samba.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] smb: client: fix atime clamp check in read completion
+Message-ID: <20260709173628.22eeb7f7@pumpkin>
+In-Reply-To: <527C2DB5ABAE200F+20260707133017.1740557-1-raoxu@uniontech.com>
+References: <527C2DB5ABAE200F+20260707133017.1740557-1-raoxu@uniontech.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	MID_RHS_NOT_FQDN(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-272987-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,linux.ibm.com,vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:sourabhjain@linux.ibm.com,m:linuxppc-dev@lists.ozlabs.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:shivangu@linux.ibm.com,m:hbathini@linux.ibm.com,m:mahesh@linux.ibm.com,m:adityag@linux.ibm.com,m:venkat88@linux.ibm.com,m:stable@vger.kernel.org,m:mahe657@linux.ibm.com,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[riteshlist@gmail.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-272983-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FORGED_RECIPIENTS(0.00)[m:raoxu@uniontech.com,m:sfrench@samba.org,m:pc@manguebit.org,m:ronniesahlberg@gmail.com,m:sprasad@microsoft.com,m:tom@talpey.com,m:bharathsm@microsoft.com,m:linux-cifs@vger.kernel.org,m:samba-technical@lists.samba.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[davidlaightlinux@gmail.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[samba.org,manguebit.org,gmail.com,microsoft.com,talpey.com,vger.kernel.org,lists.samba.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[riteshlist@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[davidlaightlinux@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[pumpkin:mid,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,uniontech.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 83199733A80
+X-Rspamd-Queue-Id: A0C317338C3
 
-Sourabh Jain <sourabhjain@linux.ibm.com> writes:
+On Tue,  7 Jul 2026 21:30:17 +0800
+raoxu <raoxu@uniontech.com> wrote:
 
-> On pseries LPAR systems, watchdog timers configured from userspace
-> can remain active after a kernel panic. During panic triggered crash
-> dump capture, the crashing kernel jumps directly to the kdump kernel
-> without shutting down userspace services. As a result, active
-> watchdogs are not stopped before entering the kdump kernel.
->
-> If dump capture takes longer than the watchdog timeout, PHYP resets
-> the LPAR before dump collection completes, resulting in dump capture
-> failure.
->
-> Fix this by issuing the H_WATCHDOG hcall on the crash shutdown path
-> to stop all active watchdogs before booting the kdump kernel.
->
-
-Nice catch!
-
-> Fixes: 69472ffa6575 ("watchdog/pseries-wdt: initial support for H_WATCHDOG-based watchdog timers")
-> Reported-by: Mahesh Kumar G <mahe657@linux.ibm.com>
-> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+> From: Xu Rao <raoxu@uniontech.com>
+> 
+> cifs_rreq_done() updates the inode atime to current_time(inode) after a
+> netfs read.  It then preserves the CIFS rule that atime should not be
+> older than mtime, because some applications break if atime is less than
+> mtime.  That rule only requires clamping when atime < mtime.
+> 
+> The current check uses the raw non-zero result of timespec64_compare().
+> It therefore takes the clamp path for both atime < mtime and
+> atime > mtime.  The latter is the normal case when reading an older file:
+> the newly recorded atime is newer than the file mtime.  The completion
+> handler then immediately moves atime back to mtime, losing the access
+> time that was just recorded.  Userspace tools that rely on atime, such as
+> stat, find -atime, backup tools or cold-data classifiers, can therefore
+> see a recently read CIFS file as not recently accessed.
+> 
+> This is easy to miss because the bug is silent: read I/O still succeeds,
+> no error is reported, and many systems either do not check atime after
+> reads or mount with policies such as relatime/noatime.  It becomes
+> visible when a CIFS file has an mtime older than the current time, the
+> file is read, and the local inode atime is inspected before a later
+> revalidation replaces the cached timestamps.
+> 
+> Clamp only when atime is actually older than mtime.  This matches the
+> same atime/mtime rule used when applying CIFS inode attributes.
+> 
+> Fixes: 69c3c023af25 ("cifs: Implement netfslib hooks")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Xu Rao <raoxu@uniontech.com>
 > ---
->  arch/powerpc/kexec/crash.c | 25 +++++++++++++++++++++++++
->  1 file changed, 25 insertions(+)
->
-> diff --git a/arch/powerpc/kexec/crash.c b/arch/powerpc/kexec/crash.c
-> index e6539f213b3d..5651523e3a70 100644
-> --- a/arch/powerpc/kexec/crash.c
-> +++ b/arch/powerpc/kexec/crash.c
-> @@ -28,6 +28,7 @@
->  #include <asm/interrupt.h>
->  #include <asm/kexec_ranges.h>
->  #include <asm/crashdump-ppc64.h>
-> +#include <asm/hvcall.h>
->  
+>  fs/smb/client/file.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
+> index 58430ba51b10..62605928d2b8 100644
+> --- a/fs/smb/client/file.c
+> +++ b/fs/smb/client/file.c
+> @@ -301,7 +301,7 @@ static void cifs_rreq_done(struct netfs_io_request *rreq)
+>  	/* we do not want atime to be less than mtime, it broke some apps */
+>  	atime = inode_set_atime_to_ts(inode, current_time(inode));
+>  	mtime = inode_get_mtime(inode);
+> -	if (timespec64_compare(&atime, &mtime))
+> +	if (timespec64_compare(&atime, &mtime) < 0)
+>  		inode_set_atime_to_ts(inode, inode_get_mtime(inode));
 
-would be nice, if we could avoid papr specific header into common crash.c
+Should that be calling inode_get_mtime() again?
+It seems to have the value cached.
 
->  /*
->   * The primary CPU waits a while for all secondary CPUs to enter. This is to
-> @@ -352,6 +353,28 @@ int crash_shutdown_unregister(crash_shutdown_t handler)
+	David
+
 >  }
->  EXPORT_SYMBOL(crash_shutdown_unregister);
->  
-> +/**
-> + * stop_watchdogs - Stop active watchdogs before entering kdump kernel
-> + * On pseries LPAR systems, watchdogs configured from userspace remain
-> + * active after a kernel panic because userspace services are not shut
-> + * down on the kdump crash path. If a watchdog expires while the kdump
-> + * kernel is collecting the dump, PHYP resets the LPAR and dump capture
-> + * fails
-> + *
-> + *   0x200UL : watchdog stop operation
-> + *   -1      : watchdog number, disable all watchdogs
-> + */
-> +static void stop_watchdogs(void)
-> +{
-> +	if (firmware_has_feature(FW_FEATURE_LPAR)) {
-> +		int rc;
+> 
+> --
+> 2.50.1
+> 
+> 
 
-ditto.
-Also I guess this could be FW_FEATURE_WATCHDOG
-
-> +
-> +		rc = plpar_hcall_norets_notrace(H_WATCHDOG, 0x200UL, -1);
-
-- 0x200 is hardcoded.
-- -1 is hardcoded.
-- I think it's return value is long.
-
-> +		if (rc != H_SUCCESS && rc != H_NOOP)
-> +			pr_warn("crash: failed to stop watchdogs\n");
-
-Let's print rc as well.
-
-> +	}
-> +}
-> +
-
-Looking at the code, we already have a mechanism to register a crash
-shutdown handler which anyways is getting called from
-default_machine_crash_shutdown(). So, I think we could use this generic
-crash handler register mechanism and keep the wdt specific calls within
-pseries/setup.c file...
-
-...How about something like this? 
-
-diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
-index 50b26ed8432d..4e557694d724 100644
---- a/arch/powerpc/platforms/pseries/setup.c
-+++ b/arch/powerpc/platforms/pseries/setup.c
-@@ -59,6 +59,7 @@
- #include <asm/xics.h>
- #include <asm/xive.h>
- #include <asm/papr-sysparm.h>
-+#include <asm/papr-watchdog.h>
- #include <asm/ppc-pci.h>
- #include <asm/i8259.h>
- #include <asm/udbg.h>
-@@ -185,14 +186,42 @@ static void __init fwnmi_init(void)
- #endif
- }
-
-<...>
-
-+static void pseries_crash_stop_watchdogs(void)
-+{
-+       long rc;
-+
-+       rc = plpar_hcall_norets_notrace(H_WATCHDOG, PSERIES_WDTF_OP_STOP,
-+                                       PSERIES_WDT_NUM_ALL);
-+       if (rc != H_SUCCESS && rc != H_NOOP)
-+               pr_warn("Could not stop watchdogs before kdump rc=%ld\n", rc);
-+}
-+
- /*
-  * Affix a device for the first timer to the platform bus if
-  * we have firmware support for the H_WATCHDOG hypercall.
-  */
- static __init int pseries_wdt_init(void)
- {
--       if (firmware_has_feature(FW_FEATURE_WATCHDOG))
--               platform_device_register_simple("pseries-wdt", 0, NULL, 0);
-+       if (!firmware_has_feature(FW_FEATURE_WATCHDOG))
-+               return 0;
-+
-+       platform_device_register_simple("pseries-wdt", 0, NULL, 0);
-+
-+       if (crash_shutdown_register(pseries_crash_stop_watchdogs))
-+               pr_warn("Could not register watchdog crash shutdown handler\n");
-+
-        return 0;
- }
- machine_subsys_initcall(pseries, pseries_wdt_init);
-
-
-Note that I added papr-watchdog.h header file in above. I am guessing we
-can move some definitions from drivers/watchdog/pseries-wdt.c to
-arch/powerpc/include/asm/papr-watchdog.h in a separate patch before this
-change.
-
-I think you get the idea. Can you try this way and let me know if this works?
-
--ritesh
-
->  void default_machine_crash_shutdown(struct pt_regs *regs)
->  {
->  	volatile unsigned int i;
-> @@ -360,6 +383,8 @@ void default_machine_crash_shutdown(struct pt_regs *regs)
->  	if (TRAP(regs) == INTERRUPT_SYSTEM_RESET)
->  		is_via_system_reset = 1;
->  
-> +	stop_watchdogs();
-> +
->  	if (IS_ENABLED(CONFIG_SMP))
->  		crash_smp_send_stop();
->  	else
-> -- 
-> 2.52.0
 
