@@ -1,157 +1,216 @@
-Return-Path: <stable+bounces-272825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272821-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id VoqQG8s2T2r+cAIAu9opvQ
-	(envelope-from <stable+bounces-272825-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 07:51:07 +0200
+	id pTG1N2o2T2rdcAIAu9opvQ
+	(envelope-from <stable+bounces-272821-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 07:49:30 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEDD872CE4D
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 07:51:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33FAE72CE22
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 07:49:30 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=nbdzJ+At;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272825-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272825-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="b+/b1Msi";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272821-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272821-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B8A5230512BB
-	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 05:46:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EFDE5304C60D
+	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 05:45:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25B8A3A872D;
-	Thu,  9 Jul 2026 05:46:05 +0000 (UTC)
-X-Original-To: Stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F3133ACEED;
+	Thu,  9 Jul 2026 05:45:36 +0000 (UTC)
+X-Original-To: stable@vger.kernel.org
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAB291F91E3
-	for <Stable@vger.kernel.org>; Thu,  9 Jul 2026 05:46:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 735E73ACA5A
+	for <stable@vger.kernel.org>; Thu,  9 Jul 2026 05:45:34 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783575964; cv=none; b=MYGex36qRdIVDQhudaLakqjkidHK83a8QK15RRFoEx6CpfLH52XfL0xOAlwZTGnOO2Rg8EY+sV7e1A8Exezn9Bidkv05bpc2YGogMwChz9/qMR2FTXiSGNq/YprniVGfq632PsMC5Kx1y27tzP4aACKG+uwsrHRRCYhElFkdSPk=
+	t=1783575935; cv=none; b=X0ZgCDVIIYN4Ya1irn1TCrfpMV0pSindkYJ9PWxA56E1me98o7QfnX/5nduNxNMGSL+oO6IkkQs9+JcgNlFhR+uthB01mHC9pWNH5O8Um5s8ISwBkM81FcndyQLS8GRbsxM7/m7khZMMqHYWvRBXr3rgyWOMjKMrOZfEAZtXIbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783575964; c=relaxed/simple;
-	bh=4ElvRs99T5XHtXNX+0keCfSpUjk+GF9PTuhdFATrP6Y=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=sNmJkTQ/AHyuDe+1Wfj6xPy+7fVTR+gZMbksRgtOE3l+JAfpFXtzqBpEKg6hycTyD9bYAkssyOV5XR9QQW6oFnxwA45ZoGP0yl5VsJ2lY/OuQK+gLQ+LyYOf0Ok07uf1s+KCXhYRsUkkPdWWJYNrRNDmZZhSu9KAYmPomEXLsmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nbdzJ+At; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD4BA1F000E9;
-	Thu,  9 Jul 2026 05:46:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783575963;
-	bh=G9jrIQ2IVt+Zs9FQJITSr3ndGqea/26FGAiLEMJL1jM=;
-	h=Subject:To:From:Date;
-	b=nbdzJ+AtyzpkAXthmVrTa6Dgx0WGqgEtBocBpE9/CDpEww/H/v3CX1aHtjl6q6hFf
-	 WUCR0JbDt5puF9N80GgzsKLwDL2CGbBhkvV4B5Vrd353sE+FpH7xZW4xJ2XrrnC3iI
-	 ZML/MdMoR/MgWnD+swN2dXBqT2fV8LyYFx8GORK4=
-Subject: patch "iio: light: al3010: fix incorrect scale for the highest gain range" added to char-misc-linus
-To: vidhu.linux@gmail.com,Stable@vger.kernel.org,andriy.shevchenko@intel.com,jic23@kernel.org
-From: <gregkh@linuxfoundation.org>
-Date: Thu, 09 Jul 2026 07:44:53 +0200
-Message-ID: <2026070953-laurel-defacing-d628@gregkh>
+	s=arc-20240116; t=1783575935; c=relaxed/simple;
+	bh=mC3oLMXWAbMD/8ggRenIHpAwU32uiCLRqrKbrmFUo/M=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=iUXJ7UpRRMnZnzRXSGuznYtx1Y4Xyl2nGrtVu6BYqSy9K672dp2vV5foSKYrBj+3nhREvC3isL30IaI3MEWiFbb44Eqbb3Nsa03NFDrzpH4ZPt1wgqgNyOL1Cn3NT7aIlA+aEMwWO/UztXdE8MBsgmksaR7/MQw9g9SWxK/M9J4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b+/b1Msi; arc=none smtp.client-ip=209.85.214.169
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2cc80b585bfso4246415ad.0
+        for <stable@vger.kernel.org>; Wed, 08 Jul 2026 22:45:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783575934; x=1784180734; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :references:cc:to:subject:from:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=yNOQxL4FXDmHyD0Kjq23REAu9LFdCtb3Pm7cOHC959s=;
+        b=b+/b1MsiXghrnUV3jqlmzuR/k6mUQp0JeeNf+pMXneovULfK1MmbMw9Pav8g4QyA3s
+         SUk72b7KiLJjspcYlpJGiAFIUTNv8uSLFrpo38MNo7NFDioiBLVqBqTR3K1nUs55dQO6
+         x/aJ4qN3auxmyhY0KtTQjjLyDw5F9L4tfdcTUvQfNgFCIOJGQO1m8XZ86GHJBefMPa/1
+         rkRqpDf4CvA41z0NQA/+Mcrg1YpsYpehU7+WiA/GKmoltRuHVT9XQUs2wUoy+t0FX0Qi
+         QOs8yf0Bmr/+5ukmOGlwc5V3X8j6/VKVnHn1Ule6cQtX26m9KwiBwV+IiPQo7hOe/1cx
+         BIMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783575934; x=1784180734;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :references:cc:to:subject:from:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=yNOQxL4FXDmHyD0Kjq23REAu9LFdCtb3Pm7cOHC959s=;
+        b=rYgt71btXfYaCoI7IVTFU4N1hdBmpwsg0hnspyYDJSbHuNI5GtQwpapWsZ1NUbGZ30
+         H9YD4xn6OGrO4MKeEWm1S6cgJHTPDIJ0bivWvY75KixrFNwCdMqJb/UsoqgEEHFjTf9x
+         eB71pPxfDpB2yDzzGGXw78d/yCnMJ16nkKyN3iuBURYv19xF+GrxmKFVeVzWLn/RD4IL
+         E7oRu/A0bvVbP3znRUSvFSdp4QyfunP7g9Vp9csnJIl+uqeof3bolGLMSI1Yk7AzpD//
+         Wp9qjqEaXI29uffC18i855HOjrSSjIvSIvGI87yrSJrtRKNscMIuEvk9eFC61SjLBBWq
+         cf6g==
+X-Gm-Message-State: AOJu0YxNErdSaHTHDmY96P/M1L6tWYqMItb0EsyTlTRMuK2DAGWhjn5W
+	iIJjB5ZrZT44ZQxwbIY12g52rO8WXqv1GheKrzHgFYvAH6qNV9Z/fPc8
+X-Gm-Gg: AfdE7cnLQ3c0/ucqc9iAT0hFavyFE0MgfplcJoTN6fuJK9Zo33IG2jk9PnAk19HkJSh
+	UZb66YE0uYksT/jGqbslkqAgbILth+DIf6b4v5v+9DBMAvx+WdraqC+jA81feuqa4MrIIHQ+2yt
+	FX0vPC8Sg0suvontZt61RqbmpeYkxlWnI2QjKMaAwPE03HJZRtPSabq61lAvctkP3DlGGW9WRf3
+	IEMEH/zjPU0Uv4uu62J/LwJtqB4YBv+kwfG/jlwMG7mwoO0vEQ0DNtlWIiMN6Rizk7Ys5+mcQ5b
+	eyDsEkf+VDzwrWrEMoz/8P07F+uU1Asw88TsDli3QysG8M49nNF+ZcFdniIQ7m5zBojqzCinOzZ
+	Q+6a6Keix/PETgtqL5qa8tbvGAdKOFBeSvUCCQarskEuZvdInFfxjVsgSdWLGKKzY8EwZbONv67
+	mMq7iq1wOYFHpeayHF
+X-Received: by 2002:a17:903:3903:b0:2cb:14b3:4cfe with SMTP id d9443c01a7336-2ccea582ae2mr60334915ad.45.1783575933576;
+        Wed, 08 Jul 2026 22:45:33 -0700 (PDT)
+Received: from [10.42.12.77] ([116.128.244.169])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc99cc5aasm38156905ad.0.2026.07.08.22.45.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 08 Jul 2026 22:45:32 -0700 (PDT)
+Message-ID: <c12700ab-7f0c-452d-b8de-8e23ca48f1bd@gmail.com>
+Date: Thu, 9 Jul 2026 13:45:23 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+From: leixiang <leenollei@gmail.com>
+Subject: Re: [PATCH] KVM: Nullify irqfd->producer when add_producer() fails
+To: Sean Christopherson <seanjc@google.com>
+Cc: stable@vger.kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Paul Mackerras <paulus@ozlabs.org>,
+ Suresh Warrier <warrier@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ leixiang <leixiang@kylinos.cn>
+References: <1782119051448443.14545.seg@mailgw.kylinos.cn>
+ <ak59frQUBl9Gs3Qn@google.com>
+Content-Language: en-US
+In-Reply-To: <ak59frQUBl9Gs3Qn@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [3.84 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-272825-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:vidhu.linux@gmail.com,m:Stable@vger.kernel.org,m:andriy.shevchenko@intel.com,m:jic23@kernel.org,m:vidhulinux@gmail.com,s:lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-272821-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org,intel.com,kernel.org];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	TO_DN_NONE(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_RCPT(0.00)[stable];
-	FROM_NO_DN(0.00)[];
+	FORGED_SENDER(0.00)[leenollei@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:seanjc@google.com,m:stable@vger.kernel.org,m:maddy@linux.ibm.com,m:npiggin@gmail.com,m:mpe@ellerman.id.au,m:chleroy@kernel.org,m:pbonzini@redhat.com,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:x86@kernel.org,m:hpa@zytor.com,m:paulus@ozlabs.org,m:warrier@linux.vnet.ibm.com,m:linuxppc-dev@lists.ozlabs.org,m:kvm@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:leixiang@kylinos.cn,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,linux.ibm.com,gmail.com,ellerman.id.au,kernel.org,redhat.com,alien8.de,linux.intel.com,zytor.com,ozlabs.org,linux.vnet.ibm.com,lists.ozlabs.org,kylinos.cn];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[leenollei@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: AEDD872CE4D
+X-Rspamd-Queue-Id: 33FAE72CE22
 
 
-This is a note to let you know that I've just added the patch titled
 
-    iio: light: al3010: fix incorrect scale for the highest gain range
+On 7/9/26 00:40, Sean Christopherson wrote:
+> On Mon, Jun 22, 2026, leixiang wrote:
+>> The x86 and powerpc add_producer() callbacks set irqfd->producer before the
+>> fallible setup and never clear it on error.  The bypass manager doesn't
+>> register a producer whose add_producer() failed -- producer->eventfd is
+>> left NULL, so the later unregister early-returns and del_producer() is
+>> never called -- so nothing ever drops the pointer.
+>>
+>> For VFIO PCI the producer is embedded in struct vfio_pci_irq_ctx and freed
+>> when the vector is disabled, after which a routing update dereferences the
+>> dangling pointer via kvm_arch_update_irqfd_routing().
+>>
+>> Nullify irqfd->producer on the error paths.
+>>
+>> Fixes: 77e1b8332d1d ("KVM: x86: Decouple device assignment from IRQ bypass")
+>> Fixes: c57875f5f9be ("KVM: PPC: Book3S HV: Enable IRQ bypass")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: leixiang <leixiang@kylinos.cn>
+> 
+> Please post the PPC patch as a separate patch.  x86 and PPC are separate maintainer
+> domains and the backports will likely need to go to different LTS kernels.
+> 
+> I'll grab/extract the x86 change from here (and I'll massage the changelog as
+> appropriate).
 
-to my char-misc git tree which can be found at
-    git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
-in the char-misc-linus branch.
+Thank you for the review and guidance.  I will submit a separate PPC patch.
 
-The patch will show up in the next release of the linux-next tree
-(usually sometime within the next 24 hours during the week.)
-
-The patch will hopefully also be merged in Linus's tree for the
-next -rc kernel release.
-
-If you have any questions about this process, please let me know.
-
-
-From aa411adc6ce40ad1a55ebc965f255a4cfc0005f8 Mon Sep 17 00:00:00 2001
-From: Vidhu Sarwal <vidhu.linux@gmail.com>
-Date: Sat, 4 Jul 2026 17:22:45 +0530
-Subject: iio: light: al3010: fix incorrect scale for the highest gain range
-
-al3010_scales[] encodes the highest gain range as {0, 1187200}.
-For IIO_VAL_INT_PLUS_MICRO, the fractional part must be less than
-1000000, so the scale 1.1872 should instead be represented as
-{ 1, 187200 }.
-
-Since write_raw() compares the value from userspace against this
-table, writing the advertised 1.1872 scale never matches the malformed
-entry and returns -EINVAL. As a result, the highest gain range cannot
-be selected. Reading the scale in that state also reports the malformed
-value.
-
-Fixes: c36b5195ab70 ("iio: light: add Dyna-Image AL3010 driver")
-Signed-off-by: Vidhu Sarwal <vidhu.linux@gmail.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <jic23@kernel.org>
----
- drivers/iio/light/al3010.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/iio/light/al3010.c b/drivers/iio/light/al3010.c
-index d603b4a6b8e8..ca1d7fd6defb 100644
---- a/drivers/iio/light/al3010.c
-+++ b/drivers/iio/light/al3010.c
-@@ -42,7 +42,7 @@ enum al3xxxx_range {
- };
- 
- static const int al3010_scales[][2] = {
--	{0, 1187200}, {0, 296800}, {0, 74200}, {0, 18600}
-+	{ 1, 187200 }, { 0, 296800 }, { 0, 74200 }, { 0, 18600 },
- };
- 
- static const struct regmap_config al3010_regmap_config = {
--- 
-2.55.0
-
-
+>> ---
+>>  arch/powerpc/kvm/book3s_hv.c | 4 +++-
+>>  arch/x86/kvm/irq.c           | 4 +++-
+>>  2 files changed, 6 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+>> index 61dbeea317f3..14919b76fb32 100644
+>> --- a/arch/powerpc/kvm/book3s_hv.c
+>> +++ b/arch/powerpc/kvm/book3s_hv.c
+>> @@ -6114,9 +6114,11 @@ static int kvmppc_irq_bypass_add_producer_hv(struct irq_bypass_consumer *cons,
+>>  	irqfd->producer = prod;
+>>
+>>  	ret = kvmppc_set_passthru_irq(irqfd->kvm, prod->irq, irqfd->gsi);
+>> -	if (ret)
+>> +	if (ret) {
+>>  		pr_info("kvmppc_set_passthru_irq (irq %d, gsi %d) fails: %d\n",
+>>  			prod->irq, irqfd->gsi, ret);
+>> +		irqfd->producer = NULL;
+>> +	}
+> 
+> Unlike x86, AFAICT there's no need to set irqfd->producer before configuring
+> the passthru/bypass stuff.  So I think that fix could be this?
+> 
+> diff --git arch/powerpc/kvm/book3s_hv.c arch/powerpc/kvm/book3s_hv.c
+> index 61dbeea317f3..ff7b25629125 100644
+> --- arch/powerpc/kvm/book3s_hv.c
+> +++ arch/powerpc/kvm/book3s_hv.c
+> @@ -6111,12 +6111,12 @@ static int kvmppc_irq_bypass_add_producer_hv(struct irq_bypass_consumer *cons,
+>         struct kvm_kernel_irqfd *irqfd =
+>                 container_of(cons, struct kvm_kernel_irqfd, consumer);
+>  
+> -       irqfd->producer = prod;
+> -
+>         ret = kvmppc_set_passthru_irq(irqfd->kvm, prod->irq, irqfd->gsi);
+>         if (ret)
+>                 pr_info("kvmppc_set_passthru_irq (irq %d, gsi %d) fails: %d\n",
+>                         prod->irq, irqfd->gsi, ret);
+> +       else
+> +               irqfd->producer = prod;
+>  
+>         return ret;
+>  }
+Agreed. Your approach is cleaner.
 
