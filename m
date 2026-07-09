@@ -1,99 +1,73 @@
-Return-Path: <stable+bounces-273036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273038-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id fwjuNRz6T2qfrQIAu9opvQ
-	(envelope-from <stable+bounces-273036-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 21:44:28 +0200
+	id VlKdBGP7T2rqrQIAu9opvQ
+	(envelope-from <stable+bounces-273038-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 21:49:55 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CA2A73522F
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 21:44:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 605857352E6
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 21:49:54 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=H3OzUJ0K;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273036-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273036-lists+stable=lfdr.de@vger.kernel.org";
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=auditcode.ai header.s=zmail header.b=U6e+0uOh;
+	dmarc=pass (policy=none) header.from=auditcode.ai;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273038-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273038-lists+stable=lfdr.de@vger.kernel.org";
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3D86430252BD
-	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 19:41:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D077E303B70F
+	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 19:48:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 308763BED70;
-	Thu,  9 Jul 2026 19:41:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8F0C3B2FDF;
+	Thu,  9 Jul 2026 19:48:45 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender-op-o17.zoho.eu (sender-op-o17.zoho.eu [136.143.169.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 425B33BFE34
-	for <stable@vger.kernel.org>; Thu,  9 Jul 2026 19:41:02 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783626064; cv=none; b=uJTI3Y7opY1ojo+9qlwDjAzyCWUDyJxyPUHNEbCFA1vDfcdPz957L1eQNJWBfUutc8xWtjItVftUsusRYJw4tHambQNdFZkb8sDAKpZIZs6ShrrZUS7YbQg6p2Y1HGrLoDAMp+l0sPtap6IrIgP1NTF503MCtsX+HFFQ35F0eqA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783626064; c=relaxed/simple;
-	bh=Tn8iQJ9CsVUfhrZiseQzEf1voZTbnVyefAonuptvolQ=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 137C521CC58;
+	Thu,  9 Jul 2026 19:48:42 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783626525; cv=pass; b=cou0GoF8M8i4S4clEr4fye4+pP3zQ2hzRw+DVvQD4VNur/NVIAAojXnsGvz8lKQfWFmdhCp8nYrIXniW7ee7TdQD1hOA+Xt3meavG4YZTkziT/MKnYMv9UIkavali6gI2ykgzv91uZ5VCnvCMEKYKU9EkDkcqzMR7P2WWf0P4CM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783626525; c=relaxed/simple;
+	bh=dDjjvt+WNwBkHfdPdkwDuLBSLtinU9dJAE6dohogZ20=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RREL4KM5sjknstYfA7jOoeONQRSigmIcVdkQcMlpGqnhV+IMKamkxecyBlt4Ux64or3jqoZERnvnR0iWMiK92wNRY4+aPpviS4j9NfoRTruHf0j4sr1n69rc6N/YvX7CJ6rxHNcVndejdlOLx3gjQgDOBNB2rbe9r/7L/0JapSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H3OzUJ0K; arc=none smtp.client-ip=209.85.128.51
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-493ed9d8c5cso1219145e9.1
-        for <stable@vger.kernel.org>; Thu, 09 Jul 2026 12:41:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783626061; x=1784230861; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=5KIY3oc9mKAdT5MTP8DhBnrr4oaktG5EnhFMqSWWNRc=;
-        b=H3OzUJ0KnqgSO3YwUAhYe0+hGdOgU14D9EK3frVzu0QJsYsdaCFraurdAy5gJNSbEV
-         VD0Q4y8A/gxujN2QCjbQNNSZ79sykbuJSQuHsgm2G3q46i101iMvccEgraA9aAJ0zX5S
-         QTDWMnrAfSBPPJihLG07w3ttc4ZWlaqNvQQuvtAaMcCKdEpc0TS6jsnhb+tR4/1f9NEL
-         6SgIJ8Up7q4lTxmS4NhOggif6XziKHnHIa6CEjUjEbO93AivGRKTo4vmt3gQkrKxzoDs
-         pWbsKT+C5lIM7ui29mb+x3P6yvjJSsjU/9/+p9WJMRRMRTWYZWcVxj9PIs8CNC846h0C
-         3QZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783626061; x=1784230861;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=5KIY3oc9mKAdT5MTP8DhBnrr4oaktG5EnhFMqSWWNRc=;
-        b=rErylri0uYCwwPGO+eUEnl6NyACfYTRDluPpTf4jDe9E6NpSQRFqzBfb/eabTjX1tG
-         2dvbJ+JLYDrdr9+Cdap4wExRLA/ids4AloHpxAd+1Oy+C9TKeCVLVca/GDpvy+YZRrLD
-         NO+ZCqpBwn6YuvOAnOOjv6SNGFeXB3/AWH0KwuwgqpfCBVYWLuM4AzRZVtW1HtyKfptS
-         3KLmS38byXNX6IU/iWpLIYhPSnMWIuYWlquE7eb4HHqf0c9GerMAJsyvPEEzaJKH7Hji
-         F30sEdgheip8PibAKqx4+h7WgTtxkPP3nZs2bDSbk5svaiaokq8X98/1L3hRpu+33dAt
-         LfaA==
-X-Forwarded-Encrypted: i=1; AHgh+RqGEi9DEbv9kAOsZXVzIXIzM20mfCwBBuJb+KZTBoPWC/u9iK/4bz/VQbDzodPAlCuC/tT85GI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxD8F8CZR63ETs4H6iITYi5S/vxIsXXuiEA38xe/Noh002kDZ87
-	JXG+6BXxNEHZKFogNgptTDV9mGLMR9s0K1psu3LO9WZRslb+9kr+pWib
-X-Gm-Gg: AfdE7cliuPrzBeRvgg64C2gkMZxJug9gbEarwrQ5Esy23zD1qaWbJIsIOgVPxzFAq4C
-	CuqOXAbR7DicUSJLG+W83JD3L6Lev7ii6yVQzGrAewfqVItSL99xrgQxztbzTvFN5jjKJXNTbaV
-	8SdHrM3avMXF5iJJJgTkzTI3MYs43jmah0nXDQC2DgllVrhDLLjjJ6aWL7lGIPoF9COpd8QS0I6
-	KMpqT63M4/FE38qnucJdhh+l8i9O47/HslD6J94/3LrxacfdHlyh4Ubn9wUiU2ED0k44HEzGU+R
-	NPEj/4B5aBspdceJ8IJkDpNAQOJRnu76ua82dSWZZbeMEEnYTbpuMejTTKRQFS7o6tl/q4JA9UZ
-	ci7Hwexwi/gp4mf6jTrENx4dtn3I+rlLH/VH+qbjEAWBmHLvqyoW9DRY0t3NfSvD7LXacuy0vO+
-	/na7vHYQg9QEsOjbPrCK/T7RES
-X-Received: by 2002:a05:600c:8b86:b0:493:c548:87fb with SMTP id 5b1f17b1804b1-493e68d6862mr90766245e9.36.1783626060604;
-        Thu, 09 Jul 2026 12:41:00 -0700 (PDT)
-Received: from mini.main.internal ([2a02:908:c211:cd18:d9f3:ab2b:ac6e:fc84])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47aa0a558easm53986441f8f.27.2026.07.09.12.40.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jul 2026 12:40:59 -0700 (PDT)
-From: Goetz Goerisch <ggoerisch@gmail.com>
-To: gregkh@linuxfoundation.org
-Cc: ggoerisch@gmail.com,
-	herbert@gondor.apana.org.au,
-	herve.codina@bootlin.com,
-	linux-crypto@vger.kernel.org,
-	miquel.raynal@bootlin.com,
-	paul.louvel@bootlin.com,
-	sashal@kernel.org,
-	stable@vger.kernel.org,
-	thomas.petazzoni@bootlin.com
-Subject: [PATCH 5/5] crypto: talitos - rename first/last to first_desc/last_desc
-Date: Thu,  9 Jul 2026 21:39:56 +0200
-Message-ID: <20260709193956.15619-6-ggoerisch@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260709193956.15619-1-ggoerisch@gmail.com>
-References: <2026070912-pluck-bagful-2a71@gregkh>
- <20260709193956.15619-1-ggoerisch@gmail.com>
+	 MIME-Version; b=lfZ0VzFkcIURpzoh8gfkt5jkZ9ecAKmnk15sN1IRnKQpNpVx9ZCCfE3wRy4Cq7o8HKpwepP5MyM0HJW7ep2N/JJ2A3LZoyVaXtLzQB3+MJIrAfYAU243jMeUEUjO/oFFoyYs2j+T7qO3Nm4idyKBHn4Jetpz7NYB+bZ9PB+95zs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=auditcode.ai; spf=pass smtp.mailfrom=auditcode.ai; dkim=pass (1024-bit key) header.d=auditcode.ai header.i=security@auditcode.ai header.b=U6e+0uOh; arc=pass smtp.client-ip=136.143.169.17
+ARC-Seal: i=1; a=rsa-sha256; t=1783626509; cv=none; 
+	d=zohomail.eu; s=zohoarc; 
+	b=TS2jbqFZ+lb4+VfgDaGIDiefHqMjc9smCWdoOvDipM7ak55Z1lzaNl6SPKgERH51O1HF9TdNhji7GcKD30304Fa91ZhgLvvgONEz4bHoUDM1i6C81CEfQVka0RQYxq0JG2nly0HkOCSvdXyuNtvD3I72KJTxwkjOSEdd6zII4sw=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
+	t=1783626509; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=Gk3XmXycZs1HvmQ6VNzfMD4HnSIDWANgBlFIkYgCNJY=; 
+	b=KUXh8/Bq9xYOholbyqF9kqxmEv4mxwTOAenlSrKL6qZSLOqe9aLzSEWWMWM/yBUO5IxZ4CkZCvfMuILBnsyt0/8E96fP/z7N+SrRLr4P0GdWQz/RTNZ5dr6en0DV/GMQyR8OKbPHa5VxlG7Ec93Sn6Pg+5zrNJoC1xK1KUBv5Ds=
+ARC-Authentication-Results: i=1; mx.zohomail.eu;
+	dkim=pass  header.i=auditcode.ai;
+	spf=pass  smtp.mailfrom=security@auditcode.ai;
+	dmarc=pass header.from=<security@auditcode.ai>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1783626509;
+	s=zmail; d=auditcode.ai; i=security@auditcode.ai;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=Gk3XmXycZs1HvmQ6VNzfMD4HnSIDWANgBlFIkYgCNJY=;
+	b=U6e+0uOh3R7fYTBAHIWnwYMnjaZVrzZBIVnv+t7HoVU29k7GJDhaySyIWQ0w0g+t
+	NQPWHPCdIAIPY/EQ0oNXe8sPokgpgxB8b0355wbA+vmPf+N0myRtG2eQPXDGZUXGl1v
+	OUD8Peny/1k3ZmAxyosHHzBJSqzsGHD7dAYwoDeM=
+Received: by mx.zoho.eu with SMTPS id 1783626507485699.487861191679;
+	Thu, 9 Jul 2026 21:48:27 +0200 (CEST)
+From: Ibrahim Hashimov <security@auditcode.ai>
+To: martin.petersen@oracle.com,
+	James.Bottomley@HansenPartnership.com
+Cc: shinichiro.kawasaki@wdc.com,
+	damien.lemoal@opensource.wdc.com,
+	linux-scsi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v2] scsi: scsi_debug: fix REPORT ZONES alloc_len underflow OOB write
+Date: Thu,  9 Jul 2026 21:48:24 +0200
+Message-ID: <20260709194824.50777-1-security@auditcode.ai>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20260709150631.45018-1-security@auditcode.ai>
+References: <20260709150631.45018-1-security@auditcode.ai>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -101,240 +75,120 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	DMARC_POLICY_ALLOW(-0.50)[auditcode.ai,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_DKIM_ALLOW(-0.20)[auditcode.ai:s=zmail];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-273036-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[gmail.com,gondor.apana.org.au,bootlin.com,vger.kernel.org,kernel.org];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FORGED_SENDER(0.00)[ggoerisch@gmail.com,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-273038-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:martin.petersen@oracle.com,m:James.Bottomley@HansenPartnership.com,m:shinichiro.kawasaki@wdc.com,m:damien.lemoal@opensource.wdc.com,m:linux-scsi@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[security@auditcode.ai,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:ggoerisch@gmail.com,m:herbert@gondor.apana.org.au,m:herve.codina@bootlin.com,m:linux-crypto@vger.kernel.org,m:miquel.raynal@bootlin.com,m:paul.louvel@bootlin.com,m:sashal@kernel.org,m:stable@vger.kernel.org,m:thomas.petazzoni@bootlin.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ggoerisch@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[security@auditcode.ai,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	ALIAS_RESOLVED(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
 	TO_DN_NONE(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	DKIM_TRACE(0.00)[auditcode.ai:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,bootlin.com:email,apana.org.au:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,auditcode.ai:from_mime,auditcode.ai:email,auditcode.ai:mid,auditcode.ai:dkim,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3CA2A73522F
+X-Rspamd-Queue-Id: 605857352E6
 
-From: Paul Louvel <paul.louvel@bootlin.com>
+resp_report_zones() reads the REPORT ZONES(16) ALLOCATION LENGTH field
+(cmd[10..13]) into the unsigned alloc_len and, apart from the
+alloc_len == 0 fast path, uses it without flooring it against the
+64-byte report header:
 
-commit a1b80018b8cec27fc06a8b04a7f8b5f6cfe86eae upstream.
+	rep_max_zones = (alloc_len - 64) >> ilog2(RZONES_DESC_HD);
+	arr = kzalloc(alloc_len, GFP_ATOMIC | __GFP_NOWARN);
+	...
+	desc = arr + 64;
 
-Previous commit introduces a new last_request variable in the context
-structure.
+For any alloc_len in the range 1..63, alloc_len - 64 wraps around
+(alloc_len and rep_max_zones are unsigned), so rep_max_zones becomes a
+huge value instead of zero. At the same time arr is allocated with the
+raw alloc_len, which is smaller than the 64-byte header the function
+always builds, and desc is set to arr + 64, already past the end of the
+allocation. The report header stores (put_unaligned_be32 at arr+0,
+put_unaligned_be64 at arr+8 and arr+16) can then run past a sub-24-byte
+buffer, and the per-zone descriptor loop, no longer bounded by the
+inflated rep_max_zones, writes 64-byte descriptors from desc onward,
+producing a slab out-of-bounds write.
 
-Renaming the first/last existing member variable in the context
-structure to improve readability.
+Fix it the way ZBC and SPC require: allocation length truncation is not
+an error, and a small alloc_len is a legitimate probe a host uses to
+read the zone list length before allocating a full buffer. Clamp
+rep_max_zones to zero when alloc_len is below the header size so no
+descriptor is emitted, and size the allocation to at least the header
+so the unconditional 64-byte header build cannot overflow. The existing
+copy-out already truncates the result with
+fill_from_dev_buffer(scp, arr, min_t(u32, alloc_len, rep_len)), so the
+host still receives exactly the alloc_len bytes it asked for. There is
+no functional change for alloc_len >= 64.
 
+This supersedes the previous approach of rejecting a sub-header
+allocation length with a check condition, which would have broken those
+legitimate small-alloc_len probes.
+
+Verified on a v6.19 KASAN build: with scsi_debug loaded as
+zbc=host-managed, issuing REPORT ZONES(16) via SG_IO with alloc_len=32
+triggers a KASAN slab-out-of-bounds write in resp_report_zones()
+before this change, and the same command produces no report once the
+clamp and allocation floor are applied. Reproduction requires
+CAP_SYS_RAWIO to submit the raw CDB.
+
+Fixes: 7db0e0c8190a ("scsi: scsi_debug: Fix buffer size of REPORT ZONES command")
 Cc: stable@vger.kernel.org
-Signed-off-by: Paul Louvel <paul.louvel@bootlin.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Ibrahim Hashimov <security@auditcode.ai>
+Assisted-by: AuditCode-AI:2026.07
 ---
- drivers/crypto/talitos.c | 46 ++++++++++++++++++++--------------------
- 1 file changed, 23 insertions(+), 23 deletions(-)
+v2: address sashiko-bot review of v1
+(https://lore.kernel.org/linux-scsi/20260709150631.45018-1-security@auditcode.ai/):
+rejecting a sub-header allocation length with a check condition violates the
+ZBC/SPC rule that allocation-length truncation is not an error and breaks
+legitimate small-alloc_len zone-list-length probes. Instead clamp rep_max_zones
+to zero and floor the allocation at the 64-byte header, letting the existing
+min(alloc_len, rep_len) copy-out return the truncated header. No functional
+change for alloc_len >= 64.
+ drivers/scsi/scsi_debug.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/crypto/talitos.c b/drivers/crypto/talitos.c
-index ea6ae72c71ad..fb1adc2956b8 100644
---- a/drivers/crypto/talitos.c
-+++ b/drivers/crypto/talitos.c
-@@ -869,8 +869,8 @@ struct talitos_ahash_req_ctx {
- 	u8 buf[2][HASH_MAX_BLOCK_SIZE];
- 	int buf_idx;
- 	unsigned int swinit;
--	unsigned int first;
--	unsigned int last;
-+	unsigned int first_desc;
-+	unsigned int last_desc;
- 	unsigned int last_request;
- 	unsigned int to_hash_later;
- 	unsigned int nbuf;
-@@ -889,8 +889,8 @@ struct talitos_export_state {
- 	u32 hw_context[TALITOS_MDEU_MAX_CONTEXT_SIZE / sizeof(u32)];
- 	u8 buf[HASH_MAX_BLOCK_SIZE];
- 	unsigned int swinit;
--	unsigned int first;
--	unsigned int last;
-+	unsigned int first_desc;
-+	unsigned int last_desc;
- 	unsigned int to_hash_later;
- 	unsigned int nbuf;
- };
-@@ -1722,7 +1722,7 @@ static void common_nonsnoop_hash_unmap(struct device *dev,
- 	if (desc->next_desc &&
- 	    desc->ptr[5].ptr != desc2->ptr[5].ptr)
- 		unmap_single_talitos_ptr(dev, &desc2->ptr[5], DMA_FROM_DEVICE);
--	if (req_ctx->last)
-+	if (req_ctx->last_desc)
- 		memcpy(areq->result, req_ctx->hw_context,
- 		       crypto_ahash_digestsize(tfm));
- 
-@@ -1759,7 +1759,7 @@ static void ahash_done(struct device *dev,
- 		 container_of(desc, struct talitos_edesc, desc);
- 	struct talitos_ahash_req_ctx *req_ctx = ahash_request_ctx(areq);
- 
--	if (!req_ctx->last && req_ctx->to_hash_later) {
-+	if (!req_ctx->last_desc && req_ctx->to_hash_later) {
- 		/* Position any partial block for next update/final/finup */
- 		req_ctx->buf_idx = (req_ctx->buf_idx + 1) & 1;
- 		req_ctx->nbuf = req_ctx->to_hash_later;
-@@ -1825,7 +1825,7 @@ static int common_nonsnoop_hash(struct talitos_edesc *edesc,
- 	/* first DWORD empty */
- 
- 	/* hash context in */
--	if (!req_ctx->first || req_ctx->swinit) {
-+	if (!req_ctx->first_desc || req_ctx->swinit) {
- 		map_single_talitos_ptr_nosync(dev, &desc->ptr[1],
- 					      req_ctx->hw_context_size,
- 					      req_ctx->hw_context,
-@@ -1833,7 +1833,7 @@ static int common_nonsnoop_hash(struct talitos_edesc *edesc,
- 		req_ctx->swinit = 0;
- 	}
- 	/* Indicate next op is not the first. */
--	req_ctx->first = 0;
-+	req_ctx->first_desc = 0;
- 
- 	/* HMAC key */
- 	if (ctx->keylen)
-@@ -1866,7 +1866,7 @@ static int common_nonsnoop_hash(struct talitos_edesc *edesc,
- 	/* fifth DWORD empty */
- 
- 	/* hash/HMAC out -or- hash context out */
--	if (req_ctx->last)
-+	if (req_ctx->last_desc)
- 		map_single_talitos_ptr(dev, &desc->ptr[5],
- 				       crypto_ahash_digestsize(tfm),
- 				       req_ctx->hw_context, DMA_FROM_DEVICE);
-@@ -1908,7 +1908,7 @@ static int common_nonsnoop_hash(struct talitos_edesc *edesc,
- 		if (sg_count > 1)
- 			sync_needed = true;
- 		copy_talitos_ptr(&desc2->ptr[5], &desc->ptr[5], is_sec1);
--		if (req_ctx->last)
-+		if (req_ctx->last_desc)
- 			map_single_talitos_ptr_nosync(dev, &desc->ptr[5],
- 						      req_ctx->hw_context_size,
- 						      req_ctx->hw_context,
-@@ -1964,7 +1964,7 @@ static int ahash_process_req_one(struct ahash_request *areq, unsigned int nbytes
- 	bool is_sec1 = has_ftr_sec1(priv);
- 	u8 *ctx_buf = req_ctx->buf[req_ctx->buf_idx];
- 
--	if (!req_ctx->last && (nbytes + req_ctx->nbuf <= blocksize)) {
-+	if (!req_ctx->last_desc && (nbytes + req_ctx->nbuf <= blocksize)) {
- 		/* Buffer up to one whole block */
- 		nents = sg_nents_for_len(req_ctx->request_sl, nbytes);
- 		if (nents < 0) {
-@@ -1981,7 +1981,7 @@ static int ahash_process_req_one(struct ahash_request *areq, unsigned int nbytes
- 	nbytes_to_hash = nbytes + req_ctx->nbuf;
- 	to_hash_later = nbytes_to_hash & (blocksize - 1);
- 
--	if (req_ctx->last)
-+	if (req_ctx->last_desc)
- 		to_hash_later = 0;
- 	else if (to_hash_later)
- 		/* There is a partial block. Hash the full block(s) now */
-@@ -2041,19 +2041,19 @@ static int ahash_process_req_one(struct ahash_request *areq, unsigned int nbytes
- 	edesc->desc.hdr = ctx->desc_hdr_template;
- 
- 	/* On last one, request SEC to pad; otherwise continue */
--	if (req_ctx->last)
-+	if (req_ctx->last_desc)
- 		edesc->desc.hdr |= DESC_HDR_MODE0_MDEU_PAD;
- 	else
- 		edesc->desc.hdr |= DESC_HDR_MODE0_MDEU_CONT;
- 
- 	/* request SEC to INIT hash. */
--	if (req_ctx->first && !req_ctx->swinit)
-+	if (req_ctx->first_desc && !req_ctx->swinit)
- 		edesc->desc.hdr |= DESC_HDR_MODE0_MDEU_INIT;
- 
- 	/* When the tfm context has a keylen, it's an HMAC.
- 	 * A first or last (ie. not middle) descriptor must request HMAC.
- 	 */
--	if (ctx->keylen && (req_ctx->first || req_ctx->last))
-+	if (ctx->keylen && (req_ctx->first_desc || req_ctx->last_desc))
- 		edesc->desc.hdr |= DESC_HDR_MODE0_MDEU_HMAC;
- 
- 	return common_nonsnoop_hash(edesc, req_ctx->areq, nbytes_to_hash, ahash_done);
-@@ -2076,7 +2076,7 @@ static void sec1_ahash_process_remaining(struct work_struct *work)
- 			req_ctx->remaining_ahash_request_bytes;
- 
- 		if (req_ctx->last_request)
--			req_ctx->last = 1;
-+			req_ctx->last_desc = 1;
+diff --git a/drivers/scsi/scsi_debug.c b/drivers/scsi/scsi_debug.c
+index 9d1c9c41d0f9..a21d76fe35f6 100644
+--- a/drivers/scsi/scsi_debug.c
++++ b/drivers/scsi/scsi_debug.c
+@@ -5911,9 +5911,11 @@ static int resp_report_zones(struct scsi_cmnd *scp,
+ 		return check_condition_result;
  	}
  
- 	err = ahash_process_req_one(req_ctx->areq,
-@@ -2103,7 +2103,7 @@ static int ahash_process_req(struct ahash_request *areq, unsigned int nbytes)
- 		if (nbytes > TALITOS1_MAX_DATA_LEN)
- 			nbytes = TALITOS1_MAX_DATA_LEN;
- 		else if (req_ctx->last_request)
--			req_ctx->last = 1;
-+			req_ctx->last_desc = 1;
- 	}
+-	rep_max_zones = (alloc_len - 64) >> ilog2(RZONES_DESC_HD);
++	rep_max_zones = (alloc_len < RZONES_DESC_HD) ? 0 :
++			(alloc_len - RZONES_DESC_HD) >> ilog2(RZONES_DESC_HD);
  
- 	req_ctx->current_ahash_request_bytes = nbytes;
-@@ -2124,14 +2124,14 @@ static int ahash_init(struct ahash_request *areq)
- 	/* Initialize the context */
- 	req_ctx->buf_idx = 0;
- 	req_ctx->nbuf = 0;
--	req_ctx->first = 1; /* first indicates h/w must init its context */
-+	req_ctx->first_desc = 1; /* first_desc indicates h/w must init its context */
- 	req_ctx->swinit = 0; /* assume h/w init of context */
- 	size =	(crypto_ahash_digestsize(tfm) <= SHA256_DIGEST_SIZE)
- 			? TALITOS_MDEU_CONTEXT_SIZE_MD5_SHA1_SHA256
- 			: TALITOS_MDEU_CONTEXT_SIZE_SHA384_SHA512;
- 	req_ctx->hw_context_size = size;
- 	req_ctx->last_request = 0;
--	req_ctx->last = 0;
-+	req_ctx->last_desc = 0;
- 	INIT_WORK(&req_ctx->sec1_ahash_process_remaining, sec1_ahash_process_remaining);
- 
- 	dma = dma_map_single(dev, req_ctx->hw_context, req_ctx->hw_context_size,
-@@ -2224,8 +2224,8 @@ static int ahash_export(struct ahash_request *areq, void *out)
- 	       req_ctx->hw_context_size);
- 	memcpy(export->buf, req_ctx->buf[req_ctx->buf_idx], req_ctx->nbuf);
- 	export->swinit = req_ctx->swinit;
--	export->first = req_ctx->first;
--	export->last = req_ctx->last;
-+	export->first_desc = req_ctx->first_desc;
-+	export->last_desc = req_ctx->last_desc;
- 	export->to_hash_later = req_ctx->to_hash_later;
- 	export->nbuf = req_ctx->nbuf;
- 
-@@ -2250,8 +2250,8 @@ static int ahash_import(struct ahash_request *areq, const void *in)
- 	memcpy(req_ctx->hw_context, export->hw_context, size);
- 	memcpy(req_ctx->buf[0], export->buf, export->nbuf);
- 	req_ctx->swinit = export->swinit;
--	req_ctx->first = export->first;
--	req_ctx->last = export->last;
-+	req_ctx->first_desc = export->first_desc;
-+	req_ctx->last_desc = export->last_desc;
- 	req_ctx->to_hash_later = export->to_hash_later;
- 	req_ctx->nbuf = export->nbuf;
- 
+-	arr = kzalloc(alloc_len, GFP_ATOMIC | __GFP_NOWARN);
++	arr = kzalloc(max_t(u32, alloc_len, RZONES_DESC_HD),
++		      GFP_ATOMIC | __GFP_NOWARN);
+ 	if (!arr) {
+ 		mk_sense_buffer(scp, ILLEGAL_REQUEST, INSUFF_RES_ASC,
+ 				INSUFF_RES_ASCQ);
 -- 
-2.55.0
+2.50.1 (Apple Git-155)
 
 
