@@ -1,160 +1,187 @@
-Return-Path: <stable+bounces-272979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272980-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id gba+LabGT2rgoAIAu9opvQ
-	(envelope-from <stable+bounces-272979-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 18:04:54 +0200
+	id jfZQHgbKT2qaoQIAu9opvQ
+	(envelope-from <stable+bounces-272980-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 18:19:18 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48B4A73342E
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 18:04:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0791B73363A
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 18:19:18 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=ziepe.ca header.s=google header.b="gKq1+/Y7";
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272979-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-272979-lists+stable=lfdr.de@vger.kernel.org";
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=google.com header.s=20251104 header.b=wnB6nh1Q;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272980-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-272980-lists+stable=lfdr.de@vger.kernel.org";
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9E225302F38D
-	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 16:04:46 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 758DD3036BB2
+	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 16:19:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CC974307AE;
-	Thu,  9 Jul 2026 16:04:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13D3E2ECD32;
+	Thu,  9 Jul 2026 16:19:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vs1-f43.google.com (mail-vs1-f43.google.com [209.85.217.43])
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10F2142CB12
-	for <stable@vger.kernel.org>; Thu,  9 Jul 2026 16:04:42 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783613084; cv=none; b=sJLUamsaTFKZCtTf7RfkqBB4EyjuAEDZ+A+C4Gsa6vKrKe0CvsyArgkOpFSLC5R941uWd0SyUifoAdwJAlQaU2syfcR6bgVDAMrixG7cwsFcPioOMeAq7T1PiOHUWcvw1th3GsNeFbSUhD+Pi0ZYGUlBvmgHqDeiadtnu5+FIAw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783613084; c=relaxed/simple;
-	bh=u7N2Wz8N3g79uBYieYx5umiLmofN8vzB4vLH6EOh0wc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qubx6N7byJ6glnDpmM3zJSHijorajR7TxttviVeXpB7u8MEtQ4DTi/q1rnZ1Y3qAZFwClEia+UB7d1cpJwEulONYx8cn14pjs7Q1/a07NJvl8XOdi7tPWPK/cfZNrfe0TPdMHFgxtoPVWO0mN8JyNXN7oF2gzT5skPmCe9a52/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=gKq1+/Y7; arc=none smtp.client-ip=209.85.217.43
-Received: by mail-vs1-f43.google.com with SMTP id ada2fe7eead31-73770fd1b65so9492137.0
-        for <stable@vger.kernel.org>; Thu, 09 Jul 2026 09:04:42 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F9844343E0
+	for <stable@vger.kernel.org>; Thu,  9 Jul 2026 16:19:12 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783613955; cv=pass; b=GGC0LSc3W2c0r3ZZqLdta6rfw3iNxLxuhcycVXU0MPhIUedcU7RXRlEQ7+N0Qbs37A/R7jvohXTgE+QnmhhDVBb1kDKjYDa8IMar5icqS0egciCroRdvj1GojVdHALu6GVyvYGEZ8lWnVp6vkXqYVcr9nnO3ITxU+JuSz10O3Wk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783613955; c=relaxed/simple;
+	bh=gQxGM2eu5u2Vm8H9Ywp6lE94Xvf3IuH3yqG9rxlZuY0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YcewEn2PrYNTgnvTTezYhjAkGonBJ5/9h4Xdvh9grgiBrUONytARHKgEjY4cwlXxrevEYqnzuQB4kTwaJxc/QYi/vPifw7Zd93fLt/1tTFxFlly/g51IPTcNGlZPMagBTG2Sx3c0b2fqBeHdegexOwXarIPYe+uPrzVMgxWalpU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wnB6nh1Q; arc=pass smtp.client-ip=209.85.210.174
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-8484a0b998fso2255189b3a.2
+        for <stable@vger.kernel.org>; Thu, 09 Jul 2026 09:19:12 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783613951; cv=none;
+        d=google.com; s=arc-20260327;
+        b=F8qaZBf+v4BKtaBhm3wRFLllIIMGtjs32o4DLoKZBe2oTnV9e7Fgfh8fylRzr9gBht
+         2VIPydwPIbp0y0RZhUykGUpJjoMtwqS+coY8wPCIuFzilDnvg1/L3Mwu1oZE+OaO2c3l
+         vKyu0YB5GPdOpX9oEJp5RU22fJYKz4uL569RqLwoeB60dlRlB/jvGGqDzIA1CSPFknZt
+         taKIxTXs7htFSXUEJiEYCbNleP0qa8ja9JiRkkrJd08gEsDo09ZrKL/5SFMouzMZ2HBQ
+         w8oUUJ/ST2JceESDTGyu6pgLXFlJy0TxpWqqktIuaIsFQPmN54p8xoWNqWjmqVJ1zaOO
+         1VTg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=gQxGM2eu5u2Vm8H9Ywp6lE94Xvf3IuH3yqG9rxlZuY0=;
+        fh=L6Uc7U8zcjl6FG7DToUUgn4C77sI26ZxgsNgZ6JnKSg=;
+        b=sptStNthoWTJ0SYJHKqn6NL9urgSj/TUp5GAEhbUQ/jUfRkjud49oqlWkk/HWWyjIC
+         DKM3xEkOT9VWewv7EYZo9rHVQqrwaR4dxvQjufDdFsT61bAfsYULosPrbr/Ss0BHB/G0
+         OYaJfcJBaeE0uH0rI5CeUpsChw5qh9Ets4vZKBiZUgpYDVhX5WGb5uwTl8hiDeopKepS
+         NYlkW3AA5pJ0eekCazYBEUWdtvU4rMXYQOOjEgjuF9lVusYg8Mr4rTtIkU/8Vq3aTlvY
+         eDlokexaEIMcWU/ekDv96XOAI0AHeRBWdZpONAuZbGEMPU7LnlqA9K65DdnooeVE98Ap
+         odHw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1783613082; x=1784217882; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+        d=google.com; s=20251104; t=1783613951; x=1784218751; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=u7N2Wz8N3g79uBYieYx5umiLmofN8vzB4vLH6EOh0wc=;
-        b=gKq1+/Y7bdxNHcppQwyf8F1erVay9/bAsWWmtx9IMqTbXHDjNcy+Y8gfMbnHwWYIhq
-         85+Gpq1VE7tWlGbjuN+GQOHOk0td63TsoZbTSKJffSlvvHhc+tQwKvVcjpj5qgh0b+J1
-         3k+lU/bEzsiPI7PfAS16LVcVAfboe/4CEtGgt0kxxO0OILRNa7LHd95yJKxhw57RyUt0
-         F24S+OfMgo9BIcUtUoB3DVmijM6HmBzdmcnrd+g+9zDSfMsBVhIaO74+DgqN8rEGW05C
-         EoWnQON4WDjrDG72bJIEp7z2HEUNH6mSthX3e68CJ+gvfU3n7U2uZf/jItDThM2sswPR
-         QUYQ==
+        bh=gQxGM2eu5u2Vm8H9Ywp6lE94Xvf3IuH3yqG9rxlZuY0=;
+        b=wnB6nh1Qh8DREGyiH/uQvoaatPVZf6PA+eqqcViY5Gb0PYpjxcjZZ9+Jry7Z0DugGD
+         muEgATZXsFapR6LhJR+cn7mjd7jNzCoDi/liIbSLSWFV6qaKFByHC9wOeHml5WY3vJOZ
+         6KG3O2uaJ9l114O/kDeDivyQDekIVjyDPhmQn4Slt50XNL+TkmnAKzqlcvNxUpnj2yMF
+         OVuiXoK8dCnZGmYS1dlKiyae+k6paxDlNs7JMXOoeVgbHqmB+cb4hV6OPpF5l/O9xjYv
+         4ky63tQ3LRvEQMOIiw+mIEAro/KtcbZS2QGLDzhEJ3sjR0FafoO8xmuuyCiEUIIu2v+3
+         SDuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783613082; x=1784217882;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20251104; t=1783613951; x=1784218751;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=u7N2Wz8N3g79uBYieYx5umiLmofN8vzB4vLH6EOh0wc=;
-        b=gPwqwoIMhMbj8e+jC7UjumW3ictmab9hNEOtpudA07CFmKJPKRTbJv/efLx7RJcLxp
-         MFi5xiEKrDd77MtcDq/CX1iC6RJfEPlvcENd9fFmjE/+1zw6jeRyD9DHjcCK+5VXRM1a
-         AHiWgMkPK4MqNbOUOkitQ2T/3R9OQfMZRewnn3uOk1wgi04zzG6Lk1chbBYEPIcaELy/
-         BZM6o8eMVHV6ERm51l7ccM9BJaH0IOVsRySCtvQ/Up/oftIwAmfVLZkm/02ZCt81nYtE
-         oTyneNNrqbSovXj3mI346nhADWU/XyrJBpkkMcbwR6/UV7qJ4DOg2QvjexHVExsOf8y7
-         DMOg==
-X-Forwarded-Encrypted: i=1; AHgh+RpkvPVyV0T6hw9b4t5iEjRCeSwfTJiNAMw2Lm0+KZBwfEGBTlRsCkbHInLi+8hYeK25u8T84bs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy/aHMfT7VZ6T20Iskkq94M9zVq6wPKZpUO0vkIQbW960oQ+3Hb
-	WNNDI3Up/TWmAR3c3MML4ysMvPQRIuROX5hFyJYuN0fFuO+K99YEY4jNA1CTL5Ybnf8=
-X-Gm-Gg: AfdE7cmhkVlYf7373Nz5+yiqQsGc+1nbx6evgfCann7TroH234/ubCR+UwbrRYef6by
-	uXem5O3jGjYa/CFFyLKC5RipdHtJrweXLzgIEGEtwxUitG9snl0zmIO40SpIysYWghUmSmMDqQs
-	OlBzbS7jsmKvOddOrcY0oJmQG+usaE3HUWYk7wX3uBpTA14NxB3wr9aywA4XG5Y731AEVvmORwT
-	Bx87+WtdGVxg03GMDCgJUJ6l4p2LNJsm6o3sgx1BJV3uXMbGT+mATnrAdzyYwVKi3wlajyRhQCW
-	VdLIZHTIs4wkCKsk9ZYPvvQkrldXn+tEayg2jGzqFlC8OosxKWjtN3iDf6uq3iZsShLcSZdNqnQ
-	wag4llFKnu0lAOnbLkFowdTe4T+v+XpJ/2AQ8bYZzTYD3Ln7v4gZVAz1M0DZ9
-X-Received: by 2002:a05:6102:f9c:b0:737:ba2e:8a29 with SMTP id ada2fe7eead31-744e0306830mr5071060137.27.1783613081904;
-        Thu, 09 Jul 2026 09:04:41 -0700 (PDT)
-Received: from ziepe.ca ([159.2.72.92])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ffd7c1d9f6sm20470796d6.23.2026.07.09.09.04.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jul 2026 09:04:41 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1whrEu-000000058g9-24As;
-	Thu, 09 Jul 2026 13:04:40 -0300
-Date: Thu, 9 Jul 2026 13:04:40 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Robin Murphy <robin.murphy@arm.com>
-Cc: will@kernel.org, joro@8bytes.org, jpb@kernel.org,
-	catalin.marinas@arm.com, linux-arm-kernel@lists.infradead.org,
-	iommu@lists.linux.dev, stable@vger.kernel.org
-Subject: Re: [PATCH] iommu/arm-smmu-v3: Add HAFT support for SVA
-Message-ID: <20260709160440.GL118978@ziepe.ca>
-References: <878cd6bcbbe2d5677d2f63da13294c148268552c.1782927917.git.robin.murphy@arm.com>
- <20260703164914.GY7525@ziepe.ca>
- <6465c885-3a9d-4c0b-ab74-7665e274ae72@arm.com>
- <20260703192459.GB1978949@ziepe.ca>
- <f13b30cf-e885-44c6-8e61-7924937eb8ac@arm.com>
+        bh=gQxGM2eu5u2Vm8H9Ywp6lE94Xvf3IuH3yqG9rxlZuY0=;
+        b=nzJlLKXIxhIYeOvxFH68sz7+E+ASHgXgqEwFtjwrGJV5xOW+toDhCJJNx+zpi1uZDX
+         H06HUGAYfRNJdiWI5jl65ccDxR4wEpHlAFAhVBBAoYF12HY2rm7vKZPTE9hYLMHxQCS/
+         P8ILjEGhsDfzbnFXMG76a/R7K+UqOnJ4TE85iI52EQBCgUDv7rOIeRuQwZJDWXVManen
+         9yB5pBjwlcr0JkKPjQyN1zDDlPhSKo1owDWE2+AIEGp+mYg5kNM6FJrNHvIl2QIoQStd
+         C8d2INAkru6qrLu4s3nfKSd+OFxCOpdBjedfqYWPjZ/r5vvWiF9BLNR5Yyh3JSZlTRCG
+         53Ig==
+X-Forwarded-Encrypted: i=1; AHgh+RrCKc9vAOtP/r26lU1KOxBf3iz8BYWD/N6zlJ1vd4jpTK0TXL9H/p00yng1vEHldQK6QuRIr+Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyAk8HPc/7Mi8PIWfKL3bhrtULLGxmZSRtIHyX6sCiKgb9tLCgO
+	K5WLvuOCTVBq75Uu5AAfH0XGln+fk/5FUdjpwO4GSbVOTHCndffYFiTI+WfUaSq8yqCqM6I1WmL
+	dRbmUzIXlz1bAXn+I6zlYjeO7ikviAT0x+U1VaHg6
+X-Gm-Gg: AfdE7cnNjidyciQr5zC0RBLY9EeIEMlfSMcV3uU4//QggNyRFGjWarW5LyZ5kquPoUI
+	2VdsuGxqmOM/vVPPpt+XADe1FBZp16VY3iMgnX3S/uPv6rH5yqE4b18UE4AZATS1PavZCzUXNUx
+	mcxPtspJSckf6NEvdEJ2/TQqbloyrU9OGzE8FXaDTIGApJF9OkCRVi04MbPr3pV6Jk9OKkUTosb
+	NdkkU3jGH98F3TLll7RfRxll6HMjQoEqGxI1EQa/nMVqUbefiTgJKocXIyMeOzAEKosWufc9fjL
+	qTHRqy34kFI2nY75DGg4eo/CVTdg+PwFmdBpVb2sUeeTcPmC/V3yqsC7aswhpnNuUFjbhkCxtYT
+	J9unEXXQDrV+dI07aj6CGs6Sye9O+wZnlJ6rMarKvEA==
+X-Received: by 2002:a05:6a21:681:b0:3c0:9c1b:d0bb with SMTP id
+ adf61e73a8af0-3c0bd31f12amr9478849637.70.1783613950892; Thu, 09 Jul 2026
+ 09:19:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f13b30cf-e885-44c6-8e61-7924937eb8ac@arm.com>
+References: <20260709025316.999913-1-mattbobrowski@google.com> <e30f1c25-bc81-4a2a-a997-9b7007890b03@iogearbox.net>
+In-Reply-To: <e30f1c25-bc81-4a2a-a997-9b7007890b03@iogearbox.net>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Thu, 9 Jul 2026 09:18:59 -0700
+X-Gm-Features: AVVi8Cdf2N_xKO2DUBcyOo5bx6SqShDIF7paay7Ksht1saLiq2ja-PfJ_1i66nU
+Message-ID: <CAAVpQUDh7bNkLyQWzXmu-=V4KEV_t9-9ubaj3AjjYwJFivbNLA@mail.gmail.com>
+Subject: Re: [PATCH bpf] bpf: fix UAF in sock clone early bailouts
+To: Daniel Borkmann <daniel@iogearbox.net>
+Cc: Matt Bobrowski <mattbobrowski@google.com>, bpf@vger.kernel.org, 
+	Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>, 
+	Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, jannh@google.com, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[ziepe.ca:s=google];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FORGED_RECIPIENTS(0.00)[m:daniel@iogearbox.net,m:mattbobrowski@google.com,m:bpf@vger.kernel.org,m:ast@kernel.org,m:andrii@kernel.org,m:martin.lau@linux.dev,m:eddyz87@gmail.com,m:song@kernel.org,m:yonghong.song@linux.dev,m:jolsa@kernel.org,m:jannh@google.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-272980-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[ziepe.ca:+];
-	TAGGED_FROM(0.00)[bounces-272979-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:robin.murphy@arm.com,m:will@kernel.org,m:joro@8bytes.org,m:jpb@kernel.org,m:catalin.marinas@arm.com,m:linux-arm-kernel@lists.infradead.org,m:iommu@lists.linux.dev,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DMARC_NA(0.00)[ziepe.ca];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[jgg@ziepe.ca,stable@vger.kernel.org];
+	FORGED_SENDER(0.00)[kuniyu@google.com,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[google.com,vger.kernel.org,kernel.org,linux.dev,gmail.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jgg@ziepe.ca,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[kuniyu@google.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[google.com:+];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,ziepe.ca:from_mime,ziepe.ca:dkim,ziepe.ca:mid]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,mail.gmail.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,iogearbox.net:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 48B4A73342E
+X-Rspamd-Queue-Id: 0791B73363A
 
-On Mon, Jul 06, 2026 at 03:13:01PM +0100, Robin Murphy wrote:
+On Thu, Jul 9, 2026 at 4:53=E2=80=AFAM Daniel Borkmann <daniel@iogearbox.ne=
+t> wrote:
+>
+> [ +Kuniyuki ]
+>
+> On 7/9/26 4:53 AM, Matt Bobrowski wrote:
+> > Similar to recent commit 9b51a6155d14 ("bpf,fork: wipe ->bpf_storage
+> > before bailouts that access it"), sk_clone() performs an initial
+> > shallow copy of the socket field ->sk_bpf_storage via sock_copy() for
+> > the cloned socket newsk.
+> >
+> > If sk_clone() bails out early (e.g. if sk_filter_charge() fails) prior
+> > to calling bpf_sk_storage_clone(), newsk->sk_bpf_storage still points
+> > to the parent socket's BPF local storage. When newsk is subsequently
+> > freed via sk_free(), the deallocation path (__sk_destruct() ->
+> > bpf_sk_storage_free()) destroys the parent socket's BPF local storage,
+> > leading to a use-after-free (UAF) on the parent socket.
+> >
+> > Fix this by resetting newsk->sk_bpf_storage to NULL immediately after
+> > sock_copy() in sk_clone(), and remove the now redundant initialization
+> > from bpf_sk_storage_clone().
+> >
+> > Cc: stable@vger.kernel.org
+> > Fixes: 6ac99e8f23d4 ("bpf: Introduce bpf sk local storage")
+> > Fixes: f12dd75959b0 ("bpf: net: Set sk_bpf_storage back to NULL for clo=
+ned sk")
+> > Signed-off-by: Matt Bobrowski <mattbobrowski@google.com>
+>
+> LGTM, thanks!
+>
+> Acked-by: Daniel Borkmann <daniel@iogearbox.net>
 
-> Indeed if anyone does want to use SVA on such mismatched hardware and are
-> happy to use a custom kernel with CONFIG_ARM64_HAFT disabled then they can
-> and will continue to be able to do so.
-
-It seems like we have a chip that is impacted by this. I'm being told
-that the necessary ARM IP is not available in time to properly match
-SMMU and CPU for its particular application.d
-
-The chip is embedded so those work arounds are possibly OK - but I
-think this issue keeps coming up and ARM should have a better overall
-solution for CPU/SMMU mismatch in the ecosystem since it seems like
-this is going to keep happening..
-
-Even if Linux could automatically limit the CPU features to the SMMU
-it would be a big help.
-
-Jason
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
 
