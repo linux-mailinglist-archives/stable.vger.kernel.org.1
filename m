@@ -1,161 +1,166 @@
-Return-Path: <stable+bounces-272884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-272885-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id /XuYBamHT2qOiwIAu9opvQ
-	(envelope-from <stable+bounces-272884-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 13:36:09 +0200
+	id EUqmNZqGT2oqiwIAu9opvQ
+	(envelope-from <stable+bounces-272885-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 13:31:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 191287306DC
-	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 13:36:08 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BA567305C8
+	for <lists+stable@lfdr.de>; Thu, 09 Jul 2026 13:31:38 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=yandex.ru header.s=mail header.b="E3/7oeAM";
-	dmarc=pass (policy=none) header.from=yandex.ru;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-272884-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-272884-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=intel.com header.s=Intel header.b=FSEpk45c;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-272885-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-272885-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B5D3E3020B77
-	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 11:29:19 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D5B54300B9D9
+	for <lists+stable@lfdr.de>; Thu,  9 Jul 2026 11:31:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42F8C41169F;
-	Thu,  9 Jul 2026 11:29:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 827D5416D11;
+	Thu,  9 Jul 2026 11:31:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from forward102d.mail.yandex.net (forward102d.mail.yandex.net [178.154.239.213])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 254993161A3;
-	Thu,  9 Jul 2026 11:29:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F561416122;
+	Thu,  9 Jul 2026 11:31:23 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783596558; cv=none; b=bE9OOXbe7JvASWmvMCAWx8oEVu8mVEozOC3bUkm/Z9J+pW4B1Ok9toNkiLTbZw1F2zIwvTj/qeOjCEfS4ryYQgaRzfdOLab/IeEcKTMGdcU0oHqjp5NKtrK4YW9ySGMOp3zDmvfa0l0fEVT59LA8yZpyoTQWbwf+AUw3j14kroM=
+	t=1783596692; cv=none; b=WJuYkyde3Cq0i3IaKn0RAsvMAAsyVKXknjguE2b9Q/Z3JmGDzqE1IFt4LALDrsukwnD4uBeaFNhCJdzhnKFoxmgqLd04tWDII2tCxASJaoLxE2x1Qxb8zEGcBsnpJEf/W4y6ZpTqyG38dIAwIKaV90qP/VTHE+0/f7h5F6TQafs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783596558; c=relaxed/simple;
-	bh=Jy7jJNK3v/SUlfeTmhEC+Xqc1aZuKwsi6ON7HO9cDoo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lnqAdNKXKhmQDGACM9LAyc5PwFihX9HSA7zOyBPwvqGruA6+uEteQGdgtYK7/fWT2vMycQkS2ARdsRRLOYAXpmPD1Tqe4L39pBWn6X/IePv0dlKN4QtCb0xnT85N6jSAaBuuN1QAZ2kGUs3txINB0d7YUr5eh9pnfos5ca+AYDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=E3/7oeAM; arc=none smtp.client-ip=178.154.239.213
-Received: from mail-nwsmtp-smtp-production-main-57.klg.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-57.klg.yp-c.yandex.net [IPv6:2a02:6b8:c42:494f:0:640:ed81:0])
-	by forward102d.mail.yandex.net (postfix) with ESMTPS id BBEFCC1F26;
-	Thu, 09 Jul 2026 14:29:11 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-57.klg.yp-c.yandex.net (smtp) with ESMTPSA id eSI9Ue8f8qM0-mcSpXkng;
-	Thu, 09 Jul 2026 14:29:11 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-	t=1783596551; bh=Q7tT8J42CoYO2uJ3oGsfu4z5NpqrMLW6Jo0gnDOw0q0=;
-	h=Message-ID:Date:Cc:Subject:To:From;
-	b=E3/7oeAMBpKeD//WLixRrsMZjJvjlz6pHufS0fZTLdoaUlqWBbCNdSNI0xbSBxKQx
-	 mFROXodS95MX/x0qZtrcUoquMEYALMDY7t3usTTmkq8RnxjZ9+CCD9kPTTTtW8D2MT
-	 Be2NmggJN4xksa2pcbwyfTXxxA9pN+xcajFUNoNo=
-From: Evgenii Burenchev <evg28bur@yandex.ru>
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Evgenii Burenchev <evg28bur@yandex.ru>,
-	alexander.deucher@amd.com,
-	christian.koenig@amd.com,
-	Xinhui.Pan@amd.com,
-	airlied@gmail.com,
-	daniel@ffwll.ch,
-	Jack.Xiao@amd.com,
-	Hawking.Zhang@amd.com,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org
-Subject: [PATCH 6.1] drm/amdgpu: Use scnprintf() in amdgpu_mes_add_ring()
-Date: Thu,  9 Jul 2026 14:28:24 +0300
-Message-ID: <20260709112825.40016-1-evg28bur@yandex.ru>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1783596692; c=relaxed/simple;
+	bh=yJ1uard9mXEZEcScZikBQrNzh5IB24NMJBc16EM5Q3o=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=GmYferNsd58j+iS9ElLZpM2d2OqnVo2scnvBh46g/xQr4jDLC36q3ITE3CdzMt6OBREDc1WgcRNABa7+lgXMMyRg1wbTcFRgLg+y8YOuVh6kPPht3GjVMUIBfJ5JIVJFI4yIkSI+Fl1dTR1q5OHiQVliHQfGHmdoWixo3MGsZjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FSEpk45c; arc=none smtp.client-ip=192.198.163.9
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1783596687; x=1815132687;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=yJ1uard9mXEZEcScZikBQrNzh5IB24NMJBc16EM5Q3o=;
+  b=FSEpk45cHU89XSIbPWQjPtupjKh48whoAgJ9zK4+iS6fYD+ATaEqfOtS
+   pE+WR70wvK1bHh6pKJvA7kFR58sVWWtvv7K3Hnifas2d2KfyhMu1XP6TH
+   oqKpCLI1GgXLWbbXWU+mK6ZH438puDVfXpJD5AmRcFEpJKW2pHYET6l6E
+   VuRBIyBgWyJY9fV8gAkn09v6XwjMGWiv04Jsruv0YWH7JkGbvtjbFXPVQ
+   FFnHVTfoCBn0edRVoIQmsfQD6h/lLcqUxAB/9HT6lLGbeOXJT7q+cOr+v
+   gSqhvP3XU0JCNmgWMQAdbsW1YAVSZB6xWGT9xCN4+NSPISnu/L3PEuQkD
+   g==;
+X-CSE-ConnectionGUID: g2QssXd/RduKW4uqUr+aSQ==
+X-CSE-MsgGUID: RkuVoIRKRwy8HUR7GjWmEg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="94921205"
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
+   d="scan'208";a="94921205"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2026 04:31:22 -0700
+X-CSE-ConnectionGUID: aSVc60UpTpCIjuloSQY5Wg==
+X-CSE-MsgGUID: aslByI6nQkqg0yYeRq7C5A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
+   d="scan'208";a="284676326"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.36])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2026 04:31:20 -0700
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Thu, 9 Jul 2026 14:31:15 +0300 (EEST)
+To: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+cc: s.shravan@intel.com, Hans de Goede <hansg@kernel.org>, 
+    platform-driver-x86@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>, 
+    stable@vger.kernel.org
+Subject: Re: [PATCH] platform/x86: int1092: Fix potential memory leak in
+ sar_probe()
+In-Reply-To: <20260707070524.953741-1-nihaal@cse.iitm.ac.in>
+Message-ID: <7ae91c3c-4d52-a3ae-e9fb-542fa9002f57@linux.intel.com>
+References: <20260707070524.953741-1-nihaal@cse.iitm.ac.in>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-5.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[yandex.ru,none];
-	R_DKIM_ALLOW(-0.20)[yandex.ru:s=mail];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-272885-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[yandex.ru,amd.com,gmail.com,ffwll.ch,lists.freedesktop.org,vger.kernel.org,linuxtesting.org];
-	FREEMAIL_FROM(0.00)[yandex.ru];
-	TAGGED_FROM(0.00)[bounces-272884-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:evg28bur@yandex.ru,m:alexander.deucher@amd.com,m:christian.koenig@amd.com,m:Xinhui.Pan@amd.com,m:airlied@gmail.com,m:daniel@ffwll.ch,m:Jack.Xiao@amd.com,m:Hawking.Zhang@amd.com,m:amd-gfx@lists.freedesktop.org,m:dri-devel@lists.freedesktop.org,m:linux-kernel@vger.kernel.org,m:lvc-project@linuxtesting.org,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[evg28bur@yandex.ru,stable@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[evg28bur@yandex.ru,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[yandex.ru:+];
+	FORGED_SENDER(0.00)[ilpo.jarvinen@linux.intel.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:nihaal@cse.iitm.ac.in,m:s.shravan@intel.com,m:hansg@kernel.org,m:platform-driver-x86@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ilpo.jarvinen@linux.intel.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxtesting.org:url]
+	RCPT_COUNT_FIVE(0.00)[6]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 191287306DC
+X-Rspamd-Queue-Id: 6BA567305C8
 
-Replace sprintf() with scnprintf() to prevent a potential buffer overflow
-when writing to ring->name. The buffer size is 16 bytes. For compute rings,
-the string format "compute_%d.%d.%d" can exceed this limit when the total
-number of digits in the three numbers is greater than 5 (e.g., pasid=1234,
-gang_id=0, queue_id=0). This can lead to memory corruption.
+On Tue, 7 Jul 2026, Abdun Nihaal wrote:
 
-Using scnprintf() guarantees that the buffer is not overflowed, even if the
-string is truncated. This is a minimal fix for the issue; the BUG() for
-unknown queue types is left unchanged to avoid additional risk.
+> The memory allocated for device_mode_info in parse_package() called by
+> sar_get_data() is not freed in some of the error paths in sar_probe().
+> Fix that by adding the corresponding free in the error path.
+> 
+> Fixes: dcfbd31ef4bc ("platform/x86: BIOS SAR driver for Intel M.2 Modem")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+> ---
+>  drivers/platform/x86/intel/int1092/intel_sar.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/platform/x86/intel/int1092/intel_sar.c b/drivers/platform/x86/intel/int1092/intel_sar.c
+> index 849f7b415c1e..b27fc07c087a 100644
+> --- a/drivers/platform/x86/intel/int1092/intel_sar.c
+> +++ b/drivers/platform/x86/intel/int1092/intel_sar.c
+> @@ -273,13 +273,13 @@ static int sar_probe(struct platform_device *device)
+>  	if (sar_get_device_mode(device) != AE_OK) {
+>  		dev_err(&device->dev, "Failed to get device mode\n");
+>  		result = -EIO;
+> -		goto r_free;
+> +		goto r_sar;
+>  	}
+>  
+>  	result = sysfs_create_group(&device->dev.kobj, &intcsar_group);
+>  	if (result) {
+>  		dev_err(&device->dev, "sysfs creation failed\n");
+> -		goto r_free;
+> +		goto r_sar;
+>  	}
+>  
+>  	if (acpi_install_notify_handler(ACPI_HANDLE(&device->dev), ACPI_DEVICE_NOTIFY,
+> @@ -292,6 +292,9 @@ static int sar_probe(struct platform_device *device)
+>  
+>  r_sys:
+>  	sysfs_remove_group(&device->dev.kobj, &intcsar_group);
+> +r_sar:
+> +	for (reg = 0; reg < MAX_REGULATORY; reg++)
+> +		kfree(context->config_data[reg].device_mode_info);
+>  r_free:
+>  	kfree(context);
 
-This code is only present in LTS kernels v6.12, v6.6, and v6.1, as it was
-completely refactored in upstream. Therefore, this patch is specifically
-intended for stable trees.
+How about try to do this with devm allocs instead (context itself 
+included)? I think results would be much better with it.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: d0c423b64765 ("drm/amdgpu/mes: use ring for kernel queue submission")
-Signed-off-by: Evgenii Burenchev <evg28bur@yandex.ru>
----
- drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c
-index 3feb792c210d..6208967f0e6c 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c
-@@ -1057,13 +1057,14 @@ int amdgpu_mes_add_ring(struct amdgpu_device *adev, int gang_id,
- 	ring->doorbell_index = qprops.doorbell_off;
- 
- 	if (queue_type == AMDGPU_RING_TYPE_GFX)
--		sprintf(ring->name, "gfx_%d.%d.%d", pasid, gang_id, queue_id);
-+		scnprintf(ring->name, sizeof(ring->name), "gfx_%d.%d.%d",
-+			pasid, gang_id, queue_id);
- 	else if (queue_type == AMDGPU_RING_TYPE_COMPUTE)
--		sprintf(ring->name, "compute_%d.%d.%d", pasid, gang_id,
--			queue_id);
-+		scnprintf(ring->name, sizeof(ring->name), "compute_%d.%d.%d",
-+			pasid, gang_id, queue_id);
- 	else if (queue_type == AMDGPU_RING_TYPE_SDMA)
--		sprintf(ring->name, "sdma_%d.%d.%d", pasid, gang_id,
--			queue_id);
-+		scnprintf(ring->name, sizeof(ring->name), "sdma_%d.%d.%d",
-+			pasid, gang_id, queue_id);
- 	else
- 		BUG();
- 
 -- 
-2.43.0
+ i.
 
 
