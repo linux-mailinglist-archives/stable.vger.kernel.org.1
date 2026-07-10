@@ -1,55 +1,73 @@
-Return-Path: <stable+bounces-273257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273259-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id qxUHKBAJUWo++QIAu9opvQ
-	(envelope-from <stable+bounces-273257-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 17:00:32 +0200
+	id /YK9CIkMUWqM+gIAu9opvQ
+	(envelope-from <stable+bounces-273259-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 17:15:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F369373C01B
-	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 17:00:31 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A6E873C23E
+	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 17:15:20 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ikfk9ise;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273257-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273257-lists+stable=lfdr.de@vger.kernel.org";
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=auditcode.ai header.s=zmail header.b=WNHKtSEo;
+	dmarc=pass (policy=none) header.from=auditcode.ai;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273259-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273259-lists+stable=lfdr.de@vger.kernel.org";
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 053183002E4A
-	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 15:00:31 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1E41F301DEAC
+	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 15:03:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 146151DC98F;
-	Fri, 10 Jul 2026 15:00:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91AB523B62B;
+	Fri, 10 Jul 2026 15:03:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from sender-op-o17.zoho.eu (sender-op-o17.zoho.eu [136.143.169.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9BA6223DE7;
-	Fri, 10 Jul 2026 15:00:28 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783695629; cv=none; b=hTrDpCXGzJwYYg7PIQqQBZeo9vHbeimj+OLDBFohFVj3/4pI8GIq309PzM5aE5nnI/OQYz8MFNutpDiVTIxGJrAexaI4cPlDfLf/GUfA7uUdkXw/O/USnFSCoFUs8s8cjW3yFmVpdIQFl6pCh1RcNFVXAcFLLFvcvhVoT0H3X2U=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783695629; c=relaxed/simple;
-	bh=WIzAkP8OyPVA8uAWxkJkDpECORMBAFVM5Vjg+fymZw8=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=L0F1Q/nsY9UorkNzPR6ggcsFJqjoDM6pi1DjKp/Hb94JFyAFsObCGON3hN2VlOEquFJ0a17lzD6vvngtZ54FXkldvBeRKmo6foS+G0KLDGRrqU7oCwTtRK8aIhYpE2XyJJViHsbdsmp4ZjS5LwEnL1devz63DR7MPYB6nC2F7fA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ikfk9ise; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B00D1F000E9;
-	Fri, 10 Jul 2026 15:00:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783695628;
-	bh=gIVfiGDljpqCKA5ERFNw/PTnn3K8M+76q6/Myzas50A=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=ikfk9ise9kwxt7eFSbbJGnpbbhtidHoXuYfeXHSjQXrGODnMTOJNQLcgKnOkwKt20
-	 qFdUnyu6cW0EZWm31VVd6nyp7Ljm3kP2l2Fvq5b0HMIM2da4IlCXKoeTtw/8E5vXOR
-	 4e3fRg7+rvgq3yJYX1ATtHtdxxDt2fpjt4gHtZ7RjcfPjSpK8zUln9voq/dtcQHz+E
-	 l9uLXTiKMr0FGHRcbskNXijPVrPIEEI18VQuG5QxQ0bA+m94XJ/fJDh2d2mcpT/TFj
-	 BRefFbpZo6+o0+NpzYQGV+A7MIgddyIe4BSuvIJpSo/+bKTYZcCMHQWm8D3XK4d+Y/
-	 pVfFMkxovGFdg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9397F3924F9B;
-	Fri, 10 Jul 2026 15:00:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B4C7233932;
+	Fri, 10 Jul 2026 15:03:51 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783695834; cv=pass; b=bC43N1NxFntyAFPPGy4zCUwvoXvUB7UvFxMpTxiAFWcJNmewmMepQui8o7svrX4Ib46bGIAQzAEwhyWx8KDO0kurFQqpODZMj8F9mkJ2LOYiI7qVKk8rxPTEdZbcsmNrQ4rpOyain2lkNBOwY/K7psBhX7cMECT7u9bLE9fAdYM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783695834; c=relaxed/simple;
+	bh=MMK84kRvLrazcgsIgR+si9AXEDsUxzxZERut+ac1mXA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LJRUCw2I75F1bn0rRHKqzb3Vp6fBANYtVQS4VOYkwdpflgRHiDFz78xVUENaRHItTDHKFMzMBxGHsfWwuwSX0lnHoFx1wduUhURONkAUoix8FAXbq7mVGh22NvWZuGTKsllY6rB6S3vrxoNgKeVB5CGTC/0CtC1uLVfTv77DAk8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=auditcode.ai; spf=pass smtp.mailfrom=auditcode.ai; dkim=pass (1024-bit key) header.d=auditcode.ai header.i=security@auditcode.ai header.b=WNHKtSEo; arc=pass smtp.client-ip=136.143.169.17
+ARC-Seal: i=1; a=rsa-sha256; t=1783695809; cv=none; 
+	d=zohomail.eu; s=zohoarc; 
+	b=Dy7xZwnyDoYsSiDZdzNaXL7NfHsoG7q9FhFdtd5PRjoN85gPhSdsw3PdIJuV6Fns0dDMBJRxOQFw/aw1X1g1733plLfPVQlr1IVxNM2xbfZqTxxytnw/v76PrQGBCWR2E5oL64qkzVieZLm6MtSVhnHGAXbKtB2hbzlhWeWOFE8=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
+	t=1783695809; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=6ZO0HfgIdC0aAjoLXaBVORj6OTHFPoVCAvzYux53aXw=; 
+	b=cRrcp0z8zDXkwTo9XZTyFmzPq17XhxSTZzFcLdRC63G2ytMeHgslyWL/cGlzx92FLDCnQ5nwMgkKt/T9yaGAMXj+H5h+POOSTc55Ty4kHLkgaZabnwPJVbvjJ5EzLH7QN+K7cFcgH5wM9TfdA73Clb9q1P290Kx2UdC7DzcEnGc=
+ARC-Authentication-Results: i=1; mx.zohomail.eu;
+	dkim=pass  header.i=auditcode.ai;
+	spf=pass  smtp.mailfrom=security@auditcode.ai;
+	dmarc=pass header.from=<security@auditcode.ai>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1783695809;
+	s=zmail; d=auditcode.ai; i=security@auditcode.ai;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=6ZO0HfgIdC0aAjoLXaBVORj6OTHFPoVCAvzYux53aXw=;
+	b=WNHKtSEohs1MxmA98H03hTrETwwoccdENPi70I0rOJYktD2R5+YxANxTXCe2Fe9Z
+	yuJ92AU5FTUR114RcYv/dwKhbkY/YE5moPM92wHDIdT0OyPXLdYZPj1jz5gMMkVfe3O
+	wQoz5QWYhSyT5sN+9qi7Gh2+RV1KMb8Utga3xzYo=
+Received: by mx.zoho.eu with SMTPS id 1783695807226107.99386696008173;
+	Fri, 10 Jul 2026 17:03:27 +0200 (CEST)
+From: Ibrahim Hashimov <security@auditcode.ai>
+To: Jon Maloy <jmaloy@redhat.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	tipc-discussion@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH net] tipc: cap number of nodes per net namespace
+Date: Fri, 10 Jul 2026 17:03:24 +0200
+Message-ID: <20260710150324.32134-1-security@auditcode.ai>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,83 +75,154 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] sctp: validate STALE_COOKIE cause length before
- reading
- staleness
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178369560614.725168.2626506030480279304.git-patchwork-notify@kernel.org>
-Date: Fri, 10 Jul 2026 15:00:06 +0000
-References: <20260704033545.2438373-2-bestswngs@gmail.com>
-In-Reply-To: <20260704033545.2438373-2-bestswngs@gmail.com>
-To: Weiming Shi <bestswngs@gmail.com>
-Cc: linux-sctp@vger.kernel.org, marcelo.leitner@gmail.com,
- lucien.xin@gmail.com, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org, xmei5@asu.edu,
- stable@vger.kernel.org
+X-ZohoMailClient: External
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[auditcode.ai,none];
+	R_DKIM_ALLOW(-0.20)[auditcode.ai:s=zmail];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,davemloft.net,google.com,kernel.org,redhat.com,asu.edu];
-	TAGGED_FROM(0.00)[bounces-273257-lists,stable=lfdr.de,netdevbpf];
-	FROM_NEQ_ENVFROM(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_SENDER(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:bestswngs@gmail.com,m:linux-sctp@vger.kernel.org,m:marcelo.leitner@gmail.com,m:lucien.xin@gmail.com,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:netdev@vger.kernel.org,m:xmei5@asu.edu,m:stable@vger.kernel.org,m:marceloleitner@gmail.com,m:lucienxin@gmail.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	URIBL_MULTI_FAIL(0.00)[sin.lore.kernel.org:server fail,vger.kernel.org:server fail,auditcode.ai:server fail];
+	TAGGED_FROM(0.00)[bounces-273259-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MISSING_XM_UA(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:jmaloy@redhat.com,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:netdev@vger.kernel.org,m:tipc-discussion@lists.sourceforge.net,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[security@auditcode.ai,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[security@auditcode.ai,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[auditcode.ai:+];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	FROM_NO_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,auditcode.ai:from_mime,auditcode.ai:email,auditcode.ai:mid,auditcode.ai:dkim,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: F369373C01B
+X-Rspamd-Queue-Id: 0A6E873C23E
 
-Hello:
+tipc_node_create() allocates a new struct tipc_node (plus a broadcast
+receive link, a unicast link slot and a keepalive timer) for every
+previously unseen (addr, node_id) pair carried in an inbound TIPC
+LINK_CONFIG discovery frame:
 
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+	n = tipc_node_find(net, addr) ?:
+		tipc_node_find_by_id(net, peer_id);
+	if (n) {
+		...
+	}
+	n = kzalloc_obj(*n, GFP_ATOMIC);
+	...
+	n->delete_at = jiffies + msecs_to_jiffies(NODE_CLEANUP_AFTER);
 
-On Fri,  3 Jul 2026 20:35:46 -0700 you wrote:
-> When an ERROR chunk with a STALE_COOKIE cause is received in the
-> COOKIE_ECHOED state, sctp_sf_do_5_2_6_stale() reads the 4-byte Measure
-> of Staleness that follows the cause header:
-> 
-> 	err   = (struct sctp_errhdr *)(chunk->skb->data);
-> 	stale = ntohl(*(__be32 *)((u8 *)err + sizeof(*err)));
-> 
-> [...]
+Both addr (msg_prevnode) and peer_id (msg_node_id) come straight out
+of the discovery frame and are fully attacker controlled, and the
+dedup key above is keyed on exactly those two values. There is no cap
+on how many distinct nodes a net namespace may hold and no rate limit
+on the create path, so an unauthenticated peer on an enabled TIPC
+bearer (L2 or UDP) can flood LINK_CONFIG frames with a fresh (addr,
+node_id) in each one and force the kernel to keep minting new,
+distinct struct tipc_node objects without bound. A link-less spoofed
+node is only reclaimed after NODE_CLEANUP_AFTER (300 s), so at typical
+discovery rates the live node table, and the memory pinned by it,
+grows roughly linearly with attacker-supplied identities for the
+duration of the flood. This is (uncontrolled resource
+consumption), reachable by any unauthenticated network-adjacent host
+once tipc.ko is loaded and a bearer is enabled.
 
-Here is the summary with links:
-  - [net] sctp: validate STALE_COOKIE cause length before reading staleness
-    https://git.kernel.org/netdev/net/c/1cd23ca80784
+Bound this the same way net/core/neighbour.c bounds the ARP/ND
+neighbour table against unauthenticated on-link input: reject new
+entries once a hard ceiling is hit instead of letting the table grow
+without limit. struct tipc_net already carries a num_nodes counter
+that is declared but never read or written anywhere in net/tipc/; wire
+it up on the create and delete paths and add a single bounds check on
+it in tipc_node_create(), guarded by the same tn->node_list_lock
+spinlock that already serializes every call site of
+tipc_node_create(), tipc_node_delete_from_list(), tipc_node_delete()
+and tipc_node_stop(). No new locking, no new data structures, and no
+change to the node table's data layout or lookup semantics; legitimate
+peers are still admitted exactly as before, up to the cap.
 
-You are awesome, thank you!
+TIPC_MAX_NODES is set to 8192, well above any realistic TIPC cluster
+size, bounding worst-case pinned memory to a fixed multiple of one
+node's footprint instead of unbounded growth. It is intentionally not
+tuned tight; exposing it as a sysctl (mirroring
+net.ipv4.neigh.default.gc_thresh3) would be a reasonable follow-up but
+is left out to keep this fix minimal.
+
+Verified on a v6.19 KASAN build: flooding spoofed (addr, node_id)
+peers past the cap makes the patched kernel log "Too many TIPC
+nodes (8192)" and drop further peers, where the same flood grew
+the live node table without bound before this patch.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Ibrahim Hashimov <security@auditcode.ai>
+Assisted-by: AuditCode-AI:2026.07
+---
+ net/tipc/node.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
+
+diff --git a/net/tipc/node.c b/net/tipc/node.c
+index 8e4ef2630ae4..bb41f3231ce1 100644
+--- a/net/tipc/node.c
++++ b/net/tipc/node.c
+@@ -49,6 +49,16 @@
+ #define INVALID_NODE_SIG	0x10000
+ #define NODE_CLEANUP_AFTER	300000
+ 
++/* Hard cap on the number of live struct tipc_node entries a single net
++ * namespace will hold. Every entry (preliminary or not) also pins a
++ * broadcast-receive link, a unicast link slot and a keepalive timer, so
++ * this bounds worst-case memory from unauthenticated LINK_CONFIG discovery
++ * traffic the same way neigh_alloc()'s gc_thresh3 bounds the ARP/ND table
++ * (see net/core/neighbour.c). 8192 is far above any realistic TIPC cluster
++ * size and is not meant to be tight -- it only stops unbounded growth.
++ */
++#define TIPC_MAX_NODES		8192
++
+ /* Flags used to take different actions according to flag type
+  * TIPC_NOTIFY_NODE_DOWN: notify node is down
+  * TIPC_NOTIFY_NODE_UP: notify node is up
+@@ -535,6 +545,11 @@ struct tipc_node *tipc_node_create(struct net *net, u32 addr, u8 *peer_id,
+ 
+ 		goto exit;
+ 	}
++	if (tn->num_nodes >= TIPC_MAX_NODES) {
++		pr_warn_ratelimited("Too many TIPC nodes (%u), dropping new peer %x\n",
++				    tn->num_nodes, addr);
++		goto exit;
++	}
+ 	n = kzalloc_obj(*n, GFP_ATOMIC);
+ 	if (!n) {
+ 		pr_warn("Node creation failed, no memory\n");
+@@ -598,6 +613,7 @@ struct tipc_node *tipc_node_create(struct net *net, u32 addr, u8 *peer_id,
+ 			break;
+ 	}
+ 	list_add_tail_rcu(&n->list, &temp_node->list);
++	tn->num_nodes++;
+ 	/* Calculate cluster capabilities */
+ 	tn->capabilities = TIPC_NODE_CAPABILITIES;
+ 	list_for_each_entry_rcu(temp_node, &tn->node_list, list) {
+@@ -630,6 +646,7 @@ static void tipc_node_delete_from_list(struct tipc_node *node)
+ #endif
+ 	list_del_rcu(&node->list);
+ 	hlist_del_rcu(&node->hash);
++	tipc_net(node->net)->num_nodes--;
+ 	tipc_node_put(node);
+ }
+ 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.50.1 (Apple Git-155)
 
 
