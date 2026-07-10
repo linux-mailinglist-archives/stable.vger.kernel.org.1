@@ -1,153 +1,164 @@
-Return-Path: <stable+bounces-273296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273297-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id qLCHG7AzUWrZAgMAu9opvQ
-	(envelope-from <stable+bounces-273296-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 20:02:24 +0200
+	id kBegBQY0UWrsAgMAu9opvQ
+	(envelope-from <stable+bounces-273297-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 20:03:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D73473D2B3
-	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 20:02:23 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1E9773D2E0
+	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 20:03:49 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=V46GW3xD;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273296-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273296-lists+stable=lfdr.de@vger.kernel.org";
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=vrVhH6CZ;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273297-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-273297-lists+stable=lfdr.de@vger.kernel.org";
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9244A300C7CA
-	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 18:02:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1B9853020E92
+	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 18:03:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B667B376BFB;
-	Fri, 10 Jul 2026 18:02:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F100D37B025;
+	Fri, 10 Jul 2026 18:03:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vs1-f42.google.com (mail-vs1-f42.google.com [209.85.217.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D9BD261B71
-	for <stable@vger.kernel.org>; Fri, 10 Jul 2026 18:02:06 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783706527; cv=pass; b=BF5ANdIp5/HWLluOuyU7oBXqieV9KhPceAm1H5JcmyBQxrZz+Qo9tBjZn5ZxGxMQdxPZ+84L34XGTflN/EMbsV7dp/L0OnbKVo9AMmNP/35piWnk7BaRNCrWPggdHPlzSl0ALcw2vAGr5xNn2jbw0KqV7luZJtRy7A9V8jh8mzo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783706527; c=relaxed/simple;
-	bh=BlimoX1CbriQcmrDmp1LB+hjsXlgxmYzLWDj/mXuzv4=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=skcO00mfjSTC5I8rFoB9O5lbQ4vnkOqZbybtJqj8eFJogILBMZAvygaDXRpUYxfxq1pqzm+7TzM+qF84b3Wej9Wdb00NPMqEg0O4pS4brtrn43BVUsc5wara9gE1Oel4KPBFX1Gj70JvJtM3OnlUevA/0H0rxl3Zj2qJpcmHFSE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V46GW3xD; arc=pass smtp.client-ip=209.85.217.42
-Received: by mail-vs1-f42.google.com with SMTP id ada2fe7eead31-736eea06c3eso419772137.0
-        for <stable@vger.kernel.org>; Fri, 10 Jul 2026 11:02:06 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783706525; cv=none;
-        d=google.com; s=arc-20260327;
-        b=fVJaxNPUivdtqhmNY5r2KULjKZIJXDDxoV0VA6N19EA/0rAGc5DDsWSsuKTJW2rZ6f
-         8k5C3RY+w45XMTaKdQMLESA2wA0zxlVJeMxO4iGDvuK0ezdLi8iHhElVTLEEjSbliGud
-         ylnDN+QLTYvuXlLOOcm5X4V92xNzPHcDv97h/m9ZsxAHLhD5LLeKwpm50BOBkTVRCWBK
-         4uxr9unyv/wNhs9gM6buVJFFxw+0bHiGrFxRqKPfuYv1Znnmi49DSC3wQeLL+DY2pVjY
-         8IQ4ToRKgOPiPHmeUYrVcZhmfdF81bFbtVkBVKfo+N49pDuT77H/ROXM/SnZz+o8gs60
-         bf9w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=BlimoX1CbriQcmrDmp1LB+hjsXlgxmYzLWDj/mXuzv4=;
-        fh=bmoJIeQXGp2rhX5KTAXYm68NwfTeaJjYfQgzd+1cC8s=;
-        b=pwgsQ9F0Yp2xEKokM8c9rpaLxLESiH/88Nd38NbH2nBdulyZweZiits+ZpXKIs8x8s
-         /70rhvSFQlW2Ge4d8/5UBKnEc+7C74OeGyWoBvWBF2wtE40QvS1zflM5ghjyyG1oWRlr
-         /7oPUIMYvwi77Uy4tuVQ3da3HLZtlXunjGMA6dUnpmQfa3CeaeS61HTMXk9/AOD2kCh1
-         3aU14JGxVeMoOw3LuOObF2AWsNseRCaaFcqimkLBNyr3DlXlSt4eKP2xqh5m7Bf0Omdp
-         n+tM7l5uBXvt30sUUQjFScM/uTSZNTYYM4D0Hw00bILoY8sDvjNplTSSgOJCSkBlDEsQ
-         /fXA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783706525; x=1784311325; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=BlimoX1CbriQcmrDmp1LB+hjsXlgxmYzLWDj/mXuzv4=;
-        b=V46GW3xDyuqCalswSaSs+FOepZBqwDTn5PS7oGv2+rGvp9VbepaultgHippZKbzWiM
-         SxsNg4bHLzZ1ue2JBmnpBl8cGCT/iQ6K4Jln2bPLey4Oysfujj6XRxwIs1d8R0bhsBlx
-         nsVnjkUeXCF74+jTGnyt+8cs68HRdwfOP1y0k6OvzGP7N2hk8HqHGwxFOt9wSYsVN/mY
-         se0rzo1jiSG6uXKUYrp+Qndpen11+92KZL38xEyjivp+TtmZagFSVS3QpelugvEo5lhV
-         1xP1xFILV42qOwS3GWiKSjUHvtfr4ZyRgSkgQ73EO9Kj3shmoICoSR856eQ1E+pAwIih
-         UiyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783706525; x=1784311325;
-        h=content-type:cc:to:subject:message-id:date:from:mime-version
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=BlimoX1CbriQcmrDmp1LB+hjsXlgxmYzLWDj/mXuzv4=;
-        b=Kgvzmddwza8DwC/qHx+D/Isy7Lj575pFpjDhxPUlQdDHSOCmkLBs73+ZbOS+b4DAq6
-         +1CoMCg6BCxpEXl0qneztf3xwDhTL/13Cv1a9dQdd/rWlBDJ59g7Pda/BYc1eUSD14h3
-         SB7uQ+5sMT9s+TZUWQfcTdG9Wa52rra4xiO2dFp9XaG9i4xZ2vhV1isBu4zNsvH00zVq
-         5sLrHdBR8CcJG9r0v9+hA0vJ0kjbyjI2tBsu8yzG9rFocUUBpRrEw0w5dzeT+AjnWZxX
-         ZL0ONoCRmB7n8TFXi8DnR7ch97QdOak7HfwlYuC+Z+WWWeLuplCNm2XMdoRbjL25ibzK
-         aCnQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqE17SpgAh/Qo6+ZlvgBow2N0pNJkhEFSwig4RNbwPir39rybWg+7ijSpiJoEoil7mqhRIle0g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwER70vo1/UXN1nIT/caXXEEj4OyQCfPtL++qFSeuFj4KwCN2WV
-	Ilve+I2+ZAL4YySZUeXzQcPpsgCrFzrT6S4O3l60uJaEFfwDvlRJlgVeXnUsxogycDQ9mPvJGnb
-	d6GpoAGrwvcMX45amrjkBKaeRhy/uRnY=
-X-Gm-Gg: AfdE7ck6L9UaTaCd2NY9uQpBaiY/vxSBtIROQrZHSxJxfYMvuhphmlGx0WkUrjjnG8+
-	byuBMi5EmI2CQS1Nc2MVeLKGKB/72tb++tbJbzZdjzSqnjYxi6uXT1M7v4Dms+vX02HiqrtHKf8
-	bNMxqjaOecKkc/4AgmQ3EdYIbUsrt8YUPUdQdVNvhCp9nwzHl6htaZvjFkmpz9ZdCDe8OBZcLrs
-	MY02TDvS5rWKMzwfe3Kl1TCGSoefBbvr39ChjrGbZPMHKKDr1Q3MxUgQGe/SIHNfOaOiuAPBhmm
-	YsCTc+WMENpzRJl1dAjFozZCHys0iJv2m43nYWvir6/meM5/lETptmyxF/fXnwC9pJ4Y+h8IGhM
-	Hv4z5FwSjLYVvR5wTVDll+BOpE1mYYa1r1Ak2ZoCGi01lFsLZ
-X-Received: by 2002:a05:6102:6891:b0:738:d6c:7104 with SMTP id
- ada2fe7eead31-7453384d14amr296475137.0.1783706525271; Fri, 10 Jul 2026
- 11:02:05 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DED83376BFB;
+	Fri, 10 Jul 2026 18:03:16 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783706600; cv=none; b=RfOntIWhwNC15co8bw7YHuqRYYjU/V0GpZsc/mYGentNtpd9YRG2oilUQYIh7lHHw71PgpquRaetCs8DhRuWQgxOx/4ClJAQJ+Kyao/xC6ThyuvxfBX7BGOfmrFWz2sl4/gFZytbCUsNU4HhhruVmZWX/T/wNfgjfk+ZI0BzkAc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783706600; c=relaxed/simple;
+	bh=jQ2ENi7efQIv9R2EbZKSeryq1m1JjIZToHHAmccFRis=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QOljFmmquBzBSPffiC7GdzzlwQ9D4QdfFzxqSFc/cqHYpNZmAIf9fTiJ68oiVzemZJFbJOAOvEjUgzxfEpbdYUzDmPjC5n9yeNvys1WT/55fuEgRa6BYhK62/vHqeb3Qt0mtuYGzS+R5uSeHSqgR42ZI3LcFKKpaTBEcHLfawXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=vrVhH6CZ; arc=none smtp.client-ip=90.155.50.34
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=aavlYHK65oZ9/GvkqG4vhVx7lYGAHZXQDwnk4WMg/dU=; b=vrVhH6CZ43iMT+yYcxyiUFLLu7
+	6n+lRXruBnU93GSLongig8SFlKm3AgZwxoDzqo0wCFEhLVi87OcdBvy8aEyLkK6uObGGpp63VQwi0
+	hSuIpfQAUdKbz4EsnK6t5wjQvkQ/25WKWlk+JecIt/nOtDbO71fPl9LF/Y/NWdanurlhHNyyBxsjK
+	XSgbg9xirVLA2JFSb6mTgsgwyUUGEvEy/Tq4u2cqbUgu7cHfzICrLfyLQIGbF4vEvE/JodppgC3p9
+	nGpQPd0upaeQCTcahdsyxydddO8e2FVnQstNr/bwE9fIu3MRbNdbcIipOiQ0Iglr3voabEDxdG1xk
+	h5/yoyDA==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wiFZA-00000007b0h-2b7J;
+	Fri, 10 Jul 2026 18:03:12 +0000
+Date: Fri, 10 Jul 2026 19:03:12 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Salvatore Dipietro <dipiets@amazon.it>
+Cc: linux-mm@kvack.org, hch@infradead.org, ritesh.list@gmail.com,
+	akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-xfs@vger.kernel.org,
+	dgc@kernel.org, vbabka@suse.cz, djwong@kernel.org,
+	brauner@kernel.org, alisaidi@amazon.com, blakgeof@amazon.com,
+	abuehaze@amazon.com, dipietro.salvatore@gmail.com,
+	stable@vger.kernel.org, Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>
+Subject: Re: [PATCH v3] mm/page_alloc: avoid direct compaction for costly
+ __GFP_NORETRY allocations
+Message-ID: <alEz4Chf7Ibyg-ZG@casper.infradead.org>
+References: <20260710143437.12379-1-dipiets@amazon.it>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Avraham Hollander <anhollander516@gmail.com>
-Date: Fri, 10 Jul 2026 14:01:53 -0400
-X-Gm-Features: AUfX_mwWzHxqlsdRXMKYl-ddla6vBJRXE6CpJ-JSoQ7f70O37_nQ9val2xs48eM
-Message-ID: <CAP1mzZSp9A5w7ac0Qh-NAdtT+MoerWxYngfQYcm-bVF5yDWd1g@mail.gmail.com>
-Subject: Re: [PATCH v3 0/3] ACPI: battery: Do not generate too much pressure
- on ACPI methods
-To: i@rong.moe
-Cc: jeffrey@waelti.dev, lenb@kernel.org, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, mpearson-lenovo@squebb.ca, 
-	rafael.j.wysocki@intel.com, rafael@kernel.org, rickk1166@gmail.com, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260710143437.12379-1-dipiets@amazon.it>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	FAKE_REPLY(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[infradead.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[infradead.org:s=casper.20170209];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	URIBL_MULTI_FAIL(0.00)[sin.lore.kernel.org:server fail,vger.kernel.org:server fail,mail.gmail.com:server fail];
-	TAGGED_FROM(0.00)[bounces-273296-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[waelti.dev,kernel.org,vger.kernel.org,squebb.ca,intel.com,gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:i@rong.moe,m:jeffrey@waelti.dev,m:lenb@kernel.org,m:linux-acpi@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:mpearson-lenovo@squebb.ca,m:rafael.j.wysocki@intel.com,m:rafael@kernel.org,m:rickk1166@gmail.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[anhollander516@gmail.com,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-273297-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:dipiets@amazon.it,m:linux-mm@kvack.org,m:hch@infradead.org,m:ritesh.list@gmail.com,m:akpm@linux-foundation.org,m:linux-kernel@vger.kernel.org,m:linux-fsdevel@vger.kernel.org,m:linux-xfs@vger.kernel.org,m:dgc@kernel.org,m:vbabka@suse.cz,m:djwong@kernel.org,m:brauner@kernel.org,m:alisaidi@amazon.com,m:blakgeof@amazon.com,m:abuehaze@amazon.com,m:dipietro.salvatore@gmail.com,m:stable@vger.kernel.org,m:vbabka@kernel.org,m:surenb@google.com,m:mhocko@suse.com,m:jackmanb@google.com,m:hannes@cmpxchg.org,m:ziy@nvidia.com,m:riteshlist@gmail.com,m:dipietrosalvatore@gmail.com,s:lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TO_DN_NONE(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[anhollander516@gmail.com,stable@vger.kernel.org];
-	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[23];
+	FORGED_SENDER(0.00)[willy@infradead.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[kvack.org,infradead.org,gmail.com,linux-foundation.org,vger.kernel.org,kernel.org,suse.cz,amazon.com,google.com,suse.com,cmpxchg.org,nvidia.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[willy@infradead.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[infradead.org:+];
 	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	SINGLE_SHORT_PART(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:from_mime,infradead.org:dkim,vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,casper.infradead.org:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9D73473D2B3
+X-Rspamd-Queue-Id: C1E9773D2E0
 
-Tested-by: Avraham Hollander <anhollander516@gmail.com>
+On Fri, Jul 10, 2026 at 02:34:37PM +0000, Salvatore Dipietro wrote:
+> Commit 5d8edfb900d5 ("iomap: Copy larger chunks from userspace")
+> introduced high-order folio allocations in the iomap buffered write
+> path.
+
+https://lore.kernel.org/linux-mm/aeZzP6iQel-tkZOu@casper.infradead.org/
+
+I just had a go at implementing what I thought might be the right design
+(having a folio_alloc_orders(min, max, gfp)), but that's not really what
+__filemap_get_folio_mpol() wants because it needs to integrate the actual
+adding of folios to the page cache into the retry loop.
+
+So instead, let's try this.  The idea is that we want to try direct reclaim
+_twice_.  Once gently (ie with NORETRY specified) when we're trying to
+allocate the maximum order folio.  But now that we've tried that once,
+there's no point trying direct reclaim for other sizes, we just want to
+ask the page allocator if it can give us memory of any subsequent size.
+
+Until we come to the minimum order.  Then we want to try exactly as hard
+as we were originally asked to try.  So revert to the original gfp flags
+and don't set the NOWARN or NORETRY flags.
+
+diff --git a/mm/filemap.c b/mm/filemap.c
+index 58eb9d240643..23eecaf9b328 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -1983,6 +1983,7 @@ struct folio *__filemap_get_folio_mpol(struct address_space *mapping,
+ 	if (!folio && (fgp_flags & FGP_CREAT)) {
+ 		unsigned int min_order = mapping_min_folio_order(mapping);
+ 		unsigned int order = max(min_order, FGF_GET_ORDER(fgp_flags));
++		gfp_t alloc_gfp = gfp | __GFP_NORETRY | __GFP_NOWARN;
+ 		int err;
+ 		index = mapping_align_index(mapping, index);
+ 
+@@ -2004,12 +2005,11 @@ struct folio *__filemap_get_folio_mpol(struct address_space *mapping,
+ 			order = __ffs(index);
+ 
+ 		do {
+-			gfp_t alloc_gfp = gfp;
+-
+ 			err = -ENOMEM;
+-			if (order > min_order)
+-				alloc_gfp |= __GFP_NORETRY | __GFP_NOWARN;
++			if (order == min_order)
++				alloc_gfp = gfp;
+ 			folio = filemap_alloc_folio(alloc_gfp, order, policy);
++			alloc_gfp &= ~__GFP_DIRECT_RECLAIM;
+ 			if (!folio)
+ 				continue;
+ 
 
