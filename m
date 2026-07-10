@@ -1,77 +1,93 @@
-Return-Path: <stable+bounces-273339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273340-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 9GVoKNtyUWpLFAMAu9opvQ
-	(envelope-from <stable+bounces-273339-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 00:31:55 +0200
+	id Xw4vAwV0UWqIFAMAu9opvQ
+	(envelope-from <stable+bounces-273340-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 00:36:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CFE073F8C7
-	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 00:31:55 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCE9173F94D
+	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 00:36:51 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=OeHbZqwP;
-	dmarc=pass (policy=quarantine) header.from=amazon.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273339-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-273339-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=nQAMCVcv;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273340-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273340-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4FB163026C2F
-	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 22:30:48 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D3B033006925
+	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 22:36:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0347B445ACB;
-	Fri, 10 Jul 2026 22:30:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C62673D16F1;
+	Fri, 10 Jul 2026 22:36:47 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from pdx-out-005.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-005.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.13.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F5F6444710
-	for <stable@vger.kernel.org>; Fri, 10 Jul 2026 22:30:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2959B37CD3A
+	for <stable@vger.kernel.org>; Fri, 10 Jul 2026 22:36:46 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783722647; cv=none; b=PRogta/2jiM4/NwB747Xi/1MlTkqckka2lBvTQoRvdM/+nUN1l72nHiZS2lz64t4XXOffedJYKQsez6vj0k1p5162YNxudmGwu7/v6b2WExbk8MVq2sTuhCfU2StXkYL/Wh25x8j2P9h8p4xFLL1LZIbRwaXiA6T69ZD7PYpK2Q=
+	t=1783723007; cv=none; b=r3YGbJH31NQwZFd7rkLrpYkimm0EJL/9AtZ5KbT4gIx06VTIXjbQgRuJOm1NlS6kessqFAyfshFKKSO6fhmMO9gaHY9xoE6UnxZD8aVmFQCAxd7Em8E7MQDiVLmBXIc61lLwMnIXbXDjZKXi0uCVtwpgJ/+HWQ9i0HSRM2PqQTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783722647; c=relaxed/simple;
-	bh=6403Da3Wz+fHxYg/ZS/tqyRqO3VaL2b0fwBQDcv0+8g=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=RALaVpsa7+6TvBss8UTWsCWD+BZ+Jfguw2wy5bAL/zkvWUeWQN+kSCCFTBY/X1eP7UorNcItz5W+vN626OSqU6SMToZXNW6tMR5NRQvu0x7ctPUNKV31ONvDBr5kOpfhLsZT4TpBSZgE3yARjGZ/2HMiO/nBVR++67QlFFwZUO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=OeHbZqwP; arc=none smtp.client-ip=52.13.214.179
+	s=arc-20240116; t=1783723007; c=relaxed/simple;
+	bh=d5m5+qwZ1g7FSuIF5EIQ39lSOUY3CG0XddPOToipTfU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=i3MIMvHNmPXWS6oI4jUKxdJpphNghmAPsg6EtbYtYpvpNwSbNYhnk+Ghf8/GClEeHMQ/MEB3XhdkNNl1z/kMK5KQ7cUL2TvGDOXMlGqk+E9z/rJKwDZGVf4PJOQmoGGERC7Mz7iCT6+NPwshJF82C6bRNGpxNUXH7/HzeRrSOnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nQAMCVcv; arc=none smtp.client-ip=209.85.128.45
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-493b27c7451so30992995e9.0
+        for <stable@vger.kernel.org>; Fri, 10 Jul 2026 15:36:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1783722646; x=1815258646;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=AoNYL6KjIawmEpp1a4Bnz60AJM36lpx7QW9KgYJ7a3k=;
-  b=OeHbZqwP9GZ4myijNzAm3tIrd3B+H0J/ddUldttQVzRp4qMo4MjTSJNz
-   E9K3XHVPVJy8/Zn3w0WMxoAMrQylZnQWDtR6eyCpJge0tMtJwDe91aBaR
-   42h1ep4/mgdTDp3dAIqZcZGAvJWXWK92ovUvc82vKfuSKf82niCxH6OVs
-   HdKQo7xl4dnvRaR8wCREO87S+7iwLFzcKAa36r8DIr8qYtVq0yIoC8Ijz
-   urzvH8aJVGyjD5ODwe7Cz6uJde2NMuvnGUjNrPDUimOIKON5+WybxCsqT
-   fCLsSS/oiiBc/NoVzrp4hTPSGF8rvyTM2emPC4tRW3MFct/1I1zwddKhD
-   g==;
-X-CSE-ConnectionGUID: LKTh14BOTzS9k1BETuRrHw==
-X-CSE-MsgGUID: J4Ri1NZzT1O7WHZ/LDTW6w==
-X-IronPort-AV: E=Sophos;i="6.25,154,1779148800"; 
-   d="scan'208";a="23447977"
-Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
-  by internal-pdx-out-005.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2026 22:30:46 +0000
-Received: from EX19MTAUWC001.ant.amazon.com [205.251.233.53:19655]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.11.115:2525] with esmtp (Farcaster)
- id 1d85c986-4115-410f-9f3c-0830c047c820; Fri, 10 Jul 2026 22:30:45 +0000 (UTC)
-X-Farcaster-Flow-ID: 1d85c986-4115-410f-9f3c-0830c047c820
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.43;
- Fri, 10 Jul 2026 22:30:45 +0000
-Received: from dev-dsk-mkbund-2b-ce767ba1.us-west-2.amazon.com (10.169.40.81)
- by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.43;
- Fri, 10 Jul 2026 22:30:45 +0000
-From: Mark Bundschuh <mkbund@amazon.com>
-To: <stable@vger.kernel.org>
-CC: Michal Kosiorek <mkosiorek121@gmail.com>, Steffen Klassert
-	<steffen.klassert@secunet.com>
-Subject: [PATCH 5.10.y] xfrm: defensively unhash xfrm_state lists in __xfrm_state_delete
-Date: Fri, 10 Jul 2026 22:30:15 +0000
-Message-ID: <20260710223015.3831465-1-mkbund@amazon.com>
-X-Mailer: git-send-email 2.50.1
+        d=gmail.com; s=20251104; t=1783723004; x=1784327804; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=kkegYOMbOm6pINe4Tn2pWBNt+Yl9vdfulmpELD+V/ao=;
+        b=nQAMCVcvoTONHoVHexx8OxCMPON/Lek4c84m/Y3Y0mlG3Guh6TIleRPuLUr3nmNLJB
+         tc2Jdf5wIrijTYnVJhha0ajRoqrLqD2xLz0cmE8Ng7VNR8fqzf6IWJ4qdPlCiUI4MdB7
+         S0Th9oIxxT5M3GJQtq4Kgf35OkU2fhDyTEq9B2AUQKwNeZ94jR0kZgp3y0+UYumPByF8
+         dpmO85nStaIJtmcDuY4JyHK5Vde3JzuYmCORhKy7Rzym1Yh8MarUyVFYvgZg8hWOzpVT
+         gEK7XBonY2JL7+ZPE4Xg5/sLhXnPjfk/faT5eWnlMY7ilFtUbR7rBXZIPKhN1DgY+HGd
+         6ceQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783723004; x=1784327804;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=kkegYOMbOm6pINe4Tn2pWBNt+Yl9vdfulmpELD+V/ao=;
+        b=NhV8XM9d/55LW9+iswKKlI2iff8udlAADdRyt7kj2ZhS2ZI3Uk3g2sBvCTHjjnc9DH
+         OgB9uRmiASsfTq4VBzsUdpFNonvojU9Aq0LRsf9otM69NHs0DJV09bcwRtCDjMFmAXGC
+         ZXYEavKB2YJ/t2AM8ReyByPZQCO20qRSSuG23z6abq1dwoAmkS5uykykzgUzca8l8nmd
+         Zs3did08o0Qv6QOangbdgBpF8uQPP8t83MjD3cHivM75nQgGZJg3tD9QUFEd4jO/qEWQ
+         +o4fNnoIYVzeTHhOwvbsl/7xwUZCw77ZfqTc91CrwTCxWvieUm99LvMSZy4dVwwGbV/C
+         gAqg==
+X-Gm-Message-State: AOJu0Yx/UtJLQQyfgm5SQi6xWucyYyrLlkYy0GdZE3UdGRSFsdM2WCis
+	fxZjk5FiR2ukrjAa1Rc91LFaukthiTNc1xvIQWh68RZRmUtX8dcbrHUBCibTFw==
+X-Gm-Gg: AfdE7clYA2EPNPs5OBJ2nWHwwUHNwtRd9m9rqGqw7pv0+94X+ZVLk3g/nInqHYG+ZtG
+	oNQtA4wGAMwTAJHg9bQQkim94IGU715lpP3bt36CGzo6Zx4A6nsgP6S0Bkunpd1+WLOgrNPMx0g
+	S/IKTn7KmxX3b5+bxeRIxu2Qw8EU4ZIIJtiWjgebapd5QqdtTP/nDWXtU2+3VjACUkWDaPI3Zaa
+	sVnIWDcEw3hOYTfalRBttArc7nZVs6ScEKNMM8QuVarFou6bYjMOG5JxfNnai+OiZedfJ+LTmea
+	H9coprh1nAOnVOILdxlpF/a+225fPEjRBopdqyfcvgTBe6qADPdBCDaKje2FcghmmOf+dFnVvKD
+	htqJmQKD9dY2Y+9ZLpUd1ENOXlDSG3N6YCOhgPTjglG9m1+CiPMrPK/vM2mVfvF/bebIxvDxB47
+	zCLoBhi7CD07wNj8IVNhjrSc8GWw==
+X-Received: by 2002:a05:600d:6401:10b0:493:b698:9247 with SMTP id 5b1f17b1804b1-493f88c71fcmr3346825e9.14.1783723004325;
+        Fri, 10 Jul 2026 15:36:44 -0700 (PDT)
+Received: from builder ([2001:9e8:f113:9116:be24:11ff:fe30:5d85])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493f4f09f89sm110612765e9.10.2026.07.10.15.36.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Jul 2026 15:36:43 -0700 (PDT)
+From: Jonas Jelonek <jelonek.jonas@gmail.com>
+To: stable@vger.kernel.org
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	linux-mips@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Jonas Jelonek <jelonek.jonas@gmail.com>
+Subject: [PATCH 6.6.y] MIPS: smp: report dying CPU to RCU in stop_this_cpu()
+Date: Fri, 10 Jul 2026 22:36:27 +0000
+Message-ID: <20260710223627.5860-1-jelonek.jonas@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -79,155 +95,118 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D038UWB002.ant.amazon.com (10.13.139.185) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-10.66 / 15.00];
-	WHITELIST_DMARC(-7.00)[amazon.com:D:+];
-	WHITELIST_SPF_DKIM(-3.00)[amazon.com:d:+,kernel.org:s:+];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[amazon.com,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[amazon.com:s=amazoncorp2];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,secunet.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-273339-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:mkosiorek121@gmail.com,m:steffen.klassert@secunet.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[mkbund@amazon.com,stable@vger.kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCPT_COUNT_THREE(0.00)[3];
+	FREEMAIL_CC(0.00)[alpha.franken.de,linutronix.de,kernel.org,linux.dev,vger.kernel.org,linuxfoundation.org,gmail.com];
+	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mkbund@amazon.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[amazon.com:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp];
+	TAGGED_FROM(0.00)[bounces-273340-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:tsbogend@alpha.franken.de,m:bigeasy@linutronix.de,m:tglx@kernel.org,m:jiayuan.chen@linux.dev,m:linux-mips@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:gregkh@linuxfoundation.org,m:sashal@kernel.org,m:jelonek.jonas@gmail.com,m:jelonekjonas@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[jelonekjonas@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jelonekjonas@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0CFE073F8C7
+X-Rspamd-Queue-Id: DCE9173F94D
 
-From: Michal Kosiorek <mkosiorek121@gmail.com>
+commit 9f3f3bdc6d9dac1a5a8262ee7ad0f2ff1527a7e7 upstream.
 
-[ Upstream commit 14acf9652e5690de3c7486c6db5fb8dafd0a32a3 ]
+smp_send_stop() parks all secondary CPUs in stop_this_cpu(). The function
+marks the CPU offline for the scheduler via set_cpu_online(false) but
+never informs RCU, so RCU keeps expecting a quiescent state from CPUs
+that are now spinning forever with interrupts disabled.
 
-KASAN reproduces a slab-use-after-free in __xfrm_state_delete()'s
-hlist_del_rcu calls under syzkaller load on linux-6.12.y stable
-(reproduced on 6.12.47, also reachable via the same code path on
-torvalds/master and on the ipsec tree). Nine unique signatures cluster
-in the xfrm_state lifecycle, the load-bearing one being:
+As long as nothing waits for an RCU grace period after smp_send_stop()
+this is harmless, which is why it went unnoticed. Since commit
+91840be8f710 ("irq_work: Fix use-after-free in irq_work_single() on PREEMPT_RT")
+however, irq_work_sync() calls synchronize_rcu() on architectures without
+an irq_work self-IPI, i.e. where arch_irq_work_has_interrupt() returns
+false. That is the asm-generic default used by MIPS. Any irq_work_sync()
+issued in the reboot/shutdown path after smp_send_stop() then blocks on
+a grace period that can never complete, hanging the reboot:
 
-  BUG: KASAN: slab-use-after-free in __hlist_del include/linux/list.h:990 [inline]
-  BUG: KASAN: slab-use-after-free in hlist_del_rcu include/linux/rculist.h:516 [inline]
-  BUG: KASAN: slab-use-after-free in __xfrm_state_delete net/xfrm/xfrm_state.c
-  Write of size 8 at addr ffff8881198bcb70 by task kworker/u8:9/435
+  WARNING: CPU: 0 PID: 15 at kernel/irq_work.c:144 irq_work_queue_on
+  ...
+  rcu: INFO: rcu_sched detected stalls on CPUs/tasks:
+  rcu: Offline CPU 1 blocking current GP.
+  rcu: Offline CPU 2 blocking current GP.
+  rcu: Offline CPU 3 blocking current GP.
 
-  Workqueue: netns cleanup_net
-  Call Trace:
-   __hlist_del / hlist_del_rcu
-   __xfrm_state_delete
-   xfrm_state_delete
-   xfrm_state_flush
-   xfrm_state_fini
-   ops_exit_list
-   cleanup_net
+This issue was noticed on several Realtek MIPS switch SoCs (MIPS
+interAptiv) and came up during kernel bump downstream in OpenWrt from
+6.18.33 to 6.18.34, after the backport of the patch to the 6.18 stable
+branch. The patch also has been backported all the way back to 6.1.
 
-The other observed signatures hit the same slab object from
-__xfrm_state_lookup, xfrm_alloc_spi, __xfrm_state_insert and an OOB
-write variant of __xfrm_state_delete, all on the byseq/byspi
-hash chains.
+Call rcu_report_dead() once interrupts are disabled, mirroring the
+generic CPU-hotplug offline path, so RCU stops waiting on the parked CPUs
+and grace periods can still complete. MIPS shuts down all CPUs here
+without going through the CPU-hotplug mechanism, so this report is not
+otherwise issued. Reporting a dying CPU to RCU outside the regular hotplug
+offline path is not unprecedented: arm64 does the same in cpu_die_early().
+There it is an exception for a CPU that was coming online and is aborting
+bringup, rather than the default shutdown action as on MIPS.
 
-__xfrm_state_delete() guards its byseq and byspi unhashes with
-value-based predicates:
+Note: this differs from the upstream commit in that it calls
+rcu_report_dead(smp_processor_id()) instead of rcutree_report_cpu_dead().
+The latter, along with the rcutree_report_cpu_dead() name, was introduced
+by commit 448e9f34d91d ("rcu: Standardize explicit CPU-hotplug calls")
+in v6.7; on this kernel the equivalent function is still named
+rcu_report_dead() and takes an explicit CPU argument.
 
-	if (x->km.seq)
-		hlist_del_rcu(&x->byseq);
-	if (x->id.spi)
-		hlist_del_rcu(&x->byspi);
+Fixes: 91840be8f710 ("irq_work: Fix use-after-free in irq_work_single() on PREEMPT_RT")
+Signed-off-by: Jonas Jelonek <jelonek.jonas@gmail.com>
+---
+ arch/mips/kernel/smp.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-while everywhere else in the file (e.g. state_cache, state_cache_input)
-the safer hlist_unhashed() check is used. xfrm_alloc_spi() sets
-x->id.spi = newspi inside xfrm_state_lock and then immediately inserts
-into byspi, but a path that observes x->id.spi != 0 outside of
-xfrm_state_lock can still skip-or-hit the byspi unhash inconsistently
-with whether x is actually on the list. The same holds for x->km.seq
-versus byseq, and the bydst/bysrc unhashes have no predicate at all,
-so a second __xfrm_state_delete() on the same object writes through
-LIST_POISON pprev.
-
-The defensive change here:
-
-  - Use hlist_del_init_rcu() instead of hlist_del_rcu() on bydst,
-    bysrc, byseq and byspi so a second deletion is a no-op rather
-    than a write through LIST_POISON pprev. The byseq/byspi nodes
-    are already initialised in xfrm_state_alloc().
-  - Test hlist_unhashed() rather than the value predicate for
-    byseq/byspi, so the unhash decision tracks list state rather than
-    mutable scalar fields.
-
-Empirical verification: applied this patch on top of v6.12.47, rebuilt,
-and re-ran the same syzkaller harness for 1h16m on a previously-crashy
-configuration that produced ~100 hits each of slab-use-after-free
-Read in xfrm_alloc_spi / Read in __xfrm_state_lookup / Write in
-__xfrm_state_delete. After the patch, 7.1M execs across 32 VMs at
-~1550 exec/sec produced zero xfrm_state UAF/OOB hits. /proc/slabinfo
-confirms the xfrm_state slab is actively allocated and freed during
-the run (~143 KiB resident), so the fuzzer is still exercising those
-code paths -- they just no longer crash.
-
-Reproduction:
-
-  - Linux 6.12.47 x86_64 + KASAN_GENERIC + KASAN_INLINE + KCOV
-  - syzkaller @ 746545b8b1e4c3a128db8652b340d3df90ce61db
-  - 32 QEMU/KVM VMs x 2 vCPU on AWS c5.metal bare metal
-  - 9 unique signatures collected in ~9h, all within xfrm_state
-    lifecycle
-
-Fixes: fe9f1d8779cb ("xfrm: add state hashtable keyed by seq")
-Fixes: 7b4dc3600e48 ("[XFRM]: Do not add a state whose SPI is zero to the SPI hash.")
-Reported-by: Michal Kosiorek <mkosiorek121@gmail.com>
-Tested-by: Michal Kosiorek <mkosiorek121@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Michal Kosiorek <mkosiorek121@gmail.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-[ 5.10: drop state_cache{,_input} lines from context because 81a331a
-("xfrm: Add an inbound percpu state cache.") does not exist yet, drop
-xfrm_nat_keepalive_state_updated line from context because f531d13
-("xfrm: support sending NAT keepalives in ESP in UDP states") does not
-exist yet, and remove byseq since that optimization in fe9f1d8 ("xfrm:
-add state hashtable keyed by seq") does not exist yet ]
-Signed-off-by: Mark Bundschuh <mkbund@amazon.com>
-
-diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
---- a/net/xfrm/xfrm_state.c
-+++ b/net/xfrm/xfrm_state.c
-@@ -659,10 +659,11 @@ int __xfrm_state_delete(struct xfrm_state *x)
- 		x->km.state = XFRM_STATE_DEAD;
- 		spin_lock(&net->xfrm.xfrm_state_lock);
- 		list_del(&x->km.all);
--		hlist_del_rcu(&x->bydst);
--		hlist_del_rcu(&x->bysrc);
--		if (x->id.spi)
--			hlist_del_rcu(&x->byspi);
-+		hlist_del_init_rcu(&x->bydst);
-+		hlist_del_init_rcu(&x->bysrc);
-+
-+		if (!hlist_unhashed(&x->byspi))
-+			hlist_del_init_rcu(&x->byspi);
- 		net->xfrm.state_num--;
- 		spin_unlock(&net->xfrm.xfrm_state_lock);
+diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
+index 81f6c4f8fbc1..1a3eb4820eb7 100644
+--- a/arch/mips/kernel/smp.c
++++ b/arch/mips/kernel/smp.c
+@@ -19,6 +19,7 @@
+ #include <linux/sched/mm.h>
+ #include <linux/cpumask.h>
+ #include <linux/cpu.h>
++#include <linux/rcupdate.h>
+ #include <linux/err.h>
+ #include <linux/ftrace.h>
+ #include <linux/irqdomain.h>
+@@ -410,6 +411,7 @@ static void stop_this_cpu(void *dummy)
+ 	set_cpu_online(smp_processor_id(), false);
+ 	calculate_cpu_foreign_map();
+ 	local_irq_disable();
++	rcu_report_dead(smp_processor_id());
+ 	while (1);
+ }
  
+
+base-commit: da47cbc254661aa66d61ef061485a7080305c4be
+-- 
+2.53.0
+
 
