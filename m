@@ -1,62 +1,71 @@
-Return-Path: <stable+bounces-273267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273268-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id KtsPCH4UUWp5/AIAu9opvQ
-	(envelope-from <stable+bounces-273267-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 17:49:18 +0200
+	id 4e/HGXYTUWpS/AIAu9opvQ
+	(envelope-from <stable+bounces-273268-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 17:44:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 693A673C607
-	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 17:49:17 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEE3073C5E5
+	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 17:44:53 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cYyPhFpF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273267-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273267-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linux.dev header.s=key1 header.b=cDeQqpyd;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273268-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-273268-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 31C5D300B10B
-	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 15:42:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C5FAD301AAAB
+	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 15:44:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 617D1434405;
-	Fri, 10 Jul 2026 15:42:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 249ED436375;
+	Fri, 10 Jul 2026 15:44:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 142F6422545
-	for <stable@vger.kernel.org>; Fri, 10 Jul 2026 15:42:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DB85435EF0
+	for <stable@vger.kernel.org>; Fri, 10 Jul 2026 15:44:06 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783698129; cv=none; b=KB+/yXs0p+OBmN34UkyUKWqfTyENxjeTwvJllGLjBBQ6rCzT2rpF7AVFOJCO3eRwoVwE3x/W5RU6MoJkOmD4ZAXj1ytFIBpIll6yLxDed3u+xOYZuzoHL6/V2TxlD1pHN3NhogbqXCX9cLHOKuLNYBOBsVrG32GP/X+oxIdXikE=
+	t=1783698256; cv=none; b=Nj7h6mMnQ2XHoFyFewI4ZEW7fZYOAsqRojL6grqxMuK20M6kjc7e8QZc8hEv4ZGHrJRrTkoMtNT5mVi+VBKQFRpvSneb9d2ARHsxIDxj8rFOvq4ljoL+uV8Zo65AIX2dm/z5AU9ffP+PpKI/yx2JO3XBt2ShNy4r1IjNz4dNxZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783698129; c=relaxed/simple;
-	bh=aei2onBR7qVkRapoYecGP3RzJKz3LJ/iRZKZH6ZJqQA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MhSx2Kj6oACgTfXmlaa9x9cGifGP3phfcS9HRIMrCwZ2/VkmWU5mAzttq+4qlKLf2upYQoZC/aNYl7f5JRX7oueu608RcT305xxyqOUPs3TYYyeJiV7gWy98jZC7cF7R2lZvLXrBdNH/7IrEM1NLez/HO5svR/YRWb+1uJL/In8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cYyPhFpF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37C021F000E9;
-	Fri, 10 Jul 2026 15:42:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783698127;
-	bh=PkCjRwkf0ZdJlqvq+TP6DWUbyip5WHEYyXEKa0IeTwQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cYyPhFpFdXOLQzYJCO7I+DFD+x+gxz9xWEB5OxVXyH6uvC6xdBZJCYu1YzNkCNq4V
-	 Ki7RKHW96nHTS9HzKSD2hJMI6qR8NQsjFphNH1D98bRgA6PB58hvKmmRO3Onyp4afI
-	 aKeUejSebWJUumLpqek76MKm8tKfz0JWkfNV2SL+OlF93R4tmPCFybP9Wc409vlbOa
-	 0tNJwsyVS74jVLRIrGDeFczD5ebHv12DseePe3jDzVyZdh9GsaLTm7QlQMRk5Xt7oh
-	 BLyEzIQLWtrIGuX523Da8ZbPD17AeKCBSTujC4u8XFYgApuievMFqaxRdE8of3f90K
-	 vWjIEArdZjdUg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] ACPI: NFIT: core: Fix acpi_nfit_init() error cleanup
-Date: Fri, 10 Jul 2026 11:42:05 -0400
-Message-ID: <20260710154205.284338-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026070918-reply-wimp-b2c4@gregkh>
-References: <2026070918-reply-wimp-b2c4@gregkh>
+	s=arc-20240116; t=1783698256; c=relaxed/simple;
+	bh=zjmyzRBsCBM/W5pCHKR8WbASYjQoEG3syzN9fxyFj0Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QzSCD0lQJa58Oe3VzvJLpmkKzG6KceNA1fs1mkZJ41NHiDu+4yC9aUibNpSdcQ3CQu5VpQk31Zf6d4fOLJKiw++L/WYVKmrIcXCRwFFwbDrVe3iSEJWaqvBNOjSD/yV5+EfQwjswYDVzvYuHi65rSoUw+1To70e4APxlk8faNE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=cDeQqpyd; arc=none smtp.client-ip=91.218.175.178
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783698231;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=/60L6Gw7LaN6NkHAg/NT5Zrh/O6NlqQ8F4DkibQxuFk=;
+	b=cDeQqpydjIuRjVm7QrrG8tYD4fmABjnIWojxi26sfQ6ogWR+27YgI1RC1Djgt55UpXsodx
+	R/poROmIofG4314ypP+lOm1nQ5seu5a3JlyBg225TeR2wh8zDKM7xPdbH1GoAvTYtHJLLs
+	CdIxtvMDSyNySfxhJt0G6kp8xJkWv0c=
+From: Qi Zheng <qi.zheng@linux.dev>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	kasong@tencent.com,
+	shakeel.butt@linux.dev,
+	baohua@kernel.org,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	hannes@cmpxchg.org,
+	harry@kernel.org,
+	muchun.song@linux.dev,
+	peiyang_he@smail.nju.edu.cn,
+	mhocko@kernel.org,
+	roman.gushchin@linux.dev,
+	ljs@kernel.org
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v5] mm: mglru: fix stale batch updates after memcg reparenting
+Date: Fri, 10 Jul 2026 23:43:18 +0800
+Message-ID: <20260710154318.75388-1-qi.zheng@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,140 +73,202 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:rafael.j.wysocki@intel.com,m:dave.jiang@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-273267-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[19];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-273268-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:akpm@linux-foundation.org,m:david@kernel.org,m:kasong@tencent.com,m:shakeel.butt@linux.dev,m:baohua@kernel.org,m:axelrasmussen@google.com,m:yuanchu@google.com,m:weixugc@google.com,m:hannes@cmpxchg.org,m:harry@kernel.org,m:muchun.song@linux.dev,m:peiyang_he@smail.nju.edu.cn,m:mhocko@kernel.org,m:roman.gushchin@linux.dev,m:ljs@kernel.org,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:zhengqi.arch@bytedance.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[3];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[qi.zheng@linux.dev,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[qi.zheng@linux.dev,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	DKIM_TRACE(0.00)[linux.dev:+];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,intel.com:email,msgid.link:url]
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,bytedance.com:email,linux.dev:from_mime,linux.dev:dkim,linux.dev:mid,nju.edu.cn:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 693A673C607
+X-Rspamd-Queue-Id: DEE3073C5E5
 
-From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+From: Qi Zheng <zhengqi.arch@bytedance.com>
 
-[ Upstream commit 38bf27511ef41bffebd157ec3eba41fc89ba59cd ]
+The mglru page table walker batches per-generation size deltas in
+walk->nr_pages while walking page tables without holding the lruvec lock.
+The reset_batch_size() later folds those deltas into walk->lruvec under
+the lruvec lock.
 
-If acpi_nfit_init() fails after adding the acpi_desc object to the
-acpi_descs list, that object is never removed from that list because
-the acpi_nfit_shutdown() devm action is not added for the NFIT device
-in that case.  Next, the acpi_nfit_init() failure causes
-acpi_nfit_probe() to fail, the acpi_desc object is freed, and a
-dangling pointer is left behind in the acpi_descs.  Any subsequent
-ACPI Machine Check Exception will trigger nfit_handle_mce() which
-iterates over acpi_descs and so a use-after-free will occur.
+The page table walker can run concurrently with the memcg reparenting path
+as follows:
 
-Moreover, if acpi_nfit_probe() returns 0 after installing a notify
-handler for the NFIT device and without allocating the acpi_desc
-object and setting the NFIT device's driver data pointer, the
-acpi_desc object will be allocated by acpi_nfit_update_notify()
-and acpi_nfit_init() will be called to initialize it.  Regardless
-of whether or not acpi_nfit_init() fails in that case, the
-acpi_nfit_shutdown() devm action is not added for the NFIT device
-and acpi_desc is never removed from the acpi_descs list.  If the
-acpi_desc object is freed subsequently on driver removal, any
-subsequent ACPI MCE will lead to a use-after-free like in the
-previous case.
+CPU0                           CPU1
+====                           ====
 
-To address the first issue mentioned above, make acpi_nfit_probe()
-call acpi_nfit_shutdown() directly on acpi_nfit_init() failures and
-to address the other one, add a remove callback to the driver and
-make it call acpi_nfit_shutdown().  Also, since it is now possible to
-pass NULL to acpi_nfit_shutdown() or the acpi_desc object passed to it
-may not have been initialized, add checks against NULL for acpi_desc and
-its nvdimm_bus field to that function and make acpi_nfit_unregister()
-clear the latter after unregistering the NVDIMM bus.
+walk_mm
+--> walk_page_range
+    --> update_batch_size
+        --> walk->nr_pages += delta
 
-Fixes: a61fe6f7902e ("nfit, tools/testing/nvdimm: unify common init for acpi_nfit_desc")
-Fixes: fbabd829fe76 ("acpi, nfit: fix module unload vs workqueue shutdown race")
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Cc: All applicable <stable@vger.kernel.org>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Link: https://patch.msgid.link/1963615.tdWV9SEqCh@rafael.j.wysocki
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+                              mem_cgroup_css_offline
+                              --> memcg_reparent_objcgs
+                                  --> lock lruvec
+                                      lru_gen_reparent_memcg
+                                      --> reparent child folios to parent
+                                      unlock lruvec
+
+    lock lruvec
+    reset_batch_size
+    --> child lrugen->nr_pages += delta
+
+This will trigger the following warning in lru_gen_exit_memcg():
+
+	VM_WARN_ON_ONCE(memchr_inv(lruvec->lrugen.nr_pages, 0,
+				   sizeof(lruvec->lrugen.nr_pages)));
+
+And the user-visible impact of underestimated nr_pages in MGLRU was
+premature OOMs because MGLRU does not try to reclaim memory when nr_pages
+reaches zero, but there are still more pages.
+
+To fix it, make reset_batch_size() check CSS_DYING under RCU before
+flushing the pending batch. A non-dying memcg keeps the original lruvec
+stable against RCU-delayed offlining; a dying memcg redirects the deltas
+to the first non-dying ancestor.
+
+Reported-by: Peiyang He <peiyang_he@smail.nju.edu.cn>
+Closes: https://lore.kernel.org/all/5A9E929D82717101+12fcf643-efb8-4b9a-a53a-1e28cc894f0b@smail.nju.edu.cn
+Fixes: f304652609ea ("mm: vmscan: prepare for reparenting MGLRU folios")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
 ---
- drivers/acpi/nfit/core.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+Changes in v5:
+ - rename lock_batch_lruvec() to lruvec_live_lock_irq(), and move it to
+   include/linux/memcontrol.h
+   (suggested by Johannes and Shakeel)
 
-diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
-index d314afec44b56d..3fbb892972a927 100644
---- a/drivers/acpi/nfit/core.c
-+++ b/drivers/acpi/nfit/core.c
-@@ -3456,6 +3456,8 @@ static void acpi_nfit_unregister(void *data)
- 	struct acpi_nfit_desc *acpi_desc = data;
- 
- 	nvdimm_bus_unregister(acpi_desc->nvdimm_bus);
-+	/* The nvdimm_bus object may have been freed, so clear the pointer. */
-+	acpi_desc->nvdimm_bus = NULL;
+Changes in v4:
+ - re-implement lock_batch_lruvec() in a simpler way
+   (suggested by Johannes and Harry)
+ - collect Reviewed-by
+ - rebase onto the next-20260630
+
+Changes in v3:
+ - re-implement lock_batch_lruvec() by checking CSS_DYING under the RCU lock
+   (suggested by Harry)
+ - update the commit message (suggested by Harry)
+ - temporarily drop the previous Reviewed-by tags
+   (since the sync method has changed)
+ - rebase onto the next-20260624
+
+Changes in v2:
+ - update the commit message (pointed by Barry)
+ - collect Reviewed-by
+
+ include/linux/memcontrol.h | 25 +++++++++++++++++++++++++
+ mm/vmscan.c                | 11 ++++-------
+ 2 files changed, 29 insertions(+), 7 deletions(-)
+
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index e1f46a0016fcf..9572606776781 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -1472,6 +1472,31 @@ static inline void lruvec_lock_irq(struct lruvec *lruvec)
+ 	spin_lock_irq(&lruvec->lru_lock);
  }
  
- int acpi_nfit_init(struct acpi_nfit_desc *acpi_desc, void *data, acpi_size sz)
-@@ -3680,7 +3682,10 @@ static void acpi_nfit_put_table(void *table)
- void acpi_nfit_shutdown(void *data)
- {
- 	struct acpi_nfit_desc *acpi_desc = data;
--	struct device *bus_dev = to_nvdimm_bus_dev(acpi_desc->nvdimm_bus);
-+	struct device *bus_dev;
++static inline struct lruvec *lruvec_live_lock_irq(struct lruvec *lruvec)
++{
++#ifdef CONFIG_MEMCG
++	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
++	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
 +
-+	if (!acpi_desc || !acpi_desc->nvdimm_bus)
-+		return;
- 
- 	/*
- 	 * Destruct under acpi_desc_lock so that nfit_handle_mce does not
-@@ -3695,6 +3700,7 @@ void acpi_nfit_shutdown(void *data)
- 	mutex_unlock(&acpi_desc->init_mutex);
- 	cancel_delayed_work_sync(&acpi_desc->dwork);
- 
-+	bus_dev = to_nvdimm_bus_dev(acpi_desc->nvdimm_bus);
- 	/*
- 	 * Bounce the nvdimm bus lock to make sure any in-flight
- 	 * acpi_nfit_ars_rescan() submissions have had a chance to
-@@ -3762,13 +3768,14 @@ static int acpi_nfit_add(struct acpi_device *adev)
- 				sz - sizeof(struct acpi_table_nfit));
- 
- 	if (rc)
--		return rc;
--	return devm_add_action_or_reset(dev, acpi_nfit_shutdown, acpi_desc);
-+		acpi_nfit_shutdown(acpi_desc);
++	rcu_read_lock();
 +
-+	return rc;
- }
- 
- static int acpi_nfit_remove(struct acpi_device *adev)
++	/*
++	 * The memcg can be NULL when the memory controller is disabled.
++	 * Otherwise, the caller keeps the memcg owning @lruvec alive.
++	 */
++	while (unlikely(memcg && css_is_dying(&memcg->css))) {
++		memcg = parent_mem_cgroup(memcg);
++		lruvec = mem_cgroup_lruvec(memcg, pgdat);
++	}
++
++	spin_lock_irq(&lruvec->lru_lock);
++#else
++	lruvec_lock_irq(lruvec);
++#endif
++
++	return lruvec;
++}
++
+ static inline void lruvec_unlock(struct lruvec *lruvec)
  {
--	/* see acpi_nfit_unregister */
-+	acpi_nfit_shutdown(dev_get_drvdata(&adev->dev));
- 	return 0;
+ 	spin_unlock(&lruvec->lru_lock);
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 35c3bb15ae96a..1a142c58700d0 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -3265,7 +3265,7 @@ static void update_batch_size(struct lru_gen_mm_walk *walk, struct folio *folio,
+ static void reset_batch_size(struct lru_gen_mm_walk *walk)
+ {
+ 	int gen, type, zone;
+-	struct lruvec *lruvec = walk->lruvec;
++	struct lruvec *lruvec = lruvec_live_lock_irq(walk->lruvec);
+ 	struct lru_gen_folio *lrugen = &lruvec->lrugen;
+ 
+ 	walk->batched = 0;
+@@ -3285,6 +3285,8 @@ static void reset_batch_size(struct lru_gen_mm_walk *walk)
+ 			lru += LRU_ACTIVE;
+ 		__update_lru_size(lruvec, lru, zone, delta);
+ 	}
++
++	lruvec_unlock_irq(lruvec);
  }
  
+ static int should_skip_vma(unsigned long start, unsigned long end, struct mm_walk *args)
+@@ -3779,11 +3781,8 @@ static void walk_mm(struct mm_struct *mm, struct lru_gen_mm_walk *walk)
+ 			mmap_read_unlock(mm);
+ 		}
+ 
+-		if (walk->batched) {
+-			lruvec_lock_irq(lruvec);
++		if (walk->batched)
+ 			reset_batch_size(walk);
+-			lruvec_unlock_irq(lruvec);
+-		}
+ 
+ 		cond_resched();
+ 	} while (err == -EAGAIN);
+@@ -4867,9 +4866,7 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+ 	walk = current->reclaim_state->mm_walk;
+ 	if (walk && walk->batched) {
+ 		walk->lruvec = lruvec;
+-		lruvec_lock_irq(lruvec);
+ 		reset_batch_size(walk);
+-		lruvec_unlock_irq(lruvec);
+ 	}
+ 
+ 	mod_lruvec_state(lruvec, PGDEMOTE_KSWAPD + reclaimer_offset(sc),
 -- 
-2.53.0
+2.54.0
 
 
