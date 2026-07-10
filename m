@@ -1,73 +1,50 @@
-Return-Path: <stable+bounces-273133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273135-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Lu+tL9BpUGr8yQIAu9opvQ
-	(envelope-from <stable+bounces-273133-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 05:41:04 +0200
+	id czK/K7VrUGqOygIAu9opvQ
+	(envelope-from <stable+bounces-273135-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 05:49:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18DA873706D
-	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 05:41:03 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23E547370D8
+	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 05:49:09 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=glSw8Dx9;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=glSw8Dx9;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273133-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273133-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=aaTcHP7m;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273135-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-273135-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 65DB93016B4E
-	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 03:41:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C7C063025E5F
+	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 03:49:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87E911A5B9D;
-	Fri, 10 Jul 2026 03:40:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B96730F7FF;
+	Fri, 10 Jul 2026 03:48:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3787122097
-	for <stable@vger.kernel.org>; Fri, 10 Jul 2026 03:40:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F20B261B9E;
+	Fri, 10 Jul 2026 03:48:53 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783654858; cv=none; b=eRxV1Wc1ODzmrdUpo3/St/S5VLksB5mt36XaWuku+SHGk+RJb47qowx9QTVLsKryUArASc8QcWawXYovEL1A2iTfz03agKxRPTWeU5JIKUsVMj8MWHiG7pagvZRF7YEeY1u5YcJLXZ3T+YYWxKCRgOxnmDWvZOnD/WNI838f6xg=
+	t=1783655337; cv=none; b=nRLNYh7jYbFhsb6QzKFazp4FYDl78o6cSfKN3VuRAoG0sNyn+hrlbdlmRwcBEGC0dpJ2Tqs2IHNHODS5EyaYYklbJtb0KTdIrpElnQmziCa06lzGljaNtEJXTb937y2G65YT8DSJsgWEhr4Q6uIvxocSahVPAdZop8pCbzC6su4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783654858; c=relaxed/simple;
-	bh=N8Ql/R2KyV13fTGjhJAlvYvaMr0kaRtJZ+kgkyK80QU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Sx8enNsn6KDbgu7HLe0iaKtpP9oOeKJxG7bxb+FAwFpIj/3tP7hI+SYzoBlEr01uP8sYeaSLDwx0BWnDB4vBK2KuuhsmBfipfF2LLIfaa7WEH+3eOzUs9H4xI1WEdpf41/ABjCL58kSbOjwigwyLPUdayj0SDdRNZ29UArNYPQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=glSw8Dx9; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=glSw8Dx9; arc=none smtp.client-ip=45.249.212.190
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=iTljOFKYJBI33ZEI0JX671u45JXFShPIM4aeNDpDwv0=;
-	b=glSw8Dx9Mzy1CL32Fk+FBH40Il6zPAuD1Q137P883L3KsqBedtUB5HPKpNDKcuua5jfShM1jF
-	Ncgz0lq6wkOMr2Ez7I/Mgtx0Q6ZrVMvw47Hh/GkzSvfcmTHTHMM+wW2xeKuBzUrO/8lBvYVhEkX
-	BvFMKYabhqI25nUDMEp6TI4=
-Received: from canpmsgout04.his.huawei.com (unknown [172.19.92.133])
-	by szxga04-in.huawei.com (SkyGuard) with ESMTPS id 4gxHfC696dz126Lt5
-	for <stable@vger.kernel.org>; Fri, 10 Jul 2026 11:40:19 +0800 (CST)
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=iTljOFKYJBI33ZEI0JX671u45JXFShPIM4aeNDpDwv0=;
-	b=glSw8Dx9Mzy1CL32Fk+FBH40Il6zPAuD1Q137P883L3KsqBedtUB5HPKpNDKcuua5jfShM1jF
-	Ncgz0lq6wkOMr2Ez7I/Mgtx0Q6ZrVMvw47Hh/GkzSvfcmTHTHMM+wW2xeKuBzUrO/8lBvYVhEkX
-	BvFMKYabhqI25nUDMEp6TI4=
-Received: from mail.maildlp.com (unknown [172.19.163.0])
-	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4gxHRx09Gpz1prKZ;
-	Fri, 10 Jul 2026 11:31:25 +0800 (CST)
-Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id 2532340537;
-	Fri, 10 Jul 2026 11:40:42 +0800 (CST)
-Received: from kwepemq200011.china.huawei.com (7.202.195.155) by
- dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 10 Jul 2026 11:40:41 +0800
-Received: from [10.67.110.108] (10.67.110.108) by
- kwepemq200011.china.huawei.com (7.202.195.155) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 10 Jul 2026 11:40:41 +0800
-Message-ID: <2410686c-bc58-44a0-9f71-ec79791daaa6@huawei.com>
-Date: Fri, 10 Jul 2026 11:40:40 +0800
+	s=arc-20240116; t=1783655337; c=relaxed/simple;
+	bh=VktXdXLHfpiEZs8SUpasfK6oGF1OWwLCtlzh6CoP3qs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QBqgr3LF8Nvp1Ar9oDZ+UEd2ymeeStQYbBqo7jycjraPsVqT8kZzuMQhwCvsNmQj6bvjTMwVULOzJLVwIquzJtl+g7SD3MFkDOpIE9ywMZ7QqRU97Q9QYsU5yKcbi/yxqpQHCNtIthX+89ytNk94rMGslQY2aHf+6zkoIHCN0hU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=aaTcHP7m; arc=none smtp.client-ip=115.124.30.98
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1783655332; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=8AK1eIZIM4gwAkDFaNwngBUDojHeaE9xY2rmvZIuvwQ=;
+	b=aaTcHP7mIXj8NMnWxso3iw5oFZq3wyEP8yC3H1T9vlILknFW56KNBICbreZpwhuWhZYEfIMNjGQiRpQ9Q5yNSX6dFbrN+4erwcxIG2XiB5/lNkA3hKqns7aN0gB9cmgtWyvEHU3HE3ttHJ82mvr/2y21smZewslS6N9aX7R1LoU=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0X6mK60X_1783655330;
+Received: from 30.74.144.121(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X6mK60X_1783655330 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 10 Jul 2026 11:48:50 +0800
+Message-ID: <c820fc9c-8e5a-4708-a773-3b005bcdb541@linux.alibaba.com>
+Date: Fri, 10 Jul 2026 11:48:49 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -75,140 +52,121 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 03/36] arm64: hibernate: mask DAIF before restoring
- hibernated kernel
-To: Vladimir Murzin <vladimir.murzin@arm.com>,
-	<linux-arm-kernel@lists.infradead.org>
-CC: <mark.rutland@arm.com>, <maz@kernel.org>, <ruanjinjie@huawei.com>,
-	<stable@vger.kernel.org>, <catalin.marinas@arm.com>, <will@kernel.org>
-References: <20260709121333.23507-1-vladimir.murzin@arm.com>
- <20260709121333.23507-4-vladimir.murzin@arm.com>
-From: "Liao, Chang" <liaochang1@huawei.com>
-In-Reply-To: <20260709121333.23507-4-vladimir.murzin@arm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemq200011.china.huawei.com (7.202.195.155)
+Subject: Re: [PATCH stable v2] mm/khugepaged: write all dirty file folios when
+ collapsing
+To: Pedro Falcato <pfalcato@suse.de>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>
+Cc: stable@vger.kernel.org, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Matthew Wilcox <willy@infradead.org>, Song Liu <song@kernel.org>,
+ Eric Hagberg <ehagberg@janestreet.com>, Zi Yan <ziy@nvidia.com>,
+ Gregg Leventhal <gleventhal@janestreet.com>,
+ Lance Yang <lance.yang@linux.dev>, linux-mm@kvack.org,
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260708151357.353173-1-pfalcato@suse.de>
+ <ak556WxAZCyqQqbf@pedro-suse.lan>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <ak556WxAZCyqQqbf@pedro-suse.lan>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-9.16 / 15.00];
-	WHITELIST_DMARC(-7.00)[huawei.com:D:+];
+X-Spamd-Result: default: False [-12.16 / 15.00];
+	WHITELIST_DMARC(-7.00)[alibaba.com:D:+];
+	WHITELIST_SPF_DKIM(-3.00)[alibaba.com:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[huawei.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[huawei.com:s=dkim];
+	DMARC_POLICY_ALLOW(-0.50)[linux.alibaba.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[linux.alibaba.com:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-273133-lists,stable=lfdr.de];
-	FORGED_SENDER(0.00)[liaochang1@huawei.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:pfalcato@suse.de,m:akpm@linux-foundation.org,m:david@kernel.org,m:ljs@kernel.org,m:stable@vger.kernel.org,m:viro@zeniv.linux.org.uk,m:brauner@kernel.org,m:jack@suse.cz,m:willy@infradead.org,m:song@kernel.org,m:ehagberg@janestreet.com,m:ziy@nvidia.com,m:gleventhal@janestreet.com,m:lance.yang@linux.dev,m:linux-mm@kvack.org,m:linux-fsdevel@vger.kernel.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:vladimir.murzin@arm.com,m:linux-arm-kernel@lists.infradead.org,m:mark.rutland@arm.com,m:maz@kernel.org,m:ruanjinjie@huawei.com,m:stable@vger.kernel.org,m:catalin.marinas@arm.com,m:will@kernel.org,s:lists@lfdr.de];
-	DKIM_TRACE(0.00)[huawei.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,arm.com:email,huawei.com:from_mime,huawei.com:dkim,huawei.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[liaochang1@huawei.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_SENDER(0.00)[baolin.wang@linux.alibaba.com,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-273135-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[baolin.wang@linux.alibaba.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux.alibaba.com:+];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[8]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 18DA873706D
-
-在 2026/7/9 20:13, Vladimir Murzin 写道:
-> From: Ada Couprie Diaz <ada.coupriediaz@arm.com>
-> 
-> The arm64 hibernate code manages the exception masking in an unsound
-> way, leading to potential crashes and/or warnings during resume.
-> 
-> When a hibernation image is saved in `swsusp_arch_suspend()`, all DAIF
-> exceptions are masked (by virtue of `local_daif_save()`), and the
-> suspended image is saved assuming that all DAIF exceptions will remain
-> masked when the image is restored.
-> 
-> When a hibernation image is resumed by `swsusp_arch_resume()`, only
-> interrupts are masked (by virtue of `local_irq_save()` in
-> `resume_target_kernel()`). When pseudo-NMI is enabled the DAIF.IF bits
-> will be clear, and regardless of pseudo-NMI the DAIF.DA bits will be
-> clear.
-> 
-> This means that there are two problems:
-> 
-> (1) It is possible to take Debug, SError, or pseudo-NMI exceptions
->     during the resume process. This is unsafe, as during the resume
->     process both the old ane new kernels will tranisently be in an
->     inconsistent state, and swsusp_arch_suspend_exit() won't retain
->     an executable mapping of any exception vectors.
-> 
->     Any exception taken here will be fatal and silent.
-> 
-> (2) When re-entering the resumed kernel, some DAIF bits will be clear
->     unexpectedly. This permits Debug, SError, or pseudo-NMI exceptions
->     to be taken for a short period while the resumed kernel is not yet
->     in a consistent state.
-> 
->     This is detected by CONFIG_ARM64_DEBUG_PRIORITY_MASKING.
-> 
-> Avoid these issues by masking all DAIF exceptions during resume.
-> 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Ada Couprie Diaz <ada.coupriediaz@arm.com>
-> Signed-off-by: Vladimir Murzin <vladimir.murzin@arm.com>
-> ---
->  arch/arm64/kernel/hibernate.c | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
-> 
-> diff --git a/arch/arm64/kernel/hibernate.c b/arch/arm64/kernel/hibernate.c
-> index 9717568518ba..d0d9bd91e639 100644
-> --- a/arch/arm64/kernel/hibernate.c
-> +++ b/arch/arm64/kernel/hibernate.c
-> @@ -405,6 +405,7 @@ int swsusp_arch_suspend(void)
->  int __nocfi swsusp_arch_resume(void)
->  {
->  	int rc;
-> +	unsigned long flags;
->  	void *zero_page;
->  	size_t exit_size;
->  	pgd_t *tmp_pg_dir;
-> @@ -465,9 +466,21 @@ int __nocfi swsusp_arch_resume(void)
->  	if (el2_reset_needed())
->  		__hyp_set_vectors(el2_vectors);
->  
-> +	/*
-> +	 * It is necessary to mask all DAIF exceptions here as:
-> +	 *
-> +	 * - The copy of swsusp_arch_suspend_exit() in the hibernation
-> +	 *   text cannot handle taking any exceptions.
-> +	 *
-> +	 * - The suspended kernel masked all DAIF exceptions in
-> +	 *   swsusp_arch_resume(), and expects to be re-entered in the
-> +	 *   same state : with all DAIF exceptions masked.
-> +	 */
-> +	flags = local_daif_save();
->  	hibernate_exit(virt_to_phys(tmp_pg_dir), resume_hdr.ttbr1_el1,
->  		       resume_hdr.reenter_kernel, restore_pblist,
->  		       resume_hdr.__hyp_stub_vectors, virt_to_phys(zero_page));
-> +	local_daif_restore(flags);
-
-As Jinjie said, the resumed kernel never return from hibernate_exit(). If that's
-the case, it seems better to place unreachable() rather than local_daif_restore(),
-would you agree?
-
->  
->  	return 0;
->  }
+X-Rspamd-Queue-Id: 23E547370D8
 
 
--- 
-BR
-Liao, Chang
+
+On 7/9/26 12:28 AM, Pedro Falcato wrote:
+> Seems that I accidentally dropped linked list Cc's here, see
+> https://lore.kernel.org/stable/20260708151357.353173-1-pfalcato@suse.de/
+> 
+> On Wed, Jul 08, 2026 at 04:13:57PM +0100, Pedro Falcato wrote:
+>> [There is no upstream commit, as this code was removed by upstream
+>>   commit 044925f9b565 ("mm: fs: remove filemap_nr_thps*() functions and their users")]
+>>
+>> As-is, khugepaged and writable-file opening exclude each other. A file
+>> cannot be open writeable and have THPs (because the filesystem is not aware
+>> of them). khugepaged will never collapse file pages for files that are
+>> opened writeable. On an open(O_RDWR/O_WRONLY), the page cache for that
+>> particular file is dropped. This is fine because nothing could've been
+>> dirtied.
+>>
+>> However, there is an edge-case: collapse_file() might not be able to
+>> coexist with concurrent writers, but it can coexist with dirty folios
+>> (from previous writers). Therefore, the following can happen:
+>>
+>> open(file, O_RDWR)
+>> write(file)
+>> close(file)
+>> madvise(file_mapping, MADV_COLLAPSE, some non-dirty range)
+>> open(file, O_RDWR)
+>>   nr_thps > 0
+>>    truncate_inode_pages()
+>>      /* THPs are cleared out, but so are the dirty folios */
+>>
+>> When this edge-case happens, there is data loss, as the dirty folios are
+>> fully discarded.
+>>
+>> Fix it by fully writing back the page cache (and waiting) when collapsing
+>> file THPs. Doing so provides the guarantee that no dirty folio will be
+>> observed while there are active THPs. To fully ensure this is safe, the
+>> invalidate_lock needs to be held while doing the writeout, so that
+>> do_dentry_open()'s page cache truncation excludes this write-and-wait.
+>>
+>> As a side effect, move the nr_thps counter bumping outside the i_pages
+>> lock. This is correct since the counter itself is an atomic_t and the
+>> producer <-> consumer correctness is provided by a full memory barrier:
+>> smp_mb() in collapse_file()/memory barrier implied by full ordering in
+>> get_write_access() -> atomic_inc_unless_negative().
+>>
+>> Cc: stable@vger.kernel.org
+>> Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+>> Cc: Christian Brauner <brauner@kernel.org>
+>> Cc: Jan Kara <jack@suse.cz>
+>> Cc: Matthew Wilcox <willy@infradead.org>
+>> Cc: Song Liu <song@kernel.org>
+>> Cc: Eric Hagberg <ehagberg@janestreet.com>
+>> Cc: Zi Yan <ziy@nvidia.com>
+>> Fixes: 99cb0dbd47a1 ("mm,thp: add read-only THP support for (non-shmem) FS")
+>> Reported-by: Gregg Leventhal <gleventhal@janestreet.com>
+>> Closes: https://lore.kernel.org/linux-mm/CAFN_u7H_0ECF3jixP=T=U7AH5=Q3wQNvJMo8an3VqUDMerQfUw@mail.gmail.com/
+>> Tested-by: Zi Yan <ziy@nvidia.com>
+>> Tested-by: Lance Yang <lance.yang@linux.dev>
+>> Signed-off-by: Pedro Falcato <pfalcato@suse.de>
+>> ---
+
+LGTM. Thanks.
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
