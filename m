@@ -1,176 +1,185 @@
-Return-Path: <stable+bounces-273176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273177-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id LNGsCFvAUGov4gIAu9opvQ
-	(envelope-from <stable+bounces-273176-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 11:50:19 +0200
+	id x0gaABfBUGpQ4gIAu9opvQ
+	(envelope-from <stable+bounces-273177-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 11:53:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E7FD739424
-	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 11:50:18 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6DEA739486
+	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 11:53:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nN7+0tvZ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273176-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273176-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=starlabs-sg.20251104.gappssmtp.com header.s=20251104 header.b=r0BRXBuG;
+	dmarc=fail reason="SPF not aligned (relaxed), DKIM not aligned (relaxed)" header.from=starlabs.sg (policy=none);
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273177-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-273177-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 488813048AEC
-	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 09:33:48 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5CFCC30A2C34
+	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 09:35:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 362EE3F65E7;
-	Fri, 10 Jul 2026 09:33:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ED7C3F8245;
+	Fri, 10 Jul 2026 09:34:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC3F53F58EF;
-	Fri, 10 Jul 2026 09:33:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD7EC3F4DE0
+	for <stable@vger.kernel.org>; Fri, 10 Jul 2026 09:34:33 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783676009; cv=none; b=fz914eN7LP2M0PG1inauUVb30scve78l1wh58GERWRfq2d+qaoj34wePK2E8i7Pt6UCFzLXZZSLklJ4uGfY80euKopcGq1U0BgYm9IXUdPzx2G+lnG3dDB3q0fSSiCtC+cT5KlApTi0AoQJlsCl2RITHdBTPWcNn0R97/D7xNpw=
+	t=1783676077; cv=none; b=cUViDKgTZhc3s8Diy1ErVvdkUyH5V8Q8bS02zQpF18ohyF95QpwXeP9A83kJWsPJ/OLXEZQ4Hv5UUFzu7QCtd5byHrUHX+DRbia9diyfcMtmfzzbBwFc0QKkY32mb/TJQEUTJgUu0FYr2so8c/jm1h4zr5t813IxksYc3rG61DM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783676009; c=relaxed/simple;
-	bh=LJghwtw/rZdPZpzGD37v4e9liYjTcIOPdSBYtvPd6LM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=YJrxE5GZJTNIgBumwswYqffJdUw/JMijreW2frCF5qXo9e3ZWAUf+Xl/1f68ttv6vqQAWPwHjBwwtlvgMMp3YM+V6u6x5h17P/eMMoGUbrJGvyhwd3my7vdIVdvx53nJDU0FCE8DyLpmH4Z/Hf5e+2/TYnV5m62vuVl2Um/AOoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nN7+0tvZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED2AC1F00A3A;
-	Fri, 10 Jul 2026 09:33:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783676007;
-	bh=xrs5lraalE2UG0MriVBsYhlbNUjZEy2u+I/gnOfdohU=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=nN7+0tvZRI8ao2T+BWyC2xVLZc9ZQ6PLswTiXRS2Z9lqXMUCPS1wpQxTSbT22Exct
-	 K1JLTiwFpJ/XWy5Rf8To66gjwDJBIXlEHoAHCGj8HjSBts4kRQrHj/hUPv/49oukbI
-	 I4MVlqSXSao9gatsjqV9Ttgi6B8iBiGZGJc3QRoFCK/YeKRyoj+uAb67EiQ4CT8hy8
-	 IchSa1/AR8ooDSzLMgxajnyCOF8u1sBMi626J6ze54bXDSIhq+4PMpHnyJXsrj9gtz
-	 zcgrxWBy3LYJXwckMZUfLM5vv2JFNAnyKJ1hgS6YY2ZkGl6OgcE+2tCgTzRzY/3HHN
-	 Z4W3URY0XuuuA==
-From: Christian Brauner <brauner@kernel.org>
-Date: Fri, 10 Jul 2026 11:33:04 +0200
-Subject: [PATCH v3 03/24] binfmt_misc: reject a flag character as the field
- delimiter
+	s=arc-20240116; t=1783676077; c=relaxed/simple;
+	bh=gk/Ly+VOdTlozILkyIXx25UNv6a0Ie7o/tS0LPDPWYU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=UiW9ED9vrM6xtodoSIvqShgnMUvFAgKuDNmQezvyRExY067J17nphEuWuWyyKTwXj0Qk21+Y0eaCZ5VsX0+kxKINK5hJjfvrb2a0Gos5yKT3yDb8pHfPvjE2/b1milJrW3WtnUs4A+re7o2Sk+gaI/wgkTU/gyjjzWeHJEpX4sk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=starlabs.sg; spf=pass smtp.mailfrom=starlabs.sg; dkim=pass (2048-bit key) header.d=starlabs-sg.20251104.gappssmtp.com header.i=@starlabs-sg.20251104.gappssmtp.com header.b=r0BRXBuG; arc=none smtp.client-ip=209.85.210.177
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-8478fe07f0fso739167b3a.0
+        for <stable@vger.kernel.org>; Fri, 10 Jul 2026 02:34:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=starlabs-sg.20251104.gappssmtp.com; s=20251104; t=1783676073; x=1784280873; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=xrSY6cgMwW3xQnZDAd/GUTYiSszR+F3mzsF9ozQGQpA=;
+        b=r0BRXBuGtIYnqP4QnskYJv82g49+PywpV7xsqL8WQ1V/8A/SgFUK7K012Wfr/w7J3D
+         zADB9pT3Y9i+IPb6tLhApnKxZM2HOXFfWl6YPf8Zm/4RV3F/kiXSZv+SFjsqww/J6mah
+         xUGwrUNIkkiNx6j2zzSR8ixswy8m4wfQBZx1CFhf4BUiWRlnVIiP9wIHSVKZpb1xmVBs
+         BIzYUabR0A7V2Uuovy/gyvoCbfYJhKfaFkObDvBzIb0uscQA1zvtzK7NPVGQnoIQlQQB
+         h5RGkXyB2XidVOo+SIVRpI41fjpdjFz9N+vmsHNN7ZLlDXESjwneqgR4P4s48W+zODg6
+         HlYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783676073; x=1784280873;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=xrSY6cgMwW3xQnZDAd/GUTYiSszR+F3mzsF9ozQGQpA=;
+        b=W3LYXWjL642hJW3dQ9RIP2KHSlGlztQul+ZdWzJynRBSlsSGdRsmxH07lHzV9yEwvK
+         hPUNw+rTHC6FfoTcqIlJkJWn7qTKaIKCNl3TsOTMAUO+yTXes8H/VbvekXNk4gNxgU5U
+         vShiT+3JgGK/7P5iSrIBOjfBJfEzA5i5keFWju/xc54/ebhOS6MU1Jb9JK7hj3iRq/WJ
+         mrLGEPV8bI6d1d4VygnTtkd02EaQ4RC/M14fRLpytRvbSN5949zsiirkz5Y/eRhDqAOJ
+         Znwht4n0g4eAo2CuHk3zQg1gmL4F33rbecVKcQ4Bwo01yQR80YREuA4MevSjif/SDo/y
+         L8Ew==
+X-Forwarded-Encrypted: i=1; AHgh+RpVCKNs/6FSAghgYPjvBsrtCXFNk4/3NQDVjnZMPpm4fz1ir/pE0W3vRgneU+hyKdo3DIEUaq0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyrELGo8YMZTNAot6/WEvw8ZAnpekvXHkHwI/CN5Mcc0RtZj79Z
+	ASGATYBgYb4F1zKr8tk204liZ1S0jCAJPUKCRIBTgooi20q7HmNJa2QACl2BNj7ioew=
+X-Gm-Gg: AfdE7cl4GQfpJHhiXMoDQVYVpk5ndOzdooGitPIeFKGux1Ff0KN5hurkRETpBP1IWUC
+	zofA2DyxXzqgSr3AxbohG2eMroYGAE9amxrBswCT6l+f1XbdDMH+SGRWPwWof8DMP5SQXeosUHO
+	A+vS5yWuIDacM+wrIXYLq3ERDZHmJoq1DMw4UDeLQcevzJVF9MvXlvDw5z9dndcGieBemYVO/zP
+	nI+QpYMyXXwWpiF15tZm64kQe2GHpkpGSTpR0h9GU1HpOtor1PclfwQfKdHUfR0SgX6iT18tLah
+	KxGGSiASNTNQ0FfoCgCVzsrH9mNr4LLrz02WuAF3Qy3nlrUyEM0v1er/dVfuL7OKOrW5O/vQmeI
+	9Vjp8uQTKLvj+8J0XU/i8B4anQedTukMz01HbrVj06xQ3LTWbKf90ePWM/7RBbpUNse0y1iP176
+	f/EMaaNmp34Tll
+X-Received: by 2002:a05:6a00:3988:b0:848:2f84:732 with SMTP id d2e1a72fcca58-8484303d498mr9875898b3a.69.1783676073080;
+        Fri, 10 Jul 2026 02:34:33 -0700 (PDT)
+Received: from localhost ([49.245.21.137])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84880a44feasm134544b3a.20.2026.07.10.02.34.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Jul 2026 02:34:32 -0700 (PDT)
+From: Lee Jia Jie <jiajie.lee@starlabs.sg>
+To: w@1wt.eu
+Cc: info@starlabs.sg,
+	security@kernel.org,
+	acme@kernel.org,
+	mingo@redhat.com,
+	namhyung@kernel.org,
+	peterz@infradead.org,
+	Lee Jia Jie <jiajie.lee@starlabs.sg>,
+	stable@vger.kernel.org
+Subject: [PATCH] perf/aux: Fix page UAF in map_range()
+Date: Fri, 10 Jul 2026 17:33:21 +0800
+Message-ID: <20260710093321.14764-1-jiajie.lee@starlabs.sg>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <alBkCyY6VCbtWW0z@1wt.eu>
+References: <alBkCyY6VCbtWW0z@1wt.eu>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260710-work-binfmt_misc-locking-v3-3-a162f7cb58d6@kernel.org>
-References: <20260710-work-binfmt_misc-locking-v3-0-a162f7cb58d6@kernel.org>
-In-Reply-To: <20260710-work-binfmt_misc-locking-v3-0-a162f7cb58d6@kernel.org>
-To: linux-fsdevel@vger.kernel.org
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, 
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
- linux-mm@kvack.org, Farid Zakaria <farid.m.zakaria@gmail.com>, 
- jannh@google.com, stable@vger.kernel.org
-X-Mailer: b4 0.16-dev-4217c
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2408; i=brauner@kernel.org;
- h=from:subject:message-id; bh=LJghwtw/rZdPZpzGD37v4e9liYjTcIOPdSBYtvPd6LM=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQF7IkLu1Tdkxr3luHWi29BHPxrVucsefmc+cTOA490o
- jfVJmZe6ChlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZjIjJOMDCcn+nFPWZjX5ePN
- x7z6tcfrj3NOL9yf+NnnVoTVrgXrSvcyMjQHXBAQvhmS2lkjH2+2O7VxgfSVQKvfBTFB2SnZP37
- 48AMA
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.06 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[starlabs-sg.20251104.gappssmtp.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[starlabs.sg : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-273176-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[zeniv.linux.org.uk,kernel.org,suse.cz,kvack.org,gmail.com,google.com,vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:linux-fsdevel@vger.kernel.org,m:viro@zeniv.linux.org.uk,m:brauner@kernel.org,m:jack@suse.cz,m:linux-mm@kvack.org,m:farid.m.zakaria@gmail.com,m:jannh@google.com,m:stable@vger.kernel.org,m:faridmzakaria@gmail.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[brauner@kernel.org,stable@vger.kernel.org];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:w@1wt.eu,m:info@starlabs.sg,m:security@kernel.org,m:acme@kernel.org,m:mingo@redhat.com,m:namhyung@kernel.org,m:peterz@infradead.org,m:jiajie.lee@starlabs.sg,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[jiajie.lee@starlabs.sg,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-273177-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jiajie.lee@starlabs.sg,stable@vger.kernel.org];
 	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[brauner@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[starlabs-sg.20251104.gappssmtp.com:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,starlabs-sg.20251104.gappssmtp.com:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5E7FD739424
+X-Rspamd-Queue-Id: E6DEA739486
 
-The registration string starts with a user chosen delimiter that
-separates the individual fields. So that the field parsers terminate
-even on a truncated string create_entry() pads the buffer with that
-same delimiter:
+map_range() reads rb->aux_pages[], rb->aux_nr_pages and rb->aux_pgoff via
+perf_mmap_to_page() while holding only event->mmap_mutex. Those fields are
+serialized by rb->aux_mutex, and mmap_mutex is per event.
 
-	memset(buf + count, del, 8);
+Thus, two events sharing one rb via PERF_EVENT_IOC_SET_OUTPUT can race
+rb_alloc_aux() with map_range(), leading to a page-UAF scenario as follows:
 
-Most fields are scanned for the delimiter with strchr()/scanarg() and
-happily stop on the padding. The flags field is different: instead of
-scanning for the delimiter check_special_flags() consumes the flag
-characters 'P', 'O', 'C' and 'F' and stops at the first byte that is
-none of them, relying on the trailing delimiter to end the scan.
+CPU 0                           CPU 1
+===============================================================
+rb_alloc_aux()                  map_range()
+[1]: allocate rb->aux_pages[0]
+[2]: rb->aux_nr_pages++
+                                [3]: perf_mmap_to_page()
+                                       returns rb->aux_pages[0]
+                                [4]: map it as VM_PFNMAP
+[5]: rb->aux_pgoff = 1
 
-If the delimiter is itself a flag character the padding no longer acts
-as a terminator. The scan swallows all eight padding bytes and keeps
-reading past the end of the allocation until it hits a byte that is
-not a flag character. For example registering
+munmap the page
+[6]: free rb->aux_pages[0]
+===============================================================
 
-	PaPEPPxPPiP
+Pages mapped as VM_PFNMAP have no refcount protection, so CPU 1 holds a
+mapping to a freed physical frame.
 
-with 'P' as the delimiter (name "a", type extension, magic "x",
-interpreter "i", empty flags) leaves the flag scan running off the end
-of the buffer. The registration is rejected in the end because the
-parser does not stop exactly at buf + count, but only after the out of
-bounds read has already happened. With an unlucky allocation layout the
-scan can walk into an unmapped page; under KASAN it is reported as a
-slab out of bounds read. binfmt_misc mounts are available to
-unprivileged users in a user namespace so the read is reachable without
-privileges.
+Fix this by taking rb->aux_mutex across the page walk in map_range().
 
-Reject a delimiter that is one of the flag characters up front. Such a
-registration was always rejected anyway, only after the out of bounds
-read, so no valid registration string changes meaning.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Fixes: b709eb872e19 ("perf: map pages in advance")
 Cc: stable@vger.kernel.org
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+Signed-off-by: Lee Jia Jie <jiajie.lee@starlabs.sg>
 ---
- fs/binfmt_misc.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ kernel/events/core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/binfmt_misc.c b/fs/binfmt_misc.c
-index 24142859658c..b7664d90eb8f 100644
---- a/fs/binfmt_misc.c
-+++ b/fs/binfmt_misc.c
-@@ -385,6 +385,10 @@ static Node *create_entry(const char __user *buffer, size_t count)
- 
- 	pr_debug("register: delim: %#x {%c}\n", del, del);
- 
-+	/* A flag-char delimiter runs the flag scan off the buffer. */
-+	if (del == 'P' || del == 'O' || del == 'C' || del == 'F')
-+		goto einval;
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index d7f3e2c2ecb1..ba5bd6a78fe7 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -7150,6 +7150,8 @@ static int map_range(struct perf_buffer *rb, struct vm_area_struct *vma)
+ 	int err = 0;
+ 	unsigned long pagenum;
+
++	guard(mutex)(&rb->aux_mutex);
 +
- 	/* Pad the buffer with the delim to simplify parsing below. */
- 	memset(buf + count, del, 8);
- 
-
--- 
-2.53.0
-
+ 	/*
+ 	 * We map this as a VM_PFNMAP VMA.
+ 	 *
 
