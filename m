@@ -1,391 +1,154 @@
-Return-Path: <stable+bounces-273223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273225-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id bt0MIdbqUGqq8QIAu9opvQ
-	(envelope-from <stable+bounces-273223-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 14:51:34 +0200
+	id ZLmiN0frUGq/8QIAu9opvQ
+	(envelope-from <stable+bounces-273225-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 14:53:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD5AA73AED8
-	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 14:51:33 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5393673AF0F
+	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 14:53:27 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=intel.com header.s=Intel header.b="bu5YzHf/";
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273223-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-273223-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Vabxe2pX;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273225-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273225-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4269630247D6
-	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 12:45:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C7FDD301C97F
+	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 12:50:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 877FE403EAE;
-	Fri, 10 Jul 2026 12:45:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41DD542A78C;
+	Fri, 10 Jul 2026 12:50:53 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DC034279EA
-	for <stable@vger.kernel.org>; Fri, 10 Jul 2026 12:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF70742A160
+	for <stable@vger.kernel.org>; Fri, 10 Jul 2026 12:50:51 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783687530; cv=none; b=ibwd4iPXbWuakoBaRX++GU9oLtu2F83WVFfZRZyoga/iwIXC93Nepqeu8yMms9rVYWu6D21IIo4uL1RT4fg1ezMyIDvl64TjLV4aai1uQqifzCKzjKmdSZ8xEZikY7S9dTMI5EccCba3uUeeJW/PT6VxilW9OGZo06nrbtbbveU=
+	t=1783687853; cv=none; b=ufbrnBHxta8yHXBz0A/vwKNoZP4jt//Sy3XAeQP6lbpvPzh5t6jCkWgif+jJR5Wp7b7iOmEr6hcu0NnpnuXfdN93pjjtpIEnTUxrN4ak3RGaG03xkl4Okj2lqvgxlVJPjioRbtagH2lup7Z4vvbVxihAUJjTNngeaMYouQhBF9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783687530; c=relaxed/simple;
-	bh=SiRxxfaKrEixWdVWrqPKMz9ASaj812XS3eMCabOJoz0=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=kbfwv6pvtZULk0/mPmou2bum9KY5suRwzfOOja+6bk3Yl3FvVD/J1V1crg9uCWJ4PGcIgV+fLBmxfe6/n9TDXrpxuH8oT7mq0qjwUWHdeE7a5vy7yQgIasCIIvQqowNIB1pIPYJOhccwK7DfEqX4gB3GXCimJfnsAN1GyNO7LCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bu5YzHf/; arc=none smtp.client-ip=198.175.65.19
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1783687529; x=1815223529;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=SiRxxfaKrEixWdVWrqPKMz9ASaj812XS3eMCabOJoz0=;
-  b=bu5YzHf/48FjlWO5H4RLcIsWQbKJ2l6IETyXFhVB0q4fITshISEgdE2v
-   QiySc+eFWFGA76qnncZ9fVdY5Qx+MuqiKFSgPPWwFZHivaFyJLROaBZDQ
-   d/dPelu+CP1/6lYHkH/S27Lt9AHU94iydxb3i0xhHjTsk/56dLfpUDEUa
-   LUxd8OfSdLZf2ySNl7mqpP/FkkebBpfObXBN3Mb6Sv4HML2fTbx50fgAr
-   493l02IwM5iV1yV1LsmvgE1xlQpOI1wkoZKv2MHY+PB3utbudsBFhDaoW
-   BCA4dLBwCexyc706puH2/3CjNZGFDxOusow3DmFc9Gqn7z6ZsYUXghGUj
-   A==;
-X-CSE-ConnectionGUID: 4fJYjA5SQxG0Frq5vG9czA==
-X-CSE-MsgGUID: /UwqhapiQIaaOhVDyWWkvw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="84354250"
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
-   d="scan'208";a="84354250"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2026 05:45:28 -0700
-X-CSE-ConnectionGUID: PU2WZrMWS/aci11mZ/1A2Q==
-X-CSE-MsgGUID: yn/Bt1WwRcq1rvkwku7eoQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
-   d="scan'208";a="253147081"
-Received: from fpallare-mobl4.ger.corp.intel.com (HELO [10.245.244.151]) ([10.245.244.151])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2026 05:45:27 -0700
-Message-ID: <5f6b7649d0bcc6bc37691708d985bdb558a66adb.camel@linux.intel.com>
-Subject: Re: [PATCH] drm/xe: Hold a dma-buf reference for imported BOs
-From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
-To: Nitin Gote <nitin.r.gote@intel.com>, intel-xe@lists.freedesktop.org
-Cc: stable@vger.kernel.org, Christian Konig <christian.koenig@amd.com>, 
- Matthew Auld <matthew.auld@intel.com>
-Date: Fri, 10 Jul 2026 14:45:24 +0200
-In-Reply-To: <20260710093726.43324-2-nitin.r.gote@intel.com>
-References: <20260710093726.43324-2-nitin.r.gote@intel.com>
-Organization: Intel Sweden AB, Registration Number: 556189-6027
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	s=arc-20240116; t=1783687853; c=relaxed/simple;
+	bh=ueIgM9Zedjth2EpM5bWLNhuGCU0XWXsv4zidLgqXdwQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=gOJ4schdrOEdcUHYr3RNDzFseGdrGWSDmOVoMHyzE1VRQ1Lz8xghqx3Z8EQtkvfsTyk1toFhsqIP6AP4dJ6sgcTbVdy5V/7Cfd/3p/sizfdKJRjGhtLz/nNgv8k0OIN/4ky9314VQWKwCd7dap6ismikHNoeF89+9I2h3Eizey8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Vabxe2pX; arc=none smtp.client-ip=209.85.214.175
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2ce98cb8165so692475ad.1
+        for <stable@vger.kernel.org>; Fri, 10 Jul 2026 05:50:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783687851; x=1784292651; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Yps81SWeSsxnRHs1BlhSPYN6Oe99kcCdL3BlNrpVj74=;
+        b=Vabxe2pXoq3icPAfdr1hO+kiwBT5kJGJPnvhbe+5MmWigyYGEpMsv9CJlc/0RR7BoB
+         J/zZq+n4UXx7eYDjlqFxWH60Nebj0mZvAT80GUmk9eP+Vp55lw8XFaAF+Ee+XPG23lxw
+         Re+So7uYwuAlmE2OGvD6VqSE6IAyBzlEFikxsBszTzRLJlTR6RFjbl3aVJ0xO1UMQzJu
+         Pp9M6vh3cnkPG+Z3uy6GQpvww9QCr7f2uHSckhQAJjBbOB30ZNV4w/7B5IKgqJXBuodD
+         tVXu2z/G/mDFke3JRZaeOZCKwE8Na75QpUoCa/v1H7Jp5TqdMSQJ9w7FMdbx4O4ZloIG
+         V1pQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783687851; x=1784292651;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Yps81SWeSsxnRHs1BlhSPYN6Oe99kcCdL3BlNrpVj74=;
+        b=OxtdTyieDKRkNuFt91oGoFtVl/aWAhDvPzMQOqK4/dBcKEBoiYj9YKkJFIyxsDCpja
+         ggjm9++RTkYX9Ku/gDUdrRbVimzzDRR3QEEUjaBFYzv87CC4KsVfZeRgH4cyyKVeXW9r
+         VcgtzYM777n7+D2XJxckteDMkf4a7b+xhHFqojgOMIQ51tcHl+YIntBun5q/2dS2JMFj
+         EnE1gM7GrKfGdjHDjpIHK5hAH75B59jW8lPBkvuKmBkQfX4fuOpRhU49PHHqPYTps4h0
+         Aj1I4wKRcq2AXUuXAhsIZp5AzDu8P6/A3swd60r3fhlfBDMwRYKJDmvNbffYnRplbrf3
+         09ww==
+X-Gm-Message-State: AOJu0YwWta+div9meO+uFY8v/FHgLc1o140DcxpsnPi6k+kkIFRc5B1s
+	rG9CilgXvj6YFf8Ku7pr85G9BCEdDGSJ3XoDDd1UZ/PoCJS/bNmOvGdonHaju5W0
+X-Gm-Gg: AfdE7cmOYaCJ1fb5qJWSHXUI+zDvTCKb+1Y3RKMbmTpjImo7ME25ta0H5NRvbYb/mR0
+	FV4u1NmcD3i5TvEFrwhU3nIDNF01XMwH8lx2wMqdEiTp5jPlNa5nskYdAAqZtYXerQwsKggJwkg
+	pgebBE0LkP4/ihcOG+FPIOj20iyh+65Ei+SwvNWAISQoKLka7IxklDI0EqAyNmEnGlJ/unuIyRy
+	L3skX17JsmwhQUD1PImccdTE15+xPkG0wocfMC1HmVwNsf9WW8TL9/ANft0732yvOsRW2S8hoU2
+	LhrhCETQfdl7jA9wyb0wMMwOmxjPB65Y/gaADcp/0h0Y1t2Xqxisp1j2BjMjlU9/hykEb/BRjgw
+	TLkxSc/ryXo1qrk0R9Kerea/emsN88tHK4y4OoAIuFtTOuTgTE2pRoG7QCJOEky28/B/8QrsMmb
+	TGDANcDc4o0USDG8f2mLvL8tbAxiAcCdnTw2nibknamYuFzmpncQQZlMshCd6P0Mpmz76pZ28lU
+	Et42yeinuWNrnmne90oqdqSh6XORIW7xApXR4Ppvcd0v+sT
+X-Received: by 2002:a17:902:db12:b0:2c9:d56d:afa3 with SMTP id d9443c01a7336-2ce8292bf9amr34395325ad.15.1783687851070;
+        Fri, 10 Jul 2026 05:50:51 -0700 (PDT)
+Received: from ip-172-31-54-240.ap-northeast-2.compute.internal (ec2-3-38-221-237.ap-northeast-2.compute.amazonaws.com. [3.38.221.237])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc9bf7678sm60145945ad.20.2026.07.10.05.50.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Jul 2026 05:50:50 -0700 (PDT)
+From: Hyokyung Kim <pulpannie@gmail.com>
+To: stable@vger.kernel.org
+Cc: Sasha Levin <sashal@kernel.org>,
+	"Michael S . Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>
+Subject: Re: [PATCH 6.6.y] virtio_net: Support dynamic rss indirection table size
+Date: Fri, 10 Jul 2026 12:49:12 +0000
+Message-ID: <20260710124912.5277-1-pulpannie@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <CAGJdW3H0Bv31W5DNaHstXyYxMcVFUnOmzAJ9LAjZOANk1y67OQ@mail.gmail.com>
+References: <CAGJdW3H0Bv31W5DNaHstXyYxMcVFUnOmzAJ9LAjZOANk1y67OQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-5.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-273225-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:nitin.r.gote@intel.com,m:intel-xe@lists.freedesktop.org,m:stable@vger.kernel.org,m:christian.koenig@amd.com,m:matthew.auld@intel.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[thomas.hellstrom@linux.intel.com,stable@vger.kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	HAS_ORG_HEADER(0.00)[];
-	TAGGED_FROM(0.00)[bounces-273223-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER(0.00)[pulpannie@gmail.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:sashal@kernel.org,m:mst@redhat.com,m:jasowang@redhat.com,s:lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[thomas.hellstrom@linux.intel.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[intel.com:+];
-	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pulpannie@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	ALIAS_RESOLVED(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.intel.com:mid,linux.intel.com:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email,intel.com:email,intel.com:dkim,gitlab.freedesktop.org:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CD5AA73AED8
+X-Rspamd-Queue-Id: 5393673AF0F
 
-On Fri, 2026-07-10 at 15:07 +0530, Nitin Gote wrote:
-> An imported dma-buf BO is created as a ttm_bo_type_sg BO whose
-> reservation object is the exporter's dma_buf->resv. The importer,
-> however, only takes a dma-buf reference after a successful
-> dma_buf_dynamic_attach(). Until then nothing keeps the exporter
-> alive,
-> so if the exporter is freed while the BO still references its resv, a
-> later access to that resv is a use-after-free:
->=20
-> =C2=A0 Oops: general protection fault, probably for non-canonical address
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0x6b6b6b6b6b6b6b9c
-> =C2=A0 Workqueue: ttm ttm_bo_delayed_delete [ttm]
-> =C2=A0 RIP: 0010:mutex_can_spin_on_owner+0x3f/0xc0
->=20
-> This can be reached on two paths:
->=20
-> =C2=A0- dma_buf_dynamic_attach() fails, or
-> =C2=A0- ttm_bo_init_reserved() fails during BO creation.
->=20
-> In both cases the BO already has bo->base.resv pointing at the
-> exporter
-> resv, and sg BOs are always torn down via ttm_bo_delayed_delete(),
-> which
-> locks bo->base.resv asynchronously - potentially after the exporter
-> has
-> been freed.
->=20
-> Take the dma-buf reference in xe_bo_init_locked(), before
-> ttm_bo_init_reserved(), so it also covers a creation failure there,
-> and
-> release it in xe_ttm_bo_destroy(). The reference is held for the
-> whole
-> BO lifetime, keeping the shared resv alive on every path.
->=20
-> Closes:
-> https://gitlab.freedesktop.org/drm/xe/kernel/-/work_items/8023
-> Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel
-> GPUs")
-> Cc: stable@vger.kernel.org
-> Cc: Thomas Hellstrom <thomas.hellstrom@linux.intel.com>
-> Cc: Christian Konig <christian.koenig@amd.com>
-> Cc: Matthew Auld <matthew.auld@intel.com>
-> Suggested-by: Thomas Hellstrom <thomas.hellstrom@linux.intel.com>
-> Assisted-by: GitHub_Copilot:claude-sonnet-4.6
-> Signed-off-by: Nitin Gote <nitin.r.gote@intel.com>
-> ---
-> Thank you Thomas for suggesting this simpler approach over the
-> earlier
-> TTM/LRU handling.
->=20
-> v6:
-> =C2=A0- Reworked the fix based on Thomas' suggestion. Instead of the TTM
-> resv
-> =C2=A0=C2=A0 individualization (v1-v5) plus the xe off-LRU/placement hand=
-ling
-> (v5),
-> =C2=A0=C2=A0 just hold a dma-buf reference for the imported BO lifetime s=
-o the
-> =C2=A0=C2=A0 shared resv can never be freed while the BO still references=
- it.
-> =C2=A0=C2=A0 Single xe patch, no TTM change. (Thomas)
-> =C2=A0- Take the reference in xe_bo_init_locked() before
-> ttm_bo_init_reserved()
-> =C2=A0=C2=A0 so a TTM creation failure is covered too (Thomas).
-> =C2=A0- Dropped the v5 series (drm/ttm + drm/xe off-LRU); the off-LRU
-> approach
-> =C2=A0=C2=A0 also regressed in CI BAT via ttm_bo_pipeline_gutting() creat=
-ing a
-> ghost
-> =C2=A0=C2=A0 BO that outlived the exporter.
-> =C2=A0=C2=A0 Link to v5: https://patchwork.freedesktop.org/series/169984/
-> =C2=A0=C2=A0=20
-> v5:
-> =C2=A0- Add drm/xe patch to keep imported sg BOs off the LRU before attac=
-h
-> =C2=A0=C2=A0 succeeds; the TTM fix alone is not sufficient for xe if the =
-BO is
-> =C2=A0=C2=A0 already LRU-visible. (Thomas)
-> =C2=A0=C2=A0 v4 patch:
-> =C2=A0=C2=A0
-> https://patchwork.freedesktop.org/patch/736663/?series=3D169129&rev=3D2
-> =C2=A0 - Patch 1 (drm/ttm) carries Christian's Reviewed-by from v4.
->=20
-> v4:
-> =C2=A0- Moved import_attach check to after dma_resv_copy_fences() so
-> fences
-> =C2=A0=C2=A0 are copied before returning for successful imports (Thomas).
-> =C2=A0- Removed exporter-alive claim from commit message (Thomas).
->=20
-> v3:
-> =C2=A0- Dropped the xe-side reordering approach since importer_priv must
-> be
-> =C2=A0=C2=A0 valid when dma_buf_dynamic_attach() publishes the attachment=
-.
-> =C2=A0- Per Christian's suggestion on the v1 thread, keyed the check on
-> =C2=A0=C2=A0 import_attach rather than removing the sg guard entirely.
-> =C2=A0- Fixes both xe and amdgpu in a single TTM patch.
+Hi Sasha,
 
-We typically place the changelog above the ___ for xe, so it is kept in
-the commit message. And in the reverse order so v3 comes first.
+Forgot to include the test details - 
+sending a follow up e-mail just in case it helps!
+ 
+Tested with KASAN (inline) under QEMU
+(guests 6.6.144 and 6.1.177), using a virtio-net device that advertises
+rss_max_indirection_table_length=512, i.e. larger than the driver's
+128-entry VIRTIO_NET_RSS_MAX_TABLE_LEN.
 
-With that fixed,
-Reviewed-by: Thomas Hellstr=C3=B6m <thomas.hellstrom@linux.intel.com>
+Boot time testing:
+  - unpatched: KASAN slab-out-of-bounds write in virtnet_probe (both trees)
+  - patched: clean, no KASAN report.
 
+Runtime testing:
+  - patched: rewriting the full 512-entry table via ETHTOOL_SRXFHINDIR
+             (reset and explicit full table) reports no KASAN bug.
 
->=20
->=20
-> =C2=A0drivers/gpu/drm/xe/xe_bo.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 24=
- ++++++++++++++++++++----
-> =C2=A0drivers/gpu/drm/xe/xe_bo.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=
-=A0 3 ++-
-> =C2=A0drivers/gpu/drm/xe/xe_bo_types.h |=C2=A0 2 ++
-> =C2=A0drivers/gpu/drm/xe/xe_dma_buf.c=C2=A0 |=C2=A0 2 +-
-> =C2=A04 files changed, 25 insertions(+), 6 deletions(-)
->=20
-> diff --git a/drivers/gpu/drm/xe/xe_bo.c b/drivers/gpu/drm/xe/xe_bo.c
-> index 85e6d9a0f575..ae730bd6f4b2 100644
-> --- a/drivers/gpu/drm/xe/xe_bo.c
-> +++ b/drivers/gpu/drm/xe/xe_bo.c
-> @@ -1349,7 +1349,7 @@ int xe_bo_notifier_prepare_pinned(struct xe_bo
-> *bo)
-> =C2=A0		backup =3D xe_bo_init_locked(xe, NULL, NULL, bo-
-> >ttm.base.resv, NULL, xe_bo_size(bo),
-> =C2=A0					=C2=A0=C2=A0
-> DRM_XE_GEM_CPU_CACHING_WB, ttm_bo_type_kernel,
-> =C2=A0					=C2=A0=C2=A0 XE_BO_FLAG_SYSTEM |
-> XE_BO_FLAG_NEEDS_CPU_ACCESS |
-> -					=C2=A0=C2=A0 XE_BO_FLAG_PINNED,
-> &exec);
-> +					=C2=A0=C2=A0 XE_BO_FLAG_PINNED, NULL,
-> &exec);
-> =C2=A0		if (IS_ERR(backup)) {
-> =C2=A0			drm_exec_retry_on_contention(&exec);
-> =C2=A0			ret =3D PTR_ERR(backup);
-> @@ -1490,7 +1490,7 @@ int xe_bo_evict_pinned(struct xe_bo *bo)
-> =C2=A0						=C2=A0=C2=A0 xe_bo_size(bo),
-> =C2=A0						=C2=A0=C2=A0
-> DRM_XE_GEM_CPU_CACHING_WB, ttm_bo_type_kernel,
-> =C2=A0						=C2=A0=C2=A0 XE_BO_FLAG_SYSTEM
-> | XE_BO_FLAG_NEEDS_CPU_ACCESS |
-> -						=C2=A0=C2=A0
-> XE_BO_FLAG_PINNED, &exec);
-> +						=C2=A0=C2=A0
-> XE_BO_FLAG_PINNED, NULL, &exec);
-> =C2=A0			if (IS_ERR(backup)) {
-> =C2=A0				drm_exec_retry_on_contention(&exec);
-> =C2=A0				ret =3D PTR_ERR(backup);
-> @@ -1826,6 +1826,8 @@ static void xe_ttm_bo_destroy(struct
-> ttm_buffer_object *ttm_bo)
-> =C2=A0
-> =C2=A0	if (bo->ttm.base.import_attach)
-> =C2=A0		drm_prime_gem_destroy(&bo->ttm.base, NULL);
-> +	if (bo->dma_buf)
-> +		dma_buf_put(bo->dma_buf);
-> =C2=A0	drm_gem_object_release(&bo->ttm.base);
-> =C2=A0
-> =C2=A0	xe_assert(xe, list_empty(&ttm_bo->base.gpuva.list));
-> @@ -2283,6 +2285,8 @@ void xe_bo_free(struct xe_bo *bo)
-> =C2=A0 * @cpu_caching: The cpu caching used for system memory backing
-> store.
-> =C2=A0 * @type: The TTM buffer object type.
-> =C2=A0 * @flags: XE_BO_FLAG_ flags.
-> + * @dma_buf: The dma-buf to reference for the BO lifetime (imported
-> BOs),
-> + * or NULL.
-> =C2=A0 * @exec: The drm_exec transaction to use for exhaustive eviction.
-> =C2=A0 *
-> =C2=A0 * Initialize or create an xe buffer object. On failure, any
-> allocated buffer
-> @@ -2294,7 +2298,8 @@ struct xe_bo *xe_bo_init_locked(struct
-> xe_device *xe, struct xe_bo *bo,
-> =C2=A0				struct xe_tile *tile, struct
-> dma_resv *resv,
-> =C2=A0				struct ttm_lru_bulk_move *bulk,
-> size_t size,
-> =C2=A0				u16 cpu_caching, enum ttm_bo_type
-> type,
-> -				u32 flags, struct drm_exec *exec)
-> +				u32 flags, struct dma_buf *dma_buf,
-> +				struct drm_exec *exec)
-> =C2=A0{
-> =C2=A0	struct ttm_operation_ctx ctx =3D {
-> =C2=A0		.interruptible =3D true,
-> @@ -2383,6 +2388,17 @@ struct xe_bo *xe_bo_init_locked(struct
-> xe_device *xe, struct xe_bo *bo,
-> =C2=A0	placement =3D (type =3D=3D ttm_bo_type_sg ||
-> =C2=A0		=C2=A0=C2=A0=C2=A0=C2=A0 bo->flags & XE_BO_FLAG_DEFER_BACKING) ?
-> &sys_placement :
-> =C2=A0		&bo->placement;
-> +
-> +	/*
-> +	 * For imported BOs, keep the exporter dma-buf alive for the
-> BO
-> +	 * lifetime. Taken before ttm_bo_init_reserved() to also
-> cover a
-> +	 * creation failure there. Released in xe_ttm_bo_destroy().
-> +	 */
-> +	if (dma_buf) {
-> +		get_dma_buf(dma_buf);
-> +		bo->dma_buf =3D dma_buf;
-> +	}
-> +
-> =C2=A0	err =3D ttm_bo_init_reserved(&xe->ttm, &bo->ttm, type,
-> =C2=A0				=C2=A0=C2=A0 placement, alignment,
-> =C2=A0				=C2=A0=C2=A0 &ctx, NULL, resv,
-> xe_ttm_bo_destroy);
-> @@ -2500,7 +2516,7 @@ __xe_bo_create_locked(struct xe_device *xe,
-> =C2=A0			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 vm && !xe_vm_in_fault_mode(=
-vm) &&
-> =C2=A0			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 flags & XE_BO_FLAG_USER ?
-> =C2=A0			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 &vm->lru_bulk_move : NULL, =
-size,
-> -			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 cpu_caching, type, flags, exec);
-> +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 cpu_caching, type, flags, NULL,
-> exec);
-> =C2=A0	if (IS_ERR(bo))
-> =C2=A0		return bo;
-> =C2=A0
-> diff --git a/drivers/gpu/drm/xe/xe_bo.h b/drivers/gpu/drm/xe/xe_bo.h
-> index 6340317f7d2e..7ae1d9ac0574 100644
-> --- a/drivers/gpu/drm/xe/xe_bo.h
-> +++ b/drivers/gpu/drm/xe/xe_bo.h
-> @@ -118,7 +118,8 @@ struct xe_bo *xe_bo_init_locked(struct xe_device
-> *xe, struct xe_bo *bo,
-> =C2=A0				struct xe_tile *tile, struct
-> dma_resv *resv,
-> =C2=A0				struct ttm_lru_bulk_move *bulk,
-> size_t size,
-> =C2=A0				u16 cpu_caching, enum ttm_bo_type
-> type,
-> -				u32 flags, struct drm_exec *exec);
-> +				u32 flags, struct dma_buf *dma_buf,
-> +				struct drm_exec *exec);
-> =C2=A0struct xe_bo *xe_bo_create_locked(struct xe_device *xe, struct
-> xe_tile *tile,
-> =C2=A0				=C2=A0 struct xe_vm *vm, size_t size,
-> =C2=A0				=C2=A0 enum ttm_bo_type type, u32 flags,
-> diff --git a/drivers/gpu/drm/xe/xe_bo_types.h
-> b/drivers/gpu/drm/xe/xe_bo_types.h
-> index fcc63ae3f455..e45f24301050 100644
-> --- a/drivers/gpu/drm/xe/xe_bo_types.h
-> +++ b/drivers/gpu/drm/xe/xe_bo_types.h
-> @@ -36,6 +36,8 @@ struct xe_bo {
-> =C2=A0	struct xe_bo *backup_obj;
-> =C2=A0	/** @parent_obj: Ref to parent bo if this a backup_obj */
-> =C2=A0	struct xe_bo *parent_obj;
-> +	/** @dma_buf: Imported dma-buf ref to keep its resv alive.
-> */
-> +	struct dma_buf *dma_buf;
-> =C2=A0	/** @flags: flags for this buffer object */
-> =C2=A0	u32 flags;
-> =C2=A0	/** @vm: VM this BO is attached to, for extobj this will be
-> NULL */
-> diff --git a/drivers/gpu/drm/xe/xe_dma_buf.c
-> b/drivers/gpu/drm/xe/xe_dma_buf.c
-> index 8a920e58245c..bf0728838ead 100644
-> --- a/drivers/gpu/drm/xe/xe_dma_buf.c
-> +++ b/drivers/gpu/drm/xe/xe_dma_buf.c
-> @@ -302,7 +302,7 @@ xe_dma_buf_create_obj(struct drm_device *dev,
-> struct dma_buf *dma_buf)
-> =C2=A0
-> =C2=A0		bo =3D xe_bo_init_locked(xe, NULL, NULL, resv, NULL,
-> dma_buf->size,
-> =C2=A0				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0, /* Will require 1way or
-> 2way for vm_bind */
-> -				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ttm_bo_type_sg,
-> XE_BO_FLAG_SYSTEM, &exec);
-> +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ttm_bo_type_sg,
-> XE_BO_FLAG_SYSTEM, dma_buf, &exec);
-> =C2=A0		drm_exec_retry_on_contention(&exec);
-> =C2=A0		if (IS_ERR(bo)) {
-> =C2=A0			ret =3D PTR_ERR(bo);
+Thanks,
+Annie Kim
 
