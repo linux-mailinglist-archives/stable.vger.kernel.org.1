@@ -1,159 +1,159 @@
-Return-Path: <stable+bounces-273163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273165-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id OMJ5Gbq4UGoL4AIAu9opvQ
-	(envelope-from <stable+bounces-273163-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 11:17:46 +0200
+	id UNb7N4a9UGqh4QIAu9opvQ
+	(envelope-from <stable+bounces-273165-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 11:38:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF251738F1D
-	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 11:17:45 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D493D739261
+	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 11:38:13 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BwL1XnJb;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=xsSEjR12;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273163-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-273163-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273165-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273165-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5B531304F2D4
-	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 08:58:40 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DBC3730EF88D
+	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 09:07:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 111D03C9895;
-	Fri, 10 Jul 2026 08:58:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6BD23D6CCD;
+	Fri, 10 Jul 2026 09:07:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E72243BBFCC
-	for <stable@vger.kernel.org>; Fri, 10 Jul 2026 08:58:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 443EE3D47D3
+	for <stable@vger.kernel.org>; Fri, 10 Jul 2026 09:07:17 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783673884; cv=none; b=G6gq751ED6+3tN48O6bBspArQOJhiEkXFAyZcmVKEBJmtJOSX7Oxydqn53CT54im6GabAAPpm8t0vtJPUX9Ctl37eMAELAd2HS2hFz6gOrzJUx8OkurO7vhlDLTndsi9up4WKRZWadmkVnaMS/WISBSxzWvlT0B6AdWt5xIWm1I=
+	t=1783674438; cv=none; b=o0dSUNcOzBdCaJAVI7KubrdMaNrdhg2Iu+POOEUZ2zxRgOHP6bxGLyaOw7b1hSAUA5QXt42yovj886dCGpyMkP+yEdXKPHpdqMaQuHa07pinagKMsmrt99a5JESnqQE/44xLDIpm9t+l3oHto2syilE84FhFn48MWp+4okBrF6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783673884; c=relaxed/simple;
-	bh=8H/HsdoetcAOJZVv1k4ryiuDTR/E+4atDCtXI+XvUoA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nyvF29wcKoTBUqOe7WnurNX7IjgwpXuitMZeNBYQPnoqXKG6KP2DJtU33rHQYXV32z1zJbAgz3QmW6J8Lc99l+Bei6AQtmZhBbdjdOb2DpwN4PIUXrVrYcZ8pTL8a8QzA5pI+L8aYTFFlusXB/v9HyhALOct+qN3faOVpaDrwCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=BwL1XnJb; arc=none smtp.client-ip=95.215.58.186
-Date: Fri, 10 Jul 2026 10:57:50 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783673881;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=V4lipBWZFiKZbcBCGrGNqJAdNSbDlvvBaJ40rsLV1ys=;
-	b=BwL1XnJbI6qMhQVrMX9TiyLufLQn86s9X6401ev1gDRrnnT06dyPVqMOb73oRKpqsVGKrZ
-	h43+rJY1hNASuum6AxXyJc4SokOths6/y9N+J9ohWW19GL8EARMDr5s6KJX1QKXEN07avc
-	E3qc6rLE77JlG1smqFQ1NzElKY8jqEo=
+	s=arc-20240116; t=1783674438; c=relaxed/simple;
+	bh=jHmMQll1ae+qhtp0WSZs4AaXAT0OmttERPZUaIEX7ds=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=PB7/RnRP1CLwVSx3M723NE/1/rY7d2gpv7nMIxhvSjr69FFGNGAruQtkV5dWd4mID4+3osJM6tr6Bax6wODMEOKaWtQ3NmO3XPyzp0yTziBemkyiv+7wXPIqxZZRUiL+8gh4gyEJHeGRlzT5k+ad6eV+hOiJu3Et9a/OuJa/loA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=xsSEjR12; arc=none smtp.client-ip=91.218.175.177
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Thorsten Blum <thorsten.blum@linux.dev>
-To: Binbin Wu <binbin.wu@linux.intel.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	stable@vger.kernel.org, seanjc@google.com, pbonzini@redhat.com,
-	kas@kernel.org, rick.p.edgecombe@intel.com
-Subject: Re: [PATCH v2] KVM: TDX: Reject concurrent change to CPUID entry
- count
-Message-ID: <alC0DpNDh7SrPc9E@linux.dev>
-References: <20260710035324.3170534-1-binbin.wu@linux.intel.com>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783674435;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IXP2s9du0gXWzN+9G9A/aXarqaLKl1ksW2pNWjl9v/E=;
+	b=xsSEjR12R3IRD07Zjk/jDFreAGmdxN3wrXTDR3M5+KgG3GTZLarVoWQVnwInBIS4NlpNzC
+	KPDO4nGRTYVDZmujBS3gU4EXcRxvj1awW0bXauPygKHulywdWIwTJhPXXKpKv3HOl1ZGS3
+	oU6HthHGxxo73mC/VZK/4d/+egiW/5A=
+From: xuanqiang.luo@linux.dev
+To: netdev@vger.kernel.org
+Cc: Xuanqiang Luo <luoxuanqiang@kylinos.cn>,
+	Rasesh Mody <rmody@marvell.com>,
+	Sudarsana Kalluru <skalluru@marvell.com>,
+	GR-Linux-NIC-Dev@marvell.com,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Ivan Vecera <ivecera@redhat.com>,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH net v1 1/3] bna: fix use-after-free on DMA mapping failure
+Date: Fri, 10 Jul 2026 17:05:22 +0800
+Message-ID: <20260710090527.58354-2-xuanqiang.luo@linux.dev>
+In-Reply-To: <20260710090527.58354-1-xuanqiang.luo@linux.dev>
+References: <20260710090527.58354-1-xuanqiang.luo@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260710035324.3170534-1-binbin.wu@linux.intel.com>
+Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-273163-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_SENDER(0.00)[thorsten.blum@linux.dev,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	TAGGED_FROM(0.00)[bounces-273165-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:binbin.wu@linux.intel.com,m:linux-kernel@vger.kernel.org,m:kvm@vger.kernel.org,m:stable@vger.kernel.org,m:seanjc@google.com,m:pbonzini@redhat.com,m:kas@kernel.org,m:rick.p.edgecombe@intel.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[3];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linux.dev:+];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER(0.00)[xuanqiang.luo@linux.dev,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:netdev@vger.kernel.org,m:luoxuanqiang@kylinos.cn,m:rmody@marvell.com,m:skalluru@marvell.com,m:GR-Linux-NIC-Dev@marvell.com,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:ivecera@redhat.com,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:andrew@lunn.ch,s:lists@lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[thorsten.blum@linux.dev,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:from_mime,linux.dev:email,linux.dev:mid,linux.dev:dkim,vger.kernel.org:from_smtp,intel.com:email]
+	FROM_NEQ_ENVFROM(0.00)[xuanqiang.luo@linux.dev,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux.dev:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	MISSING_XM_UA(0.00)[];
+	FROM_NO_DN(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,kylinos.cn:email,linux.dev:from_mime,linux.dev:dkim,linux.dev:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: AF251738F1D
+X-Rspamd-Queue-Id: D493D739261
 
-On Fri, Jul 10, 2026 at 11:53:23AM +0800, Binbin Wu wrote:
-> Reject KVM_TDX_INIT_VM if userspace changes cpuid.nent between the
-> initial read and the subsequent copy of the initialization data.
-> 
-> tdx_td_init() first reads user_data->cpuid.nent to size the flexible
-> kvm_tdx_init_vm copy.  The copied structure also contains cpuid.nent,
-> and that field can differ from the value used to size the allocation if
-> userspace modifies the input concurrently.  setup_tdparams_cpuids() later
-> passes init_vm->cpuid.nent to kvm_find_cpuid_entry2(), which uses it as
-> the array bound for the copied entries.
-> 
-> Require the copied count to match the value used to size the allocation
-> so that CPUID parsing cannot access beyond the entries actually copied.
-> 
-> Fixes: 0bd0a4a1428b ("KVM: TDX: Replace kmalloc + copy_from_user with memdup_user in tdx_td_init()")
-> Reported-by: Sashiko:gemini-3.1-pro-preview
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Binbin Wu <binbin.wu@linux.intel.com>
+From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
 
-LGTM, and thanks for fixing this!
+If dma_map_single() fails in bnad_start_xmit(), the skb is freed, but
+head_unmap->skb was set before the mapping attempt and is not cleared. The
+producer index is not advanced, so later transmissions normally overwrite
+the entry.
 
-Reviewed-by: Thorsten Blum <thorsten.blum@linux.dev>
+However, if the interface is brought down first, bnad_txq_cleanup() scans
+the entire unmap queue, finds the stale pointer, and calls
+bnad_tx_buff_unmap() on it. That function dereferences the freed skb in
+skb_headlen(). Its zero nvecs count is decremented to -1, causing its
+while (nvecs) loop to repeatedly unmap entries around the TX ring and
+potentially hang cleanup.
 
-> ---
-> v2:
-> - Reject the request if mismatch instead overwriting the value. (Thorsten, Rick)
-> - Lump the check into the existing sanity check on the cpuid field. (Sean)
-> - "KVM: x86: TDX:" -> "KVM: TDX:" in the shortlog.
-> 
-> v1:
-> - https://lore.kernel.org/kvm/20260708022937.2465796-1-binbin.wu@linux.intel.com/
-> ---
->  arch/x86/kvm/vmx/tdx.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-> index 6ff1469e91cc..d1af0a752e97 100644
-> --- a/arch/x86/kvm/vmx/tdx.c
-> +++ b/arch/x86/kvm/vmx/tdx.c
-> @@ -2797,7 +2797,11 @@ static int tdx_td_init(struct kvm *kvm, struct kvm_tdx_cmd *cmd)
->  		goto out;
->  	}
->  
-> -	if (init_vm->cpuid.padding) {
-> +	/*
-> +	 * Reject the request if userspace changes cpuid.nent between the
-> +	 * initial read and the subsequent copy.
-> +	 */
-> +	if (init_vm->cpuid.padding || init_vm->cpuid.nent != nr_user_entries) {
->  		ret = -EINVAL;
->  		goto out;
->  	}
-> 
-> base-commit: f1e5ada5ab62dbe32350bc161771c9afc6a896de
-> -- 
-> 2.46.0
-> 
+Set head_unmap->skb after the first DMA mapping succeeds. This prevents the
+stale entry from reaching bnad_tx_buff_unmap().
+
+Fixes: ba5ca7848be0 ("bna: check for dma mapping errors")
+Cc: stable@vger.kernel.org
+Assisted-by: Opencode:deepseek-v4-pro[1m]
+Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+---
+ drivers/net/ethernet/brocade/bna/bnad.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/brocade/bna/bnad.c b/drivers/net/ethernet/brocade/bna/bnad.c
+index 8e19add764db2..8b75004ba7c9d 100644
+--- a/drivers/net/ethernet/brocade/bna/bnad.c
++++ b/drivers/net/ethernet/brocade/bna/bnad.c
+@@ -3006,7 +3006,6 @@ bnad_start_xmit(struct sk_buff *skb, struct net_device *netdev)
+ 	txqent->hdr.wi.reserved = 0;
+ 	txqent->hdr.wi.num_vectors = vectors;
+ 
+-	head_unmap->skb = skb;
+ 	head_unmap->nvecs = 0;
+ 
+ 	/* Program the vectors */
+@@ -3018,6 +3017,7 @@ bnad_start_xmit(struct sk_buff *skb, struct net_device *netdev)
+ 		BNAD_UPDATE_CTR(bnad, tx_skb_map_failed);
+ 		return NETDEV_TX_OK;
+ 	}
++	head_unmap->skb = skb;
+ 	BNA_SET_DMA_ADDR(dma_addr, &txqent->vector[0].host_addr);
+ 	txqent->vector[0].length = htons(len);
+ 	dma_unmap_addr_set(&unmap->vectors[0], dma_addr, dma_addr);
+-- 
+2.43.0
 
