@@ -1,161 +1,175 @@
-Return-Path: <stable+bounces-273150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273151-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id i9gAHWKLUGp01AIAu9opvQ
-	(envelope-from <stable+bounces-273150-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 08:04:18 +0200
+	id ISiEDlCLUGpv1AIAu9opvQ
+	(envelope-from <stable+bounces-273151-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 08:04:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD793737814
-	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 08:04:17 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 180C073780A
+	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 08:04:00 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=cse-iitm-ac-in.20251104.gappssmtp.com header.s=20251104 header.b="Kix/aeOo";
-	dmarc=fail reason="SPF not aligned (relaxed), DKIM not aligned (relaxed)" header.from=iitm.ac.in (policy=none);
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273150-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-273150-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZytSI551;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273151-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273151-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0D72730180AF
-	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 06:03:46 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8557C3011061
+	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 06:03:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B00583A9879;
-	Fri, 10 Jul 2026 06:03:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CCE738228C;
+	Fri, 10 Jul 2026 06:03:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19A6C23392B
-	for <stable@vger.kernel.org>; Fri, 10 Jul 2026 06:03:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBBEC23392B;
+	Fri, 10 Jul 2026 06:03:54 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783663424; cv=none; b=OXmYPhNstQw177xoIN8O2PKbaR0nAtNiXH/3jS9EZtmhvPafqVFmDvGc+cuXXEz68gqCxvj/Mzrk8u/nzsX8tRrUNTb65wVvgpB2TJCG0/rl2ek79ZUDI6yRiW0YO1R4scBzVLxvZoZDIJmUGv4So9HAYqDaoPAlmUwng1shuWg=
+	t=1783663436; cv=none; b=D9OLDQfHT8E0OC4MeweOw2+sN06+I4Vu+2rwKU5xPbfjrSAaktOgwtMYAEskEZvXgw7UMvqm/YyrgTt94fUvMZ3RO8XLyXSVrd+sZSbvCg/pwGZvE0ArEfk2sdE4qSt9erIVUlC5z7OLMpITnbtaN+t17eEv6cUi+478jzoNEMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783663424; c=relaxed/simple;
-	bh=KhHHDAOTYZr9t13gx4YVukpxiVCL7JTAw3NnwbpE0jE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mVbMzRdIzenGqEa53pC/i2sLdcr7t5zeKFXFo02IaalRkSNCzqQGDfT1NK7ttpE+RnHDAGpm7Yuxc82S6dg6cn7Hv2yVdVnRfMWnLy9U4+YfY6y9a2A8O2SosDe5HXtRsotqDLTEu5mFzRcVd83UbM41WJQcyCdPTVBVmhYEcnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cse.iitm.ac.in; spf=pass smtp.mailfrom=cse.iitm.ac.in; dkim=pass (2048-bit key) header.d=cse-iitm-ac-in.20251104.gappssmtp.com header.i=@cse-iitm-ac-in.20251104.gappssmtp.com header.b=Kix/aeOo; arc=none smtp.client-ip=209.85.216.54
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-38759bcd877so496253a91.2
-        for <stable@vger.kernel.org>; Thu, 09 Jul 2026 23:03:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cse-iitm-ac-in.20251104.gappssmtp.com; s=20251104; t=1783663422; x=1784268222; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=YslU2XdAYfGanbbwAxmZPfELhZDR7H4hE15o+cNrNs4=;
-        b=Kix/aeOo3J4kczTOWiOGZbJUnF2YX1qdHLdUYhnJU0L0kadpaF5D+OFCBxDTcpxFsI
-         66JV9A1DXaYB7PED4qNf+GKBkYJ/jef+kMm0sBuGnA13yui97XVRiRytz/5JWZdE8pdZ
-         uRN/wQRgSs0mr7bnmsifR6QqArFAxjBz/h2yzC/5uIWsHvozl25XNjI0AkQU4YGG5EQJ
-         XZctxlLYju6c19t8Fx8Xsjr1oLO//leEwU4vjmjydLnjCjCjaK5q0Jprr8oijrLBTh6H
-         nclBtCrKB1jzb7tfmGYiRG2Edh8cGUoD0Clc7V5F/FqF+ZgAKKm0NWaUclKfq9Pnpnen
-         f9Dg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783663422; x=1784268222;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=YslU2XdAYfGanbbwAxmZPfELhZDR7H4hE15o+cNrNs4=;
-        b=D3bIQMy8DhutgzauvllqQ93fA0HQeRrw3yt5nTLnblOvOb/jAO/usYkREBQFT0Engj
-         Mkso8B4I19377eE/z+Inn0zML3gYWgmTlkEPeKCmJMTYz+xgqaIM+hLwM9ACBmb3jon8
-         2BTgINLYUJZjGo1fEAcRBiMScEYUIUzO2ItbtvvfmE163Tmk70yOnYaIRAkapHOmVNw0
-         5G39TIk0ER9qq15T1b1dhhBe5G8jc+5Wtr46oVIod4hhfgn0w1HeGbLvNjSKnb/eqyoc
-         /cilqt/C39Mx59uMdp6OYMHA/T1aozr/2cNKBgmA9dQgcPyR10PgVPoeh0j69nfDFkZF
-         yPVQ==
-X-Forwarded-Encrypted: i=1; AHgh+RppFeyf+bfApn1vo17um0SYONb4W0Cz7p5GE/Wi/Z4Ymewl55f460DduRrJcjOThu/2LHrdUIw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwQfqIExEDPZEif/BzOjZwfIM2hzcJGIBEhBTbI+ZNZRtebnWHW
-	JTRUFOgdbD2KcGuboPbwJmrpVoLUZUgWbtKzJL/DPI1wC1U/a5jmhYXwRSAeQVhb1ao=
-X-Gm-Gg: AfdE7clD2Nfsh4OQrW8r8EMEJ2NmSs9daOnYs6DHpbbP6PqkYhtteHGWvFEQ1adZQv9
-	nGeNepmLINMEh+zrk5STSFDm9sX5nC/LnH4s4VAqme+9YFSm/LmhLG0EsH4HrnANOsT1ydbjEIb
-	ZtgXvTuLC8uA2c4MYgu/B3pdfrol5LntTDb//a/c9oimUZqdnStEAPO2b2iMsi7141Uj+D33HbF
-	uL1kdD9oqvHECyv1G1KZQqJ3Dcf0VNPsaixNvGg/uceazdCL7/P3YIasUDuzJYK3qBmGhIBPtrj
-	1a4WrGp3EVj8d7P9RdKcrzQqhhtN0xNc6yrradTeglKiNeNjrd0hqIvq3MQhC0IP2X1aVWSs0bs
-	qAO6FpfKI2yDZk+Wi3e0rwlKd1OelSDkwCNyDbc+St7xaa2+Si76cyQKgb87XODbYwgnR7DYp3E
-	qZq+5b9xlCM88i/AJ0VJX7bwkJLUQNbN5DyvTaGEUe+Qi2vq+UzdxDMrAj5SBlcNdLZcVjaUdhs
-	ESXNgoj6SNeJ1yUsgDv2zE1j+l2UZKZshVTf/QRIz4=
-X-Received: by 2002:a05:6a21:6b01:b0:3bf:baed:c797 with SMTP id adf61e73a8af0-3c0bd0fa3d7mr12173891637.49.1783663422438;
-        Thu, 09 Jul 2026 23:03:42 -0700 (PDT)
-Received: from Metius.iitm.ac.in ([103.158.43.43])
-        by smtp.googlemail.com with ESMTPSA id a92af1059eb24-13b659d8da9sm63639393c88.14.2026.07.09.23.03.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jul 2026 23:03:41 -0700 (PDT)
-From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
-To: marcel@holtmann.org
-Cc: Abdun Nihaal <nihaal@cse.iitm.ac.in>,
-	luiz.dentz@gmail.com,
-	linux-bluetooth@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] Bluetooth: btintel_pcie: fix memory leak in btintel_pcie_probe()
-Date: Fri, 10 Jul 2026 11:33:32 +0530
-Message-ID: <20260710060334.136987-1-nihaal@cse.iitm.ac.in>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1783663436; c=relaxed/simple;
+	bh=3v3vmUd0MRPHLOd6bY5pUNbi0H2IDXzu2QgQPQUjN0E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ujjSGf1kR2Fz1j63nH1u1VOHQfYCg9J/GZxJmd+YwnI2jK1GDDpWfatEcGGh2rCeKPs2FQIuqhUSLIEThCh7vBJK36RS5rErI4EBcCS/A0e1/g9hcoW/IiColFKtSC8EmAlA6M/BBNxbQ6amGSd85HtGMIWw0iGmMYyc7dtCPOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZytSI551; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E8BC1F00A3A;
+	Fri, 10 Jul 2026 06:03:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783663434;
+	bh=5Y74+++guofbvMpr06xrpPUMLDVF0KSDXkgvQiQNbcQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=ZytSI551x6FAEGPu9FBvh1mo+h7Q5fQ64A6KfsUrCrlRP5Qf9DeURA7bER3GTzfPZ
+	 waKqNX7q9FSenn8xSHFobMUiLSz7IeJXUq7LQYwm+ulSV3KzmOvkJi9hecPLIrxgs7
+	 4iXfKcwvQZbdoewYRnLNNuAOd97ZQbTFFwRZtwYWBcUrDc5HAFQpV1rrGoTKxa1v8M
+	 Gh3iRFwlDEnHj5m5okTIZOKwnS1u73Xb17mO15HW1zL3FpyS+61s2kupMvl07SP3pb
+	 FjxA0/HKeRHeDCgXhpsAJDFt4cRkN9X97TMmOB+zKUzclFzDIYdbQ0OsClj72yWmC3
+	 ANg8KFRiD8e7g==
+Message-ID: <5dc6cdf9-1d25-40a5-bbe3-5d57585b46c9@kernel.org>
+Date: Fri, 10 Jul 2026 15:03:42 +0900
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] scsi: scsi_debug: fix REPORT ZONES alloc_len underflow
+ OOB write
+To: Ibrahim Hashimov <security@auditcode.ai>, martin.petersen@oracle.com,
+ James.Bottomley@HansenPartnership.com
+Cc: shinichiro.kawasaki@wdc.com, damien.lemoal@opensource.wdc.com,
+ linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <1357dbf9-e135-4ba3-896d-1472a208f82f@kernel.org>
+ <20260710055755.53830-1-security@auditcode.ai>
+From: Damien Le Moal <dlemoal@kernel.org>
+Content-Language: en-US
+Organization: Western Digital Research
+In-Reply-To: <20260710055755.53830-1-security@auditcode.ai>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [1.44 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-5.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[cse-iitm-ac-in.20251104.gappssmtp.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[iitm.ac.in : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-273150-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:security@auditcode.ai,m:martin.petersen@oracle.com,m:James.Bottomley@HansenPartnership.com,m:shinichiro.kawasaki@wdc.com,m:damien.lemoal@opensource.wdc.com,m:linux-scsi@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER(0.00)[nihaal@cse.iitm.ac.in,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:marcel@holtmann.org,m:nihaal@cse.iitm.ac.in,m:luiz.dentz@gmail.com,m:linux-bluetooth@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:luizdentz@gmail.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[dlemoal@kernel.org,stable@vger.kernel.org];
+	HAS_ORG_HEADER(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-273151-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[cse.iitm.ac.in,gmail.com,vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nihaal@cse.iitm.ac.in,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[cse-iitm-ac-in.20251104.gappssmtp.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dlemoal@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,cse.iitm.ac.in:mid,cse.iitm.ac.in:from_mime,iitm.ac.in:email,cse-iitm-ac-in.20251104.gappssmtp.com:dkim]
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp,auditcode.ai:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BD793737814
+X-Rspamd-Queue-Id: 180C073780A
 
-The memory allocated for data->workqueue is not free in some of the
-error paths. Fix that by adding the corresponding free function.
+On 7/10/26 14:57, Ibrahim Hashimov wrote:
+> resp_report_zones() derives the number of zone descriptors that fit in
+> the reply buffer from the command allocation length:
+> 
+> 	rep_max_zones = (alloc_len - 64) >> ilog2(RZONES_DESC_HD);
+> 
+> 	arr = kzalloc(alloc_len, GFP_ATOMIC | __GFP_NOWARN);
+> 
+> alloc_len is taken directly from the CDB and is fully controlled by the
+> initiator. When alloc_len is smaller than the 64-byte report header
+> (RZONES_DESC_HD), the subtraction underflows and rep_max_zones becomes a
+> huge value. The buffer is then allocated with only alloc_len bytes, which
+> is smaller than the 64-byte header the code unconditionally writes, and
+> the descriptor loop is bounded by the bogus rep_max_zones. Both the header
+> store and the following zone descriptors are then written past the end of
+> the undersized allocation, corrupting adjacent slab memory.
+> 
+> Fix it by sizing the buffer to a whole number of 64-byte blocks that
+> cover the requested allocation length:
+> 
+> 	rep_max_zones =
+> 		(ALIGN((u64)alloc_len, RZONES_DESC_HD) - RZONES_DESC_HD)
+> 		>> ilog2(RZONES_DESC_HD);
+> 	arr_len = (u64)RZONES_DESC_HD * (rep_max_zones + 1);
+> 
+> 	arr = kzalloc(arr_len, GFP_ATOMIC | __GFP_NOWARN);
+> 
+> RZONES_DESC_HD is a power of two, so ALIGN() rounds alloc_len up to the
+> next multiple of 64 and rep_max_zones can no longer underflow: for any
+> alloc_len of 1 to 64 it is 0, so only the header is built. arr_len is
+> always RZONES_DESC_HD * (rep_max_zones + 1), which is exactly large enough
+> for the header plus every descriptor the loop may write, so the report is
+> always assembled within bounds, including a possibly partial trailing
+> zone descriptor. The existing copy-out still transfers only what the host
+> asked for:
+> 
+> 	fill_from_dev_buffer(scp, arr, min_t(u32, alloc_len, rep_len));
+> 
+> so an allocation length that ends in the middle of a zone descriptor
+> returns the correctly truncated partial descriptor, as permitted by the
+> SCSI/ZBC specifications, while never reading past arr_len.
+> 
+> The aligned length and the buffer size are computed in 64-bit (alloc_len
+> is cast to u64 before ALIGN and the size product uses a u64 block size) so
+> a crafted allocation length near U32_MAX cannot wrap them to a small value;
+> such a request simply fails the large allocation and returns a check
+> condition instead of overflowing the buffer.
+> 
+> This was found by static analysis. A KASAN slab-out-of-bounds runtime
+> reproduction of the original underflow is being re-run against the ALIGN
+> based fix and will be reported separately.
+> 
+> Fixes: 7db0e0c8190a ("scsi: scsi_debug: Fix buffer size of REPORT ZONES command")
+> Suggested-by: Damien Le Moal <dlemoal@kernel.org>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Ibrahim Hashimov <security@auditcode.ai>
+> Assisted-by: AuditCode-AI:2026.07
 
-Fixes: c2b636b3f788 ("Bluetooth: btintel_pcie: Add support for PCIe transport")
-Cc: stable@vger.kernel.org
-Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
----
-Compile tested only. Issue found using static analysis.
+Looks OK to me.
 
- drivers/bluetooth/btintel_pcie.c | 1 +
- 1 file changed, 1 insertion(+)
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
 
-diff --git a/drivers/bluetooth/btintel_pcie.c b/drivers/bluetooth/btintel_pcie.c
-index 7a87549f587d..870939d8450b 100644
---- a/drivers/bluetooth/btintel_pcie.c
-+++ b/drivers/bluetooth/btintel_pcie.c
-@@ -2988,6 +2988,7 @@ static int btintel_pcie_probe(struct pci_dev *pdev,
- 	btintel_pcie_reset_bt(data);
- 
- 	destroy_workqueue(data->dump_workqueue);
-+	destroy_workqueue(data->workqueue);
- 
- 	pci_clear_master(pdev);
- 
 -- 
-2.43.0
-
+Damien Le Moal
+Western Digital Research
 
