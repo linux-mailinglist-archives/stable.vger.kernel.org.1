@@ -1,159 +1,139 @@
-Return-Path: <stable+bounces-273256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273257-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id M7SCADYIUWoG+QIAu9opvQ
-	(envelope-from <stable+bounces-273256-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 16:56:54 +0200
+	id qxUHKBAJUWo++QIAu9opvQ
+	(envelope-from <stable+bounces-273257-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 17:00:32 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6560373BFB5
-	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 16:56:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F369373C01B
+	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 17:00:31 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=acm.org header.s=mr01 header.b=WtG9+2WW;
-	dmarc=pass (policy=reject) header.from=acm.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273256-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273256-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ikfk9ise;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273257-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273257-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 88DA5300D907
-	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 14:56:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 053183002E4A
+	for <lists+stable@lfdr.de>; Fri, 10 Jul 2026 15:00:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FA9C3C3C0E;
-	Fri, 10 Jul 2026 14:56:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 146151DC98F;
+	Fri, 10 Jul 2026 15:00:30 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from 011.lax.mailroute.net (011.lax.mailroute.net [199.89.1.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F400349CC4;
-	Fri, 10 Jul 2026 14:56:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9BA6223DE7;
+	Fri, 10 Jul 2026 15:00:28 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783695405; cv=none; b=O+lAvChEm6+9CjMTUj0ceSckQb3mCsGn+YrSaBh1kCmDtol4yF5CK7zrmF9aahKJBZ17jeoCgibpbS3O8X0HnY6o6BGPoOdI9mYxo/bX4znHCFXzQhz8M+KFxtHST+i0uxiTE55cLZOn/G7TqJ1mOGr+KvlJ9NgnLSsXv/T/mRo=
+	t=1783695629; cv=none; b=hTrDpCXGzJwYYg7PIQqQBZeo9vHbeimj+OLDBFohFVj3/4pI8GIq309PzM5aE5nnI/OQYz8MFNutpDiVTIxGJrAexaI4cPlDfLf/GUfA7uUdkXw/O/USnFSCoFUs8s8cjW3yFmVpdIQFl6pCh1RcNFVXAcFLLFvcvhVoT0H3X2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783695405; c=relaxed/simple;
-	bh=95rDyyH8uLVV8MUfCUmqcc0G6oFkhuuh2+NqEXmebOM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ndd6HnCnF8+rtBD68uJvza9DKH1Vtea36AXYIWLtAHROENCrwv6e7ChgL/vcpegweWjBSLA3CVfnRKGfDqJuTON5wC856i3WzZnZ1FZfbFNhzrABmubsIPn7HDxGTLfMMIestaNeV3z4gAiQhjj0GQl1xYr4wqhqsxv+6NrBuFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=WtG9+2WW; arc=none smtp.client-ip=199.89.1.14
-Received: from localhost (localhost [127.0.0.1])
-	by 011.lax.mailroute.net (Postfix) with ESMTP id 4gxZff6qcTz1XM5kW;
-	Fri, 10 Jul 2026 14:56:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1783695393; x=1786287394; bh=k+M2661nw/s4/8gpr7YATI9W
-	2QztJaegEdr1VWFAcig=; b=WtG9+2WWuTWnl1hM8ijfcbogrIGQPobTLsJxKkYJ
-	4P86UqywYQyqXFK2bwWkAM9cWHanRVQVKpJ1AzQecBCQX2zMhqVYxysIfmLoVS/2
-	41kaysIpIZPY6Ur8+rXqbwnuA5pm9VAc+38RjTmky28/PhIP7OnwsFuZjSCHuJxT
-	p8aGZPCyessyN2OafZZNOYh9cjODfsLFgx0pTBqDJwMd2RWkmGd0y1oBbovrkDu4
-	hs+tIxX6nCdkUzDqELXIm4xZYCPWeCC/9dA+2ruLA8p5NuGdPgMs+NnxZY4qIQYo
-	1KmccJxly0KKY/LbkJkAM0BOU4vjjqPnimXN/ZmdVpN76A==
-X-Virus-Scanned: by MailRoute
-Received: from 011.lax.mailroute.net ([127.0.0.1])
- by localhost (011.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id HPIJqu_hWt31; Fri, 10 Jul 2026 14:56:33 +0000 (UTC)
-Received: from [192.168.50.14] (c-73-231-117-72.hsd1.ca.comcast.net [73.231.117.72])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 011.lax.mailroute.net (Postfix) with ESMTPSA id 4gxZfK2PMKz1XM5jn;
-	Fri, 10 Jul 2026 14:56:24 +0000 (UTC)
-Message-ID: <d426b4d5-cdf5-4090-8e94-62e652f712dc@acm.org>
-Date: Fri, 10 Jul 2026 07:56:23 -0700
+	s=arc-20240116; t=1783695629; c=relaxed/simple;
+	bh=WIzAkP8OyPVA8uAWxkJkDpECORMBAFVM5Vjg+fymZw8=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=L0F1Q/nsY9UorkNzPR6ggcsFJqjoDM6pi1DjKp/Hb94JFyAFsObCGON3hN2VlOEquFJ0a17lzD6vvngtZ54FXkldvBeRKmo6foS+G0KLDGRrqU7oCwTtRK8aIhYpE2XyJJViHsbdsmp4ZjS5LwEnL1devz63DR7MPYB6nC2F7fA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ikfk9ise; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B00D1F000E9;
+	Fri, 10 Jul 2026 15:00:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783695628;
+	bh=gIVfiGDljpqCKA5ERFNw/PTnn3K8M+76q6/Myzas50A=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=ikfk9ise9kwxt7eFSbbJGnpbbhtidHoXuYfeXHSjQXrGODnMTOJNQLcgKnOkwKt20
+	 qFdUnyu6cW0EZWm31VVd6nyp7Ljm3kP2l2Fvq5b0HMIM2da4IlCXKoeTtw/8E5vXOR
+	 4e3fRg7+rvgq3yJYX1ATtHtdxxDt2fpjt4gHtZ7RjcfPjSpK8zUln9voq/dtcQHz+E
+	 l9uLXTiKMr0FGHRcbskNXijPVrPIEEI18VQuG5QxQ0bA+m94XJ/fJDh2d2mcpT/TFj
+	 BRefFbpZo6+o0+NpzYQGV+A7MIgddyIe4BSuvIJpSo/+bKTYZcCMHQWm8D3XK4d+Y/
+	 pVfFMkxovGFdg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9397F3924F9B;
+	Fri, 10 Jul 2026 15:00:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC] Significant Random I/O Performance Regression in Linux
- Kernel 6.18 (Up to 27.7%) Likely Caused by Commit 3c7ac40d7322
-To: =?UTF-8?B?5a2Z6a2BIChLdWkgU3VuKQ==?= <kui.sun@unisoc.com>,
- Neil Armstrong <neil.armstrong@linaro.org>,
- Alim Akhtar <alim.akhtar@samsung.com>, Avri Altman <avri.altman@wdc.com>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- "andre.draszik@linaro.org" <andre.draszik@linaro.org>
-Cc: Peter Griffin <peter.griffin@linaro.org>,
- Tudor Ambarus <tudor.ambarus@linaro.org>,
- Will McVicker <willmcvicker@google.com>,
- Manivannan Sadhasivam <mani@kernel.org>,
- "kernel-team@android.com" <kernel-team@android.com>,
- "linux-samsung-soc@vger.kernel.org" <linux-samsung-soc@vger.kernel.org>,
- "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- "linux-arm-msm@vger.kernel.org" <linux-arm-msm@vger.kernel.org>,
- =?UTF-8?B?5byg5aaC5rOJIChSYWluIFpoYW5nKQ==?= <Rain.Zhang@unisoc.com>,
- "cixi.geng@linux.dev" <cixi.geng@linux.dev>,
- =?UTF-8?B?5ZSQ5pyI5p6XIChZdWVsaW4gVGFuZyk=?= <yuelin.tang@unisoc.com>,
- =?UTF-8?B?6ZmI5paH6LaFIChXZW5jaGFvIENoZW4p?= <Wenchao.Chen@unisoc.com>,
- =?UTF-8?Q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>
-References: <12a8417dc8644a71b9cb25c53c93805a@zeshmbx08.spreadtrum.com>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <12a8417dc8644a71b9cb25c53c93805a@zeshmbx08.spreadtrum.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] sctp: validate STALE_COOKIE cause length before
+ reading
+ staleness
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178369560614.725168.2626506030480279304.git-patchwork-notify@kernel.org>
+Date: Fri, 10 Jul 2026 15:00:06 +0000
+References: <20260704033545.2438373-2-bestswngs@gmail.com>
+In-Reply-To: <20260704033545.2438373-2-bestswngs@gmail.com>
+To: Weiming Shi <bestswngs@gmail.com>
+Cc: linux-sctp@vger.kernel.org, marcelo.leitner@gmail.com,
+ lucien.xin@gmail.com, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org, xmei5@asu.edu,
+ stable@vger.kernel.org
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-3.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[acm.org,reject];
-	R_DKIM_ALLOW(-0.20)[acm.org:s=mr01];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-273256-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:kui.sun@unisoc.com,m:neil.armstrong@linaro.org,m:alim.akhtar@samsung.com,m:avri.altman@wdc.com,m:James.Bottomley@HansenPartnership.com,m:martin.petersen@oracle.com,m:andre.draszik@linaro.org,m:peter.griffin@linaro.org,m:tudor.ambarus@linaro.org,m:willmcvicker@google.com,m:mani@kernel.org,m:kernel-team@android.com,m:linux-samsung-soc@vger.kernel.org,m:linux-scsi@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:linux-arm-msm@vger.kernel.org,m:Rain.Zhang@unisoc.com,m:cixi.geng@linux.dev,m:yuelin.tang@unisoc.com,m:Wenchao.Chen@unisoc.com,s:lists@lfdr.de];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[22];
-	DKIM_TRACE(0.00)[acm.org:+];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,davemloft.net,google.com,kernel.org,redhat.com,asu.edu];
+	TAGGED_FROM(0.00)[bounces-273257-lists,stable=lfdr.de,netdevbpf];
+	FROM_NEQ_ENVFROM(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_SENDER(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[bvanassche@acm.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:bestswngs@gmail.com,m:linux-sctp@vger.kernel.org,m:marcelo.leitner@gmail.com,m:lucien.xin@gmail.com,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:netdev@vger.kernel.org,m:xmei5@asu.edu,m:stable@vger.kernel.org,m:marceloleitner@gmail.com,m:lucienxin@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bvanassche@acm.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCVD_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	TAGGED_RCPT(0.00)[stable];
+	FROM_NO_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6560373BFB5
+X-Rspamd-Queue-Id: F369373C01B
 
-On 7/10/26 12:17 AM, =E5=AD=99=E9=AD=81 (Kui Sun) wrote:
-> Through investigation, we identified that upstream commit
-> 3c7ac40d732232fec0ba31d0a5e3cc9c112fc2e7, merged in April 2025, is
-> likely responsible for this performance drop.
-Two fixes for that commit are present in the upstream kernel. Are these
-fixes present in your kernel tree?
+Hello:
 
-commit eabcac808ca3ee9878223d4b49b750979029016b
-Author: Bart Van Assche <bvanassche@acm.org>
-Date:   Fri Aug 15 08:58:23 2025 -0700
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-     scsi: ufs: core: Fix IRQ lock inversion for the SCSI host lock
+On Fri,  3 Jul 2026 20:35:46 -0700 you wrote:
+> When an ERROR chunk with a STALE_COOKIE cause is received in the
+> COOKIE_ECHOED state, sctp_sf_do_5_2_6_stale() reads the 4-byte Measure
+> of Staleness that follows the cause header:
+> 
+> 	err   = (struct sctp_errhdr *)(chunk->skb->data);
+> 	stale = ntohl(*(__be32 *)((u8 *)err + sizeof(*err)));
+> 
+> [...]
 
-commit 034d319c8899e8c5c0a35c6692c7fc7e8c12c374
-Author: Nitin Rawat <quic_nitirawa@quicinc.com>
-Date:   Tue Jul 29 04:27:11 2025 +0530
+Here is the summary with links:
+  - [net] sctp: validate STALE_COOKIE cause length before reading staleness
+    https://git.kernel.org/netdev/net/c/1cd23ca80784
 
-     scsi: ufs: core: Fix interrupt handling for MCQ Mode
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Thanks,
 
-Bart.
 
