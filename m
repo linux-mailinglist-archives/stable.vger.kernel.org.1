@@ -1,65 +1,80 @@
-Return-Path: <stable+bounces-273347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273348-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 3FONNZmMUWomGAMAu9opvQ
-	(envelope-from <stable+bounces-273347-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 02:21:45 +0200
+	id ITSRIrWTUWp/GQMAu9opvQ
+	(envelope-from <stable+bounces-273348-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 02:52:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4F6A73FD26
-	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 02:21:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D09A573FDD9
+	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 02:52:04 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="NMvgPx/T";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273347-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273347-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=PdhPCfAl;
+	dmarc=pass (policy=quarantine) header.from=amazon.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273348-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273348-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E9C1F3004D0A
-	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 00:21:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 28516301F987
+	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 00:52:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F414814B977;
-	Sat, 11 Jul 2026 00:21:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4CB413E02A;
+	Sat, 11 Jul 2026 00:52:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com [35.162.73.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C019A28690;
-	Sat, 11 Jul 2026 00:21:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68A5235893
+	for <stable@vger.kernel.org>; Sat, 11 Jul 2026 00:52:00 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783729297; cv=none; b=bGmIorZ3avl6UJ6NdmN8uw0wfdOHkcW0lljPKDIRyHUdKdhnKc59DctK1OGv4m0eTzmSpGeWylItG8V66vhI2yN7F6AmTMEtNLX9z/A1YCSoa0F/uBF3npwo/hS8w3yLWqSAtoKtY4lCdntiKCHS6/KAOoPvW6Or/WLm/16DdtU=
+	t=1783731121; cv=none; b=BnSGXSkorert9/uyLeypi3xWwkWj9nIM1TB+0+H5LZwSSDF0Nn6nMz5v+UJm33AFYQa3YP1gDH7G62YTXyprOamRXwIwNs7fWMCUQ5xw16MAE6acZopPsHsB9CBEVA2gKHRrNpteXd7qhwqPB4rQ05Fp7LzGyyPg6IsdQu7ixIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783729297; c=relaxed/simple;
-	bh=D7VyiBOjfB0A60fOGI2EO26B+4QUF/FQHYmA/XvB7q0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dVNZ6whRPavBWl2lk3y0OcD+261QxYyRfw/AxpA4SDbXNr0DE1gbeFHYP0H0QjjbfWLCjcFuj0vHrD53W/XPP6set6HiFyoja5WZyJCRuSjbk8HFfTUuCtmgM2v4c8qSvlHvDNA/OVU1SfsG9CwXe+QEBEWwpEExXmnXVldU6PU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NMvgPx/T; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20DB61F000E9;
-	Sat, 11 Jul 2026 00:21:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783729296;
-	bh=qYQiKMWE2mmb3f7us04De1XfSFWoZkhtk35nJAydwh8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NMvgPx/TkwCOIr++tPwvI0CK5E/8JaJb/sCrDwY1I1e59hVNcVC3opeHoSr1r16OL
-	 x/lEfLU0OGBCWQRNv6grEMOW6nTr97oPM12vARSoKVuU55utoMo9QIXF29ExTrU+4U
-	 tD5EPWjwihpruiQknt6yh4rERnpCsjmYL048IaUIPBAyMCsASVpWbGR/boEY12ZKNA
-	 cAlQOiDUHPfleNw3cHK/KiZpqp+okxYqOG/sfTarvsU4q+NkIeTCxLvivq0IO1rvgE
-	 7xKwJtVrFuHcYvS+UQzktIFMrPE6HkSt2+5dE7kbtXH0l3bt/3aq4UIcnJbWsO38au
-	 vTzzGpJ1EsrdQ==
-From: SJ Park <sj@kernel.org>
-To: SJ Park <sj@kernel.org>
-Cc: Song Hu <husong@kylinos.cn>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 1/4] Docs/ABI/damon: fix typo in intervals_goal sysfs path
-Date: Fri, 10 Jul 2026 17:21:25 -0700
-Message-ID: <20260711002127.32005-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260710141738.24789-1-sj@kernel.org>
-References: 
+	s=arc-20240116; t=1783731121; c=relaxed/simple;
+	bh=f6ii48A2qm7BmvBmLEybKtUxiEA54YO7HFu0yk0bNcI=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=eAL5Y3bAczgiF5xslpipdVm3FGYOtZpiUVb8ivwgXPBH6FeejdtSBCCK2gATPFenMlZ8PK1GKC0D+MO9+fUvXpP8oxm2OtuAYfg8I1v1HJzAkrAogVK2rCfM3tTsxl8NHN4pgiq9mP1/AUUfGpQNGy6ulqd+zyV9eaQSaNeEfu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=PdhPCfAl; arc=none smtp.client-ip=35.162.73.231
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1783731120; x=1815267120;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=f6ii48A2qm7BmvBmLEybKtUxiEA54YO7HFu0yk0bNcI=;
+  b=PdhPCfAlvrkzd6hvjQPSc0403Z12mV8K4IZnw+Q/jobwQskDMb/H7te2
+   t0JafKiIJXmfdLxVNs1Ke3p0zU3l05fJuCApsO2nLrh8Snd41X8+bBeu1
+   rIccipO47hVkKWetEfQYJFhOPFcz5T+D5kHtvHRv2MSnD3FX7Y3bh1UTa
+   kVAG2gdFqr9SFlZ7hFBUpRSbU0HV9BURVcIzRlKxADAgBLAAlfvgBlpUW
+   8egtf+bQ2+exPi4zsifVqFposR3VNA29czpLD2d7AGbH2j4v4i7PanhpD
+   ilKP0HtZ/g48C4ntMuvmZRslB0XRPP9/4lpeCXXgwYcj3EkBEH9qtL0io
+   A==;
+X-CSE-ConnectionGUID: DUss6yahSpKLA41ZU3293A==
+X-CSE-MsgGUID: 36zvVySTQUWUXZSNryx+dg==
+X-IronPort-AV: E=Sophos;i="6.25,154,1779148800"; 
+   d="scan'208";a="23266734"
+Received: from ip-10-5-9-48.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.9.48])
+  by internal-pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jul 2026 00:52:00 +0000
+Received: from EX19MTAUWA002.ant.amazon.com [205.251.233.178:25824]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.11.115:2525] with esmtp (Farcaster)
+ id 8c7b7e93-a97f-474a-8984-603708c7a8a0; Sat, 11 Jul 2026 00:51:59 +0000 (UTC)
+X-Farcaster-Flow-ID: 8c7b7e93-a97f-474a-8984-603708c7a8a0
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.43;
+ Sat, 11 Jul 2026 00:51:59 +0000
+Received: from dev-dsk-mkbund-2b-ce767ba1.us-west-2.amazon.com (10.169.40.81)
+ by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.43;
+ Sat, 11 Jul 2026 00:51:59 +0000
+From: Mark Bundschuh <mkbund@amazon.com>
+To: <stable@vger.kernel.org>
+CC: <eadavis@qq.com>, <chenridong@huaweicloud.com>, <tj@kernel.org>,
+	<syzbot+33e571025d88efd1312c@syzkaller.appspotmail.com>
+Subject: Re: [PATCH 6.12.y] sched/psi: fix race between file release and pressure write
+Date: Sat, 11 Jul 2026 00:51:49 +0000
+Message-ID: <20260711005149.4054833-1-mkbund@amazon.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20260710224845.3892042-1-mkbund@amazon.com>
+References: <20260710224845.3892042-1-mkbund@amazon.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,69 +82,56 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D046UWB002.ant.amazon.com (10.13.139.181) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-9.16 / 15.00];
+	WHITELIST_DMARC(-7.00)[amazon.com:D:+];
+	WHITELIST_SPF_DKIM(-3.00)[amazon.com:d:+,kernel.org:s:+];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[amazon.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[amazon.com:s=amazoncorp2];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:sj@kernel.org,m:husong@kylinos.cn,m:damon@lists.linux.dev,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:linux-doc@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-273347-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER(0.00)[sj@kernel.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[qq.com,huaweicloud.com,kernel.org,syzkaller.appspotmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-273348-lists,stable=lfdr.de];
+	FORGED_SENDER(0.00)[mkbund@amazon.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:eadavis@qq.com,m:chenridong@huaweicloud.com,m:tj@kernel.org,m:syzbot+33e571025d88efd1312c@syzkaller.appspotmail.com,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[mkbund@amazon.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	DKIM_TRACE(0.00)[amazon.com:+];
+	TO_DN_NONE(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,qq.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
+	TAGGED_RCPT(0.00)[stable,33e571025d88efd1312c];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email]
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C4F6A73FD26
+X-Rspamd-Queue-Id: D09A573FDD9
 
-On Fri, 10 Jul 2026 07:17:37 -0700 SJ Park <sj@kernel.org> wrote:
+On Fri, Jul 10, 2026 at 10:48:45PM +0000, Mark Bundschuh wrote:
+> From: Edward Adam Davis <eadavis@qq.com>
+>
+> [ Upstream commit a5b98009f16d8a5fb4a8ff9a193f5735515c38fa ]
 
-> On Fri, 10 Jul 2026 12:47:34 +0800 Song Hu <husong@kylinos.cn> wrote:
-> 
-> > The ABI document spells the DAMON sysfs directory as "intrvals_goal"
-> > (missing 'e') in four What: entries, but the kernel creates it as
-> > "intervals_goal" (mm/damon/sysfs.c).  Following the documented path
-> > therefore yields a non-existent directory.
-> 
-> Nice catch!
-> 
-> > 
-> > Fixes: e2b23dc62369 ("Docs/ABI/damon: document intervals auto-tuning ABI")
-> > Cc: stable@vger.kernel.org
-
-By the way, hotfixes and non-hotfixes usually take different trains to the
-mainline.  Having those in single series therefore makes maintainer works
-difficult.  I understand this is not a hotfix but just somewhat worthy to
-eventually be backported to stable kernels.  So no problem for this.
-
-But, from the next time, please clarify or use different series for Cc: stable@
-patches.
-
+Please disregard this backport. I sent it without realizing this commit
+had already been proposed for 6.12.y and declined. Sorry for the noise.
 
 Thanks,
-SJ
-
-[...]
+Mark
 
