@@ -1,90 +1,92 @@
-Return-Path: <stable+bounces-273370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273371-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id GrTOCVLwUWqlKgMAu9opvQ
-	(envelope-from <stable+bounces-273370-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 09:27:14 +0200
+	id 4MoXHQPxUWq7KgMAu9opvQ
+	(envelope-from <stable+bounces-273371-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 09:30:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4F6D740B80
-	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 09:27:13 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7DD2740B98
+	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 09:30:10 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=0sec.ai header.s=google header.b="Mvneh4l/";
+	dkim=fail ("headers rsa verify failed") header.d=0sec.ai header.s=google header.b=zDXw+EF3;
 	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273370-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273370-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273371-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-273371-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E4CD6300A4AB
-	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 07:27:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 22FE9301CA63
+	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 07:30:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B5D63382C9;
-	Sat, 11 Jul 2026 07:27:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCC84374E43;
+	Sat, 11 Jul 2026 07:30:08 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54F481D54FA
-	for <stable@vger.kernel.org>; Sat, 11 Jul 2026 07:27:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 960CA35AC1C
+	for <stable@vger.kernel.org>; Sat, 11 Jul 2026 07:30:06 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783754828; cv=none; b=tiF4NRhyrNxpJQeHUYZIw2BeCUU4+y/xcK7aXdr3Oob8lC1fFy0MbjZL/LpQMG0h4bHfUXC7WQC6yRTrBqqkk4VlV/psec9b5o3dmumitUHkBPvGnCUGduX4q/ibt0PwwGonc21UGe4VFKEcUTFDUJbnaKIxCpior/oPT/KYMhc=
+	t=1783755008; cv=none; b=ULy8e9119EO2vxqDVY3yv4aG+J96/Gi3OLZdh2OOwdUmdNgBAgn4L4huMRcqEUJzlPjKYAWe0Oa9wMfkyEgS5jZ4A2p/5jqMtIVeFXUN33kJTO8l4ZZwNxV+T7NNMCg+B3JjRHAHZSzbZrlo9mbkNZRB8NteoXlRVB6PRVZW43Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783754828; c=relaxed/simple;
-	bh=6/vKUtPPzvuNE52W1vzgh44bVwcsydD2eMshQV62Re0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ipJz4kLz3/5Xy+1bvq1c1SZlxc/1cepCuQ4ZbAQHeglU1YA6XFfZidkyjoX5Hn3vf8WSpa+Rv65u8Y8d21JJSLcxxZZfhPozAFn3Jt7aUrnlFobz1Obx5D5EOblkb8Zjp7VX1Z2xHBn5va06dmn5Yl7sYxhBuLwRTUNwq5han4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai; spf=pass smtp.mailfrom=0sec.ai; dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b=Mvneh4l/; arc=none smtp.client-ip=209.85.221.44
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-4629051c9d1so912111f8f.2
-        for <stable@vger.kernel.org>; Sat, 11 Jul 2026 00:27:06 -0700 (PDT)
+	s=arc-20240116; t=1783755008; c=relaxed/simple;
+	bh=ONCM/qwJ65daRbnhqLGAZvYZ1WYvjKpu2vGnwR1npUs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CcTjUYkME6i/2VxQ1sB5FTOvPLAz0s8Amw7X2Hi4LvCAyuxfGCQykHeInTZVFEE3c6W0TwDyZqBUvt9Y5dyTSan6VZYCtjQIlC2XP+4GQZh/X+zUq3W55Lnuv8fVYQvaXKNSdtbpAPWgL74UEftqmMJE4Y6yq5JTqnu4XsRfu7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai; spf=pass smtp.mailfrom=0sec.ai; dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b=zDXw+EF3; arc=none smtp.client-ip=209.85.221.48
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-47de008b020so802218f8f.1
+        for <stable@vger.kernel.org>; Sat, 11 Jul 2026 00:30:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=0sec.ai; s=google; t=1783754825; x=1784359625; darn=vger.kernel.org;
+        d=0sec.ai; s=google; t=1783755005; x=1784359805; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=x1XGKV32BMtMot+0VfEXaCXl+nOm+R140hzMoZufQh0=;
-        b=Mvneh4l/vQAqCfkG5LE3Bai326zvNRxaqYsoKy8z8BSA83+BcHn7nsjkg5Mzj2RYHr
-         1+PNUhj7kqASiMZ/MiUdrAlwgioze+AUpBbs7fkXW6Oa5tSbs/KeE/AzI2SFEXj7ZAkv
-         ivbL0zK0tA6VB84CRCKzpnqpeZTnDaOWS+pFa9WMBFn5qvKngjJCR/pyKjixkhNPv6bZ
-         XQV2ZUBKRkUKMoG/VByekyUDWbe1aiWgmOZk5vECjEBzClsb113aP7DzT8OX0bvtpIUv
-         0stpMkMuPfLlAzmc1JfXS74kcCZRL4WJqxDwCl7mhYXDoOj3KVmg88RkgWLGvw4XCJ3d
-         DsjA==
+        bh=DP53W7dpzs/umsEmsxnzKCtbgmdsd+rN/OYPGxdQpZM=;
+        b=zDXw+EF3xFaEQLbZRIRD6JTX0sUrPe5gsFNrb77rHDH6ODC/a7t/aKS4I5iKi0YLJH
+         90EjBCoRtg16TCWrDHokxuTVAjYRz5fp/VBixlAJm9KFtalPEXdO8oiAi4Y/RCEF7X9X
+         R6yPbiGf4HCUTglFbtcZf5B9L2xESzKnzfHRtfO+GGxk2MCDqaUqXFN4jU6nBDIyn/Yw
+         n/tXPuyMcMFjb7XhbNC703quYyTW3KD2qHO67FIOXx/tb7BLN5JPf/vytbItNkKfagxK
+         uHgtqj73FR/0XwVH2qeyENyu+2ciCr+/WoJratjMaGWWNkNQFYnbggmIa7/0FLzYoZtI
+         /hjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783754825; x=1784359625;
+        d=1e100.net; s=20251104; t=1783755005; x=1784359805;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=x1XGKV32BMtMot+0VfEXaCXl+nOm+R140hzMoZufQh0=;
-        b=HYX0g+0BA1fH4mwmnv/htmxG994hHvZw0vIPAj7JN3HRMb8yf6+GCq0OK5XsNrRQJq
-         THOB4UDtC5JOgLQMHBW1VYrRdmWesDHjXyvrJnghpGc6SeDAvITvyki4rkCHoR59vC69
-         xjuqbTfKGHlmBtA/vslMW10/MA5KJrtr1RGP8mDYfroki3JysGQh6oehske0tucqc+X2
-         7H7naxSqwoDAjHs3ZH2emhoAYUoaK1ubGhUhErP8Lkfe8MmmYQIeE5kGU4NpZOBMWsQO
-         uydlY6Y/Ns5BmajRfMoFO6AKdKRVSMna7FHpbUEegyxRuVRiaFwNhH3A9JngDDFmXoH2
-         1eUA==
-X-Forwarded-Encrypted: i=1; AHgh+RqQ9pLkND+t6iLjyJBI+mM/D1+RBqX8mbReV/5puM97GxyISRM0JtsX15CTkFl4tDdJdvsY+bE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YweTah8elCsfN0NiuSFL77tGLV4GM1OIRTZOHoCp6I/Vq67EOux
-	LPaEIYG/HimuDuYcazoB9SOd/4kEWmkFIfjs1Yp1uLOJPa9zkLRe74Z+ZGDqn/3vMR7T
-X-Gm-Gg: AfdE7cm1bji9hHFYY5XDLz8bQodPTCo7OLKqy0/exf9GKy5jdX+s4BYBN5xOEepRu8O
-	idlFGTVBBHmhPPE28QLHDInfuhXWu5lRZrfV0kPd0LfSvcaLtI4g4Uu+JFm5JsGg87+GzkHNU9I
-	Yn1OJSFgj037wO0c1UDdZefKlxvbahOXaUl/VRpY9ies1g80xu2SMxNgvOOIY8VDTnaZeorbOVr
-	gjxy8zfhMShabmO8fh/XBQVc+6ejvFvJ69h1BZ2t8VuPM4SsSalFHERDxZ6st1jaRrgH+eA7jqG
-	g1hD+IG+rzzMTuIoB+xb01VTWzP/DCZr7DFSLjeBj0hqZgTRtok0UgEDEZQsmXAdcp6m9TAPkGs
-	qoUpx0gOyvdkEbA5CpNFoW7R51+1VTiTa6dPodShA/AXgNdH33Kn+/ZdXbD7aKTNfx8Gl+gZthk
-	uqS+IYDAQc/TG1x0KpMZl8C9GHcs3H3IUSAii7G7RKa0q0Rj5EWxnfwkFSdbsr2VIngNrCVFoow
-	UwDJwYpqMnMZtzQ+8JRJBD+h9oed4LuMLU=
-X-Received: by 2002:a05:6000:2004:b0:47a:c103:8a2e with SMTP id ffacd0b85a97d-47f2dce3062mr1867745f8f.45.1783754824681;
-        Sat, 11 Jul 2026 00:27:04 -0700 (PDT)
+        bh=DP53W7dpzs/umsEmsxnzKCtbgmdsd+rN/OYPGxdQpZM=;
+        b=JwXVIwmMga1RiJhDCQXgI6ajV/BSqLgq/2sIxPyDjVGX1azfGmDxhi9AKe97POSq7A
+         CzsELANSPM5NeWCpu6WQ/FtJZ9oRKQNhV2EkZIVoI4lWkefFj3fq0k2eEuetDSvuwrUw
+         +39fAEJBlObUGzIE3C4GCTF7prsjPspPPB66kn9fUBb3WdT030eWDc7bYRkRInTZF7B1
+         b9EkxTt0kYNvStzRea4p+sKxcZApT/1ZzinWK2gCGkCIS9W8PAjFeTCDqAJFqmutr+jA
+         onQWtaCaYLhdI4CZMtvgkGs9+9YDW6oRCksefIrc3j3tQ6ZOjO4GPqX+LPL5GMnC4ghD
+         ncSg==
+X-Forwarded-Encrypted: i=1; AHgh+Ron59dNIof6YPY4FuMMPi2kqTrOYcFHtlAGfS+upUJqZ5mVoWjBA5PaTb8xhy5g2gmh8L3qIdc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyy+zcyGsSjCLqZaK1Tilefbk+EmCLGvLnx0ZnzXc9JAQC/cice
+	rjbCS3TQ2csO76Bo0kFCnpMESqzpTU1mBiQqu6ID3MnkNP14BVqrweyrq2HQZM9t823ccxOtK1C
+	Fsgu7gd79
+X-Gm-Gg: AfdE7clCi0NHk5CPj/onyFlSWY5039LZaTAuC17WXYW1AK+o8ysmNfSbBCZnn8SS+UM
+	9UX451uMcLxJSKIaltjQ3MBx4mQmDjNjNCkY3jRDH6rddlcNIcMUCge7sIekGZiaTXA27tA1DwT
+	4uNFDXgyYnpCIOxq/rZhFYTP8URJaB5eKHIpxv5kxXWNKdinnpugMWNebfwMdXNvbD6akXMfamh
+	4Roej4De7SSANZsriAYIYNiq+P2yFNY7+UfulB7ptR0NcNygHB8dnDckJ1b5/HeEhhagbM07KBZ
+	Rxlxo5K6NgmWSjsn1XPMMxoBZOC12qghO8sSA28omHDKK4gHsTchZ4pbiuZrv4sVqTjEoSgv3G7
+	RPabAnuwvlwcKxH0OER8282ujdm70AUsP1YOg2uf8If3KdBj/QcWXUYPhiHqWWLz91zY+bcSBpS
+	eceMoZPGWn1/WTMBfYfC7iZORwyt+1bn9btz/fT0hq8yLTMTNa/i7RrUBk5mlrnTmV2Ybp31mVD
+	Pi4/V9vFxz8v3WJ1QaNAA8wCqCx9/NNMcs=
+X-Received: by 2002:a05:6000:184d:b0:474:3708:c8 with SMTP id ffacd0b85a97d-47f2dcc0d79mr1873968f8f.15.1783755005049;
+        Sat, 11 Jul 2026 00:30:05 -0700 (PDT)
 Received: from PeakBook-Mini.tail8e484.ts.net ([178.197.218.188])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47aa0960b06sm66844821f8f.28.2026.07.11.00.27.03
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47a9e4d8410sm67152622f8f.15.2026.07.11.00.30.03
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sat, 11 Jul 2026 00:27:04 -0700 (PDT)
+        Sat, 11 Jul 2026 00:30:04 -0700 (PDT)
 From: Doruk Tan Ozturk <doruk@0sec.ai>
-To: David Heidelberg <david@ixit.cz>
-Cc: Simon Horman <horms@kernel.org>,
-	oe-linux-nfc@lists.linux.dev,
-	netdev@vger.kernel.org,
+To: jikos@kernel.org,
+	bentiss@kernel.org
+Cc: spbnick@gmail.com,
+	linux-input@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH net] nfc: llcp: reject PDUs shorter than the LLCP header
-Date: Sat, 11 Jul 2026 09:27:02 +0200
-Message-ID: <20260711072702.70231-1-doruk@0sec.ai>
+	stable@vger.kernel.org,
+	Doruk Tan Ozturk <doruk@0sec.ai>
+Subject: [PATCH] HID: uclogic: fix UAF on inrange_timer at driver unbind
+Date: Sat, 11 Jul 2026 09:30:03 +0200
+Message-ID: <20260711073003.71012-1-doruk@0sec.ai>
 X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -94,87 +96,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [1.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_DKIM_REJECT(1.00)[0sec.ai:s=google];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[0sec.ai:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-273370-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:david@ixit.cz,m:horms@kernel.org,m:oe-linux-nfc@lists.linux.dev,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-273371-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,0sec.ai];
 	DMARC_NA(0.00)[0sec.ai];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER(0.00)[doruk@0sec.ai,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[0sec.ai:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[doruk@0sec.ai,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER(0.00)[doruk@0sec.ai,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:jikos@kernel.org,m:bentiss@kernel.org,m:spbnick@gmail.com,m:linux-input@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:doruk@0sec.ai,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[doruk@0sec.ai,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[0sec.ai:-];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[0sec.ai:dkim,0sec.ai:mid,0sec.ai:from_mime,0sec.ai:url,0sec.ai:email,vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,0sec.ai:from_mime,0sec.ai:url,0sec.ai:mid,0sec.ai:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A4F6D740B80
+X-Rspamd-Queue-Id: B7DD2740B98
 
-nfc_llcp_rx_skb() reads the two-byte LLCP header (DSAP/SSAP/PTYPE) and
-dispatches by PDU type; several handlers then derive a TLV-array length as
-skb->len - LLCP_HEADER_SIZE. Neither nfc_llcp_rx_skb() nor its callers
-guarantee the frame is at least LLCP_HEADER_SIZE bytes, and a sub-header
-PDU does reach it: digital_in_recv_dep_res() and digital_tg_recv_dep_req()
-strip the DEP header with skb_pull() after only checking the DEP header
-size, so a DEP I-PDU carrying a 0- or 1-byte LLCP payload is handed up as
-a sub-2-byte skb.
+uclogic_remove() drained the in-range emulation timer before calling
+hid_hw_stop():
 
-For a CONNECT or CC PDU, nfc_llcp_recv_connect() and nfc_llcp_recv_cc()
-then pass skb->len - LLCP_HEADER_SIZE to nfc_llcp_parse_connection_tlv().
-For skb->len < 2 that subtraction underflows: truncated into the u16
-tlv_array_len parameter it becomes ~0xFFFE, and for a CONNECT to the SDP
-SAP, nfc_llcp_connect_sn() uses a size_t and underflows to SIZE_MAX. The
-TLV parsers bound their walk relative to that length, so they read far
-past the end of the skb.
+	timer_delete_sync(&drvdata->inrange_timer);
+	hid_hw_stop(hdev);
 
-The aggregated-frame path (nfc_llcp_recv_agf()) already drops sub-PDUs
-shorter than the header. Apply the same guard once, in the dispatcher, so
-every PDU type is covered.
+The timer is re-armed from uclogic_raw_event_pen() with a 100 ms
+timeout on every pen-in-range report via mod_timer(), and its callback
+uclogic_inrange_timeout() dereferences drvdata to deliver a synthetic
+BTN_TOOL_PEN release.
 
-Found by 0sec (https://0sec.ai) using automated source analysis; the
-missing guard is evident from source. Compile-tested.
+drvdata is allocated with devm_kzalloc(), so the HID core devm cleanup
+frees it once uclogic_remove() returns. Because the timer is drained
+before hid_hw_stop(), a pen report still completing inside
+hid_hw_stop() can reach uclogic_raw_event_pen() and re-arm the timer
+after the drain. devm then frees drvdata and the re-armed timer fires
+on freed memory, a UAF read in uclogic_inrange_timeout(). This is a
+disconnect race (USB unplug or rmmod).
 
-Fixes: d646960f7986 ("NFC: Initial LLCP support")
+Fix by mirroring the letsketch fix: call hid_hw_stop() first, which
+synchronously kills the URBs that deliver raw_event(), so once it
+returns no path can re-arm the timer. timer_shutdown_sync() then
+drains any in-flight callback and permanently disables further
+mod_timer() calls.
+
+Found by 0sec (https://0sec.ai) using automated source analysis, as an
+incomplete-fix twin of commit 46c8beeccd8a ("HID: letsketch: fix UAF on
+inrange_timer at driver unbind"); not runtime-reproduced.
+
+Fixes: 01309e29eb95 ("HID: uclogic: Support in-range reporting emulation")
 Cc: stable@vger.kernel.org
 Assisted-by: 0sec:claude-opus-4-8
 Signed-off-by: Doruk Tan Ozturk <doruk@0sec.ai>
 ---
- net/nfc/llcp_core.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/hid/hid-uclogic-core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/nfc/llcp_core.c b/net/nfc/llcp_core.c
-index aed5fe1afef0..e3b3077e0e83 100644
---- a/net/nfc/llcp_core.c
-+++ b/net/nfc/llcp_core.c
-@@ -1481,6 +1481,9 @@ static void nfc_llcp_rx_skb(struct nfc_llcp_local *local, struct sk_buff *skb)
+diff --git a/drivers/hid/hid-uclogic-core.c b/drivers/hid/hid-uclogic-core.c
+index b73f09d26688..c440013a609f 100644
+--- a/drivers/hid/hid-uclogic-core.c
++++ b/drivers/hid/hid-uclogic-core.c
+@@ -548,8 +548,8 @@ static void uclogic_remove(struct hid_device *hdev)
  {
- 	u8 dsap, ssap, ptype;
+ 	struct uclogic_drvdata *drvdata = hid_get_drvdata(hdev);
  
-+	if (skb->len < LLCP_HEADER_SIZE)
-+		return;
-+
- 	ptype = nfc_llcp_ptype(skb);
- 	dsap = nfc_llcp_dsap(skb);
- 	ssap = nfc_llcp_ssap(skb);
+-	timer_delete_sync(&drvdata->inrange_timer);
+ 	hid_hw_stop(hdev);
++	timer_shutdown_sync(&drvdata->inrange_timer);
+ 	kfree(drvdata->desc_ptr);
+ 	uclogic_params_cleanup(&drvdata->params);
+ }
 -- 
 2.43.0
 
