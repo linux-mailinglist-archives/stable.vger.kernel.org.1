@@ -1,195 +1,149 @@
-Return-Path: <stable+bounces-273362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273363-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id dkKiHVTaUWpoJgMAu9opvQ
-	(envelope-from <stable+bounces-273362-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 07:53:24 +0200
+	id 8FogDJvaUWp4JgMAu9opvQ
+	(envelope-from <stable+bounces-273363-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 07:54:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 462AC74071A
-	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 07:53:23 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EE8174072C
+	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 07:54:34 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=smail.nju.edu.cn header.s=iohv2404 header.b=3OMVBgMW;
-	dmarc=pass (policy=reject) header.from=smail.nju.edu.cn;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273362-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273362-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=readmodwrite-com.20251104.gappssmtp.com header.s=20251104 header.b=dLtyv4E0;
+	dmarc=none;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273363-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-273363-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1535F302AE10
-	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 05:53:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8B60A30300CC
+	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 05:54:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F125A305667;
-	Sat, 11 Jul 2026 05:53:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26C8E30568B;
+	Sat, 11 Jul 2026 05:54:32 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbgbr1.qq.com (smtpbgbr1.qq.com [54.207.19.206])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6353F2F363F;
-	Sat, 11 Jul 2026 05:52:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 474D42FBE1F
+	for <stable@vger.kernel.org>; Sat, 11 Jul 2026 05:54:29 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783749180; cv=none; b=LRNHG4BhuK7x2szUrQPM4k70SACnaN2q0BlOTvNPtL2KahOM4h8NCKk/CVSyLRLlEFQ7yiMuUWXjmNlNaP01ZegBHBalLeTZxuFs1oX3BY/3uJIbrZa2sen3KbGQ76FQOv1FL5C9DK9bbOYjM9gAaNleIz/Cv4nBBkYLWqUk8wg=
+	t=1783749271; cv=none; b=DSNjWDzeUO9YhS1xoB/GINsREhs4+wPgIsl71Uhwi1MRrraVH/8HOwSNkQBvsMhTomXzhIY5fC2/3yiEjqvofVLmCmpFfMJOJ+mvLsGXYyysbSFxnhmzgzEt0U2XJdQpB0jAjo3fkP7QIwXHBg14QEqwDEnI27QYndw8bEeCaCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783749180; c=relaxed/simple;
-	bh=ttaalMz1FTfGmakTWRqtkTEzjB66sXfIOsfhZO7DEhM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cpViW2wGRankXJ7ydfIFJY6zU8GGYtsut9ZTJiHaX//ndc8m9RTplB+VXcVRhmQ9i+JDmd5DyQTkPk/4qYJqq4JvJtk8LJ2jVARa7f04e519Jvfsenkaz4+t7J9N5I/2s9fYlyPHKbyK51UACbjIiG3vVubLzuacxGCBe71Bqd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=smail.nju.edu.cn; spf=pass smtp.mailfrom=smail.nju.edu.cn; dkim=pass (1024-bit key) header.d=smail.nju.edu.cn header.i=@smail.nju.edu.cn header.b=3OMVBgMW; arc=none smtp.client-ip=54.207.19.206
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smail.nju.edu.cn;
-	s=iohv2404; t=1783749099;
-	bh=1nEroFCMNEQ1OarzSc1k6vxdkFBpH9AU9gvIdeqHk+Y=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=3OMVBgMW7lHVXQyiNSy3EPndE/WA4m+gsmC93HkPCXd5UgqU8cD3zOmHNHx3US3Ky
-	 yJ2oCi/iuSuu+Wp2D+jQhl0NT45HOvjKisTAvKMetttK4NQmfgWyAoWEA4uLCO2j63
-	 8GXAvfBE+MLvtSrTXmmRUudUBJWSbo33qecx7nOg=
-X-QQ-mid: zesmtpsz7t1783749097t45495f21
-X-QQ-Originating-IP: IIDSEp9RwtEdL52iwvqif0O5hnmgtOYnh3AsFkRNW40=
-Received: from hepeiyang-vm.wu.lxd ( [153.3.21.129])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Sat, 11 Jul 2026 13:51:34 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 3112722422674839483
-EX-QQ-RecipientCnt: 10
-From: Peiyang He <peiyang_he@smail.nju.edu.cn>
-To: joro@8bytes.org,
-	will@kernel.org
-Cc: robin.murphy@arm.com,
-	baolu.lu@linux.intel.com,
-	jgg@ziepe.ca,
-	kanie@linux.alibaba.com,
-	iommu@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Peiyang He <peiyang_he@smail.nju.edu.cn>
-Subject: [PATCH] iommu: Fix dev_iommu memory leak when device_add fails in iommu_mock_device_add
-Date: Sat, 11 Jul 2026 13:51:19 +0800
-Message-ID: <76AC62D46B998556+20260711055119.1003477-1-peiyang_he@smail.nju.edu.cn>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1783749271; c=relaxed/simple;
+	bh=s8jLFIScodMQ29MEof5LclbjYvJlO2j6tbNbsN+hPN8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FdoQAaEWsZ8oDVnEzeOzsHexrfmUAbvNlNT0OaGlqgfmL/seTyh/aBZAC9kGVIQY+Di3gCpjPNbyI+HokjHsACV0T9YMF5C+ZS2FwcYgVbusuduAZbFsSxr6ZViRhPaOmIVZC5OqoQq+GJAo1DqdivpHRPk+mXBjs7/2FTWH9Bk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=readmodwrite.com; spf=none smtp.mailfrom=readmodwrite.com; dkim=pass (2048-bit key) header.d=readmodwrite-com.20251104.gappssmtp.com header.i=@readmodwrite-com.20251104.gappssmtp.com header.b=dLtyv4E0; arc=none smtp.client-ip=209.85.221.53
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-47d70879764so1003797f8f.2
+        for <stable@vger.kernel.org>; Fri, 10 Jul 2026 22:54:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=readmodwrite-com.20251104.gappssmtp.com; s=20251104; t=1783749268; x=1784354068; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=s8jLFIScodMQ29MEof5LclbjYvJlO2j6tbNbsN+hPN8=;
+        b=dLtyv4E0xctcWwWXqtndK1SrCB8Ft/7IgzU1pDkgC7pETdYQSn1WZMd/JA2WIEAHyr
+         9tZrC4D+IXEnk0FGjPL0etK3ZtFd3UDqbpGDracN0gyGDlaejjVYleRsKnU9QvmrK35C
+         j1rJYZeoj2JPRCE4PX9TUu7Ef7wMTunBwhSE1isd5gGxY0yePa68fotLyh6Jzvsti5B9
+         T3iRqH3M1ojqJlQdcTH9a+szjBrHIWtHqVReebSoE1eouszLRjFgoForA/A+yQLvCyHb
+         D/ZVLTEAdMeEyi/To+xIS0r4EaOySIXA75yZCO6kvgXfIFtUAO+jFSe5FAcViy2Vxr5K
+         aDSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783749268; x=1784354068;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=s8jLFIScodMQ29MEof5LclbjYvJlO2j6tbNbsN+hPN8=;
+        b=aocyNLOi5s3W7LoYFiPEAtxYHicEeegKyV9mcsr7jhx1nvoAJg+Uqmc3ePbJRmW6Bj
+         ezLCNjkojnNhjHJUXZg1LJ1MiRqpexepMZy9RO5M5m3PGjLIpgJ3aOP2hUb/DTUYHJE8
+         SXG5KDTV5wTvNi/XZv3tQIW6QwSvCTxAiQJLcuZW757vsIVlHQVNN79cdLe2EosgzHmL
+         iLiL4YqW2z9hsEKX3mRsgSG1ESnjTebp+xXK3Wl5E8xe0dq8b+NXUFZN4OaSusH8RTi8
+         PLxCN8fTpAPU3xyUATtFSQ4LyqhssZ/bbWqHGQefnXcDWuSIElRKjOG0oaHt/M46URro
+         pkqg==
+X-Forwarded-Encrypted: i=1; AHgh+RqZHxhfxnwihtWdNrjH+wgi4wpGwcbLHebS/Xk5+HY5Mmzp4pKBZ/0FxPTgi4pijpo+1K3SJfU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw2e0oJ1YpCdlnQUOMOOw4xycH6An3miMS83N0ZWcg4deQ9z/qG
+	kGiV0VUcvfcDUvPI75Ui3ll0MWMlG6+06sV4BlRKWN4Pjp00N56ZriUE1PJHfEYxMho=
+X-Gm-Gg: AfdE7clwmwRuGcpWogQIEWFTwEUqawo1wQWav5Rv5gjWtM+CHHTEBYEmHklFSC72Z36
+	z1HthKZxSsLIGAbpPup9YDd21ZIQKUAtBKi0ZFU+usauMMJgyxPBG4VfsI8yaIsgzPWlmgE7X6p
+	jFL1wYz9Nl6gj6+TYw45/5b9g/iA/iK+U7ha3NbD/yXIWlvjxz6q4EK9F3iFGy1rMo8TXQ3+Fnq
+	6fVqBK5869DOZ27d61oaTvQWmLrl/axCcsuTgt5uZ/oIwlNmdi5/twMCtUOrC+7LAJdVXytNkt3
+	u3F68Z/Xi3ak4+g0trVy9AgwL80JSO4BTXdp0yty0iNQOmaY6HcpS9wmml2niv/IThU4uxT5jVX
+	gvNXVvVf+vzU2Ldd+D4wUN9VDqgMIwU7u5VM2ZE8sPwKnjYtC43IQdHi1zXJ+KoslVXuUgAVMEn
+	U=
+X-Received: by 2002:a5d:5f42:0:b0:475:5454:49f2 with SMTP id ffacd0b85a97d-47f2dcbffd3mr1436432f8f.24.1783749267440;
+        Fri, 10 Jul 2026 22:54:27 -0700 (PDT)
+Received: from localhost ([2a09:bac6:37a8:26dc::3df:54])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47aa0f21328sm67191335f8f.32.2026.07.10.22.54.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Jul 2026 22:54:25 -0700 (PDT)
+Date: Sat, 11 Jul 2026 06:54:25 +0100
+From: Matt Fleming <matt@readmodwrite.com>
+To: Tejun Heo <tj@kernel.org>
+Cc: David Vernet <void@manifault.com>, Andrea Righi <arighi@nvidia.com>, 
+	Changwoo Min <changwoo@igalia.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Edward Adam Davis <eadavis@qq.com>, Chen Ridong <chenridong@huaweicloud.com>, 
+	Matt Fleming <mfleming@cloudflare.com>, sched-ext@lists.linux.dev, cgroups@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, kernel-team@cloudflare.com
+Subject: Re: [PATCH cgroup/for-7.2-fixes] cgroup: Create the psimon kthread
+ outside of cgroup_mutex
+Message-ID: <alHaU4MhWzq9kA1i@matt-Precision-5490>
+References: <20260710100441.2653477-1-matt@readmodwrite.com>
+ <20260710134945-psimon-fix-tj@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpsz:smail.nju.edu.cn:qybglogicsvrsz:qybglogicsvrsz4b-0
-X-QQ-XMAILINFO: MACXe2l6e7j95nR9x1ySR86aE13w+ytrjMjbb1PHcZV8X37jHLDW0vwt
-	UKMz4w4jkEFJKOtKxgCOuImV9XeHGFdXZZVdaUoHkEp4z51vPFeODds1tr+A9Tw0WqMUEdL
-	ppeZ8e8ACAJPfJcLrFGSxgRUCbS/rmlgPHOxQWpryf56yNd9CYw2auTWVNaSOe/Z2UDA8ZS
-	iFIJyjnca9flz+9zZrqMZwB+shruX7XRWMgLGaNZsUY9wwUEWMsDA/Ye4Y6DuXKmLPgjhph
-	P6zmgV2zoLD+n6nfEVJd4h+VNy0XKSuQbugnXJUnQFVWiNV4vgyn2ZGKtw/uKJ4glCWgTAe
-	D6Q2iRCHt0PENSBwUwm+Em/YpGTJrARf63bckWPVs/PimOHUOY/KfZZVlAcqLCpr7ii0j/0
-	gwCNx7AwcnXJyBhrRajbSrLD9Jx/QyrbK3zf3R+eDRKSZR4ldm1ONQUM//sqmasuyz6Bj9H
-	nK7zYWoMtHDvCrLfzO+M3u97u4T0cAPILKZUHw9QakznkZsJLjOpdM0xEY9KXojT7luaoj2
-	m+i9zjKjxliwI8tDBnlKtyQOEOClKmeCqS50m5JKwp7wHSQsVbt9flvR3yfZSxvIhHeGMV+
-	pa4HZ7wMp1XIBnuQVJw48pic69nTjvuisUwkyQp7kbrc4kqxowKu7hS61idOcG6wbatGeQH
-	ZUowg8N58O9dF5OBHlkdmFhssdvklM3z5b1Wc6ir3qb0kO1oVzb1jzLbbqnLcoTr2ijkZzQ
-	mCyKSfL6xPAoTTNnoH6nIOgdPsfmuo11yq1X6nuoHlL8XqMk/0ls37Fn80cxiMe3uK3oTD9
-	Ubt8oBGzTl2rltYMVVOIr+Ipmuh3++4OklNJrP9pG5fI8R4hFTpsCKkQAR++u4USbwjTSjo
-	wjZewJ/C7fmGN9rolXIym7Qxla+k6wUjHhx9/qie8kRhNQPzjsyZj6HgEXMh2L7H4LrqLgf
-	0d5qcFqhNZJeAndl8Y1ZRIIItM5lSELfKQhlmuG5rShl9vKK6NkGt+s1U+3T+I3KgCph/0X
-	4ZzCfOJWwfz1I1EQng+1aaDitDY0A=
-X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
-X-QQ-RECHKSPAM: 0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260710134945-psimon-fix-tj@kernel.org>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[smail.nju.edu.cn,reject];
-	R_DKIM_ALLOW(-0.20)[smail.nju.edu.cn:s=iohv2404];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[readmodwrite-com.20251104.gappssmtp.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-273362-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:joro@8bytes.org,m:will@kernel.org,m:robin.murphy@arm.com,m:baolu.lu@linux.intel.com,m:jgg@ziepe.ca,m:kanie@linux.alibaba.com,m:iommu@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:peiyang_he@smail.nju.edu.cn,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:tj@kernel.org,m:void@manifault.com,m:arighi@nvidia.com,m:changwoo@igalia.com,m:hannes@cmpxchg.org,m:surenb@google.com,m:peterz@infradead.org,m:eadavis@qq.com,m:chenridong@huaweicloud.com,m:mfleming@cloudflare.com,m:sched-ext@lists.linux.dev,m:cgroups@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:kernel-team@cloudflare.com,s:lists@lfdr.de];
+	DMARC_NA(0.00)[readmodwrite.com];
+	FORGED_SENDER(0.00)[matt@readmodwrite.com,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	TAGGED_FROM(0.00)[bounces-273363-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[peiyang_he@smail.nju.edu.cn,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FREEMAIL_CC(0.00)[manifault.com,nvidia.com,igalia.com,cmpxchg.org,google.com,infradead.org,qq.com,huaweicloud.com,cloudflare.com,lists.linux.dev,vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[peiyang_he@smail.nju.edu.cn,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[smail.nju.edu.cn:+];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[matt@readmodwrite.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[readmodwrite-com.20251104.gappssmtp.com:+];
+	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,smail.nju.edu.cn:from_mime,smail.nju.edu.cn:dkim,smail.nju.edu.cn:mid,nju.edu.cn:email]
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 462AC74071A
+X-Rspamd-Queue-Id: 8EE8174072C
 
-iommu_mock_device_add() first calls iommu_fwspec_init(), which on
-success allocates both dev->iommu (via dev_iommu_get()) and
-dev->iommu->fwspec. If the subsequent device_add(dev) call fails,
-the error path only calls iommu_fwspec_free(dev), which frees
-fwspec but leaves dev->iommu still allocated.
+On Fri, Jul 10, 2026 at 01:49:45PM -1000, Tejun Heo wrote:
+> Matt, your reordering trades one deadlock for another: CLONE_INTO_CGROUP
+> forks grab cgroup_mutex inside the scx_fork_rwsem read section, so an
+> enable racing such a clone deadlocks the other way around. The fork has to
+> move out of the locked sections instead. Can you verify this fixes the
+> deadlock in your setup?
 
-This triggers the following kmemleak report when fuzzing with Syzkaller:
-
-BUG: memory leak
-unreferenced object 0xffff888011e0a200 (size 192):
-  comm "syz.1.1695", pid 24885, jiffies 4295222527
-  hex dump (first 32 bytes):
-    00 00 00 00 00 00 00 00 00 00 00 00 ad 4e ad de  .............N..
-    ff ff ff ff 00 00 00 00 ff ff ff ff ff ff ff ff  ................
-  backtrace (crc 25df5bb3):
-    kmemleak_alloc_recursive include/linux/kmemleak.h:44 [inline]
-    slab_post_alloc_hook mm/slub.c:4575 [inline]
-    slab_alloc_node mm/slub.c:4899 [inline]
-    __kmalloc_cache_noprof+0x47a/0x710 mm/slub.c:5415
-    kmalloc_noprof include/linux/slab.h:950 [inline]
-    kzalloc_noprof include/linux/slab.h:1188 [inline]
-    dev_iommu_get+0x10c/0x1a0 drivers/iommu/iommu.c:408
-    iommu_fwspec_init+0x288/0x4d0 drivers/iommu/iommu.c:3087
-    iommu_mock_device_add+0x46/0xb0 drivers/iommu/iommu.c:385
-    mock_dev_create drivers/iommu/iommufd/selftest.c:1025 [inline]
-    iommufd_test_mock_domain drivers/iommu/iommufd/selftest.c:1066 [inline]
-    iommufd_test+0x2f8a/0x6190 drivers/iommu/iommufd/selftest.c:2072
-    iommufd_fops_ioctl+0x367/0x540 drivers/iommu/iommufd/main.c:533
-    vfs_ioctl fs/ioctl.c:51 [inline]
-    __do_sys_ioctl fs/ioctl.c:597 [inline]
-    __se_sys_ioctl fs/ioctl.c:583 [inline]
-    __x64_sys_ioctl+0x18e/0x210 fs/ioctl.c:583
-    do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-    do_syscall_64+0x116/0x800 arch/x86/entry/syscall_64.c:94
-    entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Fix this by calling dev_iommu_free(dev) instead of iommu_fwspec_free(dev)
-in the device_add() failure path. dev_iommu_free() frees both fwspec
-and the outer dev_iommu struct and clears dev->iommu.
-
-Reported-by: Peiyang He <peiyang_he@smail.nju.edu.cn>
-Fixes: 2a918911ed3d ("iommufd: Register iommufd mock devices with fwspec")
-Cc: stable@vger.kernel.org
-Signed-off-by: Peiyang He <peiyang_he@smail.nju.edu.cn>
----
- drivers/iommu/iommu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-index e8f13dcebbde..23a531595835 100644
---- a/drivers/iommu/iommu.c
-+++ b/drivers/iommu/iommu.c
-@@ -390,7 +390,7 @@ int iommu_mock_device_add(struct device *dev, struct iommu_device *iommu)
- 
- 	rc = device_add(dev);
- 	if (rc)
--		iommu_fwspec_free(dev);
-+		dev_iommu_free(dev);
- 	return rc;
- }
- EXPORT_SYMBOL_GPL(iommu_mock_device_add);
-
-base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
--- 
-2.43.0
-
+Thanks for fixing this. I'll test this out ASAP and report back.
 
