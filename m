@@ -1,407 +1,177 @@
-Return-Path: <stable+bounces-273359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273360-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id hc3tDQbVUWqvJQMAu9opvQ
-	(envelope-from <stable+bounces-273359-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 07:30:46 +0200
+	id Ak9UF3fVUWrIJQMAu9opvQ
+	(envelope-from <stable+bounces-273360-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 07:32:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99A5A740639
-	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 07:30:45 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CC8E740651
+	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 07:32:38 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273359-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-273359-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linux.dev header.s=key1 header.b=deige75K;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273360-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273360-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 38510302D18E
-	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 05:30:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 86740300A259
+	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 05:32:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 403532D0C97;
-	Sat, 11 Jul 2026 05:30:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 862F82DC767;
+	Sat, 11 Jul 2026 05:32:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from zg8tmtyylji0my4xnjeumjiw.icoremail.net (zg8tmtyylji0my4xnjeumjiw.icoremail.net [162.243.161.220])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 243BA3770B;
-	Sat, 11 Jul 2026 05:30:35 +0000 (UTC)
+Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8DF423BCEE
+	for <stable@vger.kernel.org>; Sat, 11 Jul 2026 05:32:32 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783747843; cv=none; b=bp5yoNDUBPGPn3oWgcoXZusw4U7eQoOE8DGTOjWrw9+Fm0NyU9nX4bB2OYP2qcYSes0eiKCXKDGRfbcp02LdFSwzv0fvDHSqVjjqWBGaFsEtfGB8I5UKQw8D6ONm9gTQqN+dFUUFMvuc9jLRvFGganHjaZt2SrAlQiJZV75myPo=
+	t=1783747954; cv=none; b=GiVnQTpM9uAI5+MlLpM7pE6zGAquEEQd2qAiQ9c/lqkjGuVR+xlReunslbTFHDs3SC1nqjSHQMTI7JIkGj7lCQ+NiwJLqNJf7jBbjmdFOYWAlyK7ICrJlUjAsAInwIdq0/zxRxQsRmpHJ6c1BbuIjTgmkKP7C8DNRSSUJ8bw57A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783747843; c=relaxed/simple;
-	bh=G0IMDCsHZn9637YiSTEfdtPOSOs5FpHbF3Ab1eAvPZ0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=QEpwOx00oaevuF7vgJ4va81mm+/5+WS/T9rC4VqSHLM9aV799yPpSE/H2KMgye4drFrjfsuOiUo5mdQ/xtD/bOLhdlFxPh3tEbS4naHRNaaHXzhvOpWZZmIPlMwfCOSLdU3mcfnRmfEkiZIqs43wQYlIuZB2cjcc3MKQ6aNzmUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=162.243.161.220
-Received: from zju.edu.cn (unknown [10.98.66.117])
-	by mtasvr (Coremail) with SMTP id _____wAHKV3r1FFqrKw3AA--.20663S3;
-	Sat, 11 Jul 2026 13:30:20 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.98.66.117])
-	by mail-app3 (Coremail) with SMTP id zS_KCgB3kHLp1FFq38APAw--.24487S2;
-	Sat, 11 Jul 2026 13:30:17 +0800 (CST)
-From: Fan Wu <fanwu01@zju.edu.cn>
-To: netdev@vger.kernel.org
-Cc: shenjian15@huawei.com,
-	salil.mehta@huawei.com,
-	dingtianhong@huawei.com,
-	przemyslaw.kitszel@intel.com,
-	horms@kernel.org,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Fan Wu <fanwu01@zju.edu.cn>
-Subject: [PATCH net v3] net: hip04: fix tx coalesce timer and IRQ teardown races
-Date: Sat, 11 Jul 2026 05:29:22 +0000
-Message-Id: <20260711052922.1634837-1-fanwu01@zju.edu.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1783747954; c=relaxed/simple;
+	bh=gP5Y0SjcbfN2LqAkP2yZSvcUzXaeKw4zrxEpZjs6dRc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=u7N466DxUqmKwluQEgLZ5hZWUT1U64wWRxA3toj4xfpjS88hLgqEl1WaIJ78QKfGblgLUDupQILHXEWs+/PQQHocsJ8G9vmwLEz35fyOegEo8swzYvl17MHRtHntH3Z9F8De+NGoa2L7NqX37K4CSE1bGjqRjK002+5gG+18T5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=deige75K; arc=none smtp.client-ip=91.218.175.174
+Message-ID: <ab1bdfa0-7382-4d26-a65d-68eb172eb84a@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783747940;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=G5NmJY2iw9mr7LiD+wBGyisuFVRNUZ+aiJ7vkuUhCAE=;
+	b=deige75KcMd91XGDV/xznNzEracNWg8yXfEIAK9/OOOe8uqF1uoLyRtIg5SSGFwX2AQ8jc
+	WqXflyjQsmlcZq67w+XQRJVVFQ4k2yAoCA5Pj3Ag6IHox67Nho1Z+EK2liTxHbD25RhjwS
+	8hKFh1eTpSfmQhoXQoLcCR3KpQ6sEZA=
+Date: Sat, 11 Jul 2026 13:31:47 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zS_KCgB3kHLp1FFq38APAw--.24487S2
-X-CM-SenderInfo: qrstjiaswqq6lmxovvfxof0/
-X-CM-DELIVERINFO: =?B?uCrOiAXKKxbFmtjJiESix3B1w3vZ3A9ovKVTomAyoQazvoRs/NHSP8GI2EvgeEEW7R
-	sfnZPoDCNGYdHSfuFmYJL54WPsNDoajOlnwjpY/9ehveo+tEDJ4fpDi5AaZmM1fFJgL7+Q
-	GOwuDsm6pLLZHigh1nSp9E6mavGmQbzmcFsnzP86
-X-Coremail-Antispam: 1Uk129KBj93XoW3Zr1fGFyftFWDKFWxGw17Arc_yoWkWw4xpa
-	yrKaykJrWvy3ySgrZrtF40qryIya1xJa9rGw18G3s5u3ZIyr10qr4kKryjvF4UJFWvkrn3
-	Xr4FvFWUuw4DJ3gCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUP0b4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AK
-	xVW0oVCq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc804V
-	CY07AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AK
-	xVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48Icx
-	kI7VAKI48JM4x0Y48IcxkI7VAKI48G6xCjnVAKz4kxM4IIrI8v6xkF7I0E8cxan2IY04v7
-	MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr
-	0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0E
-	wIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JV
-	WxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAI
-	cVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU85l1PUUUUU==
+Subject: Re: [PATCH] mm: shrinker: Fix double-free in alloc_shrinker_info
+ error path
+To: Hongling Zeng <zenghongling@kylinos.cn>, akpm@linux-foundation.org,
+ david@fromorbit.com, roman.gushchin@linux.dev, muchun.song@linux.dev
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, zhongling0719@126.com,
+ stable@vger.kernel.org
+References: <20260711041954.95749-1-zenghongling@kylinos.cn>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <20260711041954.95749-1-zenghongling@kylinos.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [1.54 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-273359-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[14];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[zju.edu.cn];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[fanwu01@zju.edu.cn,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:netdev@vger.kernel.org,m:shenjian15@huawei.com,m:salil.mehta@huawei.com,m:dingtianhong@huawei.com,m:przemyslaw.kitszel@intel.com,m:horms@kernel.org,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:fanwu01@zju.edu.cn,m:andrew@lunn.ch,s:lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[fanwu01@zju.edu.cn,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[kvack.org,vger.kernel.org,126.com];
+	TAGGED_FROM(0.00)[bounces-273360-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	R_DKIM_NA(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	FORGED_SENDER(0.00)[qi.zheng@linux.dev,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:zenghongling@kylinos.cn,m:akpm@linux-foundation.org,m:david@fromorbit.com,m:roman.gushchin@linux.dev,m:muchun.song@linux.dev,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:zhongling0719@126.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linux.dev:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,zju.edu.cn:from_mime,zju.edu.cn:email,zju.edu.cn:mid]
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[qi.zheng@linux.dev,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,kylinos.cn:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 99A5A740639
+X-Rspamd-Queue-Id: 5CC8E740651
 
-The hip04 remove path frees the TX/RX rings before unregistering the
-netdev. If the interface is still up, unregister_netdev() then runs
-.ndo_stop, whose TX reclaim and NAPI poll touch the already-freed DMA
-ring memory. The TX coalesce timer and the platform IRQ also outlive the
-netdev private data they dereference.
+Hi Hongling,
 
-Reorder hip04_remove() so the netdev is unregistered (which runs .ndo_stop
-synchronously, stopping NAPI and the TX queue) before the rings are freed.
-Free the devm-managed IRQ explicitly before free_netdev(), so
-hip04_mac_interrupt() (whose dev_id is the netdev) cannot fire against
-freed memory: devm would otherwise release it only after .remove returns.
+On 7/11/26 12:19 PM, Hongling Zeng wrote:
+> In alloc_shrinker_info(), when shrinker_unit_alloc() fails for a node,
+> the error handler calls free_shrinker_info() which iterates over ALL
+> nodes and tries to free their shrinker_info. For the failed node,
+> rcu_assign_pointer() was skipped, so its shrinker_info still points
+> to old data. This causes double-free of valid shrinker_info structures.
 
-hip04_mac_stop() must quiesce both arming sites of the coalesce timer.
-The NAPI poll arms it, and napi_disable() returns once the poll calls
-napi_complete_done(), not when the poll function returns, so move that
-arm before napi_complete_done().  The early-exit paths in hip04_rx_poll()
-do not call napi_complete_done(); NAPI stays scheduled and will be polled
-again, so there is no need to arm the coalesce timer on that pass.  The
-Tx path also arms it, and mac_stop() is reached directly from
-hip04_tx_timeout_task() as well as via .ndo_stop, so use netif_tx_disable()
-rather than netif_stop_queue() to wait for an in-flight
-hip04_mac_start_xmit() to finish.  The timer is then drained with
-hrtimer_cancel().  A "closing" flag, checked at the single arming site,
-guards against a later arm.
+No, it will be NULL, not old data. Therefore, the double-free you
+mentioned doesn't exist. Before sending the fix, please verify the
+problem exists and your fix actually works.
 
-hip04_tx_timeout_task() restarts the device with mac_stop() + mac_open().
-Serialize that restart against .ndo_open/.ndo_stop with a driver-private
-state_lock instead of rtnl_lock(): mac_open()/mac_stop() are split into
-internal __hip04_mac_open()/__hip04_mac_stop() helpers, and the
-.ndo_open/.ndo_stop wrappers as well as the timeout worker take the lock.
-This avoids extending RTNL usage; netdev_lock() is not sufficient here, as
-hip04 does not opt into netdev-ops locking.  If timeout recovery is in
-progress when a close begins, .ndo_stop waits on the lock and performs the
-final MAC stop; if .ndo_stop acquires the lock first, the worker sees the
-device is no longer running and returns.  Either way, recovery cannot
-re-enable the MAC
-during teardown.
+And as a reminder, please don't repeatedly send identical patches:
 
-This issue was found by an in-house static analysis tool.
+1. 
+https://lore.kernel.org/all/20260711041509.92926-1-zenghongling@kylinos.cn/
+2. 
+https://lore.kernel.org/all/20260711041823.95135-1-zenghongling@kylinos.cn/
+3. 
+https://lore.kernel.org/all/20260711041954.95749-1-zenghongling@kylinos.cn/
 
-Fixes: a41ea46a9a12 ("net: hisilicon: new hip04 ethernet driver")
-Cc: stable@vger.kernel.org
-Assisted-by: Codex:gpt-5.5
-Signed-off-by: Fan Wu <fanwu01@zju.edu.cn>
----
+One last thing, please make sure to base your changes on the latest
+tree.
 
-v3: address review from Przemek Kitszel.
+Thanks,
+Qi
 
-- Drop the rtnl_lock()/rtnl_unlock() and the #include <linux/rtnetlink.h>
-  added to hip04_tx_timeout_task() in v2. Serialize the tx-timeout restart
-  against .ndo_open/.ndo_stop with a driver-private state_lock instead:
-  mac_open()/mac_stop() are split into __hip04_mac_open()/__hip04_mac_stop()
-  helpers, and the .ndo_open/.ndo_stop wrappers and the timeout worker all
-  take the lock. This avoids new RTNL usage. netdev_lock() was considered
-  but does not help: hip04 does not opt into netdev-ops locking, so its
-  .ndo_open/.ndo_stop run under RTNL and the netdev instance lock does not
-  protect them.
-
-- Rephrase the sentence about napi_complete_done() / early-exit paths that
-  was hard to read.
-
-- s/Tx xmit/Tx/.
-
-v2: Address review comments from Simon Horman. Use netif_tx_disable() rather
-   than netif_stop_queue() in hip04_mac_stop() so that an in-flight
-   hip04_mac_start_xmit() finishes before the TX ring is reclaimed;
-   mac_stop() is also called directly from the tx-timeout work, not only
-   via .ndo_stop. Arm the coalesce timer in hip04_rx_poll() before
-   napi_complete_done(), so that napi_disable() observes the final arm and
-   the subsequent cancel cannot miss it. Free the devm-managed IRQ
-   explicitly in hip04_remove() before free_netdev() so that
-   hip04_mac_interrupt() cannot run against freed memory, placing it after
-   unregister_netdev() so that the device is stopped first. Reorder
-   hip04_remove() so that the netdev is unregistered (running .ndo_stop)
-   before the PHY is disconnected and the TX/RX rings are freed. Check the
-   return value of hip04_mac_open() in the tx-timeout restart path.
-
-v2: https://lore.kernel.org/netdev/20260710015730.630775-1-fanwu01@zju.edu.cn/
-v1: https://lore.kernel.org/netdev/20260703050133.2445155-1-fanwu01@zju.edu.cn/
-
- drivers/net/ethernet/hisilicon/hip04_eth.c | 107 ++++++++++++++++++++++++++----
- 1 file changed, 96 insertions(+), 11 deletions(-)
-
-diff --git a/drivers/net/ethernet/hisilicon/hip04_eth.c b/drivers/net/ethernet/hisilicon/hip04_eth.c
-index 18376bcc7..4bd192094 100644
---- a/drivers/net/ethernet/hisilicon/hip04_eth.c
-+++ b/drivers/net/ethernet/hisilicon/hip04_eth.c
-@@ -15,6 +15,7 @@
- #include <linux/of_net.h>
- #include <linux/mfd/syscon.h>
- #include <linux/regmap.h>
-+#include <linux/mutex.h>
- 
- #define SC_PPE_RESET_DREQ		0x026C
- 
-@@ -232,6 +233,8 @@ struct hip04_priv {
- 	int tx_coalesce_frames;
- 	int tx_coalesce_usecs;
- 	struct hrtimer tx_coalesce_timer;
-+	bool closing;
-+	struct mutex state_lock; /* Serializes MAC open/stop and timeout recovery. */
- 
- 	unsigned char *rx_buf[RX_DESC_NUM];
- 	dma_addr_t rx_phys[RX_DESC_NUM];
-@@ -497,6 +500,12 @@ static void hip04_start_tx_timer(struct hip04_priv *priv)
- {
- 	unsigned long ns = priv->tx_coalesce_usecs * NSEC_PER_USEC / 2;
- 
-+	/* Do not (re-)arm the Tx coalesce timer once teardown has begun.
-+	 * Both arming sites (Tx and NAPI Rx poll) go through here.
-+	 */
-+	if (smp_load_acquire(&priv->closing))
-+		return;
-+
- 	/* allow timer to fire after half the time at the earliest */
- 	hrtimer_start_range_ns(&priv->tx_coalesce_timer, ns_to_ktime(ns),
- 			       ns, HRTIMER_MODE_REL);
-@@ -649,12 +658,15 @@ static int hip04_rx_poll(struct napi_struct *napi, int budget)
- 		priv->reg_inten |= RCV_INT;
- 		writel_relaxed(priv->reg_inten, priv->base + PPE_INTEN);
- 	}
-+	/* Arm the coalesce timer BEFORE napi_complete_done(): napi_disable()
-+	 * in hip04_mac_stop() returns once SCHED is cleared here, not when
-+	 * the poll function returns, so arming afterwards can slip past the
-+	 * stop path's hrtimer_cancel().
-+	 */
-+	if (tx_remaining)
-+		hip04_start_tx_timer(priv);
- 	napi_complete_done(napi, rx);
- done:
--	/* start a new timer if necessary */
--	if (rx < budget && tx_remaining)
--		hip04_start_tx_timer(priv);
--
- 	return rx;
- }
- 
-@@ -720,7 +732,7 @@ static void hip04_adjust_link(struct net_device *ndev)
- 	}
- }
- 
--static int hip04_mac_open(struct net_device *ndev)
-+static int __hip04_mac_open(struct net_device *ndev)
- {
- 	struct hip04_priv *priv = netdev_priv(ndev);
- 	int i;
-@@ -743,6 +755,13 @@ static int hip04_mac_open(struct net_device *ndev)
- 		hip04_set_recv_desc(priv, phys);
- 	}
- 
-+	/* RX mappings are established; clear the closing flag before
-+	 * re-enabling traffic.  The store-release pairs with the load-acquire
-+	 * in hip04_start_tx_timer(); state_lock serializes this against
-+	 * mac_stop()'s store-release.
-+	 */
-+	smp_store_release(&priv->closing, false);
-+
- 	if (priv->phy)
- 		phy_start(priv->phy);
- 
-@@ -754,13 +773,42 @@ static int hip04_mac_open(struct net_device *ndev)
- 	return 0;
- }
- 
--static int hip04_mac_stop(struct net_device *ndev)
-+static int hip04_mac_open(struct net_device *ndev)
-+{
-+	struct hip04_priv *priv = netdev_priv(ndev);
-+	int ret;
-+
-+	mutex_lock(&priv->state_lock);
-+	ret = __hip04_mac_open(ndev);
-+	mutex_unlock(&priv->state_lock);
-+	return ret;
-+}
-+
-+static int __hip04_mac_stop(struct net_device *ndev)
- {
- 	struct hip04_priv *priv = netdev_priv(ndev);
- 	int i;
- 
-+	/* Stop new timer arms before draining: set the closing flag (checked
-+	 * at the single arming site), wait for the NAPI poll and any in-flight
-+	 * TX to finish, then cancel the timer.
-+	 *
-+	 * netif_tx_disable() (not netif_stop_queue()) is required because this
-+	 * function is also called directly from hip04_tx_timeout_task(), not
-+	 * only via .ndo_stop where the core has already deactivated TX;
-+	 * netif_tx_disable() waits for an in-flight hip04_mac_start_xmit(),
-+	 * which arms the timer, to finish.
-+	 *
-+	 * Because hip04_rx_poll() arms the timer before napi_complete_done(),
-+	 * napi_disable() returning means that arm has happened, so the
-+	 * hrtimer_cancel() below cannot miss it.  The store-release pairs
-+	 * with the load in hip04_start_tx_timer().
-+	 */
-+	smp_store_release(&priv->closing, true);
-+
- 	napi_disable(&priv->napi);
--	netif_stop_queue(ndev);
-+	netif_tx_disable(ndev);
-+	hrtimer_cancel(&priv->tx_coalesce_timer);
- 	hip04_mac_disable(ndev);
- 	hip04_tx_reclaim(ndev, true);
- 	hip04_reset_ppe(priv);
-@@ -779,6 +827,16 @@ static int hip04_mac_stop(struct net_device *ndev)
- 	return 0;
- }
- 
-+static int hip04_mac_stop(struct net_device *ndev)
-+{
-+	struct hip04_priv *priv = netdev_priv(ndev);
-+
-+	mutex_lock(&priv->state_lock);
-+	__hip04_mac_stop(ndev);
-+	mutex_unlock(&priv->state_lock);
-+	return 0;
-+}
-+
- static void hip04_timeout(struct net_device *ndev, unsigned int txqueue)
- {
- 	struct hip04_priv *priv = netdev_priv(ndev);
-@@ -791,8 +849,23 @@ static void hip04_tx_timeout_task(struct work_struct *work)
- 	struct hip04_priv *priv;
- 
- 	priv = container_of(work, struct hip04_priv, tx_timeout_task);
--	hip04_mac_stop(priv->ndev);
--	hip04_mac_open(priv->ndev);
-+
-+	/* Serialize the restart with .ndo_open/.ndo_stop, which take the
-+	 * same lock.  If a close has completed or is in progress the
-+	 * netif_running() check bails; if that check races the core's
-+	 * running-state clear, .ndo_stop still runs under state_lock
-+	 * afterwards and stops the device, so this worker cannot leave the
-+	 * MAC re-enabled against a teardown.
-+	 */
-+	mutex_lock(&priv->state_lock);
-+	if (!netif_running(priv->ndev))
-+		goto out;
-+
-+	__hip04_mac_stop(priv->ndev);
-+	if (__hip04_mac_open(priv->ndev))
-+		netdev_err(priv->ndev, "restart after tx timeout failed\n");
-+out:
-+	mutex_unlock(&priv->state_lock);
- }
- 
- static int hip04_get_coalesce(struct net_device *netdev,
-@@ -983,6 +1056,7 @@ static int hip04_mac_probe(struct platform_device *pdev)
- 	}
- 
- 	INIT_WORK(&priv->tx_timeout_task, hip04_tx_timeout_task);
-+	mutex_init(&priv->state_lock);
- 
- 	ndev->netdev_ops = &hip04_netdev_ops;
- 	ndev->ethtool_ops = &hip04_ethtool_ops;
-@@ -1026,13 +1100,24 @@ static void hip04_remove(struct platform_device *pdev)
- 	struct hip04_priv *priv = netdev_priv(ndev);
- 	struct device *d = &pdev->dev;
- 
-+	unregister_netdev(ndev);
-+
-+	/* The IRQ is devm-managed and would otherwise be freed only after
-+	 * this function returns.  Free it now, after unregister_netdev() has
-+	 * run .ndo_stop to stop the device and mask its interrupt source, but
-+	 * before the manual free_netdev() below, so that hip04_mac_interrupt()
-+	 * (dev_id == ndev) cannot fire against freed memory.  free_irq() also
-+	 * drains any in-flight handler.
-+	 */
-+	devm_free_irq(d, ndev->irq, ndev);
-+	cancel_work_sync(&priv->tx_timeout_task);
-+	hrtimer_cancel(&priv->tx_coalesce_timer);
-+
- 	if (priv->phy)
- 		phy_disconnect(priv->phy);
- 
- 	hip04_free_ring(ndev, d);
--	unregister_netdev(ndev);
- 	of_node_put(priv->phy_node);
--	cancel_work_sync(&priv->tx_timeout_task);
- 	free_netdev(ndev);
- }
- 
+> 
+> Fix by tracking which node failed and only freeing shrinker_info
+> structures that were successfully assigned via rcu_assign_pointer()
+> in this call. Failed/unhandled nodes are left untouched.
+> 
+> Fixes: 15e8156713cc ("mm: shrinker: avoid memleak in alloc_shrinker_info")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Hongling Zeng <zenghongling@kylinos.cn>
+> ---
+>   mm/shrinker.c | 13 ++++++++++++-
+>   1 file changed, 12 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/shrinker.c b/mm/shrinker.c
+> index 7082d01c8c9d..92c6cb455fc9 100644
+> --- a/mm/shrinker.c
+> +++ b/mm/shrinker.c
+> @@ -78,6 +78,7 @@ int alloc_shrinker_info(struct mem_cgroup *memcg)
+>   {
+>   	int nid, ret = 0;
+>   	int array_size = 0;
+> +	int failed_nid;
+>   
+>   	mutex_lock(&shrinker_mutex);
+>   	array_size = shrinker_unit_size(shrinker_nr_max);
+> @@ -98,8 +99,18 @@ int alloc_shrinker_info(struct mem_cgroup *memcg)
+>   	return ret;
+>   
+>   err:
+> +	failed_nid = nid;
+> +	for_each_node(nid) {
+> +		struct shrinker_info *info;
+> +
+> +		if (nid >= failed_nid)
+> +			break;
+> +		info = shrinker_info_protected(memcg, nid);
+> +		rcu_assign_pointer(memcg->nodeinfo[nid]->shrinker_info, NULL);
+> +		shrinker_unit_free(info, 0);
+> +		kvfree(info);
+> +	}
+>   	mutex_unlock(&shrinker_mutex);
+> -	free_shrinker_info(memcg);
+>   	return -ENOMEM;
+>   }
+>   
 
 
