@@ -1,150 +1,158 @@
-Return-Path: <stable+bounces-273378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273379-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Se0lGDL/UWq0LAMAu9opvQ
-	(envelope-from <stable+bounces-273378-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 10:30:42 +0200
+	id udI5JhMDUmoYLQMAu9opvQ
+	(envelope-from <stable+bounces-273379-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 10:47:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8062740E8C
-	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 10:30:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B25AC740F12
+	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 10:47:14 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=intel.com header.s=Intel header.b=ZZZg9X02;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273378-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-273378-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=none;
+	dmarc=none;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273379-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273379-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 03C1730182B8
-	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 08:30:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 37EEA3016EE1
+	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 08:46:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C6C835C185;
-	Sat, 11 Jul 2026 08:30:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACA5433D512;
+	Sat, 11 Jul 2026 08:46:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 516B337A821;
-	Sat, 11 Jul 2026 08:30:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2260925A321;
+	Sat, 11 Jul 2026 08:46:34 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783758636; cv=none; b=kvPcbGsonhm7wtUBIo0ob+ABqu7OuIkFvdmCi529pZunJ2InbgDPK0htyyQni6GUdyhyT4vKMxZOvS+RC0+xmPCMOebusrPyiSQ7RtTpGB9qVQU+nlKuw743Jv/spF2cPW7EM0xO5hCXsyxnoyTyQ22bskh/ak7NJAl97NrnMmg=
+	t=1783759598; cv=none; b=m9WVijtQxrIiFt6FqWvfqjCkhHEBFSPERgVT5v81PymeI7wW1aZ7GwSNm5A7bk8Po7dBq1E3m+qbx/Ch+fUfaCkrt47FjvEikxx4wTCcXaHheHxzMsRhoig/OUUy0I+4nwZ4mGQbS3C6mmB/0tSdW4zVASOc4j03KCsyFwiAcXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783758636; c=relaxed/simple;
-	bh=i2U+zAgesSnqNI6vmnD2mvPH0KzXdQ3VKUIhAkuYBgI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fJTzRxMzUNOVzhOkXpKe+QfR9Mlcj9IDWyyI6PAmTEfWh12g0fv276Xy4sIRYUQAr9rX9cVUqzWjdvYekYpiAHmy6Aqsyn2/lIBdXUD/QHkgCYj4R5Sr37WI++Ds0eEu/ebie4De6nRGlEnEY5zzOXRAKkt1MC19GrrrOpGY5GU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZZZg9X02; arc=none smtp.client-ip=198.175.65.15
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1783758634; x=1815294634;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=i2U+zAgesSnqNI6vmnD2mvPH0KzXdQ3VKUIhAkuYBgI=;
-  b=ZZZg9X02WZFNr/bbOU9DY3i/YRL4ImuU+LJLoe/Wvuh1wk/97NtFbeTy
-   UPwU0ZIYPW7qbsuCtCbw6dYjF2qfvRoscqUDShnYPoaz92X/LIMw8Z0/o
-   QKpQikkf/wI7tcBY7yBTulaKcrkMeN7W9bQhia+L1uYA6sewA8HMoMdnD
-   GlaPNCSq1sa2HZEwcVqZLiv8zvTAHcqYyWdc27C2NqhJU72jDRxus9MrI
-   +NKRaN4x+oFcvs/l/3R+ZKsEsKuFkxES0oUNGXqpd0ndMNDXm9Ym4SqmG
-   sk3zTebIdM1kfNh7mRjiKjBFhzUawn/QZyx3DsRYrOjtmqzkdfS3KtuQG
-   w==;
-X-CSE-ConnectionGUID: RVbr14SETiySHcmqZLY5fw==
-X-CSE-MsgGUID: I4GgZSQPRKuepmbxIGIffg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="88129119"
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
-   d="scan'208";a="88129119"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jul 2026 01:30:34 -0700
-X-CSE-ConnectionGUID: +M6bVKBgRQGw/doFPsPE8A==
-X-CSE-MsgGUID: bLtXORdfSSCsZm+NGtjpbg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
-   d="scan'208";a="253963603"
-Received: from abityuts-desk.ger.corp.intel.com (HELO localhost) ([10.245.244.254])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jul 2026 01:30:32 -0700
-Date: Sat, 11 Jul 2026 11:30:29 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Laxman Acharya Padhya <acharyalaxman8848@gmail.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Joshua Crofts <joshua.crofts1@gmail.com>
-Subject: Re: [PATCH v2] iio: proximity: hx9023s: validate firmware size
-Message-ID: <alH_JR1MbGCJxsv3@ashevche-desk.local>
-References: <CAMyXUJm4CHm6cX5s+0=MabQJUA7hve1UMzf-MaaJPMvf4XCWEA@mail.gmail.com>
+	s=arc-20240116; t=1783759598; c=relaxed/simple;
+	bh=UHx/KdCEcvLTVbw6712hkv9ymSBOuVmMerQXaBS5Xe8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=afwcsvuvGZ5h5c44hEx9IYCpwMi5iGFgJW6VhkWsfr+1pXxx7fxlyeA4YUdAHnPET3XFiSnMAi9qnKCnlYk7q8ifvwuCktJMWJ9n/Igz3pEucLSd9qK4WMyEq/qqO+yJgk5Pp67bLJv5ZGHIJsxbjMQ2AkLB06Z+zf+bDtZxL6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+X-UUID: 01f9e8747d0511f1aa26b74ffac11d73-20260711
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:ba486e74-fc71-4415-8b5a-585d5b3e3a08,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:e7bac3a,CLOUDID:6be4078e0d1b9d067f170c49f73b2977,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:102|136|850|865|898,TC:nil,Content:0|15|
+	50,EDM:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0
+	,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 01f9e8747d0511f1aa26b74ffac11d73-20260711
+X-User: zenghongling@kylinos.cn
+Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <zenghongling@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 798131107; Sat, 11 Jul 2026 16:46:28 +0800
+From: Hongling Zeng <zenghongling@kylinos.cn>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	liam@infradead.org,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	zhongling0719@126.com,
+	Hongling Zeng <zenghongling@kylinos.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] mm: huge_memory: Fix kobject cleanup in thpsize_create error
+Date: Sat, 11 Jul 2026 16:46:24 +0800
+Message-Id: <20260711084624.207777-1-zenghongling@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMyXUJm4CHm6cX5s+0=MabQJUA7hve1UMzf-MaaJPMvf4XCWEA@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-273378-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:acharyalaxman8848@gmail.com,m:jic23@kernel.org,m:dlechner@baylibre.com,m:nuno.sa@analog.com,m:andy@kernel.org,m:linux-iio@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:joshua.crofts1@gmail.com,m:joshuacrofts1@gmail.com,s:lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[andriy.shevchenko@intel.com,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	HAS_ORG_HEADER(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[kernel.org,baylibre.com,analog.com,vger.kernel.org,gmail.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[kylinos.cn];
+	TAGGED_FROM(0.00)[bounces-273379-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:akpm@linux-foundation.org,m:david@kernel.org,m:ljs@kernel.org,m:ziy@nvidia.com,m:baolin.wang@linux.alibaba.com,m:liam@infradead.org,m:npache@redhat.com,m:ryan.roberts@arm.com,m:dev.jain@arm.com,m:baohua@kernel.org,m:lance.yang@linux.dev,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:zhongling0719@126.com,m:zenghongling@kylinos.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@intel.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[intel.com:+];
-	ALIAS_RESOLVED(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	FORGED_SENDER(0.00)[zenghongling@kylinos.cn,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[kvack.org,vger.kernel.org,126.com,kylinos.cn];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[zenghongling@kylinos.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	R_DKIM_NA(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,ashevche-desk.local:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kylinos.cn:from_mime,kylinos.cn:email,kylinos.cn:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A8062740E8C
+X-Rspamd-Queue-Id: B25AC740F12
 
-On Sat, Jul 11, 2026 at 08:25:58AM +0545, Laxman Acharya Padhya wrote:
-> hx9023s_send_cfg() copies the firmware into a counted flexible array and
-> then reads fixed offsets from the copied data before walking register/value
-> pairs starting at FW_DATA_OFFSET. A truncated firmware image can therefore
-> make the driver read past the copied buffer during probe-time configuration
-> loading.
-> 
-> Reject firmware images that cannot contain the fixed header, reject images
-> too large for the u16 fw_size field, and validate that the advertised
-> register count fits in the remaining payload.
+When kobject_init_and_add() fails, the kobject API requires calling
+kobject_put() to properly clean up the memory, not direct kfree().
 
-> Fixes: e9ed97be4fcc ("iio: proximity: hx9023s: Added firmware file parsing
-> functionality")
+According to the kobject API documentation, kobject_init_and_add()
+calls kobject_init() internally. If the subsequent kobject_add()
+fails, the kobject has still been initialized and must be cleaned up
+via the reference count mechanism (kobject_put), not direct kfree().
 
-Actually the tags are supposed to be "one (full) tag per line". In the second
-message it seems incorrectly wrapped.
+Direct kfree() leaves the kobject's internal state (including the
+reference count and kset membership) uncleaned, which can cause:
+ - Memory leaks of kobject internal structures
+ - Potential use-after-free if there are pending references
+ - Inconsistent state with the rest of the error handling code
 
-Also see my reply to the other email of yours.
+This fix matches the pattern used elsewhere in the kernel and in the
+same function (err_put label) which correctly uses kobject_put().
 
+Fixes: 3485b88390b0 ("mm: thp: introduce multi-size THP sysfs interface")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hongling Zeng <zenghongling@kylinos.cn>
+---
+ mm/huge_memory.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 2bccb0a53a0a..7aeb17d60ac7 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -819,7 +819,7 @@ static struct thpsize *thpsize_create(int order, struct kobject *parent)
+ 	ret = kobject_init_and_add(&thpsize->kobj, &thpsize_ktype, parent,
+ 				   "hugepages-%lukB", size);
+ 	if (ret) {
+-		kfree(thpsize);
++		kobject_put(&thpsize->kobj);
+ 		goto err;
+ 	}
+ 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.25.1
 
 
