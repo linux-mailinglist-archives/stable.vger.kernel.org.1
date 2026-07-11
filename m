@@ -1,224 +1,142 @@
-Return-Path: <stable+bounces-273422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273424-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 4bkkHi1hUmpWPAMAu9opvQ
-	(envelope-from <stable+bounces-273422-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 17:28:45 +0200
+	id DHs5N9lhUmp6PAMAu9opvQ
+	(envelope-from <stable+bounces-273424-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 17:31:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE8B7741FC1
-	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 17:28:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35FA5741FE4
+	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 17:31:37 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Lgc5ovR3;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273422-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-273422-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=cknow-tech.com header.s=key1 header.b=IWykNoSp;
+	dmarc=pass (policy=quarantine) header.from=cknow-tech.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273424-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273424-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 949DC302AC38
-	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 15:26:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CE6D130374B5
+	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 15:30:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D870372075;
-	Sat, 11 Jul 2026 15:26:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A485A38D40B;
+	Sat, 11 Jul 2026 15:30:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E961626B2AD
-	for <stable@vger.kernel.org>; Sat, 11 Jul 2026 15:26:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CC3F37A83C
+	for <stable@vger.kernel.org>; Sat, 11 Jul 2026 15:30:10 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783783609; cv=none; b=Ojr66LBPI6CCcSMDn2PU/LedROrlJ8FQnmT+42aMNGu8Oc/D1AdKBxOOoC7Lh4ecYMgP7Qh3XFYCqffvswgbC+ykFKxqRwPsHqbWSWfKg9ibeZgEdXgcVRp67SVE7+zZ2Iu9Qh54gxtDXo4H9QFbpcPvO+v5y9bY3FO2gGnaaZo=
+	t=1783783814; cv=none; b=gWqP7pvGFUHn1wjMPXZq5eug9A/dA9EaiL9uIe86pTTc3CMtPQHBTgXdO8b2BkXnfCrXj4rzzD0Zpmj78hqSOsjdUV10UUa9FEhfdChPGDoF+TW/0vkoUo0Uq7NI3x3VgMpPafVWfF3yJ5s0BmKnNuzRB/c5wJL6ZW+qaxxcK+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783783609; c=relaxed/simple;
-	bh=qu2LqjVG3gwCwIWPHQe2SrI7PA5vY7y+JJc4s9CiPJ0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dWLR651xfJQIWiivVu+HAwFCV6axcxFRQPI6QCfMrFy4WU1yivLPGkg2YJlWeA3HYCsRpT0ykPXNQ8E47xU/e8sc9MwnRW3L3alY5KzvnjmpNSv9I1K/1V96X2BysNoIGVwtIB8lSjW5O9ExS5r/xiQZhbn+IPikRu6ZG0Ab6cc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Lgc5ovR3; arc=none smtp.client-ip=209.85.222.169
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-92e5d6f35c1so151273385a.0
-        for <stable@vger.kernel.org>; Sat, 11 Jul 2026 08:26:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783783607; x=1784388407; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=OGvjcggjuRHrVJRozwL5aIcsoUIst8NdaqhwI9EK350=;
-        b=Lgc5ovR37HI4QAbBbdYChotZWcBl99mvDQVgjxQw8+KssIf/9bUBBj4hdjh6E61nfr
-         yD4AXD4/lZvzFpdFTcSnGxHucPyQ0zct251JRNOyl/dsefg6rIXPcP62mvjlOwbF+4QS
-         2IO6KtPto/gqzp5cP26o+EKYfWlBITqVuXsJ+TX5NBAENRLfouZ2cfYIdV2PKsh9bzE6
-         eBuMKJrijSa+a5uzjxH+ww/U+FNYCEJ3nc+frVpvCwCzHi1tVhktV4FEQY/wljAOn3rR
-         QD66FhcXx8jmbKf8X/OTIPkW5CGWHp6Ob2Q4uYCubkepDcOJ8dAtVlq4aFFNXdzei2W3
-         GYbQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783783607; x=1784388407;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=OGvjcggjuRHrVJRozwL5aIcsoUIst8NdaqhwI9EK350=;
-        b=dp59yXDIa6sweRSLU/qHKMLV7Gf2V7n2t29acDySp0bp47hM9NgztML/naIhIWDt7m
-         n+w8LSOI4m4blqGLyuRMY2vc60I7Hf9u6VwErhId20j6movYwR104Q8x2Trkd0GIjDiD
-         QAwdwbRooP91N6RU/QSjwBArgbRQi4ixmUdADH5osgcXCZ15toYVRx3IbKbh42Rv9SHO
-         Lt+VnyOycPG30hzFIhEvvCCU4DCI2Rzk+jnEfcMLNqraST/PxLlbPwfay5RosChNCz1S
-         D9Rh3xFHibzpO6adhzdpEW7yxXFeb7kvY9uFc2Ky8B4D0huXe1Zle7iCZCtxqaXQQveH
-         VLRw==
-X-Forwarded-Encrypted: i=1; AHgh+RqtwiF09bFKQ62gfv1IB3fBpfgDRafXXMepWII4xFS2+ZEFCrSHx9g8IlQ6c98qr3UNVh+CfP4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxmbcb0J5c/EqAAJaxp1U0w97yPgg6/CqoXYUEu7lK9YDW/rzXz
-	g9uycUEYJaV+kfx06Yq3cQ/A/ZRGa4hygyDcVxx+LrnwO+czrLGoK1wgBLukRcZn1gk=
-X-Gm-Gg: AfdE7cmbXmGSQF0UX0bch3n/k8pZHXlrnBxAL6c1CQvtbOSOsw5YrETcBTenazKItqX
-	auoxKipwC2D52Aq3zYGHZZTEtrI2Pw6XlhmPg69PcyD6bRtokME6B1VqJcOM/tWYf7Id+IGsDpv
-	Amx4GrBUrYcPJuXTc5Q9jTnOMOQw3sbgtUvX1syUvKvWtCGjNYU49dpnZVPIifUhin6z8fkgOE+
-	TPmw7Qmu4BtfCloc5Y2/vDS4/81WY+FmKSw4bJQj9A7cXcMDXaoOcpzk9mUOvmlBQFfzn1e0i5N
-	KRNsbEMMsfHv51cYto2uv+3l/7abwTFqqKNmiZOiCIvSWQnxFbUzEiYoNpJe7rrH8lWKTkuQX7R
-	NStgF8Nlwbq9E23PtJc1AbbB1Ip5C2li3o/CUy5InUE+UnhFINiAM/jzUDCw1OS7EQjpw8kZp9t
-	s0g+PhMpp26jiMv79ECyiFMVR3IHBPo7bAPyYT7WLZeb40TBmlXD4rUpeHqKj8iqBTzpMQN/1Ef
-	0aRxrQPbQ==
-X-Received: by 2002:a05:620a:2245:10b0:92e:51fc:3f1a with SMTP id af79cd13be357-92ef2c844demr268665485a.67.1783783606862;
-        Sat, 11 Jul 2026 08:26:46 -0700 (PDT)
-Received: from server0 (c-68-48-65-54.hsd1.mi.comcast.net. [68.48.65.54])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-92ee5b492ebsm468641285a.9.2026.07.11.08.26.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 11 Jul 2026 08:26:46 -0700 (PDT)
-From: Michael Bommarito <michael.bommarito@gmail.com>
-To: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	ntfs3@lists.linux.dev
-Cc: Mihai Brodschi <m.brodschi@gmail.com>,
-	linux-fsdevel@vger.kernel.org,
-	stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] fs/ntfs3: reject an oversized resident attribute on the inline iomap path
-Date: Sat, 11 Jul 2026 11:26:30 -0400
-Message-ID: <20260711152630.2975127-1-michael.bommarito@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	s=arc-20240116; t=1783783814; c=relaxed/simple;
+	bh=XfrnwkKA8RLxG11yXMzLXYbbGKJeu8aH/81XRsywFKM=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=k9oTc6EPWK+4UeJ7qqC84GdhB5qSG5w0s+rTyGZWb64yc3daJvxlRPogUGe8HtiWSpAELSXE6bv131X9Mb39rihZNWDFbuP/TwX5bIqsf4VWlnIBQfHpKzh1aMyX/94Qn25ycD7PIBr3bcQyis5OjxxULdqXmbSkjL0y5yVeHUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cknow-tech.com; spf=pass smtp.mailfrom=cknow-tech.com; dkim=pass (2048-bit key) header.d=cknow-tech.com header.i=@cknow-tech.com header.b=IWykNoSp; arc=none smtp.client-ip=95.215.58.180
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cknow-tech.com;
+	s=key1; t=1783783798;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GzKdp7Hcvs6+zEuzXa7LVO8auZ6H7XjMLgYVqU0x/Zg=;
+	b=IWykNoSpjn7zW6CuDj+8yy6zrE53QZYDQY2TzlqVtj1c/WCfWhVl5oUwsq3Pld2XnFxavJ
+	OKeLDcV/KyN5suJ2aH1WQVEyg4gcRMhLCpT1prSSIOYp38kOvKYEXQhEcNHQjx0afWN+VX
+	+EdqGbLAfKwg33sq0+4BBveY2JjDcKK5IuF+Ncs8koPzsyU2lRxld5eD18854judDqrTo8
+	8cK21M6hgoN4iBwdB2b+1ENYTUpLRy6GVzi3CaoZfcMXqv3Drl7huNW2ppa4bjtVF358fy
+	v6OXN6B8Y1h0B6i6I9mpOvyaFxAl0ZRbXRpZs4LlfUeZq6Grs/KqXaowmLqR7w==
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 11 Jul 2026 17:29:52 +0200
+Message-Id: <DJVUKXFUVH2Z.2O9IM7YHJOKYT@cknow-tech.com>
+Cc: <devicetree@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+ <linux-rockchip@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+ "Jonas Karlman" <jonas@kwiboo.se>, "Marcin Juszkiewicz"
+ <marcin@juszkiewicz.com.pl>, <stable@vger.kernel.org>
+Subject: Re: [PATCH 2/2] arm64: dts: rockchip: Fix USB hub phy-supply config
+ for NanoPC-T6 LTS
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Diederik de Haas" <diederik@cknow-tech.com>
+To: "Diederik de Haas" <diederik@cknow-tech.com>, "Rob Herring"
+ <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Conor
+ Dooley" <conor+dt@kernel.org>, "Heiko Stuebner" <heiko@sntech.de>
+References: <20260610081400.758687-1-diederik@cknow-tech.com>
+ <20260610081400.758687-3-diederik@cknow-tech.com>
+In-Reply-To: <20260610081400.758687-3-diederik@cknow-tech.com>
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MV_CASE(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[cknow-tech.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[cknow-tech.com:s=key1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-273422-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:almaz.alexandrovich@paragon-software.com,m:ntfs3@lists.linux.dev,m:m.brodschi@gmail.com,m:linux-fsdevel@vger.kernel.org,m:stable@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:mbrodschi@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[michaelbommarito@gmail.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-273424-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:devicetree@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-rockchip@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:jonas@kwiboo.se,m:marcin@juszkiewicz.com.pl,m:stable@vger.kernel.org,m:diederik@cknow-tech.com,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:heiko@sntech.de,m:krzk@kernel.org,m:conor@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[diederik@cknow-tech.com,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	RCVD_COUNT_THREE(0.00)[3];
 	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[michaelbommarito@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[diederik@cknow-tech.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[cknow-tech.com:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable,dt];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,cknow-tech.com:from_mime,cknow-tech.com:email,cknow-tech.com:mid,cknow-tech.com:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DE8B7741FC1
+X-Rspamd-Queue-Id: 35FA5741FE4
 
-attr_data_get_block_locked() maps a resident attribute as a one-page
-IOMAP_INLINE extent: it allocates a single page, copies the resident
-value into it with memcpy(), and hands that page to ntfs_iomap_begin()
-as the inline data.  The copy length is the on-disk resident value
-length (res.data_size), and mi_enum_attr() only bounds that length
-against the MFT record size.  A corrupted volume with MFT records larger
-than a page can therefore present a resident $DATA whose length exceeds
-PAGE_SIZE, and the memcpy() then writes past the single destination page.
+On Wed Jun 10, 2026 at 10:04 AM CEST, Diederik de Haas wrote:
+> The MTT USB 2.0 hub is connected to the SoC's USB20 HOST1, so the phy-sup=
+ply
+> belongs to u2phy3_host, not u2phy2_host as that is for USB20 HOST0.
+>
+> Fixes: db1dcbe5f752 ("arm64: dts: rockchip: add NanoPC-T6 LTS")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Diederik de Haas <diederik@cknow-tech.com>
+> ---
+>  arch/arm64/boot/dts/rockchip/rk3588-nanopc-t6-lts.dts | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/arch/arm64/boot/dts/rockchip/rk3588-nanopc-t6-lts.dts b/arch=
+/arm64/boot/dts/rockchip/rk3588-nanopc-t6-lts.dts
+> index 0ee67ee24f3c..0e15a2e1f2ff 100644
+> --- a/arch/arm64/boot/dts/rockchip/rk3588-nanopc-t6-lts.dts
+> +++ b/arch/arm64/boot/dts/rockchip/rk3588-nanopc-t6-lts.dts
+> @@ -38,6 +38,6 @@ usb20_host_pwren: usb20-host-pwren {
+>  	};
+>  };
+> =20
+> -&u2phy2_host {
+> +&u2phy3_host {
+>  	phy-supply =3D <&vcc5v0_usb20_host>;
+>  };
 
-Impact: reading or writing a resident file on a mounted crafted NTFS
-volume whose MFT records are larger than a page overflows the one-page
-inline buffer in attr_data_get_block_locked() with attacker-controlled
-bytes.
+Please drop this patch.
+I was hoping to confirm this with an M.2 WiFi+BT card, but let's say the
+results were kinda disappointing (to put it mildly).
 
-Reject such an attribute in attr_data_get_block_locked(), before the
-page is allocated and the copy is made.
-
-Fixes: 099ef9ab9203 ("fs/ntfs3: implement iomap-based file operations")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-8
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
----
-Changes since v1:
-- Reworded the code comment and changelog.  The oversized resident length
-  overflows the single alloc_page() page that attr_data_get_block_locked()
-  copies the resident value into; v1 described the older
-  iomap_write_end_inline() BUG_ON(!iomap_inline_data_valid()), which was
-  removed in 7.2-rc1.  Thanks to Mihai Brodschi for catching the stale
-  reference.  The fix itself is unchanged.
-
-The unbounded resident length dates to the iomap conversion; only the
-manifestation changed when the inline buffer became a single alloc_page():
-  - 7.2-rc: the memcpy() into the one-page buffer overflows the page
-    (out-of-bounds write, below).
-  - 7.0..7.1: the buffer was kmemdup()ed at the real size and the oversized
-    length instead tripped BUG_ON(!iomap_inline_data_valid()) in
-    iomap_write_end_inline() (a denial of service).
-The same data_size > PAGE_SIZE check prevents both, so it is the correct fix
-across the stable range.
-
-Reproduced under QEMU + KASAN on 7.2-rc2.  A resident $DATA value length
-above PAGE_SIZE, as a volume with MFT records larger than a page presents,
-was supplied while the alloc_page() + memcpy() path ran unchanged; the stock
-kernel faults with a KASAN out-of-bounds write in
-attr_data_get_block_locked():
-
-  BUG: KASAN: out-of-bounds in attr_data_get_block_locked
-  Write of size <data_size> by task ...
-   __asan_memcpy
-   attr_data_get_block_locked
-   attr_data_get_block
-   ntfs_iomap_begin
-   iomap_iter
-   iomap_file_buffered_write
-
-With the patch the same access returns -EINVAL and does not fault.  An
-in-bounds resident file (control) and a non-resident file are unaffected on
-both the stock and patched kernels.
- fs/ntfs3/attrib.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
-
-diff --git a/fs/ntfs3/attrib.c b/fs/ntfs3/attrib.c
-index c621a4c582f9e..2f73714a2db97 100644
---- a/fs/ntfs3/attrib.c
-+++ b/fs/ntfs3/attrib.c
-@@ -1034,6 +1034,21 @@ int attr_data_get_block_locked(struct ntfs_inode *ni, CLST vcn, CLST clen,
- 
- 	if (!attr_b->non_res) {
- 		u32 data_size = le32_to_cpu(attr_b->res.data_size);
-+
-+		/*
-+		 * A resident attribute is copied into a single page below
-+		 * (alloc_page() + memcpy()) and mapped as a one-page
-+		 * IOMAP_INLINE extent by ntfs_iomap_begin().  mi_enum_attr()
-+		 * only bounds the resident value length against the MFT record
-+		 * size, so a corrupted volume whose records are larger than a
-+		 * page can report data_size > PAGE_SIZE; copying that many bytes
-+		 * would overflow the single destination page.  Reject it.
-+		 */
-+		if (data_size > PAGE_SIZE) {
-+			err = -EINVAL;
-+			goto out;
-+		}
-+
- 		*lcn = RESIDENT_LCN;
- 		*len = data_size;
- 		if (res && data_size) {
--- 
-2.53.0
-
+Diederik
 
