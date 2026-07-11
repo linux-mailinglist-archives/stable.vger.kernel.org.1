@@ -1,159 +1,189 @@
-Return-Path: <stable+bounces-273394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273395-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 12FhO3MyUmo2NAMAu9opvQ
-	(envelope-from <stable+bounces-273394-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 14:09:24 +0200
+	id MqQCEOQ4UmpONQMAu9opvQ
+	(envelope-from <stable+bounces-273395-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 14:36:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 500EA74175F
-	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 14:09:23 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0ED3741884
+	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 14:36:51 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=google.com header.s=20251104 header.b=o2Q4KDTp;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273394-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-273394-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=0sec.ai header.s=google header.b="q3h/pdWS";
+	dmarc=none;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273395-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273395-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2943730078BD
-	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 12:09:22 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2CC9D3008D56
+	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 12:36:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6E3E3A5421;
-	Sat, 11 Jul 2026 12:09:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32F693C3C0E;
+	Sat, 11 Jul 2026 12:36:47 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B47C25B0B6
-	for <stable@vger.kernel.org>; Sat, 11 Jul 2026 12:09:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 362C337B012
+	for <stable@vger.kernel.org>; Sat, 11 Jul 2026 12:36:45 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783771758; cv=none; b=PNOgpcay9RDBAbJek8hstIMp9kJfVl+WpUY9lr+XUObi9vSeFVtgTurfQtmpsIddmFD2H8dJ0me6MRaYLpgmGIFjGceOjMveI7sJEMV+fswV301Fc5m1KxaHhgbENblecRokjrHinmt09M1z6M3B9yh+kyPAM82SJLsfoczi8j0=
+	t=1783773406; cv=none; b=nvCCt4bTrSPO3BOhD8xFewjNyqVRshVhOWFCiHZu1fpjOiN8/5t1AMxR9dL3PANaOLkHtt3ZyoEPfPtGcR9SWJajMYIIFe05Qt9F+O9XK6k6hRSZDwuLSzST7jtctU/7NUc7XeRAwE0S+5J1qFq4C7faagt4fvFMRjPQrUTWOQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783771758; c=relaxed/simple;
-	bh=NTQUTiOY6fWGJY+qqToUuWf4suAV/H32seKG+A+pnBk=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=F0TLpt2JIH582+0Jr7nqiL2RC51d4kzqjeyhmEZZQSbhVVDwPMwqdECBzQG+L5WzTybJfyoiBs/+GjmxP0U0C58Nco5SrltGupxGg3Ohdx6dKNn5rsJw7TABDjnLk0ChHBuiupaRcK+cDF5/8wuc1rHWN7/AE1ptw6pgAaKAVjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=o2Q4KDTp; arc=none smtp.client-ip=209.85.221.73
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-473e18559b2so971107f8f.0
-        for <stable@vger.kernel.org>; Sat, 11 Jul 2026 05:09:16 -0700 (PDT)
+	s=arc-20240116; t=1783773406; c=relaxed/simple;
+	bh=PhVyj9qD5Z/KlbzjKtoN1G0Qg0OHJkNtCd/AmCW/7Fk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uOhOxIaxh0Vxyha6YZlcb+P4+inVBBkSZ5o3mZXQTApaMuaWYm94IWZ2otKtzwW/9qO4epobCAg2Nso4ZHoJlZJYd5k2S96aNvwEpMVxWA+t3DdKycGh7gYfjn4F+mZOgRv5WfLbL7HiK3XGaoDPrRQK1zaJUGA/5wkDyE87ouI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai; spf=pass smtp.mailfrom=0sec.ai; dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b=q3h/pdWS; arc=none smtp.client-ip=209.85.221.41
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-472326ca506so1359024f8f.2
+        for <stable@vger.kernel.org>; Sat, 11 Jul 2026 05:36:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783771755; x=1784376555; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=rZECiUz8iXrro/+1KsBtJNmjhFi5kdYHy3t1PHyk/II=;
-        b=o2Q4KDTpENi27OJyUXz76+iAkjyePGLqWtRfSeYbujgi4tC0dYixHvcNwY6aI0dh/R
-         P3KpHuNzOgT5au/9VLQawB8WxNA2xIqXGzGqpnVew9P1Dl+sZ904l3dJKPPiwUuABVYW
-         uMZ8bclaG9bWCXfV//+EKw983xCvg4yZWlCBXGtLmI3IYP+2zQnQHiEDNjGKd0XeGJVl
-         4DkXnNK9g4qQi+E/1ZAwuAcJkvSH8B5hKNpxSgEm03C5qoWmap/gUmtw64/SRyU4qxrL
-         Xjctgu5Zw+/nRPiTidPt3jiVkWlo09Cms8Jh45Gmp+jg+ihhan6O/nkjf+ebV62fOx3U
-         RXiQ==
+        d=0sec.ai; s=google; t=1783773403; x=1784378203; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=iEZdacI12rwF3rcHsuyG8xQf3FKIyTovs73PN6g2MOE=;
+        b=q3h/pdWSeTe1k9K9MDviB3sBXlTBIgAjFetV8Dcydd4ZgT0Uk2freX/hQLdj9JXswk
+         sm1sMHNs1i1h1hoqxICHlVlgAsxKNFHIRH6OcNfpfVbBF/vQ7xtt8+XB+8oG0K6sg4Fh
+         FMp0s7PUqkXbBqzXJNlkWwhuITo35gcMZhFRoMolbZlPAnlDwjLjhpWIkTmHzyizuhR9
+         8O1bdNLE6Dl/WfxYn30drMzppzBAfnAi2Pwrwz0hYMfOkpPJ2WYN7eOCClKPff0fb4Vr
+         oXLWO5ju1x8AGdUWzIbsQB4Rf18SHiflb5JtwcvvITlLckjyTcjCX1MEJ4GRXLZXvIRQ
+         4HnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783771755; x=1784376555;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1783773403; x=1784378203;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=rZECiUz8iXrro/+1KsBtJNmjhFi5kdYHy3t1PHyk/II=;
-        b=YbjYUbJIwF8Q3rSWPi1xHvGWxz5eNQ7bfHCXCB3vh0B/SbqiwgLInXULsEL+dID7qa
-         046/xI9nFqgkCLIynTmO29iCp2riKLL9+hGbHM5JR5UmI4ksg5HpaUCBOyk/HyUSXHB1
-         aviu0Q64mwfdzgSSNl5H/bBAUkvof0HZFTfoDqaoLgn3YAhGtH2oeLeLVSThOLVCjN+F
-         gt+O+CiHZJ8MbwwVWv7HDCsBV9XnfRoMAR1cIXAVeoHLZLn6PJw+6jPhja7EyItxFkXw
-         QbdtXY3oBbU5ZHIm5CWdgJX4f7eRKiamewghRQrZE06AMRj8QY9QfheG5DxbJaZC4BF6
-         jUtw==
-X-Forwarded-Encrypted: i=1; AHgh+RrQUAEOOv53jgDP1Nk+EPBdRSLaCcKLLukLPCwa5i9Lb0bTeU8L1uRYzNQTFlwgaelmEPXDwdo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxkNn+5aCQT/eqravrCo1AI/BMb692Npcwb0wYAOgiznrJdwqfD
-	LpaVNZ/3fwGWakoQBzOQrZnXyhI35OZuVCirJlvz7U3x9e3gAJz7rvqwdZpGPWXEXVhDm/wAc9A
-	G9pjbI17R0la2TGakKg==
-X-Received: from wrwq13.prod.google.com ([2002:a5d:574d:0:b0:472:3bc6:772d])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a5d:588e:0:b0:47d:ee7d:c125 with SMTP id ffacd0b85a97d-47f2dce2cc2mr2261213f8f.40.1783771755149;
- Sat, 11 Jul 2026 05:09:15 -0700 (PDT)
-Date: Sat, 11 Jul 2026 12:09:13 +0000
-In-Reply-To: <20260710173252.191781-1-ojeda@kernel.org>
+        bh=iEZdacI12rwF3rcHsuyG8xQf3FKIyTovs73PN6g2MOE=;
+        b=AgJkcPXFmBxFFjbK8+SzOt2EhqADGQTtEYLRJ5C858yNy8ariA0KvT5MXWS1L+usL5
+         w/jD9TzX/vunwSG1B+H0y+5KRqA3odjxy73ku031j8ZOWM+cP3JWeHA85ZxM2zSnIOmW
+         bH48w3HVnOjQnz1KfUNDGYML+E+gkaaJHIr5gd8TZ2UQh4vW+NUagngNK6uLWR0jX0tm
+         16xQ8tjQzXVpk0T2BmKJsv9Wb+rTsU/PKHUfMSObhQBtghnnS0q3jfeLUQOr6VFDDkyF
+         lXM2goUPk1Zrm1PHoThX4BaHUL9WnH64gGM0dBB03FxKwffd2U5CiwLjoNil2N965R2b
+         AknA==
+X-Forwarded-Encrypted: i=1; AHgh+RrMUxOia5NZ9aO9pPET9mWBPB30GCkbfpLa7KQNaaXpW8P8FSRw4NzxUPBiGACvJMuVrDl7gBY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyqn+jHy9aIaDIei+fyHE9fpBhfvq4FfvHun8Nb/4OZ8rMSUpL6
+	H7dG4OSTmqvck0gBVhIcC346iqG4Ch9v6bvVsB0qydYpuQtpx8XTPeuHBmJ6v53xFW3T
+X-Gm-Gg: AfdE7clphuOPUiC3eI0MXp3eiwrSTrQDwI32FLz4tw3iByqCQ9xoWCjh/HYT72H1+N0
+	ot2Lvbn8uMKz0U9YkSNhiQxPaZ/+G1fYSBtXIo2ORBrqY1cnusP+9hPz3gk0fGZuWUY5qOD3M9R
+	2/tJOYUnCIiI3hUVngPpQtcQwWzZHvB1SbX5/+2pLMIAO6daOlNRnW135neaC0z/TKTU6+HS+39
+	oZvNn4MKGNCdHyA4SUW8cZ4hPTVZuUFr+xybYnZx+Q19brzDGdrAdOW9xzpbcwNn0ggmAvIldPU
+	olfSmAQ9fA/giTaS4Uvy/zuo8VezzEdYVNEdbyHy8rynm7/xOfbPcvbG1NSy1nQmcT2M2ktGYlg
+	9Cws+DKpLeuhh3A3h44PE6ljIcGoylYVARKfwU8MpPn/bRudxO7GWOqxi2QwhYIRoEvYBnlcUIL
+	wIV1xKIJ3xMeknCEYpJUlC3LsYiy2YXqSx313iY4JkE5VubjXjyQyHHYdCsx2gt74cS6VfUgfK7
+	VO/K3Vgk8g9/+zwqqmZ9F2gxlk9AgdxnSM=
+X-Received: by 2002:a5d:5849:0:b0:46d:d5db:98 with SMTP id ffacd0b85a97d-47f2dd02487mr2501924f8f.44.1783773403587;
+        Sat, 11 Jul 2026 05:36:43 -0700 (PDT)
+Received: from PeakBook-Mini.tail8e484.ts.net ([178.197.218.188])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47aa0960816sm66169851f8f.29.2026.07.11.05.36.42
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sat, 11 Jul 2026 05:36:43 -0700 (PDT)
+From: Doruk Tan Ozturk <doruk@0sec.ai>
+To: david@ixit.cz
+Cc: oe-linux-nfc@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH net] nfc: fdp: bound the device-supplied read size in fdp_nci_i2c_read()
+Date: Sat, 11 Jul 2026 14:36:41 +0200
+Message-ID: <20260711123641.32502-1-doruk@0sec.ai>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260710173252.191781-1-ojeda@kernel.org>
-Message-ID: <alIyaWz_32wZc2rK@google.com>
-Subject: Re: [PATCH] objtool/rust: add one more `noreturn` Rust function for
- Rust 1.99.0
-From: Alice Ryhl <aliceryhl@google.com>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	"Onur =?utf-8?B?w5Z6a2Fu?=" <work@onurozkan.dev>, rust-for-linux@vger.kernel.org, stable@vger.kernel.org, 
-	Petr Pavlu <petr.pavlu@suse.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	MV_CASE(0.50)[];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[0sec.ai:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-273394-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[aliceryhl@google.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[kernel.org,infradead.org,garyguo.net,protonmail.com,umich.edu,collabora.com,nvidia.com,onurozkan.dev,vger.kernel.org,suse.com];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	FORGED_RECIPIENTS(0.00)[m:ojeda@kernel.org,m:jpoimboe@kernel.org,m:peterz@infradead.org,m:boqun@kernel.org,m:gary@garyguo.net,m:bjorn3_gh@protonmail.com,m:lossin@kernel.org,m:a.hindborg@kernel.org,m:tmgross@umich.edu,m:dakr@kernel.org,m:daniel.almeida@collabora.com,m:tamird@kernel.org,m:acourbot@nvidia.com,m:work@onurozkan.dev,m:rust-for-linux@vger.kernel.org,m:stable@vger.kernel.org,m:petr.pavlu@suse.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:david@ixit.cz,m:oe-linux-nfc@lists.linux.dev,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-273395-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[0sec.ai];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[aliceryhl@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_SENDER(0.00)[doruk@0sec.ai,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[0sec.ai:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[doruk@0sec.ai,stable@vger.kernel.org];
+	TO_DN_NONE(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,suse.com:email]
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[0sec.ai:dkim,0sec.ai:mid,0sec.ai:from_mime,0sec.ai:url,0sec.ai:email,vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 500EA74175F
+X-Rspamd-Queue-Id: D0ED3741884
 
-On Fri, Jul 10, 2026 at 07:32:52PM +0200, Miguel Ojeda wrote:
-> Starting with Rust 1.99.0 (expected 2026-10-01), under
-> `CONFIG_RUST_DEBUG_ASSERTIONS=y`, `objtool` may report:
-> 
->     rust/kernel.o: warning: objtool: _R..._6kernel12module_param9set_paramaEB4_()
->     falls through to next function _R..._6kernel12module_param9set_paramhEB4_()
-> 
-> (and many others) due to calls to the `noreturn` symbol [1]:
-> 
->     core::panicking::panic_null_reference_constructed
-> 
-> Thus add the mangled one to the list so that `objtool` knows it is
-> actually `noreturn`.
-> 
-> See commit 56d680dd23c3 ("objtool/rust: list `noreturn` Rust functions")
-> for more details.
-> 
-> Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
-> Cc: Josh Poimboeuf <jpoimboe@kernel.org>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Petr Pavlu <petr.pavlu@suse.com>
-> Link: https://github.com/rust-lang/rust/pull/158796 [1]
-> Reported-by: Alice Ryhl <aliceryhl@google.com>
-> Link: https://lore.kernel.org/rust-for-linux/alEBInX9gD1M5NAr@google.com/
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+fdp_nci_i2c_read() reads a "length packet" from the FDP I2C controller and
+computes the size of the next I2C transfer from two device-supplied bytes:
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Tested-by: Alice Ryhl <aliceryhl@google.com>
+	phy->next_read_size = (tmp[2] << 8) + tmp[3] + 3;
+
+next_read_size is a u16 (up to 65535) and is never bounded. On the next
+loop iteration it is used directly as the length passed to
+
+	i2c_master_recv(client, tmp, len);
+
+which reads into the fixed 261-byte stack buffer
+tmp[FDP_NCI_I2C_MAX_PAYLOAD]. A malicious or malfunctioning controller
+that reports a large length thus overflows the stack buffer -- the
+r != len check runs only after the read has already happened.
+
+Reject a next-read size larger than the buffer and resynchronize.
+
+Found by 0sec (https://0sec.ai) using automated source analysis; the
+missing bound is evident from source. Compile-tested.
+
+Fixes: a06347c04c13 ("NFC: Add Intel Fields Peak NFC solution driver")
+Cc: stable@vger.kernel.org
+Assisted-by: 0sec:claude-opus-4-8
+Signed-off-by: Doruk Tan Ozturk <doruk@0sec.ai>
+---
+ drivers/nfc/fdp/i2c.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/nfc/fdp/i2c.c b/drivers/nfc/fdp/i2c.c
+index c1896a1d978c..581f85f0dfa8 100644
+--- a/drivers/nfc/fdp/i2c.c
++++ b/drivers/nfc/fdp/i2c.c
+@@ -128,7 +128,7 @@ static const struct nfc_phy_ops i2c_phy_ops = {
+ 
+ static int fdp_nci_i2c_read(struct fdp_i2c_phy *phy, struct sk_buff **skb)
+ {
+-	int r, len;
++	int r = -EREMOTEIO, len;
+ 	u8 tmp[FDP_NCI_I2C_MAX_PAYLOAD], lrc, k;
+ 	u16 i;
+ 	struct i2c_client *client = phy->i2c_dev;
+@@ -140,6 +140,13 @@ static int fdp_nci_i2c_read(struct fdp_i2c_phy *phy, struct sk_buff **skb)
+ 
+ 		len = phy->next_read_size;
+ 
++		if (len > FDP_NCI_I2C_MAX_PAYLOAD) {
++			dev_dbg(&client->dev, "%s: read size %d too large\n",
++				__func__, len);
++			phy->next_read_size = FDP_NCI_I2C_MIN_PAYLOAD;
++			goto flush;
++		}
++
+ 		r = i2c_master_recv(client, tmp, len);
+ 		if (r != len) {
+ 			dev_dbg(&client->dev, "%s: i2c recv err: %d\n",
+-- 
+2.43.0
+
 
