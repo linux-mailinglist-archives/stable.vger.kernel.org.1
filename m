@@ -1,136 +1,220 @@
-Return-Path: <stable+bounces-273398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273399-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id fnzAELpAUmrENgMAu9opvQ
-	(envelope-from <stable+bounces-273398-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 15:10:18 +0200
+	id h5L7DDdFUmqVNwMAu9opvQ
+	(envelope-from <stable+bounces-273399-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 15:29:27 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F8C97419E8
-	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 15:10:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EC60741ADF
+	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 15:29:26 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=RbbaB3m1;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273398-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273398-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=intel.com header.s=Intel header.b=djXpW8DF;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273399-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273399-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CD70C301F4A6
-	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 13:10:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2E9BB302BB86
+	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 13:27:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1BF73C1F24;
-	Sat, 11 Jul 2026 13:10:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB0463C5836;
+	Sat, 11 Jul 2026 13:27:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED94B3644A1;
-	Sat, 11 Jul 2026 13:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22A9F391836;
+	Sat, 11 Jul 2026 13:27:16 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783775412; cv=none; b=vFscc5Q7pXlniFkErHhuZn45XBcH8VSCnRVTET+uzfOYd5ftODil2UpgWf/9mvj6zcPxJ5P1ehy9NYRDVxtSUC7pcx+8XCgGZVezgKSLBDZxKOSOuhvU4HURKAewahef6kf+nDs8zprlmlFTQzgBkJt5VLfzB40Dl9goGCiSJgE=
+	t=1783776438; cv=none; b=VvDHwc1eH8NsirUuVMR45Gs45wLhhuAfZXOUspvxI2te5RcIDjABoJBvkMGhOA+M1XL6S/xLpvWVwIkDESOpxEp3Aog8yf5/GcPWuVIl7roXT1Hob1+YY7pBUOMPqNkn1xBO47T8wzpvgwF7T94N0e9ZCU2D0aWBkcHDuw8pb4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783775412; c=relaxed/simple;
-	bh=T0GD5bivugp2d8VVA9aIzmp/hDHu9TKTk9CZkdcMi6c=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=d/+RJuGIR0uAXuyD2kGcBNxD+v/NmH971vvQR2YVJmTx4tMYcGm4MBmmayY54lpNtWPLxfKGaoxdJrP3o34c9KewV3HsJ8j1N+X50u99nqqkKHnafRzPFlcZAqSpnYntJkQi2Ui9rz9xZoTAxXsOePdhSAo51V8zcD0jd0P0ncY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=RbbaB3m1; arc=none smtp.client-ip=91.218.175.170
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783775407;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=jVKKrioraKSDfaDaMgjgygxPfYcIZrSPy52HWbulI0s=;
-	b=RbbaB3m1jmWIHpVQU8CXskIyhsYL8TST/LJW5qIUR/c8Q9+GQ5LlnzAjTyvhSfWFsmLPPY
-	KNXKhe9V2US9IvqZpHRIix5ggRhzIHLnRrIm6spY+XISGTzmgpgEGiobqS0ANxVu6SXc7m
-	4DTqx0JoJ7LLN5NM1Ahh49NGFtPcMgo=
-From: Thorsten Blum <thorsten.blum@linux.dev>
-To: Geoff Levand <geoff@infradead.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>,
-	Paul Mackerras <paulus@ozlabs.org>,
-	MOKUNO Masakazu <mokuno@sm.sony.co.jp>
-Cc: Thorsten Blum <thorsten.blum@linux.dev>,
-	stable@vger.kernel.org,
-	Geoff Levand <geoffrey.levand@am.sony.com>,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] powerpc/ps3: Fix map failure path in dma_ioc0_map_pages()
-Date: Sat, 11 Jul 2026 15:09:32 +0200
-Message-ID: <20260711130931.740719-3-thorsten.blum@linux.dev>
+	s=arc-20240116; t=1783776438; c=relaxed/simple;
+	bh=QMRwmmcabKQsDt2EYSGPCKTrdu5/Efzn6kpB0nGGT5U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AJLNt5e2bWSWyBEg8AtNKnSRHE9JX/o0dfgm+J2aV/hYoWC39czGQGd/Kyz1i79Ei7RVn8a9TnETB6udFYQxnJ5dnm47HCMZFPixqEp40MyRUiSg+jxV0MhOOcjNjnaZkuwxIwfdPFPL2bZfy6x61N4qTlXT8UNY0+1e+oHW4Z0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=djXpW8DF; arc=none smtp.client-ip=198.175.65.16
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1783776436; x=1815312436;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=QMRwmmcabKQsDt2EYSGPCKTrdu5/Efzn6kpB0nGGT5U=;
+  b=djXpW8DFMmytLvE1Cx8JRGjkJNqI+wiQpFIdY3cG8EKt05qqArilIeCo
+   FNNHV1NyX22lJkrJxU+u/aIFYWuxolBg2PZoE43bgrXN0ZS/gBavJDq3S
+   ESDXUXlFgB1A287pafKKoYlLIfcBAtjLJTpxCK+pP+0EXBW1KXh65DRHr
+   yCexhtb7boIkS7aYr0McrQIJhPi2NPpbi8XaUcPgR4jkey1H30pvgJTYG
+   IWfoFLxHShzVacVLH3UfTIi4Su9btUz/YVrSISVaNkQ+CMttilBu+zzZQ
+   w8jWXbd0Tr5K0PuQUWVdNePP/X2Y2Tyh5/4Y+HWBCYg39RB5a5RMinBNf
+   w==;
+X-CSE-ConnectionGUID: cvtnhsEtSumsSnUzwNSymw==
+X-CSE-MsgGUID: tUe4TjNyTLiv6RzcUQlD/g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="84649717"
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
+   d="scan'208";a="84649717"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jul 2026 06:27:16 -0700
+X-CSE-ConnectionGUID: km0FdE8EQwS8E6vFC4DnIw==
+X-CSE-MsgGUID: AFD9okqYQpmb3ZBBQN83ew==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
+   d="scan'208";a="250711149"
+Received: from igk-lkp-server01.igk.intel.com (HELO e5a8ed462067) ([10.211.93.152])
+  by fmviesa006.fm.intel.com with ESMTP; 11 Jul 2026 06:27:13 -0700
+Received: from kbuild by e5a8ed462067 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wiXja-000000003M9-3DKs;
+	Sat, 11 Jul 2026 13:27:10 +0000
+Date: Sat, 11 Jul 2026 15:27:06 +0200
+From: kernel test robot <lkp@intel.com>
+To: Hongling Zeng <zenghongling@kylinos.cn>, akpm@linux-foundation.org,
+	david@fromorbit.com, qi.zheng@linux.dev, roman.gushchin@linux.dev,
+	muchun.song@linux.dev
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, zhongling0719@126.com,
+	Hongling Zeng <zenghongling@kylinos.cn>, stable@vger.kernel.org
+Subject: Re: [PATCH] mm: shrinker: fix double-free in alloc_shrinker_info
+ error path
+Message-ID: <202607111559.uTGMAUhC-lkp@intel.com>
+References: <20260711041823.95135-1-zenghongling@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1027; i=thorsten.blum@linux.dev; h=from:subject; bh=T0GD5bivugp2d8VVA9aIzmp/hDHu9TKTk9CZkdcMi6c=; b=owGbwMvMwCUWt7pQ4caZUj3G02pJDFlBDt03bZckXWqR2jHbYLG3lfO5YM07odfPTZ93c/ttl x+vjT3DOkpZGMS4GGTFFFkezPoxw7e0pnKTScROmDmsTCBDGLg4BWAiUTsYGU7srE9y4566cu+/ sJ3uPGFrHc7ODP5SX8z0fdlamTesH2UZGVb5vemyEagxmt6vdMaq0LVq2flgmz+aL7QCg1qZZ5R 9ZgIA
-X-Developer-Key: i=thorsten.blum@linux.dev; a=openpgp; fpr=1D60735E8AEF3BE473B69D84733678FD8DFEEAD4
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260711041823.95135-1-zenghongling@kylinos.cn>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-4.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-273398-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
+	TAGGED_FROM(0.00)[bounces-273399-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[lists.linux.dev,kvack.org,vger.kernel.org,126.com,kylinos.cn];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:zenghongling@kylinos.cn,m:akpm@linux-foundation.org,m:david@fromorbit.com,m:qi.zheng@linux.dev,m:roman.gushchin@linux.dev,m:muchun.song@linux.dev,m:llvm@lists.linux.dev,m:oe-kbuild-all@lists.linux.dev,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:zhongling0719@126.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	RCPT_COUNT_TWELVE(0.00)[13];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:geoff@infradead.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:Geert.Uytterhoeven@sonycom.com,m:paulus@ozlabs.org,m:mokuno@sm.sony.co.jp,m:thorsten.blum@linux.dev,m:stable@vger.kernel.org,m:geoffrey.levand@am.sony.com,m:linuxppc-dev@lists.ozlabs.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[thorsten.blum@linux.dev,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[infradead.org,linux.ibm.com,ellerman.id.au,gmail.com,kernel.org,sonycom.com,ozlabs.org,sm.sony.co.jp];
+	FORGED_SENDER(0.00)[lkp@intel.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[thorsten.blum@linux.dev,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linux.dev:+];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[intel.com:+];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MISSING_XM_UA(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:from_mime,linux.dev:email,linux.dev:mid,linux.dev:dkim,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:from_mime,intel.com:email,intel.com:mid,intel.com:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5F8C97419E8
+X-Rspamd-Queue-Id: 7EC60741ADF
 
-If lv1_put_iopte() fails in dma_ioc0_map_pages(), the error path
-decrements iopage but keeps using the failed mapping's offset. As a
-result, it repeatedly tries to invalidate the failed IOPTE slot and
-leaves the already installed IOPTEs valid.
+Hi Hongling,
 
-Recompute offset and invalidate the installed IOPTEs instead.
+kernel test robot noticed the following build errors:
 
-Fixes: 6bb5cf102541 ("[POWERPC] PS3: System-bus rework")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
----
- arch/powerpc/platforms/ps3/mm.c | 1 +
- 1 file changed, 1 insertion(+)
+[auto build test ERROR on v7.2-rc2]
+[cannot apply to akpm-mm/mm-everything linus/master next-20260710]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-diff --git a/arch/powerpc/platforms/ps3/mm.c b/arch/powerpc/platforms/ps3/mm.c
-index 20fc5b68faee..315a32fd75b1 100644
---- a/arch/powerpc/platforms/ps3/mm.c
-+++ b/arch/powerpc/platforms/ps3/mm.c
-@@ -615,6 +615,7 @@ static int dma_ioc0_map_pages(struct ps3_dma_region *r, unsigned long phys_addr,
- 
- fail_map:
- 	for (iopage--; 0 <= iopage; iopage--) {
-+		offset = (1 << r->page_size) * iopage;
- 		lv1_put_iopte(0,
- 			      c->bus_addr + offset,
- 			      c->lpar_addr + offset,
+url:    https://github.com/intel-lab-lkp/linux/commits/Hongling-Zeng/mm-shrinker-fix-double-free-in-alloc_shrinker_info-error-path/20260711-122040
+base:   v7.2-rc2
+patch link:    https://lore.kernel.org/r/20260711041823.95135-1-zenghongling%40kylinos.cn
+patch subject: [PATCH] mm: shrinker: fix double-free in alloc_shrinker_info error path
+config: x86_64-kexec (https://download.01.org/0day-ci/archive/20260711/202607111559.uTGMAUhC-lkp@intel.com/config)
+compiler: clang version 22.1.8 (https://github.com/llvm/llvm-project ca7933e47d3a3451d81e72ac174dcb5aa28b59d1)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260711/202607111559.uTGMAUhC-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202607111559.uTGMAUhC-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> mm/shrinker.c:108:10: error: call to undeclared function 'shrinker_info_protected'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+     108 |                 info = shrinker_info_protected(memcg, nid);
+         |                        ^
+>> mm/shrinker.c:108:8: error: incompatible integer to pointer conversion assigning to 'struct shrinker_info *' from 'int' [-Wint-conversion]
+     108 |                 info = shrinker_info_protected(memcg, nid);
+         |                      ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>> mm/shrinker.c:117:30: error: conflicting types for 'shrinker_info_protected'
+     117 | static struct shrinker_info *shrinker_info_protected(struct mem_cgroup *memcg,
+         |                              ^
+   mm/shrinker.c:108:10: note: previous implicit declaration is here
+     108 |                 info = shrinker_info_protected(memcg, nid);
+         |                        ^
+   3 errors generated.
+
+
+vim +/shrinker_info_protected +108 mm/shrinker.c
+
+    76	
+    77	int alloc_shrinker_info(struct mem_cgroup *memcg)
+    78	{
+    79		int nid, ret = 0;
+    80		int array_size = 0;
+    81		int failed_nid;
+    82	
+    83		mutex_lock(&shrinker_mutex);
+    84		array_size = shrinker_unit_size(shrinker_nr_max);
+    85		for_each_node(nid) {
+    86			struct shrinker_info *info = kvzalloc_node(sizeof(*info) + array_size,
+    87								   GFP_KERNEL, nid);
+    88			if (!info)
+    89				goto err;
+    90			info->map_nr_max = shrinker_nr_max;
+    91			if (shrinker_unit_alloc(info, NULL, nid)) {
+    92				kvfree(info);
+    93				goto err;
+    94			}
+    95			rcu_assign_pointer(memcg->nodeinfo[nid]->shrinker_info, info);
+    96		}
+    97		mutex_unlock(&shrinker_mutex);
+    98	
+    99		return ret;
+   100	
+   101	err:
+   102		failed_nid = nid;
+   103		for_each_node(nid) {
+   104			struct shrinker_info *info;
+   105	
+   106			if (nid >= failed_nid)
+   107				break;
+ > 108			info = shrinker_info_protected(memcg, nid);
+   109			rcu_assign_pointer(memcg->nodeinfo[nid]->shrinker_info, NULL);
+   110			shrinker_unit_free(info, 0);
+   111			kvfree(info);
+   112		}
+   113		mutex_unlock(&shrinker_mutex);
+   114		return -ENOMEM;
+   115	}
+   116	
+ > 117	static struct shrinker_info *shrinker_info_protected(struct mem_cgroup *memcg,
+   118							     int nid)
+   119	{
+   120		return rcu_dereference_protected(memcg->nodeinfo[nid]->shrinker_info,
+   121						 lockdep_is_held(&shrinker_mutex));
+   122	}
+   123	
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
