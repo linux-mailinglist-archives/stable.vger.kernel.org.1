@@ -1,41 +1,42 @@
-Return-Path: <stable+bounces-273354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273355-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id IWRCDnDDUWrIIQMAu9opvQ
-	(envelope-from <stable+bounces-273354-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 06:15:44 +0200
+	id 0TDxKyTEUWrpIQMAu9opvQ
+	(envelope-from <stable+bounces-273355-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 06:18:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95350740461
-	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 06:15:43 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8405740493
+	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 06:18:43 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
 	dkim=none;
 	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273354-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273354-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273355-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-273355-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 108313006112
-	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 04:15:42 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D903E300BC6F
+	for <lists+stable@lfdr.de>; Sat, 11 Jul 2026 04:18:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EC0B259CB9;
-	Sat, 11 Jul 2026 04:15:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4B082853FD;
+	Sat, 11 Jul 2026 04:18:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCB502848AA;
-	Sat, 11 Jul 2026 04:15:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D34B113C9C4;
+	Sat, 11 Jul 2026 04:18:33 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783743332; cv=none; b=O5duOg6OxAvX4Dv6l4U+b5APvwNbZQ4OuaTFG/HFkeyI0+06Mx4LEwk/e5zaK2g3goNz4HaYkZdL/aAI6yarN/c+SSp1LxVDq4cMLAkQG4tL12hC+6Ln6tgGhPwJkgFRSCK96wZdeGa+PNqzrYujjg7cyMP2gSgcw5svoR9O0Y0=
+	t=1783743517; cv=none; b=E7jG3L1spOiTZk3vwoYR78Jl2lmKXaJHcNAOWItmV5QJ3e7UPUMx/AI7axNRICxEcGR48pmjLJv6MY0JoYcYUwqd/vrl6znL8X/MhtLZ8afad32xFuUXdUryxYgikRKwgmEhqqk/OsO6U3HjRtHnhxdoWdgFi+wmPYnmxHoJGps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783743332; c=relaxed/simple;
+	s=arc-20240116; t=1783743517; c=relaxed/simple;
 	bh=aYoHk4YQVXxmU/xmSrjEqH+A43AOxzh0WAhAWrrngA0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=UN3OUk0hSAMvVAS/tne4g2rB2zlJpTnMl+xMxbhy0Aa1CAS9yS58Jjd5aJ6dH0TqlJ/c/RLN5u9g6RT5mNhklkRVywqkV/0Ioyb8GgccQmI1O5cSYnPr6k1FiQBV9KKymo2NZ6eJBB8H8hcQGtRVg01zuEd49Ggv2Qwmz0l1LgQ=
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=G5wDK7e0XJy0IBuE+X/bmHQX6JkXifByB2HJU8+XZwoSqm2qT4NmRGJG4YHKybVp+v/XsYyYP8R9AnH1rwxdnWcVkXn9X+QFZ4JAGBIJFBeTTvXcH73mRbcYufOGr5AddqJAglcAiKm22Q7g/BFJ6R4sfjdaYL9iwHegz6CicsU=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-X-UUID: 1d77ca247cdf11f1aa26b74ffac11d73-20260711
+X-UUID: 910a68ca7cdf11f1aa26b74ffac11d73-20260711
+X-CID-CACHE: Type:Local,Time:202607111215+08,HitQuantity:1
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:ac1c0899-ffc9-44ec-bd45-f07c830aca9e,IP:0,U
+X-CID-O-INFO: VERSION:1.3.12,REQID:41b0a526-72cd-46ae-bb86-3fd3d12447a7,IP:0,U
 	RL:0,TC:0,Content:-25,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
 	ON:release,TS:0
 X-CID-META: VersionHash:e7bac3a,CLOUDID:4d2b7686572bcb2e9fb89b31bab63187,BulkI
@@ -46,12 +47,12 @@ X-CID-BVR: 2,SSN|SDN
 X-CID-BAS: 2,SSN|SDN,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR
 X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 1d77ca247cdf11f1aa26b74ffac11d73-20260711
+X-UUID: 910a68ca7cdf11f1aa26b74ffac11d73-20260711
 X-User: zenghongling@kylinos.cn
 Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
 	(envelope-from <zenghongling@kylinos.cn>)
 	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 1745808913; Sat, 11 Jul 2026 12:15:13 +0800
+	with ESMTP id 236819042; Sat, 11 Jul 2026 12:18:27 +0800
 From: Hongling Zeng <zenghongling@kylinos.cn>
 To: akpm@linux-foundation.org,
 	david@fromorbit.com,
@@ -64,8 +65,8 @@ Cc: linux-mm@kvack.org,
 	Hongling Zeng <zenghongling@kylinos.cn>,
 	stable@vger.kernel.org
 Subject: [PATCH] mm: shrinker: fix double-free in alloc_shrinker_info error path
-Date: Sat, 11 Jul 2026 12:15:09 +0800
-Message-Id: <20260711041509.92926-1-zenghongling@kylinos.cn>
+Date: Sat, 11 Jul 2026 12:18:23 +0800
+Message-Id: <20260711041823.95135-1-zenghongling@kylinos.cn>
 X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -79,21 +80,21 @@ X-Spamd-Result: default: False [0.04 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-273354-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-273355-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DMARC_NA(0.00)[kylinos.cn];
 	FREEMAIL_CC(0.00)[kvack.org,vger.kernel.org,126.com,kylinos.cn];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[zenghongling@kylinos.cn,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:akpm@linux-foundation.org,m:david@fromorbit.com,m:qi.zheng@linux.dev,m:roman.gushchin@linux.dev,m:muchun.song@linux.dev,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:zhongling0719@126.com,m:zenghongling@kylinos.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS(0.00)[m:akpm@linux-foundation.org,m:david@fromorbit.com,m:qi.zheng@linux.dev,m:roman.gushchin@linux.dev,m:muchun.song@linux.dev,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:zhongling0719@126.com,m:zenghongling@kylinos.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -105,9 +106,9 @@ X-Spamd-Result: default: False [0.04 / 15.00];
 	R_DKIM_NA(0.00)[];
 	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp,kylinos.cn:from_mime,kylinos.cn:email,kylinos.cn:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 95350740461
+X-Rspamd-Queue-Id: A8405740493
 
 In alloc_shrinker_info(), when shrinker_unit_alloc() fails for a node,
 the error handler calls free_shrinker_info() which iterates over ALL
