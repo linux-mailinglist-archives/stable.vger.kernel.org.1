@@ -1,233 +1,173 @@
-Return-Path: <stable+bounces-273495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273496-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id sDbTJfWTU2oKcAMAu9opvQ
-	(envelope-from <stable+bounces-273495-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 12 Jul 2026 15:17:41 +0200
+	id XRi6NyuVU2okcAMAu9opvQ
+	(envelope-from <stable+bounces-273496-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 12 Jul 2026 15:22:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBAFA744C55
-	for <lists+stable@lfdr.de>; Sun, 12 Jul 2026 15:17:40 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A946744C75
+	for <lists+stable@lfdr.de>; Sun, 12 Jul 2026 15:22:51 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=arm.com header.s=foss header.b=jhlBoNmp;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273495-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273495-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=lwGd66Lo;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273496-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273496-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8CDCA301F9A1
-	for <lists+stable@lfdr.de>; Sun, 12 Jul 2026 13:17:36 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B8E4C30041EA
+	for <lists+stable@lfdr.de>; Sun, 12 Jul 2026 13:22:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 035562E9EC7;
-	Sun, 12 Jul 2026 13:17:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8372E56A;
+	Sun, 12 Jul 2026 13:22:49 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 644EE1A239A;
-	Sun, 12 Jul 2026 13:17:31 +0000 (UTC)
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 227B41A6807
+	for <stable@vger.kernel.org>; Sun, 12 Jul 2026 13:22:47 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783862254; cv=none; b=Dzy/j79ximraAzykYsFg+av5H8FYBrNFUhN3p/NlTa4k2+VVlJ0FAorCjwqLkQWISbL2Sg+Nfmc6txsjsgaymVZ8cOyLV8MBMJRav8dqQe572mB953wWrIBcHnVclo3lzNu+0vdHHvMpZVpQQ4gd+sfC7cxazhoGT2ByYpmUGF8=
+	t=1783862569; cv=none; b=C2Sl0VlL2pT3NvnAdZCmzeGBKKy3MU1AW9BYWBg4TuxYeeonuSChVJGxlNUEXNJ0ztWuRG47CiJHRAL/1AkBKiVqiFIX+ZGX1MaC+O+s8ypXZ19TPMRCy+ZXpKsWaUjbhR7QPZI15ijNAt0P2zuV3FaA2TfwvGpV2LzLzeTgvpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783862254; c=relaxed/simple;
-	bh=Hcs/GzepDdIetzHjiaaCoZ2JnUmYACvmukBnUhnWH7o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qDUhz0z0fTZq6+xPDNML96vKkowhFUoLurjBfxhAAKHsATFfeqMQv27Jq0ugMZWzzSzkn8y4fIT9fz+9gw5tPERrrWN6BiDnNXiw+0IJWzTqoxStTz+AIadSARVbhIVoV/yww3h5L6qLRaN94fRSMmeGsYfHoYtGxWIwxzZClYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=jhlBoNmp; arc=none smtp.client-ip=217.140.110.172
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7F7191684;
-	Sun, 12 Jul 2026 06:17:19 -0700 (PDT)
-Received: from [10.163.128.224] (unknown [10.163.128.224])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 296AC3F85F;
-	Sun, 12 Jul 2026 06:17:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1783862243; bh=Hcs/GzepDdIetzHjiaaCoZ2JnUmYACvmukBnUhnWH7o=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=jhlBoNmp4V+xpb5NnhaUMiVCTOtAElGvdQk7fmpFrcS3v0g3VNy1OuWqR8pPZ36kN
-	 Xun5IY8YwezHpllvFoP1/LKdzEH5CvNT0edOT6q7i7+wR+IdF2iMKGDqrG9dMx+IDw
-	 FKr3DEZcQp7SsjUU3ircfCWMmXgwcGC/xv4PruhA=
-Message-ID: <72e034d9-adcd-4302-93eb-96326846199c@arm.com>
-Date: Sun, 12 Jul 2026 18:47:12 +0530
+	s=arc-20240116; t=1783862569; c=relaxed/simple;
+	bh=xAwWrn135mVWGuRJMRuBayOCkroezRocDlu6CZpN8Sw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ipNsiswRD1xbTrzq8GxjDS/fKloSNEimSYzN1kDKn/PxfTZbSwXLTqNvnQXoJXWRnb1ED8xnqqcTemdLf1k192561dKP6GZXholJoIWVm3mK3QucbT6scaX51oLXshn1NuiHOSCKUWbxuvxJs4bXo7ZetEPofX25kUYExDpwWYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lwGd66Lo; arc=none smtp.client-ip=209.85.128.52
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-493f0ae9572so8584345e9.3
+        for <stable@vger.kernel.org>; Sun, 12 Jul 2026 06:22:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783862566; x=1784467366; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=f+YFzVviG3DzxMqpa6xeKwhT6SuFAN+/OdOMSnwiZgU=;
+        b=lwGd66LoMamqnIsdxcCBSbsxNB6gIYf3m3vmJmXe/TYUwBmVoTkA1QZ6iD/LTm6BS9
+         9gM/tmdCkjAHHHlskU3IKfeMCIrvuQ9m1oeqWN25I4G+6oPUw3Y1BUOPgD0EUX790wbK
+         eqAxQVrjbNaUIopyCcrBK2vi46BeBuSaBLCEJpkBSbMXQVE9iJDOPUt1+V4SBfuMZX4o
+         wQgDBdsE7OE9mrQCxt0S6f7kA47bhI6UU2tzxtNa6e0solnlmWpjRWk9urmamJVgPDOt
+         PdFtLOu9YVjSPYnlcZ0GJKUJ4U0zHxLQvyjTvpMUOwPD5D3H/eKTXSEe6qKstRkHuCrJ
+         kAXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783862566; x=1784467366;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=f+YFzVviG3DzxMqpa6xeKwhT6SuFAN+/OdOMSnwiZgU=;
+        b=qqcI9CHTqKz5qCXcTks2lBz1x1gHS/1J5MO3FZ05CByjGFrzfmqrD9SbiVkXTAPgde
+         3386Rxi3UCl9V2/JAN96AQnCepAQ2uq6jZ+9JHznfbSFzwvkjZeabwg7vo2mXRAZLs8l
+         USOSTXnmAs5HXtNOklekDLdoSVWRHdyJqAswKeacXnVhyt4vl2yt+mLo2W+zgn39wsJH
+         2EJ+01L4Y4RiOaJoO+s9QJUU27wCwkpVjsuAe4ts4mikMtSYjor8olX7eDVouIfQqpcb
+         4upkw2RS2Zj0Zk7i9xa85VrSVMpicl+G0H6Wioz+lZaPCbB52x5VhvMBpvZops//0xPv
+         wcuw==
+X-Forwarded-Encrypted: i=1; AHgh+RrPB4aPhhTsRF5IdDDGSGObcxIkE5X3MnUNxYwbryevDnRGBruMnbiVN1j+dJUmRTX0egeOQL8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz1rRP8hAWzQjyMySvxIgVrKxia/3MePhqxNMzXIKHTm6MFh7Va
+	70yIxQThlfbkYE+e3DhBt1YLmYmgqPZQoUQPGnaGgu17OzfhfGx98V5o
+X-Gm-Gg: AfdE7ckW9wX8KpwAyNdJdOaaD5o5Ie1EQ5CzZuwMjDMEasLZcvNwir6A7ZCK/VVDeIY
+	3iTjnsqd1FX/prFuELNE6UshczWrdYaa74WfXpj4HBgRKX5T6B082MHnQ/HLCeXrr5oMmcCVf+6
+	Kx+30BJnuSBWcH2uPyUd2a7fi6tyf4RTnqAm3uXkzyDsV+ubwcl8P2PIPlVIcHjKaVCFe0PujwF
+	z54Quse6QrpvyvnHenWXB01t1vSfyP+RQa5ipKEGP7ITN8aHc08sbMTWabXZxV/SJxtnVQ2pYAb
+	uErzN7G1q6b6h399vvs2JuLZp2YzT5/cnwhIKupPVRxlCPQDgDLQJd2EXcn3zxo9KeN1j8C0lZf
+	pfv4SFYL6kp2Ua5k9jPM7nXzfb5tsLSsEyWJVwqrYvynjHHUHFkRwpP+v0naxnLpP+euN35cnRs
+	5oz8/Io/wUUryuKGASbCGOOHkAGZhhQHcocy9br6hTU9M8iF4gdj7Gc8eE/xQJTc1Hv3qTMb58
+X-Received: by 2002:a05:600c:8b52:b0:492:53e8:3bc1 with SMTP id 5b1f17b1804b1-493f87f3cffmr58484955e9.17.1783862566268;
+        Sun, 12 Jul 2026 06:22:46 -0700 (PDT)
+Received: from dohko.chello.ie (188-141-5-72.dynamic.upc.ie. [188.141.5.72])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493f4cbc620sm180883955e9.13.2026.07.12.06.22.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 12 Jul 2026 06:22:45 -0700 (PDT)
+From: David Carlier <devnexen@gmail.com>
+To: intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org
+Cc: anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	maciej.fijalkowski@intel.com,
+	aleksandr.loktionov@intel.com,
+	advoretsky@gmail.com,
+	stable@vger.kernel.org,
+	David Carlier <devnexen@gmail.com>
+Subject: [PATCH net] igc: remove napi_synchronize() in igc_down()
+Date: Sun, 12 Jul 2026 14:22:42 +0100
+Message-ID: <20260712132242.223254-1-devnexen@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-hotfixes v2 1/4] mm/vmalloc: acquire init_mm lock on
- huge vmap to avoid ptdump UAF
-To: Lorenzo Stoakes <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Suren Baghdasaryan <surenb@google.com>, "Liam R. Howlett"
- <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Shakeel Butt <shakeel.butt@linux.dev>, David Hildenbrand <david@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>,
- Uladzislau Rezki <urezki@gmail.com>, Toshi Kani <toshi.kani@hpe.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski
- <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Ryan Roberts <ryan.roberts@arm.com>
-Cc: David Carlier <devnexen@gmail.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org,
- syzbot+fd95a72470f5a44e464c@syzkaller.appspotmail.com
-References: <20260712-series-vmap-race-fix-v2-0-ad134cc3a12a@kernel.org>
- <20260712-series-vmap-race-fix-v2-1-ad134cc3a12a@kernel.org>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20260712-series-vmap-race-fix-v2-1-ad134cc3a12a@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[arm.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[arm.com:s=foss];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-273495-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-273496-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[intel.com,gmail.com,vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER(0.00)[devnexen@gmail.com,stable@vger.kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:ljs@kernel.org,m:akpm@linux-foundation.org,m:surenb@google.com,m:liam@infradead.org,m:vbabka@kernel.org,m:shakeel.butt@linux.dev,m:david@kernel.org,m:rppt@kernel.org,m:mhocko@suse.com,m:urezki@gmail.com,m:toshi.kani@hpe.com,m:dave.hansen@linux.intel.com,m:luto@kernel.org,m:peterz@infradead.org,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:x86@kernel.org,m:hpa@zytor.com,m:kas@kernel.org,m:catalin.marinas@arm.com,m:will@kernel.org,m:ryan.roberts@arm.com,m:devnexen@gmail.com,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:bpf@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:stable@vger.kernel.org,m:syzbot+fd95a72470f5a44e464c@syzkaller.appspotmail.com,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[dev.jain@arm.com,stable@vger.kernel.org];
-	FREEMAIL_TO(0.00)[kernel.org,linux-foundation.org,google.com,infradead.org,linux.dev,suse.com,gmail.com,hpe.com,linux.intel.com,redhat.com,alien8.de,zytor.com,arm.com];
-	FREEMAIL_CC(0.00)[gmail.com,kvack.org,vger.kernel.org,lists.infradead.org,syzkaller.appspotmail.com];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:intel-wired-lan@lists.osuosl.org,m:netdev@vger.kernel.org,m:anthony.l.nguyen@intel.com,m:przemyslaw.kitszel@intel.com,m:maciej.fijalkowski@intel.com,m:aleksandr.loktionov@intel.com,m:advoretsky@gmail.com,m:stable@vger.kernel.org,m:devnexen@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dev.jain@arm.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[arm.com:+];
+	FROM_NEQ_ENVFROM(0.00)[devnexen@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[30];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,fd95a72470f5a44e464c];
-	TO_DN_SOME(0.00)[]
+	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: EBAFA744C55
+X-Rspamd-Queue-Id: 4A946744C75
 
+When an AF_XDP zero-copy application is killed abruptly, the XSK pool is
+torn down but NAPI keeps polling. igc_clean_rx_irq_zc() then returns the
+full budget on every poll, so napi_complete_done() never clears
+NAPI_STATE_SCHED.
 
+igc_down() calls napi_synchronize() before napi_disable(), so it spins
+forever waiting for that bit and the interface never goes down. Drop the
+napi_synchronize() and let napi_disable() do the job -- it sets
+NAPI_STATE_DISABLE, which forces the stuck poll to complete. Reorder it
+ahead of igc_set_queue_napi() so the NAPI mapping is cleared only after
+polling has stopped, matching the recent igb fix b1e067240379.
 
-On 12/07/26 4:12 pm, Lorenzo Stoakes wrote:
-> Currently there is a nasty race between ptdump and vmap when attempting to
-> map a huge P4D, PMD or PUD entry.
-> 
-> ptdump is invoked by arch code to walk kernel or EFI page tables, either to
-> output it for debugging purposes, or to assert that there are no
-> W+X (i.e. executable writable pages) exposed in these ranges.
-> 
-> The feature is enabled generally via CONFIG_PTDUMP (whose implementation is
-> in mm/ptdump.c), and expose a debugfs interface for it if
-> CONFIG_PTDUMP_DEBUGFS is defined.
-> 
-> If CONFIG_PTDUMP is enabled, then /sys/kernel/debug/check_wx_pages is
-> enabled which checks kernel ranges to perform the W+X check. If
-> CONFIG_DEBUG_WX is enabled, this is done on boot.
-> 
-> (Note that arm32 implements its own page table walker and uses
-> CONFIG_ARM_DEBUG_WX and CONFIG_ARM_PTDUMP_DEBUGFS for this.)
-> 
-> The EFI implementations vary by architecture, but are not relevant to the
-> bug, as the issue is when kernel page ranges are walked.
-> 
-> ptdump_walk_pgd() holds both the mem hotplug lock and the mmap write lock
-> before invoking walk_page_range_debug(), however this runs into an issue
-> with vmalloc ranges.
-> 
-> When vmap maps a P4D, PUD or a PMD sized range and encounters an existing
-> P4d/PUD/PMD entry pointing to a PUD/PMD/PTE page table, it invokes
-> vmap_try_huge_[p4d,pud,pmd]() to try to convert it to a huge page table
-> mapping if possible.
-> 
-> However, when it does this, it holds no meaningful locks against other
-> kernel page table walkers, invoking [p4d,pud,pmd]_free_[pud,pmd,pte]_page()
-> which calls pagetable_free() and pagetable_free_kernel() in
-> turn (pte_fragment_free() for powerpc).
-> 
-> This means that a use-after-free becomes possible if the ptdump page table
-> walker happens to be walking a PUD, PMD or PTE page table after it has been
-> freed.
-> 
-> Since commit 5ba2f0a15564 ("mm: introduce deferred freeing for kernel page
-> tables"), if CONFIG_ASYNC_KERNEL_PGTABLE_FREE is set,
-> pagetable_free_kernel() will batch the page table freeing operation,
-> otherwise it frees the page table directly.
-> 
-> While the KASAN report that syzbot highlighted indicated that the issue
-> arose in a workqueue introduced by this change, this is coincidental and
-> the commit did not alter the race which has existed for quite some time.
-> 
-> This patch resolves the issue by simply having
-> vmap_try_huge_[p4d,pud,pmd]() hold the mmap read lock on init_mm while
-> invoking [p4d,pud,pmd]_free_[pud,pmd,pte]_page() and
-> [p4d,pud,pmd]_set_huge().
-> 
-> This way, page table walkers either observe a newly promoted huge
-> P4D/PUD/PMD leaf entry or the prior PUD/PMD/PTE entry and never get passed
-> a dangling pointer, whether the page is freed asynchronously or not.
-> 
-> All other kernel page table walkers that touch vmalloc ranges either
-> exclusively own the memory walked or acquire the mmap lock, so this
-> correctly excludes those walkers.
-> 
-> We acquire the mmap read lock as a trylock, as this is an optimisation that
-> is permitted not to succeed, a race is very unlikely, and doing so
-> eliminates latency sleeping on the lock would have otherwise caused.
-> 
-> We also define a guard class for mmap_read_trylock() so we can use
-> cleanup.h to make the scope handling cleaner in the implementation.
-> 
-> One wrinkle here is commit fa93b45fd397 ("arm64: Enable vmalloc-huge with
-> ptdump"), which addresses the issue for arm64 only by explicitly acquiring
-> the mmap read lock on kernel page table freeing should a concurrent ptdump
-> be in progress.
-> 
-> This is problematic as vmap may acquire the mmap read lock prior to ptdump
-> attempting to acquire an mmap write lock, leading to a deadlock when the
-> mmap read lock is slept upon on page table freeing due to rwsem
-> anti-starvation.
-> 
-> We work around this by predicating the mmap lock being taken on
-> !CONFIG_ARM64 for the time being.
-> 
-> With this patch applied, a follow up will partially revert commit
-> fa93b45fd397 ("arm64: Enable vmalloc-huge with ptdump") and at that stage
-> remove the arm64 ifdeffery.
-> 
-> We also update walk_page_range_debug() to assert the mmap write lock
-> unconditionally and update the comment here to reflect this change.
-> 
-> The issue has existed as long as ptdump was available and vmap freed page
-> tables when promoting to a huge leaf entry, that is, since commit
-> b6bdb7517c3d ("mm/vmalloc: add interfaces to free unmapped page table") for
-> huge ioremap, and commit 121e6f3258fe ("mm/vmalloc: hugepage vmalloc
-> mappings") for huge vmalloc.
-> 
-> Since the former is the earlier of the two we choose that for our Fixes
-> tag.
-> 
-> This patch is based on work by David Carlier (linked), with gratitude!
-> 
-> Fixes: b6bdb7517c3d ("mm/vmalloc: add interfaces to free unmapped page table")
-> Cc: stable@vger.kernel.org
-> Reported-by: syzbot+fd95a72470f5a44e464c@syzkaller.appspotmail.com
-> Closes: https://lore.kernel.org/all/6a287988.39669fcc.33b062.00a0.GAE@google.com/T/
-> Link: https://lore.kernel.org/linux-mm/20260706203128.162335-1-devnexen@gmail.com/
-> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
-> ---
-Reviewed-by: Dev Jain <dev.jain@arm.com>
+Fixes: fc9df2a0b520 ("igc: Enable RX via AF_XDP zero-copy")
+Suggested-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: David Carlier <devnexen@gmail.com>
+---
+ drivers/net/ethernet/intel/igc/igc_main.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
+diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
+index 2c9e2dfd8499..b3883a5a7d7a 100644
+--- a/drivers/net/ethernet/intel/igc/igc_main.c
++++ b/drivers/net/ethernet/intel/igc/igc_main.c
+@@ -5352,9 +5352,8 @@ void igc_down(struct igc_adapter *adapter)
+ 
+ 	for (i = 0; i < adapter->num_q_vectors; i++) {
+ 		if (adapter->q_vector[i]) {
+-			napi_synchronize(&adapter->q_vector[i]->napi);
+-			igc_set_queue_napi(adapter, i, NULL);
+ 			napi_disable(&adapter->q_vector[i]->napi);
++			igc_set_queue_napi(adapter, i, NULL);
+ 		}
+ 	}
+ 
+-- 
+2.53.0
 
 
