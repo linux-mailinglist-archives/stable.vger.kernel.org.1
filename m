@@ -1,142 +1,161 @@
-Return-Path: <stable+bounces-273502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273503-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id X7yqHmO/U2pregMAu9opvQ
-	(envelope-from <stable+bounces-273502-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 12 Jul 2026 18:22:59 +0200
+	id WklcGczGU2qWewMAu9opvQ
+	(envelope-from <stable+bounces-273503-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 12 Jul 2026 18:54:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECA8074553C
-	for <lists+stable@lfdr.de>; Sun, 12 Jul 2026 18:22:58 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E97B9745632
+	for <lists+stable@lfdr.de>; Sun, 12 Jul 2026 18:54:35 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LPujuT0L;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273502-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-273502-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=hZd3B02y;
+	dmarc=pass (policy=none) header.from=alien8.de;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273503-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273503-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 48632300334B
-	for <lists+stable@lfdr.de>; Sun, 12 Jul 2026 16:22:58 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 300FD30028AD
+	for <lists+stable@lfdr.de>; Sun, 12 Jul 2026 16:54:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8462D3563E1;
-	Sun, 12 Jul 2026 16:22:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E021C3655C2;
+	Sun, 12 Jul 2026 16:54:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FB5B25B092;
-	Sun, 12 Jul 2026 16:22:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24FF8364EAF;
+	Sun, 12 Jul 2026 16:54:27 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783873374; cv=none; b=TWOulielt+jRCzNGR4zQhETQbDBwcr99WGTBY0fjFgCt0UuNWT85fs9iop5jEeVBgjnO/R2Et1x6Z6YYxAh5aQpzOiy88c0kIl0LedYA8wqt6XLi7ZWPDwOtdIqMQJDbC5/S2I9Oc8ZV7Skf1K6OpsDhy9guXgMbK5tMehsIAO0=
+	t=1783875271; cv=none; b=ct5CQFU145RMR3Ffw0nlGpkeKZqXqhx/I/nPewEvRVNB16n1J00YvH4q0MbXzG5Zh7MMhYAx+pMSZzojwSUvwO0t9MxTfkeXXCC28JgCivE27uiBwJwET5xf1BxPjHblBDkv6f5z3w5ySF1afh/jYI8C0eb2srmFjXM10xRvq5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783873374; c=relaxed/simple;
-	bh=RSiIR1z2mpzASDxjHuQkD2I0bpgzQ/FS832oGCKKcCg=;
+	s=arc-20240116; t=1783875271; c=relaxed/simple;
+	bh=3t/8oLbvVkCPegE8QAQn71oA+Q4HfSxM+oHBOvO26rY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hJFWw6j4gexTRPwT4do9Qm/I6zZ4X0Lg+li9+vmx40ydV84gbDmkYa2Vr/3y4tbJkBqIJQwTooZ1pR7won5NwhwP41rySZv/c7WV+QWQvFRVxNWZ40s7bYbmiSXY30yFQ3K/I2aU4YJI6Mi+TvUiJLyXSfMnQo92nSt82OsOHmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LPujuT0L; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id E1C781F000E9;
-	Sun, 12 Jul 2026 16:22:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783873373;
-	bh=FZTvFXX2MudrX92TEaij+xL5i/6YlKbl9UJuuydy7zg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=LPujuT0LV11yb+bgnE6+BzngTwJ0EpEgrQcNoUiCS+wbhMBFQGaQOQxsgk40seesV
-	 x55VVByjtTTmY0gGIHWMY1VqzuWZfr+/y/ImdS7uS/GGAhNcmsLhGH6nE0LLd2RJSb
-	 M+SjBuuoJuID4BOMCWh/5YrBow0KjrwbfXyx63hla1THhXE9Q37yQMs2dIKgUMaEGk
-	 +TF68L7/9VTwFxNSqNer4TNpXe5/wh9nLlw+wCUBjiHtOpzNFNqREIKBMcY3lHQ8r/
-	 BFJeIstxrQ/+bskIRyPnUdGOgVIyevE0XfSQhtJJmin+LyGVoUtq8tZqM858RoCm3w
-	 VZsGmHj6rutHA==
-Date: Sun, 12 Jul 2026 09:22:52 -0700
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: Guanghui Yang <3497809730@qq.com>
-Cc: linux-xfs@vger.kernel.org, Carlos Maiolino <cem@kernel.org>,
-	Christoph Hellwig <hch@lst.de>, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] xfs: propagate errors from xfs_rtginode_load
-Message-ID: <20260712162252.GA7233@frogsfrogsfrogs>
-References: <tencent_542687AA9C474951C4132E84DAED17622105@qq.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Jtd2LG/LTLXyRnjevNQqSCwHgd2XcfMRNvK0p3gwdXxozxW/rR7huxNrgW+ufduJw9kLfDYJ4K92FF+fAvg8wqDByfXALmH9/yxTgO0Txw7ShcwVnUS/ttV7LrD8PsdPVuhabm1UyVsTTQkhhWW7mC2he5uOxLVj0WipM1PuY6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=hZd3B02y; arc=none smtp.client-ip=65.109.113.108
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 0C99240E029F;
+	Sun, 12 Jul 2026 16:54:25 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id srior6ed563w; Sun, 12 Jul 2026 16:54:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1783875255; bh=y0mSGKSljGbp3wm1OkPuo0d6XMXK1FIsRCwQHXpgKVI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hZd3B02yURgxnaN2bOuG5eS5BGaZkYAs2AweWjgF8MPvxxPq1Pt2vhEEqnCqz6wWA
+	 8dNkaOdtd19u+IcSBM/HjAx7JcHZLN7A5upeotFOjvVZJuJPXZ2xLlJORfsSwePPkj
+	 s2QScnUZnorDzAAJHT7r+lAsUwSUICK0TK1gzPA+4BNove0iPem796CCGh6+vQ2uTF
+	 IaaWP96Soy2OIRtZQ4wj3sYYMzUU7eb9vJwS5dkoeTmPjJv/vViw09zNDbqo+F8B9q
+	 AyltvY6d3w6OaBCUM9eOqQsnsnrBBcZmFjmra1vn3CEnFOv/wKIU6VNf/oyr4hwPGu
+	 7M7+2UxNFU+pg0Lto33EIt9lKX7i+Z29412SELwxHS1ldaxuC8r38fIiiBJ/60gssa
+	 pi0hvyvsYutR7Ji2QjYroHz3Tz4NoMG/Ar3Egs6W/tT79qOi1QngXwmUMBYQyqPoUH
+	 Ruz1xqCCFqxR3bLPqeiF9m4mB9wan85MmnjIRAYyecU6ELmJSYolJcfG5wxdEz+Bdf
+	 GsCumXAiqGmZg2okklasr3ESHBzuoOl7c9q1iHAJ7QaMfNvEci61R9mQ2/96kYvjQ6
+	 X2EbOcc7yHrtpWfN6qHdZShRWsJAMFRBQB9QrCT/E+9KlUi/jyYAcpQpaMbn/8DBjw
+	 Da+sRgL8/If7qfYW8RZJTeHc=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::3a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 22D5740E00C3;
+	Sun, 12 Jul 2026 16:53:45 +0000 (UTC)
+Date: Sun, 12 Jul 2026 09:53:41 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Toshi Kani <toshi.kani@hpe.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Dev Jain <dev.jain@arm.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	David Carlier <devnexen@gmail.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
+Subject: Re: [PATCH mm-hotfixes v2 2/4] x86/mm/pat: acquire mmap lock on page
+ table free to avoid ptdump UAF
+Message-ID: <20260712165341.GAalPGldsKpBs5treJ@fat_crate.local>
+References: <20260712-series-vmap-race-fix-v2-0-ad134cc3a12a@kernel.org>
+ <20260712-series-vmap-race-fix-v2-2-ad134cc3a12a@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <tencent_542687AA9C474951C4132E84DAED17622105@qq.com>
+In-Reply-To: <20260712-series-vmap-race-fix-v2-2-ad134cc3a12a@kernel.org>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	DMARC_POLICY_ALLOW(-0.50)[alien8.de,none];
+	R_DKIM_ALLOW(-0.20)[alien8.de:s=alien8];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_TO(0.00)[qq.com];
-	FORGED_RECIPIENTS(0.00)[m:3497809730@qq.com,m:linux-xfs@vger.kernel.org,m:cem@kernel.org,m:hch@lst.de,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER(0.00)[djwong@kernel.org,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[29];
 	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[djwong@kernel.org,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-273502-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-273503-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:ljs@kernel.org,m:akpm@linux-foundation.org,m:surenb@google.com,m:liam@infradead.org,m:vbabka@kernel.org,m:shakeel.butt@linux.dev,m:david@kernel.org,m:rppt@kernel.org,m:mhocko@suse.com,m:urezki@gmail.com,m:toshi.kani@hpe.com,m:dave.hansen@linux.intel.com,m:luto@kernel.org,m:peterz@infradead.org,m:tglx@kernel.org,m:mingo@redhat.com,m:x86@kernel.org,m:hpa@zytor.com,m:kas@kernel.org,m:catalin.marinas@arm.com,m:will@kernel.org,m:dev.jain@arm.com,m:ryan.roberts@arm.com,m:devnexen@gmail.com,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:bpf@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORGED_SENDER(0.00)[bp@alien8.de,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linux-foundation.org,google.com,infradead.org,kernel.org,linux.dev,suse.com,gmail.com,hpe.com,linux.intel.com,redhat.com,zytor.com,arm.com,kvack.org,vger.kernel.org,lists.infradead.org];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bp@alien8.de,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[alien8.de:+];
+	ALIAS_RESOLVED(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp,alien8.de:from_mime,alien8.de:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: ECA8074553C
+X-Rspamd-Queue-Id: E97B9745632
 
-On Sun, Jul 12, 2026 at 03:42:56AM +0000, Guanghui Yang wrote:
-> xfs_rtginode_ensure() treats every xfs_rtginode_load() error other than
-> -ENOENT as success.  This can leave the realtime group inode unset after an
-> I/O, allocation, or corruption error.  Growfs then continues as though the
-> inode had been loaded.
-> 
-> Only -ENOENT means that the inode needs to be created.  Return all other
-> errors to the growfs caller.
-> 
-> Fixes: ae897e0bed0f ("xfs: support creating per-RTG files in growfs")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Guanghui Yang <3497809730@qq.com>
+On Sun, Jul 12, 2026 at 11:42:25AM +0100, Lorenzo Stoakes wrote:
+> This patch resolves the issue by acquiring the mmap read lock on init_mm to
 
-Yeah, that's correct
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
+s/This patch resolves/Resolve/
 
---D
+> provide mutual exclusion against ptdump, which acquires the init_mm write
+> lock.
 
-> ---
->  fs/xfs/xfs_rtalloc.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/fs/xfs/xfs_rtalloc.c b/fs/xfs/xfs_rtalloc.c
-> index 7a3f97686989..84efe5a8fb11 100644
-> --- a/fs/xfs/xfs_rtalloc.c
-> +++ b/fs/xfs/xfs_rtalloc.c
-> @@ -737,7 +737,7 @@ xfs_rtginode_ensure(
->  	xfs_trans_cancel(tp);
->  
->  	if (error != -ENOENT)
-> -		return 0;
-> +		return error;
->  	return xfs_rtginode_create(rtg, type, true);
->  }
->  
-> -- 
-> 2.34.1
-> 
+...
+
+> We also include cleanup.h in order to use a scoped_guard() to implement
+> this cleanly.
+
+You don't need to explain that.
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
