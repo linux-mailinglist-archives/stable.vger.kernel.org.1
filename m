@@ -1,66 +1,68 @@
-Return-Path: <stable+bounces-273479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273480-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 8TzYAO1wU2qzawMAu9opvQ
-	(envelope-from <stable+bounces-273479-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 12 Jul 2026 12:48:13 +0200
+	id kGICMA9xU2q8awMAu9opvQ
+	(envelope-from <stable+bounces-273480-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 12 Jul 2026 12:48:47 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 407937446B7
-	for <lists+stable@lfdr.de>; Sun, 12 Jul 2026 12:48:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B5447446C1
+	for <lists+stable@lfdr.de>; Sun, 12 Jul 2026 12:48:47 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PKTQ6vWX;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V1ozN2CI;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273479-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-273479-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273480-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-273480-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4F99F302B0B2
-	for <lists+stable@lfdr.de>; Sun, 12 Jul 2026 10:46:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8B914300DE27
+	for <lists+stable@lfdr.de>; Sun, 12 Jul 2026 10:47:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EB4E39EF25;
-	Sun, 12 Jul 2026 10:46:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07D2939F17F;
+	Sun, 12 Jul 2026 10:47:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AD9430568B;
-	Sun, 12 Jul 2026 10:46:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C78E5372B31;
+	Sun, 12 Jul 2026 10:47:54 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783853206; cv=none; b=oRRimwcRAi+em9LPX9kDmUDxdfOw+3YR/ZvugC3oKGfiCPlZikJLDHAY/NA3QHHsfHFxCAjwOImw9K1m8Mg4C1fXv1fic6C2aZfJN+t56XvdXyhFIsqcspbSCz4G9X6V2hlRa4H0ziSkM8SLDVWzjAtAJVIr6eJ4qBm7KrbLe/8=
+	t=1783853275; cv=none; b=M2G2GYlSVNcX7lgqIRMhnvwDyupJhFMadwDmMWTxQZUikXOLw4YmfQ7hG5KpNo41eoA54y2wGDK4bcei6clj1xLp9ijq8oa1ul2igIx5Fi8vbMLOCqMFFXyHbLBH+OX7a1cGuvl93AfepC+TY6DIaR4+Fy53b8yYqQEa8jYRSYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783853206; c=relaxed/simple;
-	bh=IOUDvUEy6TKOQq0Pr9YmzerkWeQFM6q4kLvyq82Q8as=;
+	s=arc-20240116; t=1783853275; c=relaxed/simple;
+	bh=/qQuNHwfggsZrnd+KuV0gCXU2w7baMsOVUJIH5eNkXk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KQx0Q/e5lrpj9AjejUp07I77fQ0sMLcGBb72DINFy1VMH7etbf1sv3cf9UJ6qh6suwdr8ioob161dF0dFcuBEwJgu2xRgLjiP2CDbKYWqatG5kyqSMPJRDQ29NZOMY0o39osm2zgHFHBUHnWwpN5S2MPucSpnayyz2b+ZW6omZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PKTQ6vWX; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E9671F000E9;
-	Sun, 12 Jul 2026 10:46:40 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=BKeY3gt/JSiL30z0RiK0io917W+ajpbRNVIDNIMHFK5wolxv20DXlWC5m+D588zkN/QjaoH7b1VGKSd+wjDwDSliqz6T0GuVcE2wp53t2zk7Lj8O0lhFj9k+VwTYngCTT706FSd6aul7UHGPP+H18vCxxlyhWPC9c29VPw+YDhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V1ozN2CI; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AA251F000E9;
+	Sun, 12 Jul 2026 10:47:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783853205;
-	bh=IOUDvUEy6TKOQq0Pr9YmzerkWeQFM6q4kLvyq82Q8as=;
+	s=k20260515; t=1783853274;
+	bh=/qQuNHwfggsZrnd+KuV0gCXU2w7baMsOVUJIH5eNkXk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=PKTQ6vWXX63l864cAkgQJT1N7/Kyzos1q+xOsJJWgJcP33PxRcUUaQilhxJIIuNVP
-	 uLRI5TjlTGyTKaIYAcZAkmJ/Nqw6H1rGLFCZtVfjox2s4ML5vrToRtpAXbyrBm5x1x
-	 HXYWhZcw7qmFabZ6IXVl+5UjUKDprf1XzKFdoBEExm7an3lyYxiLSL7ZHbledfUkk+
-	 DpmSmW/nL09o21U05djkTJcLO1r7w3jNWcA+4kAWGYU5mxmblc2j1XeHQHw9O5g0zI
-	 CravUsr9bcF38MZz/twHZNpG1+pDnjOBgQthLv48XiiG9FuFKa/gVii3M2hXkreG87
-	 TVdR/fXbkO4lA==
-Date: Sun, 12 Jul 2026 11:46:30 +0100
+	b=V1ozN2CI66ESnpPd6ytBXeC3H6HMQRK81sUTWsm21lJyTwKGzX/HRRlnuAqyYbD0X
+	 IiTOsAg97PRsAt6Oq1sufKt9qpvuqnhabuDX+fqYj3UR8UzW+X3ycE9Fe5YOuBJdde
+	 XLo3/VPmEaanQVvrThzd+K8cf0ztSHDWmJWSr+JY38UvmY4KK7A2jKmlgiiD0+q0d7
+	 W0RhK/rAJgRcPqJp6wI4Vba4z+2ph9ZZiuTzt6egY+Q5ayfqw9sunhIJO0+5AOCpn5
+	 GzbAjhhzR4rN4YdjyS/fjZWQKLQH2puxrILzkYdDT3R2mrVoJLl1AMtLj80STq2UfQ
+	 FqAJyroPITEtQ==
+Date: Sun, 12 Jul 2026 11:47:40 +0100
 From: Lorenzo Stoakes <ljs@kernel.org>
-To: Dave Hansen <dave.hansen@linux.intel.com>, 
-	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>, Kiryl Shutsemau <kas@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Carlier <devnexen@gmail.com>, Vlastimil Babka <vbabka@kernel.org>, 
-	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] x86/mm/pat: acquire mmap lock on page table free to
- avoid ptdump UAF
-Message-ID: <alNwO-lnRDsWPrB6@lucifer>
-References: <20260710-fix-cpa-ptdump-race-v1-1-d898699a7417@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Toshi Kani <toshi.kani@hpe.com>, 
+	Catalin Marinas <catalin.marinas@arm.com>, David Carlier <devnexen@gmail.com>, Dev Jain <dev.jain@arm.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Will Deacon <will@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, Dave Hansen <dave.hansen@linux.intel.com>
+Subject: Re: [PATCH] mm/ptdump: always stabilise against page table freeing
+ using init_mm
+Message-ID: <alNwoFee3Qe9mK1_@lucifer>
+References: <20260710-b4-fix-non-init_mm-ptdump-v1-1-2d40982c98ec@kernel.org>
+ <20260710132954.49c85be140500c59c1fcb773@linux-foundation.org>
+ <alH27K6kvUVxJ672@lucifer>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,7 +71,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260710-fix-cpa-ptdump-race-v1-1-d898699a7417@kernel.org>
+In-Reply-To: <alH27K6kvUVxJ672@lucifer>
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-4.66 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
@@ -81,23 +83,23 @@ X-Spamd-Result: default: False [-4.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:dave.hansen@linux.intel.com,m:luto@kernel.org,m:peterz@infradead.org,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:x86@kernel.org,m:hpa@zytor.com,m:rppt@kernel.org,m:kas@kernel.org,m:akpm@linux-foundation.org,m:devnexen@gmail.com,m:vbabka@kernel.org,m:david@kernel.org,m:liam@infradead.org,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:bpf@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:akpm@linux-foundation.org,m:david@kernel.org,m:liam@infradead.org,m:vbabka@kernel.org,m:rppt@kernel.org,m:surenb@google.com,m:mhocko@suse.com,m:toshi.kani@hpe.com,m:catalin.marinas@arm.com,m:devnexen@gmail.com,m:dev.jain@arm.com,m:ryan.roberts@arm.com,m:shakeel.butt@linux.dev,m:will@kernel.org,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:dave.hansen@linux.intel.com,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
+	RCPT_COUNT_TWELVE(0.00)[18];
 	FORGED_SENDER(0.00)[ljs@kernel.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-273479-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-273480-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[ljs@kernel.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linux-foundation.org,gmail.com,kernel.org,infradead.org,kvack.org,vger.kernel.org];
+	FREEMAIL_CC(0.00)[kernel.org,infradead.org,google.com,suse.com,hpe.com,arm.com,gmail.com,linux.dev,kvack.org,vger.kernel.org,linux.intel.com];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -106,13 +108,61 @@ X-Spamd-Result: default: False [-4.66 / 15.00];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 407937446B7
+X-Rspamd-Queue-Id: 1B5447446C1
 
-FYI please don't take this patch as it's been superceded by a v2 in the series
-[0].
+On Sat, Jul 11, 2026 at 08:57:18AM +0100, Lorenzo Stoakes wrote:
+> (+cc Dave as we were discussing on another thread)
+>
+> On Fri, Jul 10, 2026 at 01:29:54PM -0700, Andrew Morton wrote:
+> > On Fri, 10 Jul 2026 14:29:21 +0100 Lorenzo Stoakes <ljs@kernel.org> wrote:
+> >
+> > > x86 and arm64 invokes ptdump_walk_pgd() with non-init_mm mm whilst still
+> > > walking kernel page table ranges.
+> > >
+> > > For x86 this is done in ptdump_curknl_show() and ptdump_efi_show(), the
+> > > first passing current->mm, and the second passing efi_mm (we reach kernel
+> > > mappings that init_mm protects for current->mm due to x86 cloning shared
+> > > kernel page tables for arbitrary mm's).
+> > >
+> > > arm64 does so via ptdump_debugfs_register(), configured by efi_ptdump_info
+> > > for efi ranges against efi_mm.
+> > >
+> > > The init_mm mmap lock is used to stabilise page table freeing against
+> > > ptdump, so take a nested lock on init_mm to ensure that we are correctly
+> > > stabilised.
+> > >
+> > > We take this after mmap write locking the non-init_mm mm. Nothing acquires
+> > > the init_mm lock first before locking an arbitrary mm, so no deadlock is
+> > > possible.
+> > >
+> > > Other fixes have been sent which update the two cases which can cause races
+> > > with ptdump in init_mm ranges to acquire the init_mm mmap write lock - vmap
+> > > and x86 CPA huge page promotion.
+> > >
+> > > For arm64, commit fa93b45fd397 ("arm64: Enable vmalloc-huge with ptdump")
+> > > already provides exclusion against init_mm for the vmap case, which this
+> > > patch also pairs with.
+> > >
+> > > The first point at which ptdump can race kernel page table freeing is
+> > > commit b6bdb7517c3d ("mm/vmalloc: add interfaces to free unmapped page
+> > > table"), so we target this in the Fixes tag.
+> >
+> > Does this have any known userspace impact?
+>
+> Taken in conjunction with the other fixes mentioned it resolves a UAF, so yes :)
+>
+> >
+> > > Fixes: b6bdb7517c3d ("mm/vmalloc: add interfaces to free unmapped page table")
+> >
+> > Since 2018, so I won't make this a hotfix, OK?
+> >
+>
+> No, this has to be a hotfix, it is part of solving a live UAF issue.
+>
+> Cheers, Lorenzo
 
-In the end agree with Mike that it's just simpler to keep everything together as
-one :)
+Have put this patch in a series in [0], as easier to just keep everything
+together and makes dependencies clear and what it's for.
 
 Cheers, Lorenzo
 
