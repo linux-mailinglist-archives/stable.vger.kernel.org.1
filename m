@@ -1,161 +1,203 @@
-Return-Path: <stable+bounces-273503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273504-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id WklcGczGU2qWewMAu9opvQ
-	(envelope-from <stable+bounces-273503-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 12 Jul 2026 18:54:36 +0200
+	id P7w/Jt7GU2qbewMAu9opvQ
+	(envelope-from <stable+bounces-273504-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 12 Jul 2026 18:54:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E97B9745632
-	for <lists+stable@lfdr.de>; Sun, 12 Jul 2026 18:54:35 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35F0D745640
+	for <lists+stable@lfdr.de>; Sun, 12 Jul 2026 18:54:54 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=hZd3B02y;
-	dmarc=pass (policy=none) header.from=alien8.de;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273503-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273503-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YA5LLlgi;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273504-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-273504-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 300FD30028AD
-	for <lists+stable@lfdr.de>; Sun, 12 Jul 2026 16:54:35 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4867E3006819
+	for <lists+stable@lfdr.de>; Sun, 12 Jul 2026 16:54:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E021C3655C2;
-	Sun, 12 Jul 2026 16:54:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BACF13655C2;
+	Sun, 12 Jul 2026 16:54:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24FF8364EAF;
-	Sun, 12 Jul 2026 16:54:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 696C7343D9D;
+	Sun, 12 Jul 2026 16:54:43 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783875271; cv=none; b=ct5CQFU145RMR3Ffw0nlGpkeKZqXqhx/I/nPewEvRVNB16n1J00YvH4q0MbXzG5Zh7MMhYAx+pMSZzojwSUvwO0t9MxTfkeXXCC28JgCivE27uiBwJwET5xf1BxPjHblBDkv6f5z3w5ySF1afh/jYI8C0eb2srmFjXM10xRvq5I=
+	t=1783875284; cv=none; b=r4fSD7yX6EVMANC59ujxpxYu4aOxhSuD1peAhWuFnsavLzUS2I9WScAPda+KCndIs7jyW3Cf83KlocSNyqiceb1oiwc3kEvcpOievR799KC9m53wR8XsvFkMHJBiOlRtMtgvzarfmKkRMgwRQcvFwuX4m1tt5LJwszrxXPSTEdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783875271; c=relaxed/simple;
-	bh=3t/8oLbvVkCPegE8QAQn71oA+Q4HfSxM+oHBOvO26rY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Jtd2LG/LTLXyRnjevNQqSCwHgd2XcfMRNvK0p3gwdXxozxW/rR7huxNrgW+ufduJw9kLfDYJ4K92FF+fAvg8wqDByfXALmH9/yxTgO0Txw7ShcwVnUS/ttV7LrD8PsdPVuhabm1UyVsTTQkhhWW7mC2he5uOxLVj0WipM1PuY6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=hZd3B02y; arc=none smtp.client-ip=65.109.113.108
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 0C99240E029F;
-	Sun, 12 Jul 2026 16:54:25 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id srior6ed563w; Sun, 12 Jul 2026 16:54:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1783875255; bh=y0mSGKSljGbp3wm1OkPuo0d6XMXK1FIsRCwQHXpgKVI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hZd3B02yURgxnaN2bOuG5eS5BGaZkYAs2AweWjgF8MPvxxPq1Pt2vhEEqnCqz6wWA
-	 8dNkaOdtd19u+IcSBM/HjAx7JcHZLN7A5upeotFOjvVZJuJPXZ2xLlJORfsSwePPkj
-	 s2QScnUZnorDzAAJHT7r+lAsUwSUICK0TK1gzPA+4BNove0iPem796CCGh6+vQ2uTF
-	 IaaWP96Soy2OIRtZQ4wj3sYYMzUU7eb9vJwS5dkoeTmPjJv/vViw09zNDbqo+F8B9q
-	 AyltvY6d3w6OaBCUM9eOqQsnsnrBBcZmFjmra1vn3CEnFOv/wKIU6VNf/oyr4hwPGu
-	 7M7+2UxNFU+pg0Lto33EIt9lKX7i+Z29412SELwxHS1ldaxuC8r38fIiiBJ/60gssa
-	 pi0hvyvsYutR7Ji2QjYroHz3Tz4NoMG/Ar3Egs6W/tT79qOi1QngXwmUMBYQyqPoUH
-	 Ruz1xqCCFqxR3bLPqeiF9m4mB9wan85MmnjIRAYyecU6ELmJSYolJcfG5wxdEz+Bdf
-	 GsCumXAiqGmZg2okklasr3ESHBzuoOl7c9q1iHAJ7QaMfNvEci61R9mQ2/96kYvjQ6
-	 X2EbOcc7yHrtpWfN6qHdZShRWsJAMFRBQB9QrCT/E+9KlUi/jyYAcpQpaMbn/8DBjw
-	 Da+sRgL8/If7qfYW8RZJTeHc=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::3a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 22D5740E00C3;
-	Sun, 12 Jul 2026 16:53:45 +0000 (UTC)
-Date: Sun, 12 Jul 2026 09:53:41 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	David Hildenbrand <david@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Toshi Kani <toshi.kani@hpe.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Dev Jain <dev.jain@arm.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	David Carlier <devnexen@gmail.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
-Subject: Re: [PATCH mm-hotfixes v2 2/4] x86/mm/pat: acquire mmap lock on page
- table free to avoid ptdump UAF
-Message-ID: <20260712165341.GAalPGldsKpBs5treJ@fat_crate.local>
-References: <20260712-series-vmap-race-fix-v2-0-ad134cc3a12a@kernel.org>
- <20260712-series-vmap-race-fix-v2-2-ad134cc3a12a@kernel.org>
+	s=arc-20240116; t=1783875284; c=relaxed/simple;
+	bh=WbRrUwXHOSUNJ6AcjpSUXWxrRu5t9s1NmUpcg93yiDM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UeUBV8hTpisQc7Oejc6NVmWnWiMAEtuJySDDMu7PTuGyQUFck2FyZQdgaRPBXTMry9+Florjvifr+S8QAo+BeTGTScc/eV1qyymah8+4nG2D7EMs2a+xv1WpUDg8D7sO8xrR/apWVyZgkcrISzjm2Ms0+uL+aJF970V3e9QAcl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YA5LLlgi; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC8AB1F000E9;
+	Sun, 12 Jul 2026 16:54:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783875283;
+	bh=8xnGzHVEhJzHmaj8zqg2Ec1CH067snxS1T5Ejp1k8Wo=;
+	h=From:To:Cc:Subject:Date;
+	b=YA5LLlgiAG2b39oDhfv1a+J8X+VkVbiTa/cHAGwNCuP2QLWhqnoop/z6ghtSG9Iug
+	 p0tu/I0XAT1DnC8BV1uj0hNiQSTnsBqBrZaIR2cqNUlovy/+IiPEEa1866YGFLjTpo
+	 51e8GWlPN5qoaKG4edMAxodxPgM6j7khzSwQpoHq80WbKxItFMVEpY3JA+bIFM2wJh
+	 bKG0N9r8y7IeQNfwjHTDjZr1x9YsPxjJznBRzOPThBmUfHI4hroqMrIaZECwuMJLKr
+	 em3Wd5vANQku8XZ2qCVcJp6OaXMD3qqxxRJoorDmHZGQ4zhEt4brhTSzbXC3uSrXyc
+	 7etC0DI8d4l6Q==
+From: SJ Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SJ Park <sj@kernel.org>,
+	stable@vger.kernel.org,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH] mm/damon/core: skip aging from repeated aggressive merging
+Date: Sun, 12 Jul 2026 09:54:30 -0700
+Message-ID: <20260712165432.87609-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260712-series-vmap-race-fix-v2-2-ad134cc3a12a@kernel.org>
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-3.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[alien8.de,none];
-	R_DKIM_ALLOW(-0.20)[alien8.de:s=alien8];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[29];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-273503-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-273504-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:akpm@linux-foundation.org,m:sj@kernel.org,m:stable@vger.kernel.org,m:damon@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:linux-mm@kvack.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[sj@kernel.org,stable@vger.kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:ljs@kernel.org,m:akpm@linux-foundation.org,m:surenb@google.com,m:liam@infradead.org,m:vbabka@kernel.org,m:shakeel.butt@linux.dev,m:david@kernel.org,m:rppt@kernel.org,m:mhocko@suse.com,m:urezki@gmail.com,m:toshi.kani@hpe.com,m:dave.hansen@linux.intel.com,m:luto@kernel.org,m:peterz@infradead.org,m:tglx@kernel.org,m:mingo@redhat.com,m:x86@kernel.org,m:hpa@zytor.com,m:kas@kernel.org,m:catalin.marinas@arm.com,m:will@kernel.org,m:dev.jain@arm.com,m:ryan.roberts@arm.com,m:devnexen@gmail.com,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:bpf@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_SENDER(0.00)[bp@alien8.de,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linux-foundation.org,google.com,infradead.org,kernel.org,linux.dev,suse.com,gmail.com,hpe.com,linux.intel.com,redhat.com,zytor.com,arm.com,kvack.org,vger.kernel.org,lists.infradead.org];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bp@alien8.de,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[alien8.de:+];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp,alien8.de:from_mime,alien8.de:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E97B9745632
+X-Rspamd-Queue-Id: 35F0D745640
 
-On Sun, Jul 12, 2026 at 11:42:25AM +0100, Lorenzo Stoakes wrote:
-> This patch resolves the issue by acquiring the mmap read lock on init_mm to
+The number of DAMON regions could temporarily exceed the user-defined
+maximum number of regions limit for corner cases.  For example, users
+could lower the limit via runtime parameters update.  For such a case,
+kdamond_merge_regions() repeats merging regions in the case doubling the
+merge threshold.  The repeated merge operation could update the age of
+regions multiple times.  This corrupts the monitoring results.  Fix the
+issue by asking the merge operation to skip aging for the corner case.
 
-s/This patch resolves/Resolve/
+The user impact is degradation of the monitoring quality.  The impact
+should be mild, since the degradation is only temporal, and it is not
+common to happen in realistic setups.
 
-> provide mutual exclusion against ptdump, which acquires the init_mm write
-> lock.
+The issue was discovered [1,2] by Sashiko.
 
-...
+[1] https://lore.kernel.org/20260621203548.10718-1-sj@kernel.org
+[2] https://lore.kernel.org/20260709145425.96247-1-sj@kernel.org
 
-> We also include cleanup.h in order to use a scoped_guard() to implement
-> this cleanly.
+Fixes: 310d6c15e910 ("mm/damon/core: merge regions aggressively when max_nr_regions is unmet")
+Cc: <stable@vger.kernel.org> # 6.10
+Signed-off-by: SJ Park <sj@kernel.org>
+---
+Changes from RFC
+- RFC: https://lore.kernel.org/20260711171537.75278-1-sj@kernel.org
+- Drop RFC tag.
 
-You don't need to explain that.
+ mm/damon/core.c             | 21 +++++++++++++--------
+ mm/damon/tests/core-kunit.h |  2 +-
+ 2 files changed, 14 insertions(+), 9 deletions(-)
 
-Thx.
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 806a67d02a6e9..6c4215cc809ec 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -3308,7 +3308,7 @@ static unsigned int damon_merge_score(struct damon_region *r, bool last,
+  * sz_limit	size upper limit of each region
+  */
+ static void damon_merge_regions_of(struct damon_target *t, unsigned int thres,
+-		unsigned long sz_limit, struct damon_ctx *ctx)
++		unsigned long sz_limit, struct damon_ctx *ctx, bool count_age)
+ {
+ 	struct damon_region *r, *prev = NULL, *next;
+ 	bool use_probe_hits = damon_has_probe_weights(ctx);
+@@ -3319,12 +3319,14 @@ static void damon_merge_regions_of(struct damon_target *t, unsigned int thres,
+ 		score = damon_merge_score(r, false, ctx, use_probe_hits);
+ 		last_score = damon_merge_score(r, true, ctx, use_probe_hits);
+ 
+-		if (abs_diff(score, last_score) > thres)
+-			r->age = 0;
+-		else if ((score == 0) != (last_score == 0))
+-			r->age = 0;
+-		else
+-			r->age++;
++		if (count_age) {
++			if (abs_diff(score, last_score) > thres)
++				r->age = 0;
++			else if ((score == 0) != (last_score == 0))
++				r->age = 0;
++			else
++				r->age++;
++		}
+ 
+ 		if (!prev)
+ 			goto set_prev_continue;
+@@ -3366,15 +3368,18 @@ static void kdamond_merge_regions(struct damon_ctx *c, unsigned int threshold,
+ 	struct damon_target *t;
+ 	unsigned int nr_regions;
+ 	unsigned int max_thres;
++	bool count_age = true;
+ 
+ 	max_thres = c->attrs.aggr_interval /
+ 		(c->attrs.sample_interval ?  c->attrs.sample_interval : 1);
+ 	do {
+ 		nr_regions = 0;
+ 		damon_for_each_target(t, c) {
+-			damon_merge_regions_of(t, threshold, sz_limit, c);
++			damon_merge_regions_of(t, threshold, sz_limit, c,
++					count_age);
+ 			nr_regions += damon_nr_regions(t);
+ 		}
++		count_age = false;
+ 		threshold = max(1, threshold * 2);
+ 	} while (nr_regions > c->attrs.max_nr_regions &&
+ 			threshold / 2 < max_thres);
+diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
+index 6ad73559dd8ea..68d30648c612e 100644
+--- a/mm/damon/tests/core-kunit.h
++++ b/mm/damon/tests/core-kunit.h
+@@ -257,7 +257,7 @@ static void damon_test_merge_regions_of(struct kunit *test)
+ 		damon_add_region(r, t);
+ 	}
+ 
+-	damon_merge_regions_of(t, 9, 9999, ctx);
++	damon_merge_regions_of(t, 9, 9999, ctx, true);
+ 	/* 0-112, 114-130, 130-156, 156-170, 170-230, 230-10170 */
+ 	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), 6u);
+ 	for (i = 0; i < 6; i++) {
 
+base-commit: 96e4e82548418bcd5b3518d3b4efed1f5631772e
 -- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+2.47.3
 
