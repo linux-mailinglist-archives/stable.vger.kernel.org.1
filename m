@@ -1,191 +1,176 @@
-Return-Path: <stable+bounces-273457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273458-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id cFYHB+8TU2r6WgMAu9opvQ
-	(envelope-from <stable+bounces-273457-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 12 Jul 2026 06:11:27 +0200
+	id 6fRJLKEWU2rGWwMAu9opvQ
+	(envelope-from <stable+bounces-273458-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 12 Jul 2026 06:22:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8C8E743C74
-	for <lists+stable@lfdr.de>; Sun, 12 Jul 2026 06:11:26 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18A70743D34
+	for <lists+stable@lfdr.de>; Sun, 12 Jul 2026 06:22:57 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=el4GwnCV;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273457-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273457-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=realtek.com header.s=dkim header.b="gW+c/fD9";
+	dmarc=pass (policy=none) header.from=realtek.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273458-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-273458-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2EB73300789A
-	for <lists+stable@lfdr.de>; Sun, 12 Jul 2026 04:11:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ACA5A3017269
+	for <lists+stable@lfdr.de>; Sun, 12 Jul 2026 04:22:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8C0536C0D2;
-	Sun, 12 Jul 2026 04:11:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2B2E36C9E5;
+	Sun, 12 Jul 2026 04:22:49 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16460328B71
-	for <stable@vger.kernel.org>; Sun, 12 Jul 2026 04:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6444635A3A9;
+	Sun, 12 Jul 2026 04:22:45 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783829480; cv=none; b=LAGfQboOA6KCkCvXDTVFUo5/hijnEwq/3ghbSTHF8GnQQ5peuGSyJKgajZJAwet4eCSRySYahAeqClByRGjb79j7ibA7ZYC+nQIV/TWv9bGqM1zSdwOYDHnvTQkWRU6RuZFk5VPDOtZW9dwEdmbGtlWZrKTUXEKLJaH3PSXZKc4=
+	t=1783830168; cv=none; b=p7bkrNr+iKFhvVfSCLlMnMChqXjT6Gv1FiihKtiHOQf10ZIHEIBPZjwjt2+r0HqDkGcDvVX6D31GbA0/2j1FdU1Zwr9kEtv1H05GN97TqxFWDc9cvFaTE2xD2A5F+q2y5MTGd9/GpHkUB0UZWgint+owkuyxrnXnNYF8gBl3f14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783829480; c=relaxed/simple;
-	bh=nwZTpXgP8MVi00sG8x1sckv5BNqKE1ZEPgFs58b94wQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=V16qb3InT/EI7JABQOksDKDPdYih2w6SqwFoot2rkr9Dobydef4qkP060T6ll6iyGGCfxf2wgsaalQfEHx4yukSkG9MRQdYyBnJ3E7GCLPX2Widu6SwAhN7BCCz+z1YUXAyvRXgGJowMTGKlCAsRdB2wbuDoSJNY0+Rz70mG0po=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=el4GwnCV; arc=none smtp.client-ip=209.85.214.180
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2ce87c7e3bbso20691805ad.1
-        for <stable@vger.kernel.org>; Sat, 11 Jul 2026 21:11:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783829477; x=1784434277; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=7Ua0X8FikfiEo6q6nozi853UqZXRTepXxqADI3wGhfM=;
-        b=el4GwnCVRUEHzCaTQdqdgvN9cQZkhOL0Xw56f9jRaMh6YqFxJ8IS6kSCtXKA/5/U/e
-         cMOiXvJgxmww6SVVhkalUIBwnrYlEeiZiTyc7vyzSlP9XRWX3GpBdC12lXk1vUSq7gcm
-         K0HOSEeVNX7Ff+hKf4adw/YfbA84QGySugTl2a/0N2jy5izqcKQIroDYyergzOU44KLz
-         u+Z1c2Q4xaH5fKDbi2pB49m3xUYS74Lt5AD4ssuVGXn59Z3rWpqtiPl4n6L++PCiCgaS
-         z8fzMzDBQgSc+RFf4rT7CGFr3JTD16k3uXwhB7DtcMftpT+7vl9b1RCTcZH2igp/x0eI
-         /dQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783829477; x=1784434277;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=7Ua0X8FikfiEo6q6nozi853UqZXRTepXxqADI3wGhfM=;
-        b=mGYBFh/onlhEfZnA6ZNY76nkA+fhyqqsyesLXS72zQwvIu4hYvVZd2DItS0RVZjKy3
-         sIgS+aS6YRQrO+nLbCixdNdbuRSeToveSER4spYDh6SikvV6WPom+vCcGY/N6G+VRRq5
-         sPyTyAwDOU7i5tmPPeF+QGP41zy2SX9ku2mCYX1/V5PDyiD7MskAk8shQVu1sdqxmudO
-         0jQ2XyHGaM2o+aetQYp3IuuU1Yn1CJnU80bPZNzgSI1ev4/vTJjcOV/zM9JqiJUpyh0S
-         xxbF7Iu1pUN8PvfjtQO3xtjpsi4C/2RJkg6t8XH16pZokEXJS33J+wo1KnhRPghZ2dOa
-         Kjhw==
-X-Forwarded-Encrypted: i=1; AHgh+RqNe9Xi6XSJx5MgKClDkX5X52Fafw+hoG2g99ztv/Y8shYRvsIt6z/fVUNHGu8VzvItJiY1izU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyGn7KS5u9bt61FHSQiEWbSzPPFJW+dUHvgthnUsOrEE+i/9ZJd
-	X8+TTn9kCoKV5bKIFeM+GYRpRKbm2EzrGeWN0CYVQATyBCuBSODiVMwP
-X-Gm-Gg: AfdE7cki8IReFRvnmhW81ci1GO18tuVTnfQqddoLrrFvzb1rtPt150NwvOpnHcW3Wv7
-	aNW7GzAig0vhdUT1jpuVJlQbfImwpuaMVs2p5LPhCB3CLfUFXr1EXiH1g1pLchA4ZUweYPnDqL5
-	NgXDE/dE+AInJc5u1J0jH6q26jMnZTZqQpmY20Ss0x+QrliBHfY60CRLF9RWyIAUjYIsyI9uDMR
-	7ihaZpo0DQZAKpErD3jYAwnAD7L2HYcdbWLpCIIWwvUnBsVaZxHSLGeGnvYAe/X3usx9CyH2P7P
-	sC0WHnf966RHeGQsyKzFTANVgpU8ReM/s6BlALrAvU3RFFrgmMa52czAzhON7ZpMYrb2S7mAN7u
-	UrQzauknnVG4yVEU2oVPoDHVMQkvIJWPJ6sRGQ6MIaqwDPgKTQAyHProYam+tAprsWsjf5wFOoK
-	idXF+Ymc86CwQCuiUyFuDGWxs0L887l3h5NPP3yLNIYts=
-X-Received: by 2002:a17:902:d2c8:b0:2c9:e835:ac67 with SMTP id d9443c01a7336-2ce9eacec40mr49101855ad.19.1783829477400;
-        Sat, 11 Jul 2026 21:11:17 -0700 (PDT)
-Received: from ChatreeyT9-N100.localdomain ([122.35.120.240])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ce935d9696sm26358595ad.25.2026.07.11.21.11.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 11 Jul 2026 21:11:16 -0700 (PDT)
-From: teirua <qndkdrnl@gmail.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-staging@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	MinJea Kim <qndkdrnl@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] staging: rtl8723bs: fix inverted HT40 secondary channel offset
-Date: Sun, 12 Jul 2026 13:11:00 +0900
-Message-ID: <20260712041100.11787-1-qndkdrnl@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1783830168; c=relaxed/simple;
+	bh=UpIY7V0pTTlevXHW+Z12acJHmEW7eFT4SMwJiWy74LQ=;
+	h=From:To:CC:Subject:In-Reply-To:References:Message-ID:Date:
+	 MIME-Version:Content-Type; b=W7a4k60gQK9zE/9mpQF8MgZxc8X/TrQwLYFKZGzBPdiVx8VrJTfTiQtxmzWY6a3XbUNUGIdewtXB2k7EF8XsJupID/XtLVurd9FhB9g/uD7AB4dr/lkTG7gQ8yOXyfPiRVEWY50GwvvAUox1FtoBDSbTy+ZpaFefsgPb6ek90RE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=gW+c/fD9; arc=none smtp.client-ip=211.75.126.72
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 66C4MRWU0543991, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1783830148; bh=j+4cgdZH3hb6hZ/5BjzpqEpBgMRkvFPmXCi+xOVSD9s=;
+	h=From:To:CC:Subject:In-Reply-To:References:Message-ID:Date:
+	 MIME-Version:Content-Type;
+	b=gW+c/fD9Qw1+g5YuZOa7GGnyQ8pq+pEo8bT9+mruWuiRnDWZRuqJ+pfbxbw1NJLMP
+	 MFbN3o3m+QuVjyhBFIIQLoDXLLxWXvl4RDqN6e35eU3QGJdMxJK6G+ylSMwcWyvfRU
+	 JmloqN9vWTqpdarwZ3lDLOrLUYfT/5a3eCocNQxqAYuKFXr3mncy3H2QeEHmvQNdy5
+	 Sc+ENgVxcorKURycXILOkAm7sdgXEQxax97UqB+xAuNDWCBShd0ueNNOgUmPmfrRNu
+	 JgNp0HmS8ZFg+yfHlqvYr3CifJMRzW5+GOFB69gClvY4dDsWTzghlFDFYoe3IU6HOb
+	 QZ5QpgWk9dsRw==
+Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 66C4MRWU0543991
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Sun, 12 Jul 2026 12:22:28 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Sun, 12 Jul 2026 12:22:27 +0800
+Received: from RTKEXHMBS05.realtek.com.tw (10.21.1.55) by
+ RTKEXHMBS06.realtek.com.tw (10.21.1.56) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Sun, 12 Jul 2026 12:22:27 +0800
+Received: from [127.0.1.1] (172.21.40.75) by RTKEXHMBS05.realtek.com.tw
+ (10.21.1.55) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17 via Frontend
+ Transport; Sun, 12 Jul 2026 12:22:22 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Fan Wu <fanwu01@zju.edu.cn>, <Jes.Sorensen@gmail.com>
+CC: <kvalo@kernel.org>, <linux-wireless@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>, Fan Wu
+	<fanwu01@zju.edu.cn>
+Subject: Re: [PATCH] wifi: rtl8xxxu: fix use-after-free from rx_urb_wq on stop
+In-Reply-To: <20260630033117.3377-1-fanwu01@zju.edu.cn>
+References: <20260630033117.3377-1-fanwu01@zju.edu.cn>
+Message-ID: <1c64aa87-6c3e-46aa-bbed-eeb909eab914@RTKEXHMBS05.realtek.com.tw>
+Date: Sun, 12 Jul 2026 12:22:22 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
+	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-273458-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,gmail.com];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-273457-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:linux-staging@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:qndkdrnl@gmail.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:fanwu01@zju.edu.cn,m:Jes.Sorensen@gmail.com,m:kvalo@kernel.org,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:JesSorensen@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[pkshih@realtek.com,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[qndkdrnl@gmail.com,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_TO(0.00)[zju.edu.cn,gmail.com];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[realtek.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[qndkdrnl@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[zju.edu.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,RTKEXHMBS05.realtek.com.tw:mid,realtek.com:from_mime,realtek.com:dkim];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A8C8E743C74
+X-Rspamd-Queue-Id: 18A70743D34
 
-From: MinJea Kim <qndkdrnl@gmail.com>
+Fan Wu <fanwu01@zju.edu.cn> wrote:
 
-rtw_get_chan_type() maps the driver's channel offset to nl80211 channel
-types the wrong way around.
+> rtl8xxxu arms rx_urb_wq from the RX completion path:
+> rtl8xxxu_rx_complete() hands the URB to rtl8xxxu_queue_rx_urb(), which
+> queues it on rx_urb_pending_list and, once the list grows past
+> RTL8XXXU_RX_URB_PENDING_WATER, schedules rx_urb_wq.  The worker
+> rtl8xxxu_rx_urb_work() drains rx_urb_pending_list, recovers priv through
+> container_of, and resubmits each URB through rtl8xxxu_submit_rx_urb(),
+> which anchors it on rx_anchor and dereferences priv->udev.
+> 
+> rtl8xxxu_stop() cancels the sibling work items (c2hcmd_work, ra_watchdog,
+> update_beacon_work) but never cancels rx_urb_wq, so a worker armed during
+> the last burst of RX traffic can run rtl8xxxu_rx_urb_work() after
+> rtl8xxxu_disconnect() has called ieee80211_free_hw(), which frees priv,
+> producing a use-after-free.  The window opens under active RX traffic
+> (pending count above the watermark) followed by a disconnect.
+> 
+> There are two teardown races to close:
+> 
+>   * rtl8xxxu_queue_rx_urb() decided whether to enqueue under rx_urb_lock
+>     but called schedule_work() after dropping the lock.  A completion
+>     that observed shutdown == false and released the lock could then call
+>     schedule_work() after rtl8xxxu_stop() had set shutdown and
+>     cancel_work_sync() had already returned, arming the worker to run
+>     after the teardown.  Move schedule_work() under the same !shutdown
+>     branch so the arming decision is atomic with the shutdown check.
+> 
+>   * rtl8xxxu_rx_urb_work() anchors every URB it drained back onto
+>     rx_anchor through rtl8xxxu_submit_rx_urb().  A worker still running
+>     when usb_kill_anchored_urbs(&priv->rx_anchor) returned would submit a
+>     URB that escaped the kill.  In rtl8xxxu_stop(), call
+>     cancel_work_sync(&priv->rx_urb_wq) before the kill so the worker is
+>     drained first.
+> 
+> After priv->shutdown is set under rx_urb_lock, completions can no longer
+> queue rx_urb_wq. cancel_work_sync() then drains the last queued or running
+> worker, and the following usb_kill_anchored_urbs() kills the URBs it may
+> have submitted.
+> 
+> rtl8xxxu_disconnect() is covered because ieee80211_unregister_hw()
+> guarantees .stop() runs for a live interface before ieee80211_free_hw()
+> frees priv.  The probe error path needs no cancel: rx_urb_wq is
+> INIT_WORK()'d there but cannot have been scheduled, since no URB is
+> submitted before ieee80211_register_hw() succeeds.
+> 
+> This bug was found by static analysis.
+> 
+> Fixes: 26f1fad29ad9 ("New driver: rtl8xxxu (mac80211)")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Fan Wu <fanwu01@zju.edu.cn>
 
-In this driver HAL_PRIME_CHNL_OFFSET_LOWER means the primary channel is
-the lower 20 MHz half of the 40 MHz pair, i.e. the secondary channel is
-above the primary one: rtw_get_center_ch() computes the center channel
-as "channel + 2" for OFFSET_LOWER, and bwmode_update_check() sets
-OFFSET_LOWER when the AP's HT operation IE announces SCA (secondary
-channel above). In nl80211 terms that is NL80211_CHAN_HT40PLUS, not
-HT40MINUS.
+1 patch(es) applied to rtw-next branch of rtw.git, thanks.
 
-Because of the inversion, cfg80211_rtw_get_channel() reports an HT40+
-association as HT40-. For an HT40+ AP on a low channel (e.g. channel 3)
-the resulting chandef spans below the 2.4 GHz band edge and is invalid,
-so the regulatory core tears the connection down 60 seconds
-(REG_ENFORCE_GRACE_MS) after the AP's country IE triggers a regdomain
-change: reg_check_chans_work() considers the reported chandef unusable
-and calls cfg80211_leave(). The supplicant then reconnects, the country
-IE changes the regdomain again, and the cycle repeats, causing a
-disconnect/reconnect loop every ~65 seconds for as long as the link is
-up.
+6c080026ecc1 wifi: rtl8xxxu: fix use-after-free from rx_urb_wq on stop
 
-Observed on a TECLAST X80 Power tablet (RTL8723BS) associated to an
-HT40+ AP on channel 3 with a KR country IE; a kprobe trace showed
-cfg80211_disconnect() being invoked from reg_check_chans_work(). With
-the mapping fixed, "iw dev wlan0 info" reports the correct
-"width: 40 MHz, center1: 2432 MHz" and the periodic disconnects stop.
-
-Fixes: 5402cc178c5d ("staging: rtl8723bs: add get_channel cfg80211 implementation")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude-Code:claude-fable-5 bpftrace
-Signed-off-by: MinJea Kim <qndkdrnl@gmail.com>
 ---
- drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c b/drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c
-index 1484336..e472687 100644
---- a/drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c
-+++ b/drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c
-@@ -1949,7 +1949,12 @@ static u8 rtw_get_chan_type(struct adapter *adapter)
- 		else
- 			return NL80211_CHAN_NO_HT;
- 	case CHANNEL_WIDTH_40:
--		if (mlme_ext->cur_ch_offset == HAL_PRIME_CHNL_OFFSET_UPPER)
-+		/*
-+		 * HAL_PRIME_CHNL_OFFSET_LOWER means the primary channel is
-+		 * the lower 20 MHz half, i.e. the secondary channel sits
-+		 * above it (SCA), which is NL80211_CHAN_HT40PLUS.
-+		 */
-+		if (mlme_ext->cur_ch_offset == HAL_PRIME_CHNL_OFFSET_LOWER)
- 			return NL80211_CHAN_HT40PLUS;
- 		else
- 			return NL80211_CHAN_HT40MINUS;
--- 
-2.43.0
+https://github.com/pkshih/rtw.git
 
 
