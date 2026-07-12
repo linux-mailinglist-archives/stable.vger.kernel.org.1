@@ -1,63 +1,70 @@
-Return-Path: <stable+bounces-273472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273473-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id gnMSOrtXU2rnZwMAu9opvQ
-	(envelope-from <stable+bounces-273472-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 12 Jul 2026 11:00:43 +0200
+	id pln2NxNeU2q8aAMAu9opvQ
+	(envelope-from <stable+bounces-273473-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 12 Jul 2026 11:27:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E8E974437C
-	for <lists+stable@lfdr.de>; Sun, 12 Jul 2026 11:00:43 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62ADA7443FD
+	for <lists+stable@lfdr.de>; Sun, 12 Jul 2026 11:27:47 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nAPMebMe;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ka37fTyx;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273472-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273472-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273473-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-273473-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 526323012CD4
-	for <lists+stable@lfdr.de>; Sun, 12 Jul 2026 09:00:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AA6923005598
+	for <lists+stable@lfdr.de>; Sun, 12 Jul 2026 09:27:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CE59374A15;
-	Sun, 12 Jul 2026 09:00:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18CE5369D75;
+	Sun, 12 Jul 2026 09:27:45 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07439846A;
-	Sun, 12 Jul 2026 09:00:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E895F3D994;
+	Sun, 12 Jul 2026 09:27:43 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783846841; cv=none; b=hsvC53W98/vEt7li/UXhgz9gB1f1iA9H2hOnYgw72Mv2Vn0P63Xq0rEhJ46tYqNqt1XftFHvc0l4OBDIlUkHKEe42sPuYglL743XRzseXcPXByf7Ktmsfg7AHbVpJG2yW/eUHNVSkxgg4gf/fVTBUWvZtYqeqVT9HXWPaqNrYyQ=
+	t=1783848464; cv=none; b=A36y7Vru6M/uTdVFcOL9Z8PCGLwrxX/pb0t4U5CSTmTxRJKcJzjolyb6YRWOS9Nqrb+ZWVpM/KVBO3AZd6y9Ox0du1Ir218oV/tyPtoz5BDj3TU/Bs7C7TSHZQXnYnXP2LIJBXKogAoC/mdzNY9ZpeD1avLnqBNt0iO35LE3a0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783846841; c=relaxed/simple;
-	bh=cdPgc+CStkGbGY41juRPK0ZU1hbixKLGDPNjftHaFR4=;
+	s=arc-20240116; t=1783848464; c=relaxed/simple;
+	bh=eleGJpEnYFxDxqONcdE0kQSQcyi7bZFQeN5aLXAYq54=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PQiB9eL2aWay6qrjb5d4htSom+kp7cqqzgkN/VIxkjn6mLwRp5M+FVrSFVcHblrnGSyU2a3btC8PQODhFsGB5u485piZ73MoE92Y/Rk4sHza/IEVFVYFaqu/NqFE+WEzvS83MR7te2HpleM0DrC4lOGspUO3B/K0Ki0o35juGlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nAPMebMe; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC2CA1F000E9;
-	Sun, 12 Jul 2026 09:00:38 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=p+DM3CX6orBIYUubO2dPZ3El56Ingia0BMMyE6YGzXFl9y30FPKjfcgKoZeNXgnZnugsW5ROceA6wk19lRnznBy3fxVnacI7WN320qh0HUtyoWUoUcHnUP4xVUaC4BAmCYI8Db7uRmUsyvf+mU6gp22Dy6FnRL1dfrogW4C2z+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ka37fTyx; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF8961F000E9;
+	Sun, 12 Jul 2026 09:27:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783846839;
-	bh=laRfzb8kU7fOWYgGWh/o1G1QdY4ESAgNuOu32OH6bV4=;
+	s=k20260515; t=1783848463;
+	bh=eleGJpEnYFxDxqONcdE0kQSQcyi7bZFQeN5aLXAYq54=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=nAPMebMeML1PN7C7TbTUk9ko4YAE+UNJS2KBSFu2T0JgLlFJh7ays72eL0g3BwBZb
-	 dNKBSs+UsDSDfxWK+9BTtaAyBUUHNP8J39IOw1AxfuvpLsF+SMUv3wzpViCWxyAShm
-	 dv8JMVkdQWNA/753WYBtLsOqQt6lU57B8+D6Vm+bDlEJv2oMTN1KBIaolTCdigzP2J
-	 XCsATzUl0S6DshbLpc43e1wBx7tvdcmJ/6dGD2aQXvyh9DQLrj0MZIsD60jypXbvaE
-	 OKosdHX+dXl4ZfUiwfeX9T9Shx1H6aOJs2ObIQNrFjf7XIVzE04+ZU3J/Hteb0Z8zu
-	 Fao3Y2TDeSBYA==
-Date: Sun, 12 Jul 2026 12:00:34 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: "yanjun.zhu" <yanjun.zhu@linux.dev>
-Cc: Ibrahim Hashimov <security@auditcode.ai>, zyjzyj2000@gmail.com,
-	jgg@ziepe.ca, linux-rdma@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] RDMA/rxe: validate num_sge/cur_sge before indexing
- wqe->dma.sge[]
-Message-ID: <20260712090034.GE33197@unreal>
-References: <20260708224534.1206-1-security@auditcode.ai>
- <20260709072656.9074-1-security@auditcode.ai>
- <3f5b2bfb-9ca0-4ece-aae6-177e7c845e08@linux.dev>
+	b=ka37fTyx+JNPlw83sQi68vWVt8JMjJt2tNkTNPcKRGzmTHPEEqiJoChin9qpQaxdN
+	 /rYCH6H7Z1cI4GEPWa3N05fu+XaZVbqXO0bTtAfzkrQtEVOet2dZu2zq1Dsv9vo7M3
+	 g4W0NgQ6hGAIE3IRw3DjY28ZxEL+BjdyGjpEfnfVd5xtn7ieaanNN4Hgs9k2lh6++i
+	 GoP0a+nUeqhZs8X1j9ldvGavcQcytsjw050iyvWcXY2kpcn6/If3pfAfmqOd7Ry0N3
+	 pwIaCPMKfn8lnm7IIw/KCYQpv0rSDRJuPucmqY+wFy7e4NEG7c01WITL05nPeNZepM
+	 3SCtswq0L8OpQ==
+Date: Sun, 12 Jul 2026 10:27:28 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Dev Jain <dev.jain@arm.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Suren Baghdasaryan <surenb@google.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+	Uladzislau Rezki <urezki@gmail.com>, Toshi Kani <toshi.kani@hpe.com>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	David Carlier <devnexen@gmail.com>, Ryan Roberts <ryan.roberts@arm.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org, 
+	syzbot+fd95a72470f5a44e464c@syzkaller.appspotmail.com
+Subject: Re: [PATCH 1/2] mm/vmalloc: acquire init_mm read lock on huge vmap
+ promotion
+Message-ID: <alNcMpAtslog2wPW@lucifer>
+References: <20260710-series-vmap-race-fix-v1-0-5b3794c113fe@kernel.org>
+ <20260710-series-vmap-race-fix-v1-1-5b3794c113fe@kernel.org>
+ <d47ac961-4767-4ce4-9c75-f281beb24e42@arm.com>
+ <2026071252-sweep-quirk-a068@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,198 +73,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <3f5b2bfb-9ca0-4ece-aae6-177e7c845e08@linux.dev>
+In-Reply-To: <2026071252-sweep-quirk-a068@gregkh>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.66 / 15.00];
+X-Spamd-Result: default: False [-3.16 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MID_RHS_NOT_FQDN(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-273472-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:dev.jain@arm.com,m:akpm@linux-foundation.org,m:surenb@google.com,m:liam@infradead.org,m:vbabka@kernel.org,m:shakeel.butt@linux.dev,m:david@kernel.org,m:rppt@kernel.org,m:mhocko@suse.com,m:urezki@gmail.com,m:toshi.kani@hpe.com,m:catalin.marinas@arm.com,m:will@kernel.org,m:devnexen@gmail.com,m:ryan.roberts@arm.com,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:stable@vger.kernel.org,m:syzbot+fd95a72470f5a44e464c@syzkaller.appspotmail.com,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[auditcode.ai,gmail.com,ziepe.ca,vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:yanjun.zhu@linux.dev,m:security@auditcode.ai,m:zyjzyj2000@gmail.com,m:jgg@ziepe.ca,m:linux-rdma@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[21];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[leon@kernel.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-273473-lists,stable=lfdr.de];
+	FORGED_SENDER(0.00)[ljs@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[leon@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ljs@kernel.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[arm.com,linux-foundation.org,google.com,infradead.org,kernel.org,linux.dev,suse.com,gmail.com,hpe.com,kvack.org,vger.kernel.org,lists.infradead.org,syzkaller.appspotmail.com];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,unreal:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.dev:email]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[stable,fd95a72470f5a44e464c];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,lucifer:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4E8E974437C
+X-Rspamd-Queue-Id: 62ADA7443FD
 
-On Thu, Jul 09, 2026 at 11:37:08AM -0700, yanjun.zhu wrote:
-> On 7/9/26 12:26 AM, Ibrahim Hashimov wrote:
-> > A user QP's send queue (qp->sq.queue) is a shared ring the userspace
-> > application writes to directly via mmap (vmalloc_user(), see
-> > rxe_queue.c). For such a QP, rxe_post_send() takes the qp->is_user
-> > branch and only schedules the requester task -- it never validates or
-> > copies the posted WQE:
-> > 
-> > 	drivers/infiniband/sw/rxe/rxe_verbs.c:
-> > 		if (qp->is_user) {
-> > 			rxe_sched_task(&qp->send_task);
-> > 			...
-> > 		}
-> > 
-> > The requester then consumes the WQE in place straight out of that
-> > mmap'd ring:
-> > 
-> > 	rxe_req.c:	wqe = req_next_wqe(qp);
-> > 	rxe_req.c:	err = copy_data(qp->pd, 0, &wqe->dma,
-> > 					payload_addr(pkt), payload,
-> > 					RXE_FROM_MR_OBJ);
-> > 
-> > copy_data() indexes the per-WQE sge array with the attacker-controlled
-> > cur_sge field and dereferences it (once there is payload to copy):
-> > 
-> > 	rxe_mr.c:	struct rxe_sge *sge = &dma->sge[dma->cur_sge];
-> > 	rxe_mr.c:	...
-> > 	rxe_mr.c:	if (sge->length && (offset < sge->length)) {
-> > 
-> > dma->sge[] is a flex array whose real backing storage is exactly
-> > qp->sq.max_sge entries per WQE slot (see rxe_qp.c, wqe_size computed
-> > from max_sge at QP create time). Since a user QP's WQE bytes are
-> > entirely attacker-supplied, both wqe->dma.num_sge and wqe->dma.cur_sge
-> > can be set to arbitrary values independent of each other and of
-> > max_sge. Only the *kernel*-QP post path bounds num_sge:
-> > 
-> > 	rxe_verbs.c: validate_send_wr()
-> > 		if (num_sge > sq->max_sge) {
-> > 			rxe_err_qp(qp, "num_sge > max_sge\n");
-> > 
-> > but that function is only reachable from rxe_post_one_send() for
-> > kernel-owned QPs; it is never consulted for a user QP's raw WQE.
-> > 
-> > The sibling receive path already has the equivalent guard, with the
-> > literal comment documenting exactly why it is required:
-> > 
-> > 	rxe_resp.c: get_srq_wqe()
-> > 		/* don't trust user space data */
-> > 		if (unlikely(wqe->dma.num_sge > srq->rq.max_sge)) {
-> > 			...
-> > 			rxe_dbg_qp(qp, "invalid num_sge in SRQ entry\n");
-> > 			return RESPST_ERR_MALFORMED_WQE;
-> > 		}
-> > 
-> > The send/requester path has no analogous check, so a local,
-> > unprivileged user who can open /dev/infiniband/uverbs* and create a
-> > user QP on a soft-RoCE (rxe) link can hand-craft a WQE in the shared
-> > send queue with an out-of-range wqe->dma.cur_sge (or an oversized
-> > wqe->dma.num_sge) and ring the send doorbell. rxe_requester() then
-> > calls copy_data(), which dereferences &dma->sge[cur_sge] out of the
-> > bounds of the per-WQE sge array -- a vmalloc out-of-bounds *read*
-> > (confirmed via KASAN: "KASAN: vmalloc-out-of-bounds in copy_data"),
-> > reliably panicking the kernel (local DoS). sge->addr itself is still
-> > bounds-checked later by lookup_mr()/rxe_mr_copy(), so the primitive is
-> > an OOB read of sge metadata, not an arbitrary read/write primitive.
-> > 
-> > Fix this the same way get_srq_wqe() already does for SRQ entries:
-> > bound the fields pulled from the (possibly user-mapped) send queue
-> > entry before they are used to index wqe->dma.sge[], right where the
-> > requester fetches the next WQE off the ring in rxe_requester(). num_sge
-> > is capped at qp->sq.max_sge (matching the sibling SRQ check and the
-> > kernel-QP validate_send_wr() check). cur_sge is bounded only when the
-> > WQE actually carries payload (wqe->dma.resid): copy_data() dereferences
-> > dma->sge[cur_sge] only after its own length == 0 early return, so a
-> > zero-payload WQE never touches the sge array and must not be rejected
-> > -- notably that is the only kind of WQE a max_sge == 0 QP can post
-> > (qp->sq.max_sge is itself derived from user-supplied max_send_sge /
-> > max_inline_data and may be 0). Gating on resid rather than num_sge is
-> > deliberate: payload is wqe->dma.resid, which is independent of num_sge,
-> > so a WQE with num_sge == 0 but a large resid and an out-of-range
-> > cur_sge would still reach the sge dereference.
-> > 
-> > This is a long-standing bug in the rxe (soft-RoCE) driver: the
-> > qp->is_user bypass in rxe_post_send() and the unbounded
-> > &dma->sge[dma->cur_sge] indexing in copy_data() have been present
-> > since the driver was introduced.
-> > 
-> > Runtime-verified on a v6.19 KASAN (CONFIG_KASAN_VMALLOC=y) stand: a
-> > reproducer that posts a user QP send WQE with an out-of-range cur_sge
-> > reliably tripped "KASAN: vmalloc-out-of-bounds in copy_data" (an
-> > out-of-bounds read) before this patch, and no longer triggers that
-> > report with the patch applied.
-> > 
-> > Fixes: 8700e3e7c485 ("Soft RoCE driver")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Ibrahim Hashimov <security@auditcode.ai>
-> > Assisted-by: AuditCode-AI:2026.07
-> > ---
-> > v2: address Zhu Yanjun's review of v1
-> >      (https://lore.kernel.org/linux-rdma/20260708224534.1206-1-security@auditcode.ai/):
-> >      qp->sq.max_sge can legitimately be 0, and v1's unconditional
-> >      "cur_sge >= max_sge" check then wrongly rejected a valid zero-payload
-> >      WQE. Gate the cur_sge bound on wqe->dma.resid instead (copy_data()
-> >      dereferences dma->sge[] only when there is payload), so zero-payload
-> >      WQEs -- the only kind a max_sge == 0 QP can post -- are accepted while
-> >      the out-of-range cur_sge OOB is still rejected. Commit message fixed.
-> 
-> Thanks a lot. I am fine with this. Please Leon and Jason comment on this.
+On Sun, Jul 12, 2026 at 10:01:37AM +0200, Greg KH wrote:
+>
+> And scoped guard has been backported to many of the LTS branches
+> already.
 
-I marked all patches from Ibrahim as "changes requested".
+That's really handy :)
 
-Thanks
+>
+> thanks,
+>
+> greg k-h
 
-> 
-> Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-> 
-> Zhu Yanjun
-> 
-> > 
-> >   drivers/infiniband/sw/rxe/rxe_req.c | 22 ++++++++++++++++++++++
-> >   1 file changed, 22 insertions(+)
-> > 
-> > diff --git a/drivers/infiniband/sw/rxe/rxe_req.c b/drivers/infiniband/sw/rxe/rxe_req.c
-> > index 12d03f390b09..363c56a1edbb 100644
-> > --- a/drivers/infiniband/sw/rxe/rxe_req.c
-> > +++ b/drivers/infiniband/sw/rxe/rxe_req.c
-> > @@ -701,6 +701,28 @@ int rxe_requester(struct rxe_qp *qp)
-> >   	if (unlikely(!wqe))
-> >   		goto exit;
-> > +	/*
-> > +	 * Don't trust user space data: for a user QP, qp->sq.queue is a
-> > +	 * raw ring the application writes directly, so this WQE's num_sge
-> > +	 * and cur_sge are attacker-controlled. copy_data() dereferences
-> > +	 * dma->sge[cur_sge] without bounding the initial cur_sge against
-> > +	 * the per-WQE sge array, whose capacity is qp->sq.max_sge (the
-> > +	 * loop there only bounds subsequent increments, against num_sge).
-> > +	 * Bound num_sge to that capacity, the way get_srq_wqe() and
-> > +	 * validate_send_wr() already do, and bound cur_sge only when the
-> > +	 * WQE actually carries payload (dma.resid): copy_data() returns
-> > +	 * early on a zero-length copy before it ever touches dma->sge[],
-> > +	 * so a zero-payload WQE -- the only valid WQE on a max_sge == 0
-> > +	 * QP -- must not be rejected here.
-> > +	 */
-> > +	if (unlikely(wqe->dma.num_sge > qp->sq.max_sge ||
-> > +		     (wqe->dma.resid &&
-> > +		      wqe->dma.cur_sge >= qp->sq.max_sge))) {
-> > +		rxe_dbg_qp(qp, "invalid num_sge/cur_sge in send wqe\n");
-> > +		wqe->status = IB_WC_LOC_QP_OP_ERR;
-> > +		goto err;
-> > +	}
-> > +
-> >   	if (rxe_wqe_is_fenced(qp, wqe)) {
-> >   		qp->req.wait_fence = 1;
-> >   		goto exit;
-> 
+Cheers, Lorenzo
 
