@@ -1,67 +1,63 @@
-Return-Path: <stable+bounces-273470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273471-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id +pz5AOFWU2rIZwMAu9opvQ
-	(envelope-from <stable+bounces-273470-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 12 Jul 2026 10:57:05 +0200
+	id mVnIF1pXU2rWZwMAu9opvQ
+	(envelope-from <stable+bounces-273471-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 12 Jul 2026 10:59:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44CA774435B
-	for <lists+stable@lfdr.de>; Sun, 12 Jul 2026 10:57:04 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96D9074436C
+	for <lists+stable@lfdr.de>; Sun, 12 Jul 2026 10:59:05 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G8NirJNo;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lL1lbCY1;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273470-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273470-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273471-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-273471-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 96A6A301015B
-	for <lists+stable@lfdr.de>; Sun, 12 Jul 2026 08:56:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0A059301015C
+	for <lists+stable@lfdr.de>; Sun, 12 Jul 2026 08:59:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E56E23988EB;
-	Sun, 12 Jul 2026 08:56:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 089EE39656D;
+	Sun, 12 Jul 2026 08:59:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F90921CA13;
-	Sun, 12 Jul 2026 08:56:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DB8823BCF7;
+	Sun, 12 Jul 2026 08:58:59 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783846617; cv=none; b=OBXVwcXKkP5DerkduDnJ2UEhSIFL1TNrUU/KMPbqPllsgAgUc+xHSnQvphbB+fmMSf9Xi5L/OLTTTWCaSqVSeYASR/0/alzINZe5AjwM1NBAjO+Bx1lnC/cjM0jJ4MYQbwoQi+XbT9slLrFXKYfxztqhez466VFlukGXHslRzdA=
+	t=1783846740; cv=none; b=WWcdwefUVs4ZyWakpkVzebNTR0gMr/CkZXFTZriPPAEoKYYIP9JEDrgjuMqFSKURWI0DaXrj9x7BnezVAiZsBcWFMgHGeUivBH/RQ1dbcE1vLPy0UqVvkrYMhvD/ugBLtPO/7EfU7ThxW9wTNo+GoFBKQexasd8oNFA3Ez3GuXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783846617; c=relaxed/simple;
-	bh=S9zZzrtXVx8sDeydTwaAPoD0ptxeVLh3tmyBEnIlufY=;
+	s=arc-20240116; t=1783846740; c=relaxed/simple;
+	bh=uRLQLRyxwtHE5O1pVBAZbAghFo7A6NH9F7/p5s8u9B0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jAn2W8GH982rWyxYEolgRVLma6piNaKbKepe9nL+23ZyPngsvmBzlkNslxearXixNp2OC/KlNLNzE7VJ1HTpkKhhRzts9pEzgd/1SdHJeA++b+Zf4T3iiTXEBnrwtOq1lAjeEzGIyB1Ac5sAyNhj8STrgqu24NwKJ/lrAWS40+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G8NirJNo; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D902B1F000E9;
-	Sun, 12 Jul 2026 08:56:51 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=VSQAPS/SKLn3rHLl/9EBLY25F9qGUrnGypeIdTTLNjR1g4kV+CHSB7i+/87M+dpVw9UJ7EVhE/YePpE3ksbbc0Ksjo+B3MeqFOw2eBFkuS5F8KIFxt0CXNL8vX/PS0QsYW5pAX59p0VwDHBq32Fwbv8Vy1/167uOU7hgNORmNgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lL1lbCY1; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88DEC1F000E9;
+	Sun, 12 Jul 2026 08:58:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783846616;
-	bh=w1QX3hTGyK7nmH+TWYo3ib3paeMzWZv8UTRh9r0nU6A=;
+	s=k20260515; t=1783846739;
+	bh=J64ehip8Tb1bFN8XDylGiqy4Rg9r8gPvbRiDoeEVIVA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=G8NirJNogPgfVQStzR93ILsQkLo2BuDodADXa7j2U2HKGcUuBSxHAB/1xQ+C4pNTA
-	 tFEwuEv4Q1XThXD2hfBkx8dxi/kSJCSJgfW2xdKsng/Glkv5jgvOOpNhtEky7rU/RQ
-	 Qyk1xWkUZA0v4Tjq2VGnVnOXyJ6949OgkXyNKWy5Qa0/y7HjI0v+H5l6qdabltTH9J
-	 wYDS2P0HwwuRTqTMgjRTuCVahT40r/OGHgiJympxHvzIQeSPvCB4anE5PgHVcHSV8h
-	 QzDfHUW1JHXMtkgYRtrD6a8AzCkEl7KqptGR6Q5EAvXKyucQvMHgmGY+zYhCVRxqss
-	 9Uao4jecSE1Nw==
-Date: Sun, 12 Jul 2026 09:56:41 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>, 
-	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	Kiryl Shutsemau <kas@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Carlier <devnexen@gmail.com>, Vlastimil Babka <vbabka@kernel.org>, 
-	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] x86/mm/pat: acquire mmap lock on page table free to
- avoid ptdump UAF
-Message-ID: <alNWRKkOTIwJx-x7@lucifer>
-References: <20260710-fix-cpa-ptdump-race-v1-1-d898699a7417@kernel.org>
- <alIVXHrcjaHhaFQo@kernel.org>
+	b=lL1lbCY1I8kLeRQDlHoC50SDVImNz/MPH+BaENVBc8RswfONoeLeLpPoMgo5pJ4+N
+	 7af8tGB3FPJiYrfT6ounX2pYSoiaFRpOLmTWiFylsTpBZ3zW5rLdXdX2FWkLf1gQON
+	 6T8K6ED+AgwpdfqQllNeU+EZVr/Aty06WR3ZVdu7M+EIAkOXYOvLiyhU2ilMKL83Z2
+	 gjLCf+TKTf7P6s9CwlAorB69U208V3myOy5DmBoawQoaepOYp3SxkoP0Ekg2S81VKF
+	 x6g2lvQ+tOybB4uMorkyEjAAHJq+N8O2Jc5ecgun2Utpa0IxZPO0e9FFaDxy9RiaYE
+	 gNefQ2Sx/b0hA==
+Date: Sun, 12 Jul 2026 11:58:55 +0300
+From: Leon Romanovsky <leon@kernel.org>
+To: "yanjun.zhu" <yanjun.zhu@linux.dev>
+Cc: Ibrahim Hashimov <security@auditcode.ai>, zyjzyj2000@gmail.com,
+	jgg@ziepe.ca, linux-rdma@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] RDMA/rxe: fix responder UAF on
+ IB_QP_MAX_DEST_RD_ATOMIC modify_qp
+Message-ID: <20260712085855.GD33197@unreal>
+References: <20260708224550.1281-1-security@auditcode.ai>
+ <20260709072651.9040-1-security@auditcode.ai>
+ <821c7993-b99d-42eb-be3f-0c2b9ac33340@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,7 +66,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <alIVXHrcjaHhaFQo@kernel.org>
+In-Reply-To: <821c7993-b99d-42eb-be3f-0c2b9ac33340@linux.dev>
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-4.66 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
@@ -78,108 +74,176 @@ X-Spamd-Result: default: False [-4.66 / 15.00];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:rppt@kernel.org,m:dave.hansen@linux.intel.com,m:luto@kernel.org,m:peterz@infradead.org,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:x86@kernel.org,m:hpa@zytor.com,m:kas@kernel.org,m:akpm@linux-foundation.org,m:devnexen@gmail.com,m:vbabka@kernel.org,m:david@kernel.org,m:liam@infradead.org,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:bpf@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-273471-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	FORGED_SENDER(0.00)[ljs@kernel.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[auditcode.ai,gmail.com,ziepe.ca,vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:yanjun.zhu@linux.dev,m:security@auditcode.ai,m:zyjzyj2000@gmail.com,m:jgg@ziepe.ca,m:linux-rdma@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-273470-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_SENDER(0.00)[leon@kernel.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ljs@kernel.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linux.intel.com,kernel.org,infradead.org,redhat.com,alien8.de,zytor.com,linux-foundation.org,gmail.com,kvack.org,vger.kernel.org];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[leon@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	TAGGED_RCPT(0.00)[stable];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lucifer:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:email,unreal:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 44CA774435B
+X-Rspamd-Queue-Id: 96D9074436C
 
-On Sat, Jul 11, 2026 at 01:05:16PM +0300, Mike Rapoport wrote:
-> On Fri, Jul 10, 2026 at 12:56:40PM +0100, Lorenzo Stoakes wrote:
-> > x86 implements page attribute modification using its Change Page
-> > Attributes (CPA) mechanism.
-> >
-> > This tracks properties of ranges such as cache mode through x86 page
-> > attributes, and as part of that logic manipulates kernel page tables.
-> >
-> > Since commit 41d88484c71c ("x86/mm/pat: restore large ROX pages after
-> > fragmentation") ranges of kernel page table entries can be collapsed into
-> > huge page table entries as part of this logic.
-> >
-> > As part of this collapse, it frees the page tables which the collapsed
-> > entries previously pointed to, and it does so without any relevant locks
-> > being held to preclude concurrent kernel page table walkers.
-> >
-> > The only way this code can be reached is if CPA_COLLAPSE is specified, and
-> > this is only set in set_memory_rox() via:
-> >
-> > set_memory_rox()
-> > -> change_page_attr_set_clr()
-> > -> cpa_flush()
-> > -> cpa_collapse_large_pages()
-> >
-> > Notable users of this are execmem and bpf when manipulating executable
-> > mappings.
-> >
-> > However, this is problematic for ptdump, as it walks ranges it does not own
-> > and thus runs the risk of a use-after-free on page tables freed underneath
-> > it.
-> >
-> > This patch resolves the issue by acquiring the mmap read lock on init_mm to
-> > provide mutual exclusion against ptdump, which acquires the init_mm write
-> > lock.
-> >
-> > It is safe to acquire a sleeping lock as all the callers invoke
-> > set_memory_rox() from process context and in any case,
-> > change_page_attr_set_clr() calls vm_unmap_alias() which ultimately takes a
-> > mutex, disallowing atomic context here.
-> >
-> > We also include cleanup.h in order to use a scoped_guard() to implement
-> > this cleanly.
->
-> This is a part of another patch, isn't it?
-
-Yeah, as discussed off-list, I think the easiest way now is for me to resend the
-whole thing as a 4 patch series.
-
-I was avoiding this, as it makes the stable stuff tricky and means we end up
-with a series with different Fixes tags and some stuff requiring ordering
-dependencies and some not, but hopefully Andrew will be forgiving :)
-
-And likely I'll just handle the stable stuff manually, ultimately.
-
->
-> > Fixes: 41d88484c71c ("x86/mm/pat: restore large ROX pages after fragmentation")
+On Thu, Jul 09, 2026 at 11:24:32AM -0700, yanjun.zhu wrote:
+> On 7/9/26 12:26 AM, Ibrahim Hashimov wrote:
+> > rxe_qp_from_attr()'s IB_QP_MAX_DEST_RD_ATOMIC branch frees and
+> > reallocates qp->resp.resources[] (the rd_atomic resource array used by
+> > the responder to track in-flight RDMA READ/ATOMIC/FLUSH requests)
+> > completely outside of the IB_QP_STATE handling above it. Unlike every
+> > other place that tears this array down -- rxe_qp_reset(), reached only
+> > under IB_QP_STATE, always calls rxe_disable_task(&qp->recv_task) /
+> > rxe_disable_task(&qp->send_task) to drain the responder and requester
+> > tasks before touching per-QP state, then re-enables them -- this branch
+> > runs with the responder task (rxe_receiver(), scheduled as recv_task on
+> > the rxe_wq workqueue) fully live and unlocked. A userspace modify_qp()
+> > that sets only IB_QP_MAX_DEST_RD_ATOMIC (no state change, so
+> > __qp_chk_state()/ib_modify_qp_is_ok() never runs and qp->state_lock is
+> > never taken here) can therefore race the responder in two ways:
+> > 
+> >   1. free_rd_atomic_resources() calls kfree(qp->resp.resources) and
+> >      alloc_rd_atomic_resources() kzalloc_objs()'s a new array while
+> >      rxe_prepare_res()/find_resource() in rxe_resp.c are concurrently
+> >      walking &qp->resp.resources[i] with no lock held -- a straight
+> >      free-vs-read race on the array itself.
+> > 
+> >   2. free_rd_atomic_resources() only NULLs qp->resp.resources; it never
+> >      clears qp->resp.res, the raw pointer *into* that array that
+> >      rxe_resp.c caches across a multi-packet RDMA READ/ATOMIC/FLUSH
+> >      reply (set at rxe_resp.c read/atomic/flush-reply sites, cleared
+> >      only on the normal completion paths). If a modify_qp() races a
+> >      resource still referenced by qp->resp.res, the array is freed out
+> >      from under the cached pointer and the next reply packet dereferences
+> >      it -- independent of the kfree/kzalloc_objs() window in (1).
+> > 
+> > Reproduced with KASAN: a single process driving one RC QP pair in rxe
+> > loopback, one thread pumping large multi-packet IBV_WR_RDMA_READs
+> > against qpB while a second thread hammers
+> > ibv_modify_qp(qpB, IB_QP_MAX_DEST_RD_ATOMIC), reliably (~11s) produces
+> > 
+> >    BUG: KASAN: slab-use-after-free in rxe_receiver+0x4f78/0x89e0 [rdma_rxe]
+> >    Workqueue: rxe_wq do_work [rdma_rxe]
+> > 
+> > with the freed kmalloc-1k object being the rd_atomic resource array
+> > freed by the modify_qp() thread while the recv_task kworker reads it.
+> > An identical run modifying only IB_QP_MIN_RNR_TIMER (no resource free)
+> > is clean.
+> > 
+> > Fix both races the same way rxe_qp_reset() already handles tearing down
+> > this exact array: quiesce the responder task around the free/realloc by
+> > calling rxe_disable_task(&qp->recv_task) before free_rd_atomic_resources()
+> > and rxe_enable_task(&qp->recv_task) only after alloc_rd_atomic_resources()
+> > has succeeded, so rxe_receiver() cannot observe the array mid-free/
+> > mid-realloc. On the alloc-failure path the responder is deliberately
+> > left quiesced: qp->resp.resources is NULL at that point and
+> > rxe_prepare_res()/find_resource() would dereference it, so recv_task
+> > must not be re-enabled until a fresh array has been installed. And
+> > close the still-open window for (2) at the source: have
+> > free_rd_atomic_resources() clear qp->resp.res along with
+> > qp->resp.resources, exactly like the existing completion paths in
+> > rxe_resp.c (check_rkey()/duplicate_request()/RESPST_CLEANUP) already do
+> > when a resource's lifetime ends, so a drained-and-resumed responder
+> > restarts at RESPST_CHK_PSN against the fresh array instead of replaying
+> > a stale reference into the old one.
+> > 
+> > Only qp->recv_task is drained: qp->resp.resources / qp->resp.res are
+> > touched exclusively by the responder (rxe_resp.c); the requester
+> > (send_task / rxe_sender()) never reads them, so there is no need to
+> > widen this beyond what rxe_qp_reset() would drain for the equivalent
+> > state.
+> > 
+> > Verified on the same v6.19 KASAN stand: with this fix applied, the
+> > identical differential reproducer drives sustained MAX_DEST_RD_ATOMIC
+> > storms against qpB well past the ~11s pre-fix time-to-first-splat with
+> > zero KASAN reports, versus reliably tripping the slab-use-after-free in
+> > rxe_receiver() described above before the fix.
+> > 
+> > Fixes: 8700e3e7c485 ("Soft RoCE driver")
 > > Cc: stable@vger.kernel.org
-> > Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
->
-> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-
-Thanks!
-
->
+> > Signed-off-by: Ibrahim Hashimov <security@auditcode.ai>
+> > Assisted-by: AuditCode-AI:2026.07
 > > ---
-> >  arch/x86/mm/pat/set_memory.c | 14 +++++++++++---
-> >  1 file changed, 11 insertions(+), 3 deletions(-)
->
-> --
-> Sincerely yours,
-> Mike.
+> > v2: address Zhu Yanjun's review of v1
+> >      (https://lore.kernel.org/linux-rdma/20260708224550.1281-1-security@auditcode.ai/):
+> >      only re-enable recv_task after alloc_rd_atomic_resources() succeeds, so
+> >      the responder is not resumed against a NULL qp->resp.resources on the
+> >      ENOMEM path (rxe_prepare_res()/find_resource() would dereference it).
+> >      No change to the successful path; fix description updated accordingly.
+> > 
+> >   drivers/infiniband/sw/rxe/rxe_qp.c | 16 +++++++++++++++-
+> >   1 file changed, 15 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/infiniband/sw/rxe/rxe_qp.c b/drivers/infiniband/sw/rxe/rxe_qp.c
+> > index f3dff1aea96a..e39fb144cbbb 100644
+> > --- a/drivers/infiniband/sw/rxe/rxe_qp.c
+> > +++ b/drivers/infiniband/sw/rxe/rxe_qp.c
+> > @@ -172,6 +172,7 @@ static void free_rd_atomic_resources(struct rxe_qp *qp)
+> >   		}
+> >   		kfree(qp->resp.resources);
+> >   		qp->resp.resources = NULL;
+> > +		qp->resp.res = NULL;
+> >   	}
+> >   }
+> > @@ -709,11 +710,24 @@ int rxe_qp_from_attr(struct rxe_qp *qp, struct ib_qp_attr *attr, int mask,
+> >   		qp->attr.max_dest_rd_atomic = max_dest_rd_atomic;
+> > +		/*
+> > +		 * This branch is not gated by IB_QP_STATE, so the responder
+> > +		 * task is live here. Quiesce it the way rxe_qp_reset() does
+> > +		 * before swapping the rd_atomic resource array, so
+> > +		 * rxe_receiver() cannot race the free/realloc.
+> > +		 */
+> > +		rxe_disable_task(&qp->recv_task);
+> >   		free_rd_atomic_resources(qp);
+> > -
+> >   		err = alloc_rd_atomic_resources(qp, max_dest_rd_atomic);
+> > +		/*
+> > +		 * On failure the responder stays quiesced: qp->resp.resources
+> > +		 * is NULL now, and rxe_prepare_res()/find_resource() would
+> > +		 * dereference it, so do not re-enable recv_task until a fresh
+> > +		 * array has been installed.
+> > +		 */
+> >   		if (err)
+> >   			return err;
+> > +		rxe_enable_task(&qp->recv_task);
+> 
+> Thanks a lot. I am fine with this commit. Please Leon and Jason comment on
+> this commit.
 
-Cheers, Lorenzo
+1. Please send patches as a standalone series, not as a reply to
+   the previous one.
+
+2. Write commit messages in a clear and sensible way so they are
+   easy for humans to understand. Keep them short and direct, and
+   describe the function call flow instead of producing AI prose.
+
+Thanks
+
+> 
+> Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+> 
+> Zhu Yanjun
+> 
+> >   	}
+> >   	if (mask & IB_QP_EN_SQD_ASYNC_NOTIFY)
+> 
 
