@@ -1,144 +1,168 @@
-Return-Path: <stable+bounces-273566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273567-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id /nuVIB97VGr3mQMAu9opvQ
-	(envelope-from <stable+bounces-273566-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 07:43:59 +0200
+	id z3voAml7VGoAmgMAu9opvQ
+	(envelope-from <stable+bounces-273567-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 07:45:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D071747510
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 07:43:59 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F5D9747527
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 07:45:12 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OcedfHK4;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273566-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273566-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=MGvdVaiT;
+	dmarc=pass (policy=none) header.from=uniontech.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273567-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-273567-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D73F43018BFB
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 05:43:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 50E7930151DC
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 05:45:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B7FB3612DB;
-	Mon, 13 Jul 2026 05:43:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 980B7361651;
+	Mon, 13 Jul 2026 05:45:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpbgau2.qq.com (smtpbgau2.qq.com [54.206.34.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AD9E360EE1;
-	Mon, 13 Jul 2026 05:43:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D897EACD;
+	Mon, 13 Jul 2026 05:45:00 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783921431; cv=none; b=gIcpjwiOv7vJ8HHMgoyk/9q/4wpBkpvhGfilINDZ+FEJZcoLwgsrZTc+Z5BowVqhckQMcN82cAGMHf1mNAhQo1zTkHf3Gqmpwc3dUw1K/w14RzQ8Mm+ijio4l1DIOx+P33WlNAwi7ULJgidm1o0xFoUlOhL7lA0TQajp6QE2eRQ=
+	t=1783921507; cv=none; b=I/I2ZrIMQrE68YaODy0p/mkwqOckdtDx/sisBwkK8gZJdtDhjIN1kg+qGlbdEcm0Km/LD3a8piaFULDKkRWTBWUhVXGrwk2wLwifS7gzUiiv+lIhDBxlgFb2azuVkrJD9PFtWtiXptuWgcKex/H91n6UNtKKPWUTdojpHHgMVyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783921431; c=relaxed/simple;
-	bh=fQQauDvquFNVkljquuUCTZ/0N14ZPibLdvgA2db5jr0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ktJ59r4TbMNix2fTxXOkgtye6eRgqc2iPou4aXFUyzaQ353sPNcawa9SVPa8QIPUlquQt+Kbf1R/dUibr2NR0D+/Ttnt6maHoZd6VqGar7BEns+qoZLmbxgrbG560d3bH/4tWprU2HAfd/3sZkORzEOs9ey7mC6CdQ6sbemP770=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OcedfHK4; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E51F1F000E9;
-	Mon, 13 Jul 2026 05:43:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783921429;
-	bh=TzhiU6V/SRkdXn64SP6A00c/m/jt5XsqeIpJAiXO25w=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=OcedfHK4YYkqygLuGSwdXJLwD3T8hM+ps/HClwp81UQ1vD4ym3pyJuM0rkF3ABtRy
-	 tXPjc/4eAR7h9rEn5e4yRgUfS6XvF85jlXI234HKuiB1FG2VE6xbg6ljvIkY1wP8BR
-	 rzcOEpJJjPBQDkcqZ6UL2BY/+9x4RIAh3X7pJ96G9rE7Doiwdv9UN4V2FuJx8vRXIm
-	 FLkTOXzEzET45OMretFagfopv2HRQVEuodzsGAxTWp/Tza50IF0A2rK1ndMM1xGTKl
-	 r7u6IwA8e01rtuyTKd4G/t5uMQZ6lJevG8U7vOZXc38P0AaLpZxwds3akxOwdhZDcd
-	 7773YFJiq+TLA==
-Message-ID: <c276a318-34b6-403a-8dd0-0271764d5860@kernel.org>
-Date: Mon, 13 Jul 2026 14:43:37 +0900
+	s=arc-20240116; t=1783921507; c=relaxed/simple;
+	bh=hT+Ooj9tgT1KwwQdt8RCridwYA1wzetFZZJ1WarZjWo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pxksnCRBmuKaaZvUZ1cgO4wSIM48+5rRE5WwebtkxpSCVSOmEUGihskgKoofdf5AAOV80Wm3PSlCL1fwARdQOUyeQSZcP1X631mHuR0W357GgAcd5HRq30vl/rOyLvGQ0+sJaJ+iWtpT8qbMmUNYtTXGINNR20MrRfognXCfogg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=MGvdVaiT; arc=none smtp.client-ip=54.206.34.216
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1783921452;
+	bh=xsMiDfHY3No78dLfmPMb1cw+NhSYORJVBK/d0sBYa00=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=MGvdVaiTK1Iz1CIrw/B0DDi2BHd+r4uL69ZkxCQcJr4oQDUH/rGIpYa/O68Yg/5NQ
+	 8nkhjA5fLianwRHboTsE0foktSA5fgmyjrk08fggXfk5wVbmMuybWk/sKftwbpuJnK
+	 XZIV6YjrEltkcdODmJTIV4bEKqOvVbOuzBTF0Ql4=
+X-QQ-mid: esmtpgz15t1783921433tee904caf
+X-QQ-Originating-IP: KGIqFQ6ZwelBHVBQsdz3AWi16EJ0V4fs0KzB/tMla+U=
+Received: from PEN202512010004 ( [113.57.152.160])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Mon, 13 Jul 2026 13:43:51 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 2535388820443823587
+EX-QQ-RecipientCnt: 9
+From: raoxu <raoxu@uniontech.com>
+To: srini@kernel.org
+Cc: amahesh@qti.qualcomm.com,
+	arnd@arndb.de,
+	gregkh@linuxfoundation.org,
+	linux-arm-msm@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	raoxu@uniontech.com,
+	stable@vger.kernel.org
+Subject: [PATCH] misc: fastrpc: drop channel context ref on failed open
+Date: Mon, 13 Jul 2026 13:43:50 +0800
+Message-ID: <DD9C99F155919095+20260713054350.3170620-1-raoxu@uniontech.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] scsi: scsi_debug: fix REPORT ZONES alloc_len underflow
- OOB write
-To: Ibrahim Hashimov <security@auditcode.ai>, martin.petersen@oracle.com,
- James.Bottomley@HansenPartnership.com
-Cc: bvanassche@acm.org, shinichiro.kawasaki@wdc.com,
- damien.lemoal@opensource.wdc.com, linux-scsi@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260710055755.53830-1-security@auditcode.ai>
- <20260712183739.83915-1-security@auditcode.ai>
-From: Damien Le Moal <dlemoal@kernel.org>
-Content-Language: en-US
-Organization: Western Digital Research
-In-Reply-To: <20260712183739.83915-1-security@auditcode.ai>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpgz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: MmIUUz9KGMMdf7ciTnOWCYhgf7Ab6BzS799SOmRs2PXr/GhaMIgUyO/V
+	iGzT0/+4dp0z/PtrYJq/h2AujJ9XnJ9j+ejjlUlzR3k3DFXGNDerH+3j8SIhNzBmCsrAe1S
+	3HDBB+ia32mplRtxOLJMH1cUUoxcNhaBZfF9zMeXV2ZFCQvEzkDFf2xekbaJHY2/iZh/H6N
+	k9CO1DgQ8BBPUbgcN9oKN0guH8hACxaHN98mT7B2c69yw+Dtn8ZhsSLPCysF8HXrnI6iwfd
+	+Dd20yPUZK96l55JoL5u4hdntdE421JIG7bMGkKGNVRE4l7ERYWZy4C2pc3VlylT6pawIYz
+	uPwowy165LZ6K8mp7UbgvfSaGjA7rv6UUHGi3kOsPnVaHa0mGwDsiKNQKV4ETIfHsz5F+Pg
+	t14TrPbNnAQk/Lct130ilnTJWbOw8mji0dpQ1ofkfkAY6k9ylbInO5FYwf1TecAdgcn5zjs
+	/9uvgSYZen0xcSZ5e2KcFzJV8HbGLaNehqz6wOiaxSevGUkgbDdb2V6DN8HcA2tLxLxwO2c
+	rgrJtsEkZrsL0bcEjPNXUCrZe4ctor6QvGr9yRVxp4Hd9S7nQvH3jLHDsLsKdIA7KkiM11Q
+	56dHDYM7n6V8YxZ30ZwOzLuqPnT992NJ9Cal72Q8RZSJQad2d9lQMRwULYSVCpn6NQP6EoN
+	1BFTONrJvaebjXNxiKSr2ItlFRwrM9RznnYoq3zh3VGB523TrTDhu4LqqsROB7IkacNpDmH
+	T7vbeK5PioQCv1ZJ7MSQ4J+Gx1wBDXmbhFrJolJmZjlPIx/2edHB5SFOPJzL4fa7kvtZhUk
+	1C6D89s/jGEBWpgFgSnhoKRQ6GZxoQJ5SX4WSmWCoUCCJByzL3UiS/qVQ3+F3k8zv1oSVqc
+	suzMzY4GMXkwQU5e2FBhkccgABcmEDNb6HUcoHU885LN5N/WNVKH+HKl5xTEguhan3hk82T
+	HMg0JhKaUDsWMFwOABmuDDP18gQlBNEh9ZM5jkTpp1tKGWiKguidY97HVqN0Fa6bzILeCK7
+	86WSzU9MJ06I8mvSlQKCrzCU/PLQcsHSMvKPEP1NvqJi+SdKAIkkN1wmxannqCagXTLTyi4
+	A==
+X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
+X-QQ-RECHKSPAM: 0
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-5.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[uniontech.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[uniontech.com:s=onoh2408];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:security@auditcode.ai,m:martin.petersen@oracle.com,m:James.Bottomley@HansenPartnership.com,m:bvanassche@acm.org,m:shinichiro.kawasaki@wdc.com,m:damien.lemoal@opensource.wdc.com,m:linux-scsi@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[dlemoal@kernel.org,stable@vger.kernel.org];
-	HAS_ORG_HEADER(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-273566-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dlemoal@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-273567-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:srini@kernel.org,m:amahesh@qti.qualcomm.com,m:arnd@arndb.de,m:gregkh@linuxfoundation.org,m:linux-arm-msm@vger.kernel.org,m:dri-devel@lists.freedesktop.org,m:linux-kernel@vger.kernel.org,m:raoxu@uniontech.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[raoxu@uniontech.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	FROM_NEQ_ENVFROM(0.00)[raoxu@uniontech.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	ALIAS_RESOLVED(0.00)[];
+	TO_DN_NONE(0.00)[];
+	DKIM_TRACE(0.00)[uniontech.com:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[uniontech.com:from_mime,uniontech.com:email,uniontech.com:mid,uniontech.com:dkim,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1D071747510
+X-Rspamd-Queue-Id: 8F5D9747527
 
-On 7/13/26 03:37, Ibrahim Hashimov wrote:
-> resp_report_zones() sizes the reply buffer from the CDB allocation
-> length. The v3 fix rounds alloc_len up with ALIGN() before deriving the
-> descriptor count:
-> 
-> 	rep_max_zones = (ALIGN((u64)alloc_len, RZONES_DESC_HD) -
-> 			 RZONES_DESC_HD) >> ilog2(RZONES_DESC_HD);
-> 	arr_len = (u64)RZONES_DESC_HD * (rep_max_zones + 1);
-> 
-> For alloc_len in 0xFFFFFFC1..0xFFFFFFFF, ALIGN() rounds up to
-> 0x100000000, so arr_len is 4 GB. On 32-bit, kzalloc()'s size_t is
-> 32-bit and truncates 0x100000000 to 0; kzalloc(0) returns
-> ZERO_SIZE_PTR, which passes the !arr check, and desc = arr + 64 is then
-> dereferenced in the loop -> out-of-bounds write / panic.
-> 
-> Clamp rep_max_zones to devip->nr_zones. The loop already stops at
-> sdebug_capacity (after nr_zones zones), so a report can never hold more
-> than nr_zones descriptors; the clamp does not change the report, it
-> only bounds arr_len to (nr_zones + 1) * RZONES_DESC_HD, a real device
-> property that can never reach 0x100000000.
-> 
-> Fixes: 7db0e0c8190a ("scsi: scsi_debug: Fix buffer size of REPORT ZONES command")
-> Suggested-by: Damien Le Moal <dlemoal@kernel.org>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Ibrahim Hashimov <security@auditcode.ai>
-> Assisted-by: AuditCode-AI:2026.07
+From: Xu Rao <raoxu@uniontech.com>
 
-Looks good.
+fastrpc_device_open() takes a reference on the channel context before it
+allocates a session.  On a successful open, that reference is tied to the
+fastrpc_user object and is released from fastrpc_user_free(), which is
+reached through fastrpc_device_release().
 
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+If fastrpc_session_alloc() fails because no valid session is available,
+open returns -EBUSY before the user refcount is initialized and before
+release can run.  The channel-context reference taken earlier in open is
+therefore left behind.  Repeated opens while the session pool is
+exhausted can permanently pin the channel context and prevent the rpmsg
+remove path from freeing it.
 
--- 
-Damien Le Moal
-Western Digital Research
+Drop the channel-context reference on this failed-open path before
+freeing the partially initialized fastrpc_user.
+
+Fixes: 278d56f970ae ("misc: fastrpc: Reference count channel context")
+Cc: stable@vger.kernel.org
+Signed-off-by: Xu Rao <raoxu@uniontech.com>
+---
+ drivers/misc/fastrpc.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/misc/fastrpc.c b/drivers/misc/fastrpc.c
+index f3a49384586d..907a87d7ca56 100644
+--- a/drivers/misc/fastrpc.c
++++ b/drivers/misc/fastrpc.c
+@@ -1671,6 +1671,7 @@ static int fastrpc_device_open(struct inode *inode, struct file *filp)
+ 	fl->sctx = fastrpc_session_alloc(fl);
+ 	if (!fl->sctx) {
+ 		dev_err(&cctx->rpdev->dev, "No session available\n");
++		fastrpc_channel_ctx_put(cctx);
+ 		mutex_destroy(&fl->mutex);
+ 		kfree(fl);
+
+--
+2.50.1
+
 
