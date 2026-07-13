@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-273952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273945-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 2agTCTAsVWqLkwAAu9opvQ
-	(envelope-from <stable+bounces-273952-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 20:19:28 +0200
+	id dhpSJT0rVWpHkwAAu9opvQ
+	(envelope-from <stable+bounces-273945-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 20:15:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE80374E6CF
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 20:19:27 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D947974E645
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 20:15:24 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=free.fr header.s=smtp-20201208 header.b="HP9/4s5G";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273952-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273952-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=free.fr header.s=smtp-20201208 header.b="OMZSLA/+";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273945-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-273945-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=free.fr;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 961BB3022B3D
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 18:18:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 87F7E3077E21
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 18:12:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3450E352C4F;
-	Mon, 13 Jul 2026 18:18:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBA1B352004;
+	Mon, 13 Jul 2026 18:12:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtpfb1-g21.free.fr (smtpfb1-g21.free.fr [212.27.42.9])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0460A34A3BF;
-	Mon, 13 Jul 2026 18:18:39 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783966724; cv=none; b=G+EsNslmPbTfUSP19auUJAThSdcHE9dQYzmNkM+SFq0nWnNLH8fm1fFDB+oLr3/0QQSXThfYrZbbNoFPe69Naeq/P++gJof8pb95fcVm42Z7e3a2vuhMb6YTFzvoAIaEzO7a120jBsLdHMlLeNECHWtZwHXV/HpejAGWvKBU1OY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783966724; c=relaxed/simple;
-	bh=MW0fHm4TEwvAk5mUjhZ7QSZSJF8LLYeJTbTRWroVGJI=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=dcM58BzIxCTKgYx7iUFPT90ZHDCfh5F6ytnBwUr9QlcHUeV3c1uaq7SWGNvJvTfHtG1zXXIcgJnYC6Bs1lDf+tRlrOORLr+oBTwBbmciNfDMWhGCL3OhhpbBaRUKdAYfZxpodwUd23RUWWEg5dg1JA/S+/Ab1i2rNtDGkGoGiPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=free.fr; spf=pass smtp.mailfrom=free.fr; dkim=pass (2048-bit key) header.d=free.fr header.i=@free.fr header.b=HP9/4s5G; arc=none smtp.client-ip=212.27.42.9
 Received: from smtp1-g21.free.fr (smtp1-g21.free.fr [212.27.42.1])
-	by smtpfb1-g21.free.fr (Postfix) with ESMTP id 3D2728346D6;
-	Mon, 13 Jul 2026 20:12:33 +0200 (CEST)
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2B15344D9D;
+	Mon, 13 Jul 2026 18:12:47 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783966371; cv=none; b=d8PQdgLNlMI9q+RLjUBPsk12i3kfq/acIULRgqN4gfIJB8DCckJ33FHpVH6VBhRAgO3NtIJ4W63MmaEhbpRhy5EceaVaCdFM3hfU9M4ETosxVDckpMXIjr66v6fg//GtIlLE6KoaAssCBJ1ORTqAS2LSOWBQqAMwQRJ2AukFAXI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783966371; c=relaxed/simple;
+	bh=MB93t3nfvRdSDolU+OMtP3YuXMmW9lVD3yUEkEyoz4E=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=PguY0o7OUbZ3WVhN+3kGgmhWwvIFg8mFXwe8QdFLx2whyi4kxuHQKPulO9TVU+V2ibALDg3aT/+3AZhX+VK+Ffw2/V9jKnHP9ODcj7QAos8u67a7ld8CaTg9MkaUYCmEm8nKvs/T0/zh99pT0/GkQnd7WoxrDTQ4ZFc/Jqdgbes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=free.fr; spf=pass smtp.mailfrom=free.fr; dkim=pass (2048-bit key) header.d=free.fr header.i=@free.fr header.b=OMZSLA/+; arc=none smtp.client-ip=212.27.42.1
 Received: from [127.0.1.1] (unknown [91.160.0.144])
 	(Authenticated sender: vjardin@free.fr)
-	by smtp1-g21.free.fr (Postfix) with ESMTPSA id 009BAB0055A;
-	Mon, 13 Jul 2026 20:12:04 +0200 (CEST)
+	by smtp1-g21.free.fr (Postfix) with ESMTPSA id 67DAFB005AC;
+	Mon, 13 Jul 2026 20:12:25 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=free.fr;
-	s=smtp-20201208; t=1783966345;
-	bh=MW0fHm4TEwvAk5mUjhZ7QSZSJF8LLYeJTbTRWroVGJI=;
-	h=From:Subject:Date:To:Cc:From;
-	b=HP9/4s5GL7nJJXLSYkAF+NqAQsUFE9JtmkJnD8cU4E0lmuJT2TZTQiygCb+inNRRZ
-	 Z2WTVMEI2JpxTwiI2gTOo3k8Z+mkGkLH9ZNwIZOzbqXm8xdh/RVktt9ZH5GTBNKH3k
-	 NBehoNisOosZP2h0hHq4oLvPWFbpMTM+gq2pO3mtYi4Thz8Juvgh3dn3D6wzpV79z/
-	 Uc4YzUjDsztG80b5lgGRL2g6M51MwmwcVjgSmK/gaEnPEt/gUqDnQwUqxDnyt+OUrd
-	 EVn7K/rpxEpFr7YRTWomdJnsP9EE2ItGY4Kp+vkX4GCF5pUTGq1f4C8K9BIGwyrvbh
-	 pUvnksAgC3i3w==
+	s=smtp-20201208; t=1783966366;
+	bh=MB93t3nfvRdSDolU+OMtP3YuXMmW9lVD3yUEkEyoz4E=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=OMZSLA/+hz/KDAZ/BHUjwQDa+chahuXZN/6mgR4ZOBZ7SMCIMuJNb/wx0E7axbUlF
+	 Cx+XhNxgMvLAI7v9txj6L89fCcNcphBC91+OUXhw5jMmBOnIHegDVe/q3nBmU15WCg
+	 C+NhvZAYQpL6BKLSFfBSCzcMX+CSew9bZYxW7udK7/0XY66iL1qnZyM71D58K/7cx1
+	 65v/XY8Qyz5rKjQ27aC7c3qmewIgue8IPnLWXzgoVBDQZVn05ds6G+yse9uWVtGRd2
+	 SfWW1xVgZs8PgX6X94mntoTjBMccXLCtjnU02cxUAe3ErGYC7IMB32XR+R5n6rw46v
+	 t5FD12NGs2NnQ==
 From: Vincent Jardin <vjardin@free.fr>
-Subject: [PATCH v3 0/2] i2c: imx: fix SMBus block-read of 0 locking the bus
-Date: Mon, 13 Jul 2026 20:11:58 +0200
-Message-Id: <20260713-for-upstream-i2c-lx2160-fix-v1-v3-0-073ac9e103a5@free.fr>
+Date: Mon, 13 Jul 2026 20:11:59 +0200
+Subject: [PATCH v3 1/2] i2c: imx: fix locked bus on SMBus block-read of 0
+ (atomic)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,10 +60,9 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAG4qVWoC/5XNwQ6CMAzG8VchO1tTugzFk+9hPIzRyRIV0uGCI
- by7g4tXPf7b5PfNKrIEjupUzEo4hRj6Zw69K5Tr7PPGENrcipAqNGTA9wKvIY7C9gGBHNwnKis
- EHyZIJaBrLFrEWrNRGRmE82cbuFxzdyGOvby3vVSu15/pVQev0TZGt219cGcvzHsvaoUT/YdRx
- qiy2rmja9GYL7YsyweAWWSWFwEAAA==
+Message-Id: <20260713-for-upstream-i2c-lx2160-fix-v1-v3-1-073ac9e103a5@free.fr>
+References: <20260713-for-upstream-i2c-lx2160-fix-v1-v3-0-073ac9e103a5@free.fr>
+In-Reply-To: <20260713-for-upstream-i2c-lx2160-fix-v1-v3-0-073ac9e103a5@free.fr>
 To: Oleksij Rempel <o.rempel@pengutronix.de>, 
  Pengutronix Kernel Team <kernel@pengutronix.de>, 
  Andi Shyti <andi.shyti@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
@@ -77,11 +76,11 @@ Cc: linux-i2c@vger.kernel.org, imx@lists.linux.dev,
  Vincent Jardin <vjardin@free.fr>, stable@vger.kernel.org, 
  Carlos Song <carlos.song@nxp.com>, Stefan Eichenberger <eichest@gmail.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1783966324; l=1860;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783966324; l=2882;
  i=vjardin@free.fr; s=20260525; h=from:subject:message-id;
- bh=MW0fHm4TEwvAk5mUjhZ7QSZSJF8LLYeJTbTRWroVGJI=;
- b=HB4/D489cBV9RGeIlXnJ5L0Cx4Oci/dGh9tVchNtz7Ut6n2ixBh23Cwbk1Xta51rz/iUbqwun
- XJ6O0CjdUAgD9GB9UUz9/kcWL1vmAwrDWZ2G2qkSXTeEdIDKXhaN4Oo
+ bh=MB93t3nfvRdSDolU+OMtP3YuXMmW9lVD3yUEkEyoz4E=;
+ b=EAfrG/l4yjYiRBr25rzQTMFXUHFvyfy+O1ND7nv0EOzDLBLyPO6dtiIZ9uQ03Tp6SxZiheqBz
+ JrUTvnQi4hKBqZxQEdPdvJE7v9jDM9LJ990XiZtdDvVT/z/tWccsFmi
 X-Developer-Key: i=vjardin@free.fr; a=ed25519;
  pk=hppgLeFpGpKOi7LNwGEZ4jOYofJCoGd4Jf1ltAabiLw=
 X-Rspamd-Action: no action
@@ -89,82 +88,114 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[free.fr,quarantine];
 	R_DKIM_ALLOW(-0.20)[free.fr:s=smtp-20201208];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS(0.00)[m:o.rempel@pengutronix.de,m:kernel@pengutronix.de,m:andi.shyti@kernel.org,m:Frank.Li@nxp.com,m:s.hauer@pengutronix.de,m:festevam@gmail.com,m:wsa@kernel.org,m:kaushalkernelmailinglist@gmail.com,m:shawn.guo@freescale.com,m:stefan.eichenberger@toradex.com,m:linux-i2c@vger.kernel.org,m:imx@lists.linux.dev,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:vjardin@free.fr,m:stable@vger.kernel.org,m:carlos.song@nxp.com,m:eichest@gmail.com,s:lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-273952-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[pengutronix.de,kernel.org,nxp.com,gmail.com,freescale.com,toradex.com];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER(0.00)[vjardin@free.fr,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FREEMAIL_FROM(0.00)[free.fr];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,lists.infradead.org,free.fr,nxp.com,gmail.com];
+	FREEMAIL_TO(0.00)[pengutronix.de,kernel.org,nxp.com,gmail.com,freescale.com,toradex.com];
 	RCPT_COUNT_TWELVE(0.00)[18];
 	FORWARDED(0.00)[lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-273945-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[free.fr:+];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[vjardin@free.fr,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[free.fr:+];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,lists.infradead.org,free.fr,nxp.com,gmail.com];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nxp.com:email,pengutronix.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: AE80374E6CF
+X-Rspamd-Queue-Id: D947974E645
 
-i2c-imx rejects an SMBus Block Read byte count of 0 (valid per SMBus 3.1
-6.5.7) as -EPROTO and returns without emitting a NACK + STOP, leaving the
-target holding SDA so the bus stays stuck until a power cycle.
+SMBus 3.1 6.5.7 allows a Block Read byte count of 0, but the atomic
+(polling) path rejects it as -EPROTO. Worse, it returns without a
+NACK+STOP: the next receive cycle has already started, so the target
+keeps holding SDA and the bus stays stuck until a power cycle for
+this i2c controller.
 
-It was triggered by an MPQ8785 PMBus regulator on a LX2160A i2c
-bus: when the kernel binds it using the pmbus/hwmon framework, the bus
-locks up and it does never recovers. It was confirmed with a scope, with
-and without the fix.
+Reading I2DR to obtain the count likewise arms the next byte on the
+count > I2C_SMBUS_BLOCK_MAX path, which also returned -EPROTO directly
+and left the bus held.
 
-The same bug is occuring with two independently introduced spots, so the
-fix is two patches with their respective Fixes: tags and backport ranges
+Handle both: NACK the in-flight dummy byte (TXAK) and extend msgs->len so
+the existing last-byte handling emits STOP; the dummy byte is discarded.
+A count of 0 is a valid empty block read; a count above
+I2C_SMBUS_BLOCK_MAX is still reported as -EPROTO, but only after the bus
+has been released.
 
-  1/2  atomic/polling path       Fixes: 8e8782c71595   v3.16+
-  2/2  IRQ-driven state machine  Fixes: 5f5c2d4579ca   v6.13+
+The interrupt-driven path has the same flaw from a later commit and is
+fixed separately, as it carries a different Fixes: tag and stable range.
 
+Fixes: 8e8782c71595 ("i2c: imx: add SMBus block read support")
+Cc: stable@vger.kernel.org # v3.16+
+Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Acked-by: Carlos Song <carlos.song@nxp.com>
+Reviewed-by: Stefan Eichenberger <eichest@gmail.com>
 Signed-off-by: Vincent Jardin <vjardin@free.fr>
 ---
-Changes in v3:
-- no functional change; collected the review tags received on v2:
-  Acked-by Oleksij Rempel, Acked-by Carlos Song, Reviewed-by Stefan
-  Eichenberger (both patches)
-- cover letter: add the real-world trigger (MPQ8785 PMBus regulator
-  on the LX2160A) and how the fix was validated, asked by Carlos Song
-- resend as a new thread, per Andi Shyti's request
-- Link to v2: https://lore.kernel.org/r/20260525-for-upstream-i2c-lx2160-fix-v1-v2-0-26a3cc8cd055@free.fr
+ drivers/i2c/busses/i2c-imx.c | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
-Changes in v2:
-- Handle when count > I2C_SMBUS_BLOCK_MAX the same way as count == 0
-  Reported by the Sashiko AI review on v1.
+diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
+index 28313d0fad37..cfd1e63359e7 100644
+--- a/drivers/i2c/busses/i2c-imx.c
++++ b/drivers/i2c/busses/i2c-imx.c
+@@ -1415,6 +1415,7 @@ static int i2c_imx_atomic_read(struct imx_i2c_struct *i2c_imx,
+ 	int i, result;
+ 	unsigned int temp;
+ 	int block_data = msgs->flags & I2C_M_RECV_LEN;
++	int block_err = 0;
+ 
+ 	result = i2c_imx_prepare_read(i2c_imx, msgs, false);
+ 	if (result)
+@@ -1436,8 +1437,20 @@ static int i2c_imx_atomic_read(struct imx_i2c_struct *i2c_imx,
+ 		 */
+ 		if ((!i) && block_data) {
+ 			len = imx_i2c_read_reg(i2c_imx, IMX_I2C_I2DR);
+-			if ((len == 0) || (len > I2C_SMBUS_BLOCK_MAX))
+-				return -EPROTO;
++			if ((len == 0) || (len > I2C_SMBUS_BLOCK_MAX)) {
++				/*
++				 * SMBus 3.1 6.5.7: support count byte of 0.
++				 * I2C_SMBUS_BLOCK_MAX case should not hold the SDA either.
++				 */
++				if (len > I2C_SMBUS_BLOCK_MAX)
++					block_err = -EPROTO;
++				temp = imx_i2c_read_reg(i2c_imx, IMX_I2C_I2CR);
++				temp |= I2CR_TXAK;
++				imx_i2c_write_reg(temp, i2c_imx, IMX_I2C_I2CR);
++				msgs->buf[0] = 0;
++				msgs->len = 2;
++				continue;
++			}
+ 			dev_dbg(&i2c_imx->adapter.dev,
+ 				"<%s> read length: 0x%X\n",
+ 				__func__, len);
+@@ -1485,7 +1498,7 @@ static int i2c_imx_atomic_read(struct imx_i2c_struct *i2c_imx,
+ 			"<%s> read byte: B%d=0x%X\n",
+ 			__func__, i, msgs->buf[i]);
+ 	}
+-	return 0;
++	return block_err;
+ }
+ 
+ static int i2c_imx_read(struct imx_i2c_struct *i2c_imx, struct i2c_msg *msgs,
 
----
-Vincent Jardin (2):
-      i2c: imx: fix locked bus on SMBus block-read of 0 (atomic)
-      i2c: imx: fix locked bus on SMBus block-read of 0 (IRQ)
-
- drivers/i2c/busses/i2c-imx.c | 36 +++++++++++++++++++++++++++++++++---
- 1 file changed, 33 insertions(+), 3 deletions(-)
----
-base-commit: a13c140cc289c0b7b3770bce5b3ad42ab35074aa
-change-id: 20260525-for-upstream-i2c-lx2160-fix-v1-0cba0a0093e5
-
-Best regards,
 -- 
-Vincent Jardin <vjardin@free.fr>
+2.43.0
 
 
