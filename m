@@ -1,139 +1,204 @@
-Return-Path: <stable+bounces-273648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273650-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id CNlONiTLVGrkaQAAu9opvQ
-	(envelope-from <stable+bounces-273648-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 13:25:24 +0200
+	id MiRVL8TMVGr7ewAAu9opvQ
+	(envelope-from <stable+bounces-273650-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 13:32:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28A6A74A52B
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 13:25:24 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C72E74A636
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 13:32:20 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NDGR2S+n;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273648-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273648-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=bv0+jPSE;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273650-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273650-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D7C8B3024CB2
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 11:24:13 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C416C3013476
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 11:32:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 166EE39B943;
-	Mon, 13 Jul 2026 11:24:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA50B386422;
+	Mon, 13 Jul 2026 11:32:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E274030CD85;
-	Mon, 13 Jul 2026 11:24:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46A48346766
+	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 11:32:17 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783941852; cv=none; b=ns/DsS7o+Cw5ZXhSoWpvQ4jkOKk7bBEN6cfTt0rVBHLBgnY4MxljgZ/SiSnzyGCiVdv0E3x56rVT9hR98z82QIAplbidFnB02Deglv6YLQjCpdJEwYcLzyMnhsPTnFOJWe0dth8hEvq7HRzk7Ke+apKgA+eGZy1uf39caw0seg8=
+	t=1783942338; cv=none; b=ql+UOrzjBJ31RMvjPg2pWKYHCYqBVHVcZSyF8CIOq7heP+AFzOobtYF5TgxrDvdk+fAGjl4dDmWxvCyGEV+pTD2sy0kQU2nWTFUXrkazZz5tSp+Ty8wHC5yTjSJEfvxBf+LJqiJpTAP/EypWnwPTLJ/1SnmKFcgcGnOgjT50fkg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783941852; c=relaxed/simple;
-	bh=m1J/d/PYVhC/rKT9VeZk2geeZIQpoUwUBFioUePZgGg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=irW2f2z21uQ2Mk+k0suwhKmBBH9fppa+q+z3UxOW87m8R7d6AxpeeMY4+snx8WpRlJwVrKBN9JLXRPupCJY/dsjxLeHs66uICORx6nCubfMchSFFY0ve3QK4MGgBIeZ+W4C+cDfbl4dARwNmpSKepLi1KnUID1qmFNFORcw7VvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NDGR2S+n; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F304A1F000E9;
-	Mon, 13 Jul 2026 11:24:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783941851;
-	bh=72WoxctWpy4wTccgtBZq5D0qoW2IakfKc+DqFExW7hM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=NDGR2S+nscyYK/UZBG3aj1/uiixAqvvftosFOqXqPUwwn1apj54Syy3b1Nyi1GBMI
-	 ByNXp2VgcoycQXfEVRCm0EqL2C8tTqqIeQug6IMTP2n3qzcAzz8K1qW1Gk78wPK24f
-	 BbqAplUr6lqMtiiLNmdtWv1X5PbbRNpMQVRipgwCcHEDS0VpV4TDsRcg/jwaDIgGcn
-	 grmsHgFxBbBe8LpCYyUzftp4HLtGILO0QVPXkomAEC4YrUrlYY1msdTFdHg+t+otJ3
-	 S52EBxaqB9uSSqvauQs0a4BJ/z6X81wzYWD/e8AcKw6sjIyeh8CHW9eTbujHHXM8sl
-	 zv2vid4zklhYg==
-Date: Mon, 13 Jul 2026 12:24:07 +0100
-From: Lee Jones <lee@kernel.org>
-To: FirstName LastName <bsevens@google.com>, stable@vger.kernel.org
-Cc: Roderick Colenbrander <roderick.colenbrander@sony.com>,
-	Jiri Kosina <jikos@kernel.org>,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] HID: playstation: validate num_touch_reports in
- DualShock 4 reports
-Message-ID: <20260713112407.GB3774971@google.com>
-References: <20260323124737.3223129-1-bsevens@google.com>
- <20260713112252.GA3774971@google.com>
+	s=arc-20240116; t=1783942338; c=relaxed/simple;
+	bh=pe0ZWEl9hpbKNM4POdPYU+xRMmXadYbOlA4SMxHiFR4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XVx1b4C2sUq+0KVgG2gjQ7ZrryiUCuFj8G3T/N0rCN4DtPOKQncbVmGXqufF0B+bVDlTuoQWjW9rB8BZYQe+FH+T+xWtWfzo7njhWQ7f+VxO+mzPGRFV9qkd+ACT+YMheForncU8TqQFyqd7vFbem1DDmlLcC+AbvvJO/bg/MlY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bv0+jPSE; arc=none smtp.client-ip=209.85.210.182
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-848882fdb18so2129541b3a.0
+        for <stable@vger.kernel.org>; Mon, 13 Jul 2026 04:32:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783942337; x=1784547137; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=bQ5YkObDJn3q5yEXBMbpydhpxp/loGCG/PfQF+sLSPI=;
+        b=bv0+jPSE1dp5ZtI8P/S87t2/8h78QGDfYyX573LFTRf0PpyXoPEHJYMVsp0rxN3pvU
+         WhnbRpWiC4HRBwlYPNKSpyzmZayODlgPXb2CCE+xzEYamoDqOAMkrv3pU7LKYoF0fVjb
+         SGCorSeUAcWUziKrZT/NxlDs68RVWQ46RrOACsmftat89aubRSEZTzrFTVyBPY250HOu
+         2HP+7TGAZgyAvKMZCPktusOfcOr2VPGuqrVbgynriKbyXNHvjEEZLMo8scsLb26ySwpi
+         ggQG1+1hUPylCGZIvvFtHFbLQGVn2GWRU1hBy/aLAgNPjLSxo+YPxpk4bCKCi8QbMJa0
+         V1ig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783942337; x=1784547137;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=bQ5YkObDJn3q5yEXBMbpydhpxp/loGCG/PfQF+sLSPI=;
+        b=GL19ewor3q8Qu/CgCkwLoqvePsGybT0d+UAEb8PCZgdN2lG2ZzdS9cEQLN+0PZRcqM
+         VSQvXMrVT3BsSwt8RowsyLvHy6TWuw5bjqazdbYlH/rfxqt7gBH/1Tp4/z5DXw0/TfSk
+         FmlYuyftyzFq2Y/aKb27T+g1bNTA1bB1wAsOA+4/Wm4eXsTdtayjOxfEvwsaZPtYunX8
+         pjeUx7mUwjXNVsNZRPKWvj7tCZX99PwLOU+06Gp/22z8+WfzDTUHSAtHjC2q77ShLws5
+         Up0E1gseliDk6WoK8NgsSNRyXAu56E50DDwJ7iabIDsioP08+LP5jurxt+L1rHGpBSk8
+         1+rA==
+X-Forwarded-Encrypted: i=1; AHgh+RrHRokyLUlT+6sD+p1+XyAErAsNoKjwVbR/uBs6uN4MjLruZS3QFBZoqB3JgtRvE0hKOF6L/0Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx1RS8hVr+Iyv8TZ8fG5z8UQHwB2eRPjdIxayltBquIN2CyVu5V
+	L2k34S46BviJ5g7sKBSz7M39d0hfCWJoWeKkVZi0fFJes43p0qwdhaka
+X-Gm-Gg: AfdE7cnsUM3WTMJoq/EnbfYM1D+CI7zkTXXLJEzQp8ityw16c0Eovu4o/qV/NKY5uDR
+	mUN90RF3EULS/6B9ye/C4STWXEgbg05rD3y1vf+ZbAur3xpjhGFEL4GAiF3ku90/6ytVjO5U9b0
+	KC+SBU+pDvTWG0On+aJ+USSn5b8V/IwHhcdoO6xHxFF32anZgpsTdd5KajuCCZ0rD1TEenIiopW
+	DlJ31K7k5h6fTzJmdJEjXzpwvXgkezx/gtzBXy08bGwLKqV6Lc8fQsJmQISQLEnUn79Bv7FRb6W
+	YmVN52qj8HXYvbIykrqK/fGiEhLu8Pv9EqYx3VCVIaC9+nBip24651sMnDa3e4CeANpie3zwq07
+	8XVUp6CWGIYYBJGm3SvEgFHvPmeXqCQRntdgokhjUjrPrKpgRWoxIplgiWiITd0pfWLAPovU=
+X-Received: by 2002:a05:6a00:18aa:b0:845:d286:1fa8 with SMTP id d2e1a72fcca58-84889768958mr8641367b3a.55.1783942336528;
+        Mon, 13 Jul 2026 04:32:16 -0700 (PDT)
+Received: from lgs.. ([2001:250:5800:1000::f280])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84880a4abf1sm4318802b3a.16.2026.07.13.04.32.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Jul 2026 04:32:16 -0700 (PDT)
+From: Guangshuo Li <lgs201920130244@gmail.com>
+To: Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	CK Hu <ck.hu@mediatek.com>,
+	Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>,
+	dri-devel@lists.freedesktop.org,
+	linux-mediatek@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Cc: Johan Hovold <johan@kernel.org>,
+	Guangshuo Li <lgs201920130244@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v3] drm/mediatek: mtk_hdmi: Fix DDC adapter double put in v2
+Date: Mon, 13 Jul 2026 19:29:57 +0800
+Message-ID: <20260713112957.884640-1-lgs201920130244@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260713112252.GA3774971@google.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	MID_RHS_MATCH_TO(1.00)[];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-273650-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-273648-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[lee@kernel.org,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[kernel.org,pengutronix.de,gmail.com,ffwll.ch,collabora.com,mediatek.com,lists.freedesktop.org,lists.infradead.org,vger.kernel.org];
+	FORGED_SENDER(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FORGED_RECIPIENTS(0.00)[m:chunkuang.hu@kernel.org,m:p.zabel@pengutronix.de,m:airlied@gmail.com,m:simona@ffwll.ch,m:matthias.bgg@gmail.com,m:angelogioacchino.delregno@collabora.com,m:ck.hu@mediatek.com,m:louisalexis.eyraud@collabora.com,m:dri-devel@lists.freedesktop.org,m:linux-mediatek@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:johan@kernel.org,m:lgs201920130244@gmail.com,m:stable@vger.kernel.org,m:matthiasbgg@gmail.com,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:bsevens@google.com,m:stable@vger.kernel.org,m:roderick.colenbrander@sony.com,m:jikos@kernel.org,m:bentiss@kernel.org,m:linux-input@vger.kernel.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lee@kernel.org,stable@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[kernel.org,gmail.com,vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ALIAS_RESOLVED(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 28A6A74A52B
+X-Rspamd-Queue-Id: 4C72E74A636
 
-[This time with the Stable Team included #fail]
+mtk_hdmi_common_probe() gets the DDC adapter with
+of_find_i2c_adapter_by_node() and registers a devm action to release the
+adapter device reference with put_device().
 
-> Stable Team,
-> 
-> > From: Benoît Sevens <bsevens@google.com>
-> > 
-> > The DualShock 4 HID driver fails to validate the num_touch_reports field
-> > received from the device in both USB and Bluetooth input reports.
-> > A malicious device could set this field to a value larger than the
-> > allocated size of the touch_reports array (3 for USB, 4 for Bluetooth),
-> > leading to an out-of-bounds read in dualshock4_parse_report().
-> > 
-> > This can result in kernel memory disclosure when processing malicious
-> > HID reports.
-> > 
-> > Validate num_touch_reports against the array size for the respective
-> > connection types before processing the touch data.
-> > 
-> > Signed-off-by: Benoît Sevens <bsevens@google.com>
-> > ---
-> >  drivers/hid/hid-playstation.c | 12 ++++++++++++
-> >  1 file changed, 12 insertions(+)
-> 
-> Could we have this in all branches up to and including linux-6.6.y please?
-> 
-> Upstream commit:
-> 
->   Fixes: 82a4fc463309 ("HID: playstation: validate num_touch_reports in DualShock 4 reports")
+The HDMI v2 remove callback also calls i2c_put_adapter() on the same DDC
+adapter. This is not paired with of_find_i2c_adapter_by_node(): it drops
+the adapter device reference before the devm action drops it again, and
+it also puts a module reference that was never taken.
 
+Remove the extra i2c_put_adapter() call and drop the now-empty HDMI v2
+remove callback. The common devm action releases the adapter device
+reference.
+
+Fixes: 8d0f79886273 ("drm/mediatek: Introduce HDMI/DDC v2 for MT8195/MT8188")
+Cc: stable@vger.kernel.org
+Reviewed-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+---
+v3:
+  - Add Reviewed-by tag from Johan Hovold.
+  - No code changes.
+
+v2:
+  - Drop the empty remove callback, as suggested by Johan Hovold.
+  - Mention that i2c_put_adapter() also drops a module reference that was
+    never taken.
+  - Fix the Fixes tag.
+  - Add Cc stable.
+
+ drivers/gpu/drm/mediatek/mtk_hdmi_v2.c | 8 --------
+ 1 file changed, 8 deletions(-)
+
+diff --git a/drivers/gpu/drm/mediatek/mtk_hdmi_v2.c b/drivers/gpu/drm/mediatek/mtk_hdmi_v2.c
+index 7bbf463056c9..ffe456238a2b 100644
+--- a/drivers/gpu/drm/mediatek/mtk_hdmi_v2.c
++++ b/drivers/gpu/drm/mediatek/mtk_hdmi_v2.c
+@@ -1499,13 +1499,6 @@ static int mtk_hdmi_v2_probe(struct platform_device *pdev)
+ 	return 0;
+ }
+ 
+-static void mtk_hdmi_v2_remove(struct platform_device *pdev)
+-{
+-	struct mtk_hdmi *hdmi = platform_get_drvdata(pdev);
+-
+-	i2c_put_adapter(hdmi->ddc_adpt);
+-}
+-
+ static const struct of_device_id mtk_drm_hdmi_v2_of_ids[] = {
+ 	{ .compatible = "mediatek,mt8188-hdmi-tx", .data = &mtk_hdmi_conf_mt8188 },
+ 	{ .compatible = "mediatek,mt8195-hdmi-tx", .data = &mtk_hdmi_conf_mt8195 },
+@@ -1515,7 +1508,6 @@ MODULE_DEVICE_TABLE(of, mtk_drm_hdmi_v2_of_ids);
+ 
+ static struct platform_driver mtk_hdmi_v2_driver = {
+ 	.probe = mtk_hdmi_v2_probe,
+-	.remove = mtk_hdmi_v2_remove,
+ 	.driver = {
+ 		.name = "mediatek-drm-hdmi-v2",
+ 		.of_match_table = mtk_drm_hdmi_v2_of_ids,
 -- 
-Lee Jones
+2.43.0
+
 
