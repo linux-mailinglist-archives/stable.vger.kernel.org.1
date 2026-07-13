@@ -1,188 +1,211 @@
-Return-Path: <stable+bounces-273863-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273861-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id /LDeICUGVWpCjAAAu9opvQ
-	(envelope-from <stable+bounces-273863-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 17:37:09 +0200
+	id GESeHZwDVWqfiwAAu9opvQ
+	(envelope-from <stable+bounces-273861-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 17:26:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCCF374D20C
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 17:37:08 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 694AE74D026
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 17:26:19 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=analog.com header.s=DKIM header.b=YM46QrAR;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273863-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-273863-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=analog.com;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=google.com header.s=20251104 header.b=kFt3PI1Q;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273861-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273861-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F08253051C69
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:21:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 75F643021146
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:19:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 920E93749F4;
-	Mon, 13 Jul 2026 15:21:17 +0000 (UTC)
-X-Original-To: Stable@vger.kernel.org
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B2693CF962;
+	Mon, 13 Jul 2026 15:19:33 +0000 (UTC)
+X-Original-To: stable@vger.kernel.org
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5237377EC3
-	for <Stable@vger.kernel.org>; Mon, 13 Jul 2026 15:21:15 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783956077; cv=none; b=CJSXkO4qx3CXRErlcguWoptKtutJilvai4NWgCS7r0Dhm9sjTZgNK0oFCLdGuu4wEfqMjXOyeKvOE2Bnawjf6XEVdaAuXmiAa/l62jzfJ00AzBrv2ivVBcAQbaCC8v1w71Yw3AARzODj6f0Wazxh9cDxg2/wbjkwzxvzMrICQy4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783956077; c=relaxed/simple;
-	bh=P9VdsfF8z3q0Uk1mscnPeVGuUtGpCeVajhPpCxRHHIE=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WIRZa7zcO0wOtk4ivDeVMuLbUH4mDQnMokjDANWnPM2qnFUhiCLmRq/hEXwSdNLgOagtuPc02QWn1qe7S4r8bYDDWkZ5N1IC8pcYWuj1Bm1Rd//eeQUoUHBMvaTPC+eSJE6QTbbN+TfHJ6XXq/4Lp0cj7IMOD7O0gIyLTDptoAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=YM46QrAR; arc=none smtp.client-ip=148.163.135.77
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66DFG2TM3993000;
-	Mon, 13 Jul 2026 11:21:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=fKctk
-	rASQeetK5K9tNmHrfKZuF44L4mxac57PJoTUKI=; b=YM46QrARCz0OQ/SvHFHSX
-	ahVO9c+oWqAJboZmq5mGo+OIoYgr68QlGkDymIz1dn8/IG3QnpFUUUMqD9w43TgY
-	RsV3083bE96Mwl5yx6KomnO2kuBk4qp268rH9WA+j/XEsRy/SQRbgd6bKQEEit9w
-	5kboumRh39WDTicuS2CR/jO3Z27wngzt4YKfQA4N4810aFBAm6zEgytBD8TstvpF
-	v+Ab0J6uijVEMEFGujsJUKyhxjDoZi3i+89Y3IYY8dMzzziIqHitMLNkVMOG/itx
-	uJahCfaZ5Bh9NneMhj8HkOKhIDtNkW8Rk/GnOT43ZNRyOLnGEPiOKXA1haJgwmGz
-	Q==
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 4fcx3qh1h9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 13 Jul 2026 11:21:13 -0400 (EDT)
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 66DFLClD034514
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 13 Jul 2026 11:21:12 -0400
-Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
- ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.37; Mon, 13 Jul 2026 11:21:12 -0400
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
- ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.37; Mon, 13 Jul 2026 11:21:12 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.2.1748.37 via Frontend
- Transport; Mon, 13 Jul 2026 11:21:07 -0400
-Received: from HYB-MkYHBcJRSnh.ad.analog.com (HYB-MkYHBcJRSnh.ad.analog.com [10.48.65.243])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 66DFKr1h021760;
-	Mon, 13 Jul 2026 11:20:58 -0400
-From: Liviu Stan <liviu.stan@analog.com>
-To: <stable@vger.kernel.org>
-CC: Liviu Stan <liviu.stan@analog.com>, <Stable@vger.kernel.org>,
-        "Jonathan
- Cameron" <jic23@kernel.org>
-Subject: [PATCH 5.10.y] iio: temperature: ltc2983: Fix n_wires default bypassing rotation check
-Date: Mon, 13 Jul 2026 18:16:13 +0300
-Message-ID: <20260713151613.93022-1-liviu.stan@analog.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <2026071327-overbook-grandly-b911@gregkh>
-References: <2026071327-overbook-grandly-b911@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DAFE381EBB
+	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 15:19:30 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783955972; cv=pass; b=JYiaZxSg7JpMfqus3U68wOSCz4I5jkU/WiTiIx86OSo8LNSkegaQQ/bpWr/TdMTVW9hTYlaKg1FvqyEXwIeANKRbmfzirHu48umcizTPX4mw55o3VH6fdxW/8jXAXBXamlKt7fJl7JoIGzLibDONemQdPxmNFMRPPNMPZUAKzFE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783955972; c=relaxed/simple;
+	bh=sEE3FMqOqkgJ0LjaW8o88lS57GWwQKCfWUiiHh0s0hA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hvYunOR1t9AfSlHoYJYdajvZxO0KvkmBTjWF9tDXV3S3ts/9rioTg9lN1aDLLU2LBhVrm9lfE33fL7LX1VW8q8Hbv4IXXECaac/QffdIeR8LHdxxm1n/0Rg/wgDqy7Z0dFBow/kkZZbJuKchdtOFsAuOdUUwnOazdcKKcTkX5Gk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kFt3PI1Q; arc=pass smtp.client-ip=209.85.208.52
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-698b78c05b0so5897a12.1
+        for <stable@vger.kernel.org>; Mon, 13 Jul 2026 08:19:30 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783955969; cv=none;
+        d=google.com; s=arc-20260327;
+        b=f3Zi3xxR720tJu5FYYK8dseaDXCPM1iN2Jka9hueIBFPT7LisvKvtLoUDVg3FdmO5Y
+         stTQ+aWeL3LPTGyLbYkVMaoOCjFRiH3L2zkNVxb95pJZV0nRuC4FNzKWBxTATtlba8Yb
+         jGI/Zqe4geMu/yerWlzY8xiqiUw5b/LkFL5L/O67eZJI03qDFMPSyCH08TZ2+9ALowt9
+         XgoJpFON66g4h+6NzhDeWNr5PAdyTaZDgQrWwjW/Ysc1YgqwI6Lt5SLaR5mxNWlerQ6L
+         UHULRddO8MHpkGswEKbGpVFHjS3SAKA1CcGfzkJUvzBKgievCWZdPP2R2qc2x3oVjwNa
+         jPfQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=FG71CBoheueQ+381OlVy9pD30LVk3nyO1mhdOYTqr5E=;
+        fh=0mlf7SB5gGQ8F5GZtaB3O5LjDeQG3chLQnYT5PIoP0E=;
+        b=QvhfD33nNYZMZuG0FymtbcVDX2nUQi551mfUKqAJIIogJhlag3f9YyZXEX9/g+PQWp
+         hAryi7gg6O+ue8/S/BH8ia185NcWNCVjeIbMrCQM7ix/aFh9dlexPbGR8WKp4Q799O/3
+         AxEpbmqVhlXGeUWVATuSoFhShw9CBsOUSDxekx1OBzI9s4klSN9GyJtMRy1QMCH7lyjR
+         +I7yNP1RfaWUKbCXpAQat6SGLTDfbseANFrPOJAHzj14Oc0zHYfGqIW2itbxCfHxTYFj
+         5QErP+LGYwkZviyzpsqfKPASApgQ0GiRz4/dMoYZFOtoGO0YiulZI0BM71gNgqqByqMr
+         TeHg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1783955969; x=1784560769; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=FG71CBoheueQ+381OlVy9pD30LVk3nyO1mhdOYTqr5E=;
+        b=kFt3PI1QZw9DhboebyXuep+pJfRL8F396BztJKrxxhrAeQxzZSE8ligQkAk4PSz8Vn
+         FKncFxU+Mu1cUE8efVmT9G01ku3WBjzY2BTMdSBUicG8paHVFxL2FoRCc7qNtIzQ6y69
+         RP3ATif6Ex4uJOnnZHOFLGjDX11p4vOK5kehWNBvDek6uLZz6p7c4K2KDWhhZ/32ut5b
+         MbXuqUXjyEaF/P0G7sqjWmcw2siHyneJ+HKJHyis1AkIMHQfcWhT1QU7KojlG6TQ22Rc
+         5uLEZe8mOUc2LNXkGtzf7sKVrxl5Z0WNBu5P/B/15BWYmBEcbTAR1V3JWFZmwvDBQd/h
+         +Zvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783955969; x=1784560769;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=FG71CBoheueQ+381OlVy9pD30LVk3nyO1mhdOYTqr5E=;
+        b=F2BAUnPKLM+fOXhmgW2eR6GbAf1yJ9TsRQEHOwI7IZjJcOroRPm/jcDOzDMA20peKt
+         5ISdGtwDnAS+H02MJJ+CdIHQXCHH5PzMsW++SCPLASgFoL2oS665mdlS7lS5Bfd2Pj4w
+         FwZoIB/lo38s3zqFAyTzJhmBC4tLsrVsREtGNLpUNqtsI1Ao3yG0+fwVmxhrdKr938W/
+         kQS+kNuX2BsxE0Lj20Md4QdR6NEOq/yR3cqm+rAvMnjQifd+Ct1mCF2iHlYMHw0/O86t
+         VUlkpz5tgiDMAONlowdF9pQF2tdvV+CFjwkvkLtQy8YgJbZMK+ttDOJot2BauzxpifT5
+         sU3Q==
+X-Forwarded-Encrypted: i=1; AHgh+RrKDLdc4VvQeR8cmEikBcVK3qD3aheDcMvG8GoE4rCCMfZPh/DuMp4y96zqc6pPRN5CzbHeuxo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy0RE/ZtVMThhJun+fPpPeu+dUDdRXttZWJjogH4VCzJqvl7DBf
+	wLq+mARcLqoqD4vboPgxjP/4eV0BHUxtP85Ne9mNNVXNRsjt3A28P5giRwVTJxtt3+PdBky9lp/
+	0NE4wFWXOiuvcIfInDLj/zNyV/vmWq61z5y5Tzfqr
+X-Gm-Gg: AfdE7ckJtVANLNGJomXcRS96p+3I8q1oidpkUsiZXzIrH/7s/b9phGZdRgf0rHSFBfK
+	G6gPIhaW4WVQgmh/+Tka2zVgIsRS/hDvU7pF3tSknStxGWXwWbXMtoaoSzgCt+d5CNSIJx0vR+j
+	TL/YWZXkjdhiH5D0/bDdsF7TvcyUBTUsmOeA1qNWmTJ7ZN7ifkawq8TS/vhuD6H2mQr4s4aqJl4
+	M7fJsdqEEEWSyr24Ntr1/1V5yNt0viQbpbfqr/KVjFdDyKG4Lik9sC2ynPt4nSfoxb+VgY=
+X-Received: by 2002:a05:6402:5612:b0:697:be5e:3c26 with SMTP id
+ 4fb4d7f45d1cf-69ccf0e109dmr30478a12.7.1783955968197; Mon, 13 Jul 2026
+ 08:19:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Authority-Analysis: v=2.4 cv=cqirVV4i c=1 sm=1 tr=0 ts=6a550269 cx=c_pps
- a=3WNzaoukacrqR9RwcOSAdA==:117 a=3WNzaoukacrqR9RwcOSAdA==:17
- a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=0sLvza09kfJOxVLZPwjg:22
- a=uXIjobp8t2wMuQ0fPvqm:22 a=gAnH3GRIAAAA:8 a=VwQbUJbxAAAA:8
- a=itsfFgpfY7t2nVq4jXIA:9
-X-Proofpoint-GUID: vTuxlJMbtsow36mdOgwBI9XmlIFsTyb6
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzEzMDE2MCBTYWx0ZWRfX4PnlP+AjD/J3
- L/BTfChtfHvdg5EiN/IJxmmRqweBmoLQpGdj9fsrxX4OVxnq1kWYUC5rEVxQkNudQVW6kX4LIST
- iIRhAvqAX62/JOHeI+VkxQg+DJ92cGiJD/AoZt+ItdWRNH5ffvVwsP6H4UCnPyASnrNI7ssMhWK
- cExPYNKE8czESX6LQ0Kdv+yaZWAN3PN5pBMJE2lx6Ec7t5FzMg3CGQvRfAOGp6IZYgwv7h8Oi9Z
- 6pdm4RMtBpoED13c27sG02nt0PiU9Huc+JWa6HlAC6/01Tnqy80DbH3U4cRmwBcgCLOpDCYfL6y
- B2rMu89t42kb6Na80Ui79imasxF2IKsTriUpCGUBDjonSLwkLXS/E8A96QVyvl16RgogeYddae5
- K3baXE62WLXWWEy/Kl6ugiUvDW1CYEUqc+pJHRvON9C4UfM70ujvhSpufHLYwO+GjN7RC1gq56X
- vUBfMIK0TlYfTDTr27w==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzEzMDE2MCBTYWx0ZWRfXzpqj4ceSjFD/
- QhzQFi1CLyMsmtFc0bzf9orlFiIUNlDNrOwVEpFkI3DU8k16XmUTEPLXghzKfWecJ3c9cqPBDwV
- JWmuO8w0E1nycAZyfeYy9qGxO9BQ/KkIPQzH8Phm/HMS4HMXuUmt
-X-Proofpoint-ORIG-GUID: vTuxlJMbtsow36mdOgwBI9XmlIFsTyb6
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-13_04,2026-07-10_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 priorityscore=1501 malwarescore=0 spamscore=0 lowpriorityscore=0
- impostorscore=0 bulkscore=0 suspectscore=0 clxscore=1011 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607130160
+References: <20260712174619.3553231-1-tj@kernel.org> <20260712174619.3553231-2-tj@kernel.org>
+ <alTsERFTlUKCLw4C@matt-Precision-5490>
+In-Reply-To: <alTsERFTlUKCLw4C@matt-Precision-5490>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Mon, 13 Jul 2026 08:19:12 -0700
+X-Gm-Features: AUfX_mwJphU_f7-jLqu_Z_Ua6JyGkcwumDuVDobQYNKxyxoqyxOYbk8wQ-qoTzY
+Message-ID: <CAJuCfpGAx3t_ur3gkpvr8uxooM5=1pbA+ap_qtUvu=CjNzaYzQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] sched/psi: Create the psimon kthread outside of cgroup_mutex
+To: Matt Fleming <matt@readmodwrite.com>
+Cc: Tejun Heo <tj@kernel.org>, David Vernet <void@manifault.com>, Andrea Righi <arighi@nvidia.com>, 
+	Changwoo Min <changwoo@igalia.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Edward Adam Davis <eadavis@qq.com>, 
+	Chen Ridong <chenridong@huaweicloud.com>, Zhaoyang Huang <zhaoyang.huang@unisoc.com>, 
+	"ziwei . dai" <ziwei.dai@unisoc.com>, "ke . wang" <ke.wang@unisoc.com>, 
+	Matt Fleming <mfleming@cloudflare.com>, sched-ext@lists.linux.dev, 
+	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	kernel-team@cloudflare.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[analog.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[analog.com:s=DKIM];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-273863-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:matt@readmodwrite.com,m:tj@kernel.org,m:void@manifault.com,m:arighi@nvidia.com,m:changwoo@igalia.com,m:hannes@cmpxchg.org,m:peterz@infradead.org,m:eadavis@qq.com,m:chenridong@huaweicloud.com,m:zhaoyang.huang@unisoc.com,m:ziwei.dai@unisoc.com,m:ke.wang@unisoc.com,m:mfleming@cloudflare.com,m:sched-ext@lists.linux.dev,m:cgroups@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:kernel-team@cloudflare.com,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-273861-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:liviu.stan@analog.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[liviu.stan@analog.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[liviu.stan@analog.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[analog.com:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,analog.com:from_mime,analog.com:mid,analog.com:email,analog.com:dkim];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER(0.00)[surenb@google.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[kernel.org,manifault.com,nvidia.com,igalia.com,cmpxchg.org,infradead.org,qq.com,huaweicloud.com,unisoc.com,cloudflare.com,lists.linux.dev,vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[surenb@google.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[google.com:+];
+	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[10]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp,qq.com:email,cmpxchg.org:email,readmodwrite.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DCCF374D20C
+X-Rspamd-Queue-Id: 694AE74D026
 
-When adi,number-of-wires is absent, n_wires is left at 0. The binding
-documents a default of 2 wires, matching the hardware default. However
-the current-rotate validation checks n_wires == 2 || n_wires == 3, so
-with n_wires = 0 the guard is bypassed and adi,current-rotate is accepted
-for a 2-wire RTD.
+On Mon, Jul 13, 2026 at 6:48=E2=80=AFAM Matt Fleming <matt@readmodwrite.com=
+> wrote:
+>
+> On Sun, Jul 12, 2026 at 07:46:18AM -1000, Tejun Heo wrote:
+> > a5b98009f16d ("sched/psi: fix race between file release and pressure wr=
+ite")
+> > made pressure_write() hold cgroup_mutex across psi_trigger_create(), wh=
+ich
+> > forks the psimon kthread for the first rtpoll trigger. As kthread creat=
+ion
+> > depends on the whole fork path, the commit inadvertently created a lot =
+of
+> > unwanted locking dependencies from cgroup_mutex.
+> >
+> > sched_ext got hit by one: its enable path blocks forks and then grabs
+> > cgroup_mutex, so a pressure write racing a scheduler enable deadlocks, =
+with
+> > every other fork piling up behind.
+> >
+> > Fix it by splitting trigger creation so that the worker is forked with
+> > cgroup_mutex dropped and the kernfs active reference left broken. The l=
+atter
+> > matters because rmdir and cgroup.pressure writes drain active reference=
+s
+> > under cgroup_mutex. Publishing the trigger last keeps error reporting
+> > synchronous and preserves the of->priv lifetime rules.
+> >
+> > The trigger registered in the first stage pins the group's rtpoll machi=
+nery
+> > across the unlocked window, leaving only creation races to resolve. The
+> > catch-up poll on installation covers scheduling attempts dropped while =
+there
+> > was no worker.
+> >
+> > v2: Retagged sched/psi (was cgroup).
+> >
+> > Fixes: a5b98009f16d ("sched/psi: fix race between file release and pres=
+sure write")
+> > Cc: stable@vger.kernel.org
+> > Cc: Johannes Weiner <hannes@cmpxchg.org>
+> > Cc: Edward Adam Davis <eadavis@qq.com>
+> > Cc: Chen Ridong <chenridong@huaweicloud.com>
+> > Reported-by: Matt Fleming <mfleming@cloudflare.com>
+> > Closes: https://lore.kernel.org/all/20260710100441.2653477-1-matt@readm=
+odwrite.com/
+> > Signed-off-by: Tejun Heo <tj@kernel.org>
+> > ---
+> >  include/linux/psi.h    |  4 ++-
+> >  kernel/cgroup/cgroup.c | 23 +++++++++++++-
+> >  kernel/sched/psi.c     | 69 ++++++++++++++++++++++++++++++++----------
+> >  3 files changed, 78 insertions(+), 18 deletions(-)
+>
+> Tested-by: Matt Fleming <mfleming@cloudflare.com>
 
-Initialize n_wires = 2 to match the binding default and ensure the
-rotation check fires correctly when the property is absent.
-
-Fixes: f110f3188e56 ("iio: temperature: Add support for LTC2983")
-Signed-off-by: Liviu Stan <liviu.stan@analog.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <jic23@kernel.org>
-(cherry picked from commit 434c150752675f44dc52c384a7fa22e5176bc35a)
-Signed-off-by: Liviu Stan <liviu.stan@analog.com>
----
- drivers/iio/temperature/ltc2983.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/iio/temperature/ltc2983.c b/drivers/iio/temperature/ltc2983.c
-index b2ae2d2c7eef..2fafd9040ad8 100644
---- a/drivers/iio/temperature/ltc2983.c
-+++ b/drivers/iio/temperature/ltc2983.c
-@@ -697,7 +697,7 @@ static struct ltc2983_sensor *ltc2983_rtd_new(const struct device_node *child,
- 	int ret = 0;
- 	struct device *dev = &st->spi->dev;
- 	struct device_node *phandle;
--	u32 excitation_current = 0, n_wires = 0;
-+	u32 excitation_current = 0, n_wires = 2;
- 
- 	rtd = devm_kzalloc(dev, sizeof(*rtd), GFP_KERNEL);
- 	if (!rtd)
--- 
-2.43.0
-
+Acked-by: Suren Baghdasaryan <surenb@google.com>
 
