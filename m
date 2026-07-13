@@ -1,178 +1,141 @@
-Return-Path: <stable+bounces-273843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273844-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id mEevBY7xVGrVhgAAu9opvQ
-	(envelope-from <stable+bounces-273843-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 16:09:18 +0200
+	id rWHHLM30VGrchwAAu9opvQ
+	(envelope-from <stable+bounces-273844-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 16:23:09 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F0E774C26B
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 16:09:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 031B574C55F
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 16:23:09 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=K198PuNm;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273843-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-273843-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E2Ea1hUg;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273844-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-273844-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9F2573088373
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 13:59:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 748A8338E935
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 14:03:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E29943B488;
-	Mon, 13 Jul 2026 13:58:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D82BF439014;
+	Mon, 13 Jul 2026 14:02:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E720438007;
-	Mon, 13 Jul 2026 13:58:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DA3343712D;
+	Mon, 13 Jul 2026 14:02:08 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783951129; cv=none; b=E6DXqK+D6L1W86Vak/JeFR8lQq07QMH0Hco5uW/Xwzcz/2Zm5pVCFKMyCbbmUsOyymiW45cTfPVD3wPywqG5+yD6UoyBowuMhz/WKqahK063OJxU+eLCfQKux3/WXf39RCcWOg8Yt7axN9ouEgOe5M4eTC3zver4aSPUJuz0PDc=
+	t=1783951329; cv=none; b=VBmEeGYIm3GPiaRzUnYItSm6zyTvnbyk/tEf5RiD/v+GrJPg+xlN3SFTt9RIYmSzB3CZ/J4jJ55XyPpFIWOfHHKwwKTGGW6DIx9+zqIHwudpBfV1UjqlzhbjCu3ugrLhB+X5wZnCC2ax8ClKyiF5hsJ7pPNyDhcwDz4TXRKzNX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783951129; c=relaxed/simple;
-	bh=5ScejZ7WR20mP7M32rQjyj8bSoc3hvLkckL0qcqy7ww=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rj2uGeA0S8ZDCbZPwbhraYqmxKnJK34LbJSdOPIZrt8Nc8kVZ6lXssvu4aNHRps7IAwS3SFFBVwNYHj0YRGDia2qVR3YShLEfzm5wLfVh6AHise+WyNGCWxg0+7zbAcETBmTSjShM1S+ClAsUFN/i20cnDMdR3BwsqGWii8KEw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K198PuNm; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 513471F000E9;
-	Mon, 13 Jul 2026 13:58:47 +0000 (UTC)
+	s=arc-20240116; t=1783951329; c=relaxed/simple;
+	bh=rAoflZ7dU2zWOKzTwefMVaAJ9I7PYu3c3DG0uX0OyiY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QI297dZ3FC2QPydeDukH30ObbbXpGm1brsL/pNLaIEZDz8iwguHW3DiMVnuh0vz6Y2fScGVaR0XAfuiRg/XNteVruZDgVNbBvTqmcjZLPYAz4/H/Vg8bDayI24Ck3VhO1tNRrj/yVcUPudQVEpOLTwPbrtgbpnrURvmZmkgKQVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E2Ea1hUg; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A5531F000E9;
+	Mon, 13 Jul 2026 14:02:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783951127;
-	bh=MTFa+hpzXfcfyF1zP3rvNz2Fhu2Cffg36gE6sioOaYQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=K198PuNm525azO9JOEGv+kYtKZf9GL5saEoMnfwLfy+QoVvf3M61SFFj9Ca/kvdOi
-	 VNY6nNIHsGF9lg6m6lqNuukfbHXvnSjaHO9YU6+vcHqg9ZdMcecBXajrDGxgE/s2g4
-	 l0Wt/AKMPXEfe93V9qTx55JGD7KTaF8fpcH+sjIBHom4GIVw4m0pnTJMdiz9Tu3W3n
-	 gTdjeVBMURLeaBsAeoG7+hfOfpXTA/PkLpa40PYH/h1vpDWwT4A2sPxsSgny4eCYQE
-	 iR6FlfA4UqD/vJnw7VcrrLV9Dr82Gl6cOq7kSKZwgg8bJwCf+62WBbXPZgrqMDDbW1
-	 rPBXT5uQWgmYA==
-From: SJ Park <sj@kernel.org>
-To: 
-Cc: SJ Park <sj@kernel.org>,
-	stable@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC PATCH v1.2 4/5] mm/damon/paddr: drop last same folio access check reuse optimization
-Date: Mon, 13 Jul 2026 06:58:35 -0700
-Message-ID: <20260713135838.32730-5-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260713135838.32730-1-sj@kernel.org>
-References: <20260713135838.32730-1-sj@kernel.org>
+	s=k20260515; t=1783951328;
+	bh=VHWWX3igIqoXlkJhrdkPaM1ZU2q8wVQ+l2OU8Gbgv7I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=E2Ea1hUgzgQf/KfQ2FGfuS8rdPCCpAQbyalFan22o6o8Dmf+69zVGJsG8DinLoq7y
+	 41e/rNM5YeoOIzb0+i5EYATrxa6PYu3q0GsiBSLIeOadnAS3r9XqFWFwVbgs8H4DOB
+	 o3I1nPQO8pt2QL2NvmUJLbgu9itj4tMeo0xg5gkWMRx4zG/rxi+rtYFMQxUxAdL5l7
+	 PXk6p+dT4HMddlUHt+rCbcfcpWnAzax/cBcf275RaY+WRfbWG7wPCFg+41KPmDmfNV
+	 exyhzzHVxlAVFjeKFQ/mFymX8n18ZYIOYFKY120cv/YWLqOpl2ozCR8CYhKq6ZCpfB
+	 qWkAuXNWJUASQ==
+Received: from johan by xi.lan with local (Exim 4.99.4)
+	(envelope-from <johan@kernel.org>)
+	id 1wjHEU-000000052Jh-01m8;
+	Mon, 13 Jul 2026 16:02:06 +0200
+Date: Mon, 13 Jul 2026 16:02:06 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Guangshuo Li <lgs201920130244@gmail.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] intel_th: Fix MSC output device reference leak
+Message-ID: <alTv3j9hIH2qjJ2Z@hovoldconsulting.com>
+References: <20260713120205.1003691-1-lgs201920130244@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260713120205.1003691-1-lgs201920130244@gmail.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
+X-Spamd-Result: default: False [-5.16 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FORGED_RECIPIENTS(0.00)[m:lgs201920130244@gmail.com,m:alexander.shishkin@linux.intel.com,m:gregkh@linuxfoundation.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-273843-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:sj@kernel.org,m:stable@vger.kernel.org,m:akpm@linux-foundation.org,m:damon@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:linux-mm@kvack.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[sj@kernel.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_SENDER(0.00)[johan@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-273844-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,hovoldconsulting.com:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8F0E774C26B
+X-Rspamd-Queue-Id: 031B574C55F
 
-It can race when multiple kdamonds are being used.  The problem from the
-race is doubtful, but the gain from the optimization is also doubtful.
-Simply drop the optimization in favor of code simplicity.
+On Mon, Jul 13, 2026 at 08:02:05PM +0800, Guangshuo Li wrote:
+> intel_th_output_open() looks up the output device with
+> bus_find_device_by_devt(), which returns the device with a reference that
+> must be dropped after use.
+> 
+> The reference is currently intended to be dropped from
+> intel_th_output_release(). However, a successful open replaces
+> file->f_op with the output driver's file operations before returning, so
+> close runs the output driver's release method rather than
+> intel_th_output_release().
+> 
+> For MSC outputs, close runs intel_th_msc_release(). That release path
+> only removes the per-file iterator and does not drop the device
+> reference taken by intel_th_output_open(), so every successful MSC open
+> leaks one device reference.
+> 
+> Drop the device reference from intel_th_msc_release(), which is the
+> release path that is actually used for MSC output files.
+> 
+> Fixes: 95fc36a234da ("intel_th: fix device leak on output open()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+> ---
+> v2:
+>   - Add Cc stable.
+>   - No code changes.
 
-The user impact is doubtfully trivial.  After all, this kind of
-interference can happen only by intentional user setup.  Even if it
-happens, it will be rare, and the consequence is degradation of the
-best-effort monitoring results.  No critical consequences like kernel
-panic or memory corruption happen.
+You forgot to remove the intel_th_output_fops release callback as I
+mentioned here:
 
-The race was discovered [1] by Sashiko.
+	https://lore.kernel.org/all/aktZDK0NZrTdEqOm@hovoldconsulting.com/
 
-[1] https://lore.kernel.org/20260621204050.10993-1-sj@kernel.org
-
-Fixes: a28397beb55b ("mm/damon: implement primitives for physical address space monitoring")
-Cc: <stable@vger.kernel.org> # 5.16.x
-Signed-off-by: SJ Park <sj@kernel.org>
----
- mm/damon/paddr.c | 20 ++++----------------
- 1 file changed, 4 insertions(+), 16 deletions(-)
-
-diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
-index b85f88a7a38f4..e4f98d67461f5 100644
---- a/mm/damon/paddr.c
-+++ b/mm/damon/paddr.c
-@@ -65,7 +65,7 @@ static void damon_pa_prepare_access_checks(struct damon_ctx *ctx)
- 	}
- }
- 
--static bool damon_pa_young(phys_addr_t paddr, unsigned long *folio_sz)
-+static bool damon_pa_young(phys_addr_t paddr)
- {
- 	struct folio *folio = damon_get_folio(PHYS_PFN(paddr));
- 	bool accessed;
-@@ -74,7 +74,6 @@ static bool damon_pa_young(phys_addr_t paddr, unsigned long *folio_sz)
- 		return false;
- 
- 	accessed = damon_folio_young(folio);
--	*folio_sz = folio_size(folio);
- 	folio_put(folio);
- 	return accessed;
- }
-@@ -82,23 +81,12 @@ static bool damon_pa_young(phys_addr_t paddr, unsigned long *folio_sz)
- static void __damon_pa_check_access(struct damon_region *r,
- 		unsigned long addr_unit)
- {
--	static phys_addr_t last_addr;
--	static unsigned long last_folio_sz = PAGE_SIZE;
--	static bool last_accessed;
-+	bool accessed;
- 	phys_addr_t sampling_addr = damon_pa_phys_addr(
- 			r->sampling_addr, addr_unit);
- 
--	/* If the region is in the last checked page, reuse the result */
--	if (ALIGN_DOWN(last_addr, last_folio_sz) ==
--				ALIGN_DOWN(sampling_addr, last_folio_sz)) {
--		damon_update_region_access_rate(r, last_accessed);
--		return;
--	}
--
--	last_accessed = damon_pa_young(sampling_addr, &last_folio_sz);
--	damon_update_region_access_rate(r, last_accessed);
--
--	last_addr = sampling_addr;
-+	accessed = damon_pa_young(sampling_addr);
-+	damon_update_region_access_rate(r, accessed);
- }
- 
- static unsigned int damon_pa_check_accesses(struct damon_ctx *ctx)
--- 
-2.47.3
+Johan
 
