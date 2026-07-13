@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-273743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273745-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id RcbgBmnqVGpqhAAAu9opvQ
-	(envelope-from <stable+bounces-273743-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:38:49 +0200
+	id U+VfCJfrVGrdhAAAu9opvQ
+	(envelope-from <stable+bounces-273745-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:43:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A991774BB45
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:38:48 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E56A74BC7F
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:43:50 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=g4hXlzuj;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273743-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-273743-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=QBoQymBb;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273745-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-273745-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 69BE63080CDD
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 13:25:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 63EA1317FDF1
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 13:26:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB64540E8E5;
-	Mon, 13 Jul 2026 13:24:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE2F54314A4;
+	Mon, 13 Jul 2026 13:25:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F100425CEA
-	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 13:24:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B229428475
+	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 13:25:19 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783949057; cv=none; b=ElJIm8Ajl2868crp858hYljPCJeEzEV42wyrKcNtxxLIWhFFWnO4tTBORDAcRL3SX0vguaDcbSyUsqo0MUmediI3XJHW/ze9rtLHBUrK9YnHpXqsNJE3OwDF368jTtVhfhn+NiXp/EvMMFbhoHQuisXCxWwB39GCBb3fNGXD4xk=
+	t=1783949120; cv=none; b=LUWVGhJVIrzhGqRBN1LwH0gSrmf81XpOzik2/NbOoLrfHY7DJjxYaaRkiUWQo8LxFhDdFRCR3Q/CDEdmFkDcIw6+jP+qBoU2+BfGtT2NCOp4HsB/Z3lk2ik0iZZSBOweuzw8IxMmbzQXP/O0VXmBt29c+4c0i2+4cojrjKM9WHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783949057; c=relaxed/simple;
-	bh=5TSmIGMenD0raIjHdK70kmxMGFXh/yUdweC2IqhsFb4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=SblP/J5ijMROno3s0nEEvs62sJRoabESsj1zoQ69EWq7T81j5VfeJX3J3X7hdrITNsRPShUPOj247KwRUKtvHTLfGdsCZ6U2U31JDx9mf1Mo9gxFzOlORXi9Eird5fvxebmk5TDugw7cd3DKk2FVKFHeVdsNv3D7N1okMe6+FeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g4hXlzuj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF8A41F000E9;
-	Mon, 13 Jul 2026 13:24:15 +0000 (UTC)
+	s=arc-20240116; t=1783949120; c=relaxed/simple;
+	bh=rCmNeJ3fKntfJYDAR1kUjXhn7U6wV7/uFEyA7+ArHIU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=lrtUA5phxkk4CTdkuDrqyOtIxK4aJrFoOnngHmJXMDloMYqso6KaRUyTshWkk43QFBkpaHUZFgJjQBb74OzW/ko69c1pJEIc7jZa6wXWyJb1lTNZTNLNa1y52tM/k+xifX15DioXFVsvlztlBHhjFBUBab6+inQARHhMjunjh9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QBoQymBb; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CFAD1F000E9;
+	Mon, 13 Jul 2026 13:25:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783949056;
-	bh=P2PgSODwZQaSXorYRRsJxfRDsw3O7Ru0Y5UdKQh4HsI=;
+	s=korg; t=1783949119;
+	bh=Szs3F1GHF8PwnsDdkYqIKlaNL2tBiqt/GmElz9lesjM=;
 	h=Subject:To:Cc:From:Date;
-	b=g4hXlzuj0ykkLrnZQ+sdqPQta/o82jrHv7VOpbwA1hH9L1eu42OkNbO6v1ttXFTrq
-	 C1KCo7RK5akNWq0XpKxhXnN5MAVc1T+yiE6bKpGqzDas7WxZqjBtQPjIyfzDNXo7gQ
-	 h9O94g5E0wUp4oGyInm0pN9QMAmOcMA+PBR7kswY=
-Subject: FAILED: patch "[PATCH] usb: typec: tcpci_rt1711h: unregister TCPCI port with devres" failed to apply to 5.10-stable tree
-To: mhun512@gmail.com,ae878000@gmail.com,gregkh@linuxfoundation.org,stable@kernel.org
+	b=QBoQymBbY41y+8wcj82O1bJb4vUaEQsehpCOADGNHuJw1DgdeaTssVWWW94V6JC8H
+	 Tb7CZ/7LrLjSwR8HJGQb368fYd/DMipf+2Wye98OcoS0ASHUZGXFp74oI+z3aNQKrN
+	 BGbxMphifwCqG3ooVt+I8kSd6kQLsclOa0MQal68=
+Subject: FAILED: patch "[PATCH] PCI: altera: Fix resource leaks on probe failure" failed to apply to 6.12-stable tree
+To: mahesh.vaidya@altera.com,mani@kernel.org,subhransu.sekhar.prusty@altera.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 13 Jul 2026 15:14:47 +0200
-Message-ID: <2026071347-polyester-drool-f66a@gregkh>
+Date: Mon, 13 Jul 2026 15:16:01 +0200
+Message-ID: <2026071301-yummy-panhandle-afe6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,54 +60,53 @@ X-Rspamd-Action: no action
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:mhun512@gmail.com,m:ae878000@gmail.com,m:gregkh@linuxfoundation.org,m:stable@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com,linuxfoundation.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-273743-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-273745-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:mahesh.vaidya@altera.com,m:mani@kernel.org,m:subhransu.sekhar.prusty@altera.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_NONE(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	FROM_NO_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,gregkh:mid,linuxfoundation.org:from_mime,linuxfoundation.org:email,linuxfoundation.org:dkim]
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:mid,vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,altera.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A991774BB45
+X-Rspamd-Queue-Id: 3E56A74BC7F
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x e8da46d99d3710106e7c44db14566bf9b57386b5
+git cherry-pick -x 7a94138caeb27f3c49c1dbd93bf422098925bb28
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026071347-polyester-drool-f66a@gregkh' --subject-prefix 'PATCH 5.10.y' 'HEAD^..'
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026071301-yummy-panhandle-afe6@gregkh' --subject-prefix 'PATCH 6.12.y' 'HEAD^..'
 
 Possible dependencies:
 
@@ -119,77 +118,101 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From e8da46d99d3710106e7c44db14566bf9b57386b5 Mon Sep 17 00:00:00 2001
-From: Myeonghun Pak <mhun512@gmail.com>
-Date: Mon, 6 Jul 2026 23:53:12 +0900
-Subject: [PATCH] usb: typec: tcpci_rt1711h: unregister TCPCI port with devres
+From 7a94138caeb27f3c49c1dbd93bf422098925bb28 Mon Sep 17 00:00:00 2001
+From: Mahesh Vaidya <mahesh.vaidya@altera.com>
+Date: Thu, 30 Apr 2026 13:43:30 -0700
+Subject: [PATCH] PCI: altera: Fix resource leaks on probe failure
 
-rt1711h_probe() registers the TCPCI port before requesting the interrupt
-and enabling alert interrupts. If either of those later steps fails, the
-probe function returns without unregistering the TCPCI port. The explicit
-unregister currently only happens from the remove callback.
+The chained IRQ handler is set during probe, but is only removed during the
+driver remove(). If pci_host_probe() fails, the handler and INTx IRQ
+domain remain set even though the devm-managed host bridge storage
+containing struct altera_pcie will be released, leaving the handler with
+a stale data pointer.
 
-Register a devres action immediately after tcpci_register_port() succeeds,
-so tcpci_unregister_port() runs on later probe failures and on driver
-detach. Drop the remove callback to avoid unregistering the same port
-twice.
+Interrupts are also enabled before pci_host_probe() is called. If probe
+fails after that point, the controller interrupt source should be disabled
+before the chained handler and INTx domain are removed.
 
-This issue was identified during our ongoing static-analysis research while
-reviewing kernel code.
+So set the chained handler only after the INTx domain has been created.
+Disable controller interrupts during IRQ teardown, and tear the IRQ setup
+down if pci_host_probe() fails.
 
-Fixes: 302c570bf36e ("usb: typec: tcpci_rt1711h: avoid screaming irq causing boot hangs")
-Cc: stable <stable@kernel.org>
-Co-developed-by: Ijae Kim <ae878000@gmail.com>
-Signed-off-by: Ijae Kim <ae878000@gmail.com>
-Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
-Link: https://patch.msgid.link/20260706145312.37260-1-mhun512@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c63aed7334c2 ("PCI: altera: Use pci_host_probe() to register host")
+Signed-off-by: Mahesh Vaidya <mahesh.vaidya@altera.com>
+[mani: commit log]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Reviewed-by: Subhransu S. Prusty <subhransu.sekhar.prusty@altera.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260430204330.3121003-3-mahesh.vaidya@altera.com
 
-diff --git a/drivers/usb/typec/tcpm/tcpci_rt1711h.c b/drivers/usb/typec/tcpm/tcpci_rt1711h.c
-index a8726da6fc71..20037ef130ca 100644
---- a/drivers/usb/typec/tcpm/tcpci_rt1711h.c
-+++ b/drivers/usb/typec/tcpm/tcpci_rt1711h.c
-@@ -295,6 +295,8 @@ static int rt1711h_sw_reset(struct rt1711h_chip *chip)
+diff --git a/drivers/pci/controller/pcie-altera.c b/drivers/pci/controller/pcie-altera.c
+index 3d3519b8d88f..76f3823d9613 100644
+--- a/drivers/pci/controller/pcie-altera.c
++++ b/drivers/pci/controller/pcie-altera.c
+@@ -864,8 +864,23 @@ static int altera_pcie_init_irq_domain(struct altera_pcie *pcie)
  	return 0;
  }
  
-+static void rt1711h_unregister_tcpci_port(void *tcpci);
++static void altera_pcie_disable_irq(struct altera_pcie *pcie)
++{
++	if (pcie->pcie_data->version == ALTERA_PCIE_V1 ||
++	    pcie->pcie_data->version == ALTERA_PCIE_V2) {
++		/* Disable all P2A interrupts */
++		cra_writel(pcie, 0, P2A_INT_ENABLE);
++	} else if (pcie->pcie_data->version == ALTERA_PCIE_V3) {
++		/* Disable port-level interrupts (CFG_AER, etc.) */
++		writel(0, pcie->hip_base +
++			  pcie->pcie_data->port_conf_offset +
++			  pcie->pcie_data->port_irq_enable_offset);
++	}
++}
 +
- static int rt1711h_probe(struct i2c_client *client)
+ static void altera_pcie_irq_teardown(struct altera_pcie *pcie)
  {
- 	int ret;
-@@ -340,6 +342,10 @@ static int rt1711h_probe(struct i2c_client *client)
- 	if (IS_ERR_OR_NULL(chip->tcpci))
- 		return PTR_ERR(chip->tcpci);
++	altera_pcie_disable_irq(pcie);
+ 	irq_set_chained_handler_and_data(pcie->irq, NULL, NULL);
+ 	irq_domain_remove(pcie->irq_domain);
+ }
+@@ -890,7 +905,6 @@ static int altera_pcie_parse_dt(struct altera_pcie *pcie)
+ 	if (pcie->irq < 0)
+ 		return pcie->irq;
  
-+	ret = devm_add_action_or_reset(chip->dev, rt1711h_unregister_tcpci_port, chip->tcpci);
+-	irq_set_chained_handler_and_data(pcie->irq, pcie->pcie_data->ops->rp_isr, pcie);
+ 	return 0;
+ }
+ 
+@@ -1019,6 +1033,14 @@ static int altera_pcie_probe(struct platform_device *pdev)
+ 		return ret;
+ 	}
+ 
++	/*
++	 * The chained handler uses pcie->irq_domain, so set it only after the
++	 * INTx domain has been created.
++	 */
++	irq_set_chained_handler_and_data(pcie->irq,
++					 pcie->pcie_data->ops->rp_isr,
++					 pcie);
++
+ 	if (pcie->pcie_data->version == ALTERA_PCIE_V1 ||
+ 	    pcie->pcie_data->version == ALTERA_PCIE_V2) {
+ 		/* clear all interrupts */
+@@ -1036,7 +1058,16 @@ static int altera_pcie_probe(struct platform_device *pdev)
+ 	bridge->busnr = pcie->root_bus_nr;
+ 	bridge->ops = &altera_pcie_ops;
+ 
+-	return pci_host_probe(bridge);
++	ret = pci_host_probe(bridge);
 +	if (ret)
-+		return ret;
++		goto err_teardown_irq;
 +
- 	ret = devm_request_threaded_irq(chip->dev, client->irq, NULL,
- 					rt1711h_irq,
- 					IRQF_ONESHOT | IRQF_TRIGGER_LOW,
-@@ -357,11 +363,9 @@ static int rt1711h_probe(struct i2c_client *client)
- 	return 0;
++	return 0;
++
++err_teardown_irq:
++	altera_pcie_irq_teardown(pcie);
++
++	return ret;
  }
  
--static void rt1711h_remove(struct i2c_client *client)
-+static void rt1711h_unregister_tcpci_port(void *tcpci)
- {
--	struct rt1711h_chip *chip = i2c_get_clientdata(client);
--
--	tcpci_unregister_port(chip->tcpci);
-+	tcpci_unregister_port(tcpci);
- }
- 
- static const struct rt1711h_chip_info rt1711h = {
-@@ -394,7 +398,6 @@ static struct i2c_driver rt1711h_i2c_driver = {
- 		.of_match_table = rt1711h_of_match,
- 	},
- 	.probe = rt1711h_probe,
--	.remove = rt1711h_remove,
- 	.id_table = rt1711h_id,
- };
- module_i2c_driver(rt1711h_i2c_driver);
+ static void altera_pcie_remove(struct platform_device *pdev)
 
 
