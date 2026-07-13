@@ -1,82 +1,82 @@
-Return-Path: <stable+bounces-273905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273911-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id RPBHKykhVWozkQAAu9opvQ
-	(envelope-from <stable+bounces-273905-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 19:32:25 +0200
+	id zWkcDkMhVWo6kQAAu9opvQ
+	(envelope-from <stable+bounces-273911-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 19:32:51 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C27374E095
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 19:32:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B83A374E0A7
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 19:32:50 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=0sec.ai header.s=google header.b=FD7eTgtL;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273905-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273905-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=0sec.ai header.s=google header.b=PXUAqGMG;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273911-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273911-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=none;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 93468303C2A9
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 17:30:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1D246304FA92
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 17:30:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0315348C42;
-	Mon, 13 Jul 2026 17:30:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB136349CCD;
+	Mon, 13 Jul 2026 17:30:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED0EF348C6A
-	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 17:30:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BAAF3491E1
+	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 17:30:36 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783963836; cv=none; b=hFSxZ3N/t1dVqiUlSv1dJWtzMHkaVzCE6mxkCtdig/0+sQj2cIBNXRTh99Z5oyaerJzSIFFztaq6lKNal7XDKy9fO5T7WszjVszR1H+1LxtXURPz6IMO88b8lblIRRAwtdj0qezLF1d1pdjdKaVOAswmMCdRujKAZKLgNL+dHBE=
+	t=1783963848; cv=none; b=mqBD/Aw2jk1E0dmo05ON6NGFGiBDr/impR/UaxdLPyPixx97kSGl2+dEBHD2yfjuKoEPN+6EFfrbcHoWpvQuo+HdtMiMUtC8hUiOUbofnf+05+xrCSfOIjUDzuZCF/YL+KzNuHOn1GD0mwtZ1IoUHreCgNNULtxrGEPZc4yXew0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783963836; c=relaxed/simple;
-	bh=PcyM4CQHbO5KMJ3N1bAHLttCr4/v1lxQVOiHVJpdnVc=;
+	s=arc-20240116; t=1783963848; c=relaxed/simple;
+	bh=1die7bI0OcCIcn1bppUSBazJU6X5SGKun1KXOThfxSQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NDiicGHfaKJywAOh8Uryl79MAQlfG7gzF4HwEBWaP5+IHxOlTguxW0JIXTfE5kUPk0G/fOcAiWnSW4o3rxCNRfIL41JRRHI8F0xX/I24Dszorqfd+Sjwfd2cQg7mL/QQZ/CwXOKPMFcd6kZzdRMkHTwdF4LpgNisbEU6qSVABG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai; spf=pass smtp.mailfrom=0sec.ai; dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b=FD7eTgtL; arc=none smtp.client-ip=209.85.128.53
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-493ce08a75bso13570725e9.1
-        for <stable@vger.kernel.org>; Mon, 13 Jul 2026 10:30:34 -0700 (PDT)
+	 MIME-Version; b=Gta8B6KrtferRPIRng7Np9rv+3cawv13MpEKauLb4seG0Jvmnpg127flbd1rgISfpwtXMDuzyIJAc/3dwBWW8evQww1y7jyvgRUTl8L5bFxMrC6WqReMfNPeuwnLfjX1bzzHIiS/h4Ae3ZcAlWxI8ae0KZiQR2i1OviwQMNQu08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai; spf=pass smtp.mailfrom=0sec.ai; dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b=PXUAqGMG; arc=none smtp.client-ip=209.85.128.42
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-493c52cde9eso30584705e9.3
+        for <stable@vger.kernel.org>; Mon, 13 Jul 2026 10:30:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=0sec.ai; s=google; t=1783963833; x=1784568633; darn=vger.kernel.org;
+        d=0sec.ai; s=google; t=1783963835; x=1784568635; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=h1VuKaNm+FCqQ0Qgm5d1hgzA1jRjKkQpwwjQu1kdhRU=;
-        b=FD7eTgtLx1xYBziB8cjCjHw76SBRlr5EkIuG2xN13drGz1IXuwzxKPCctip4XpOXV4
-         aZBb0cyoeQQzQUCQERwH4bn8alBHKHeFxDyMnlyKIW9IM3qfRUV27WsfDV0j7yd6K5Nd
-         jlDiXOzuyaCqZiMsBEnCUtBxqhW1JKlibPJvHBBNU34T4Ac4mYTWxjLwZ4G0hbMeH62i
-         tJbrphRTxiee6IAjM1IBZod6woMIaw89z/YHTXkPkLoJWhMJ8czVxl7TeSVrUaVGCQ51
-         5ukff30spfuF/bm6ueEPVvfuHjInhSpsdUOI3dKrI811q/CAtqsfRz0snTHMMsYGRMn2
-         UfFA==
+        bh=bhFRmtEAl63b5XEQYkBemzUeown6Ez5I0lj5DtalopQ=;
+        b=PXUAqGMGt9VdATqyXceiAh1SejsxG5hJ3b/DFrxKlOMynHIb7j1rxTZudsGZu6laFG
+         kTZRi1Ml3G7gDQXTgrjfd1oN+qZZBew6/oQSx+HuPI9tzzZ8eEtGJthJNn5yyZRbqefK
+         3nFkELcDsNxCOVAsDf4Er8Lx5trgNdtRM/+ZY419GOnhlbOVunb+itoM4Cwvhk4R2XtM
+         AAhDllS39/XpSku1k44zwf5qnP5+V79OJYzqTokB41U75PcEYq4WYD2q8pVYR92fz5pD
+         a6uTw7Vx+NkqjXk/tKcDqKqXdlL9MK+TJ5+TRcUG8OQipWT5o10Pm5878M0gVh0HttiB
+         A+ZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783963833; x=1784568633;
+        d=1e100.net; s=20251104; t=1783963835; x=1784568635;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=h1VuKaNm+FCqQ0Qgm5d1hgzA1jRjKkQpwwjQu1kdhRU=;
-        b=CKvkQ9wJ8CfEEXcAKDa6zmLZwPCcSwJCpdENN0ru45Z1BYiuX216cTYIB1XcP+WEAu
-         Yz972BwJlbqRABHJSPmufpQzk9tVg9A1k/ARmmBfIeOE9i4/1a1ROsnXPHag2kTeuOxs
-         gg2Ba2RF+1FmKlq4xxIWFmJhixBDLyM/rPXo8uZbgP2VfjejUcfxe87B+wWbAh98yD2I
-         Kw9x/R97egIkPLlAfRiKl7hihVQW+neTj7NyZXvb9h3tN6V5Mskm/otidiyTGxxKDmof
-         VbFp8RkOTcpTWTsdWUlVESLYD+MhgIAo1NfYqnAFcpLfRXkEa9S2AClii5nSJjftRB0l
-         w0EQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoRdQfwKKK1ttqS8eRxO7FX60R8qb70UOwybM+g1VuNvQGeA5NQPcMUgZPDSIyOBwBaOlslQ8k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzEIXvNFm6Dviik2A22iToDlGkKBUsxpkhkkotDzuj9CupJIOOa
-	e9BCqZLFrqxhDku71wOuEgHS8kw/2KUWW8kUUlTyZRUptJGEGX4UAW1fNc7jJKS5CWzO
-X-Gm-Gg: AfdE7cnakvDEHFhJnwIuQtTEZdacmFZWzMHDTcnpXOCjiwQGPwJ0W7Hd9bYPZsHGLDK
-	1P21gwPURmMjrJ54CDWF5nlvDyyd/5fycx5lqvdwiDVcgx8vb2CAzneY4wx70dFnGdxY/AfQZLh
-	MnJ1NjUiAtyP6KGwG25mEhGxEkIV+JmigzFk7WMMzMZpjNVoeGTeGJtmhqCNy9B3VS/ESEBs8iW
-	gz6bi2MGE1vgvO9NhBr5pU9WpJed9nZYldnz4tIZdl6fEZ6s0YOyuZIP7kYUkaDtBGgBYnuYDl0
-	pEH6Ea7qPr6wxApGMx6EyPjkCgbSDXbrCp3LnoAo6wZCXZ1ES1mSZ1P99KZuNWwKvli1JfIPx0+
-	mRB3v1A7ePAoHgXPU3jrs3jfWnrKbLSr8cDzN9Gtj1pcRfkkt22LUeX5VqVec2v4Gf3UikNtUev
-	t/+4G/Ge5sAs4ErAt6y+L2ktdlQd/q2YdDYVD9ICYByb9MysokT48rhFjTeD47WpsVPHcyaLct3
-	t19QmkaCAcPy7ntGovTDBUyidZXUE9ur//c5m/hKzVjrw==
-X-Received: by 2002:a05:600c:6303:b0:493:cfe8:5b36 with SMTP id 5b1f17b1804b1-495158c6a1bmr3362305e9.8.1783963833325;
-        Mon, 13 Jul 2026 10:30:33 -0700 (PDT)
+        bh=bhFRmtEAl63b5XEQYkBemzUeown6Ez5I0lj5DtalopQ=;
+        b=oVb2mPmxH+RjELKPhtd1OQMyPGyzn4Ze+MkjHSAH+dj/7O5qzeGaLL5gyr92L0nuNT
+         awTfLtxu7HWgILUAWyqwMnsIRhITCDqGy+fizWRhn2zU4+OFj8/E1Vcm7Kcg+I5RDYyD
+         OasVdNzqu/LF4hvW+LhCjuxFZv411ocqJtRik3ICsGPhYwLsTrjNa/N/Zn5tw5NWIltO
+         tT0shZFYw4ITk3CV1O2VKAQSVqvX+sCcUpEPCeMhbhyBo2stSP6a5YgLyvR84jFjrKU6
+         wgRbpVuES9wj6cjpE7ERI0K3KKe4vVmRUy0xwb5RjKkHUxcJY6ZQRlQnC44omeuJlujs
+         1h/g==
+X-Forwarded-Encrypted: i=1; AHgh+Rq/fd6ZMP1HT7shKPP+xI/1oe9isVfsopemIt3hEgfjv6q5Gu/YYlDwbPPvOJxSfxXDu1cyhD8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyWs1hobOJ4PM2DaVPf+sMeBauKUv7x4Q6Z7zKUoO+bGO7qGTU1
+	Z8AAldhWuls+wdLO4aLTS1w7zaiLMoXjViUc6g+1XaWcH/ffTvc6bKPmuqCueDsTMC85
+X-Gm-Gg: AfdE7clNKGhgX8rd5j5iLlBdlag305IzwfoqsEhw5GgITn4C6xLsJEDrxRKKKXqLP3O
+	Wcfr0J8e5AXkBIFOdkWfvcIGfrcK2LDURnfooqP8JMHG9LlPbeqU5gUSS0zBHS/Z+xJYZT7exq4
+	QjD6rsfIDUwrt9SNb+YLIREBp44rWopDbrI3y1kR85z8QEgsz0n3pW2U4AMOnIrwfM3OjsqQjYS
+	mDNmhapazV22hCMnSemll3yjVV5oFRum9K2Cg9QS03Nbcac/lThfuehvuqn2QfJMyedzpRv3swl
+	YHnvqAmCqU9ellY8I51VggxVBW+PnHUgA2dn5yTkanOLINfDuAXfjhpg34hK7XVMPZFsrws9zAD
+	76Z5h6TN4TwbQTllrZCbe/OBc0eCgraJhq2IlxQ2PfQb+k4xvLA/ik1PGtl5AY/xpOHhnhhTwPN
+	dBuq3bmXlJP3TLg+UkELLFXpne3/9g2P28lwXYDcIdSOdMA/pVQUsB2DbgGoQhujr7IxF/v2K9B
+	QyiFg71/vhso/wZfH4QHJ/EDezxZ1QMYzAajQroHiEBLg==
+X-Received: by 2002:a05:600c:8718:b0:493:c1a1:68f0 with SMTP id 5b1f17b1804b1-493f881f0f1mr96584005e9.20.1783963834676;
+        Mon, 13 Jul 2026 10:30:34 -0700 (PDT)
 Received: from PeakBook-Mini.tail8e484.ts.net ([178.197.218.188])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493f3a60404sm260075855e9.1.2026.07.13.10.30.32
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493f3a60404sm260075855e9.1.2026.07.13.10.30.33
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 13 Jul 2026 10:30:32 -0700 (PDT)
+        Mon, 13 Jul 2026 10:30:34 -0700 (PDT)
 From: Doruk Tan Ozturk <doruk@0sec.ai>
 To: Min Ma <mamin506@gmail.com>,
 	Lizhi Hou <lizhi.hou@amd.com>,
@@ -85,9 +85,9 @@ Cc: dri-devel@lists.freedesktop.org,
 	linux-kernel@vger.kernel.org,
 	Doruk Tan Ozturk <doruk@0sec.ai>,
 	stable@vger.kernel.org
-Subject: [PATCH 1/2] accel/amdxdna: reject user command submission without a command BO
-Date: Mon, 13 Jul 2026 19:30:28 +0200
-Message-ID: <20260713173030.87541-2-doruk@0sec.ai>
+Subject: [PATCH 2/2] accel/amdxdna: reject command submission on devices without a submit op
+Date: Mon, 13 Jul 2026 19:30:29 +0200
+Message-ID: <20260713173030.87541-3-doruk@0sec.ai>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260713173030.87541-1-doruk@0sec.ai>
 References: <20260713173030.87541-1-doruk@0sec.ai>
@@ -113,7 +113,7 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	RCVD_TLS_LAST(0.00)[];
 	DMARC_NA(0.00)[0sec.ai];
 	FORGED_SENDER(0.00)[doruk@0sec.ai,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-273905-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-273911-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FREEMAIL_TO(0.00)[gmail.com,amd.com,kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
@@ -131,28 +131,19 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,0sec.ai:email,0sec.ai:dkim,0sec.ai:url,0sec.ai:from_mime,0sec.ai:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[0sec.ai:email,0sec.ai:dkim,0sec.ai:url,0sec.ai:from_mime,0sec.ai:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1C27374E095
+X-Rspamd-Queue-Id: B83A374E0A7
 
-amdxdna_drm_submit_execbuf() passes the user-supplied command BO handle
-straight into amdxdna_cmd_submit() with drv_cmd == NULL. When the handle
-is AMDXDNA_INVALID_BO_HANDLE (0), the block that fetches job->cmd_bo is
-skipped, leaving it NULL, and no check rejects it on the user path (the
-!job->cmd_bo guard lives inside the != INVALID branch).
+amdxdna_cmd_submit() calls xdna->dev_info->ops->cmd_submit()
+unconditionally, but only aie2_dev_ops defines that callback.
+aie4_vf_ops (the AIE4 SR-IOV virtual function) does not, so a user
+AMDXDNA_EXEC_CMD ioctl on an AIE4 device reaches a NULL function-pointer
+call and oopses the kernel. AIE4 submits work through a mapped user queue
+and doorbell, not this ioctl path.
 
-The job is then armed and pushed to the DRM scheduler.
-aie2_sched_job_run() takes the drv_cmd == NULL path and calls
-amdxdna_cmd_set_state(job->cmd_bo) -> amdxdna_gem_vmap(NULL) ->
-to_gobj(NULL)->dev, a NULL pointer dereference in the drm_sched worker.
-A process with access to the accel node on a system with a probed AMD NPU
-can trigger a kernel oops with a single AMDXDNA_EXEC_CMD ioctl
-(cmd_handles = 0).
-
-Only internal driver commands (SYNC_DEBUG_BO / ATTACH_DEBUG_BO)
-legitimately pass AMDXDNA_INVALID_BO_HANDLE, and they always set drv_cmd.
-Reject the invalid handle for user submissions (drv_cmd == NULL) at the
-submit choke point so every user path is covered.
+Reject the submission early with -EOPNOTSUPP when the device provides no
+cmd_submit op, so the shared EXEC ioctl is a clean no-op on such devices.
 
 Fixes: aac243092b70 ("accel/amdxdna: Add command execution")
 Cc: stable@vger.kernel.org
@@ -160,30 +151,24 @@ Found by 0sec automated security-research tooling (https://0sec.ai).
 Assisted-by: 0sec:claude-opus-4-8
 Signed-off-by: Doruk Tan Ozturk <doruk@0sec.ai>
 ---
- drivers/accel/amdxdna/amdxdna_ctx.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/accel/amdxdna/amdxdna_ctx.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/drivers/accel/amdxdna/amdxdna_ctx.c b/drivers/accel/amdxdna/amdxdna_ctx.c
-index 8f8df9d04ec5..a5c8c2c4de6d 100644
+index a5c8c2c4de6d..bdbd3db12a6c 100644
 --- a/drivers/accel/amdxdna/amdxdna_ctx.c
 +++ b/drivers/accel/amdxdna/amdxdna_ctx.c
-@@ -603,6 +603,16 @@ int amdxdna_cmd_submit(struct amdxdna_client *client,
- 			ret = -EINVAL;
- 			goto free_job;
- 		}
-+	} else if (!drv_cmd) {
-+		/*
-+		 * Only internal driver commands (drv_cmd != NULL) may omit a
-+		 * command BO. A user command submission with the invalid handle
-+		 * would leave job->cmd_bo NULL and later fault when the scheduler
-+		 * dereferences it in amdxdna_cmd_set_state().
-+		 */
-+		XDNA_DBG(xdna, "Command BO handle required for user submission");
-+		ret = -EINVAL;
-+		goto free_job;
- 	}
+@@ -590,6 +590,10 @@ int amdxdna_cmd_submit(struct amdxdna_client *client,
+ 	int ret, idx;
  
- 	ret = amdxdna_arg_bos_lookup(client, job, arg_bo_hdls, arg_bo_cnt);
+ 	XDNA_DBG(xdna, "Command BO hdl %d, Arg BO count %d", cmd_bo_hdl, arg_bo_cnt);
++
++	if (!xdna->dev_info->ops->cmd_submit)
++		return -EOPNOTSUPP;
++
+ 	job = kzalloc_flex(*job, bos, arg_bo_cnt);
+ 	if (!job)
+ 		return -ENOMEM;
 -- 
 2.43.0
 
