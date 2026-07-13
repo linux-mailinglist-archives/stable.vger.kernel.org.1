@@ -1,149 +1,135 @@
-Return-Path: <stable+bounces-273938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273941-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id iRkqCX0oVWqfkgAAu9opvQ
-	(envelope-from <stable+bounces-273938-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 20:03:41 +0200
+	id v6obHM8qVWotkwAAu9opvQ
+	(envelope-from <stable+bounces-273941-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 20:13:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 702A774E458
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 20:03:40 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1FBE74E60B
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 20:13:34 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m+hoBfM1;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273938-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273938-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eoUiroz5;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273941-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273941-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1A5E2301CC25
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 18:03:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 27EDC30EBA96
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 18:09:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 247CB34EEFD;
-	Mon, 13 Jul 2026 18:03:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B63F35202C;
+	Mon, 13 Jul 2026 18:09:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53B65352010
-	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 18:03:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF677351C31
+	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 18:09:55 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783965816; cv=none; b=rutKZvpNshvl7kUshl+jGRhb5EVS3rczJecEBLadMmD9b323emSbfVIDOr2mARxm1kCzEKRulzv2z8Bax4DsKyKCtSFPQI+1r3xxlFl2wJpYS9ErWJHaKQh4hM1C9c0vYGp5qyqVCaz6kJXLILqfafI4HsMl+lwmJ13AiRo6crI=
+	t=1783966197; cv=none; b=kkOhLX7HSiIrs9w7je8jRPnVkQEbZjpMtqZL4XHxejdBIrsAvUhzM86NSs5w+FVhnh/4lcGMEQYxd6xuiy/g3DNFD47AlBndH3lLTaeAWgdwxMvAjOMRSyJiGlkhjd++ZUI+uOxDRhc7GLbg9LEuQR0Gk+36Ah4dO11gjIYsNn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783965816; c=relaxed/simple;
-	bh=nvgz8S/G4xOdrauZEYeH2t5Dk7LmnQ1Ehp6VPAXOSwE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RSCTAceKVntMp3BrZ/7cORGUe5n2q0q+mO8mR4E3WYdFOTEfo7uNe9RxgAV0XP/fNYiiEKHegCD/ear7TR+qgQsdB6WKV3yTsnwrZk+nsQwEfOWZif4Nf9V/h85K1gIRs/v8lGUPMXUBNKdiec1E8uSjEIjyJhP7AYXs92+7EkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m+hoBfM1; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 933831F00A3E;
-	Mon, 13 Jul 2026 18:03:30 +0000 (UTC)
+	s=arc-20240116; t=1783966197; c=relaxed/simple;
+	bh=AjgIWghdFYFTReALUR4dxHultO6p0oNeQVTcDBCXUS4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UbBpUKFrWEKJx62KlNOqV9T3LkeKLLOvHwJOV0Mhj/IluuoQAkVEOfkz1K/1Dh5VrLYXXnlGwJOenB3iVYvhMaxSXklfRXgOMKOKQ64igu549oczwGITzm81/9HqNBqM5n+24ATcaZsvHqUfcANO8FNcNYMYFPafMAQV4ymxdq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eoUiroz5; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9D281F00AC4
+	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 18:09:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783965811;
-	bh=vSteEKYmc5eOugLiHW+eDmg4kcFWdCcEVkfvQGQ+QvY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=m+hoBfM1L2Kg5h3zJtfRjT5eDW/EmMoEZRl/GJvDpaMcMDDlM0bc0wFiyLy09vxp5
-	 7r2m8HITVaNAhHFF8K3ZMtgdMr38K4aouFWGvJN1rH+G7Tw1cVX57GIUJ9RwZ6Ky/+
-	 UqkBS1jr8CaBpGdkO7I1osX4ZAex3aAmPPpG6LPK3ZwY2lQGd5rO0zh6T3mZh80BC0
-	 rpt3s5hyWPq1ZiK7ryWCWKghrBjvklczqG+FIyjCM3iDTp53b5AuBF0nZPV7kkKfFK
-	 J9euRFf2PHp7aCsT//qm8ILeg9b8Agn0gZQk7btUaTVB11NUh0xmVRZ3OYgqE20NNx
-	 gf08dOvDo5Eew==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Runyu Xiao <runyu.xiao@seu.edu.cn>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] iio: imu: adis: add IRQF_NO_THREAD to non-FIFO trigger IRQ
-Date: Mon, 13 Jul 2026 14:03:29 -0400
-Message-ID: <20260713180329.1923595-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026071352-yanking-dealer-b803@gregkh>
-References: <2026071352-yanking-dealer-b803@gregkh>
+	s=k20260515; t=1783966195;
+	bh=AjgIWghdFYFTReALUR4dxHultO6p0oNeQVTcDBCXUS4=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=eoUiroz5YNAKl0+zUVJM9l94tJfBzgqNLcB/VvHzuYLbsRqrqXoBYw5JXYxBOZEEd
+	 up7iFH4uAck8y9rwo3SjO7ni6Kn8Cvs7odcK1jOtN+Cryr+2DeZwJth7zoAOlTnoQN
+	 cyX29ypGs0lMj3yME+RveE4btqPKYnh+JlNxIk4TPCECItX/MDfI613LrNK5qLV08Z
+	 hiMJVoG0Kf3t7iKP9KfsZb7Um7d24F78uG8pEYDH2Jm4uL0LCWEp4DvOMMKI6lHWNL
+	 FCfzFCFDb7aiO2ZSAiAEV+W5tgd+61K/dvHg0EK6s82/5Kpg0lSl5cNjrIfWAPwbDN
+	 pV3vSBndRtqlA==
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-c15e03c2763so35331366b.0
+        for <stable@vger.kernel.org>; Mon, 13 Jul 2026 11:09:55 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+Ro0MZ5ssPWTKgM4pmzCZOfhD9Y30AWP0e+u8aOqeyzeVjl9Eo3hHqphfBEm/5OVU6hJyd3xS7Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy8p79NVdnk5eDCIzSWPQ+5Y/9JqiRJtB8jW7YRI3HhFzlJ7rzE
+	+QyzCyXpNI4/1UxkmoqU1vH+waoQz5VO+6Q56euwWKOOARcFxHwCizXijcZ1TNvRkRfWOL2mYHk
+	VA5wlTei4ZbnOOhnWNe/Jr1cNLuh/Lqs=
+X-Received: by 2002:a17:907:3e92:b0:beb:d461:7b09 with SMTP id
+ a640c23a62f3a-c161e89f210mr540204166b.11.1783966194573; Mon, 13 Jul 2026
+ 11:09:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260713180153.2728382-1-yosry@kernel.org> <20260713180153.2728382-2-yosry@kernel.org>
+In-Reply-To: <20260713180153.2728382-2-yosry@kernel.org>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Mon, 13 Jul 2026 11:09:42 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zPhmLNdVgyXib-P+Ge_KSp=a8gA3mLDcpjJ5br-eXpj8w@mail.gmail.com>
+X-Gm-Features: AVVi8CfA0knMptWzDciEPgOB08A5RKL7bIyn0rifQCDim0HLfgvv18cOw7GIMYw
+Message-ID: <CAO9r8zPhmLNdVgyXib-P+Ge_KSp=a8gA3mLDcpjJ5br-eXpj8w@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] KVM: x86: Check EFER validity on KVM_SET_SREGS*
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
+X-Spamd-Result: default: False [-5.16 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:runyu.xiao@seu.edu.cn,m:jic23@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-273938-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-273941-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:seanjc@google.com,m:pbonzini@redhat.com,m:kvm@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER(0.00)[yosry@kernel.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
 	DKIM_TRACE(0.00)[kernel.org:+];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[yosry@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,seu.edu.cn:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 702A774E458
+X-Rspamd-Queue-Id: B1FBE74E60B
 
-From: Runyu Xiao <runyu.xiao@seu.edu.cn>
+On Mon, Jul 13, 2026 at 11:02=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> wro=
+te:
+>
+> When handling userspace SREGS writes, check the validity of EFER (i.e.
+> allowed bits) before writing the new value of EFER through the
+> per-vendor set_efer callbacks. This prevents userspace from writing
+> bogus values (e.g. EFER.SVME=3D1 with nested=3D0).
+>
+> Note: on KVM_SET_MSRS, KVM only checks EFER validity in terms of KVM
+> caps, not guest caps, so it is possible to set EFER bits that are
+> supported by KVM but not by the guest CPUID. Potentially allowing
+> userspace to set msrs before CPUID.
+>
+> However, for KVM_SET_SREGS*, check the validity of the set bits against
+> both KVM and guest caps. This is consistent with other validity checks
+> (e.g. for CR4) that check validity against guest caps, which already
+> imposes the need to set CPUID before SREGS.
+>
+> Cc: stable@vger.kernel.org
+> Change-Id: I45701ec440e4fdd8f086eb70db0c0845fb0ed509
 
-[ Upstream commit 6e1b9bff1202da55c464e36bd34a2b6863d7fe30 ]
-
-devm_adis_probe_trigger() registers iio_trigger_generic_data_rdy_poll()
-through devm_request_irq() on the non-FIFO path, but it does not add
-IRQF_NO_THREAD to the IRQ flags.
-
-When the kernel is booted with forced IRQ threading, the parent IRQ can
-otherwise be threaded by the IRQ core and the subsequent IIO trigger
-child IRQ is then dispatched from irq/... thread context instead of
-hardirq context. Because iio_trigger_generic_data_rdy_poll()
-immediately drives iio_trigger_poll(), this violates the hardirq-only
-IIO trigger helper contract and can push downstream trigger consumers
-through the wrong execution context.
-
-Add IRQF_NO_THREAD on top of the existing adis->irq_flag value for the
-non-FIFO request_irq() path, while preserving the current trigger
-polarity and IRQF_NO_AUTOEN behavior.
-
-Fixes: fec86c6b8369 ("iio: imu: adis: Add Managed device functions")
-Cc: stable@vger.kernel.org
-Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
-Signed-off-by: Jonathan Cameron <jic23@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/iio/imu/adis_trigger.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/iio/imu/adis_trigger.c b/drivers/iio/imu/adis_trigger.c
-index f890bf842db86b..7e18b31f9d7770 100644
---- a/drivers/iio/imu/adis_trigger.c
-+++ b/drivers/iio/imu/adis_trigger.c
-@@ -79,7 +79,7 @@ int devm_adis_probe_trigger(struct adis *adis, struct iio_dev *indio_dev)
- 
- 	ret = devm_request_irq(&adis->spi->dev, adis->spi->irq,
- 			       &iio_trigger_generic_data_rdy_poll,
--			       adis->irq_flag,
-+			       adis->irq_flag | IRQF_NO_THREAD,
- 			       indio_dev->name,
- 			       adis->trig);
- 	if (ret)
--- 
-2.53.0
-
+Forgot to drop these, sorry :/
 
