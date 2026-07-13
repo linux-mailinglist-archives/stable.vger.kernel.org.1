@@ -1,193 +1,289 @@
-Return-Path: <stable+bounces-273773-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273777-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 86hDDRbrVGqphAAAu9opvQ
-	(envelope-from <stable+bounces-273773-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:41:42 +0200
+	id CfEeIz3tVGpxhQAAu9opvQ
+	(envelope-from <stable+bounces-273777-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:50:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8F4674BC01
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:41:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D08AD74BE2F
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:50:52 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b=A5n8TNgq;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=iYuywsQ7;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273773-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-273773-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=none;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=osqxt6al;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273777-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-273777-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=ibm.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C78703060D42
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 13:38:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A7B753055097
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 13:38:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE00842B73F;
-	Mon, 13 Jul 2026 13:38:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E604429827;
+	Mon, 13 Jul 2026 13:38:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from flow-b4-smtp.messagingengine.com (flow-b4-smtp.messagingengine.com [202.12.124.139])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 637B542CB12;
-	Mon, 13 Jul 2026 13:37:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADB9F25B0B8
+	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 13:38:52 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783949880; cv=none; b=DAS7QwnK86XBPFrWRGjt+P6LHwdMYS1oCdwQabN4AWyxjhj7aGh9/o2PG5VHwHgg8P23B52ULw9mxcFIz1tEmCdUjp5mHyltT+6EC5zubZwbvygCkEDiAX4oXet07wBb56s1iWbIUzgxdwvkBCFbh347xwan2xOnf4SjBjqCgLc=
+	t=1783949934; cv=none; b=q/JQOzqTxxPN/HD3bar2lPRdiiAOfIyV2q6uNGVhqqIc9W1QhRlYSc3Z/Yg6JthbqPmxTDIY1WcrQSM8rT0tICIG3V8q+6RrT07k/ZM9X6w/Xp8LykUiPfv37SwfwbxXRhW2uu7QE3kHp9S4Tl1Fwk1+GV0ZJVhqfAEhTve4eZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783949880; c=relaxed/simple;
-	bh=tPBPcSFLQf5NItfqN1fV4gsCU8J6WgHiYXr5nQtLJPc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pzt2p87XVSmwig+2vXNaFOaorwW3akyFBT2YJ2PJV8xPQj4vwbp0/xkjg1ZCSsLGRncN7GuCap5to8Eh/ApzN4URehrOH0q1Z4Z1ii1VTKuMcYqRjCXqcMwVJtocOX8tgpPAUKklzL0W1drm9Tz9e3KpZaqFKFunx//wt8aTMiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name; spf=pass smtp.mailfrom=shutemov.name; dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b=A5n8TNgq; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=iYuywsQ7; arc=none smtp.client-ip=202.12.124.139
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailflow.stl.internal (Postfix) with ESMTP id F2DA913000C4;
-	Mon, 13 Jul 2026 09:37:56 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Mon, 13 Jul 2026 09:37:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
-	:from:in-reply-to:message-id:mime-version:reply-to:subject
-	:subject:to:to; s=fm3; t=1783949876; x=1783957076; bh=dzTqBUl2eL
-	FYEhkrJ6M4erI1EUrg+fHBNBXuGqU63xc=; b=A5n8TNgqUZppV8a7BnSmMLEW9E
-	dkSQlRe6SEWKL59hNN7rIXYGYyxzjGbCW2Ao0DSnzZLfGFN/YYWPuDnC8jCYt6gP
-	/4zThlNsekmYHdbjMXE97AQZ45IbOPpRvB8Hx9crGDF3q1HeevwpSPokt8mTgCMT
-	iHBm9ErSOg0nAN6co1vBAp047j5nktnM+Vpc3J7GoRJdJx+J8TcL9HX1va0PgWST
-	A/Yx7R8Yv05tak4VJ21F6yYwNFbWiUeE7qvGNdXohSqNutGeiHEWe0vur29mueys
-	UHBrQYs6TBmGvHkn9b2MDM5dRrEzzG+Ww1N08OQeMo8rdYDNU7FNVZjaQ6tQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1783949876; x=1783957076; bh=dzTqBUl2eLFYEhkrJ6M4erI1EUrg+fHBNBX
-	uGqU63xc=; b=iYuywsQ7rorzH/gG9UJvq8B104L4PZqcgzrYmTdnZR7tq+LOSUL
-	nptOm+iAJHmplBjhAKF2VBEWzeBo3pz+gQH7tjZQafvvI8rI5W9pH1NZDf1F4Fhs
-	bDMPct1ZawHAYlmgXY3tjEsqclLJN5oAdb5c12vSOAmPYalR16gdGYUdDhafBe4/
-	bsIz1TqIVfv4VElPcRH/LmBZG0x1uIzyX2cpEGvZXWzv/9o3A5x21cebMAJuZxgu
-	f/CKBm8U2CCwK+n3J7YJLV1YPlzsWxSOT4FMEas6xEfP5D4wIIOpG8Mx5HU62D2n
-	0wS8Uv+XmVNVTbpnMFqSTuz/r7oJSgZEEjw==
-X-ME-Sender: <xms:NOpUarA8CkbVDT6mxQLl_qVIMiw89Bb4jCblRXLu8G9Zud1HGW4zbQ>
-    <xme:NOpUautNWq0LSgNo8EJvRv1IJ_D-cEvCIiEwl87Fxh2ShsO_WmUrWeqN7pyJjpERF
-    xUyxmrG2xJ9Pnzg2q3bmWKub8VI3FfqIqa9gniTgRArys0BefUFdu-c>
-X-ME-Received: <xmr:NOpUarHHz4facFzDgxA-8BCO8g5aZneqG06gBcnoXRn8PW4KHGtUxDvGCqSXtg>
-X-ME-Proxy-Cause: dmFkZTFB8CWiq131oKGJAq6ry3QIOKk4f8msJsEELyHZ2RUJCg85Wx+xqjmRp3VQJUxKRS
-    RBZokesNlsIXQCdluz0As3UKcpg6hDo+dNM49VZC+6CT6SF3LoygdiHlkX/y15SWgBIQSC
-    io/E8X3ZB06zJlpPy7C0I7H//Q981rJqdqbjOJpEUqa2XvpgYz6NecariubYX1mVfLggwp
-    zwGRdaOTu3xqHK3mkhEih40z8RGyjuVF1JdTgrbMFMf9YN5EFJSGWZyM7e/7xAoURzJQZZ
-    C4h2HNPGYPQN1Zh+Wk90LmGLqX/zsNIXnAEc/Bl7xzrrqVDkIscLsyUS+kYgiHayJwcVHq
-    VGV9nR6RzhX48H7XqdwZG+pPtUxV/zUgYjmtYdDhQ/SKySu/xdilUIKEorLmZ3kpJIbAam
-    S65Rvokmqvt1PPaXwedU7TKZQZGVF/YXFcGRD3+bdFC6QUV4pbigyxWxin9FZ7fnYjvJ0L
-    114YNILkgvQkefDfs45Zz2EdUXOB9wRhlnyNHDAcSKXNvMb6M8Bgl6yRTruaAgib6NsxQ/
-    du4obEl8BtcpYyAu25Aja1XDPu392Y453pCztfkSI+oc3EgoUDHgX+7eH/U+VGg93Vn+3/
-    Oa/ubTLE+WjGWqbBn45X3SSgmUnD6N+kRVM8bt+DsMC4lUoGglsE7pLA+uOQ
-X-ME-Proxy: <xmx:NOpUap8T1iuQg4_xtrGgoeLMz7Nh6x0L7J-stSNZZF0mTHV5lHJhVw>
-    <xmx:NOpUahMaHV_O7LUg8PlgzQldFedQkfOpbqkhxRe5-hdO4IW3HOdWiQ>
-    <xmx:NOpUavjSZu53Vz-xU0ZojWcRh1331WI50Htdi_sucemoVT83g1U-3A>
-    <xmx:NOpUagRA7T1u6PeJfoVe0rBEQrMOeOvxkpI2hgaz2pb4HcUOKNtCCQ>
-    <xmx:NOpUakY8Z5D3HkXFrvS40mwvqmJUnUCQJKCT6uhOq1_7lzMZgcHAMarl>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 13 Jul 2026 09:37:55 -0400 (EDT)
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	x86@kernel.org
-Cc: Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Kai Huang <kai.huang@intel.com>,
-	Xiaoyao Li <xiaoyao.li@intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Binbin Wu <binbin.wu@linux.intel.com>,
-	David Laight <david.laight.linux@gmail.com>,
-	Andi Kleen <ak@linux.intel.com>,
-	Dan Williams <djbw@kernel.org>,
-	Borys Tsyrulnikov <tsyrulnikov.borys@gmail.com>,
-	kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	"Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Subject: [PATCH v6 0/3] x86/tdx: Fix port I/O handling bugs
-Date: Mon, 13 Jul 2026 14:37:50 +0100
-Message-ID: <20260713133753.223947-1-kirill@shutemov.name>
-X-Mailer: git-send-email 2.54.0
+	s=arc-20240116; t=1783949934; c=relaxed/simple;
+	bh=VNJ+aQGkfU0BlfZtvrfPEZeQ86VyfkR7rVu407KYYqo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eHorF9r2+TRUO33GzZRw/k5X0ZQz+EahSKkk/8dYVznOlazI6NR8GX/CH+lWa55qzqBHjgT8jsD/oQnOZjYRTEXpmcuxz2X1ME3nh9nqpL9k2BlrYruMgQtRCqxt5Pbmm8HtuvHp8qc/3w0Zn9mms6hq/dYhSoGeyPgKE9pttpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=osqxt6al; arc=none smtp.client-ip=148.163.156.1
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66DCDH4j2437906;
+	Mon, 13 Jul 2026 13:38:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=QDT6Nx
+	UXtQ0d7xpPP4Zq7vIAgPv2bMd/AWmrj8RSsp0=; b=osqxt6al24b5Ab5z3NPTRc
+	sQUUDJIpfcrYtMYlCXYdx6gBifAx0jP9f3UEn7c7Mk+Tt8NK4mrCrsn8NUVjSgWA
+	+GScONzIT7Ta0DRYcC34/XDLdff4CvNgRg5p+OPWFDtfcJwFTKtczOnmpfINuvl7
+	qiQZzerr8e1PzWIOf1on5oG+NshlNOJ+1BINMXl1sxbGcvLR1HaaxOXMpxWCO0T7
+	Jaxec/QAySgbvbWlrg4KZmqheQ2mGAq3eueRNB6BGb7RKSZwlBdniLnYb9O37OdF
+	A49xN6BrypyhHJWHy+YgkitdNvOaj9OQzp+VbQPhwfIhzY9m2cGp/EtIg7PYKIQg
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fbepx8v75-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 13 Jul 2026 13:38:41 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66DDYlq8024929;
+	Mon, 13 Jul 2026 13:38:40 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fc2uxwjud-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 13 Jul 2026 13:38:40 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66DDcaLe30736916
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 13 Jul 2026 13:38:36 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B212420043;
+	Mon, 13 Jul 2026 13:38:36 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D16C820040;
+	Mon, 13 Jul 2026 13:38:33 +0000 (GMT)
+Received: from [9.123.14.142] (unknown [9.123.14.142])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 13 Jul 2026 13:38:33 +0000 (GMT)
+Message-ID: <eaf57ed1-216c-4ccf-9418-d3ac3e32f078@linux.ibm.com>
+Date: Mon, 13 Jul 2026 19:07:51 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/3] powerpc/crash: stop watchdogs before booting kdump
+ kernel
+To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+        linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com, mpe@ellerman.id.au
+Cc: npiggin@gmail.com, chleroy@kernel.org, shivangu@linux.ibm.com,
+        hbathini@linux.ibm.com, mahesh@linux.ibm.com, adityag@linux.ibm.com,
+        venkat88@linux.ibm.com, stable@vger.kernel.org,
+        Mahesh Kumar G <mahe657@linux.ibm.com>
+References: <20260713035954.1559605-1-sourabhjain@linux.ibm.com>
+ <20260713035954.1559605-4-sourabhjain@linux.ibm.com>
+ <o6gbv5jl.ritesh.list@gmail.com>
+Content-Language: en-US
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+In-Reply-To: <o6gbv5jl.ritesh.list@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: cwabT_ne3oPpz8luNwdtUvsIYdM6W-bT
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzEzMDEzOCBTYWx0ZWRfX3gaKfNxfCtpE
+ hKki+iv+VDoZPT7LSnfYQ+ch4liiXbB+k3SxuMspwTbG4SqzZgxrAH5vtqakxzEfG4yJwLxtqm2
+ +JHLm1HJ/4r3QDTnlxQ7UfItDsy4L+M=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzEzMDEzOCBTYWx0ZWRfXwITQfhe7hiGP
+ CKcdJuOP4h+FVNPU+M2Kjs+nffiRVKRK/cO3M7kTpdaWTXmml9YNnsMusJ1iLDlUKAma3Yr4vFW
+ izEKwnoUE1+PwRdDpDR6k/NionnitXOU7EZslMME4VAZM3gMfn98arEcFymY2ABagYqdF2Z6bJo
+ OfN41XlcCKUrN42KkFcE2bmt2akGlOVDgqCJUcj7fkNjxlplClL7XkTd7RX0xQDWxcYi5FsfJoM
+ Aq6aWff3FJDrjwbYF4qWvo0oKpAOptmyqBtT/7AB6qvrqQladuJn1IZwhv290TwAwo0F7LnrOjv
+ y7nu6yZGrgSLPROwxM8ALEMIn2Gq9A/NbsffLUltDLMulP09jM83B5YzjZVKM0pXIzsXg6/tLK4
+ aUl+UEOFHTyTp5Acx4BtgNkw/ZNAbzQOXTRGkR57M0vzQ1gBTIvBbHKpJq85CeBzgODbQA/j3Vz
+ JCSidm851+98zKdP41g==
+X-Authority-Analysis: v=2.4 cv=XbS5Co55 c=1 sm=1 tr=0 ts=6a54ea62 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8
+ a=pGLkceISAAAA:8 a=D1YSW_bcgk-0_7OrHpMA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: XlhPyuiRcGrhvbLG99jKz4skMF3Aw6eA
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-13_03,2026-07-10_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 suspectscore=0 spamscore=0 phishscore=0 lowpriorityscore=0
+ priorityscore=1501 adultscore=0 malwarescore=0 impostorscore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607130138
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [1.34 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[shutemov.name:s=fm3,messagingengine.com:s=fm2];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-273777-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[21];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
+	FREEMAIL_TO(0.00)[gmail.com,lists.ozlabs.org,linux.ibm.com,ellerman.id.au];
+	FORGED_SENDER(0.00)[sourabhjain@linux.ibm.com,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	FORGED_RECIPIENTS(0.00)[m:ritesh.list@gmail.com,m:linuxppc-dev@lists.ozlabs.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:shivangu@linux.ibm.com,m:hbathini@linux.ibm.com,m:mahesh@linux.ibm.com,m:adityag@linux.ibm.com,m:venkat88@linux.ibm.com,m:stable@vger.kernel.org,m:mahe657@linux.ibm.com,m:riteshlist@gmail.com,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-273773-lists,stable=lfdr.de];
-	FORGED_SENDER(0.00)[kirill@shutemov.name,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:dave.hansen@linux.intel.com,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:x86@kernel.org,m:seanjc@google.com,m:pbonzini@redhat.com,m:sathyanarayanan.kuppuswamy@linux.intel.com,m:kai.huang@intel.com,m:xiaoyao.li@intel.com,m:rick.p.edgecombe@intel.com,m:binbin.wu@linux.intel.com,m:david.laight.linux@gmail.com,m:ak@linux.intel.com,m:djbw@kernel.org,m:tsyrulnikov.borys@gmail.com,m:kvm@vger.kernel.org,m:linux-coco@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:kas@kernel.org,m:davidlaightlinux@gmail.com,m:tsyrulnikovborys@gmail.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	DMARC_NA(0.00)[shutemov.name];
-	FREEMAIL_CC(0.00)[google.com,redhat.com,linux.intel.com,intel.com,gmail.com,kernel.org,vger.kernel.org,lists.linux.dev];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org,linux.ibm.com,vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kirill@shutemov.name,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[sourabhjain@linux.ibm.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[shutemov.name:+,messagingengine.com:+];
-	RCVD_COUNT_FIVE(0.00)[6];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DKIM_TRACE(0.00)[ibm.com:+];
 	ALIAS_RESOLVED(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,shutemov.name:from_mime,shutemov.name:dkim,shutemov.name:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,messagingengine.com:dkim]
+	RCVD_COUNT_SEVEN(0.00)[11]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B8F4674BC01
-
-From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-
-Three fixes for emulated port I/O in the TDX guest #VE handler.
-
-Patch 1 fixes an off-by-one in the GENMASK() used by handle_in() and
-handle_out(): the mask was one bit too wide for every I/O size.
-
-Patch 3 fixes 32-bit port IN to zero-extend into RAX, per x86
-semantics, instead of preserving the upper 32 bits. To avoid
-open-coding the partial-register-write rules, patch 2 first moves KVM's
-assign_register() into <asm/insn-eval.h> as insn_assign_reg() so both
-KVM and the #VE handler can share it.
-
-Changes since v5:
-  - Patch 2: reword the shortlog and comment; no functional change
-    (Sean, David Laight). Collect Acked-by from Sean.
-  - Patches 1 and 3 unchanged.
-
-v5: https://lore.kernel.org/all/20260701110547.764083-1-kirill@shutemov.name/
-v4: https://lore.kernel.org/all/cover.1780584300.git.kas@kernel.org/
-
-Kiryl Shutsemau (Meta) (3):
-  x86/tdx: Fix off-by-one in port I/O handling
-  x86/insn-eval: Move assign_register() out of KVM as insn_assign_reg()
-  x86/tdx: Fix zero-extension for 32-bit port I/O
-
- arch/x86/coco/tdx/tdx.c          | 10 ++++-----
- arch/x86/include/asm/insn-eval.h | 36 ++++++++++++++++++++++++++++++++
- arch/x86/kvm/emulate.c           | 26 ++++-------------------
- 3 files changed, 44 insertions(+), 28 deletions(-)
+X-Rspamd-Queue-Id: D08AD74BE2F
 
 
-base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
--- 
-2.54.0
+
+On 13/07/26 10:40, Ritesh Harjani (IBM) wrote:
+> Sourabh Jain <sourabhjain@linux.ibm.com> writes:
+>
+>> On pseries LPAR systems, watchdog timers configured from userspace can
+>> remain active after a kernel panic. When a panic triggers kdump, the
+>> crashing kernel jumps directly to the kdump kernel without stopping
+>> active watchdogs. As a result, the watchdogs remain active after the
+>> kdump kernel starts.
+>>
+>> If dump capture takes longer than the watchdog timeout, PHYP resets the
+>> LPAR before the dump is fully captured, causing dump capture to fail.
+>>
+>> Fix this by issuing the `H_WATCHDOG` hcall during the crash shutdown
+>> sequence to stop all active watchdogs before booting the kdump kernel.
+>>
+>> Fixes: 69472ffa6575 ("watchdog/pseries-wdt: initial support for H_WATCHDOG-based watchdog timers")
+>> Reported-by: Mahesh Kumar G <mahe657@linux.ibm.com>
+>> Suggested-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+>> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+>> ---
+>>   arch/powerpc/include/asm/papr-watchdog.h |  2 ++
+>>   arch/powerpc/platforms/pseries/setup.c   | 18 ++++++++++++++++++
+>>   2 files changed, 20 insertions(+)
+>>
+>> diff --git a/arch/powerpc/include/asm/papr-watchdog.h b/arch/powerpc/include/asm/papr-watchdog.h
+>> index fb3a511aa861..84bbe1ddd56f 100644
+>> --- a/arch/powerpc/include/asm/papr-watchdog.h
+>> +++ b/arch/powerpc/include/asm/papr-watchdog.h
+>> @@ -55,4 +55,6 @@
+>>   #define PSERIES_WDTQ_MIN_TIMEOUT(cap)	(((cap) >> 48) & 0xffff)
+>>   #define PSERIES_WDTQ_MAX_NUMBER(cap)	(((cap) >> 32) & 0xffff)
+>>   
+>> +#define PSERIES_WDT_NUM_ALL	((unsigned long)-1)
+>> +
+> minor nit:
+>
+> This should be defined at the end of the H_WATCHDOG Input section.
+> /*
+>   * H_WATCHDOG Input
+>   *
+>
+> <...>
+>
+> Something like this maybe?
+>
+> /*
+>   * R5: "watchdogNumber":
+
+Makes sense. Since this is the third argument to the hypercall,
+R5 is the correct register to use in the comment.
+
+>   *       PAPR says use -1 (all ones) to stop all watchdogs.
+>   */
+> #define PSERIES_WDT_NUM_ALL	((unsigned long)-1)
+>
+> /*
+>   * H_WATCHDOG Output
+>   *
+>   * R3: Return code
+>   *
+>   <...>
+>
+>>   #endif /* _ASM_POWERPC_CRASHDUMP_PPC64_H */
+>> diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
+>> index bbb2813f8ede..2e40a9dba637 100644
+>> --- a/arch/powerpc/platforms/pseries/setup.c
+>> +++ b/arch/powerpc/platforms/pseries/setup.c
+>> @@ -77,6 +77,7 @@
+>>   #include <asm/dtl.h>
+>>   #include <asm/hvconsole.h>
+>>   #include <asm/setup.h>
+>> +#include <asm/papr-watchdog.h>
+>>   
+>>   #include "pseries.h"
+>>   
+>> @@ -185,6 +186,18 @@ static void __init fwnmi_init(void)
+>>   #endif
+>>   }
+>>   
+>> +#ifdef CONFIG_CRASH_DUMP
+>> +static void pseries_crash_stop_watchdogs(void)
+>> +{
+>> +	long rc;
+>> +
+>> +	rc = plpar_hcall_norets_notrace(H_WATCHDOG, PSERIES_WDTF_OP_STOP,
+>> +					PSERIES_WDT_NUM_ALL);
+>> +	if (rc != H_SUCCESS && rc != H_NOOP)
+>> +		pr_warn("Could not stop watchdogs before kdump rc=%ld\n", rc);
+>> +}
+>> +#endif /* CONFIG_CRASH_DUMP */
+>> +
+>>   /*
+>>    * Affix a device for the first timer to the platform bus if
+>>    * we have firmware support for the H_WATCHDOG hypercall.
+>> @@ -203,6 +216,11 @@ static __init int pseries_wdt_init(void)
+>>   		return PTR_ERR(pseries_wdt_dev);
+>>   	}
+>>   
+>> +#ifdef CONFIG_CRASH_DUMP
+>> +	if (crash_shutdown_register(pseries_crash_stop_watchdogs))
+>> +		pr_warn("Could not register watchdog crash shutdown handler\n");
+>> +#endif
+>> +
+> minor nit:
+> I don't think we need any of the #ifdef. All definitions used inside
+> pseries_crash_stop_watchdogs are already available and
+> crash_shutdown_register() already exists for !CONFIG_CRASH_DUMP, so we
+> may as well drop all of the ifdefs.
+
+Yes, the #ifdef is not really needed  because crash_shutdown_register() is
+always available.
+
+I removed the #ifdef blocks and built the kernel both with and without
+CONFIG_CRASH_DUMP. The kernel built successfully in both cases.
+
+>
+>
+> Otherwise LGTM, so feel free to add:
+> Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Thanks for the review.
+
+- Sourabh Jain
 
 
