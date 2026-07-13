@@ -1,659 +1,190 @@
-Return-Path: <stable+bounces-273918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273905-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id L2vaF/QgVWoskQAAu9opvQ
-	(envelope-from <stable+bounces-273918-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 19:31:32 +0200
+	id RPBHKykhVWozkQAAu9opvQ
+	(envelope-from <stable+bounces-273905-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 19:32:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 527A074E080
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 19:31:31 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C27374E095
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 19:32:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=j7fOmE8I;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273918-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273918-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	dkim=pass header.d=0sec.ai header.s=google header.b=FD7eTgtL;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273905-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273905-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=none;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1D88C300C381
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 17:31:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 93468303C2A9
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 17:30:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2A0B34846A;
-	Mon, 13 Jul 2026 17:31:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0315348C42;
+	Mon, 13 Jul 2026 17:30:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D98662441A6
-	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 17:31:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED0EF348C6A
+	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 17:30:34 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783963866; cv=none; b=AYstFmX1y+6bApGjz+GI63O02tJoafglxqA8grIN9fkaZOPTJL5cj4CltRyh526puaqAPjBbfy/RZ1egijtvUWXEJ8+LiXWKNHktnZMXzNuTUks3ZEfgmcdAbvRlpMX5iYOa6jWy8gwmjcX71EVrMGBDbdo/mqfiGEQpzqTu8Dg=
+	t=1783963836; cv=none; b=hFSxZ3N/t1dVqiUlSv1dJWtzMHkaVzCE6mxkCtdig/0+sQj2cIBNXRTh99Z5oyaerJzSIFFztaq6lKNal7XDKy9fO5T7WszjVszR1H+1LxtXURPz6IMO88b8lblIRRAwtdj0qezLF1d1pdjdKaVOAswmMCdRujKAZKLgNL+dHBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783963866; c=relaxed/simple;
-	bh=VWs9bOtjE7uYn5vlYGK5qARfbYpiF5fWJzRowzE2zBI=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=jxEjdl5AkdIDKAVPj2oF1IGgcRQQxhXFf2b6EQfxd00PWTRNlu3jvDFdaowZJdMDMUqle94xdFs6/8u7YPJwRt744rVP9Ja6PbOM2hA293fZUHtPmm/l4t0RDqjh/emTlJvmJSOtix9VzCYyCR1SsQ1+/Hz9I7UgrIB0zKLSVD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j7fOmE8I; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B9591F000E9;
-	Mon, 13 Jul 2026 17:31:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783963864;
-	bh=o1HR8XrbfHelIVFrs2b4dM9i3Qi0MIaBAmSYQNo1JU0=;
-	h=Subject:To:Cc:From:Date;
-	b=j7fOmE8IpHplq6UadvYgcWhB3ZngXHITMbuqQDt4Mbb65Ljx4aDo7fiyL1cyJVkfe
-	 PqI1IFqZ6oiqng4mCWnUpOAyb1ovSJGGKIDf+WZoq/3hblesw8OxJJ0pq5RIDfygRu
-	 7r7A/pwqVWs52I1PHMneuPjckBCpYZg69Gu748CE=
-Subject: FAILED: patch "[PATCH] Bluetooth: L2CAP: Fix use-after-free in" failed to apply to 6.1-stable tree
-To: oss@fourdim.xyz,luiz.von.dentz@intel.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 13 Jul 2026 19:30:08 +0200
-Message-ID: <2026071307-release-elongated-f82c@gregkh>
+	s=arc-20240116; t=1783963836; c=relaxed/simple;
+	bh=PcyM4CQHbO5KMJ3N1bAHLttCr4/v1lxQVOiHVJpdnVc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=NDiicGHfaKJywAOh8Uryl79MAQlfG7gzF4HwEBWaP5+IHxOlTguxW0JIXTfE5kUPk0G/fOcAiWnSW4o3rxCNRfIL41JRRHI8F0xX/I24Dszorqfd+Sjwfd2cQg7mL/QQZ/CwXOKPMFcd6kZzdRMkHTwdF4LpgNisbEU6qSVABG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai; spf=pass smtp.mailfrom=0sec.ai; dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b=FD7eTgtL; arc=none smtp.client-ip=209.85.128.53
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-493ce08a75bso13570725e9.1
+        for <stable@vger.kernel.org>; Mon, 13 Jul 2026 10:30:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=0sec.ai; s=google; t=1783963833; x=1784568633; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=h1VuKaNm+FCqQ0Qgm5d1hgzA1jRjKkQpwwjQu1kdhRU=;
+        b=FD7eTgtLx1xYBziB8cjCjHw76SBRlr5EkIuG2xN13drGz1IXuwzxKPCctip4XpOXV4
+         aZBb0cyoeQQzQUCQERwH4bn8alBHKHeFxDyMnlyKIW9IM3qfRUV27WsfDV0j7yd6K5Nd
+         jlDiXOzuyaCqZiMsBEnCUtBxqhW1JKlibPJvHBBNU34T4Ac4mYTWxjLwZ4G0hbMeH62i
+         tJbrphRTxiee6IAjM1IBZod6woMIaw89z/YHTXkPkLoJWhMJ8czVxl7TeSVrUaVGCQ51
+         5ukff30spfuF/bm6ueEPVvfuHjInhSpsdUOI3dKrI811q/CAtqsfRz0snTHMMsYGRMn2
+         UfFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783963833; x=1784568633;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=h1VuKaNm+FCqQ0Qgm5d1hgzA1jRjKkQpwwjQu1kdhRU=;
+        b=CKvkQ9wJ8CfEEXcAKDa6zmLZwPCcSwJCpdENN0ru45Z1BYiuX216cTYIB1XcP+WEAu
+         Yz972BwJlbqRABHJSPmufpQzk9tVg9A1k/ARmmBfIeOE9i4/1a1ROsnXPHag2kTeuOxs
+         gg2Ba2RF+1FmKlq4xxIWFmJhixBDLyM/rPXo8uZbgP2VfjejUcfxe87B+wWbAh98yD2I
+         Kw9x/R97egIkPLlAfRiKl7hihVQW+neTj7NyZXvb9h3tN6V5Mskm/otidiyTGxxKDmof
+         VbFp8RkOTcpTWTsdWUlVESLYD+MhgIAo1NfYqnAFcpLfRXkEa9S2AClii5nSJjftRB0l
+         w0EQ==
+X-Forwarded-Encrypted: i=1; AHgh+RoRdQfwKKK1ttqS8eRxO7FX60R8qb70UOwybM+g1VuNvQGeA5NQPcMUgZPDSIyOBwBaOlslQ8k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzEIXvNFm6Dviik2A22iToDlGkKBUsxpkhkkotDzuj9CupJIOOa
+	e9BCqZLFrqxhDku71wOuEgHS8kw/2KUWW8kUUlTyZRUptJGEGX4UAW1fNc7jJKS5CWzO
+X-Gm-Gg: AfdE7cnakvDEHFhJnwIuQtTEZdacmFZWzMHDTcnpXOCjiwQGPwJ0W7Hd9bYPZsHGLDK
+	1P21gwPURmMjrJ54CDWF5nlvDyyd/5fycx5lqvdwiDVcgx8vb2CAzneY4wx70dFnGdxY/AfQZLh
+	MnJ1NjUiAtyP6KGwG25mEhGxEkIV+JmigzFk7WMMzMZpjNVoeGTeGJtmhqCNy9B3VS/ESEBs8iW
+	gz6bi2MGE1vgvO9NhBr5pU9WpJed9nZYldnz4tIZdl6fEZ6s0YOyuZIP7kYUkaDtBGgBYnuYDl0
+	pEH6Ea7qPr6wxApGMx6EyPjkCgbSDXbrCp3LnoAo6wZCXZ1ES1mSZ1P99KZuNWwKvli1JfIPx0+
+	mRB3v1A7ePAoHgXPU3jrs3jfWnrKbLSr8cDzN9Gtj1pcRfkkt22LUeX5VqVec2v4Gf3UikNtUev
+	t/+4G/Ge5sAs4ErAt6y+L2ktdlQd/q2YdDYVD9ICYByb9MysokT48rhFjTeD47WpsVPHcyaLct3
+	t19QmkaCAcPy7ntGovTDBUyidZXUE9ur//c5m/hKzVjrw==
+X-Received: by 2002:a05:600c:6303:b0:493:cfe8:5b36 with SMTP id 5b1f17b1804b1-495158c6a1bmr3362305e9.8.1783963833325;
+        Mon, 13 Jul 2026 10:30:33 -0700 (PDT)
+Received: from PeakBook-Mini.tail8e484.ts.net ([178.197.218.188])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493f3a60404sm260075855e9.1.2026.07.13.10.30.32
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 13 Jul 2026 10:30:32 -0700 (PDT)
+From: Doruk Tan Ozturk <doruk@0sec.ai>
+To: Min Ma <mamin506@gmail.com>,
+	Lizhi Hou <lizhi.hou@amd.com>,
+	Oded Gabbay <ogabbay@kernel.org>
+Cc: dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	Doruk Tan Ozturk <doruk@0sec.ai>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] accel/amdxdna: reject user command submission without a command BO
+Date: Mon, 13 Jul 2026 19:30:28 +0200
+Message-ID: <20260713173030.87541-2-doruk@0sec.ai>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260713173030.87541-1-doruk@0sec.ai>
+References: <20260713173030.87541-1-doruk@0sec.ai>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[0sec.ai:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FORGED_RECIPIENTS(0.00)[m:mamin506@gmail.com,m:lizhi.hou@amd.com,m:ogabbay@kernel.org,m:dri-devel@lists.freedesktop.org,m:linux-kernel@vger.kernel.org,m:doruk@0sec.ai,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-273918-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:oss@fourdim.xyz,m:luiz.von.dentz@intel.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
+	DMARC_NA(0.00)[0sec.ai];
+	FORGED_SENDER(0.00)[doruk@0sec.ai,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-273905-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[gmail.com,amd.com,kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_NONE(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[doruk@0sec.ai,stable@vger.kernel.org];
 	ALIAS_RESOLVED(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
+	DKIM_TRACE(0.00)[0sec.ai:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:from_mime,linuxfoundation.org:dkim,intel.com:email,gregkh:mid,vger.kernel.org:from_smtp,fourdim.xyz:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,0sec.ai:email,0sec.ai:dkim,0sec.ai:url,0sec.ai:from_mime,0sec.ai:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 527A074E080
+X-Rspamd-Queue-Id: 1C27374E095
 
+amdxdna_drm_submit_execbuf() passes the user-supplied command BO handle
+straight into amdxdna_cmd_submit() with drv_cmd == NULL. When the handle
+is AMDXDNA_INVALID_BO_HANDLE (0), the block that fetches job->cmd_bo is
+skipped, leaving it NULL, and no check rejects it on the user path (the
+!job->cmd_bo guard lives inside the != INVALID branch).
 
-The patch below does not apply to the 6.1-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+The job is then armed and pushed to the DRM scheduler.
+aie2_sched_job_run() takes the drv_cmd == NULL path and calls
+amdxdna_cmd_set_state(job->cmd_bo) -> amdxdna_gem_vmap(NULL) ->
+to_gobj(NULL)->dev, a NULL pointer dereference in the drm_sched worker.
+A process with access to the accel node on a system with a probed AMD NPU
+can trigger a kernel oops with a single AMDXDNA_EXEC_CMD ioctl
+(cmd_handles = 0).
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Only internal driver commands (SYNC_DEBUG_BO / ATTACH_DEBUG_BO)
+legitimately pass AMDXDNA_INVALID_BO_HANDLE, and they always set drv_cmd.
+Reject the invalid handle for user submissions (drv_cmd == NULL) at the
+submit choke point so every user path is covered.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-git checkout FETCH_HEAD
-git cherry-pick -x 6fef032af0092ed5ccb767239a9ac1bc38c08a40
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026071307-release-elongated-f82c@gregkh' --subject-prefix 'PATCH 6.1.y' 'HEAD^..'
+Fixes: aac243092b70 ("accel/amdxdna: Add command execution")
+Cc: stable@vger.kernel.org
+Found by 0sec automated security-research tooling (https://0sec.ai).
+Assisted-by: 0sec:claude-opus-4-8
+Signed-off-by: Doruk Tan Ozturk <doruk@0sec.ai>
+---
+ drivers/accel/amdxdna/amdxdna_ctx.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 6fef032af0092ed5ccb767239a9ac1bc38c08a40 Mon Sep 17 00:00:00 2001
-From: Siwei Zhang <oss@fourdim.xyz>
-Date: Mon, 29 Jun 2026 09:49:58 -0400
-Subject: [PATCH] Bluetooth: L2CAP: Fix use-after-free in
- l2cap_sock_new_connection_cb()
-
-l2cap_sock_new_connection_cb() returned l2cap_pi(sk)->chan after
-release_sock(parent). Once the parent lock is dropped the newly
-enqueued child socket sk is reachable via the accept queue, so another
-task can accept and free it before the callback dereferences sk,
-resulting in a use-after-free.
-
-Rework the ->new_connection() op so the core, rather than the callback,
-owns the child channel's lifetime. The op now receives a pre-allocated
-new_chan and returns an errno instead of allocating and returning a
-channel. l2cap_new_connection() allocates the child channel and links
-it into the conn list via __l2cap_chan_add() before invoking the
-callback, so the conn-list reference keeps the channel alive once
-release_sock(parent) exposes the socket to other tasks.
-
-Channel configuration that was duplicated in l2cap_sock_init() and the
-various new_connection callbacks is consolidated into
-l2cap_chan_set_defaults(), which now inherits from the parent channel
-when one is supplied.
-
-Fixes: 8ffb929098a5 ("Bluetooth: Remove parent socket usage from l2cap_core.c")
-Cc: stable@kernel.org
-Assisted-by: Claude:claude-opus-4-8
-Signed-off-by: Siwei Zhang <oss@fourdim.xyz>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-
-diff --git a/include/net/bluetooth/l2cap.h b/include/net/bluetooth/l2cap.h
-index 1640cc9bf83a..ef6ce1c20a4f 100644
---- a/include/net/bluetooth/l2cap.h
-+++ b/include/net/bluetooth/l2cap.h
-@@ -617,7 +617,8 @@ struct l2cap_chan {
- struct l2cap_ops {
- 	char			*name;
- 
--	struct l2cap_chan	*(*new_connection) (struct l2cap_chan *chan);
-+	int			(*new_connection)(struct l2cap_chan *chan,
-+						  struct l2cap_chan *new_chan);
- 	int			(*recv) (struct l2cap_chan * chan,
- 					 struct sk_buff *skb);
- 	void			(*teardown) (struct l2cap_chan *chan, int err);
-@@ -882,9 +883,10 @@ static inline __u16 __next_seq(struct l2cap_chan *chan, __u16 seq)
- 	return (seq + 1) % (chan->tx_win_max + 1);
- }
- 
--static inline struct l2cap_chan *l2cap_chan_no_new_connection(struct l2cap_chan *chan)
-+static inline int l2cap_chan_no_new_connection(struct l2cap_chan *chan,
-+					       struct l2cap_chan *new_chan)
- {
--	return NULL;
-+	return -EOPNOTSUPP;
- }
- 
- static inline int l2cap_chan_no_recv(struct l2cap_chan *chan, struct sk_buff *skb)
-@@ -961,7 +963,7 @@ int l2cap_chan_send(struct l2cap_chan *chan, struct msghdr *msg, size_t len,
- void l2cap_chan_busy(struct l2cap_chan *chan, int busy);
- void l2cap_chan_rx_avail(struct l2cap_chan *chan, ssize_t rx_avail);
- int l2cap_chan_check_security(struct l2cap_chan *chan, bool initiator);
--void l2cap_chan_set_defaults(struct l2cap_chan *chan);
-+void l2cap_chan_set_defaults(struct l2cap_chan *chan, struct l2cap_chan *pchan);
- int l2cap_ertm_init(struct l2cap_chan *chan);
- void l2cap_chan_add(struct l2cap_conn *conn, struct l2cap_chan *chan);
- void __l2cap_chan_add(struct l2cap_conn *conn, struct l2cap_chan *chan);
-diff --git a/net/bluetooth/6lowpan.c b/net/bluetooth/6lowpan.c
-index e7be18a3af33..d504a363a30f 100644
---- a/net/bluetooth/6lowpan.c
-+++ b/net/bluetooth/6lowpan.c
-@@ -632,7 +632,7 @@ static struct l2cap_chan *chan_create(void)
- 	if (!chan)
- 		return NULL;
- 
--	l2cap_chan_set_defaults(chan);
-+	l2cap_chan_set_defaults(chan, NULL);
- 
- 	chan->chan_type = L2CAP_CHAN_CONN_ORIENTED;
- 	chan->mode = L2CAP_MODE_LE_FLOWCTL;
-@@ -745,21 +745,6 @@ static inline void chan_ready_cb(struct l2cap_chan *chan)
- 	ifup(dev->netdev);
- }
- 
--static inline struct l2cap_chan *chan_new_conn_cb(struct l2cap_chan *pchan)
--{
--	struct l2cap_chan *chan;
--
--	chan = chan_create();
--	if (!chan)
--		return NULL;
--
--	chan->ops = pchan->ops;
--
--	BT_DBG("chan %p pchan %p", chan, pchan);
--
--	return chan;
--}
--
- static void unregister_dev(struct lowpan_btle_dev *dev)
- {
- 	struct hci_dev *hdev = READ_ONCE(dev->hdev);
-@@ -889,7 +874,6 @@ static long chan_get_sndtimeo_cb(struct l2cap_chan *chan)
- 
- static const struct l2cap_ops bt_6lowpan_chan_ops = {
- 	.name			= "L2CAP 6LoWPAN channel",
--	.new_connection		= chan_new_conn_cb,
- 	.recv			= chan_recv_cb,
- 	.close			= chan_close_cb,
- 	.state_change		= chan_state_change_cb,
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index 4ee3b9e30c65..519cd9552d86 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -522,7 +522,10 @@ void l2cap_chan_put(struct l2cap_chan *c)
- }
- EXPORT_SYMBOL_GPL(l2cap_chan_put);
- 
--void l2cap_chan_set_defaults(struct l2cap_chan *chan)
-+/* Initialise @chan with default values, inheriting from the parent channel
-+ * @pchan when it is given.
-+ */
-+void l2cap_chan_set_defaults(struct l2cap_chan *chan, struct l2cap_chan *pchan)
- {
- 	chan->fcs  = L2CAP_FCS_CRC16;
- 	chan->max_tx = L2CAP_DEFAULT_MAX_TX;
-@@ -536,6 +539,31 @@ void l2cap_chan_set_defaults(struct l2cap_chan *chan)
- 	chan->retrans_timeout = L2CAP_DEFAULT_RETRANS_TO;
- 	chan->monitor_timeout = L2CAP_DEFAULT_MONITOR_TO;
- 
-+	if (pchan) {
-+		BT_DBG("chan %p pchan %p", chan, pchan);
-+
-+		chan->chan_type = pchan->chan_type;
-+		chan->imtu = pchan->imtu;
-+		chan->omtu = pchan->omtu;
-+		chan->mode = pchan->mode;
-+		chan->fcs = pchan->fcs;
-+		chan->max_tx = pchan->max_tx;
-+		chan->tx_win = pchan->tx_win;
-+		chan->tx_win_max = pchan->tx_win_max;
-+		chan->sec_level = pchan->sec_level;
-+		chan->conf_state = pchan->conf_state;
-+		chan->flags = pchan->flags;
-+		chan->tx_credits = pchan->tx_credits;
-+		chan->rx_credits = pchan->rx_credits;
-+
-+		if (chan->chan_type == L2CAP_CHAN_FIXED) {
-+			chan->scid = pchan->scid;
-+			chan->dcid = pchan->scid;
-+		}
-+
-+		return;
-+	}
-+
- 	chan->conf_state = 0;
- 	set_bit(CONF_NOT_COMPLETE, &chan->conf_state);
- 
-@@ -4024,6 +4052,38 @@ static inline int l2cap_command_rej(struct l2cap_conn *conn,
- 	return 0;
- }
- 
-+/* Allocate and initialise a channel for an incoming connection.
-+ *
-+ * The channel inherits its configuration from @pchan and is linked into @conn
-+ * before ->new_connection() runs, so the conn list reference keeps it alive if
-+ * the callback exposes it (e.g. via the socket accept queue) before this
-+ * returns. The l2cap_chan_create() reference is taken over by the subsystem on
-+ * success and dropped here on failure.
-+ */
-+static struct l2cap_chan *l2cap_new_connection(struct l2cap_conn *conn,
-+					       struct l2cap_chan *pchan)
-+{
-+	struct l2cap_chan *chan;
-+
-+	chan = l2cap_chan_create();
-+	if (!chan)
-+		return NULL;
-+
-+	l2cap_chan_set_defaults(chan, pchan);
-+	chan->ops = pchan->ops;
-+
-+	__l2cap_chan_add(conn, chan);
-+
-+	if (pchan->ops->new_connection &&
-+	    pchan->ops->new_connection(pchan, chan) < 0) {
-+		l2cap_chan_del(chan, 0);
-+		l2cap_chan_put(chan);
-+		return NULL;
-+	}
-+
-+	return chan;
-+}
-+
- static void l2cap_connect(struct l2cap_conn *conn, struct l2cap_cmd_hdr *cmd,
- 			  u8 *data, u8 rsp_code)
- {
-@@ -4070,7 +4130,7 @@ static void l2cap_connect(struct l2cap_conn *conn, struct l2cap_cmd_hdr *cmd,
- 		goto response;
- 	}
- 
--	chan = pchan->ops->new_connection(pchan);
-+	chan = l2cap_new_connection(conn, pchan);
- 	if (!chan)
- 		goto response;
- 
-@@ -4088,8 +4148,6 @@ static void l2cap_connect(struct l2cap_conn *conn, struct l2cap_cmd_hdr *cmd,
- 	chan->psm  = psm;
- 	chan->dcid = scid;
- 
--	__l2cap_chan_add(conn, chan);
--
- 	dcid = chan->scid;
- 
- 	__set_chan_timer(chan, chan->ops->get_sndtimeo(chan));
-@@ -4972,7 +5030,7 @@ static int l2cap_le_connect_req(struct l2cap_conn *conn,
- 		goto response_unlock;
- 	}
- 
--	chan = pchan->ops->new_connection(pchan);
-+	chan = l2cap_new_connection(conn, pchan);
- 	if (!chan) {
- 		result = L2CAP_CR_LE_NO_MEM;
- 		goto response_unlock;
-@@ -4987,8 +5045,6 @@ static int l2cap_le_connect_req(struct l2cap_conn *conn,
- 	chan->omtu = mtu;
- 	chan->remote_mps = mps;
- 
--	__l2cap_chan_add(conn, chan);
--
- 	l2cap_le_flowctl_init(chan, __le16_to_cpu(req->credits));
- 
- 	dcid = chan->scid;
-@@ -5196,7 +5252,7 @@ static inline int l2cap_ecred_conn_req(struct l2cap_conn *conn,
- 			continue;
+diff --git a/drivers/accel/amdxdna/amdxdna_ctx.c b/drivers/accel/amdxdna/amdxdna_ctx.c
+index 8f8df9d04ec5..a5c8c2c4de6d 100644
+--- a/drivers/accel/amdxdna/amdxdna_ctx.c
++++ b/drivers/accel/amdxdna/amdxdna_ctx.c
+@@ -603,6 +603,16 @@ int amdxdna_cmd_submit(struct amdxdna_client *client,
+ 			ret = -EINVAL;
+ 			goto free_job;
  		}
- 
--		chan = pchan->ops->new_connection(pchan);
-+		chan = l2cap_new_connection(conn, pchan);
- 		if (!chan) {
- 			result = L2CAP_CR_LE_NO_MEM;
- 			continue;
-@@ -5211,8 +5267,6 @@ static inline int l2cap_ecred_conn_req(struct l2cap_conn *conn,
- 		chan->omtu = mtu;
- 		chan->remote_mps = mps;
- 
--		__l2cap_chan_add(conn, chan);
--
- 		l2cap_ecred_init(chan, __le16_to_cpu(req->credits));
- 
- 		/* Init response */
-@@ -7492,14 +7546,12 @@ static void l2cap_connect_cfm(struct hci_conn *hcon, u8 status)
- 			goto next;
- 
- 		l2cap_chan_lock(pchan);
--		chan = pchan->ops->new_connection(pchan);
-+		chan = l2cap_new_connection(conn, pchan);
- 		if (chan) {
- 			bacpy(&chan->src, &hcon->src);
- 			bacpy(&chan->dst, &hcon->dst);
- 			chan->src_type = bdaddr_src_type(hcon);
- 			chan->dst_type = dst_type;
--
--			__l2cap_chan_add(conn, chan);
- 		}
- 
- 		l2cap_chan_unlock(pchan);
-diff --git a/net/bluetooth/l2cap_sock.c b/net/bluetooth/l2cap_sock.c
-index de56ca691afa..4058ff50cc27 100644
---- a/net/bluetooth/l2cap_sock.c
-+++ b/net/bluetooth/l2cap_sock.c
-@@ -43,7 +43,8 @@ static struct bt_sock_list l2cap_sk_list = {
- static const struct proto_ops l2cap_sock_ops;
- static void l2cap_sock_init(struct sock *sk, struct sock *parent);
- static struct sock *l2cap_sock_alloc(struct net *net, struct socket *sock,
--				     int proto, gfp_t prio, int kern);
-+				     int proto, gfp_t prio, int kern,
-+				     struct l2cap_chan *chan);
- static void l2cap_sock_cleanup_listen(struct sock *parent);
- 
- bool l2cap_is_socket(struct socket *sock)
-@@ -1284,6 +1285,23 @@ static int l2cap_sock_recvmsg(struct socket *sock, struct msghdr *msg,
- 	return err;
- }
- 
-+/* Release the sock's ref on chan and clear the pointer so that the ref is
-+ * dropped exactly once even if both l2cap_sock_kill() and
-+ * l2cap_sock_destruct() run. Setting chan->data to NULL first stops any other
-+ * task from dereferencing the now-dead sock pointer.
-+ */
-+static void l2cap_sock_put_chan(struct sock *sk)
-+{
-+	struct l2cap_chan *chan = l2cap_pi(sk)->chan;
-+
-+	if (!chan)
-+		return;
-+
-+	chan->data = NULL;
-+	l2cap_pi(sk)->chan = NULL;
-+	l2cap_chan_put(chan);
-+}
-+
- /* Kill socket (only if zapped and orphan)
-  * Must be called on unlocked socket, with l2cap channel lock.
-  */
-@@ -1294,13 +1312,9 @@ static void l2cap_sock_kill(struct sock *sk)
- 
- 	BT_DBG("sk %p state %s", sk, state_to_string(sk->sk_state));
- 
--	/* Sock is dead, so set chan data to NULL, avoid other task use invalid
--	 * sock pointer.
--	 */
--	l2cap_pi(sk)->chan->data = NULL;
--	/* Kill poor orphan */
-+	l2cap_sock_put_chan(sk);
- 
--	l2cap_chan_put(l2cap_pi(sk)->chan);
-+	/* Kill poor orphan */
- 	sock_set_flag(sk, SOCK_DEAD);
- 	sock_put(sk);
- }
-@@ -1543,12 +1557,13 @@ static void l2cap_sock_cleanup_listen(struct sock *parent)
- 	}
- }
- 
--static struct l2cap_chan *l2cap_sock_new_connection_cb(struct l2cap_chan *chan)
-+static int l2cap_sock_new_connection_cb(struct l2cap_chan *chan,
-+					struct l2cap_chan *new_chan)
- {
- 	struct sock *sk, *parent = chan->data;
- 
- 	if (!parent)
--		return NULL;
-+		return -EINVAL;
- 
- 	lock_sock(parent);
- 
-@@ -1556,25 +1571,28 @@ static struct l2cap_chan *l2cap_sock_new_connection_cb(struct l2cap_chan *chan)
- 	if (sk_acceptq_is_full(parent)) {
- 		BT_DBG("backlog full %d", parent->sk_ack_backlog);
- 		release_sock(parent);
--		return NULL;
-+		return -ENOBUFS;
- 	}
- 
- 	sk = l2cap_sock_alloc(sock_net(parent), NULL, BTPROTO_L2CAP,
--			      GFP_ATOMIC, 0);
-+			      GFP_ATOMIC, 0, new_chan);
- 	if (!sk) {
- 		release_sock(parent);
--		return NULL;
--        }
-+		return -ENOMEM;
-+	}
- 
- 	bt_sock_reclassify_lock(sk, BTPROTO_L2CAP);
- 
- 	l2cap_sock_init(sk, parent);
- 
-+	/* The conn list reference taken by l2cap_new_connection() keeps new_chan
-+	 * alive once release_sock() lets another task free this socket.
-+	 */
- 	bt_accept_enqueue(parent, sk, false);
- 
- 	release_sock(parent);
- 
--	return l2cap_pi(sk)->chan;
-+	return 0;
- }
- 
- static int l2cap_sock_recv_cb(struct l2cap_chan *chan, struct sk_buff *skb)
-@@ -1871,10 +1889,7 @@ static void l2cap_sock_destruct(struct sock *sk)
- 
- 	BT_DBG("sk %p", sk);
- 
--	if (l2cap_pi(sk)->chan) {
--		l2cap_pi(sk)->chan->data = NULL;
--		l2cap_chan_put(l2cap_pi(sk)->chan);
--	}
-+	l2cap_sock_put_chan(sk);
- 
- 	list_for_each_entry_safe(rx_busy, next, &l2cap_pi(sk)->rx_busy, list) {
- 		kfree_skb(rx_busy->skb);
-@@ -1907,30 +1922,12 @@ static void l2cap_sock_init(struct sock *sk, struct sock *parent)
- 	BT_DBG("sk %p", sk);
- 
- 	if (parent) {
--		struct l2cap_chan *pchan = l2cap_pi(parent)->chan;
--
- 		sk->sk_type = parent->sk_type;
- 		bt_sk(sk)->flags = bt_sk(parent)->flags;
- 
--		chan->chan_type = pchan->chan_type;
--		chan->imtu = pchan->imtu;
--		chan->omtu = pchan->omtu;
--		chan->conf_state = pchan->conf_state;
--		chan->mode = pchan->mode;
--		chan->fcs  = pchan->fcs;
--		chan->max_tx = pchan->max_tx;
--		chan->tx_win = pchan->tx_win;
--		chan->tx_win_max = pchan->tx_win_max;
--		chan->sec_level = pchan->sec_level;
--		chan->flags = pchan->flags;
--		chan->tx_credits = pchan->tx_credits;
--		chan->rx_credits = pchan->rx_credits;
--
--		if (chan->chan_type == L2CAP_CHAN_FIXED) {
--			chan->scid = pchan->scid;
--			chan->dcid = pchan->scid;
--		}
--
-+		/* Channel configuration is inherited from the parent by
-+		 * l2cap_new_connection().
++	} else if (!drv_cmd) {
++		/*
++		 * Only internal driver commands (drv_cmd != NULL) may omit a
++		 * command BO. A user command submission with the invalid handle
++		 * would leave job->cmd_bo NULL and later fault when the scheduler
++		 * dereferences it in amdxdna_cmd_set_state().
 +		 */
- 		security_sk_clone(parent, sk);
- 	} else {
- 		switch (sk->sk_type) {
-@@ -1956,7 +1953,7 @@ static void l2cap_sock_init(struct sock *sk, struct sock *parent)
- 			chan->mode = L2CAP_MODE_BASIC;
- 		}
- 
--		l2cap_chan_set_defaults(chan);
-+		l2cap_chan_set_defaults(chan, NULL);
++		XDNA_DBG(xdna, "Command BO handle required for user submission");
++		ret = -EINVAL;
++		goto free_job;
  	}
  
- 	/* Default config options */
-@@ -1975,10 +1972,10 @@ static struct proto l2cap_proto = {
- };
- 
- static struct sock *l2cap_sock_alloc(struct net *net, struct socket *sock,
--				     int proto, gfp_t prio, int kern)
-+				     int proto, gfp_t prio, int kern,
-+				     struct l2cap_chan *chan)
- {
- 	struct sock *sk;
--	struct l2cap_chan *chan;
- 
- 	sk = bt_sock_alloc(net, sock, &l2cap_proto, proto, prio, kern);
- 	if (!sk)
-@@ -1989,16 +1986,7 @@ static struct sock *l2cap_sock_alloc(struct net *net, struct socket *sock,
- 
- 	INIT_LIST_HEAD(&l2cap_pi(sk)->rx_busy);
- 
--	chan = l2cap_chan_create();
--	if (!chan) {
--		sk_free(sk);
--		if (sock)
--			sock->sk = NULL;
--		return NULL;
--	}
--
--	l2cap_chan_hold(chan);
--
-+	/* The sock takes ownership of the caller's reference on chan. */
- 	l2cap_pi(sk)->chan = chan;
- 
- 	return sk;
-@@ -2008,6 +1996,7 @@ static int l2cap_sock_create(struct net *net, struct socket *sock, int protocol,
- 			     int kern)
- {
- 	struct sock *sk;
-+	struct l2cap_chan *chan;
- 
- 	BT_DBG("sock %p", sock);
- 
-@@ -2022,10 +2011,16 @@ static int l2cap_sock_create(struct net *net, struct socket *sock, int protocol,
- 
- 	sock->ops = &l2cap_sock_ops;
- 
--	sk = l2cap_sock_alloc(net, sock, protocol, GFP_ATOMIC, kern);
--	if (!sk)
-+	chan = l2cap_chan_create();
-+	if (!chan)
- 		return -ENOMEM;
- 
-+	sk = l2cap_sock_alloc(net, sock, protocol, GFP_ATOMIC, kern, chan);
-+	if (!sk) {
-+		l2cap_chan_put(chan);
-+		return -ENOMEM;
-+	}
-+
- 	l2cap_sock_init(sk, NULL);
- 	bt_sock_link(&l2cap_sk_list, sk);
- 	return 0;
-diff --git a/net/bluetooth/smp.c b/net/bluetooth/smp.c
-index 031d3022cb1e..c4470958b0d5 100644
---- a/net/bluetooth/smp.c
-+++ b/net/bluetooth/smp.c
-@@ -3201,34 +3201,19 @@ static const struct l2cap_ops smp_chan_ops = {
- 	.get_sndtimeo		= l2cap_chan_no_get_sndtimeo,
- };
- 
--static inline struct l2cap_chan *smp_new_conn_cb(struct l2cap_chan *pchan)
-+static inline int smp_new_conn_cb(struct l2cap_chan *chan,
-+				  struct l2cap_chan *new_chan)
- {
--	struct l2cap_chan *chan;
--
--	BT_DBG("pchan %p", pchan);
--
--	chan = l2cap_chan_create();
--	if (!chan)
--		return NULL;
--
--	chan->chan_type	= pchan->chan_type;
--	chan->ops	= &smp_chan_ops;
--	chan->scid	= pchan->scid;
--	chan->dcid	= chan->scid;
--	chan->imtu	= pchan->imtu;
--	chan->omtu	= pchan->omtu;
--	chan->mode	= pchan->mode;
-+	new_chan->ops = &smp_chan_ops;
- 
- 	/* Other L2CAP channels may request SMP routines in order to
- 	 * change the security level. This means that the SMP channel
- 	 * lock must be considered in its own category to avoid lockdep
- 	 * warnings.
- 	 */
--	atomic_set(&chan->nesting, L2CAP_NESTING_SMP);
-+	atomic_set(&new_chan->nesting, L2CAP_NESTING_SMP);
- 
--	BT_DBG("created chan %p", chan);
--
--	return chan;
-+	return 0;
- }
- 
- static const struct l2cap_ops smp_root_chan_ops = {
-@@ -3288,7 +3273,7 @@ static struct l2cap_chan *smp_add_cid(struct hci_dev *hdev, u16 cid)
- 
- 	l2cap_add_scid(chan, cid);
- 
--	l2cap_chan_set_defaults(chan);
-+	l2cap_chan_set_defaults(chan, NULL);
- 
- 	if (cid == L2CAP_CID_SMP) {
- 		u8 bdaddr_type;
+ 	ret = amdxdna_arg_bos_lookup(client, job, arg_bo_hdls, arg_bo_cnt);
+-- 
+2.43.0
 
 
