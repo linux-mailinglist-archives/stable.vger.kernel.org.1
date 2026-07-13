@@ -1,138 +1,194 @@
-Return-Path: <stable+bounces-274039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273636-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id OlKfLpZ0VWqPogAAu9opvQ
-	(envelope-from <stable+bounces-274039-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 01:28:22 +0200
+	id G76PC2LCVGoPSQAAu9opvQ
+	(envelope-from <stable+bounces-273636-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 12:48:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17B6074FB69
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 01:28:22 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 864C2749F3A
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 12:48:01 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=vPYDZZPm;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274039-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274039-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=mailbox.org;
+	dkim=pass header.d=trailofbits.com header.s=google header.b=SCNJLHdV;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273636-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-273636-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=trailofbits.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 84CC030B912E
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 23:27:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5814F3021672
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 10:48:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE89E3D1A82;
-	Mon, 13 Jul 2026 23:27:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F3513E1693;
+	Mon, 13 Jul 2026 10:47:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A80713B8111;
-	Mon, 13 Jul 2026 23:27:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66D1226F29C
+	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 10:47:55 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783985242; cv=none; b=rixVQZDlz5F9xs8adXHpzoca7tZtVAjUDdk1uasLQRHyvudynAC6apAAEvmGw2qTrHC+IJn/ev3n8FWUhU2kXNJRgeVTbsimi86V+akOWV4q61RyZI0sOAMZdShv+Hayy0uC8HjBK6QGQIIcXNhQkNnb+JDYGEFal8YQar53sUY=
+	t=1783939676; cv=none; b=tD8leLpn3j8TSv+9pKvn2sxmruJtl3i3i7KMM7ZrHKzS/oVqRaJCETRSH6BcIESh20kUJ6tiB+SFDbds854HZ6d8QBkmxGUeEFHQcWGDA3GiCBxR0zy2WJlhBIAiVlfGBR43/Uq+LeeXUTDt1gWd/LNOfu8L7QXBQznEvgIsJzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783985242; c=relaxed/simple;
-	bh=cUBIquBOEoGi3tb6mT6fwEKQy+VY2dI1DlOzD1iD7G8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OLPWMK4RUWShtEf7KJ0L4lFqujINiwA5axQY8fiSH7vd4Z8emaPiWMfpSz9sfLsHWqA3R7KUDneKcMll0aDrKw9sEu+O29K4yZ47AqdSeUz4lXLIJPAq5WONwW3RmcUd3NdENmfI/paH/951QIFuJyReTUgUoCIwIEuCtS1O9yE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=vPYDZZPm; arc=none smtp.client-ip=80.241.56.172
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA512)
-	(No client certificate requested)
-	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4gzdrH2v6qzMlQr;
-	Tue, 14 Jul 2026 01:27:11 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1783985231;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XA2dLptzhu0nUEfqFTnwynbh4jwI52oxA+77WXPT/Rk=;
-	b=vPYDZZPmJmDS9iIJcsWwKna8dAANTT51a58D8WjMr3kqcnWVjk+s4RjYjYvXrYeAbPMZup
-	PHI6FHWZzDXCVqIkddK6tQIMeam9f4UBy/5xvSOsoP87MAaW4+Ia/suy865xgWQ5a2yYks
-	seW5S9Dc6upEIkp9fdhvnT0d9awgaG8KLs4EWTJdyisKSn6oSxK15DlVA7fSbvVEFdH1Lu
-	FoPs6NPDjvO9ih8wzeo3y7diICtCAqPx7VcxW+8y9Igu+a1oPsdp8muN0uPaJR4p22gq0a
-	RaNl9wWVSIh1SusamdDaP//0Rt89C01HVQn9OOAESBnyPIY5VepWZZvCSXs75A==
-Message-ID: <1d0d4074-90ca-4b33-9bd3-ff27aa0fd4d4@mailbox.org>
-Date: Mon, 13 Jul 2026 12:43:18 +0200
+	s=arc-20240116; t=1783939676; c=relaxed/simple;
+	bh=GxG/GDWpn5mwK1tIal/l0Dw5POK+wIXBW12wM/0SicE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cpe54gpClpSoAjcw5k0uLsAlu4a1P+g9I9dqUumoJ/H04LpBRvFC5h+bbxNwzw3SJQEuGcaIAPMCqu3Xrm3oSnbiUDt8e5w2I2zEc1n+mBQ7Fh5E8KiF/7k4ZIYkvRlQSqp6Vy6iCYCIa+yEF+oH2SuuQ3ixLfHtygf8PvCh+HA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com; spf=pass smtp.mailfrom=trailofbits.com; dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b=SCNJLHdV; arc=none smtp.client-ip=209.85.219.48
+Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-8f18d92172aso40482676d6.2
+        for <stable@vger.kernel.org>; Mon, 13 Jul 2026 03:47:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=trailofbits.com; s=google; t=1783939674; x=1784544474; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=djDZZW+WjRlIj682sN8PrAtMnjaRhZOc5mbUij8u74g=;
+        b=SCNJLHdVIYR2vI17FYhRc6vMgRd72AMHsMdRQ2KdsC2Klv15BaH19iXc/C0zJDHJnV
+         13LKalp32u9aLgo83/OlgzCrRH/y2bKncA2TqrT72u793a//UnkIHQx3YYlWvvZolQRL
+         YetGEv/2CoaxkYzO2UN+cEzHndQhLyywNBYIppkE7OwEk9LSiUaPMhDjkiTUM6oQwgib
+         Xv/jYw5nBqXpfRNxW4Ec/C24bSerdnlm/00lkVWCtAziw6f/hQiwef98V8eGi8e1E80x
+         V+Qik5b7VOgrVcZoo0TEsScFDeedDSBLp83T5XegPuLFBIMbJkBIjmJO3s5qlOoTcb7j
+         /bDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783939674; x=1784544474;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=djDZZW+WjRlIj682sN8PrAtMnjaRhZOc5mbUij8u74g=;
+        b=ha98Zq0MKyMtmHpG9BWozZ+RF8fa5ImZU7aHEYFfCNJZszvTahaiDuOWDR4ruZojuB
+         TRHGYtuAc6NAdlBLHXw8QYxhlCKIhfjR1gSsOy/YRHoFncywHL0eJBjoeiJDtu2VV9G/
+         08KdJygzg2iRbDAmqWPwwK8yBMd8kWwvLBNG6MCGiRZ5esEd9K7d0joTUcRD0JdCqnOZ
+         wFPFckRONwZbmXG26SdsWWjBO3a/uc4T5jr6gHkQoHC/fnIEAgtru3ZaVyuE/K+5N4lX
+         syEWwaS3SGzLuE4/Sxry9oSe4gFItO8J5IP3agvQ6DYQ6DYwkTS1IinXta8hE6zTvm4u
+         ZGVw==
+X-Forwarded-Encrypted: i=1; AHgh+Ro3SG3lyc4IfmbQOV+xZCIi/wV44Pbx9UgZ4AGhX/kgqJG4AhwEZsB6g0LkYLhEJd5Tz7AIQ8Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxkXSkEeaDYb5YvY+2RxMQympsOt07PT8pfd+Rp5A2t8+VcZxgs
+	UtBhorsRm81c1jyK4mJnXOxmHTJ5Dfttq4hAuZZAXypOqJOZHruilsWDEAGpBrlLk3U=
+X-Gm-Gg: AfdE7cnZTEUaoRE8dRvkd5WX661zDRq6R7yGmqo980YKEYJiD6derPYUnPtXJI+auQA
+	vZG9ZMFVxsYgXtJ8/qCEDRu6m2wS7PTpZl1qCWO/6+tI6Meo0dMldHcPutSeIbfthpEIU1sqtyw
+	MrMViACje2nBl4EXPlrR/7A7vUFs8t0tfK6u5vhZZX6Uv3BTeKEHDQoSpbPeuLdTWwfPATzx6JO
+	qSHgC7spr4fT18eAz2cRH0KM5FMOmd8Po22W/B/KCd0sN6NpUOcIhcq14R4D96uonWSaVJ6N1SS
+	EDNXlzU64Jr8UzxzWZ8kxG6BK11uwQrsx2lYkF7xjx8ejbfGWWvnprK1vdAPCFF6q588JUu77b9
+	F31RP9A2F2+ene68dRw57W9uAXC/lqnOEVJyAZASnFUbISCp5DIK7wApOpjRN6aCdO0N2H1Gdh9
+	DBSbVPYCTDihF8CkmpyA==
+X-Received: by 2002:a05:620a:25d1:b0:92e:71bb:d1ac with SMTP id af79cd13be357-92ef2aeb554mr848155785a.19.1783939674393;
+        Mon, 13 Jul 2026 03:47:54 -0700 (PDT)
+Received: from localhost ([146.190.222.192])
+        by smtp.gmail.com with UTF8SMTPSA id af79cd13be357-92ee59223e7sm1031429685a.0.2026.07.13.03.47.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 13 Jul 2026 03:47:54 -0700 (PDT)
+From: David Lee <david.lee@trailofbits.com>
+To: Martin Schiller <ms@dev.tdt.de>
+Cc: David Lee <david.lee@trailofbits.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Dominik 'Disconnect3d' Czarnota <dominik.czarnota@trailofbits.com>,
+	linux-x25@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH net] net/x25: fix use-after-free in x25_kill_by_neigh()
+Date: Mon, 13 Jul 2026 10:47:50 +0000
+Message-ID: <20260713104752.241175-1-david.lee@trailofbits.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v2] arm64: dts: renesas: ironhide: Describe inline ECC
- carveouts
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org,
- Conor Dooley <conor+dt@kernel.org>,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Magnus Damm
- <magnus.damm@gmail.com>, Rob Herring <robh@kernel.org>,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-renesas-soc@vger.kernel.org
-References: <20260710160450.64967-1-marek.vasut+renesas@mailbox.org>
- <CAMuHMdUQJ8mzUi0birB5f1KnCMX_QufHTgYB7AW=d3ZoFer+Yg@mail.gmail.com>
-Content-Language: en-US
-From: Marek Vasut <marek.vasut@mailbox.org>
-In-Reply-To: <CAMuHMdUQJ8mzUi0birB5f1KnCMX_QufHTgYB7AW=d3ZoFer+Yg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-MBO-RS-META: jkiushhrxt7zs11gobawxupzowtdgffm
-X-MBO-RS-ID: f81c410024f901d45b4
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[mailbox.org,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[mailbox.org:s=mail20150812];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[trailofbits.com,reject];
+	R_DKIM_ALLOW(-0.20)[trailofbits.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-274039-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-273636-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[lists.infradead.org,vger.kernel.org,kernel.org,glider.be,gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:geert@linux-m68k.org,m:linux-arm-kernel@lists.infradead.org,m:stable@vger.kernel.org,m:conor+dt@kernel.org,m:geert+renesas@glider.be,m:krzk+dt@kernel.org,m:magnus.damm@gmail.com,m:robh@kernel.org,m:devicetree@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-renesas-soc@vger.kernel.org,m:conor@kernel.org,m:geert@glider.be,m:krzk@kernel.org,m:magnusdamm@gmail.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[marek.vasut@mailbox.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORGED_SENDER(0.00)[david.lee@trailofbits.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:ms@dev.tdt.de,m:david.lee@trailofbits.com,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:dominik.czarnota@trailofbits.com,m:linux-x25@vger.kernel.org,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[marek.vasut@mailbox.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[mailbox.org:+];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	TAGGED_RCPT(0.00)[stable,dt,renesas];
 	TO_DN_SOME(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[david.lee@trailofbits.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[trailofbits.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,trailofbits.com:from_mime,trailofbits.com:mid,trailofbits.com:email,trailofbits.com:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 17B6074FB69
+X-Rspamd-Queue-Id: 864C2749F3A
 
-On 7/13/26 11:11 AM, Geert Uytterhoeven wrote:
+x25_kill_by_neigh() walks the global X.25 socket list looking for sockets
+attached to a terminating neighbour. x25_list_lock protects list membership
+while the lookup is in progress, but it does not pin a socket's lifetime
+after the lock is dropped.
 
-Hello Geert,
+The function currently drops x25_list_lock before calling lock_sock(s). A
+concurrent close can run x25_release(), remove the same socket from
+x25_list, and drop the last socket reference in that window. The neighbour
+teardown path can then lock or inspect a freed struct sock/struct x25_sock.
 
->> +               ecc@1e66660000 {
->> +                       reg = <0x1e 0x66660000 0x0 0x999a0000>;
->> +                       no-map;
->> +               };
-> 
-> Given all DB[0-7]FSDRAMECCAREA00 registers on Ironhide contain
-> 0x0000cccc (md.l e98[0-3][7f]450 1), I think the last 3 regions should
-> start at offset 0xcccc0000 instead of 0x66660000, too.
-> As a bonus, we get 4.8 GiB back ;-)
-I asked about that part internally already, and yes, it does take away a 
-lot of DRAM. I think it is safer to reserve more DRAM and have a stable 
-system than reserve less DRAM and deal with potential stability issues. 
-I also think we can always update the reserved memory nodes in the 
-future and shrink them to make more DRAM available, once we know that it 
-is safe to do so.
+Take sock_hold(s) while x25_list_lock still proves that the list entry is
+live, then drop the temporary reference after the socket has been locked,
+rechecked, and released. Recheck x25_sk(s)->neighbour after lock_sock(),
+because another path may have disconnected the socket before this path
+acquired the socket lock. Restart the list walk after each disconnect
+because the list lock was dropped and the previous iterator state may no
+longer be valid.
+
+A QEMU/KASAN run against origin/master reproduced a slab-use-after-free in
+x25_kill_by_neigh().
+
+Fixes: 7781607938c8 ("net/x25: Fix null-ptr-deref caused by x25_disconnect")
+Cc: stable@vger.kernel.org
+Signed-off-by: David Lee <david.lee@trailofbits.com>
+Assisted-by: Codex:gpt-5.5
+---
+Trail of Bits has a reproducer that triggers kernel panic demonstrating the bug, and can share it if needed.
+
+net/x25/af_x25.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/net/x25/af_x25.c b/net/x25/af_x25.c
+index c31d2af5dd22..8aae9273b7c1 100644
+--- a/net/x25/af_x25.c
++++ b/net/x25/af_x25.c
+@@ -1768,15 +1768,19 @@ void x25_kill_by_neigh(struct x25_neigh *nb)
+ {
+ 	struct sock *s;
+ 
++again:
+ 	write_lock_bh(&x25_list_lock);
+ 
+ 	sk_for_each(s, &x25_list) {
+ 		if (x25_sk(s)->neighbour == nb) {
++			sock_hold(s);
+ 			write_unlock_bh(&x25_list_lock);
+ 			lock_sock(s);
+-			x25_disconnect(s, ENETUNREACH, 0, 0);
++			if (x25_sk(s)->neighbour == nb)
++				x25_disconnect(s, ENETUNREACH, 0, 0);
+ 			release_sock(s);
+-			write_lock_bh(&x25_list_lock);
++			sock_put(s);
++			goto again;
+ 		}
+ 	}
+ 	write_unlock_bh(&x25_list_lock);
 
