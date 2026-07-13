@@ -1,334 +1,293 @@
-Return-Path: <stable+bounces-273725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273699-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id V03tCoznVGqFgwAAu9opvQ
-	(envelope-from <stable+bounces-273725-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:26:36 +0200
+	id tPdeGf3iVGrhgQAAu9opvQ
+	(envelope-from <stable+bounces-273699-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:07:09 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B426F74B8CD
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:26:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB29274B47F
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:07:08 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=KzdYEATA;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273725-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273725-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	dkim=pass header.d=tuxon.dev header.s=google header.b=kVcUtVWq;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273699-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273699-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=none;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id F1875303B377
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 13:19:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B4D24301F8B0
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 13:05:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70000421F1B;
-	Mon, 13 Jul 2026 13:19:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1F0F414DF4;
+	Mon, 13 Jul 2026 13:05:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2670423A66
-	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 13:19:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0D18414DCE
+	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 13:05:52 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783948764; cv=none; b=eh7EHFXONS6NIAUUJGy5r2XRTaUZfhZ7UpzSBjzDiFdMWxpgyogtCeLkS4srpBXO0oZkIumWsTQ2OTizYjgbMZsB23M++kgmx6p2jT4nWb9Q6aGSSoTngb3gdfOENEhix6Qqvb5Rj/BkKCNS5H7WXzvClUHgeE4/0ASg/t0rg8Q=
+	t=1783947954; cv=none; b=XHQA3/eAr4+3oVuFOBLEkB350i4K/IJznaEYq+dVaAMRNY5m+fL9YKejA5pQU0sQn3TgVDh/eb/ii/HuqYt44TSfexciQN2PNhY1ac+T1nS+fcP59SUKdJEw/U/Pi8BtK6kWTZTkqGTK0pOL61XEz3fVmHy7BGUuonlmv3C8FU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783948764; c=relaxed/simple;
-	bh=KKMegZZvEBgnpZNI1GxVWRj0SN6tKJl/1yfnRy+W0AE=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=EtLiBpexRX1Qm4oGuxjrkY+bAvqYViV3jQRMH92thPfnRuN9tYClpeNJpYrWSjmC/bZFbg2zXFDrDfZzd5EicAfPFBHL6epSofwb13v8U4VO5Oq3/ZN0QqsM5uP38+TldI9lzUpVLF/fl/1aS1h9OKlgPnOBB6KLOh6Rka0G0o8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KzdYEATA; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 435FF1F000E9;
-	Mon, 13 Jul 2026 13:19:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783948762;
-	bh=hjHk5bUR1Ji4rfC799/YvAR47SrOvuBAKhPUcDGDUQg=;
-	h=Subject:To:Cc:From:Date;
-	b=KzdYEATAvMxje9uEX+cjc0MXa7qWm0AohEjYXbA5ofHHMJ6povK/GycHoi8cc48pa
-	 BIqTu0vLh9TQRmD1S6a79PINaV53mA9Kme8kWdLu6V7tVWjK1Of+Jz3ijj+A5bugxZ
-	 SjOP/YA1KytnVjHMeTia6PeQQctjelr37yBBE9Kc=
-Subject: FAILED: patch "[PATCH] vfio/pci: Use a private flag to prevent power state change" failed to apply to 6.1-stable tree
-To: rananta@google.com,alex@shazbot.org,jgg@ziepe.ca
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 13 Jul 2026 15:05:25 +0200
-Message-ID: <2026071325-recipient-lavender-88d4@gregkh>
+	s=arc-20240116; t=1783947954; c=relaxed/simple;
+	bh=vpQtCTf9lK6ZUysGw0BojPKDiQ0w5G9QuaCqYXbcuJ4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=KdXW0cQtO2SFNPfiqMpQdqmw3YBT/vou5sUU9WOwi+sINEDHEoZ4pB03oraU7ikh8BaOo0DapomWFYjuhhmM38P3THQq7N3/ebFFXnWGKOlPXyuitHX6THQz2+Lwg01nQ3xC+oXqiJPhWWMnCOxcvHsMrk1HAUSIngnd+SpAgNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=kVcUtVWq; arc=none smtp.client-ip=209.85.221.52
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-4629051c9d1so1696980f8f.2
+        for <stable@vger.kernel.org>; Mon, 13 Jul 2026 06:05:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=tuxon.dev; s=google; t=1783947951; x=1784552751; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=vIEzViZhXjAraDf7Ayi3/ThvikdI1szu91oMmQWBOX0=;
+        b=kVcUtVWqz4+2IYUTZRLOGopB2MOTMQJPnoo5pwatZXPEny6WksWCXuDWM9aurECGwr
+         4SVCXoMD61wDQwd7KyTwQoFm79BQ2AULGwVr29FajrFUNCJJK+e8Rw+IeuHcYiWdcjuW
+         McwUVRrE1mfjgwgqigAdN2kZdweCtmxYxhbCSzHXAo/G0NEqJcy8fW3blJ4v2tJLf46f
+         y7DTdguH+8h8QZrvLjOe5wZRoUEp60DEsTMSsOIWMKWNamw3IrS1PBbl2WCaFk/gtc2i
+         gmdyU/AFhvNOHoG31bpBOs5Qp0VIf99Nby4+0D7HjeoeADP7mz9geU4wuCWdBk6LC1Sw
+         k45Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783947951; x=1784552751;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=vIEzViZhXjAraDf7Ayi3/ThvikdI1szu91oMmQWBOX0=;
+        b=CYfnv+aFwnJeZIMz1IL6gqd6wcy5OcRL8JyjqVlnmWGsBrgaScfqpeVsoDmdNhlHFf
+         8/lB7CZxFXeyBAMNl7s41S9jlTQJ8hBLS2MnVSCTsD6UOrBYfFJty0c1BVT/xZb1HMd6
+         YN44PRVtM9KtcyuuzKvktcdaffFLR575Vq/t+FQ2uTpFYdLiEJ9e/p6HNiZs3W8ltnqo
+         L6brZpoNc/L85ezrV+8uJ0pdv4c80rNNkrTn6hkzlo1Ax53P954JNeptnAreTmjEJi3G
+         DTAZfX5Lh5CrhswAMxR+r5U4sViZxkT456jSF56c1FAHHdCHP/d6J/R4U4VlfHiG0FPt
+         JZ4g==
+X-Forwarded-Encrypted: i=1; AHgh+Rrj3eMmb2l9z585KlJK428NRrlZplkS1smdGi0LI+Oo1/dpuJ3jcL1S3whxsDAOyVRRO4ycCnc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwuwlRP708y3urJ3GH769WgqGA3QfDEi3+jGflgnNQfC+oxHVz2
+	iRAjPAWwlPcpOiI1XDgt98ZzWd4ZdP4de/WUFUlddKmMpIe6vqhnd+liH1ENkguwsac=
+X-Gm-Gg: AfdE7cmRm82+p4R32NmaAJW+0NjHreeKt4mN4x8n4VJNLEEhEFkT/efsuh3zTpJ4VX0
+	vSuEz09Le5exXxm+C7sdznX3Xy+tcTKPxTQSNJP4TeD5lzw60b4KQmA/ebseDNdCTgNYHrkfQGm
+	AdLgIeCMoNyCCId4TLAxpaHrOYMjyT2mSGEQKmsI1YlEUbbe6qN4vQlnUxxDnkifwIithgm7bo6
+	AXfkPUpSAGhoy1OsVetxpNNHRS0V6ASIbU39FfcJ276nSkfVUPkbVikY/w4Ne2oYny2iW0NiL0P
+	eUdO/tFfwtc3KqPxLz3QRye6wxenP7w9qHWzjIl/2fNL/7Zk9mIJV9J6UD2EON3uIYI+iPxmARP
+	ADErc27LJxJ4M3RNXbKfjH0E+y2LWDik+2NlKlDUlyUJvP+yUvus0HlXOxMy4CKsPUlQtbBlGhS
+	gIcuLLH+TUhQZAe518PwVL4DyqNlo0CczaLy3tYbF1zf6x68USgUAEDYksa5lWdR7zXIOqbzQ=
+X-Received: by 2002:a05:6000:2902:b0:473:1ccc:15bf with SMTP id ffacd0b85a97d-47f2dce2fcemr10893103f8f.42.1783947951174;
+        Mon, 13 Jul 2026 06:05:51 -0700 (PDT)
+Received: from claudiu-TUXEDO-InfinityBook-Pro-AMD-Gen9.. ([2a02:2f04:6402:500:e91e:fe5e:857b:d0c])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f273195d9sm25321609f8f.3.2026.07.13.06.05.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Jul 2026 06:05:50 -0700 (PDT)
+From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+X-Google-Original-From: Claudiu Beznea <claudiu.beznea+renesas@tuxon.dev>
+To: wsa+renesas@sang-engineering.com,
+	tommaso.merciai.xr@bp.renesas.com,
+	alexandre.belloni@bootlin.com,
+	Frank.Li@nxp.com,
+	p.zabel@pengutronix.de
+Cc: claudiu.beznea@tuxon.dev,
+	linux-i3c@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v5 01/17] i3c: renesas: Check that the transfer is valid before accessing it
+Date: Mon, 13 Jul 2026 16:05:29 +0300
+Message-ID: <20260713130545.568657-2-claudiu.beznea+renesas@tuxon.dev>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260713130545.568657-1-claudiu.beznea+renesas@tuxon.dev>
+References: <20260713130545.568657-1-claudiu.beznea+renesas@tuxon.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
+	R_DKIM_ALLOW(-0.20)[tuxon.dev:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-273699-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-273725-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:rananta@google.com,m:alex@shazbot.org,m:jgg@ziepe.ca,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:wsa+renesas@sang-engineering.com,m:tommaso.merciai.xr@bp.renesas.com,m:alexandre.belloni@bootlin.com,m:Frank.Li@nxp.com,m:p.zabel@pengutronix.de,m:claudiu.beznea@tuxon.dev,m:linux-i3c@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:linux-renesas-soc@vger.kernel.org,m:claudiu.beznea.uj@bp.renesas.com,m:stable@vger.kernel.org,m:wsa@sang-engineering.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[claudiu.beznea@tuxon.dev,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DMARC_NA(0.00)[tuxon.dev];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_NONE(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[tuxon.dev:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[claudiu.beznea@tuxon.dev,stable@vger.kernel.org];
+	ALIAS_RESOLVED(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_RCPT(0.00)[stable,renesas];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,shazbot.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,ziepe.ca:email,gregkh:mid]
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[renesas.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp,tuxon.dev:from_mime,tuxon.dev:dkim,tuxon.dev:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B426F74B8CD
+X-Rspamd-Queue-Id: EB29274B47F
 
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-The patch below does not apply to the 6.1-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+The Renesas I3C driver uses an asynchronous model to transfer data. It
+prepares a struct renesas_i3c_xfer, enqueues it, and waits for completion.
+The interrupt handler dequeues the transfer, updates/uses it, and signals
+the waiting thread.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+If the completion times out, the waiting thread dequeues the transfer and
+free it. If an interrupt fires after that, the handler may access freed
+memory, leading to crashes.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-git checkout FETCH_HEAD
-git cherry-pick -x 40ef3edf151e184d021917a5c4c771cc0870844a
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026071325-recipient-lavender-88d4@gregkh' --subject-prefix 'PATCH 6.1.y' 'HEAD^..'
+Check that the transfer is still valid before accessing it in the
+interrupt handler. With it clear any status flags and disable all
+the interrupts to avoid triggering the same interrupts again.
 
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 40ef3edf151e184d021917a5c4c771cc0870844a Mon Sep 17 00:00:00 2001
-From: Raghavendra Rao Ananta <rananta@google.com>
-Date: Thu, 14 May 2026 17:34:49 +0000
-Subject: [PATCH] vfio/pci: Use a private flag to prevent power state change
- with VFs
-
-The current implementation uses pci_num_vf() while holding the
-memory_lock to prevent changing the power state of a PF when
-VFs are enabled. This creates a lockdep circular dependency
-warning because memory_lock is held during device probing.
-
-[  286.997167] ======================================================
-[  287.003363] WARNING: possible circular locking dependency detected
-[  287.009562] 7.0.0-dbg-DEV #3 Tainted: G S
-[  287.015074] ------------------------------------------------------
-[  287.021270] vfio_pci_sriov_/18636 is trying to acquire lock:
-[  287.026942] ff45bea2294d4968 (&vdev->memory_lock){+.+.}-{4:4}, at:
-vfio_pci_core_runtime_resume+0x1f/0xa0
-[  287.036530]
-[  287.036530] but task is already holding lock:
-[  287.042383] ff45bea3a96b8230 (&new_dev_set->lock){+.+.}-{4:4}, at:
-vfio_group_fops_unl_ioctl+0x44d/0x7b0
-[  287.051879]
-[  287.051879] which lock already depends on the new lock.
-[  287.051879]
-[  287.060070]
-[  287.060070] the existing dependency chain (in reverse order) is:
-[  287.067568]
-[  287.067568] -> #2 (&new_dev_set->lock){+.+.}-{4:4}:
-[  287.073941]        __mutex_lock+0x92/0xb80
-[  287.078058]        vfio_assign_device_set+0x66/0x1b0
-[  287.083042]        vfio_pci_core_register_device+0xd1/0x2a0
-[  287.088638]        vfio_pci_probe+0xd2/0x100
-[  287.092933]        local_pci_probe_callback+0x4d/0xa0
-[  287.098001]        process_scheduled_works+0x2ca/0x680
-[  287.103158]        worker_thread+0x1e8/0x2f0
-[  287.107452]        kthread+0x10c/0x140
-[  287.111230]        ret_from_fork+0x18e/0x360
-[  287.115519]        ret_from_fork_asm+0x1a/0x30
-[  287.119983]
-[  287.119983] -> #1 ((work_completion)(&arg.work)){+.+.}-{0:0}:
-[  287.127219]        __flush_work+0x345/0x490
-[  287.131429]        pci_device_probe+0x2e3/0x490
-[  287.135979]        really_probe+0x1f9/0x4e0
-[  287.140180]        __driver_probe_device+0x77/0x100
-[  287.145079]        driver_probe_device+0x1e/0x110
-[  287.149803]        __device_attach_driver+0xe3/0x170
-[  287.154789]        bus_for_each_drv+0x125/0x150
-[  287.159346]        __device_attach+0xca/0x1a0
-[  287.163720]        device_initial_probe+0x34/0x50
-[  287.168445]        pci_bus_add_device+0x6e/0x90
-[  287.172995]        pci_iov_add_virtfn+0x3c9/0x3e0
-[  287.177719]        sriov_add_vfs+0x2c/0x60
-[  287.181838]        sriov_enable+0x306/0x4a0
-[  287.186038]        vfio_pci_core_sriov_configure+0x184/0x220
-[  287.191715]        sriov_numvfs_store+0xd9/0x1c0
-[  287.196351]        kernfs_fop_write_iter+0x13f/0x1d0
-[  287.201338]        vfs_write+0x2be/0x3b0
-[  287.205286]        ksys_write+0x73/0x100
-[  287.209233]        do_syscall_64+0x14d/0x750
-[  287.213529]        entry_SYSCALL_64_after_hwframe+0x77/0x7f
-[  287.219120]
-[  287.219120] -> #0 (&vdev->memory_lock){+.+.}-{4:4}:
-[  287.225491]        __lock_acquire+0x14c6/0x2800
-[  287.230048]        lock_acquire+0xd3/0x2f0
-[  287.234168]        down_write+0x3a/0xc0
-[  287.238019]        vfio_pci_core_runtime_resume+0x1f/0xa0
-[  287.243436]        __rpm_callback+0x8c/0x310
-[  287.247730]        rpm_resume+0x529/0x6f0
-[  287.251765]        __pm_runtime_resume+0x68/0x90
-[  287.256402]        vfio_pci_core_enable+0x44/0x310
-[  287.261216]        vfio_pci_open_device+0x1c/0x80
-[  287.265947]        vfio_df_open+0x10f/0x150
-[  287.270148]        vfio_group_fops_unl_ioctl+0x4a4/0x7b0
-[  287.275476]        __se_sys_ioctl+0x71/0xc0
-[  287.279679]        do_syscall_64+0x14d/0x750
-[  287.283975]        entry_SYSCALL_64_after_hwframe+0x77/0x7f
-[  287.289559]
-[  287.289559] other info that might help us debug this:
-[  287.289559]
-[  287.297582] Chain exists of:
-[  287.297582]   &vdev->memory_lock --> (work_completion)(&arg.work)
---> &new_dev_set->lock
-[  287.297582]
-[  287.310023]  Possible unsafe locking scenario:
-[  287.310023]
-[  287.315961]        CPU0                    CPU1
-[  287.320510]        ----                    ----
-[  287.325059]   lock(&new_dev_set->lock);
-[  287.328917]
-lock((work_completion)(&arg.work));
-[  287.336153]                                lock(&new_dev_set->lock);
-[  287.342523]   lock(&vdev->memory_lock);
-[  287.346382]
-[  287.346382]  *** DEADLOCK ***
-[  287.346382]
-[  287.352315] 2 locks held by vfio_pci_sriov_/18636:
-[  287.357125]  #0: ff45bea208ed3e18 (&group->group_lock){+.+.}-{4:4},
-at: vfio_group_fops_unl_ioctl+0x3e3/0x7b0
-[  287.367048]  #1: ff45bea3a96b8230 (&new_dev_set->lock){+.+.}-{4:4},
-at: vfio_group_fops_unl_ioctl+0x44d/0x7b0
-[  287.376976]
-[  287.376976] stack backtrace:
-[  287.381353] CPU: 191 UID: 0 PID: 18636 Comm: vfio_pci_sriov_
-Tainted: G S                  7.0.0-dbg-DEV #3 PREEMPTLAZY
-[  287.381355] Tainted: [S]=CPU_OUT_OF_SPEC
-[  287.381356] Call Trace:
-[  287.381357]  <TASK>
-[  287.381358]  dump_stack_lvl+0x54/0x70
-[  287.381361]  print_circular_bug+0x2e1/0x300
-[  287.381363]  check_noncircular+0xf9/0x120
-[  287.381364]  ? __lock_acquire+0x5b4/0x2800
-[  287.381366]  __lock_acquire+0x14c6/0x2800
-[  287.381368]  ? pci_mmcfg_read+0x4f/0x220
-[  287.381370]  ? pci_mmcfg_write+0x57/0x220
-[  287.381371]  ? lock_acquire+0xd3/0x2f0
-[  287.381373]  ? pci_mmcfg_write+0x57/0x220
-[  287.381374]  ? lock_release+0xef/0x360
-[  287.381376]  ? vfio_pci_core_runtime_resume+0x1f/0xa0
-[  287.381377]  lock_acquire+0xd3/0x2f0
-[  287.381378]  ? vfio_pci_core_runtime_resume+0x1f/0xa0
-[  287.381379]  ? lock_is_held_type+0x76/0x100
-[  287.381382]  down_write+0x3a/0xc0
-[  287.381382]  ? vfio_pci_core_runtime_resume+0x1f/0xa0
-[  287.381383]  vfio_pci_core_runtime_resume+0x1f/0xa0
-[  287.381384]  ? __pfx_pci_pm_runtime_resume+0x10/0x10
-[  287.381385]  __rpm_callback+0x8c/0x310
-[  287.381386]  ? ktime_get_mono_fast_ns+0x3d/0xb0
-[  287.381389]  ? __pfx_pci_pm_runtime_resume+0x10/0x10
-[  287.381390]  rpm_resume+0x529/0x6f0
-[  287.381392]  ? lock_is_held_type+0x76/0x100
-[  287.381394]  __pm_runtime_resume+0x68/0x90
-[  287.381396]  vfio_pci_core_enable+0x44/0x310
-[  287.381398]  vfio_pci_open_device+0x1c/0x80
-[  287.381399]  vfio_df_open+0x10f/0x150
-[  287.381401]  vfio_group_fops_unl_ioctl+0x4a4/0x7b0
-[  287.381402]  __se_sys_ioctl+0x71/0xc0
-[  287.381404]  do_syscall_64+0x14d/0x750
-[  287.381405]  ? entry_SYSCALL_64_after_hwframe+0x77/0x7f
-[  287.381406]  ? trace_irq_disable+0x25/0xd0
-[  287.381409]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Introduce a private flag 'sriov_active' in the vfio_pci_core_device
-struct. This  allows the driver to track the SR-IOV power state requirement
-without  relying on pci_num_vf() while holding the memory_lock. The lock is
-now  only held to set the flag and ensure the device is in D0, after which
-pci_enable_sriov() can be called without the lock.
-
-Fixes: f4162eb1e2fc ("vfio/pci: Change the PF power state to D0 before enabling VFs")
+Fixes: d028219a9f14 ("i3c: master: Add basic driver for the Renesas I3C controller")
 Cc: stable@vger.kernel.org
-Suggested-by: Jason Gunthorpe <jgg@ziepe.ca>
-Suggested-by: Alex Williamson <alex@shazbot.org>
-Signed-off-by: Raghavendra Rao Ananta <rananta@google.com>
-Link: https://lore.kernel.org/r/20260514173449.3282188-1-rananta@google.com
-[promote bitfield to plain bool to avoid storage-unit races]
-Signed-off-by: Alex Williamson <alex@shazbot.org>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+---
 
-diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-index 041243a84d81..a28f1e99362c 100644
---- a/drivers/vfio/pci/vfio_pci_core.c
-+++ b/drivers/vfio/pci/vfio_pci_core.c
-@@ -271,8 +271,11 @@ int vfio_pci_set_power_state(struct vfio_pci_core_device *vdev, pci_power_t stat
- 	int ret;
- 
- 	/* Prevent changing power state for PFs with VFs enabled */
--	if (pci_num_vf(pdev) && state > PCI_D0)
--		return -EBUSY;
-+	if (state > PCI_D0) {
-+		lockdep_assert_held_write(&vdev->memory_lock);
-+		if (vdev->sriov_active)
-+			return -EBUSY;
-+	}
- 
- 	if (vdev->needs_pm_restore) {
- 		if (pdev->current_state < PCI_D3hot && state >= PCI_D3hot) {
-@@ -2326,8 +2329,9 @@ int vfio_pci_core_sriov_configure(struct vfio_pci_core_device *vdev,
- 
- 		down_write(&vdev->memory_lock);
- 		vfio_pci_set_power_state(vdev, PCI_D0);
--		ret = pci_enable_sriov(pdev, nr_virtfn);
-+		vdev->sriov_active = true;
- 		up_write(&vdev->memory_lock);
-+		ret = pci_enable_sriov(pdev, nr_virtfn);
- 		if (ret) {
- 			pm_runtime_put(&pdev->dev);
- 			goto out_del;
-@@ -2341,6 +2345,13 @@ int vfio_pci_core_sriov_configure(struct vfio_pci_core_device *vdev,
+Changes in v5:
+- introduced renesas_i3c_irqs_mask_and_clear_locked() that keeps
+  unified the IRQ mask and clean path
+- updated the patch description
+
+Changes in v4:
+- disable also the interrupts
+- dropped the Rb tag
+
+Changes in v3:
+- none
+
+Changes in v2:
+- clean the IRQ status bits before returning IRQ_HANDLED and adjusted the
+  patch description to reflect this change
+- collected Frank's tag. Frank, please let me know if you consider
+  I should drop your tag. Thanks!
+
+ drivers/i3c/master/renesas-i3c.c | 52 +++++++++++++++++++++++++++-----
+ 1 file changed, 45 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/i3c/master/renesas-i3c.c b/drivers/i3c/master/renesas-i3c.c
+index f39c449922ca..38b8428f464c 100644
+--- a/drivers/i3c/master/renesas-i3c.c
++++ b/drivers/i3c/master/renesas-i3c.c
+@@ -433,6 +433,21 @@ static void renesas_i3c_enqueue_xfer(struct renesas_i3c *i3c, struct renesas_i3c
  	}
+ }
  
- out_del:
-+	/*
-+	 * Avoid taking the memory_lock intentionally. A race with a power
-+	 * state transition would at most result in an -EBUSY, leaving the
-+	 * device in PCI_D0.
-+	 */
-+	vdev->sriov_active = false;
++static void renesas_i3c_irqs_mask_and_clear_locked(struct renesas_i3c *i3c)
++{
++	/* Disable all the interrupts. */
++	renesas_writel(i3c->regs, BIE, 0);
++	renesas_writel(i3c->regs, NTIE, 0);
 +
- 	mutex_lock(&vfio_pci_sriov_pfs_mutex);
- 	list_del_init(&vdev->sriov_pfs_item);
- out_unlock:
-diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
-index 4fa129fc5c64..5fc6ce4dd786 100644
---- a/include/linux/vfio_pci_core.h
-+++ b/include/linux/vfio_pci_core.h
-@@ -127,6 +127,7 @@ struct vfio_pci_core_device {
- 	bool			needs_pm_restore:1;
- 	bool			pm_intx_masked:1;
- 	bool			pm_runtime_engaged:1;
-+	bool			sriov_active;
- 	struct pci_saved_state	*pci_saved_state;
- 	struct pci_saved_state	*pm_save;
- 	int			ioeventfds_nr;
++	/* Clear normal transfer status flags. */
++	renesas_writel(i3c->regs, NTST, 0);
++
++	/* Clear bus status flags. */
++	renesas_writel(i3c->regs, BST, 0);
++	/* Read back registers to confirm writes have fully propagated. */
++	renesas_readl(i3c->regs, BST);
++}
++
+ static void renesas_i3c_wait_xfer(struct renesas_i3c *i3c, struct renesas_i3c_xfer *xfer)
+ {
+ 	unsigned long time_left;
+@@ -1014,6 +1029,11 @@ static irqreturn_t renesas_i3c_tx_isr(int irq, void *data)
+ 
+ 	scoped_guard(spinlock, &i3c->xferqueue.lock) {
+ 		xfer = i3c->xferqueue.cur;
++		if (!xfer) {
++			renesas_i3c_irqs_mask_and_clear_locked(i3c);
++			return IRQ_HANDLED;
++		}
++
+ 		cmd = xfer->cmds;
+ 
+ 		if (xfer->is_i2c_xfer) {
+@@ -1054,6 +1074,11 @@ static irqreturn_t renesas_i3c_resp_isr(int irq, void *data)
+ 
+ 	scoped_guard(spinlock, &i3c->xferqueue.lock) {
+ 		xfer = i3c->xferqueue.cur;
++		if (!xfer) {
++			renesas_i3c_irqs_mask_and_clear_locked(i3c);
++			return IRQ_HANDLED;
++		}
++
+ 		cmd = xfer->cmds;
+ 
+ 		/* Clear the Respone Queue Full status flag*/
+@@ -1138,6 +1163,11 @@ static irqreturn_t renesas_i3c_tend_isr(int irq, void *data)
+ 
+ 	scoped_guard(spinlock, &i3c->xferqueue.lock) {
+ 		xfer = i3c->xferqueue.cur;
++		if (!xfer) {
++			renesas_i3c_irqs_mask_and_clear_locked(i3c);
++			return IRQ_HANDLED;
++		}
++
+ 		cmd = xfer->cmds;
+ 
+ 		if (xfer->is_i2c_xfer) {
+@@ -1184,6 +1214,11 @@ static irqreturn_t renesas_i3c_rx_isr(int irq, void *data)
+ 
+ 	scoped_guard(spinlock, &i3c->xferqueue.lock) {
+ 		xfer = i3c->xferqueue.cur;
++		if (!xfer) {
++			renesas_i3c_irqs_mask_and_clear_locked(i3c);
++			return IRQ_HANDLED;
++		}
++
+ 		cmd = xfer->cmds;
+ 
+ 		if (xfer->is_i2c_xfer) {
+@@ -1234,15 +1269,13 @@ static irqreturn_t renesas_i3c_stop_isr(int irq, void *data)
+ 	struct renesas_i3c_xfer *xfer;
+ 
+ 	scoped_guard(spinlock, &i3c->xferqueue.lock) {
+-		xfer = i3c->xferqueue.cur;
+-
+-		/* read back registers to confirm writes have fully propagated */
+-		renesas_writel(i3c->regs, BST, 0);
+-		renesas_readl(i3c->regs, BST);
+-		renesas_writel(i3c->regs, BIE, 0);
+-		renesas_clear_bit(i3c->regs, NTST, NTST_TDBEF0 | NTST_RDBFF0);
++		renesas_i3c_irqs_mask_and_clear_locked(i3c);
+ 		renesas_clear_bit(i3c->regs, SCSTRCTL, SCSTRCTL_RWE);
+ 
++		xfer = i3c->xferqueue.cur;
++		if (!xfer)
++			return IRQ_HANDLED;
++
+ 		xfer->ret = 0;
+ 		complete(&xfer->comp);
+ 	}
+@@ -1259,6 +1292,11 @@ static irqreturn_t renesas_i3c_start_isr(int irq, void *data)
+ 
+ 	scoped_guard(spinlock, &i3c->xferqueue.lock) {
+ 		xfer = i3c->xferqueue.cur;
++		if (!xfer) {
++			renesas_i3c_irqs_mask_and_clear_locked(i3c);
++			return IRQ_HANDLED;
++		}
++
+ 		cmd = xfer->cmds;
+ 
+ 		if (xfer->is_i2c_xfer) {
+-- 
+2.43.0
 
 
