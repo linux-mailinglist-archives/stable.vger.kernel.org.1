@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-273823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273828-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 65r/DEbvVGoRhgAAu9opvQ
-	(envelope-from <stable+bounces-273823-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:59:34 +0200
+	id NCEPJezuVGrwhQAAu9opvQ
+	(envelope-from <stable+bounces-273828-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:58:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4357674C019
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:59:33 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCCEE74BFA2
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:58:03 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=eLURIQrb;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273823-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273823-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Ndae9bdB;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273828-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-273828-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7B42E306A407
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 13:46:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F1DBF30747F5
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 13:53:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17E7E3876D0;
-	Mon, 13 Jul 2026 13:46:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDCA4435AAC;
+	Mon, 13 Jul 2026 13:53:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2E70427A04
-	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 13:46:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EB66435A82
+	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 13:53:30 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783950411; cv=none; b=fVKOdB9PnsCwuvF+l/gBUif+prkOTAxlG+CICvweUNWrsQ2st14CAnMBd9JGctw/0l7Meglio9/ge41eg7/bOL/G1wnVj+ecRdwttNPK2OJpKnSUoHR9mwLZokralPpa4nwQanjhFR22JpAyBPUPbVk/MEMstR7b6V0t6i/w0i4=
+	t=1783950811; cv=none; b=qsomuMnYO4YXY1FMObNG7hh/tMTV6ZyY7NKqvqzorqsXQ1+2XpmdVCL/4A8+H11FSfLSEQpXWLCL6VRa62RI6gedZ21bsNpBwep5uBXbkFh+0A8i4tgPyB7D65mAYUj8sOq/bIgnfWKUbdT5NP9JEtYtBSRmgEW7KkZRoHReLrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783950411; c=relaxed/simple;
-	bh=cBgTs0FLeXDcznInLL67hO/38tyI5oRDOtB8iRbUm8c=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=IVOmlpOHqXsi1/8yn6rT/hbpaE7mvSSHFnSOXFkanpYTI11irwpviE0CHvQiQZozVaETrQAgvPQubOGdbXUscG4jYY9MiPDAvgKfuE/cL4jHYo0Gc14dbnnz6nLVCGlrIUR17IlyZNbdbVN9U4zwGtyUzeib5PmIKbqlfpq0nzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eLURIQrb; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC3641F000E9;
-	Mon, 13 Jul 2026 13:46:49 +0000 (UTC)
+	s=arc-20240116; t=1783950811; c=relaxed/simple;
+	bh=x/lDl88+p5zs7Ly1P5IewvXFY5J07Q6lj+bLffon72U=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=TOBQhTkCFjX1Btl7wWwtOMPC9kbUpl3fQpESbdyEd32qtMkqSortN/WwVIz8iZGA5TZ3Wk3yPqy5BAUchd67//mXGK8Hy3t73R9V7EH6zS15JdRPUsLncpZm4BIS3gXSWwfCh5/l4ZnmnpPGtfOV2YB0ukcWnVpnrLqAX2J77nc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ndae9bdB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4DAC1F000E9;
+	Mon, 13 Jul 2026 13:53:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783950410;
-	bh=YzNmIlcZq2dyX8CF4ZPCUCNpCSyaCJNxFFxvxDG+vio=;
+	s=korg; t=1783950810;
+	bh=pKl6+/iIfWJxaTwq+884pJInU5mQJHkH+RB3x2d5YLU=;
 	h=Subject:To:Cc:From:Date;
-	b=eLURIQrbK+yUNeU5Mqs/+x3nZvTcMGK79ysC/MR8iDZODcONdpi0SeHXuIIKhwWtj
-	 rgfs5zdSP3Rvs2KSErwdoVTJKA1dtOrf7cEBVN2nVUWS6g7YFwP02wnSrNVo0sJnUg
-	 j7PdGjHDFd9mG0zSR5Mln4AyNaiayZbpR3bAtSoQ=
-Subject: FAILED: patch "[PATCH] mm: swap_cgroup: fix NULL deref in lookup_swap_cgroup_id on" failed to apply to 6.12-stable tree
-To: jose.fernandez@linux.dev,akpm@linux-foundation.org,baohua@kernel.org,david@kernel.org,hannes@cmpxchg.org,hughd@google.com,mhocko@kernel.org,muchun.song@linux.dev,roman.gushchin@linux.dev,ryncsn@gmail.com,shakeel.butt@linux.dev,stable@vger.kernel.org
+	b=Ndae9bdBivs0YhNN3I7HjXwafkt+vKQ+9yHfyykJc4PRFyy0MKvt6JNiXUPsp5fUH
+	 MMUFWsfPGQOUWnJFje3Es7xpby/zfuaco3uhqcF+kbmXCuUQz80P2QwICKFf/DJPkM
+	 iy6f6FGXPDFPSKKVebEeLs5nTj/L2nY8e7Ka5Pvk=
+Subject: FAILED: patch "[PATCH] netpoll: fix a use-after-free on shutdown path" failed to apply to 6.6-stable tree
+To: leitao@debian.org,kuba@kernel.org,pavan.chebbi@broadcom.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 13 Jul 2026 15:43:02 +0200
-Message-ID: <2026071302-lethargy-obedient-3108@gregkh>
+Date: Mon, 13 Jul 2026 15:45:49 +0200
+Message-ID: <2026071349-stiffly-worried-8d88@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,54 +60,53 @@ X-Rspamd-Action: no action
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:jose.fernandez@linux.dev,m:akpm@linux-foundation.org,m:baohua@kernel.org,m:david@kernel.org,m:hannes@cmpxchg.org,m:hughd@google.com,m:mhocko@kernel.org,m:muchun.song@linux.dev,m:roman.gushchin@linux.dev,m:ryncsn@gmail.com,m:shakeel.butt@linux.dev,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[linux.dev,linux-foundation.org,kernel.org,cmpxchg.org,google.com,gmail.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-273823-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-273828-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:leitao@debian.org,m:kuba@kernel.org,m:pavan.chebbi@broadcom.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_NONE(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
 	TAGGED_RCPT(0.00)[stable];
-	FROM_NO_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:from_mime,linuxfoundation.org:dkim,linux-foundation.org:email,gregkh:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linux.dev:email,cmpxchg.org:email,vger.kernel.org:from_smtp]
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:mid,vger.kernel.org:from_smtp,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:from_mime,linuxfoundation.org:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4357674C019
+X-Rspamd-Queue-Id: DCCEE74BFA2
 
 
-The patch below does not apply to the 6.12-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 63b02a9409cb5180398491b093e48bcb5315f5fb
+git cherry-pick -x 45f1458a85017a023f138b22ac5c76abd477db42
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026071302-lethargy-obedient-3108@gregkh' --subject-prefix 'PATCH 6.12.y' 'HEAD^..'
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026071349-stiffly-worried-8d88@gregkh' --subject-prefix 'PATCH 6.6.y' 'HEAD^..'
 
 Possible dependencies:
 
@@ -119,75 +118,90 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 63b02a9409cb5180398491b093e48bcb5315f5fb Mon Sep 17 00:00:00 2001
-From: "Jose Fernandez (Anthropic)" <jose.fernandez@linux.dev>
-Date: Mon, 4 May 2026 12:55:17 +0000
-Subject: [PATCH] mm: swap_cgroup: fix NULL deref in lookup_swap_cgroup_id on
- swapless host
+From 45f1458a85017a023f138b22ac5c76abd477db42 Mon Sep 17 00:00:00 2001
+From: Breno Leitao <leitao@debian.org>
+Date: Thu, 25 Jun 2026 05:03:18 -0700
+Subject: [PATCH] netpoll: fix a use-after-free on shutdown path
 
-lookup_swap_cgroup_id() passes swap_cgroup_ctrl[type].map to
-__swap_cgroup_id_lookup() without checking that the type was ever
-registered via swap_cgroup_swapon().  On a swapless host every ctrl->map
-is NULL, so __swap_cgroup_id_lookup() dereferences NULL + a scaled
-swp_offset().
+There is a use-after-free error on netpoll, which is clearly detected by
+KASAN.
 
-Since commit bea67dcc5eea ("mm: attempt to batch free swap entries for
-zap_pte_range()"), zap_pte_range() -> swap_pte_batch() calls
-lookup_swap_cgroup_id() on any non-present, non-none PTE that decodes as a
-real swap entry, without first validating it against swap_info[].  A
-single PTE corrupted into a type-0 swap entry takes the host down at
-process exit.
+      BUG: KASAN: slab-use-after-free in _raw_spin_lock_irqsave+0x3b/0x80
+      Read of size 1 at addr ... by task kworker/9:1
+      Workqueue: events queue_process
+      Call Trace:
+       skb_dequeue+0x1e/0xb0
+       queue_process+0x2c/0x600
+       process_scheduled_works+0x4b6/0x850
+       worker_thread+0x414/0x5a0
+      Allocated by task 242:
+       __netpoll_setup+0x201/0x4a0
+       netpoll_setup+0x249/0x550
+       enabled_store+0x32f/0x380
+      Freed by task 0:
+       kfree+0x1b7/0x540
+       rcu_core+0x3f8/0x7a0
 
-We hit this in production on a swapless 6.12.58 host: ~1s of
-"get_swap_device: Bad swap file entry 3f800204222bb" (do_swap_page() being
-correctly defensive about the same entry) followed by
+The problem happens when there is a pending TX worker running in
+parallel with the cleanup path.
 
-  BUG: unable to handle page fault for address: 000003f800204220
-  RIP: 0010:lookup_swap_cgroup_id+0x2b/0x60
-  Call Trace:
-   swap_pte_batch+0xbf/0x230
-   zap_pte_range+0x4c8/0x780
-   unmap_page_range+0x190/0x3e0
-   exit_mmap+0xd9/0x3c0
-   do_exit+0x20c/0x4b0
+This is what happens on netpoll shutdown path:
 
-syzbot has reported the identical stack.
+1) __netpoll_cleanup() is called
+2) set dev->npinfo to NULL
+3) call_rcu() with rcu_cleanup_netpoll_info()
+  3.1) rcu_cleanup_netpoll_info() tries to cancel all workers with
+       cancel_delayed_work(), but doesn't wait for the worker to finish
+4) and kfree(npinfo);
 
-The source of the PTE corruption is a separate bug; this change makes the
-teardown path as robust as the fault path already is.  Every other caller
-of lookup_swap_cgroup_id() is downstream of a get_swap_device() that has
-already validated the entry, so the new branch is cold.
+Because 3.1) doesn't really cancel the work, as the comment says "we
+can't call cancel_delayed_work_sync here, as we are in softirq", the TX
+worker can run after 4).
 
-Link: https://lore.kernel.org/20260504-swap-cgroup-fix-7-0-v1-1-f53ff41ee553@linux.dev
-Fixes: bea67dcc5eea ("mm: attempt to batch free swap entries for zap_pte_range()")
-Signed-off-by: Jose Fernandez (Anthropic) <jose.fernandez@linux.dev>
-Reported-by: syzbot+e12bd9ca48157add237a@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/r/69859728.050a0220.3b3015.0033.GAE@google.com
-Assisted-by: Claude:unspecified
-Cc: Barry Song <baohua@kernel.org>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Kairui Song <ryncsn@gmail.com>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Tl;DR: queue_process() is not an RCU reader, it reaches npinfo through
+the work item via container_of().
 
-diff --git a/mm/swap_cgroup.c b/mm/swap_cgroup.c
-index de779fed8c21..95c38e54dd58 100644
---- a/mm/swap_cgroup.c
-+++ b/mm/swap_cgroup.c
-@@ -124,6 +124,8 @@ unsigned short lookup_swap_cgroup_id(swp_entry_t ent)
- 		return 0;
+Use disable_delayed_work_sync() to ensure the worker is completely
+stopped and prevent any future re-arming attempts. Once npinfo is set
+to NULL, senders will bail out and not queue new work. The disable flag
+ensures any in-flight re-arming attempts also fail silently.
+
+In the future, we can do the cleanup inline here without needing the
+npinfo->rcu rcu_head, but that is net-next material.
+
+Cc: stable@vger.kernel.org
+Fixes: 38e6bc185d95 ("netpoll: make __netpoll_cleanup non-block")
+Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Link: https://patch.msgid.link/20260625-netpoll_rcu_fix-v2-1-0748ffac1e98@debian.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+
+diff --git a/net/core/netpoll.c b/net/core/netpoll.c
+index 229dde818ab3..96d5945e6a30 100644
+--- a/net/core/netpoll.c
++++ b/net/core/netpoll.c
+@@ -633,14 +633,6 @@ static void rcu_cleanup_netpoll_info(struct rcu_head *rcu_head)
+ 			container_of(rcu_head, struct netpoll_info, rcu);
  
- 	ctrl = &swap_cgroup_ctrl[swp_type(ent)];
-+	if (unlikely(!ctrl->map))
-+		return 0;
- 	return __swap_cgroup_id_lookup(ctrl->map, swp_offset(ent));
+ 	skb_queue_purge(&npinfo->txq);
+-
+-	/* we can't call cancel_delayed_work_sync here, as we are in softirq */
+-	cancel_delayed_work(&npinfo->tx_work);
+-
+-	/* clean after last, unfinished work */
+-	__skb_queue_purge(&npinfo->txq);
+-	/* now cancel it again */
+-	cancel_delayed_work(&npinfo->tx_work);
+ 	kfree(npinfo);
  }
+ 
+@@ -664,6 +656,7 @@ static void __netpoll_cleanup(struct netpoll *np)
+ 			ops->ndo_netpoll_cleanup(np->dev);
+ 
+ 		RCU_INIT_POINTER(np->dev->npinfo, NULL);
++		disable_delayed_work_sync(&npinfo->tx_work);
+ 		call_rcu(&npinfo->rcu, rcu_cleanup_netpoll_info);
+ 	}
  
 
 
