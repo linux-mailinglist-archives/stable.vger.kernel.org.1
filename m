@@ -1,89 +1,89 @@
-Return-Path: <stable+bounces-273614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273615-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id XwTPObmsVGrupAMAu9opvQ
-	(envelope-from <stable+bounces-273614-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 11:15:37 +0200
+	id 3MUXD5GsVGrgpAMAu9opvQ
+	(envelope-from <stable+bounces-273615-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 11:14:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FBAF7492ED
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 11:15:37 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CA987492DB
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 11:14:56 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
 	dkim=none;
 	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273614-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-273614-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273615-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-273615-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 92C52305A208
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 09:12:05 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 404EF300BC59
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 09:13:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 162183DDDBB;
-	Mon, 13 Jul 2026 09:12:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45CA83D25A6;
+	Mon, 13 Jul 2026 09:12:53 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f171.google.com (mail-vk1-f171.google.com [209.85.221.171])
+Received: from mail-vs1-f44.google.com (mail-vs1-f44.google.com [209.85.217.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30AB03D647F
-	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 09:12:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B863E3DE424
+	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 09:12:51 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783933924; cv=none; b=EtiBqzwb/NtM03ES+IZq31EzunWAb90u+PHSFW2yRk4OwEL0Z7o4VhbSnbnXJI5VXiAyo3KlbxfluR4f++U41N5DO2bhkLkcQrZAX21hxiVjLuOa5AHEDxNso1Eo1D7TU+qBCSKGH/l6OSdJk2kjgNXYoLiP3OdjQk8zQF4Vckg=
+	t=1783933973; cv=none; b=MhHoUdug8qzZZzjnuSR8cICptCSAb8HHpQLJjwnF/A5ryc00Sx7VrsPlC4+IIFtgJZv8JmLV35zWBPFscEsgd00TI7l9beJM8G/czQ6aaKeyHnMSXdZ8Ujv5VVEgof9upQyazFHu3K9nBYHWLcYsoYf9ZbWa7ELkgwNkIACVn0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783933924; c=relaxed/simple;
-	bh=c5+FxcOGmAmceHhtPcpLKMS/cB4l1dpKb753xDlDMDw=;
+	s=arc-20240116; t=1783933973; c=relaxed/simple;
+	bh=KR7ofJS3EykDayBzMtL2mzrr5NE5XcLuA8fzBY6jaNM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=L3XjdHabEUAk5ozIorzL7FXdkxcvPEhjJ9XzF2nOwfkuZAlDqfnRatoDIdIvHlHihoY8FNIUI7BZQ5gZTooQFUfC9ML+Vb0zAVZCONC0L//R2E1ubEU/b/KMVXD26lgBkEIz9KXWRv/EFEj9LR0SEqjcXQB0pbOxgOn4sf5xTGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.171
-Received: by mail-vk1-f171.google.com with SMTP id 71dfb90a1353d-5bfaf91daa2so634700e0c.0
-        for <stable@vger.kernel.org>; Mon, 13 Jul 2026 02:12:03 -0700 (PDT)
+	 To:Cc:Content-Type; b=UAuXjeG4nKDMz3UOARpi5VJGnnGWJq3yNcXSEZ2Fc4o5C4l2RSM3hCNqEcOAvKS26t+zY/wrT+3jSlicK1v49Ib11TC8md1oyRGPaB2WX5nsAncLERWjpIxjxU89M2vQx+J+GefWmK5VvV3bpJzlSdVwk0VRD1ocZ7XXXwoOdZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.217.44
+Received: by mail-vs1-f44.google.com with SMTP id ada2fe7eead31-73f6a641f6eso997061137.1
+        for <stable@vger.kernel.org>; Mon, 13 Jul 2026 02:12:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783933922; x=1784538722;
+        d=1e100.net; s=20251104; t=1783933971; x=1784538771;
         h=content-type:cc:to:subject:message-id:date:from:in-reply-to
          :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=W0GhslFIBhV7HjGc4JTm9mx3d3RqP/ws4R5ft90HGkM=;
-        b=TyZQOnCejI8S5WlD6Yw2beyqLtiJTrSCTv53BMpl5pY/udeWjcT9qnsDmeQujoQVMJ
-         NWGT4x9TIbAWrFcT9Be0Jo9LaML8blDeAbiFnzd9lFSj8IwxIJn7ARKyDWE/HmwwtxV0
-         brP7PcJARAr2eX4tSmopr7+NrTAKyD+VpJaIR8xmcCi25OOSNv5fNx7aWMQZE07cF70L
-         HzVYk3mG98bqQYzLhs95pIzpAAwAuK8/2flEoqCTeEXEAtOIoE/IkOtnBMbMouKAerr4
-         s6KumehOCmwLrWokdZRsbYfEfeSJp/20fPT56C9BuwU0DMik9LiwCIzwqUqcxCtxY6DC
-         9z5A==
-X-Forwarded-Encrypted: i=1; AHgh+RpR90kXFH3Q23FekuSHe/UtbJ0eC3wQUuCg7zq4NSjs+Nlz+iCDr8CKnkjRKeV98iXUIld3oSY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxjbAp/e9R6rA1NULRmrZ/v5zZ+mb9J1OzILmw7KMFn8onsXexa
-	myO+UW7MoaaLncczBWNeVTfBSdauwqamK/tqsZCMontTpV3k663gVAZEmDAxSCuR
-X-Gm-Gg: AfdE7ck83vicRgAahAVdtz9fS6BDIUZTGpuTTzFcYzYZBgLPZInWo+wf8XLNgne/fwx
-	a25Zqf/LkEI4DaVWrAbbO5cmAF1SUc2+PqTH6Ezf7rRYjbokUwTNSFTx6jd50FgJNSBcMYb6Tip
-	YcMtQIuaBxF5ZZ+uRBaxDVx2SDWEX7fx/tMFQWLyGCu4yxAO0sNEBCeiAlrwqiz80Fxj6Ihrdj1
-	r9tUsqjtsEuLrAekgfhuRmt7LdVRsG1SfIHG4fi5/wuuLvOuZ/ut8um0thupG79UNwnLSVlr5Sw
-	YFn4SB0STyZDGUqJLycnZ8iw1w4QRBfFmuIawacoG8OsAG3TE8GaDHSu/hEudSp9lnmfLkmmRsD
-	W7cqDRB9DnDJACZVgtuj2/T0/6jt5FFTgvJ6y7fpHOhCWN0HwM8zjU/ev5VhSKeI/AHb2DNk9Tx
-	Z5uUvnuTFpxLk7fxgGxiVZf57U3pFqInjOgOijh3MBFoqYL5uk00YwkQ==
-X-Received: by 2002:a05:6122:50a:b0:5bd:aa13:c9a6 with SMTP id 71dfb90a1353d-5bfbed583f7mr5056632e0c.0.1783933922075;
-        Mon, 13 Jul 2026 02:12:02 -0700 (PDT)
-Received: from mail-vk1-f174.google.com (mail-vk1-f174.google.com. [209.85.221.174])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5bf6f8f4283sm8541512e0c.17.2026.07.13.02.11.58
+        bh=Mdt2ZpMbpiIZVtPHl8mFZke/+oHZ4bhDPI14xdCANR8=;
+        b=PrDxRhhVINcnoD1Em6vvIuQT1fyv678xxSq1orziCLgEizFWsjpCFUWhFThhiZLSPh
+         n8pdS3czkIbrUQs8WBz0PqfNSiWypl7sk3fBT3BGA4oD6/ctvS7yU5PqiPTjjqXFDqOF
+         R1FEvIBFkv4id5rtyPAWhpiVLlRlj2QhGp4xE++H5wRmGWjqnKhML6ZukDx70lGLQfHL
+         LESxNWduYcFVtpwFYNYxDjiNKJJ/KG9a3JCtJpodN8PGGUGFs4s+48sx2HDDUxeyCtZp
+         8+0cDi1l9Nz/fLFTaWkT8fCGq9U33gkLjTUYF45B+7FFS6czt4bqJGsYsufMWS9fFlW5
+         R8ng==
+X-Forwarded-Encrypted: i=1; AHgh+RrnqT6+HXCaithzK8uKT4Q6npFKF1JCPbmuYZlWqnAsnHDGDyNoFM5ug+mJOhhkvGVW4F/Csas=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyGN5+yEZgNE4facMcIo3iXBWHnYL5YDDGwH9w8ZCJ2gn4y/1DE
+	F9S/7qB65wfWeiyo+xarZBDWwqm2r8xCwwl6UaMnQrnwzVQ8Gm+Nw/zZlyR+rjIO
+X-Gm-Gg: AfdE7ck/EgcPNi6wjaWJFrJi4cMyOGPWz1jZgzC5/5ps3GyYHG0j5xTsXVuU2SAsgOl
+	Spn+aedCFZ0qMN3QmP58vWTQwlERpiFwK5dbQscU+jXmCz+0lAstD3k9PtAwq7QTI4mKqh/GFiU
+	Sk05LoFoHKZG6PtrRzW1srHgd96hcvuan+8QN7e42YX+AsH0zV/z1XGnx5qNZ1bueHM6YHAUqi5
+	ZoPh7cr017yIC4uCnLN6fMYlovBrzafQuUtL6NSyPcYeFlGpeyZmlFLTcDpmpz4C8CWUjCp8464
+	OTPepL+6h9zbGJ7J1EsgswRxZYIA5gyQ4upp+y4SQk4tePuVcMlIPuVZhUzpcT6teDvhL/X3PiY
+	CBF5x2hCP3UQX41jh6q0M9HC58l22LwE3xEnPMlddqIXUxaIzX0WAE4C4M84ec9mdC/IGTNYZu+
+	F/Hu+uiDpKrYZ3Ghbw6C3+Tjim/eGeB8QAaI4FEkCQ+cShJTTqvA==
+X-Received: by 2002:a05:6102:38c6:b0:739:626d:4473 with SMTP id ada2fe7eead31-74533848931mr4773400137.0.1783933970660;
+        Mon, 13 Jul 2026 02:12:50 -0700 (PDT)
+Received: from mail-vs1-f54.google.com (mail-vs1-f54.google.com. [209.85.217.54])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-744d6a3eb8esm8450226137.3.2026.07.13.02.12.50
         for <stable@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 13 Jul 2026 02:12:00 -0700 (PDT)
-Received: by mail-vk1-f174.google.com with SMTP id 71dfb90a1353d-5bf62388d17so1051179e0c.3
-        for <stable@vger.kernel.org>; Mon, 13 Jul 2026 02:11:58 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+Rq51p19Kbe1YQ+2IkB3G/oOWdXySylNvI6O00kNVfOPlJ0iMRydiPrMJoi25gg61Ebn0O5UixA=@vger.kernel.org
-X-Received: by 2002:a05:6122:4881:b0:5bd:ddab:59a7 with SMTP id
- 71dfb90a1353d-5bfbf36c0c7mr4476532e0c.10.1783933918601; Mon, 13 Jul 2026
- 02:11:58 -0700 (PDT)
+        Mon, 13 Jul 2026 02:12:50 -0700 (PDT)
+Received: by mail-vs1-f54.google.com with SMTP id ada2fe7eead31-745497ac8fcso320345137.0
+        for <stable@vger.kernel.org>; Mon, 13 Jul 2026 02:12:50 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+Ro22uqK+3b90PpKeb07ywzOCqcV1WTs4AD+UilufAVx3Vkd8KxGtMKlBCONFcpxQpl2wRacZCQ=@vger.kernel.org
+X-Received: by 2002:a05:6102:c11:b0:631:4cd8:b6aa with SMTP id
+ ada2fe7eead31-74533d5836bmr4638111137.13.1783933970193; Mon, 13 Jul 2026
+ 02:12:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260710160450.64967-1-marek.vasut+renesas@mailbox.org>
-In-Reply-To: <20260710160450.64967-1-marek.vasut+renesas@mailbox.org>
+References: <20260710160450.64967-1-marek.vasut+renesas@mailbox.org> <CAMuHMdUQJ8mzUi0birB5f1KnCMX_QufHTgYB7AW=d3ZoFer+Yg@mail.gmail.com>
+In-Reply-To: <CAMuHMdUQJ8mzUi0birB5f1KnCMX_QufHTgYB7AW=d3ZoFer+Yg@mail.gmail.com>
 From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 13 Jul 2026 11:11:47 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdUQJ8mzUi0birB5f1KnCMX_QufHTgYB7AW=d3ZoFer+Yg@mail.gmail.com>
-X-Gm-Features: AUfX_mx2_XwwyHYURvzuCSrFPVED98PoIu91Ql66CsUnywXi7izjAFqbWrYeOLo
-Message-ID: <CAMuHMdUQJ8mzUi0birB5f1KnCMX_QufHTgYB7AW=d3ZoFer+Yg@mail.gmail.com>
+Date: Mon, 13 Jul 2026 11:12:36 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdVD=y++zr8sfnf9ZjW8md43ifmuytd-F7PY7r6e2p9Tbw@mail.gmail.com>
+X-Gm-Features: AUfX_mwAEKuhdsHoYqlC4vkeXsOmSglqwfwCjvHk1qnz5qkYmbXVC-KIeAr11Bw
+Message-ID: <CAMuHMdVD=y++zr8sfnf9ZjW8md43ifmuytd-F7PY7r6e2p9Tbw@mail.gmail.com>
 Subject: Re: [PATCH v2] arm64: dts: renesas: ironhide: Describe inline ECC carveouts
 To: Marek Vasut <marek.vasut+renesas@mailbox.org>
 Cc: linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org, 
@@ -95,11 +95,11 @@ Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-273614-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-273615-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FREEMAIL_CC(0.00)[lists.infradead.org,vger.kernel.org,kernel.org,glider.be,gmail.com];
 	RCVD_TLS_LAST(0.00)[];
@@ -117,107 +117,51 @@ X-Spamd-Result: default: False [-1.46 / 15.00];
 	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[geert@linux-m68k.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	ALIAS_RESOLVED(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[11];
 	R_DKIM_NA(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable,renesas,dt];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,mailbox.org:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mailbox.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,mail.gmail.com:mid,vger.kernel.org:from_smtp,linux-m68k.org:from_mime,linux-m68k.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7FBAF7492ED
+X-Rspamd-Queue-Id: 3CA987492DB
 
-Hi Marek,
-
-On Fri, 10 Jul 2026 at 18:05, Marek Vasut
-<marek.vasut+renesas@mailbox.org> wrote:
-> The DBSC5 DRAM controller protects DRAM content using inline ECC.
-> The inline ECC utilizes areas of DRAM for its operation, which are
-> in the DRAM address range, but must not be accessed or modified.
-> Describe the inline ECC carveout areas used by the DBSC5 controller
-> on this hardware as reserved-memory, which must not be accessed.
-> Include DRAM areas which are unprotected by ECC as well, those are
-> parts of the DRAM which directly precede the ECC carveout.
+On Mon, 13 Jul 2026 at 11:11, Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> On Fri, 10 Jul 2026 at 18:05, Marek Vasut
+> <marek.vasut+renesas@mailbox.org> wrote:
+> > The DBSC5 DRAM controller protects DRAM content using inline ECC.
+> > The inline ECC utilizes areas of DRAM for its operation, which are
+> > in the DRAM address range, but must not be accessed or modified.
+> > Describe the inline ECC carveout areas used by the DBSC5 controller
+> > on this hardware as reserved-memory, which must not be accessed.
+> > Include DRAM areas which are unprotected by ECC as well, those are
+> > parts of the DRAM which directly precede the ECC carveout.
+> >
+> > In case of high DRAM utilization, unless the inline ECC carveouts
+> > are properly reserved, Linux may use and corrupt the memory used
+> > by the DBSC5 DRAM controller for inline ECC, which would lead to
+> > the system becoming unstable.
+> >
+> > Fixes: ad142a4ef710 ("arm64: dts: renesas: r8a78000: Add initial Ironhide board support")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
 >
-> In case of high DRAM utilization, unless the inline ECC carveouts
-> are properly reserved, Linux may use and corrupt the memory used
-> by the DBSC5 DRAM controller for inline ECC, which would lead to
-> the system becoming unstable.
+> > V2: Include the unprotected data areas as well
 >
-> Fixes: ad142a4ef710 ("arm64: dts: renesas: r8a78000: Add initial Ironhide board support")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
-
-> V2: Include the unprotected data areas as well
-
-Thanks for the update!
-
-With the ECC carveouts, Ironhide survives booting with "earlycon
-memtest=17".
-
-> --- a/arch/arm64/boot/dts/renesas/r8a78000-ironhide.dts
-> +++ b/arch/arm64/boot/dts/renesas/r8a78000-ironhide.dts
-> @@ -107,6 +107,47 @@ tee@8c400000 {
->                         reg = <0x0 0x8c400000 0x0 0x02000000>;
->                         no-map;
->                 };
-> +
-> +               /* DRAM controller inline ECC areas */
-> +               ecc@10cccc0000 {
-> +                       reg = <0x10 0xcccc0000 0x0 0x33340000>;
-> +                       no-map;
-> +               };
-> +
-> +               ecc@12cccc0000 {
-> +                       reg = <0x12 0xcccc0000 0x0 0x33340000>;
-> +                       no-map;
-> +               };
-> +
-> +               ecc@14cccc0000 {
-> +                       reg = <0x14 0xcccc0000 0x0 0x33340000>;
-> +                       no-map;
-> +               };
-> +
-> +               ecc@16cccc0000 {
-> +                       reg = <0x16 0xcccc0000 0x0 0x33340000>;
-> +                       no-map;
-> +               };
-> +
-> +               ecc@18cccc0000 {
-> +                       reg = <0x18 0xcccc0000 0x0 0x33340000>;
-> +                       no-map;
-> +               };
-> +
-> +               ecc@1a66660000 {
-> +                       reg = <0x1a 0x66660000 0x0 0x999a0000>;
-> +                       no-map;
-> +               };
-> +
-> +               ecc@1c66660000 {
-> +                       reg = <0x1c 0x66660000 0x0 0x999a0000>;
-> +                       no-map;
-> +               };
-> +
-> +               ecc@1e66660000 {
-> +                       reg = <0x1e 0x66660000 0x0 0x999a0000>;
-> +                       no-map;
-> +               };
-
-Given all DB[0-7]FSDRAMECCAREA00 registers on Ironhide contain
-0x0000cccc (md.l e98[0-3][7f]450 1), I think the last 3 regions should
-start at offset 0xcccc0000 instead of 0x66660000, too.
-As a bonus, we get 4.8 GiB back ;-)
-
->         };
->  };
+> Thanks for the update!
 >
+> With the ECC carveouts, Ironhide survives booting with "earlycon
+> memtest=17".
+
+Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+(also with all offsets set to 0xcccc0000).
 
 Gr{oetje,eeting}s,
 
                         Geert
 
-
---
+-- 
 Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
 In personal conversations with technical people, I call myself a hacker. But
