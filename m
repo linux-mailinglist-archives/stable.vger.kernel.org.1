@@ -1,169 +1,400 @@
-Return-Path: <stable+bounces-273901-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273903-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Osc4BfggVWoukQAAu9opvQ
-	(envelope-from <stable+bounces-273901-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 19:31:36 +0200
+	id aXm7GJ4hVWpLkQAAu9opvQ
+	(envelope-from <stable+bounces-273903-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 19:34:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7522874E085
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 19:31:35 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A70C274E0DF
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 19:34:21 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=gwIhX+za;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273901-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-273901-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=none;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=E52NTC9e;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273903-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-273903-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A12AB3031DA2
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 17:28:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F1D703027965
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 17:30:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7AFB34753C;
-	Mon, 13 Jul 2026 17:28:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6B89271A9A;
+	Mon, 13 Jul 2026 17:30:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F295346ADE
-	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 17:28:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB12D34844C
+	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 17:30:28 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783963720; cv=none; b=rdkcbcVbXL8B49qOJ0+9gFfIEH/rholaquNXI/kvJOWjLKCCX01S2Z4z04YlonKkrTX1wfKv/SwLixD6PHaqW0C86jXKzLyerdOqgwjoG0RRNHWkA2JWYtTlPNch65gEFtGcjgj1lgY/+JwjJyu2fgFRuEpidbkJJXkNkkrPTpk=
+	t=1783963831; cv=none; b=BrVDPH1XiPMW+jI3L/0VwLjG0J27jezvoq204X+8uY2Xl3UEfnQqPnxk5wld9hnjy1/gV0XrI+YtrCl43e4xPEWezfgevSiEx+1YTh5IQA3dnPMoEn2klRmQ5Jx488NR3RaRmJHFYXsHuA2QTGZ6FlgKrI+djyaFi8BZi5wt3Io=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783963720; c=relaxed/simple;
-	bh=gT9s9oRpIiwyq5GIG9RUX0KOjdNXvmY7rnr7/TrhcE0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Y/Vv/kwumsp9vfuT5Vw0hCZdjqKoOpVhN1F1tIrVL+DudWLqUc1Dbl3XuHxZc+ySeHbLPE6zr1s/piiZ/lMhdzZa3FExOu0sGD1SfAHQFh220QqRKIBu1aJ9njmoX52iWk0wEfZ9nBa+BtexDKeOOHukxCUYtCXXKS8SaajFT08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=gwIhX+za; arc=none smtp.client-ip=209.85.160.169
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-51c2a818fc4so24722591cf.2
-        for <stable@vger.kernel.org>; Mon, 13 Jul 2026 10:28:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1783963718; x=1784568518; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=JDQW3Iu7NBoAVzUsdpY0L5+hRHDfdkqTfxv3iduKA6M=;
-        b=gwIhX+za/qpfeQYrKqHRrT/NYBKqy1fcxDs86izaC5tJz8hrqta/fnluLKggVQBGGG
-         U2KTuwo3SiCLMdcAnqO69f24xoLy2SBf/89SZ97ltuOXTbXuPu5xeLSKmEaABLf6aGdy
-         uyDIKEj8dezMmaIR3yPRZbkYP6YPTqbOTIgv0xJhaA/s0+ML6gjpZ1GUBmgqbtN4pLsO
-         235XCqM5efLvRbg6Q3OFGk045bDFJ45dNzI4CNo4EmxGM1+i5rqyPmEl8Ypl4liZpIFB
-         sNMdL42Iuh3yJGA6PRbzsoCu19OR3I1lkjWMRu+JNQynmOro+/3HUvw3SOh7xIm2ikFu
-         g7JA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783963718; x=1784568518;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=JDQW3Iu7NBoAVzUsdpY0L5+hRHDfdkqTfxv3iduKA6M=;
-        b=ODnPTHcyfgDX/EDUEeSdp3Yf5vgBNjs8tWLj49b0KEJGwv1TVRBAhJgqpl9hPRzuq0
-         rYrVfuYxH7drVWuRMhvR6HOzCB/7O6H0PA+ovaqRyjKCVaJf30fLQmnduIzlY1xn+5Fj
-         vKdFLS9PUwU5KjnC52CFIWstF2wF3vggu2CHPDPrvriMvvxtZXGKAmGON8qXA5cz/o9h
-         F8Kcd0+v3GEPb2947+EtDP57VJ+tAdy0UGVSm5tvLanXtakczLR7SnFYPZcH7Vs1Pqyv
-         Rds/1+wT3IZfLhemmNzCk6V4tLHxpE9t/44HcNpG+QsaNFalkrdqpFLuk8V/LlGkEHOL
-         qDDw==
-X-Forwarded-Encrypted: i=1; AHgh+RoTBBZ/hIJLcSLZhZ1kHXlUQOMLFGBssa+flkq4UuOZk8pOJDUX2ywgvOe/T2RhzXfw1e2ZNpc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxnfLuO/Yy6nU7U0+jQgQdBTSThXMkYLdf9c7TLQg/R7E621e41
-	XHWER6bdmBgd4fOIzvxtGVGn+Agk3jLWP8Tb0wfKx1v3V9nmKaUlVxyOvr4XXdIWi9s=
-X-Gm-Gg: AfdE7cnvVQj7s6cfHTV+q/MuhN2MWARU5aRhSoDvNC3k9Y3ulyIcVclXVN9ToRvLylQ
-	92ZqJWkCuRa32u1nvHAh7Ns7vH3kvAEvKALIHjkONio0nYWy3XKqMlMSwwts4pojy0iCTRbzpOB
-	59sxnelDz2SiCrR0gczzXBZYbWJ5JX8XJQEIRFKCQs9tXI9HR81b6prnUKMc3pUcdstQskAn+Yt
-	kJF+OC9OH5ttkGSOFy0N5Ff0GhdMrc8My5BiNHtaaVHEVXv4jGOKoLr3hZqpYY9mPhm6snEjwm/
-	gf45fB6V9MVGGEAQNbNRd/DdM8T+ZiOujU/Fhl7sXXw7UT3Ycv+IlNr+a/kmhKmqAqb8r+UL9Ze
-	tQW8AcjucX2Gvh0ZxzWO7cWZ48jxaPMUZ1whlrtDa8z2DE8FCgzV/DeBLybas
-X-Received: by 2002:ac8:5ac1:0:b0:51c:478:32a1 with SMTP id d75a77b69052e-51cbf06d972mr109410031cf.18.1783963717964;
-        Mon, 13 Jul 2026 10:28:37 -0700 (PDT)
-Received: from ziepe.ca ([159.2.72.92])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51caafd8b4fsm89742801cf.31.2026.07.13.10.28.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Jul 2026 10:28:37 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1wjKSK-0000000Dmea-3sFm;
-	Mon, 13 Jul 2026 14:28:36 -0300
-Date: Mon, 13 Jul 2026 14:28:36 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Peiyang He <peiyang_he@smail.nju.edu.cn>
-Cc: kevin.tian@intel.com, joro@8bytes.org, will@kernel.org,
-	iommu@lists.linux.dev, robin.murphy@arm.com,
-	linux-kernel@vger.kernel.org, syzkaller@googlegroups.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] iommufd: Reject DMABUF pages from the access pin path
-Message-ID: <20260713172836.GG3133966@ziepe.ca>
-References: <E8540D7D05768C91+8b2ef227-3368-494e-909d-7b28e1489dfb@smail.nju.edu.cn>
- <CD68F549BF3761B7+20260709050800.520607-1-peiyang_he@smail.nju.edu.cn>
+	s=arc-20240116; t=1783963831; c=relaxed/simple;
+	bh=iRiXQugT/lEV2e0G3TyYUVijFqASw/0dH8MIJreWHK4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=SF7Vg079j5o4TKzvwNrUjWIJdIq/j0lB6ilEaQdVgxB1QbGBpUAYMqpTJT1obalqpkWlUfXUhXBo+8z0kc5z5ZE8ipCueqIh0dgkWi3uIAWW1gd70zjaIhIrRQdMsUK0Cgbm/vYrqdU+KYCU5O9OwQ4a1NyVVuLKwxPaCgAkdDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E52NTC9e; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAB1A1F000E9;
+	Mon, 13 Jul 2026 17:30:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1783963828;
+	bh=kMiC4mWRVmRCwXRj1G1EQR+PRojQcW/qsI+HBCd+UP0=;
+	h=Subject:To:Cc:From:Date;
+	b=E52NTC9eX9tymheyXzi0ByWEy9X4X8hYIMEt8Z6Mz8GPFpv+xPuVgWAJwDSe1QSYY
+	 QGa84StW/FGC1bTNeXzNPMSY8ZtveWPPGCy5HWM584KOCglGbrRBEWTeAS1GsVO6yO
+	 MJ5IwMwlGtbVApBpE+Z8jDAoPereE0XarIbz3cqc=
+Subject: FAILED: patch "[PATCH] Bluetooth: hci_conn: Fix null ptr deref in hci_abort_conn()" failed to apply to 6.6-stable tree
+To: oss@fourdim.xyz,luiz.von.dentz@intel.com,xiaowu.417@qq.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 13 Jul 2026 19:28:50 +0200
+Message-ID: <2026071350-agent-mustard-7408@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CD68F549BF3761B7+20260709050800.520607-1-peiyang_he@smail.nju.edu.cn>
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[ziepe.ca:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-273903-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[ziepe.ca:+];
-	TAGGED_FROM(0.00)[bounces-273901-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:peiyang_he@smail.nju.edu.cn,m:kevin.tian@intel.com,m:joro@8bytes.org,m:will@kernel.org,m:iommu@lists.linux.dev,m:robin.murphy@arm.com,m:linux-kernel@vger.kernel.org,m:syzkaller@googlegroups.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	DMARC_NA(0.00)[ziepe.ca];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[jgg@ziepe.ca,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:oss@fourdim.xyz,m:luiz.von.dentz@intel.com,m:xiaowu.417@qq.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jgg@ziepe.ca,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[fourdim.xyz,intel.com,qq.com];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	TO_DN_NONE(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,ziepe.ca:from_mime,ziepe.ca:dkim,ziepe.ca:mid]
+	FROM_NO_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:from_mime,linuxfoundation.org:dkim,intel.com:email,gregkh:mid,fourdim.xyz:email,vger.kernel.org:from_smtp,qq.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7522874E085
+X-Rspamd-Queue-Id: A70C274E0DF
 
-On Thu, Jul 09, 2026 at 01:08:00PM +0800, Peiyang He wrote:
-> DMABUF pages are not supported for iommufd access pinning.
-> iommufd_access_pin_pages() returns struct page pointers for
-> in-kernel CPU access, but DMABUF-backed iopt_pages do not carry
-> a userspace address that can be passed to the GUP path.
-> 
-> iopt_pages_rw_access() already rejects IOPT_ADDRESS_DMABUF before doing
-> CPU access. Apply the same rejection to iopt_area_add_access() before it
-> takes pages->mutex and calls iopt_pages_fill_xarray().
-> Otherwise a DMABUF-backed iopt_pages can reach the hole-fill path, where
-> pfn_reader_user_pin() interprets the union as uptr and
-> calls pin_user_pages_fast()/pin_user_pages_remote().
-> 
-> This fix also avoids the lockdep warning reported from that path, where
-> pages_dmabuf_mutex_key is held while gup_fast_fallback() may acquire
-> mmap_lock.
-> 
-> Reported-by: Peiyang He <peiyang_he@smail.nju.edu.cn>
-> Closes: https://lore.kernel.org/all/E8540D7D05768C91+8b2ef227-3368-494e-909d-7b28e1489dfb@smail.nju.edu.cn/
-> Fixes: 71db84a092c3 ("iommufd: Add DMABUF to iopt_pages")
-> Cc: stable@vger.kernel.org
-> Tested-by: Peiyang He <peiyang_he@smail.nju.edu.cn>
-> Signed-off-by: Peiyang He <peiyang_he@smail.nju.edu.cn>
-> ---
->  drivers/iommu/iommufd/pages.c | 3 +++
->  1 file changed, 3 insertions(+)
 
-Applied thanks
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Jason
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x 12917f591cea1af36087dba5b9ec888652f0b42a
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026071350-agent-mustard-7408@gregkh' --subject-prefix 'PATCH 6.6.y' 'HEAD^..'
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 12917f591cea1af36087dba5b9ec888652f0b42a Mon Sep 17 00:00:00 2001
+From: Siwei Zhang <oss@fourdim.xyz>
+Date: Mon, 15 Jun 2026 11:33:05 -0400
+Subject: [PATCH] Bluetooth: hci_conn: Fix null ptr deref in hci_abort_conn()
+
+hci_abort_conn() read hci_skb_event(hdev->sent_cmd) when a connection
+was pending, but hdev->sent_cmd can be NULL while req_status is still
+HCI_REQ_PEND, leading to a NULL pointer dereference and a general
+protection fault from the hci_rx_work() receive path.
+
+Instead of inspecting hdev->sent_cmd, track the in-flight create
+connection command with a new per-connection HCI_CONN_CREATE flag and
+route all cancellation through hci_cancel_connect_sync(), which
+dispatches to a dedicated per-type cancel function. The create command
+is in exactly one of two states: still queued, or in flight. The cancel
+function holds cmd_sync_work_lock across the whole decision: the worker
+takes this lock to dequeue every entry, so while it is held a queued
+command cannot start running and an in-flight command cannot complete
+and let the next command become pending. This keeps the flag test and
+hci_cmd_sync_cancel() atomic with respect to the worker, so a queued
+command is simply dequeued, and an in-flight command owned by this
+connection is cancelled without the risk of cancelling an unrelated
+command that became pending in the meantime. CIS uses the same flag
+mechanism via HCI_CONN_CREATE_CIS but cannot be dequeued per-connection.
+
+hci_acl_create_conn_sync() and hci_le_create_conn_sync() clear
+HCI_CONN_CREATE after the create command completes, but the command
+status handler can free conn via hci_conn_del() (for example when the
+controller rejects the connection) while the worker is still blocked on
+the connection complete event. Hold a reference on conn across the
+create command so the flag can be cleared without a use-after-free.
+
+Fixes: a13f316e90fd ("Bluetooth: hci_conn: Consolidate code for aborting connections")
+Cc: stable@vger.kernel.org
+Suggested-by: XIAO WU <xiaowu.417@qq.com>
+Assisted-by: Claude:claude-opus-4-8
+Signed-off-by: Siwei Zhang <oss@fourdim.xyz>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+
+diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
+index 7e15da47fe3a..4ca09298e11a 100644
+--- a/include/net/bluetooth/hci_core.h
++++ b/include/net/bluetooth/hci_core.h
+@@ -985,6 +985,7 @@ enum {
+ 	HCI_CONN_AUTH_FAILURE,
+ 	HCI_CONN_PER_ADV,
+ 	HCI_CONN_BIG_CREATED,
++	HCI_CONN_CREATE,
+ 	HCI_CONN_CREATE_CIS,
+ 	HCI_CONN_CREATE_BIG_SYNC,
+ 	HCI_CONN_BIG_SYNC,
+diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
+index c335372e4062..1966cd153d97 100644
+--- a/net/bluetooth/hci_conn.c
++++ b/net/bluetooth/hci_conn.c
+@@ -3178,26 +3178,11 @@ int hci_abort_conn(struct hci_conn *conn, u8 reason)
+ 
+ 	conn->abort_reason = reason;
+ 
+-	/* If the connection is pending check the command opcode since that
+-	 * might be blocking on hci_cmd_sync_work while waiting its respective
+-	 * event so we need to hci_cmd_sync_cancel to cancel it.
+-	 *
+-	 * hci_connect_le serializes the connection attempts so only one
+-	 * connection can be in BT_CONNECT at time.
++	/* Cancel the connect attempt. A return of 0 means the create command
++	 * was still queued and got dequeued, so there is nothing to disconnect.
+ 	 */
+-	if (conn->state == BT_CONNECT && READ_ONCE(hdev->req_status) == HCI_REQ_PEND) {
+-		switch (hci_skb_event(hdev->sent_cmd)) {
+-		case HCI_EV_CONN_COMPLETE:
+-		case HCI_EV_LE_CONN_COMPLETE:
+-		case HCI_EV_LE_ENHANCED_CONN_COMPLETE:
+-		case HCI_EVT_LE_CIS_ESTABLISHED:
+-			hci_cmd_sync_cancel(hdev, ECANCELED);
+-			break;
+-		}
+-	/* Cancel connect attempt if still queued/pending */
+-	} else if (!hci_cancel_connect_sync(hdev, conn)) {
++	if (!hci_cancel_connect_sync(hdev, conn))
+ 		return 0;
+-	}
+ 
+ 	/* Run immediately if on cmd_sync_work since this may be called
+ 	 * as a result to MGMT_OP_DISCONNECT/MGMT_OP_UNPAIR which does
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index 3be8c3581c6c..c896d4edd013 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -6633,6 +6633,11 @@ static int hci_le_create_conn_sync(struct hci_dev *hdev, void *data)
+ 
+ 	bt_dev_dbg(hdev, "conn %p", conn);
+ 
++	/* Hold a reference so conn stays valid for the HCI_CONN_CREATE
++	 * clear_bit() at done.
++	 */
++	hci_conn_get(conn);
++
+ 	clear_bit(HCI_CONN_SCANNING, &conn->flags);
+ 	conn->state = BT_CONNECT;
+ 
+@@ -6645,6 +6650,7 @@ static int hci_le_create_conn_sync(struct hci_dev *hdev, void *data)
+ 		    hdev->le_scan_type == LE_SCAN_ACTIVE &&
+ 		    !hci_dev_test_flag(hdev, HCI_LE_SIMULTANEOUS_ROLES)) {
+ 			hci_conn_del(conn);
++			hci_conn_put(conn);
+ 			return -EBUSY;
+ 		}
+ 
+@@ -6690,6 +6696,12 @@ static int hci_le_create_conn_sync(struct hci_dev *hdev, void *data)
+ 					     &own_addr_type);
+ 	if (err)
+ 		goto done;
++
++	/* Mark create connection in flight so hci_cancel_connect_sync() can
++	 * cancel it while blocking on the connection complete event.
++	 */
++	set_bit(HCI_CONN_CREATE, &conn->flags);
++
+ 	/* Send command LE Extended Create Connection if supported */
+ 	if (use_ext_conn(hdev)) {
+ 		err = hci_le_ext_create_conn_sync(hdev, conn, own_addr_type);
+@@ -6725,11 +6737,14 @@ static int hci_le_create_conn_sync(struct hci_dev *hdev, void *data)
+ 				       conn->conn_timeout, NULL);
+ 
+ done:
++	clear_bit(HCI_CONN_CREATE, &conn->flags);
++
+ 	if (err == -ETIMEDOUT)
+ 		hci_le_connect_cancel_sync(hdev, conn, 0x00);
+ 
+ 	/* Re-enable advertising after the connection attempt is finished. */
+ 	hci_resume_advertising_sync(hdev);
++	hci_conn_put(conn);
+ 	return err;
+ }
+ 
+@@ -7004,10 +7019,25 @@ static int hci_acl_create_conn_sync(struct hci_dev *hdev, void *data)
+ 	else
+ 		cp.role_switch = 0x00;
+ 
+-	return __hci_cmd_sync_status_sk(hdev, HCI_OP_CREATE_CONN,
+-					sizeof(cp), &cp,
+-					HCI_EV_CONN_COMPLETE,
+-					conn->conn_timeout, NULL);
++	/* Hold a reference so conn stays valid for the HCI_CONN_CREATE
++	 * clear_bit() below.
++	 */
++	hci_conn_get(conn);
++
++	/* Mark create connection in flight so hci_cancel_connect_sync() can
++	 * cancel it while blocking on the connection complete event.
++	 */
++	set_bit(HCI_CONN_CREATE, &conn->flags);
++
++	err = __hci_cmd_sync_status_sk(hdev, HCI_OP_CREATE_CONN,
++				       sizeof(cp), &cp,
++				       HCI_EV_CONN_COMPLETE,
++				       conn->conn_timeout, NULL);
++
++	clear_bit(HCI_CONN_CREATE, &conn->flags);
++	hci_conn_put(conn);
++
++	return err;
+ }
+ 
+ int hci_connect_acl_sync(struct hci_dev *hdev, struct hci_conn *conn)
+@@ -7059,22 +7089,97 @@ int hci_connect_le_sync(struct hci_dev *hdev, struct hci_conn *conn)
+ 	return (err == -EEXIST) ? 0 : err;
+ }
+ 
+-int hci_cancel_connect_sync(struct hci_dev *hdev, struct hci_conn *conn)
++static int hci_acl_cancel_create_conn_sync(struct hci_dev *hdev,
++					   struct hci_conn *conn)
+ {
+-	if (conn->state != BT_OPEN)
+-		return -EINVAL;
++	struct hci_cmd_sync_work_entry *entry;
++	int err = -EBUSY;
+ 
+-	switch (conn->type) {
+-	case ACL_LINK:
+-		return !hci_cmd_sync_dequeue_once(hdev,
+-						  hci_acl_create_conn_sync,
+-						  conn, NULL);
+-	case LE_LINK:
+-		return !hci_cmd_sync_dequeue_once(hdev, hci_le_create_conn_sync,
+-						  conn, create_le_conn_complete);
++	/* cmd_sync_work_lock makes the HCI_CONN_CREATE test and the cancel
++	 * atomic against the worker, which takes this lock to dequeue every
++	 * entry: while it is held no other command can become pending, so
++	 * hci_cmd_sync_cancel() cannot cancel an unrelated command.
++	 */
++	mutex_lock(&hdev->cmd_sync_work_lock);
++
++	/* In flight: this connection owns the pending request, cancel it. */
++	if (test_bit(HCI_CONN_CREATE, &conn->flags)) {
++		hci_cmd_sync_cancel(hdev, ECANCELED);
++		goto unlock;
+ 	}
+ 
+-	return -ENOENT;
++	/* Still queued: a successful dequeue means it never started, so there
++	 * is nothing to disconnect.
++	 */
++	entry = _hci_cmd_sync_lookup_entry(hdev, hci_acl_create_conn_sync, conn,
++					   NULL);
++	if (entry) {
++		_hci_cmd_sync_cancel_entry(hdev, entry, -ECANCELED);
++		err = 0;
++	}
++
++unlock:
++	mutex_unlock(&hdev->cmd_sync_work_lock);
++	return err;
++}
++
++static int hci_le_cancel_create_conn_sync(struct hci_dev *hdev,
++					  struct hci_conn *conn)
++{
++	struct hci_cmd_sync_work_entry *entry;
++	int err = -EBUSY;
++
++	/* cmd_sync_work_lock keeps the HCI_CONN_CREATE test and the cancel
++	 * atomic against the cmd_sync worker.
++	 */
++	mutex_lock(&hdev->cmd_sync_work_lock);
++
++	if (test_bit(HCI_CONN_CREATE, &conn->flags)) {
++		hci_cmd_sync_cancel(hdev, ECANCELED);
++		goto unlock;
++	}
++
++	entry = _hci_cmd_sync_lookup_entry(hdev, hci_le_create_conn_sync, conn,
++					   create_le_conn_complete);
++	if (entry) {
++		_hci_cmd_sync_cancel_entry(hdev, entry, -ECANCELED);
++		err = 0;
++	}
++
++unlock:
++	mutex_unlock(&hdev->cmd_sync_work_lock);
++	return err;
++}
++
++static int hci_cis_cancel_create_conn_sync(struct hci_dev *hdev,
++					   struct hci_conn *conn)
++{
++	/* LE Create CIS is shared by the whole CIG and cannot be dequeued
++	 * per-connection, so only an in-flight command can be cancelled.
++	 * cmd_sync_work_lock keeps the test and the cancel atomic against the
++	 * cmd_sync worker.
++	 */
++	mutex_lock(&hdev->cmd_sync_work_lock);
++
++	if (test_bit(HCI_CONN_CREATE_CIS, &conn->flags))
++		hci_cmd_sync_cancel(hdev, ECANCELED);
++
++	mutex_unlock(&hdev->cmd_sync_work_lock);
++	return -EBUSY;
++}
++
++int hci_cancel_connect_sync(struct hci_dev *hdev, struct hci_conn *conn)
++{
++	switch (conn->type) {
++	case ACL_LINK:
++		return hci_acl_cancel_create_conn_sync(hdev, conn);
++	case LE_LINK:
++		return hci_le_cancel_create_conn_sync(hdev, conn);
++	case CIS_LINK:
++		return hci_cis_cancel_create_conn_sync(hdev, conn);
++	default:
++		return -ENOENT;
++	}
+ }
+ 
+ int hci_le_conn_update_sync(struct hci_dev *hdev, struct hci_conn *conn,
+
 
