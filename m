@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-273954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273955-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 6NPcE4IvVWpIlAAAu9opvQ
-	(envelope-from <stable+bounces-273954-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 20:33:38 +0200
+	id bdbGM4MvVWpJlAAAu9opvQ
+	(envelope-from <stable+bounces-273955-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 20:33:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B260E74E81C
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 20:33:37 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EADF74E81F
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 20:33:39 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mLR4KFr7;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273954-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-273954-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kwAoS7Ar;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273955-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273955-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A48613023336
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 18:33:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 481A030233C5
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 18:33:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E348D34E763;
-	Mon, 13 Jul 2026 18:33:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C16A352C4F;
+	Mon, 13 Jul 2026 18:33:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3A68335BB4
-	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 18:33:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5379D335BB4
+	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 18:33:35 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783967613; cv=none; b=bg0e2Pecm56WeQ3oZes036dWyJLXpmZFZux9tSYx1oG05ZBMx76p8+fMo29M+u3UHsVnZ1uLf1YCUsEPJJa0SnG14IxX1kh1WOzdlb4qFK4KShIKWPFUJmN75xai15AENeFaZZ7odWEobgjDmcjYMVfMAujs9b84FS8J4Tw+UBI=
+	t=1783967616; cv=none; b=s5T/VmAh91vv+i9ad3DCxet/ht+PGz0PASYB2jM+UPExkpS9rbc+w1zGWtQoCF6WOO2toygbgOB2Z5mymK+YSBGXQbtsw6pOdJVJ/zJjXv+0OgsZUqRuDFeb21/YvAqKcJdWOmLTeSEo0AnWTPn85m+LEWvMaTEYOK1vadLOaxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783967613; c=relaxed/simple;
-	bh=BD7RgtT7LVUzyH5B2yO7qKo7Aoo/3KiO9wN/6gozsds=;
+	s=arc-20240116; t=1783967616; c=relaxed/simple;
+	bh=NmVZTOFq7i7MSKXWLG2T7agLlAhMU4/H04Ysk2Z2MII=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gg84uuaX+EkWutair0fm3f3Jw0l46PcUCjsCs+nuEURtTQ5bRnF8lwMyMMg+WZw57TbGjgPaDI5XPmsYfaleznPq4vIiuR+83PTZicQgK75mVnDnAM8F16GaAYFo0af6+2yDRmqW6WW70XQ6+Zov2afxYqEfDLYk03oQC4vL2vw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mLR4KFr7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B809A1F000E9;
-	Mon, 13 Jul 2026 18:33:31 +0000 (UTC)
+	 MIME-Version; b=c+kanxmpDMgtocFxX4AUz6zn62s+9413OlzSGyVgKKQrYfABZ+fo7BPr/0Q1jk94lTlM1KGmkE65yQKEATZWqZPybFkz9cMzH3KYsoA0kvFUPUBBouGLaZRuUOW227C/Sq9+V6UWa9DxyZOo44FJdPmD2AbGa65D3m4/lJU/VF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kwAoS7Ar; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85DB71F000E9;
+	Mon, 13 Jul 2026 18:33:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783967612;
-	bh=tFdcY9/unnw9ZqBEebLvoO7DAa0kXmsT+Ii4u6E1bDo=;
+	s=k20260515; t=1783967615;
+	bh=Sf6b9nGxR+QDtlZwXLDsoYJ2GLoi3vmiWQHB5CoOCDU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mLR4KFr7cIZQKoCRmraLEOVeOrpI1yZdI1PqALLrlDGa6ht2yW9PIBg6SJ+pCgMgy
-	 oQxy1W40eOda9bVb1GUoz7puj5HnCIvjD5Pez11oSVQ9R8zxj3YLux2vf5yZAv1Fqy
-	 HT4hDOjLtLXIynw0XIIKe43t3CB6Q5m5pNLE/OV/t2pNV8jCOBCxPMT1q8bJHZdb9h
-	 AdhoDX9zkVcYbvRbLvs2wBbp1plTCW9UmEHHX9nOv9+GD8Sh2nuCozNaKXYKjQWORr
-	 28UTk6d5GG4uvPI2BwMMowgRf7PejDCgkGJNsPXlQQ3TNNh6qpeQB1kv+UKQKv6Ncc
-	 ghjx5j5f6VpVQ==
+	b=kwAoS7ArJ2TqG9/B/vFNl+mWXnfkQpwdAoz/2Rs1d7FjBQ0Nmj20gDwKV3nnKan3G
+	 P9AHL9jI/XaBSzzvKamVhZ783Ox8J/eXHcM1TSaxumU4fGXmhpOr93TO2Wm8f2lMq7
+	 VQPXZai9qgwMPyINS44O8ihrcqrF6X13drijrsfc7xNbCFIjObAhhctHDAWPRnsyyq
+	 n5DyH1yYPSUA4o+b1ePx7IXST6qFQYZsiyEG7AHceQ8ah0hMZRE9pxVNbYusVl+Iew
+	 XwRD5T0pfj/ENeXf3Ub61p7i3zUAyXMM/iU2lFdNxIx3YeW6I3s8Mjn6UQQO1NmQvo
+	 H9EP1t+/PlojA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Biren Pandya <birenpandya@gmail.com>,
-	Stable@vger.kernel.org,
+Cc: Runyu Xiao <runyu.xiao@seu.edu.cn>,
 	Jonathan Cameron <jic23@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.1.y] iio: pressure: mpl115: fix runtime PM leak on read error
-Date: Mon, 13 Jul 2026 14:33:29 -0400
-Message-ID: <20260713183329.1950423-1-sashal@kernel.org>
+Subject: [PATCH 5.10.y] iio: imu: adis: add IRQF_NO_THREAD to non-FIFO trigger IRQ
+Date: Mon, 13 Jul 2026 14:33:32 -0400
+Message-ID: <20260713183332.1950471-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026071330-evasion-badland-cd54@gregkh>
-References: <2026071330-evasion-badland-cd54@gregkh>
+In-Reply-To: <2026071353-jackpot-overcrowd-9420@gregkh>
+References: <2026071353-jackpot-overcrowd-9420@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -72,85 +71,78 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-273954-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:birenpandya@gmail.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:runyu.xiao@seu.edu.cn,m:jic23@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-273955-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B260E74E81C
+X-Rspamd-Queue-Id: 1EADF74E81F
 
-From: Biren Pandya <birenpandya@gmail.com>
+From: Runyu Xiao <runyu.xiao@seu.edu.cn>
 
-[ Upstream commit fbe67ff37a6fd855a6c097f84f3738bd13d0a898 ]
+[ Upstream commit 6e1b9bff1202da55c464e36bd34a2b6863d7fe30 ]
 
-mpl115_read_raw() takes a runtime PM reference with pm_runtime_get_sync()
-before reading the processed pressure or raw temperature, but on the read
-error path it returns without calling pm_runtime_put_autosuspend(). Each
-failed read therefore leaks a runtime PM reference and prevents the device
-from autosuspending.
+devm_adis_probe_trigger() registers iio_trigger_generic_data_rdy_poll()
+through devm_request_irq() on the non-FIFO path, but it does not add
+IRQF_NO_THREAD to the IRQ flags.
 
-Drop the reference before checking the return value so both the success
-and error paths are balanced.
+When the kernel is booted with forced IRQ threading, the parent IRQ can
+otherwise be threaded by the IRQ core and the subsequent IIO trigger
+child IRQ is then dispatched from irq/... thread context instead of
+hardirq context. Because iio_trigger_generic_data_rdy_poll()
+immediately drives iio_trigger_poll(), this violates the hardirq-only
+IIO trigger helper contract and can push downstream trigger consumers
+through the wrong execution context.
 
-Fixes: 0c3a333524a3 ("iio: pressure: mpl115: Implementing low power mode by shutdown gpio")
-Signed-off-by: Biren Pandya <birenpandya@gmail.com>
-Assisted-by: Claude:claude-opus-4-8 coccinelle
-Cc: <Stable@vger.kernel.org>
+Add IRQF_NO_THREAD on top of the existing adis->irq_flag value for the
+non-FIFO request_irq() path, while preserving the current trigger
+polarity and IRQF_NO_AUTOEN behavior.
+
+Fixes: fec86c6b8369 ("iio: imu: adis: Add Managed device functions")
+Cc: stable@vger.kernel.org
+Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
 Signed-off-by: Jonathan Cameron <jic23@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/pressure/mpl115.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iio/imu/adis_trigger.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/pressure/mpl115.c b/drivers/iio/pressure/mpl115.c
-index 830a5065c008f8..16e112b796ba9e 100644
---- a/drivers/iio/pressure/mpl115.c
-+++ b/drivers/iio/pressure/mpl115.c
-@@ -106,18 +106,18 @@ static int mpl115_read_raw(struct iio_dev *indio_dev,
- 	case IIO_CHAN_INFO_PROCESSED:
- 		pm_runtime_get_sync(data->dev);
- 		ret = mpl115_comp_pressure(data, val, val2);
-+		pm_runtime_put_autosuspend(data->dev);
- 		if (ret < 0)
- 			return ret;
--		pm_runtime_put_autosuspend(data->dev);
+diff --git a/drivers/iio/imu/adis_trigger.c b/drivers/iio/imu/adis_trigger.c
+index 80adfa58e50cb3..985bb7d6b8452a 100644
+--- a/drivers/iio/imu/adis_trigger.c
++++ b/drivers/iio/imu/adis_trigger.c
+@@ -84,7 +84,7 @@ int devm_adis_probe_trigger(struct adis *adis, struct iio_dev *indio_dev)
  
- 		return IIO_VAL_INT_PLUS_MICRO;
- 	case IIO_CHAN_INFO_RAW:
- 		pm_runtime_get_sync(data->dev);
- 		/* temperature -5.35 C / LSB, 472 LSB is 25 C */
- 		ret = mpl115_read_temp(data);
-+		pm_runtime_put_autosuspend(data->dev);
- 		if (ret < 0)
- 			return ret;
--		pm_runtime_put_autosuspend(data->dev);
- 		*val = ret >> 6;
- 
- 		return IIO_VAL_INT;
+ 	ret = devm_request_irq(&adis->spi->dev, adis->spi->irq,
+ 			       &iio_trigger_generic_data_rdy_poll,
+-			       adis->irq_flag,
++			       adis->irq_flag | IRQF_NO_THREAD,
+ 			       indio_dev->name,
+ 			       adis->trig);
+ 	if (ret)
 -- 
 2.53.0
 
