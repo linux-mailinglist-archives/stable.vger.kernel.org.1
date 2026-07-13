@@ -1,196 +1,190 @@
-Return-Path: <stable+bounces-273850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273851-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id eh1FBv72VGpoiAAAu9opvQ
-	(envelope-from <stable+bounces-273850-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 16:32:30 +0200
+	id ILQRKPf3VGqsiAAAu9opvQ
+	(envelope-from <stable+bounces-273851-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 16:36:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53BA474C6D7
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 16:32:29 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2835474C77A
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 16:36:39 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=xs4all.nl header.s=xs4all01 header.b=aC+I2FN3;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273850-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-273850-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=xs4all.nl;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=YhPqNrZl;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273851-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273851-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linux.dev;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 55CD7305CA19
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 14:21:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 59BB3304FE07
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 14:31:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18E3342EED8;
-	Mon, 13 Jul 2026 14:21:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4242743801F;
+	Mon, 13 Jul 2026 14:31:47 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from ewsoutbound.kpnmail.nl (ewsoutbound.kpnmail.nl [195.121.94.183])
+Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 996971F099C
-	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 14:20:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4218A437451
+	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 14:31:45 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783952462; cv=none; b=nh1/TpZpt01Eey8WAHx7/yY865qmRlTLHIqb+KUczxXq6xJGtO7m2l50TguO3MYG7YpIu2AtQmabs104l/nswbCmcceUfHalw7ukjET7m4CzxNg21V7lxi9jUqr73JuKO+htEPAi4P4qt5TiVWfY86ndHp9N9r/u+9i4VaQfqlM=
+	t=1783953107; cv=none; b=FlhsMrrx9Csb3qSMvniwp4doUb1RZufP/e/okilaCUMoE/gO6Dj+sVRn+/+Yd15TcKsZV+9G8qrY4bVslEnuPHmyld3GHvgdL+PQxIsPFE2bCPO8uFaQ6RUfBn0vFfVuLcA47sTinWyMTm0H730oafZdipYoaoy4YeFJsehIo6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783952462; c=relaxed/simple;
-	bh=LeLc1llhf0PMlCspoCbrUoXy6+AV0me2TrJmjljyT2s=;
-	h=Date:From:To:Cc:Message-ID:Subject:MIME-Version:Content-Type; b=RSOMXu9kJGcF3oj8pQj0FLEkVdGyCdGR4UfKhPSi9TeXab8tRf/F7r0CgQK0ZeYiFh/pUY4Ahh2A4WZhSeWGI6iYAKuyVIexyhy0uplJUgFwNstMRPoby4+PfjA4khSbuupLQY5/fryuC/P2dpn9qRHILnvskJIcveUkikF+fak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xs4all.nl; spf=pass smtp.mailfrom=xs4all.nl; dkim=pass (2048-bit key) header.d=xs4all.nl header.i=@xs4all.nl header.b=aC+I2FN3; arc=none smtp.client-ip=195.121.94.183
-X-KPN-MessageId: 1068b33d-7ec6-11f1-8f54-005056992ed3
-Received: from mta.kpnmail.nl (unknown [10.31.161.188])
-	by ewsoutbound.so.kpn.org (Halon) with ESMTPS
-	id 1068b33d-7ec6-11f1-8f54-005056992ed3;
-	Mon, 13 Jul 2026 16:20:56 +0200 (CEST)
-Received: from mtaoutbound.kpnmail.nl (unknown [10.128.135.189])
-	by mta.kpnmail.nl (Halon) with ESMTP
-	id 10678412-7ec6-11f1-9b0c-00505699693e;
-	Mon, 13 Jul 2026 16:20:56 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=xs4all.nl; s=xs4all01;
-	h=content-type:mime-version:subject:message-id:to:from:date;
-	bh=bIFnZ3KGdR4CKnyx75LCp3jZBE63H4isY2YjwT3K40E=;
-	b=aC+I2FN3BHeYqiSmNdjSu7P7ZTGylyF2zlsyTaHpcMrxnOQ8LdZLdCbpQohJj4NsK1gm8DaEPRtu8
-	 07RoAADHF+zSHEcJtcJzpxL4aFElCeOupaxGBTxZz5hRdI+cNZLh4W0h5rvMIDtMHrr6xgvhlgWert
-	 bo3pVXzOM27gWjS21C6r7evTzSQ/o0Rfim9dLBpk72rRJSCRarNKcV21tR1aX+JpO17MIzRxfAbWZg
-	 4OiHFSbWthl6YDnYV55dS3CuegD3Rn73pxp5hX+ETn+LTFlVPXIrsmol+i9MgRd8PENcVmfCVDzGq1
-	 kgAF1lOfJZ1pKdDwFQ1qwceg0026EPw==
-X-KPN-MID: 33|fFDYJmCM2JyhhASvSGhTgTleZxTLrdjH0y1cLbO3y2QpbaysJjOai6CaO0r+exD
- Jruq5D7vLJ0pnZps+8hGyHiHXCGQ51BOu3uWprkjpgkY=
-X-CMASSUN: 33|0RkxCv4tFRlwJdj8l/MBDyA6+HZKOlkOXM/yBWmui5g1GI2jOCjlC9qw9O4V11R
- YcMTgRjUi0ENp2aD4oW/c9w==
-X-KPN-VerifiedSender: Yes
-Received: from cpxoxapps-mh01 (cpxoxapps-mh01.personalcloud.so.kpn.org [10.128.135.207])
-	by mtaoutbound.kpnmail.nl (Halon) with ESMTPSA
-	id 1059c206-7ec6-11f1-8edb-00505699eff2;
-	Mon, 13 Jul 2026 16:20:56 +0200 (CEST)
-Date: Mon, 13 Jul 2026 16:20:56 +0200 (CEST)
-From: Jori Koolstra <jkoolstra@xs4all.nl>
-To: Christian Brauner <brauner@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org, Alexander Viro <viro@zeniv.linux.org.uk>,
-	Jan Kara <jack@suse.cz>, linux-mm@kvack.org,
-	Farid Zakaria <farid.m.zakaria@gmail.com>, jannh@google.com,
-	stable@vger.kernel.org
-Message-ID: <479591519.862301.1783952456807@kpc.webmail.kpnmail.nl>
-Subject: Re: [PATCH v3 03/24] binfmt_misc: reject a flag character as the
- field delimiter
+	s=arc-20240116; t=1783953107; c=relaxed/simple;
+	bh=bHTg67WLZNZPGJySzByFGb5I52o4TwIzu25xmj4aii0=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
+	 References:In-Reply-To; b=qoB/KfOqIlKIOfxa/WtIizPCNcooGJ/VY0YRFIKBh7XqG/MnfU1DGv6Ry8A6FsA4DGazKKyFHqnB66ZObJJJk1q1ns9Zg5drRuOeBq7k1uhAaSMr+7Eq5ZWvQWCFHgN1VH/8151kzu4ZDJk+6OBHbqt87lG9GN+bNs81LIdwFTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=YhPqNrZl; arc=none smtp.client-ip=91.218.175.178
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783953092;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RP3LyPOyZnOu+5+FjIIqGVMA/Bpeem6vrUwBKnHaTKI=;
+	b=YhPqNrZlHQ8ejQJEsKy22q7L2GwC8ZsKq8sODTlaMyBeXGHMdDNE3YCyn027NpCm9FGZKb
+	GH4lpKEvmboLM/8AbLfjpjKd/DdrCA8T9cOaPAVIXi/jfL1ehkYFeaV3dNVJG67SVAs8NC
+	uHVXw1fkorik/3Y+InQR45DobcQBcmo=
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-Importance: Normal
+Date: Mon, 13 Jul 2026 14:31:29 +0000
+Message-Id: <DJXILB94G82L.37YBL62YO9XBK@linux.dev>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Brendan Jackman" <brendan.jackman@linux.dev>
+To: "Andrew Morton" <akpm@linux-foundation.org>, "Brendan Jackman"
+ <jackmanb@google.com>
+Cc: "Vlastimil Babka" <vbabka@kernel.org>, "Suren Baghdasaryan"
+ <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>, "Johannes Weiner"
+ <hannes@cmpxchg.org>, "Zi Yan" <ziy@nvidia.com>, "Sebastian Andrzej
+ Siewior" <bigeasy@linutronix.de>, "Clark Williams" <clrkwllms@kernel.org>,
+ "Steven Rostedt" <rostedt@goodmis.org>, "Shakeel Butt"
+ <shakeel.butt@linux.dev>, "Harry Yoo" <harry@kernel.org>, "Alexei
+ Starovoitov" <ast@kernel.org>, <linux-mm@kvack.org>,
+ <linux-kernel@vger.kernel.org>, <linux-rt-devel@lists.linux.dev>,
+ <sashiko-bot@kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH 1/2] mm/page_alloc: don't spin_trylock() in NMI on UP
+References: <20260710-spin-trylock-followup-v1-0-affb5fe5ed00@google.com>
+ <20260710-spin-trylock-followup-v1-1-affb5fe5ed00@google.com>
+ <20260710170311.e22bfd21c658e8357ceddeec@linux-foundation.org>
+In-Reply-To: <20260710170311.e22bfd21c658e8357ceddeec@linux-foundation.org>
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	FAKE_REPLY(1.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[xs4all.nl,reject];
-	R_DKIM_ALLOW(-0.20)[xs4all.nl:s=xs4all01];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	MV_CASE(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	HAS_X_PRIO_THREE(0.00)[3];
-	TAGGED_FROM(0.00)[bounces-273850-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:brauner@kernel.org,m:linux-fsdevel@vger.kernel.org,m:viro@zeniv.linux.org.uk,m:jack@suse.cz,m:linux-mm@kvack.org,m:farid.m.zakaria@gmail.com,m:jannh@google.com,m:stable@vger.kernel.org,m:faridmzakaria@gmail.com,s:lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	RCVD_TLS_LAST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[jkoolstra@xs4all.nl,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,zeniv.linux.org.uk,suse.cz,kvack.org,gmail.com,google.com];
+	FORGED_RECIPIENTS(0.00)[m:akpm@linux-foundation.org,m:jackmanb@google.com,m:vbabka@kernel.org,m:surenb@google.com,m:mhocko@suse.com,m:hannes@cmpxchg.org,m:ziy@nvidia.com,m:bigeasy@linutronix.de,m:clrkwllms@kernel.org,m:rostedt@goodmis.org,m:shakeel.butt@linux.dev,m:harry@kernel.org,m:ast@kernel.org,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:linux-rt-devel@lists.linux.dev,m:sashiko-bot@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[brendan.jackman@linux.dev,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[3];
+	TAGGED_FROM(0.00)[bounces-273851-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[xs4all.nl];
-	RCVD_COUNT_FIVE(0.00)[6];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jkoolstra@xs4all.nl,stable@vger.kernel.org];
-	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[xs4all.nl:+];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	TAGGED_RCPT(0.00)[stable];
 	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[brendan.jackman@linux.dev,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux.dev:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,xs4all.nl:from_mime,xs4all.nl:email,xs4all.nl:dkim]
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:from_mime,linux.dev:dkim,linux.dev:mid,sashiko.dev:url,vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 53BA474C6D7
+X-Rspamd-Queue-Id: 2835474C77A
 
-On Fri, Jul 10, 2026 at 11:33:04AM +0200, Christian Brauner wrote:
-> The registration string starts with a user chosen delimiter that
-> separates the individual fields. So that the field parsers terminate
-> even on a truncated string create_entry() pads the buffer with that
-> same delimiter:
-> 
-> 	memset(buf + count, del, 8);
-> 
-> Most fields are scanned for the delimiter with strchr()/scanarg() and
-> happily stop on the padding. The flags field is different: instead of
-> scanning for the delimiter check_special_flags() consumes the flag
-> characters 'P', 'O', 'C' and 'F' and stops at the first byte that is
-> none of them, relying on the trailing delimiter to end the scan.
-> 
-> If the delimiter is itself a flag character the padding no longer acts
-> as a terminator. The scan swallows all eight padding bytes and keeps
-> reading past the end of the allocation until it hits a byte that is
-> not a flag character. For example registering
-> 
-> 	PaPEPPxPPiP
-> 
-> with 'P' as the delimiter (name "a", type extension, magic "x",
-> interpreter "i", empty flags) leaves the flag scan running off the end
-> of the buffer. The registration is rejected in the end because the
-> parser does not stop exactly at buf + count, but only after the out of
-> bounds read has already happened. With an unlucky allocation layout the
-> scan can walk into an unmapped page; under KASAN it is reported as a
-> slab out of bounds read. binfmt_misc mounts are available to
-> unprivileged users in a user namespace so the read is reachable without
-> privileges.
-> 
-> Reject a delimiter that is one of the flag characters up front. Such a
-> registration was always rejected anyway, only after the out of bounds
-> read, so no valid registration string changes meaning.
-
-Looks good, I see no user visible changes.
-
-A general comment on the code that does not affect this change: the
-nesting is awful, it would be great if we could reduce that by moving
-some stuff in separate functions like check_special_flags().
-
-Also, can't we support a less arcane and impenetrable format, like JSON
-or YAML?
-
-Reviewed-by: Jori Koolstra <jkoolstra@xs4all.nl>
-
-> 
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
-> ---
->  fs/binfmt_misc.c | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/fs/binfmt_misc.c b/fs/binfmt_misc.c
-> index 24142859658c..b7664d90eb8f 100644
-> --- a/fs/binfmt_misc.c
-> +++ b/fs/binfmt_misc.c
-> @@ -385,6 +385,10 @@ static Node *create_entry(const char __user *buffer, size_t count)
->  
->  	pr_debug("register: delim: %#x {%c}\n", del, del);
->  
-> +	/* A flag-char delimiter runs the flag scan off the buffer. */
-> +	if (del == 'P' || del == 'O' || del == 'C' || del == 'F')
-> +		goto einval;
-> +
->  	/* Pad the buffer with the delim to simplify parsing below. */
->  	memset(buf + count, del, 8);
->  
-> 
-> -- 
-> 2.53.0
+On Sat Jul 11, 2026 at 12:03 AM UTC, Andrew Morton wrote:
+> On Fri, 10 Jul 2026 10:42:20 +0000 Brendan Jackman <jackmanb@google.com> =
+wrote:
 >
+>> As noted in can_spin_trylock(), using this is unsafe in this context.
+>> commit 620b46ed6ae17 ("mm/page_alloc: return NULL early from
+>> alloc_frozen_pages_nolock() in NMI on UP") fixed this on the alloc side
+>> but missed the free side.
+>>=20
+>> Reported-by: sashiko-bot@kernel.org
+>> Link: https://sashiko.dev/#/patchset/20260703-alloc-trylock-v5-0-c87b714=
+e19d3@google.com
+>> Cc: stable@vger.kernel.org
+>> Fixes: d7242af86434 ("mm: Introduce alloc_frozen_pages_nolock()")
+>
+> Is this correct?  I'm not seeing anything in that commit which could
+> have caused this?
+
+Oh yeah I guess it should be:
+
+Fixes: 8c57b687e8331 ("mm, bpf: Introduce free_pages_nolock()")
+
+This is confusing coz we have:
+
+A: commit d7242af86434 ("mm: Introduce alloc_frozen_pages_nolock()")
+B: commit 8c57b687e8331 ("mm, bpf: Introduce free_pages_nolock()")
+...
+X: commit 620b46ed6ae17 ("mm/page_alloc: return NULL early from alloc_froze=
+n_pages_nolock() in NMI on UP")=20
+
+X is marked as Fixing A, but it was an incomplete fix. I just copy
+pasted the Fixes tag. But actually I'm now changing the free path that
+was only introduced in B.=20
+
+>> --- a/mm/page_alloc.c
+>> +++ b/mm/page_alloc.c
+>> @@ -2979,8 +2979,7 @@ static void __free_frozen_pages(struct page *page,=
+ unsigned int order,
+>>  		migratetype =3D MIGRATE_MOVABLE;
+>>  	}
+>> =20
+>> -	if (unlikely((fpi_flags & FPI_TRYLOCK) && IS_ENABLED(CONFIG_PREEMPT_RT=
+)
+>> -		     && (in_nmi() || in_hardirq()))) {
+>> +	if (unlikely((fpi_flags & FPI_TRYLOCK) && !can_spin_trylock())) {
+>>  		add_page_to_zone_llist(zone, page, order);
+>>  		return;
+>>  	}
+>
+> It would be nice to include a description of the userspace impact.  I'm
+> suspecting that's "none known", but some speculation on what might
+> happen to someone is appropriate.
+
+Ack. I think if you trigger this bug by accident it will probably crash
+your machine in extremely confusing ways. If you can trigger it
+deliberately from unpriv (depends on the rest of the host setup, e.g.
+what tracing is being used) you can probably use it to get root/ring0.
+Can mention this in the commit message.
+
+> Also, please let's not combine a cc:stable bugfix with a minor macro
+> renaming.  They're very different things and will take quite different
+> paths into mainline and -stable kernels.
+
+Ack. I assume by "combine" you mean put them in the same series - let
+me know if I misunderstood that. Will separate them for v2.
+
+> Also, Sashiko might have found yet more pre-existing issues:
+> 	https://sashiko.dev/#/patchset/20260710-spin-trylock-followup-v1-0-affb5=
+fe5ed00@google.com
+
+There are 2 cases here:
+
+1: !pcp_allowed_order() -> This is forbidden by alloc_order_allowed(),
+   quite a bad miss from Sashiko IMO. Usually I expect AI to do better
+   at spotting this kind of thing, makes me wonder if I'm the dumb one
+   here.
+
+2. pageblock is isolated -> Yeah this looks broken to me.=20
 
