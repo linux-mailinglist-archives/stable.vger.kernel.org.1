@@ -1,172 +1,461 @@
-Return-Path: <stable+bounces-273628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273629-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id WPC5F4m4VGoyqAMAu9opvQ
-	(envelope-from <stable+bounces-273628-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 12:06:01 +0200
+	id zSJTL3G6VGq+qAMAu9opvQ
+	(envelope-from <stable+bounces-273629-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 12:14:09 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B57357499EB
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 12:06:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5401C749AC6
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 12:14:09 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=j79GI0X1;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=jSEGnLrX;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="CC10pH/C";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=K1D1TaoP;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273628-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-273628-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=readmodwrite-com.20251104.gappssmtp.com header.s=20251104 header.b=r9ZHgQRu;
+	dmarc=none;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273629-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-273629-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F1FA33026C0F
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 10:05:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A8CCE303662B
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 10:12:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A8B13C8700;
-	Mon, 13 Jul 2026 10:05:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FC433E5ED6;
+	Mon, 13 Jul 2026 10:12:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDE2F381E8F
-	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 10:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3B4D3E3158
+	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 10:12:51 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783937144; cv=none; b=T3tWiw7FUhE7c0IyPeV3QrJTClZD8y2KLNmQN+2/Vg/heolePclVw4LjIVjSpeS9P09bsgmWs41xLoz9p0AxLCE0vVHZVZzDyGlAYlNxnT2xFRRpJl0AsVUutip5554AWX4lcMvNnjF8/Huw7+RyGmu4szEiHfj0ocFBFUAkb/g=
+	t=1783937575; cv=none; b=TDmfD5u1aaire/lPivUiVNeB9hKv9+Hxm0bLJXVd3aazRY2TogYEgKSZuM5nB2DZ/hQNlCRL1sAp4WMKMP5vFDfSN6N5Ym0sx4ysRzpr+LXJZOBztBNFGiOcnBfJz7WVkZ7VXTkaLy1fXVDL7jehb6zUlSbmWBmJWQdRRKoamx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783937144; c=relaxed/simple;
-	bh=CWUjlakXHUNq91p+MX+0FoYHSkSJ5N4I219o9rDMv5s=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PlCHVb1tbYSiTZ+G+fc6IOpidZSM2t1EMsEZctORNriSFT6Z4MjHV7v+1WeW+dnQNvtWWfPgi2856Obv1ZcEd6V1WzuLtw5q2S9M4gDfVbjyXW9KbwGB2cEVP2Kosvlk4lvkkPEyrzjoNMT/RVA+8mZuL7ikGmDAE1+DiHWVHVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=j79GI0X1; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=jSEGnLrX; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=CC10pH/C; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=K1D1TaoP; arc=none smtp.client-ip=195.135.223.131
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id F176A774D8;
-	Mon, 13 Jul 2026 10:05:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1783937141; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OC54V+i9Zl30wrHXbdGiyL0OWpwGu7v7FYGc0CYHgZM=;
-	b=j79GI0X1OwBx8vfwg8hKTgyTqcNQIeGZmZMlNyGoDS/os5DidRzUFYAFQxUxcgwYfuUlho
-	SkL2SktP7gwCdZpxfdfQwcNspaFDkYycR+AeFNIBC8NxIsTCCWy87zotibRzhBMXaNbr07
-	lAc+0XmWiF3zK19mdEl6WGJ9gQ+2oX4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1783937141;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OC54V+i9Zl30wrHXbdGiyL0OWpwGu7v7FYGc0CYHgZM=;
-	b=jSEGnLrXvvPGazBkBIUyPepCGICx4OPsrvct6mpaAaLXKi/uScGvaZVKhfaXH3xelF+bKV
-	7IiupEkQGrDJGsAQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1783937140; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OC54V+i9Zl30wrHXbdGiyL0OWpwGu7v7FYGc0CYHgZM=;
-	b=CC10pH/CcRkXI2SUP2m/7VYRu0AZpPSqQXV1S82RNl8gj1NGV6l9UGT3mEJAX1ixyH/j0D
-	PNBonjgQ3OI71YsqgcWfU2Gx5lHYPCcEWvX7uQ0VBFjsd2ZzzUasbQQu0txp8TvheHBM0X
-	zGz1S7zJXv9UWByUEBhj9gp+m9OtlWA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1783937140;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OC54V+i9Zl30wrHXbdGiyL0OWpwGu7v7FYGc0CYHgZM=;
-	b=K1D1TaoP7Oh3YH6OUcsVqjSq14s0OnMBdEPZhGScXcAo1tHOdNDR+Xk+eB6GpRfY1lAZzh
-	523o0WzDSbFIhpBQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C0839779AE;
-	Mon, 13 Jul 2026 10:05:40 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id QpiDLXS4VGogHgAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Mon, 13 Jul 2026 10:05:40 +0000
-Date: Mon, 13 Jul 2026 12:05:40 +0200
-Message-ID: <87se5nyzkb.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: Damien Laine <damien.laine@gmail.com>
-Cc: Takashi Iwai <tiwai@suse.com>,
-	Jaroslav Kysela <perex@perex.cz>,
-	linux-sound@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] ALSA: hda/realtek: Fix speakers on Legion Pro 7 16ARX8H with codec SSID 17aa:38a7
-In-Reply-To: <20260712213708.1835469-1-damien.laine@gmail.com>
-References: <20260712213708.1835469-1-damien.laine@gmail.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/30.2 Mule/6.0
+	s=arc-20240116; t=1783937575; c=relaxed/simple;
+	bh=I0iNJ5l1KFpuImGwAYZaxJGvSjujxWdh8H760eEBEhU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cBlUJm39+ZHPJ0diQIAx4tVJSokHJZ0997aRUV6UOOmCVZktvXAxltLVglevHcuWK5AeXkQRZSBEqQMKHAKiImEFuyWFxLrd6lLP1rrM1SieneB+2CDj/j8M+30cGSOjWKaRN8M+ew40muMIZs92CZGJzn6YL2WqdZRA3i1B5ZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=readmodwrite.com; spf=none smtp.mailfrom=readmodwrite.com; dkim=pass (2048-bit key) header.d=readmodwrite-com.20251104.gappssmtp.com header.i=@readmodwrite-com.20251104.gappssmtp.com header.b=r9ZHgQRu; arc=none smtp.client-ip=209.85.221.42
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-476a130c138so3580360f8f.0
+        for <stable@vger.kernel.org>; Mon, 13 Jul 2026 03:12:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=readmodwrite-com.20251104.gappssmtp.com; s=20251104; t=1783937570; x=1784542370; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=gQDcHMF91uNTbQRKUs7FtApfDoXRXDWv1xLDi776PsY=;
+        b=r9ZHgQRu/aReOhR3NxdgCb7zasbspl28ZRPlQ/LVLucLBk1J5Y949HrRtsaukhfMAn
+         GUEeuesayF3NYDSaSMoGZzuESW6OMN1xOSwhZ3bBxEcmOqTXniwnAakjDEiLnMpnWWtb
+         npvDNGQov9qxj2LaujnttYKmEWO7Aa1k9Qj5n8sDLa1W4Mjx/3w/HCgQekByqV74g9GI
+         nvcevf4c3FvUDrCSZBkcQZDjjqfFLZLmaw8+NFOtv1czLZ2158F3WsKl74H8QGdSTFtu
+         CzqF6Z235LlNMXj42nnrPji/gObhBVNCAvhqRLXiBTmFiMkXn7OHztUpjxCfMBt8bjHP
+         +nRQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783937570; x=1784542370;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=gQDcHMF91uNTbQRKUs7FtApfDoXRXDWv1xLDi776PsY=;
+        b=Y7SzqYaJDatn8zryq/zN1o1BI3j2HpSMIbBzYaprzvZo4nRLaWUF4yahCVjxKUpYdv
+         PzsSivCoI6bJVc/HR8ECC0FROXHirLbS5xaSjHUJhjcr3MzyFUWwG0KHMWXGfTmIOof6
+         HeL5JJYVi/8p1rkWWZ9i31lh0NxbfU26vokzaknQ57kct5/Dm6RNGYnvhjL9jWMOZ3MI
+         +GI8BXphjnZJPBNX9QM4KaRRsaTPuFa4ap6Qg8JCcLXDexaEiHxdwhhq/7MtAk5u3CmA
+         0neqZQPOGrFJGwsBVZSS3TIruMd6ZDZTf8JOpPFiCey6YSGTkob+MoPRgBMZp2xlbb7X
+         LBKQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrZLSG/CpNVBXJiScDkJh/NRNObAiKH23UWwPeL05mQ0EvLp0oriiWjWBkwUOmfknYZ9X+vvHs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxuZ6oaq7kh3oylWk7oconfuxjsXiSGWU+XkAd/wmMMYRPDHbNC
+	+F1pkQmpiKeEsrWbx0deXLjt/a823lQf9nw+XcIV+ZCtq2Mgaq0Ra3E1j52fYGws2Es=
+X-Gm-Gg: AfdE7cmIIiggtjxcBNfTSIigGFrc45G6jW79amuU+0l3mQQvRKhMweq7wg6yLC/oJKx
+	jYwnD3WJoq0wbM6iWeVse7Y6esTQcPfHi/vpOdV3Iby7+N4J7OUXUnf6tirY4v1EZsqygghRUfB
+	TD9wD4jveknamerKEuBY3OpSRYtd26XIQFbGDG8JXzUwxovlfTFw/ZEM5CWd0xF3aOt5TWMy4My
+	7jrN7by+8681xhhN4useIL3IsB1mYrinxM9MQguRZXS5rXrf4+7yyyF1GlWQvkT6bYA0An9qQ4p
+	a4GX+1P//VtCDrN2mguZTd37D0PIGnUMR1pDOE2hjz0hzLs0+1fnZYOxV+a0Ilu2lIDYW6Lubk6
+	QL1cubUqnYSQWuBghB3O6i3IvQuOgPybFRz/FSvTNIsjpIiqHeGi6a5ItQl6w3H82je8lB5Jel6
+	Gkl0fW4WmfGjnoyl9Z
+X-Received: by 2002:a05:6000:381:b0:478:6c1:6e34 with SMTP id ffacd0b85a97d-47f2dcde775mr9944873f8f.13.1783937570185;
+        Mon, 13 Jul 2026 03:12:50 -0700 (PDT)
+Received: from matt-Precision-5490.. ([2a09:bac6:37a8:1f19::319:116])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47aa0960b06sm85081489f8f.28.2026.07.13.03.12.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Jul 2026 03:12:49 -0700 (PDT)
+From: Matt Fleming <matt@readmodwrite.com>
+To: "Paul E . McKenney" <paulmck@kernel.org>
+Cc: Frederic Weisbecker <frederic@kernel.org>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Zqiang <qiang.zhang@linux.dev>,
+	Tejun Heo <tj@kernel.org>,
+	Andrea Righi <arighi@nvidia.com>,
+	rcu@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	sched-ext@lists.linux.dev,
+	stable@vger.kernel.org,
+	kernel-team@cloudflare.com,
+	Matt Fleming <mfleming@cloudflare.com>
+Subject: [PATCH] rcu-tasks: Defer IRQ-disabled callback enqueue to irq_work
+Date: Mon, 13 Jul 2026 11:12:45 +0100
+Message-ID: <20260713101245.3207634-1-matt@readmodwrite.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Flag: NO
-X-Spam-Score: -2.01
-X-Spam-Level: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[readmodwrite-com.20251104.gappssmtp.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-273628-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	TAGGED_FROM(0.00)[bounces-273629-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_SENDER(0.00)[tiwai@suse.de,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:damien.laine@gmail.com,m:tiwai@suse.com,m:perex@perex.cz,m:linux-sound@vger.kernel.org,m:stable@vger.kernel.org,m:damienlaine@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:paulmck@kernel.org,m:frederic@kernel.org,m:neeraj.upadhyay@kernel.org,m:joelagnelf@nvidia.com,m:josh@joshtriplett.org,m:boqun@kernel.org,m:urezki@gmail.com,m:rostedt@goodmis.org,m:mathieu.desnoyers@efficios.com,m:jiangshanlai@gmail.com,m:qiang.zhang@linux.dev,m:tj@kernel.org,m:arighi@nvidia.com,m:rcu@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:sched-ext@lists.linux.dev,m:stable@vger.kernel.org,m:kernel-team@cloudflare.com,m:mfleming@cloudflare.com,s:lists@lfdr.de];
+	FREEMAIL_CC(0.00)[kernel.org,nvidia.com,joshtriplett.org,gmail.com,goodmis.org,efficios.com,linux.dev,vger.kernel.org,lists.linux.dev,cloudflare.com];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tiwai@suse.de,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[suse.de:+];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER(0.00)[matt@readmodwrite.com,stable@vger.kernel.org];
+	DMARC_NA(0.00)[readmodwrite.com];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[matt@readmodwrite.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[readmodwrite-com.20251104.gappssmtp.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:from_mime,suse.de:dkim,suse.de:mid,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[readmodwrite-com.20251104.gappssmtp.com:dkim,cloudflare.com:email,readmodwrite.com:mid,readmodwrite.com:from_mime,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B57357499EB
+X-Rspamd-Queue-Id: 5401C749AC6
 
-On Sun, 12 Jul 2026 23:37:08 +0200,
-Damien Laine wrote:
-> 
-> Some units of the Lenovo Legion Pro 7 16ARX8H (82WS) report codec
-> subsystem ID 17aa:38a7 instead of 17aa:38a8. Since only 38a8 has a
-> codec SSID quirk, these machines fall through to the PCI SSID match
-> 17aa:386f (Legion Pro 7i 16IAX7) and get ALC287_FIXUP_CS35L41_I2C_2,
-> which probes the Cirrus amplifiers of the Intel variant. The TI
-> TAS2781 amplifier (ACPI TIAS2781:00) present on this AMD variant is
-> never bound and the internal speakers remain silent.
-> 
-> Add a codec SSID quirk for 17aa:38a7 pointing to
-> ALC287_FIXUP_TAS2781_I2C, mirroring the existing 38a8 entry.
-> 
-> Tested on a Legion Pro 7 16ARX8H (82WS, BIOS LPCN62WW): with the codec
-> SSID overridden to 17aa:38a8 via the HDA patch loader, the TAS2781
-> amplifier binds and the internal speakers work.
-> 
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Damien Laine <damien.laine@gmail.com>
+From: Matt Fleming <mfleming@cloudflare.com>
 
-Applied now.  Thanks.
+call_rcu_tasks_generic() can be invoked with IRQs disabled, and on
+older kernels this exposed an ABBA deadlock against the scheduler
+runqueue lock via sched_ext's task-storage teardown path:
 
+        CPU 0                           CPU 1
+        -----                           -----
+sched_ext_free()
+  task_rq_lock()
+    raw_spin_lock(rq->lock)
+                                      rcu_tasks_one_gp()
+                                        raw_spin_lock(cbs_gbl_lock)
+  scx_exit_task()
+    bpf_task_storage_delete()
+      call_rcu_tasks_generic()
+        raw_spin_lock(cbs_gbl_lock)
+          <blocks>
+                                        _printk()
+                                          console_unlock()
+                                            try_to_wake_up()
+                                              raw_spin_lock(rq->lock)
+                                                <blocks>
 
-Takashi
+Tasks Trace has since moved to SRCU and no longer takes this path, but
+Tasks and Tasks Rude still go through call_rcu_tasks_generic() and
+remain exposed to lock-order inversions against any lock that may be
+held with IRQs disabled by a caller.
+
+Split the enqueue based on the caller's IRQ state. When IRQs are
+disabled, push the callback onto a statically initialised per-CPU
+lockless llist and schedule a hard irq_work to drain it into the
+segmented callback list under the usual per-CPU lock outside the
+caller's lock context. The drain is also invoked from
+rcu_barrier_tasks_generic() and rcu_tasks_need_gpcb() so barriers
+and grace-period progress cannot miss in-transit callbacks.
+IRQ-enabled callers keep the existing direct-enqueue semantics.
+
+Fixes: ab97152f88a4 ("rcu-tasks: Use more callback queues if contention encountered")
+Suggested-by: Paul E. McKenney <paulmck@kernel.org>
+Link: https://lore.kernel.org/r/20260710095359.2643791-1-matt@readmodwrite.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Matt Fleming <mfleming@cloudflare.com>
+---
+
+I have a separately tested 6.18.y backport and will submit it once this
+change lands upstream.
+
+---
+ kernel/rcu/tasks.h | 186 ++++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 149 insertions(+), 37 deletions(-)
+
+diff --git a/kernel/rcu/tasks.h b/kernel/rcu/tasks.h
+index f4da5fad70f5..e16d14b7b4df 100644
+--- a/kernel/rcu/tasks.h
++++ b/kernel/rcu/tasks.h
+@@ -30,6 +30,8 @@ typedef void (*postgp_func_t)(struct rcu_tasks *rtp);
+  * @rtp_n_lock_retries: Rough lock-contention statistic.
+  * @rtp_work: Work queue for invoking callbacks.
+  * @rtp_irq_work: IRQ work queue for deferred wakeups.
++ * @rtp_irq_bypass_work: IRQ work queue for draining IRQ-bypassed callbacks.
++ * @rtp_irq_bypass_list: Lockless callback list for IRQ-disabled callers.
+  * @barrier_q_head: RCU callback for barrier operation.
+  * @rtp_blkd_tasks: List of tasks blocked as readers.
+  * @rtp_exit_list: List of tasks in the latter portion of do_exit().
+@@ -46,6 +48,8 @@ struct rcu_tasks_percpu {
+ 	unsigned int urgent_gp;
+ 	struct work_struct rtp_work;
+ 	struct irq_work rtp_irq_work;
++	struct irq_work rtp_irq_bypass_work;
++	struct llist_head rtp_irq_bypass_list;
+ 	struct rcu_head barrier_q_head;
+ 	struct list_head rtp_blkd_tasks;
+ 	struct list_head rtp_exit_list;
+@@ -129,11 +133,15 @@ struct rcu_tasks {
+ };
+ 
+ static void call_rcu_tasks_iw_wakeup(struct irq_work *iwp);
++static void call_rcu_tasks_iw_drain_irq_bypass(struct irq_work *iwp);
++static void rcu_tasks_adjust_cbs(struct rcu_tasks *rtp);
+ 
+ #define DEFINE_RCU_TASKS(rt_name, gp, call, n)						\
+ static DEFINE_PER_CPU(struct rcu_tasks_percpu, rt_name ## __percpu) = {			\
+ 	.lock = __RAW_SPIN_LOCK_UNLOCKED(rt_name ## __percpu.cbs_pcpu_lock),		\
+ 	.rtp_irq_work = IRQ_WORK_INIT_HARD(call_rcu_tasks_iw_wakeup),			\
++	.rtp_irq_bypass_work = IRQ_WORK_INIT_HARD(call_rcu_tasks_iw_drain_irq_bypass), \
++	.rtp_irq_bypass_list = LLIST_HEAD_INIT(rtp_irq_bypass_list),			\
+ };											\
+ static struct rcu_tasks rt_name =							\
+ {											\
+@@ -328,6 +336,103 @@ static void call_rcu_tasks_generic_timer(struct timer_list *tlp)
+ 		rcuwait_wake_up(&rtp->cbs_wait);
+ }
+ 
++static bool call_rcu_tasks_enqueue_locked(struct rcu_head *rhp,
++					  struct rcu_tasks *rtp,
++					  struct rcu_tasks_percpu *rtpcp)
++{
++	bool havekthread;
++	bool needwake;
++
++	// Queuing callbacks before initialization not yet supported.
++	if (WARN_ON_ONCE(!rcu_segcblist_is_enabled(&rtpcp->cblist)))
++		rcu_segcblist_init(&rtpcp->cblist);
++	/* Pairs with the kthread publication in rcu_tasks_kthread(). */
++	havekthread = smp_load_acquire(&rtp->kthread_ptr);
++	needwake = (!havekthread && rcu_segcblist_empty(&rtpcp->cblist)) ||
++		   (rhp->func == wakeme_after_rcu) ||
++		   (rcu_segcblist_n_cbs(&rtpcp->cblist) == rcu_task_lazy_lim);
++	if (havekthread && !needwake && !timer_pending(&rtpcp->lazy_timer)) {
++		if (rtp->lazy_jiffies)
++			mod_timer(&rtpcp->lazy_timer, rcu_tasks_lazy_time(rtp));
++		else
++			needwake = rcu_segcblist_empty(&rtpcp->cblist);
++	}
++	if (needwake)
++		rtpcp->urgent_gp = 3;
++	rcu_segcblist_enqueue(&rtpcp->cblist, rhp);
++	return needwake;
++}
++
++/* Acquire the callback-list lock and report whether the acquisition contended. */
++static bool call_rcu_tasks_lock(struct rcu_tasks_percpu *rtpcp)
++{
++	if (raw_spin_trylock_rcu_node(rtpcp)) // irqs already disabled.
++		return false;
++	raw_spin_lock_rcu_node(rtpcp); // irqs already disabled.
++	return true;
++}
++
++/* Record one callback-queuing-time contention event. */
++static bool rcu_tasks_need_queue_adjust(struct rcu_tasks *rtp,
++					struct rcu_tasks_percpu *rtpcp)
++{
++	unsigned long j = jiffies;
++
++	if (rtpcp->rtp_jiffies != j) {
++		rtpcp->rtp_jiffies = j;
++		rtpcp->rtp_n_lock_retries = 0;
++	}
++
++	return rcu_task_cb_adjust &&
++	       ++rtpcp->rtp_n_lock_retries > rcu_task_contend_lim &&
++	       READ_ONCE(rtp->percpu_enqueue_lim) != rcu_task_cpu_ids;
++}
++
++static void rcu_tasks_drain_irq_bypass(struct rcu_tasks_percpu *rtpcp)
++{
++	bool contended;
++	bool needadjust = false;
++	bool needwake = false;
++	unsigned long flags;
++	struct llist_node *llnode;
++	struct llist_node *next;
++	struct rcu_head *rhp;
++	struct rcu_tasks *rtp = rtpcp->rtpp;
++
++	local_irq_save(flags);
++	rcu_read_lock();
++	contended = call_rcu_tasks_lock(rtpcp);
++
++	/*
++	 * Serialize the entire bypass-to-cblist transfer with barrier
++	 * entrainment so that a barrier cannot pass callbacks in transit.
++	 */
++	llnode = llist_del_all(&rtpcp->rtp_irq_bypass_list);
++	if (!llnode) {
++		raw_spin_unlock_irqrestore_rcu_node(rtpcp, flags);
++		rcu_read_unlock();
++		return;
++	}
++
++	if (contended)
++		needadjust = rcu_tasks_need_queue_adjust(rtp, rtpcp);
++
++	llnode = llist_reverse_order(llnode);
++	llist_for_each_safe(llnode, next, llnode) {
++		rhp = (struct rcu_head *)llnode;
++		needwake |= call_rcu_tasks_enqueue_locked(rhp, rtp, rtpcp);
++	}
++	raw_spin_unlock_irqrestore_rcu_node(rtpcp, flags);
++
++	if (unlikely(needadjust))
++		rcu_tasks_adjust_cbs(rtp);
++	rcu_read_unlock();
++
++	/* We can't create the thread unless interrupts are enabled. */
++	if (needwake && READ_ONCE(rtp->kthread_ptr))
++		rcuwait_wake_up(&rtp->cbs_wait);
++}
++
+ // IRQ-work handler that does deferred wakeup for call_rcu_tasks_generic().
+ static void call_rcu_tasks_iw_wakeup(struct irq_work *iwp)
+ {
+@@ -338,15 +443,40 @@ static void call_rcu_tasks_iw_wakeup(struct irq_work *iwp)
+ 	rcuwait_wake_up(&rtp->cbs_wait);
+ }
+ 
++// IRQ-work handler that drains IRQ-bypassed callbacks.
++static void call_rcu_tasks_iw_drain_irq_bypass(struct irq_work *iwp)
++{
++	struct rcu_tasks_percpu *rtpcp;
++
++	rtpcp = container_of(iwp, struct rcu_tasks_percpu, rtp_irq_bypass_work);
++	rcu_tasks_drain_irq_bypass(rtpcp);
++}
++
++static void rcu_tasks_adjust_cbs(struct rcu_tasks *rtp)
++{
++	unsigned long flags;
++	bool expanded = false;
++
++	raw_spin_lock_irqsave(&rtp->cbs_gbl_lock, flags);
++	if (rtp->percpu_enqueue_lim != rcu_task_cpu_ids) {
++		WRITE_ONCE(rtp->percpu_enqueue_shift, 0);
++		WRITE_ONCE(rtp->percpu_dequeue_lim, rcu_task_cpu_ids);
++		smp_store_release(&rtp->percpu_enqueue_lim, rcu_task_cpu_ids);
++		expanded = true;
++	}
++	raw_spin_unlock_irqrestore(&rtp->cbs_gbl_lock, flags);
++	if (expanded)
++		pr_info("Switching %s to per-CPU callback queuing.\n", rtp->name);
++}
++
+ // Enqueue a callback for the specified flavor of Tasks RCU.
+ static void call_rcu_tasks_generic(struct rcu_head *rhp, rcu_callback_t func,
+ 				   struct rcu_tasks *rtp)
+ {
+ 	int chosen_cpu;
+ 	unsigned long flags;
+-	bool havekthread = smp_load_acquire(&rtp->kthread_ptr);
+ 	int ideal_cpu;
+-	unsigned long j;
++	bool irqsoff = irqs_disabled();
+ 	bool needadjust = false;
+ 	bool needwake;
+ 	struct rcu_tasks_percpu *rtpcp;
+@@ -359,44 +489,23 @@ static void call_rcu_tasks_generic(struct rcu_head *rhp, rcu_callback_t func,
+ 	chosen_cpu = cpumask_next(ideal_cpu - 1, cpu_possible_mask);
+ 	WARN_ON_ONCE(chosen_cpu >= rcu_task_cpu_ids);
+ 	rtpcp = per_cpu_ptr(rtp->rtpcpu, chosen_cpu);
+-	if (!raw_spin_trylock_rcu_node(rtpcp)) { // irqs already disabled.
+-		raw_spin_lock_rcu_node(rtpcp); // irqs already disabled.
+-		j = jiffies;
+-		if (rtpcp->rtp_jiffies != j) {
+-			rtpcp->rtp_jiffies = j;
+-			rtpcp->rtp_n_lock_retries = 0;
+-		}
+-		if (rcu_task_cb_adjust && ++rtpcp->rtp_n_lock_retries > rcu_task_contend_lim &&
+-		    READ_ONCE(rtp->percpu_enqueue_lim) != rcu_task_cpu_ids)
+-			needadjust = true;  // Defer adjustment to avoid deadlock.
+-	}
+-	// Queuing callbacks before initialization not yet supported.
+-	if (WARN_ON_ONCE(!rcu_segcblist_is_enabled(&rtpcp->cblist)))
+-		rcu_segcblist_init(&rtpcp->cblist);
+-	needwake = (!havekthread && rcu_segcblist_empty(&rtpcp->cblist)) ||
+-		   (func == wakeme_after_rcu) ||
+-		   (rcu_segcblist_n_cbs(&rtpcp->cblist) == rcu_task_lazy_lim);
+-	if (havekthread && !needwake && !timer_pending(&rtpcp->lazy_timer)) {
+-		if (rtp->lazy_jiffies)
+-			mod_timer(&rtpcp->lazy_timer, rcu_tasks_lazy_time(rtp));
+-		else
+-			needwake = rcu_segcblist_empty(&rtpcp->cblist);
++	if (irqsoff) {
++		llist_add((struct llist_node *)rhp, &rtpcp->rtp_irq_bypass_list);
++		rcu_read_unlock();
++		local_irq_restore(flags);
++		irq_work_queue(&rtpcp->rtp_irq_bypass_work);
++		return;
+ 	}
+-	if (needwake)
+-		rtpcp->urgent_gp = 3;
+-	rcu_segcblist_enqueue(&rtpcp->cblist, rhp);
++
++	if (call_rcu_tasks_lock(rtpcp))
++		needadjust = rcu_tasks_need_queue_adjust(rtp, rtpcp);
++
++	needwake = call_rcu_tasks_enqueue_locked(rhp, rtp, rtpcp);
+ 	raw_spin_unlock_irqrestore_rcu_node(rtpcp, flags);
+-	if (unlikely(needadjust)) {
+-		raw_spin_lock_irqsave(&rtp->cbs_gbl_lock, flags);
+-		if (rtp->percpu_enqueue_lim != rcu_task_cpu_ids) {
+-			WRITE_ONCE(rtp->percpu_enqueue_shift, 0);
+-			WRITE_ONCE(rtp->percpu_dequeue_lim, rcu_task_cpu_ids);
+-			smp_store_release(&rtp->percpu_enqueue_lim, rcu_task_cpu_ids);
+-			pr_info("Switching %s to per-CPU callback queuing.\n", rtp->name);
+-		}
+-		raw_spin_unlock_irqrestore(&rtp->cbs_gbl_lock, flags);
+-	}
++	if (unlikely(needadjust))
++		rcu_tasks_adjust_cbs(rtp);
+ 	rcu_read_unlock();
++
+ 	/* We can't create the thread unless interrupts are enabled. */
+ 	if (needwake && READ_ONCE(rtp->kthread_ptr))
+ 		irq_work_queue(&rtpcp->rtp_irq_work);
+@@ -438,6 +547,7 @@ static void __maybe_unused rcu_barrier_tasks_generic(struct rcu_tasks *rtp)
+ 		if (cpu >= smp_load_acquire(&rtp->percpu_dequeue_lim))
+ 			break;
+ 		rtpcp = per_cpu_ptr(rtp->rtpcpu, cpu);
++		rcu_tasks_drain_irq_bypass(rtpcp);
+ 		rtpcp->barrier_q_head.func = rcu_barrier_tasks_generic_cb;
+ 		raw_spin_lock_irqsave_rcu_node(rtpcp, flags);
+ 		if (rcu_segcblist_entrain(&rtpcp->cblist, &rtpcp->barrier_q_head))
+@@ -470,6 +580,8 @@ static int rcu_tasks_need_gpcb(struct rcu_tasks *rtp)
+ 			continue;
+ 		struct rcu_tasks_percpu *rtpcp = per_cpu_ptr(rtp->rtpcpu, cpu);
+ 
++		rcu_tasks_drain_irq_bypass(rtpcp);
++
+ 		/* Advance and accelerate any new callbacks. */
+ 		if (!rcu_segcblist_n_cbs(&rtpcp->cblist))
+ 			continue;
+-- 
+2.43.0
+
 
