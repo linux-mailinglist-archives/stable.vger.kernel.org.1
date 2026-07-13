@@ -1,187 +1,268 @@
-Return-Path: <stable+bounces-273706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273726-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id wyvuI4bkVGqKggAAu9opvQ
-	(envelope-from <stable+bounces-273706-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:13:42 +0200
+	id MbbzAdjpVGo4hAAAu9opvQ
+	(envelope-from <stable+bounces-273726-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:36:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEA7774B650
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:13:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40ECB74BAA9
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:36:23 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=tuxon.dev header.s=google header.b=ZsZlPld2;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273706-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-273706-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=none;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="MLj/8x6v";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273726-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273726-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5D0CD3056F0C
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 13:06:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6D67C32A55B5
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 13:19:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCAF141CB28;
-	Mon, 13 Jul 2026 13:06:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E00A1421F1B;
+	Mon, 13 Jul 2026 13:19:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA31D4189A9
-	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 13:06:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B98A3AB293
+	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 13:19:25 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783947966; cv=none; b=AObonN46lbi+HH+j5gnraTCZQWYeLUAsUa6WZmY35DhSXTC29sLdvvDvMNIcWQ0Z47q5Jo1lfZzPv8tgdEj1gCzrGOoyyOE/yGLNOf1Awy0tQiPp9LxrAXxQ7kRcB6PAZRFW6SbRigXj2Tti4DGSTcVXjfn5Ja7d+aDt3CYAZZY=
+	t=1783948766; cv=none; b=UwjuWgfsVCnouzZkG6ysN5/PD0FrwADCxnlx2Wti3p3yrs6eLa5ZoFmYAJuKZiNF5TLbg25hdqpQowrsUFijmb6Sme/mZDdF69eShEab67SEADJivPVfwA8cvsA8h2XOLrZNJh9hKgtmfSSxHO44wkQwql1oQZLlk0p58KEreis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783947966; c=relaxed/simple;
-	bh=yIpwaIQ3XL+j837k7sGNNcyGvaBkKgpHdoGUX8DP3aE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MV2byj+WoHNzIs/4Xfa+12HV1tjviDANe9kgUCkVFzOBFMhem/er1WtEKgfZVjFn4IwgueJU3iarkve7B6TrqYTnpn2A4n8/NZECEdbWTWCq6Z/al6KbCAQBClu2zROdef/PxL0FxmWNPhTslIFQFjTpOTQN5APfoccU2nIq5Vk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=ZsZlPld2; arc=none smtp.client-ip=209.85.128.43
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-493b77b150aso26169125e9.2
-        for <stable@vger.kernel.org>; Mon, 13 Jul 2026 06:06:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tuxon.dev; s=google; t=1783947963; x=1784552763; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=0uLPM+01Tsv/yEFxBZFkTxOO3Vsml2pOVlgqkzc7WeY=;
-        b=ZsZlPld2fZQbL5X/Sj/cgypz+q8pDLxHFM4dd4BU93jBdtU41UuHTcHBcqt7LEcyst
-         8k2B2snI1Knl6mtmNNM1I5dbPCYNIAIw4zt3VJpgQZ8Fztl1GB1XzU6VIVWmPYcUOe/w
-         qD6V8jgyAAeRRHfN6+0VTrw7tP16L8PP/yDJC8dLyBDJMtpLG3oK4qePQMjB6fvTYl4g
-         Az1s1k5XJ/Qlexjh9Pc3XTiyKMQpxBaJ66zYDYQeX7s1aFgoUjWLmD5TlAUEQIb4TkQH
-         JCbOTK+P7iuD6eVEgrv1UJgdt2VqZyijoHzI3G64r+NJw9h6OHGW9C0egbtIbK6gls0j
-         Px2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783947963; x=1784552763;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=0uLPM+01Tsv/yEFxBZFkTxOO3Vsml2pOVlgqkzc7WeY=;
-        b=AWo4odsrPwgzv6jFEcYHCJ1NVpRiI7X8xoMwzPRh0xOfkWi1zl70Swf6QHql3cnGUy
-         1yrjlzR/+ZTx3rjUP9p/hpYOaBdTdoX7utD4KOSUq7B8ddqBXX5fyt9oaaIQyansQ0nM
-         HmmZTo1s4HKPBgItxh9JFSx1U4B82hfAt4jzklLjo38zZmbYru7GbrRr5hbpCnM5nAgI
-         weghrZX41UTqmw+L7KJpSAh4SFIBOHyFBz7YtheJ+LMtGKb/5eS0pe+mHh/zD4AuZyau
-         mhudb42or5srR4CAcJDdU/Yj4UBrPVA8+znKBbRwR1ukoeSfQ1qbuPAUct5qTPQgTGLG
-         tTgA==
-X-Forwarded-Encrypted: i=1; AHgh+RpMuPwCxzFiLTwq2uKXiZ5LxEuTrfKwa0iK2uHj9XVaNm8W7kyo6bzVrG1VQnE11r6riMwcZE4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxLVuKb73sPK/LsTV62Z8UFaYso4B/RdGMfP/nLbPZ+3LjpIvAH
-	khADEJbZ+Ninr3VUl+Ysht0tUxO3Y2W1aZDwDE6YHT7betY/o0G6wXVYsi8gOdunn2OI+rCUnux
-	DqogE
-X-Gm-Gg: AfdE7clr7fK16fPlpAhjvKHAiSKWvJSKxnY89+m1mt3TzCHP/LWNnfpHvTEDeRlDs5b
-	oUjveKbm6E01AKgnM2lveGqzK3AGHakwbnyy9TGxIGRFgYx9L24AAgWo11oygtSk95yWVxsyWo9
-	8LdsnK2D8MMwOLqN2JLw7e/dEuM+2kFqxKGfz7bWb1ns8V+HH1fx2KG0Vk85sx/VM7v3V26VudL
-	Hy/qKidp5pjIumCknsz/Cpf2WVnwHZ8qZpRrF1HDJHMJ/fXZEx1OKN4DitMElME63jE5l8VXgCJ
-	0aYkjJxwqHb9M4N1e0NSRrRW1kLFZXQu9PWDkv7C3hGFYXeM1bqgsJfqr5HUQocr3CojfW+If72
-	jsooZ9x97WaQZ1StfKHBedrkfbmLJrodToy5eDQMvphD9q+UWbuMF5vpG0dIfCDFhZSNUxgPocy
-	XAmzUilwmtt2JI6ii/exXa+jIJvviymbAgX9mDKCj45Iqn/YogAVmzZV63Q3VQwfZ1lp1qN9o=
-X-Received: by 2002:a05:600c:a40c:b0:493:ee4d:5c5d with SMTP id 5b1f17b1804b1-493f882cb8cmr64144385e9.31.1783947963058;
-        Mon, 13 Jul 2026 06:06:03 -0700 (PDT)
-Received: from claudiu-TUXEDO-InfinityBook-Pro-AMD-Gen9.. ([2a02:2f04:6402:500:e91e:fe5e:857b:d0c])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f273195d9sm25321609f8f.3.2026.07.13.06.06.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Jul 2026 06:06:02 -0700 (PDT)
-From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-X-Google-Original-From: Claudiu Beznea <claudiu.beznea+renesas@tuxon.dev>
-To: wsa+renesas@sang-engineering.com,
-	tommaso.merciai.xr@bp.renesas.com,
-	alexandre.belloni@bootlin.com,
-	Frank.Li@nxp.com,
-	p.zabel@pengutronix.de
-Cc: claudiu.beznea@tuxon.dev,
-	linux-i3c@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v5 08/17] i3c: renesas: Fix out-of-bounds access for newdevs mask
-Date: Mon, 13 Jul 2026 16:05:36 +0300
-Message-ID: <20260713130545.568657-9-claudiu.beznea+renesas@tuxon.dev>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260713130545.568657-1-claudiu.beznea+renesas@tuxon.dev>
-References: <20260713130545.568657-1-claudiu.beznea+renesas@tuxon.dev>
+	s=arc-20240116; t=1783948766; c=relaxed/simple;
+	bh=N+mR/g4ce4E2RLqPigeAX4bHffGErcNyDW+rqcJf8D0=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=CpgeZsfiosGvRBnD06l5dS0J2HifDtNpO6hn4gZcGB6zkp9TgXG/t0WAv0JH+yCYx2nd227MrwThDcQid6MLnh/1t30Nk1/eWdZey6zh8kPYgqcKpAXrsZBktZ+07vcMSiN4gUXlNMuAagoP59Mx0hD6N8RQzBRzOegH96AuNxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MLj/8x6v; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E041A1F000E9;
+	Mon, 13 Jul 2026 13:19:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1783948765;
+	bh=Qee0FfabObk5jQRoU2xrKlu5PIJIy2zc/SHweD7xQ4c=;
+	h=Subject:To:Cc:From:Date;
+	b=MLj/8x6vnIHUc/Az2ibHr9j+Vpoy2kWlGe18fP8VHTM3yOnm0Q11s3dtfs72CRdo5
+	 f4gm3bzArfnejEcaOyS1Lw+6T3+NBqtk81pQ7BhwOlmMojGUrRpWqt2VOKyQI+C4ub
+	 w9etZd8Cj3J2umHSuXqjfZ4ld8eqJ0CQADWRtXRU=
+Subject: FAILED: patch "[PATCH] vfio/pci: Latch disable_idle_d3 per device" failed to apply to 6.1-stable tree
+To: alex.williamson@nvidia.com,alex@shazbot.org,kevin.tian@intel.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 13 Jul 2026 15:06:01 +0200
+Message-ID: <2026071301-corned-default-6f79@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[tuxon.dev:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_FROM(0.00)[bounces-273706-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-273726-lists,stable=lfdr.de];
+	URIBL_MULTI_FAIL(0.00)[nvidia.com:server fail,shazbot.org:server fail,gregkh:server fail,vger.kernel.org:server fail,intel.com:server fail,sea.lore.kernel.org:server fail,linuxfoundation.org:server fail];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:wsa+renesas@sang-engineering.com,m:tommaso.merciai.xr@bp.renesas.com,m:alexandre.belloni@bootlin.com,m:Frank.Li@nxp.com,m:p.zabel@pengutronix.de,m:claudiu.beznea@tuxon.dev,m:linux-i3c@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:linux-renesas-soc@vger.kernel.org,m:claudiu.beznea.uj@bp.renesas.com,m:stable@vger.kernel.org,m:wsa@sang-engineering.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[claudiu.beznea@tuxon.dev,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DMARC_NA(0.00)[tuxon.dev];
+	FORGED_RECIPIENTS(0.00)[m:alex.williamson@nvidia.com,m:alex@shazbot.org,m:kevin.tian@intel.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[tuxon.dev:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[claudiu.beznea@tuxon.dev,stable@vger.kernel.org];
-	ALIAS_RESOLVED(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_FORWARDING(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	TO_DN_NONE(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,tuxon.dev:from_mime,tuxon.dev:dkim,tuxon.dev:mid,renesas.com:email,vger.kernel.org:from_smtp]
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_RCPT(0.00)[stable];
+	FROM_NO_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,intel.com:email,gregkh:mid,nvidia.com:email,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,shazbot.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: EEA7774B650
+X-Rspamd-Queue-Id: 40ECB74BAA9
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-When software initiates DAA (Dynamic Address Assignment), the controller
-reports the result via the NRSPQP (Normal Response Queue Port Register).
-The data length field of the response descriptor, which is accessible
-through the NRSPQP register, indicates the number of devices remaining
-after DAA. Consequently, when the bus is empty, this field contains the
-maximum number of devices supported by the controller (8 for the Renesas
-I3C controller).
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Adjust the condition that computes the newly discovered devices bitmask
-to prevent an out-of-bounds when the I3C bus is empty.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Fixes: e7218986319b ("i3c: renesas: Add suspend/resume support")
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x 4575e9aac5336d1365138c0284773bf8da4b1fa3
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026071301-corned-default-6f79@gregkh' --subject-prefix 'PATCH 6.1.y' 'HEAD^..'
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 4575e9aac5336d1365138c0284773bf8da4b1fa3 Mon Sep 17 00:00:00 2001
+From: Alex Williamson <alex.williamson@nvidia.com>
+Date: Mon, 15 Jun 2026 13:12:29 -0600
+Subject: [PATCH] vfio/pci: Latch disable_idle_d3 per device
+
+When disable_idle_d3 was introduced in vfio-pci, it directly manipulated
+the device power state with pci_set_power_state().  There were no
+refcounts to maintain or balanced operations, we could unconditionally
+bring the device to D0 and conditionally move it to D3hot.  Therefore
+the module parameter was made writable.
+
+Later, in commit c61302aa48f7 ("vfio/pci: Move module parameters to
+vfio_pci.c"), as part of the vfio-pci-core split, the writable aspect
+of the module parameter was nullified.  The parameter value could still
+be changed through sysfs, but the vfio-pci driver latched the values
+into vfio-pci-core globals at module init.  Loading the vfio-pci module,
+or unloading and reloading, with non-default or different values could
+change the globals relative to existing devices bound to vfio-pci
+variant drivers.
+
+Runtime PM was introduced in commit 7ab5e10eda02 ("vfio/pci: Move the
+unused device into low power state with runtime PM"), which marks the
+point where power states became refcounted.  PM get and put operations
+need to be balanced, but the same module operations noted above can
+change the global variables relative to those devices already bound to
+vfio-pci variant drivers.  This introduces a window where PM operations
+can now become unbalanced.
+
+To resolve this with a narrow footprint for stable backports, the
+disable_idle_d3 flag is latched into the vfio_pci_core_device at the
+time of initialization, such that the device always operates with a
+consistent value.
+
+NB. vfio_pci_dev_set_try_reset() now unconditionally raises the
+runtime PM usage count around bus reset to account for disable_idle_d3
+becoming a per-device rather than global flag.  When this flag is set,
+the additional get/put pair is harmless and allows continued use of the
+shared vfio_pci_dev_set_pm_runtime_get() helper.
+
+Fixes: 7ab5e10eda02 ("vfio/pci: Move the unused device into low power state with runtime PM")
 Cc: stable@vger.kernel.org
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
----
+Assisted-by: Claude:claude-opus-4-8
+Signed-off-by: Alex Williamson <alex.williamson@nvidia.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Link: https://lore.kernel.org/r/20260615191241.688297-2-alex.williamson@nvidia.com
+Signed-off-by: Alex Williamson <alex@shazbot.org>
 
-Changes in v5:
-- none; this patch is new
-
- drivers/i3c/master/renesas-i3c.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/i3c/master/renesas-i3c.c b/drivers/i3c/master/renesas-i3c.c
-index b9784d238f61..c459e40fd5ff 100644
---- a/drivers/i3c/master/renesas-i3c.c
-+++ b/drivers/i3c/master/renesas-i3c.c
-@@ -703,7 +703,11 @@ static int renesas_i3c_daa(struct i3c_master_controller *m)
+diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+index a28f1e99362c..f8d1755de2ce 100644
+--- a/drivers/vfio/pci/vfio_pci_core.c
++++ b/drivers/vfio/pci/vfio_pci_core.c
+@@ -538,7 +538,7 @@ int vfio_pci_core_enable(struct vfio_pci_core_device *vdev)
+ 	u16 cmd;
+ 	u8 msix_pos;
  
- 	renesas_i3c_wait_xfer(i3c, xfer);
+-	if (!disable_idle_d3) {
++	if (!vdev->disable_idle_d3) {
+ 		ret = pm_runtime_resume_and_get(&pdev->dev);
+ 		if (ret < 0)
+ 			return ret;
+@@ -617,7 +617,7 @@ int vfio_pci_core_enable(struct vfio_pci_core_device *vdev)
+ out_disable_device:
+ 	pci_disable_device(pdev);
+ out_power:
+-	if (!disable_idle_d3)
++	if (!vdev->disable_idle_d3)
+ 		pm_runtime_put(&pdev->dev);
+ 	return ret;
+ }
+@@ -753,7 +753,7 @@ void vfio_pci_core_disable(struct vfio_pci_core_device *vdev)
+ 	vfio_pci_dev_set_try_reset(vdev->vdev.dev_set);
  
--	newdevs = GENMASK(i3c->maxdevs - cmd->rx_count - 1, 0);
-+	if (cmd->rx_count >= i3c->maxdevs)
-+		newdevs = 0;
-+	else
-+		newdevs = GENMASK(i3c->maxdevs - cmd->rx_count - 1, 0);
+ 	/* Put the pm-runtime usage counter acquired during enable */
+-	if (!disable_idle_d3)
++	if (!vdev->disable_idle_d3)
+ 		pm_runtime_put(&pdev->dev);
+ }
+ EXPORT_SYMBOL_GPL(vfio_pci_core_disable);
+@@ -2144,6 +2144,8 @@ int vfio_pci_core_init_dev(struct vfio_device *core_vdev)
+ 	init_rwsem(&vdev->memory_lock);
+ 	xa_init(&vdev->ctx);
+ 
++	vdev->disable_idle_d3 = disable_idle_d3;
 +
- 	newdevs &= ~olddevs;
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(vfio_pci_core_init_dev);
+@@ -2239,7 +2241,7 @@ int vfio_pci_core_register_device(struct vfio_pci_core_device *vdev)
  
- 	for (pos = 0; pos < i3c->maxdevs; pos++) {
--- 
-2.43.0
+ 	dev->driver->pm = &vfio_pci_core_pm_ops;
+ 	pm_runtime_allow(dev);
+-	if (!disable_idle_d3)
++	if (!vdev->disable_idle_d3)
+ 		pm_runtime_put(dev);
+ 
+ 	ret = vfio_register_group_dev(&vdev->vdev);
+@@ -2248,7 +2250,7 @@ int vfio_pci_core_register_device(struct vfio_pci_core_device *vdev)
+ 	return 0;
+ 
+ out_power:
+-	if (!disable_idle_d3)
++	if (!vdev->disable_idle_d3)
+ 		pm_runtime_get_noresume(dev);
+ 
+ 	pm_runtime_forbid(dev);
+@@ -2267,7 +2269,7 @@ void vfio_pci_core_unregister_device(struct vfio_pci_core_device *vdev)
+ 	vfio_pci_vf_uninit(vdev);
+ 	vfio_pci_vga_uninit(vdev);
+ 
+-	if (!disable_idle_d3)
++	if (!vdev->disable_idle_d3)
+ 		pm_runtime_get_noresume(&vdev->pdev->dev);
+ 
+ 	pm_runtime_forbid(&vdev->pdev->dev);
+@@ -2599,7 +2601,7 @@ static void vfio_pci_dev_set_try_reset(struct vfio_device_set *dev_set)
+ 	 * state. Increment the usage count for all the devices in the dev_set
+ 	 * before reset and decrement the same after reset.
+ 	 */
+-	if (!disable_idle_d3 && vfio_pci_dev_set_pm_runtime_get(dev_set))
++	if (vfio_pci_dev_set_pm_runtime_get(dev_set))
+ 		return;
+ 
+ 	if (!pci_reset_bus(pdev))
+@@ -2609,8 +2611,7 @@ static void vfio_pci_dev_set_try_reset(struct vfio_device_set *dev_set)
+ 		if (reset_done)
+ 			cur->needs_reset = false;
+ 
+-		if (!disable_idle_d3)
+-			pm_runtime_put(&cur->pdev->dev);
++		pm_runtime_put(&cur->pdev->dev);
+ 	}
+ }
+ 
+diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
+index 5fc6ce4dd786..27aab3fdbb91 100644
+--- a/include/linux/vfio_pci_core.h
++++ b/include/linux/vfio_pci_core.h
+@@ -127,6 +127,7 @@ struct vfio_pci_core_device {
+ 	bool			needs_pm_restore:1;
+ 	bool			pm_intx_masked:1;
+ 	bool			pm_runtime_engaged:1;
++	bool			disable_idle_d3:1;
+ 	bool			sriov_active;
+ 	struct pci_saved_state	*pci_saved_state;
+ 	struct pci_saved_state	*pm_save;
 
 
