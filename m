@@ -1,55 +1,71 @@
-Return-Path: <stable+bounces-273585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273586-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id BbQJBjKMVGrDnAMAu9opvQ
-	(envelope-from <stable+bounces-273585-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 08:56:50 +0200
+	id z0HmGnqQVGqSnQMAu9opvQ
+	(envelope-from <stable+bounces-273586-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 09:15:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DF85747BC2
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 08:56:49 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68AFF747E9B
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 09:15:05 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=dev.snart.me header.s=00 header.b=rFR7crQN;
-	dmarc=pass (policy=reject) header.from=dev.snart.me;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273585-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273585-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=leemhuis.info header.s=key2 header.b=QXkWykl8;
+	dmarc=none;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273586-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-273586-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E4C1B3009892
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 06:56:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F3F7A301B171
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 07:15:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1D113655DD;
-	Mon, 13 Jul 2026 06:56:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4886235F5ED;
+	Mon, 13 Jul 2026 07:15:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from embla.dev.snart.me (embla.dev.snart.me [54.252.183.203])
+Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [188.68.63.162])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37A3417A300
-	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 06:56:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E0652836A0;
+	Mon, 13 Jul 2026 07:14:58 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783925805; cv=none; b=WhtJxz30LC4sUgRDljNdhl4/UpydvjOyzyOt6uSnGKOTo1bTMe5AIXVhdM1+0vTrIQOL0DGhuLVlRyL7wJ1bnyQSyuSrEoDoschLG+F8SqFLiuAtCjuPNcrC7A/cUlKdcXaGlTUZQx56o5RGSEwk7HH0/GrjJ1Mrhnh8pPoT+Ig=
+	t=1783926900; cv=none; b=LD/vnxJIj7VziLc1DNEnIGxyCEzLW1vz8Ppif3pEluwhVne2GNxvd02Pt9KhXwonpl4ZsCEAjYf8zJGwGLVLyfpNBJ8oXB5ZA25vKddsNjcwtWsqJNtgDX+KPCxUo3iTDm0zpcg8w8y7Fl7y66m5PIpHjjDSistJq5PB4d67bS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783925805; c=relaxed/simple;
-	bh=1S4t/bd9Acp+A0Rb7ye2I50Hz9GjrmnkLGLh+nobMYM=;
+	s=arc-20240116; t=1783926900; c=relaxed/simple;
+	bh=ft5/eljShbuYhVYHfb0X4qATRaHxv9WlJJ3lqFQIN2A=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=InrEPTPHq2CKaqdCr4ST0wSJC+KHcPGNsmnDml5wWbAqkdu7mGX8lIRUj1KVeuj5eJygSSZsFR0PMkKeGmUCedYO8VF8vMJ+TzUlmYbpd4scE2ahl/5OA80wydQduU9rJ01QH5q73CACWz9cHaUdBKnT7l7cVxp6dwkbibTA4qk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=dev.snart.me; spf=pass smtp.mailfrom=dev.snart.me; dkim=pass (1024-bit key) header.d=dev.snart.me header.i=@dev.snart.me header.b=rFR7crQN; arc=none smtp.client-ip=54.252.183.203
-Received: from embla.dev.snart.me (localhost [IPv6:::1])
-	by embla.dev.snart.me (Postfix) with ESMTP id 7EC9E1D4A2;
-	Mon, 13 Jul 2026 06:56:41 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 embla.dev.snart.me 7EC9E1D4A2
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=dev.snart.me; s=00;
-	t=1783925802; bh=1S4t/bd9Acp+A0Rb7ye2I50Hz9GjrmnkLGLh+nobMYM=;
+	 In-Reply-To:Content-Type; b=Lux58siNrdcTRCq72KYQLMwaPpLvsR+k+UVhkH/hOZEHCK9HT7OYJUOlKSV4zxOeMdoa1OLUbdIURATZQcz1OfOi89d90ShS2Oh48VbZQhnVNZeIrQhWAWeOfAqC+IYr4y3tj+/9cpHtE9qdqYiknvl4vIWeykAQNMEYMt3gJ1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=QXkWykl8; arc=none smtp.client-ip=188.68.63.162
+Received: from mors-relay-8201.netcup.net (localhost [127.0.0.1])
+	by mors-relay-8201.netcup.net (Postfix) with ESMTPS id 4gzDFF2YLdz41mt;
+	Mon, 13 Jul 2026 09:13:53 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
+	s=key2; t=1783926833;
+	bh=ft5/eljShbuYhVYHfb0X4qATRaHxv9WlJJ3lqFQIN2A=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=rFR7crQNkFydK5kX8apYWuk9jNY8qCboDRlGGkrouWAJgmg+cHCaglyjX+mU2b+j5
-	 4GT7kfVSRAicm3WAPCLytV0PchZFkM65kNIjlhwaLWluk3+hvwCYU+TvjieHftNvoi
-	 ahDRxb9ztRBrMDMedkJUwioN3aSjQQGhkebKA0dI=
-Received: from [192.168.1.18] ([182.226.25.243])
-	by embla.dev.snart.me with ESMTPSA
-	id R5j+CymMVGq5wwIA8KYfjw
-	(envelope-from <dxdt@dev.snart.me>); Mon, 13 Jul 2026 06:56:41 +0000
-Message-ID: <ddc6ffcf-0981-41d2-811b-cd46d5ae5c52@dev.snart.me>
-Date: Mon, 13 Jul 2026 15:56:39 +0900
+	b=QXkWykl8hifEgutAY/lzyn35YKVwZWQWF3ZaqD7dFUropywiLUD+NzTU9FbrMS8Gb
+	 N7TxJzsyM0rLg1s/N6S+evPSuSWcZKd3S72/5H9dIgpUVrYW9zJfbJ/NJReuVi0hiA
+	 ZEdzy7+Yr2Yn2lwb9NaTOuQbP8Q03XImk0jOy1ds6DrsPXaCFjrUwgbNgeJU2W9foc
+	 IeTnObDohuNHv8HGeUgcPfb760bwn+7YdwIoW7B5laHHhvYjg6ZsQPAN7SCUtJNtAk
+	 XCKUKycfalhsqa+m1pOL8dSc8Pd5aec/KxZiGCDjsJndw0jrSY8Hn+zQwBmHhsLsgy
+	 IClFEYaqTfVJA==
+Received: from policy01-mors.netcup.net (unknown [46.38.225.35])
+	by mors-relay-8201.netcup.net (Postfix) with ESMTPS id 4gzDF31rC6z41vC;
+	Mon, 13 Jul 2026 09:13:43 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at policy01-mors.netcup.net
+X-Spam-Flag: NO
+X-Spam-Score: -2.898
+X-Spam-Level: 
+Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by policy01-mors.netcup.net (Postfix) with ESMTPS id 4gzDDz3Vhbz8tbl;
+	Mon, 13 Jul 2026 09:13:39 +0200 (CEST)
+Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
+	by mxe9fb.netcup.net (Postfix) with ESMTPSA id 81FD66041D;
+	Mon, 13 Jul 2026 09:13:31 +0200 (CEST)
+Received-SPF: pass (mxe9fb: connection is authenticated)
+Message-ID: <ae5c29aa-3790-479a-bdfb-1b571eaab809@leemhuis.info>
+Date: Mon, 13 Jul 2026 09:13:30 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,74 +73,89 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] exfat: bail prematurely from exfat_extend_valid_size()
- upon fatal signal
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Namjae Jeon <linkinjeon@kernel.org>, Sungjong Seo
- <sj1557.seo@samsung.com>, Yuezhang Mo <yuezhang.mo@sony.com>,
- Andy Wu <Andy.Wu@sony.com>, Aoyama Wataru <wataru.aoyama@sony.com>,
- stable@vger.kernel.org
-References: <20260713061954.19557-1-dxdt@dev.snart.me>
- <2026071352-bunkmate-anymore-0962@gregkh>
-From: David Timber <dxdt@dev.snart.me>
-Content-Language: en-US, ko
-Autocrypt: addr=dxdt@dev.snart.me; keydata=
- xjMEYmJg1hYJKwYBBAHaRw8BAQdAf5E+ri1XLtjqYbZdHOyc8oS+1/XJ5bSlbx5WHXmVBZzN
- IERhdmlkIFRpbWJlciA8ZHhkdEBkZXYuc25hcnQubWU+wpQEExYKADwWIQQn/Jn96EMUaIoF
- X+T/ldyyrZpWaAUCYmJg1gIbAwULCQgHAgMiAgEGFQoJCAsCBBYCAwECHgcCF4AACgkQ/5Xc
- sq2aVmjJZwD8COjPlUwccrlRvbNQ6f87DWchtYO0o8W2DNRM3RLps0EA/jEhIbRV6AsyC8jr
- 30Ut3aJ3/mO/6G4sLj7OvkEEBH0MzjgEYmJg1hIKKwYBBAGXVQEFAQEHQFpgtIgaByv9lIEY
- EmpavMO0pYjtu7TMJynwdnGYkN9LAwEIB8J4BBgWCgAgFiEEJ/yZ/ehDFGiKBV/k/5Xcsq2a
- VmgFAmJiYNYCGwwACgkQ/5Xcsq2aVmhFCwEA0kM9VyYB4bLCM7+SuXUUH+5Ec99Nj4RXxFad
- Key9GuwA/2BZK6bNyrLSfEk2JDRoskqf7OIL0wa6JOD5SrBnMe8E
-In-Reply-To: <2026071352-bunkmate-anymore-0962@gregkh>
+Subject: Re: [resend] [regression] amdgpu carrizo: no display signal after
+ modeset
+To: Dianne Skoll <dianne@skoll.ca>, Jaak Ristioja <jaak@ristioja.ee>
+Cc: Mario Limonciello <mario.limonciello@amd.com>,
+ Salvatore Bonaccorso <carnil@debian.org>, Chris Park <chris.park@amd.com>,
+ Matthew Stewart <matthew.stewart2@amd.com>,
+ Dan Wheeler <daniel.wheeler@amd.com>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Harry Wentland <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>,
+ Rodrigo Siqueira <siqueira@igalia.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ 1139950@bugs.debian.org, regressions@lists.linux.dev,
+ stable@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
+References: <9fba2020-24d1-4235-9869-319d4aab3a4c@ristioja.ee>
+ <178198613176.3658222.16247101620976737948@eldamar.lan>
+ <ajcLuO0YZCoPN7Xw@eldamar.lan> <e4f60b98-9bd8-491a-9703-a5a7a58a4ca0@amd.com>
+ <82b5026d-2dcc-4dcd-9094-2ccf70057964@ristioja.ee>
+ <6cf6be99-76c3-43b3-854f-96cae180318c@ristioja.ee>
+ <20260622153449.453b493e@gato.skoll.ca>
+From: Thorsten Leemhuis <regressions@leemhuis.info>
+Content-Language: de-DE, en-US
+In-Reply-To: <20260622153449.453b493e@gato.skoll.ca>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-PPP-Message-ID: <178392681229.3442660.9578169747564647640@mxe9fb.netcup.net>
+X-NC-CID: MzLG2tZMKB/ADR25837MhEmuu9VJVl40ek1ivkRoK5XTXQ/26lE=
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[dev.snart.me,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[dev.snart.me:s=00];
+	R_DKIM_ALLOW(-0.20)[leemhuis.info:s=key2];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[dev.snart.me:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-273585-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-273586-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:dianne@skoll.ca,m:jaak@ristioja.ee,m:mario.limonciello@amd.com,m:carnil@debian.org,m:chris.park@amd.com,m:matthew.stewart2@amd.com,m:daniel.wheeler@amd.com,m:alexander.deucher@amd.com,m:gregkh@linuxfoundation.org,m:harry.wentland@amd.com,m:sunpeng.li@amd.com,m:siqueira@igalia.com,m:christian.koenig@amd.com,m:airlied@gmail.com,m:simona@ffwll.ch,m:1139950@bugs.debian.org,m:regressions@lists.linux.dev,m:stable@vger.kernel.org,m:amd-gfx@lists.freedesktop.org,m:dri-devel@lists.freedesktop.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[leemhuis.info];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,gitlab.freedesktop.org:url,vger.kernel.org:from_smtp,ristioja.ee:email];
+	FORGED_SENDER(0.00)[regressions@leemhuis.info,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	FREEMAIL_CC(0.00)[amd.com,debian.org,linuxfoundation.org,igalia.com,gmail.com,ffwll.ch,bugs.debian.org,lists.linux.dev,vger.kernel.org,lists.freedesktop.org];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[dxdt@dev.snart.me,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:linkinjeon@kernel.org,m:sj1557.seo@samsung.com,m:yuezhang.mo@sony.com,m:Andy.Wu@sony.com,m:wataru.aoyama@sony.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	DKIM_TRACE(0.00)[leemhuis.info:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dxdt@dev.snart.me,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[regressions@leemhuis.info,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp,dev.snart.me:from_mime,dev.snart.me:dkim,dev.snart.me:mid]
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7DF85747BC2
+X-Rspamd-Queue-Id: 68AFF747E9B
 
-On 7/13/26 15:53, Greg KH wrote:
-> On Mon, Jul 13, 2026 at 03:19:54PM +0900, David Timber wrote:
->> commit 82a81a7352bcf5f2756ac33d47ee0582737e9a85 upstream.
-> No this is not :(
->
-> confused,
->
-> gre gk-h
-I'm sorry. I know. This still under review. Stupid git send-email cc'd
-the list address.
+On 6/22/26 21:34, Dianne Skoll wrote:
+> On Mon, 22 Jun 2026 20:46:44 +0300
+> Jaak Ristioja <jaak@ristioja.ee> wrote:
+> 
+>> Reverting commit fee50077656 ("drm/amd/display: Bump the HDMI clock to 
+>> 340MHz") on top of v7.1.1 appears to resolve the issue, as I am now able 
+>> to get a picture.
+> 
+> Unfortunately, reverting that commit will *break* it for me with my Dasung
+> E-Ink monitor. :(
+Jaak, was this ever resolved? It looks like this fell through the
+cracks, but maybe I missed something.
 
-Davo
+If this is still unfixed, I think it likely is best if you report this
+to https://gitlab.freedesktop.org/drm/amd/-/work_items/ if you haven't
+done so already -- I suspect that is more likely to get the attention of
+the amdgpu maintainers. Please drop the link to the ticket here after
+submitting the issue.
+
+Ciao, Thorsten
 
