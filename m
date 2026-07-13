@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-273981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273982-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id axXjB9M/VWpGmAAAu9opvQ
-	(envelope-from <stable+bounces-273981-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 21:43:15 +0200
+	id CN/pGdo/VWpLmAAAu9opvQ
+	(envelope-from <stable+bounces-273982-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 21:43:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A764374ED57
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 21:43:14 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56D2474ED5B
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 21:43:21 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V18a9lzf;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273981-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-273981-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HnrC9BaM;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273982-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-273982-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1B7373011E8E
+	by sin.lore.kernel.org (Postfix) with ESMTP id D1AAA300691E
 	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 19:43:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F5EB357CF8;
-	Mon, 13 Jul 2026 19:43:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9CDA358388;
+	Mon, 13 Jul 2026 19:43:13 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 111F81DED5B
-	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 19:43:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85227357CE5
+	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 19:43:12 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783971791; cv=none; b=tKaaoAvJHikbecSO0r/+UsJR5wTGZgZXXc6VYd7Ad2nED50MuqvuriLIUoy5YoTV0OBDBxAbgzUna5ScuFaLilED9/mrbRdBPSdKM9pNDsxckzOOggdj5+pM6L0ZiurqKZosLoM4GY14Tg+elC+IZyHYvVTnP+bQP4N06fzikQw=
+	t=1783971793; cv=none; b=biQyNvQI9hnlr3j2og7XXVQecDB5vf6BJ3dAYqYGQnFlmHq0plG19U3kGk2QtQ3dfzQYCtdOE/lBGPLmilxblnOLoVIpYXrIL7FcEHi1dTXZxScNIeFqe+tO3SCEL90J3NATT7kAFp9PC8mbEMc846PMt68Zd9Fk3I16UUhMIMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783971791; c=relaxed/simple;
+	s=arc-20240116; t=1783971793; c=relaxed/simple;
 	bh=WsysDYKlmNIi1GeaMYZNzj3eo5Jd1cfgBO4xygxqFM8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EEmcWWC8HbJdMhsSu7L0qUVm/s2mXkmMoie2TVqdOZZJBrTiH8WufvgRfweSMz1tpfb1arTdkvoAn1Y1+VQWR5CtMFFdCWIVrBXFUtkbB0qTQ76rWpJvJHbZgPwzAIr74JABUPHjFyL8yoTolJCtVrUdJ53D+NokxolSaxBYXdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V18a9lzf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 150B81F000E9;
-	Mon, 13 Jul 2026 19:43:09 +0000 (UTC)
+	 MIME-Version; b=SvSKLilvDTST9o0+uty3dZsDARAfJS/86tLFwEcbCTVeBsWSAk6yHSUZFZs4BoXk64xKYVh9XxHqkQxsAmydi4Yo6XIUVLyryNGGQ2oJ67cmESnXiCkiHneho7FhrA6wYBBV0P6c2ZKEKAVqJcRakL7wCgQBKxWEFvE96dD1x2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HnrC9BaM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 911351F000E9;
+	Mon, 13 Jul 2026 19:43:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783971789;
+	s=k20260515; t=1783971792;
 	bh=xg6cJ7Emy56zQk35qGT2BR2rdqy14HcsQeCTzOrDaOw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=V18a9lzfYyS+E55hLaV9xF11f9hklzThT6ACS+Iy9vM56OYzrTiCZdW6LIrYlAwUu
-	 gWt14xEGMHt8Lc3bdUC+BKyACCUarhVj5KTdQBVzxIxquxQgkXEtUUR7FHnvLvfMsO
-	 Snu9l3wiKp/lViG5u1dtSZi2/5MVE23aCUsvMynVpYIc61d3FAzo3ENan/fef3bDvC
-	 3Qmu1ZCgDK/d47mUVhNe+kUEAwjxb1OCGh6BHn9cHd37qZSEPLZg5XAS1c1FsIadzq
-	 Zu/1yyJLPV0kVXvdkgsXboAQGdKLlY34F6bWvwHhGRHj0G1QOKC+sjfFiVmIjQMDH2
-	 ZYdHKaKSK2vVg==
+	b=HnrC9BaMw6TEpgwlojQP+9+4ttFpO/5f/sIoOpvfBDnUPVeIT6BS9aXFwwkT5Coo5
+	 Rf8NkPjquX6D64oSCeiUlmmJUTrLfBUEyMeQiTWHuCbDqGb8gRnyPocn1+9wvI/dal
+	 h+hO+KdYZc5rmOmLgbC7esprlvrs1fhSjuLtoERGawZJgpJ2pPN7ZZAl7zAuvxOqIG
+	 Wyd3CkOrtP+k2brAgxrU+tCxZz2LWlJ8Yx1xEZhshTeelrZpSTlgMmXRGybPY6y1Am
+	 FYqnv7qJDqimh+G9um0Gvfhz/LcH+BMRgm/dKVJcC1Egy8ioflz1z7eEXhuEeVNEbh
+	 1dnitsx3eO0Fg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Biren Pandya <birenpandya@gmail.com>,
@@ -53,8 +53,8 @@ Cc: Biren Pandya <birenpandya@gmail.com>,
 	Jonathan Cameron <jic23@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
 Subject: [PATCH 6.6.y] iio: pressure: mpl115: fix runtime PM leak on read error
-Date: Mon, 13 Jul 2026 15:43:07 -0400
-Message-ID: <20260713194307.2064131-1-sashal@kernel.org>
+Date: Mon, 13 Jul 2026 15:43:10 -0400
+Message-ID: <20260713194310.2065294-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <2026071359-barbell-reversal-8689@gregkh>
 References: <2026071359-barbell-reversal-8689@gregkh>
@@ -72,13 +72,13 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-273981-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-273982-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -97,11 +97,11 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A764374ED57
+X-Rspamd-Queue-Id: 56D2474ED5B
 
 From: Biren Pandya <birenpandya@gmail.com>
 
