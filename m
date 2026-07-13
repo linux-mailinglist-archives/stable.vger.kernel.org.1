@@ -1,177 +1,168 @@
-Return-Path: <stable+bounces-273682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273684-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id jJE1KA3fVGqagAAAu9opvQ
-	(envelope-from <stable+bounces-273682-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 14:50:21 +0200
+	id FltGBm3fVGq+gAAAu9opvQ
+	(envelope-from <stable+bounces-273684-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 14:51:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F278474B1B4
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 14:50:20 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED46774B207
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 14:51:55 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=S3LyF4yF;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273682-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273682-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=T5gIEr+B;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273684-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273684-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0A78A3016035
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 12:50:20 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9E8A3300B8FC
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 12:51:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 007FC3F58D9;
-	Mon, 13 Jul 2026 12:50:17 +0000 (UTC)
-X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77A8D40E8E9;
+	Mon, 13 Jul 2026 12:51:33 +0000 (UTC)
+X-Original-To: Stable@vger.kernel.org
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A61142DA74A
-	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 12:50:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFE98411662
+	for <Stable@vger.kernel.org>; Mon, 13 Jul 2026 12:51:29 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783947016; cv=none; b=rtjWg5qNLZlotYKIUvwU57UvECKBwqeYFyoyxeIC8UTlk3Zk31dr+5ENjWOqwvrSFz22CM3vzyUuxwrexri1cxpdvcQHfEP4ufCXZdKGapM6useaYy0jWrRo6JJ1f0NXLUJbUWlViAbS5qAPxGb6PV6dBPTwW1RpvRGVH/XXpRQ=
+	t=1783947091; cv=none; b=CCMkzCjk5cojjif6u+oQ8GrGwDLVfNN+sKDKnUKoc0z7SofrKvlIbXlHlUGkQtYqvane/+2cPTLLuO4tcrQ2UYes/rYe3nQc1kaaTOTDLig8GmU4UMiWqKaY108AVswiu/88cIq2HN2LZQi84Vc5pV8DWT4j7EjrjUAwnpttXLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783947016; c=relaxed/simple;
-	bh=S92pQ2C0qUV/KBqi32UApWFOvWJs4dXNLhZODPKvz9M=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=INVgvf2Ev1vs56gQk4s1gBZ+gJt8YgJl4Jx4dqRJ3Pt0wkZI7rbMDKSAcDTKcEdPiWeDNG/47HtOlsMh+OuDhZT1VmKYlFRhpLALEgYE6eVgXKRvekmWUnkoUzzDlr3MuGZhJQVHB3x9ud9mu6lNibfqjYPdiCDsJcceDb4CDCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S3LyF4yF; arc=none smtp.client-ip=209.85.214.182
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2ccf2360620so26050965ad.3
-        for <stable@vger.kernel.org>; Mon, 13 Jul 2026 05:50:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783947015; x=1784551815; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=TvooeHfwR2QntnuwEEpfCHr1XrT9fgk2dlfW1+7scHw=;
-        b=S3LyF4yFCL8Rb/DLclSRrX8LAud28j1tN9zG8au2ig8qIULMOML73cVJ+9ZeQqazhQ
-         sqV28oVOALOyyGqBIaVS3Q7TNcO9yKtf4iOcEqhzJVBPcGt6/j1XR93sYo2zCHeBjJqx
-         jLrjp+PC9M9AEc3OMM24Xt3dBdgziXgOXIG3OIfaXbMVScJoJnIm0ntvklxUJs/skj4t
-         kxt+Gb2DpLnVyrh9tgkJCWhSGTWFfzpXKzQJcQp7faDf6GiSioQ+JdxbQeMMR+igbq7R
-         3YkyZmq0vi5ml9owV+R4O6pIX77dcEmyv23/EKjoDMj73pwCR7pJ2/+py2VzmeN35HDs
-         NXNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783947015; x=1784551815;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=TvooeHfwR2QntnuwEEpfCHr1XrT9fgk2dlfW1+7scHw=;
-        b=b4DhO+bJwjuM3tyZ1uzshH1ijg2WuHr5/TahMF426b9OwX9Q6gxxiGzRzJh3DgODgP
-         /aYFgnMn9tZrXz0qUIECCfEK+tEiXztY91F33zKufLSdNtdL4+4jloGx1nQEvoI4WXxh
-         RTeHMl1xtGVzJ4MlwBiuKI5HdFETice0Ih1FUu8z3/+ny1d333llSlDoqJzTzSUprskl
-         +dbMMNzOjmxmcopsU/PrqkGBlw/KobNJAKk5Otsjo6o1jyLrXiv5Q9OizaemP/KsIa/b
-         Q8qUE/bKFwbGUM4EBV+IRtGqbqRGti1JRgJlC4ZHTnsWvo0WDRsCgIIaogShwqHRzIEw
-         V+qQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpYmhisNwvvDaL8AHivU1EqKT+RNA0y+TcD/mGtten1axgUS+6/k2mNxjMwODbdAY8TgMI+02Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzMYpwh/AfDYG7kCNHSFywRD3H2yrQMDZwy4TS6Q56/09E1/m6W
-	qDle6T38uwsx+QCvoPxS2+nNlZdrHeR6o4ygTVgE0CEbYcEETEEUzB9gJ5Q+YmJS+Mk=
-X-Gm-Gg: AfdE7clvj3/PN2EH4GXJJ0SEOMUEAdTLtiI/KqYQBO1hHx8OdWW6MWUMvC6nc01e9m/
-	WLgkwxx9vmNPKFW/3ch00bF5mECR6cIwLqUfkLTlq1KNPcfZCe8ByoFPIpn3/Q29pbCxira4u1G
-	+nXTV2NzLYe0ZtA6RC40rwTW3dSmaudnxcQDxtnuaO271CxV9V+JZIkwJoXJ0OQD/4DegXsTlJu
-	D8q309KxplxFezDWtLLy94okeImcHVzPi3byI3m78RCsGcmeDKkiLHhnX7E/XU7X5mvuzEH3+mI
-	R5epdhhIlDjCxEcpcaJ9J2aQ3SV3qqmSijAfEraoTbGxqq1cHg5Vgg9CkKn1XBcsXS3Ed4F2sVU
-	eQK3Xzac7Kz1+5Bm1jGFF5I6i3mZR83tcer4MiKjSMEw6oF9GjYykLZItTY64xKpgcNeDxv81AP
-	Xxf0/RnxLheE63ECFA6O8+amgIUHTv7T4ujpsuMykYdyj+uL5mpsTcqLqzRpOu2mc2ZIlUxGIXH
-	dDFm+VI/8MlmRqo4r0utgPcYrAd8H8dkA==
-X-Received: by 2002:a17:903:3904:b0:2c9:c517:d078 with SMTP id d9443c01a7336-2ce9f038f6amr81245505ad.36.1783947014974;
-        Mon, 13 Jul 2026 05:50:14 -0700 (PDT)
-Received: from localhost.localdomain ([101.251.7.10])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc9bdb76asm101815485ad.12.2026.07.13.05.50.12
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 13 Jul 2026 05:50:14 -0700 (PDT)
-From: Laxman Acharya Padhya <acharyalaxman8848@gmail.com>
-To: Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Cc: linux-bluetooth@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] Bluetooth: btbcm: bound local name logging
-Date: Mon, 13 Jul 2026 18:35:08 +0545
-Message-ID: <20260713125008.75358-1-acharyalaxman8848@gmail.com>
-X-Mailer: git-send-email 2.51.2
+	s=arc-20240116; t=1783947091; c=relaxed/simple;
+	bh=D2SYj6y5FQgQbIg6A4Uz697Ia73fbYgB9RCD+VGCV1E=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=DsEJPVEBsMG1iPcC79a+mK3APA9jv0GDkOZy6/08e3GrsOD2Ms8vqi+JXDtckSLdGq4G5Zjk+dY7gO7cysby4m2rm0SjqZtG5KqQ+GHMPv5DV+wH/0K1RE3iuZnSR1LKQaLF53Fu8ZtV2dbj0LmurjkAmi6iEMIJ1cLD6APsZH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T5gIEr+B; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9344B1F000E9;
+	Mon, 13 Jul 2026 12:51:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1783947089;
+	bh=+CipRC3ZSQELgKgClu4NAGAIumwzQdyB4hvz18+5tcI=;
+	h=Subject:To:Cc:From:Date;
+	b=T5gIEr+BeK4F5sS7ZlsAIxf9EeZxoAZTaz2r98Gp7x8FL2bJqjzI/dJn7b4k/zanX
+	 26hpZP13krkVPsm0Poh48pXs5FObDj9izICzm8iy07nl8twJUmJatBNUefeQfj7Wla
+	 p1J9taPTX710o3q2AS1Ilk+PgBjb0zhaq+9QbdS0=
+Subject: FAILED: patch "[PATCH] iio: pressure: mpl115: fix runtime PM leak on read error" failed to apply to 6.6-stable tree
+To: birenpandya@gmail.com,Stable@vger.kernel.org,jic23@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 13 Jul 2026 14:51:15 +0200
+Message-ID: <2026071315-browbeat-obnoxious-e1ef@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-273684-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-273682-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:marcel@holtmann.org,m:luiz.dentz@gmail.com,m:linux-bluetooth@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:luizdentz@gmail.com,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[holtmann.org,gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[acharyalaxman8848@gmail.com,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[acharyalaxman8848@gmail.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:birenpandya@gmail.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org,kernel.org];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	TO_DN_NONE(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	FROM_NO_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,gregkh:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: F278474B1B4
+X-Rspamd-Queue-Id: ED46774B207
 
-The HCI Read Local Name response contains a fixed 248-byte name. A NUL
-terminator is supplied only when the name is shorter than the maximum
-length.
 
-btbcm prints the returned name using %s, so a maximum-length controller
-name lets the log formatting read past the HCI response buffer.
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Use a precision of HCI_MAX_NAME_LENGTH when logging the name.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Fixes: 9bc63ca0904d ("Bluetooth: btbcm: Read the local name in setup stage")
-Fixes: 2fcdd562b91b ("Bluetooth: btbcm: Make btbcm_initialize() print local-name on re-init too")
-Cc: stable@vger.kernel.org
-Signed-off-by: Laxman Acharya Padhya <acharyalaxman8848@gmail.com>
----
- drivers/bluetooth/btbcm.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x fbe67ff37a6fd855a6c097f84f3738bd13d0a898
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026071315-browbeat-obnoxious-e1ef@gregkh' --subject-prefix 'PATCH 6.6.y' 'HEAD^..'
 
-diff --git a/drivers/bluetooth/btbcm.c b/drivers/bluetooth/btbcm.c
-index 463d59890bef..499e12169ca3 100644
---- a/drivers/bluetooth/btbcm.c
-+++ b/drivers/bluetooth/btbcm.c
-@@ -479,7 +479,8 @@ static int btbcm_print_local_name(struct hci_dev *hdev)
- 	if (IS_ERR(skb))
- 		return PTR_ERR(skb);
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From fbe67ff37a6fd855a6c097f84f3738bd13d0a898 Mon Sep 17 00:00:00 2001
+From: Biren Pandya <birenpandya@gmail.com>
+Date: Sun, 14 Jun 2026 12:45:48 +0530
+Subject: [PATCH] iio: pressure: mpl115: fix runtime PM leak on read error
+
+mpl115_read_raw() takes a runtime PM reference with pm_runtime_get_sync()
+before reading the processed pressure or raw temperature, but on the read
+error path it returns without calling pm_runtime_put_autosuspend(). Each
+failed read therefore leaks a runtime PM reference and prevents the device
+from autosuspending.
+
+Drop the reference before checking the return value so both the success
+and error paths are balanced.
+
+Fixes: 0c3a333524a3 ("iio: pressure: mpl115: Implementing low power mode by shutdown gpio")
+Signed-off-by: Biren Pandya <birenpandya@gmail.com>
+Assisted-by: Claude:claude-opus-4-8 coccinelle
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <jic23@kernel.org>
+
+diff --git a/drivers/iio/pressure/mpl115.c b/drivers/iio/pressure/mpl115.c
+index 830a5065c008..16e112b796ba 100644
+--- a/drivers/iio/pressure/mpl115.c
++++ b/drivers/iio/pressure/mpl115.c
+@@ -106,18 +106,18 @@ static int mpl115_read_raw(struct iio_dev *indio_dev,
+ 	case IIO_CHAN_INFO_PROCESSED:
+ 		pm_runtime_get_sync(data->dev);
+ 		ret = mpl115_comp_pressure(data, val, val2);
++		pm_runtime_put_autosuspend(data->dev);
+ 		if (ret < 0)
+ 			return ret;
+-		pm_runtime_put_autosuspend(data->dev);
  
--	bt_dev_info(hdev, "%s", (char *)(skb->data + 1));
-+	bt_dev_info(hdev, "%.*s", HCI_MAX_NAME_LENGTH,
-+		    (char *)(skb->data + 1));
- 	kfree_skb(skb);
+ 		return IIO_VAL_INT_PLUS_MICRO;
+ 	case IIO_CHAN_INFO_RAW:
+ 		pm_runtime_get_sync(data->dev);
+ 		/* temperature -5.35 C / LSB, 472 LSB is 25 C */
+ 		ret = mpl115_read_temp(data);
++		pm_runtime_put_autosuspend(data->dev);
+ 		if (ret < 0)
+ 			return ret;
+-		pm_runtime_put_autosuspend(data->dev);
+ 		*val = ret >> 6;
  
- 	return 0;
-@@ -766,7 +767,8 @@ int btbcm_setup_apple(struct hci_dev *hdev)
- 	/* Read Local Name */
- 	skb = btbcm_read_local_name(hdev);
- 	if (!IS_ERR(skb)) {
--		bt_dev_info(hdev, "%s", (char *)(skb->data + 1));
-+		bt_dev_info(hdev, "%.*s", HCI_MAX_NAME_LENGTH,
-+			    (char *)(skb->data + 1));
- 		kfree_skb(skb);
- 	}
- 
--- 
-2.51.2
+ 		return IIO_VAL_INT;
 
 
