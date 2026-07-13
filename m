@@ -1,75 +1,75 @@
-Return-Path: <stable+bounces-273550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273552-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id zn8zBfdiVGqnlQMAu9opvQ
-	(envelope-from <stable+bounces-273550-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 06:00:55 +0200
+	id RLopMOdiVGqklQMAu9opvQ
+	(envelope-from <stable+bounces-273552-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 06:00:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58FE17470BE
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 06:00:54 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C19647470B3
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 06:00:38 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=RKwOlIoJ;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=hHd07QBC;
 	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273550-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273550-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273552-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273552-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B636E300E707
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 04:00:31 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DD572300620D
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 04:00:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D2CA33DEF2;
-	Mon, 13 Jul 2026 04:00:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0AB9233937;
+	Mon, 13 Jul 2026 04:00:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8499554723
-	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 04:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D0CA54723
+	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 04:00:33 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783915230; cv=none; b=kC+S2ZAqi0vsBV88nNvEDDF4gl1+iHbv5b9+C1XglPWJPpkSHaTMNc2Rx9DtD5sBtQ/Szx7yQpUqT9c0r2ak+pujhHq2GUkIXJ63SZqoIVm3UFl8+HLPD+sbyTWm4EnIqSfyUT5wds4TvAfDtXzORttuK99vaeH7Rdy+KQO/dhE=
+	t=1783915234; cv=none; b=QiUA3Gmm2t5JF1afsQf5FJo0oJYlvqYT6qu2D9/tjFmBrU8A2PlSuGzJF0z3CC7xm2xsE1c2glDAUWnLXsUeWWY7PeQdWbuJIagu9F38DtnZo/Fq3JTFVKugD7AvakIBTRiXQDjuWwrwNetpc4n4bgYh+aapnjhnfVhyXz/wQFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783915230; c=relaxed/simple;
-	bh=ENk3L6GDM2H7eh2ULxsnaDkK1fnzHBc1gSf7Wir6W78=;
+	s=arc-20240116; t=1783915234; c=relaxed/simple;
+	bh=ov6kymvgGOEb3ieCdG21Td7c1duhet/rkuPpQGc66f8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i5AGJPTdTjDmuFYQAWtDupYhg32/+9Qn4CZdn/550k4HE65QTVTBK3mh/zlk8vcpCxU0IXcElEuJ0ateUZXeTOmlK/egNFewghoFYPBwSgkyiQqnSruRdy1ifOFOmRLqdccYxrgrsrqoR2kADZldhZZKAM3LMjpeZZDaXyym+e8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=RKwOlIoJ; arc=none smtp.client-ip=148.163.156.1
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66D3Bfi11283661;
-	Mon, 13 Jul 2026 04:00:12 GMT
+	 MIME-Version; b=Q3ztkqTfRd8qd+KrB03bXQhFzKY1Wy9leiYHgkf+7dijDYwDiWiJ7c6gKjylVfBB6ScrSgcX07fGeFJHuYwVxUJEBFwc0H/OZKVgHJ0VFC2mEkyko8zAVKeTM6qGgCMHt2IWpk/ygJTx9F1PvbOSR+aT9C1n+wUhqFU1So0Bms8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=hHd07QBC; arc=none smtp.client-ip=148.163.158.5
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66D3D1fA1306533;
+	Mon, 13 Jul 2026 04:00:16 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=WlHhu1Q+xzTF8bbFA
-	Gz93JWNPU7N/wflReqwQ79BzBI=; b=RKwOlIoJvDURCWvqpLllcY2g0KH9iaH0y
-	sD3EMiCECYDeQmVgWYSuE0CYmIikf6UPOhkAmCncpfQPe/WlDq4vWBQuwTklKPOl
-	tT90++bAIonllMOQ23g5oNRTzxi4eCjJtwSkrZMJv66SdiELtN62xFtETyKL65x/
-	2saso4GGmZ1jWqU67P4HLRqq+MklILqz1CefqbudcLUZGI60pdFZbs/MyUFrXZV8
-	mQ69/9+HHV4I/+ACXD0ldUgasJghBHK0/dIIXvjnKLP+Eq46B1/rVu8yPG7UL9qD
-	ZJ8ov5XOsyMg5zJlr1jvv+r6IpS+qWWO3I9sIkTGtQzFM4ObZ6f9w==
+	:mime-version:references:subject:to; s=pp1; bh=P4kPvtAAZt0I1oC0B
+	Vn1KCFE9SL8fiHGVd41usPeFz8=; b=hHd07QBC2ZuQve6HZRCDwgKr5NEPpG+xy
+	6MrIVs2+S4tMteVsfxPz0BYap9LJKzDmvSgwDfswef49oH8aip73B7idhbTG1OlA
+	dlzHhiwmgEaBuJE3+bw8pw6BjcJG+g//69cQnCH5p2nhY4krbxue16apn12zGcbO
+	0w5bilfn662GVV3GA3w3f7nQKAPcHslF2bI9Qsz/9tm6Svpx0nzNF1nkwvAzLADT
+	FV5XL6hCmKYBVPkdmzEh3diRRCZOgH0AagTBfpfDdhVHBM4GaQEvrNYuyZEs1CB5
+	5CdraRcY6vUIUNA0Kp6mFp590ksYKW8Grae7MC+h3K9WU1xAxU56A==
 Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fber86gn8-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fbegbecby-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 13 Jul 2026 04:00:11 +0000 (GMT)
+	Mon, 13 Jul 2026 04:00:15 +0000 (GMT)
 Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66D3ncAK014922;
-	Mon, 13 Jul 2026 04:00:10 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fc15jkx8u-1
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66D3noxF014996;
+	Mon, 13 Jul 2026 04:00:15 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fc15jkx9f-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 13 Jul 2026 04:00:10 +0000 (GMT)
+	Mon, 13 Jul 2026 04:00:15 +0000 (GMT)
 Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66D406Tw50463088
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66D40BOP47120708
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 13 Jul 2026 04:00:06 GMT
+	Mon, 13 Jul 2026 04:00:11 GMT
 Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0972820040;
-	Mon, 13 Jul 2026 04:00:06 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id F3BF02004B;
+	Mon, 13 Jul 2026 04:00:10 +0000 (GMT)
 Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BE2102004F;
-	Mon, 13 Jul 2026 04:00:02 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 651BD20040;
+	Mon, 13 Jul 2026 04:00:07 +0000 (GMT)
 Received: from li-4f5ba44c-27d4-11b2-a85c-a08f5b49eada.bl1-in.ibm.com (unknown [9.123.14.142])
 	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 13 Jul 2026 04:00:02 +0000 (GMT)
+	Mon, 13 Jul 2026 04:00:07 +0000 (GMT)
 From: Sourabh Jain <sourabhjain@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com, mpe@ellerman.id.au,
         ritesh.list@gmail.com
@@ -77,9 +77,9 @@ Cc: npiggin@gmail.com, chleroy@kernel.org, shivangu@linux.ibm.com,
         hbathini@linux.ibm.com, mahesh@linux.ibm.com, adityag@linux.ibm.com,
         venkat88@linux.ibm.com, stable@vger.kernel.org,
         Sourabh Jain <sourabhjain@linux.ibm.com>
-Subject: [PATCH v2 1/3] powerpc/pseries: Move H_WATCHDOG definitions to a common header
-Date: Mon, 13 Jul 2026 09:29:52 +0530
-Message-ID: <20260713035954.1559605-2-sourabhjain@linux.ibm.com>
+Subject: [PATCH v2 2/3] powerpc/pseries: Handle and log pseries-wdt registration failures
+Date: Mon, 13 Jul 2026 09:29:53 +0530
+Message-ID: <20260713035954.1559605-3-sourabhjain@linux.ibm.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260713035954.1559605-1-sourabhjain@linux.ibm.com>
 References: <20260713035954.1559605-1-sourabhjain@linux.ibm.com>
@@ -92,32 +92,32 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzEzMDAzNCBTYWx0ZWRfX5Bt7pO4bu+MQ
- rt4XSQVuHc/H6kenRW/hYcHkHgWMQTh8AdBc4ACakkXq+QTo8HnZF+2xjILuJIwGsFi+rxTURBz
- 5puz+qduLF+M0g8tfOFVMkml/M7hluduvAIiCe1JAUk2ngJ4kuVNXvz+gbXLdtqsqvKdhh1+H7g
- uiviri10VrpMz5JKpYzhxCfaoOfqjrX8i75EQeDDFurndcNB63dyN3dv/Xx1YovVVZFQTcmk110
- Wd1AUDU8AuDEbSa1pGcbRSA/Qvbh0W4pw2h+IinRQigi+WHRmHGMgwNUTNsBgGGU6V+iHX1uFoF
- elEiWKd5ea070u0QyuhyvuuHIsWI5uxttsMHteiO8DNfkdSpfJpvoLuXCDiQqzo+3m4xn9s9aL/
- ZVF9WSOtp84BAWvLpb3UvLoiz+tq18HfRr2qj3EtYv+dEG75BTxDtokHuT8vUDnmivvtTUdQFbg
- eZ+qTM3w9tEpzAUScuw==
-X-Proofpoint-ORIG-GUID: rL_-M4gxF_dLXV3US6xznv2T1ZMPwIs6
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzEzMDAzNCBTYWx0ZWRfXxeDlFbsh4CS9
- 5Y8Gxz6vUjVgLz1FSKDcF41x2tizN6Om3mHKW5ennVQBvWrC9ztkR+8gzxY3MSfC8i8EJLq9OLG
- j7e/xVs1cUzihYXxHoXqnykyNJTQqAE=
-X-Authority-Analysis: v=2.4 cv=TpzWQjXh c=1 sm=1 tr=0 ts=6a5462cb cx=c_pps
+X-Authority-Analysis: v=2.4 cv=fOcJG5ae c=1 sm=1 tr=0 ts=6a5462d0 cx=c_pps
  a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
  a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=uAbxVGIbfxUO_5tXvNgY:22 a=pGLkceISAAAA:8 a=VnNF1IyMAAAA:8
- a=GYsGH9NJgqgsJyUot8sA:9
-X-Proofpoint-GUID: Q5ai_6-jgueiHRD2Lj2_slL8c23QVex-
+ a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8 a=jFMkbxqpFWXI0KRqqm4A:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzEzMDAzNCBTYWx0ZWRfX1S2s6hsDUxMQ
+ pZUpicpm8I1sA2bnuLpzg4CtW03hxOma8CteWWKqJbwzsrCh2SRQHtOubYEUDgcMcDKfmEUDkeu
+ 4x9+LaDNELjKCKf1SGzD+5oROdwYfIVeH0rk/DguJJphGxp0wq+qoZm+B9zXu/oo/NRGZ89uup9
+ k8X4hMsoRs2butMuWNkSJVfLbExUAJq5+IDbIPe5Ck5Z0GOgcFHODbGsBblE3nFKCv/Q68I9LCG
+ xxTX2eczBVpoth/QkGbFcmVdAxQsQdr6Lqz6KiR4ktk/5cl9rhKVILocSaBAVonP3XVIwMh5IuH
+ He5l8N2VHZ/DqHjB+NJ0HjxBfASB93Ubcg+vWGx7h/vEdW4dA7rfzvKmI2KRiJ11MPUWkV6iOSf
+ IW+ra/nsiG6n3QWBA492js1VaubBNII7T7uY+WJQBPX/p8/YPOPPajgKA4Gq5Z2TFcIT6X0B9Kj
+ tEBvgx/QcxmIJkW7gNA==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzEzMDAzNCBTYWx0ZWRfX9XWALN9ccIXb
+ DnotcIhfKJAXTJC9bZTZ2KrKgYvJ35cj4l2jtX+Em3CG7ZzxrdN7EuMOMg9MgafRu0tVFGLL3RH
+ eBVb9J/tVXITWizI6Mu9o+kmgda8cSo=
+X-Proofpoint-GUID: REYBLvmg1ZOjqvANa6RD1H4Vr68YoCOg
+X-Proofpoint-ORIG-GUID: jTRR6nxhG9SVKKgVx7qX6EgYafHYcBz9
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-07-13_01,2026-07-10_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 priorityscore=1501 impostorscore=0 malwarescore=0 bulkscore=0
- lowpriorityscore=0 adultscore=0 spamscore=0 clxscore=1015 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607130034
+ spamscore=0 bulkscore=0 impostorscore=0 suspectscore=0 adultscore=0
+ priorityscore=1501 malwarescore=0 clxscore=1015 phishscore=0
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2607130034
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
@@ -125,12 +125,12 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-273550-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-273552-lists,stable=lfdr.de];
 	FREEMAIL_TO(0.00)[lists.ozlabs.org,linux.ibm.com,ellerman.id.au,gmail.com];
 	MIME_TRACE(0.00)[0:+];
 	RCPT_COUNT_TWELVE(0.00)[13];
@@ -147,164 +147,53 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[sourabhjain@linux.ibm.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.ibm.com:mid,linux.ibm.com:from_mime,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.ibm.com:mid,linux.ibm.com:from_mime,vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
 	RCVD_COUNT_SEVEN(0.00)[11]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 58FE17470BE
+X-Rspamd-Queue-Id: C19647470B3
 
-The H_WATCHDOG input and output definitions are currently local to the
-pseries watchdog driver. The next patch in this series also needs these
-definitions to issue H_WATCHDOG hypercalls outside the watchdog driver.
+The pseries watchdog initialization registers the pseries-wdt platform
+device using platform_device_register_simple(), but currently ignores
+its return value.
 
-Move the H_WATCHDOG definitions to a new common header,
-asm/papr-watchdog.h, so they can be shared without duplicating the
-PAPR watchdog definitions.
+Check the returned pointer for errors, log a descriptive error message
+when registration fails, and propagate the failure code to the caller.
+This avoids silently ignoring platform device registration failures.
 
-No functional changes.
-
-Suggested-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
 ---
- arch/powerpc/include/asm/papr-watchdog.h | 58 ++++++++++++++++++++++++
- drivers/watchdog/pseries-wdt.c           | 53 +---------------------
- 2 files changed, 59 insertions(+), 52 deletions(-)
- create mode 100644 arch/powerpc/include/asm/papr-watchdog.h
+ arch/powerpc/platforms/pseries/setup.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/papr-watchdog.h b/arch/powerpc/include/asm/papr-watchdog.h
-new file mode 100644
-index 000000000000..fb3a511aa861
---- /dev/null
-+++ b/arch/powerpc/include/asm/papr-watchdog.h
-@@ -0,0 +1,58 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
+diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
+index 1223dc961242..bbb2813f8ede 100644
+--- a/arch/powerpc/platforms/pseries/setup.c
++++ b/arch/powerpc/platforms/pseries/setup.c
+@@ -191,8 +191,18 @@ static void __init fwnmi_init(void)
+  */
+ static __init int pseries_wdt_init(void)
+ {
+-	if (firmware_has_feature(FW_FEATURE_WATCHDOG))
+-		platform_device_register_simple("pseries-wdt", 0, NULL, 0);
++	struct platform_device *pseries_wdt_dev;
 +
-+#ifndef _ASM_POWERPC_CRASHDUMP_PPC64_H
-+#define _ASM_POWERPC_CRASHDUMP_PPC64_H
++	if (!firmware_has_feature(FW_FEATURE_WATCHDOG))
++		return 0;
 +
-+/*
-+ * H_WATCHDOG Input
-+ *
-+ * R4: "flags":
-+ *
-+ *         Bits 48-55: "operation"
-+ */
-+#define PSERIES_WDTF_OP_START	0x100UL		/* start timer */
-+#define PSERIES_WDTF_OP_STOP	0x200UL		/* stop timer */
-+#define PSERIES_WDTF_OP_QUERY	0x300UL		/* query timer capabilities */
++	pseries_wdt_dev = platform_device_register_simple("pseries-wdt", 0, NULL, 0);
 +
-+/*
-+ *         Bits 56-63: "timeoutAction" (for "Start Watchdog" only)
-+ */
-+#define PSERIES_WDTF_ACTION_HARD_POWEROFF	0x1UL	/* poweroff */
-+#define PSERIES_WDTF_ACTION_HARD_RESTART	0x2UL	/* restart */
-+#define PSERIES_WDTF_ACTION_DUMP_RESTART	0x3UL	/* dump + restart */
++	if (IS_ERR(pseries_wdt_dev)) {
++		pr_err("Failed to register pseries-wdt platform device\n");
++		return PTR_ERR(pseries_wdt_dev);
++	}
 +
-+/*
-+ * H_WATCHDOG Output
-+ *
-+ * R3: Return code
-+ *
-+ *     H_SUCCESS    The operation completed.
-+ *
-+ *     H_BUSY	    The hypervisor is too busy; retry the operation.
-+ *
-+ *     H_PARAMETER  The given "flags" are somehow invalid.  Either the
-+ *                  "operation" or "timeoutAction" is invalid, or a
-+ *                  reserved bit is set.
-+ *
-+ *     H_P2         The given "watchdogNumber" is zero or exceeds the
-+ *                  supported maximum value.
-+ *
-+ *     H_P3         The given "timeoutInMs" is below the supported
-+ *                  minimum value.
-+ *
-+ *     H_NOOP       The given "watchdogNumber" is already stopped.
-+ *
-+ *     H_HARDWARE   The operation failed for ineffable reasons.
-+ *
-+ *     H_FUNCTION   The H_WATCHDOG hypercall is not supported by this
-+ *                  hypervisor.
-+ *
-+ * R4:
-+ *
-+ * - For the "Query Watchdog Capabilities" operation, a 64-bit
-+ *   structure:
-+ */
-+#define PSERIES_WDTQ_MIN_TIMEOUT(cap)	(((cap) >> 48) & 0xffff)
-+#define PSERIES_WDTQ_MAX_NUMBER(cap)	(((cap) >> 32) & 0xffff)
-+
-+#endif /* _ASM_POWERPC_CRASHDUMP_PPC64_H */
-diff --git a/drivers/watchdog/pseries-wdt.c b/drivers/watchdog/pseries-wdt.c
-index 48d67f7c972a..e97b943e1d3c 100644
---- a/drivers/watchdog/pseries-wdt.c
-+++ b/drivers/watchdog/pseries-wdt.c
-@@ -12,61 +12,10 @@
- #include <linux/platform_device.h>
- #include <linux/time64.h>
- #include <linux/watchdog.h>
-+#include <asm/papr-watchdog.h>
- 
- #define DRV_NAME "pseries-wdt"
- 
--/*
-- * H_WATCHDOG Input
-- *
-- * R4: "flags":
-- *
-- *         Bits 48-55: "operation"
-- */
--#define PSERIES_WDTF_OP_START	0x100UL		/* start timer */
--#define PSERIES_WDTF_OP_STOP	0x200UL		/* stop timer */
--#define PSERIES_WDTF_OP_QUERY	0x300UL		/* query timer capabilities */
--
--/*
-- *         Bits 56-63: "timeoutAction" (for "Start Watchdog" only)
-- */
--#define PSERIES_WDTF_ACTION_HARD_POWEROFF	0x1UL	/* poweroff */
--#define PSERIES_WDTF_ACTION_HARD_RESTART	0x2UL	/* restart */
--#define PSERIES_WDTF_ACTION_DUMP_RESTART	0x3UL	/* dump + restart */
--
--/*
-- * H_WATCHDOG Output
-- *
-- * R3: Return code
-- *
-- *     H_SUCCESS    The operation completed.
-- *
-- *     H_BUSY	    The hypervisor is too busy; retry the operation.
-- *
-- *     H_PARAMETER  The given "flags" are somehow invalid.  Either the
-- *                  "operation" or "timeoutAction" is invalid, or a
-- *                  reserved bit is set.
-- *
-- *     H_P2         The given "watchdogNumber" is zero or exceeds the
-- *                  supported maximum value.
-- *
-- *     H_P3         The given "timeoutInMs" is below the supported
-- *                  minimum value.
-- *
-- *     H_NOOP       The given "watchdogNumber" is already stopped.
-- *
-- *     H_HARDWARE   The operation failed for ineffable reasons.
-- *
-- *     H_FUNCTION   The H_WATCHDOG hypercall is not supported by this
-- *                  hypervisor.
-- *
-- * R4:
-- *
-- * - For the "Query Watchdog Capabilities" operation, a 64-bit
-- *   structure:
-- */
--#define PSERIES_WDTQ_MIN_TIMEOUT(cap)	(((cap) >> 48) & 0xffff)
--#define PSERIES_WDTQ_MAX_NUMBER(cap)	(((cap) >> 32) & 0xffff)
--
- static const unsigned long pseries_wdt_action[] = {
- 	[0] = PSERIES_WDTF_ACTION_HARD_POWEROFF,
- 	[1] = PSERIES_WDTF_ACTION_HARD_RESTART,
+ 	return 0;
+ }
+ machine_subsys_initcall(pseries, pseries_wdt_init);
 -- 
 2.52.0
 
