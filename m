@@ -1,198 +1,207 @@
-Return-Path: <stable+bounces-273646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273647-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id kmxOC9TIVGrQSwAAu9opvQ
-	(envelope-from <stable+bounces-273646-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 13:15:32 +0200
+	id m62ZGD3IVGq8SwAAu9opvQ
+	(envelope-from <stable+bounces-273647-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 13:13:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77C3174A388
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 13:15:31 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDB5874A340
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 13:13:00 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EjONWQge;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273646-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-273646-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=pYZD8Ipk;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273647-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-273647-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D3AE93036410
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 11:10:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E5B2D303BBAF
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 11:11:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1CBC383C67;
-	Mon, 13 Jul 2026 11:10:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D200385D66;
+	Mon, 13 Jul 2026 11:11:49 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E55A7381EB9
-	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 11:10:43 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783941046; cv=none; b=cjtDVxKpE8u5zwOI/aYoz00bKPxdGxHY7f8yRclyclhxVRPj6iongK+pFg4YNF736NUcxJPvETUfkKwcuu1wH2vi2r7ox3USY5FASsnrKGbjM4gFzDpDRLvX6w0IxiraOc4HaKkvMsL2b24kNIOsOiZ5Hdc8jb9FWoxG2eC82Y8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783941046; c=relaxed/simple;
-	bh=w7ElCMjLkYLkyB+bROUj878GRmag6+SaeE+dMid5A7M=;
-	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=k42okoIDvsekR2thwqPHQJxJwi9vBOWtOrKc0DHUH7UMeEPAKd+M6I6ZipSODKnDope67CdcSqGaYzXrpm+aoTnMlvBJH1FSqltXXaR1YbjF9mJqmQJghKmRuMewEP2XReTwrv2AicDmTRy/fLXbmgpmBMU5093bBi349581F5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EjONWQge; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF3711F00ADE
-	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 11:10:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783941043;
-	bh=euGOGq/jybJAzlTSdL+ChBakGwyhbx52kI/Gq1xLLZY=;
-	h=From:In-Reply-To:References:Date:Subject:To:Cc;
-	b=EjONWQgeikBTJ2FOQy+gyBDoYY8/FNnmBzWQa2d/vSEM1ESAzS+snz/iGdirgROU5
-	 AN7zz7TgnhyYoGr1+xSNfdbJaCicZrS5GoogZXiicAuANUQO8Gk9fvbpHyyPw/15gD
-	 U8ur8J6RTNJRminr6TpHK8X1ySKDbtH2cGunkFYUDUllIusnoef588jcMULzT27dl9
-	 dZnGaw50eIsQFeKI110CnzssLpqQKOb7rn8Zh3W6/mbnGmYUWyq1B56YnbKB2sbC7E
-	 e4Bi619ezSDIuGMutVWcpEihVEJD/j3U/6o4eLB7mrh7ZXEe6NUXMBLl3TmwUc6TKB
-	 IevHr5lfsnIXw==
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-39c908d6cb6so26166891fa.1
-        for <stable@vger.kernel.org>; Mon, 13 Jul 2026 04:10:43 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RrNl/wI1FzwJ2ji3IwxMhEgVsCW8cOUaA5k2z6uKzTXGzY+ExNuTTe1pRlQhlduarMPJKICwp8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyA/qcBzqNbNsmQ9Qn3cmkvQyHBruEG7aLVj2n16fxnWlSE6kxt
-	D7JRnQjYh0/0YwM4PZoX2jeSx+s5OHw0TDHa7P9IN8owA4xOZFNgFSpakzTgFR0hY2esrsAWczP
-	0a47/CI0YkHW0Halh1YyeCyE1BEF+oFK7YqXpVB6/EA==
-X-Received: by 2002:a2e:bcc7:0:b0:39c:8f36:8104 with SMTP id
- 38308e7fff4ca-39caa834fdfmr18180491fa.19.1783941042464; Mon, 13 Jul 2026
- 04:10:42 -0700 (PDT)
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 13 Jul 2026 04:10:41 -0700
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 13 Jul 2026 04:10:41 -0700
-From: Bartosz Golaszewski <brgl@kernel.org>
-In-Reply-To: <20260706-qce-fix-self-tests-v5-0-86f461ff1829@oss.qualcomm.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAD303845D0
+	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 11:11:46 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783941108; cv=pass; b=iZCSMx4MJ0fVFXZV/VWmIq592AYn3ko6occaZxDsVfstXGztrbHMQ+N5FQKg4MuXRfx0vXrIcRQ5QMDnm5zG4RdFhtFgszCFxZ8IZ/CjHPGzraCWYWbYEgP7gAsytCuT32Wb/E8kH83F0Vrob3NgaTD0wV0xGR1CM2EKJiDlN+4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783941108; c=relaxed/simple;
+	bh=reE3ZIiA8bR6q5vWMypk5waJeiVnZpjysUAdSkXjsNY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=G5HRnEpn0TlWDAH9sSzEl05SXtoROahdvqRPGlT5h8bPM4krQSpfub5LBOKt70eeWDdbgPIUp1ZXjJsHRpmPcmnaF3wTR0TEaD3rXU8cDz+3V71deVxuzzYhkqGg9ln/MeRX5A0jPNtAUB7x1SuBSZYk+ht0qrE/BI1rMhQbsLY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pYZD8Ipk; arc=pass smtp.client-ip=209.85.128.169
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-80cebd41372so30670017b3.3
+        for <stable@vger.kernel.org>; Mon, 13 Jul 2026 04:11:46 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783941106; cv=none;
+        d=google.com; s=arc-20260327;
+        b=FZMD7mM3ERkj1wcCTUSgnn5+1awDgeDk0Q2XgLMqWl9IZ9eISJCbY4qpE7iAMafrHN
+         S1zWRLj0989OCnK0acodx6wv5MS0v+ckm2cZTv6TpUCgKfhlKWP6YfwrZB09yfvm2n3F
+         Z/jovLPZ41ucnuDwCPRmF1S3N77qIJV8LD0s6i7Lpl1jXZ4L/LMleWEpYblYwRA/rK/Q
+         W/9NoHNpjBfLRpfBd9tzFJ24CBMMXuz/F8HYBxYme20aDGoroirEPX5rPpn8JXkYINUs
+         ysNC4T7sUPJt5PjIVTCnDr3P8qI37Day0bmEYTVImwGZi8TyiQmCmty+Hv3LGfHO30cv
+         Xpnw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=4NrvnEAuHaG+ihZe9SM0nCZuvqTV6eJwGbpjBAxoUPw=;
+        fh=n6OrC7SLXE+VUOWxt+nqi4w6nq9oWIHSoRhRzQJ5Pwc=;
+        b=YJBW+bazOh2ANPmcB1m+zp5kj63T3P2uj5IfJAvbYGhzmbS8y+5qcIN9gwd23a36Lm
+         IsrEWqeNkqLqa0UnOkObKSSomtHeonYXFqVske0IVHwBJzwbcdudxEgIkRZfJ4MGic6t
+         Esb8NXbiWwOfyHQrG5MfoVt2Age7OXny7mLunvP3TV8AHRoBaUoa3pXwfzYf5IH2qpLN
+         QJmTmkv7e0QMDuj8yrzqnBUpNNIqyADfnLWWZYXqwTaseK8jDSuLsAPoP1rgk+voboId
+         e7A8UkaJGs3Yxipy/RnCxJFcF6uHyaXkEopfUSm+0zoXbEFk8+fOg7orZsmVzzn3jIJA
+         cuhQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783941106; x=1784545906; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=4NrvnEAuHaG+ihZe9SM0nCZuvqTV6eJwGbpjBAxoUPw=;
+        b=pYZD8IpkIku5UfEhVJQng/Q1qEXvvtb2iK8nw37pweh8Ltf+ZZxc68k8hxEYUYF0pi
+         RizImnTmB1kQGK9fBAOyttojIzSK/d7qyqFG6GXvoCxTXBpyYWSSsE9B0X7yDqs2VyUP
+         dGaJ9lkLm4jMCgH7Kd/qiffWZOkkchzMS9n3z4MFUpFkV/qfqjh6pyBJvOyap6fK2ERF
+         fnqmVy9Tej7SftkJYfpqwtkDPD+kSK/gf6LELkEY1tylKpFT5p6kMZboOdwqOmnUkPRQ
+         r7OV40yvkusjO4nLOiTHz7vOS9NV5Fu8w458bYOSy3Vl4kTd05FbA34Zq8sLam9flMkz
+         JcUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783941106; x=1784545906;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=4NrvnEAuHaG+ihZe9SM0nCZuvqTV6eJwGbpjBAxoUPw=;
+        b=I0raJauX5ALDzAUdslo/ffZ8khz8IaGq4CRMQr4jcy5ptXejDxRRfizAJqbKgE9lni
+         XZH9194MrjsFkFP/lmGcILjYHX6zam/UcBELCy7Hco/nxCYjEQsFlS3Yw0NeNBpUdePZ
+         hsRKDFdLyfCAb/NW+F8SJ7ZM9zyjowt+0XN7YA3yXsCS9IWUsDlQAkO4YiFWqxBxt5M6
+         uw1QsTvs2DMrcguNya82UvqhdxgV3levka6YbKkGICKSPF85MQzuk6YX+cokkyH6+Ior
+         siNjEbdMVn+mYsbhEjv7uoQSoz+A+3zdD74u6XtwrD9YjY6NrWRsaZNSLNg7OLorKpAX
+         quSQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rp7FRXfb10g6Sv0+xwi9T1D6zBOfaoGoZW+d07OXN8t/xFuiVISfLCEam8w5zN4Brgx4O65U6k=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx7Mu6m+Dbsz/l0umlCB/x7dOg+70Wrp59hIQZ6yOeVTCfRHWVl
+	BNmKzv7lncw6l++eyYkD+YUpnBAQxWRIfOLujjSPkhxae3b7flBqL6cUFJSmHmohdJ7tRtlH1dr
+	1DH54Ik4IBpcK7ylDuEe1HdSLcMi97cm1ZPpsGzpJaUCo
+X-Gm-Gg: AfdE7clSHy5SnxKBcsxZwPNP4Ec02a780P3gkVu6HlIHvJFTPNRW4M4HxT2V46+jNSR
+	oe95945uXzMbeAZEL0mFS69eyqpjI/NC+256HSDnV00NYSHHmoxsYL2rR9tf4fUnM2Rf6TiMAil
+	Ps/J9hgyDNTBNJ70Kr1ciGkscC1sywOK5pVjF90+XrYwJF1hXG+rcxjdjIjcParMZfWjyThmg73
+	o9e2VFNmGtDgFc7xybZuxYdW4i7pKRhbpmBLVMqdbAEC8LZ0QLQ1Bf9+DgDhPcXfuHwKI1aF6+2
+	T/t9QUZH2ANf8xuC+lY2Ug/7iNU7AB9nGJr+vcZZ
+X-Received: by 2002:a05:690c:620b:b0:80c:85c6:898e with SMTP id
+ 00721157ae682-81e901ac70amr62178667b3.61.1783941105949; Mon, 13 Jul 2026
+ 04:11:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260706-qce-fix-self-tests-v5-0-86f461ff1829@oss.qualcomm.com>
-Date: Mon, 13 Jul 2026 04:10:41 -0700
-X-Gmail-Original-Message-ID: <CAMRc=McqBwG8qSYvgsmvCpJvtYDy24yhW1FMRuUpdu-dqWcYwQ@mail.gmail.com>
-X-Gm-Features: AVVi8Ce019xBHlwdOviPJt1Xf4Hj7OQrNGjXwrTA9vUYlWrVB9i66XRbDv2XoLc
-Message-ID: <CAMRc=McqBwG8qSYvgsmvCpJvtYDy24yhW1FMRuUpdu-dqWcYwQ@mail.gmail.com>
-Subject: Re: [PATCH v5 0/7] crypto: qce - Fix crypto self-test failures
-To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Cc: linux-crypto@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, brgl@kernel.org, stable@vger.kernel.org, 
-	Thara Gopinath <thara.gopinath@gmail.com>, Herbert Xu <herbert@gondor.apana.org.au>, 
-	"David S. Miller" <davem@davemloft.net>, Stanimir Varbanov <svarbanov@mm-sol.com>, 
-	Eneas U de Queiroz <cotequeiroz@gmail.com>, Kuldeep Singh <kuldeep.singh@oss.qualcomm.com>, 
-	Eric Biggers <ebiggers@kernel.org>
+References: <20260713063513.215781-1-shung-hsi.yu@suse.com>
+In-Reply-To: <20260713063513.215781-1-shung-hsi.yu@suse.com>
+From: sun jian <sun.jian.kdev@gmail.com>
+Date: Mon, 13 Jul 2026 19:11:34 +0800
+X-Gm-Features: AUfX_mwt6y9dWHTw1akM5JZlx25bW7epDzcN33A1C37dw0beEB9vA4ospeyhCn8
+Message-ID: <CABFUUZG5++CQ+CoVaVgXGEPn0CwAz5JciBwk+xcRQh01frC3GQ@mail.gmail.com>
+Subject: Re: [PATCH bpf 1/1] selftests/bpf: Enable BLK_DEV_NBD for raw_tp_writable_reject_nbd_invalid
+To: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Cc: bpf@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
+	Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
+	Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
+	Emil Tsalapatis <emil@etsalapatis.com>, Shuah Khan <shuah@kernel.org>, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Matt Mullins <mmullins@mmlx.us>, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[13];
+	TAGGED_FROM(0.00)[bounces-273647-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:shung-hsi.yu@suse.com,m:bpf@vger.kernel.org,m:ast@kernel.org,m:daniel@iogearbox.net,m:andrii@kernel.org,m:eddyz87@gmail.com,m:memxor@gmail.com,m:martin.lau@linux.dev,m:song@kernel.org,m:yonghong.song@linux.dev,m:jolsa@kernel.org,m:emil@etsalapatis.com,m:shuah@kernel.org,m:linux-kselftest@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:mmullins@mmlx.us,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-273646-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:bartosz.golaszewski@oss.qualcomm.com,m:linux-crypto@vger.kernel.org,m:linux-arm-msm@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:brgl@kernel.org,m:stable@vger.kernel.org,m:thara.gopinath@gmail.com,m:herbert@gondor.apana.org.au,m:davem@davemloft.net,m:svarbanov@mm-sol.com,m:cotequeiroz@gmail.com,m:kuldeep.singh@oss.qualcomm.com,m:ebiggers@kernel.org,m:tharagopinath@gmail.com,s:lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER(0.00)[sunjiankdev@gmail.com,stable@vger.kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[brgl@kernel.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,gmail.com,gondor.apana.org.au,davemloft.net,mm-sol.com,oss.qualcomm.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email,msgid.link:url];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,iogearbox.net,gmail.com,linux.dev,etsalapatis.com,mmlx.us];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[brgl@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sunjiankdev@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,mail.gmail.com:mid,suse.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 77C3174A388
+X-Rspamd-Queue-Id: CDB5874A340
 
-On Mon, 6 Jul 2026 15:53:51 +0200, Bartosz Golaszewski
-<bartosz.golaszewski@oss.qualcomm.com> said:
-> This extends the initial submission from Kuldeep.
+On Mon, Jul 13, 2026 at 2:35=E2=80=AFPM Shung-Hsi Yu <shung-hsi.yu@suse.com=
+> wrote:
 >
-> The QCE hardware crypto engine has several limitations that cause it to
-> produce incorrect results or stall on certain inputs. This series fixes
-> several bugs and adds workaround allowing the deiver to pass crypto
-> self-tests.
 >
-> The failures addressed are:
+> The raw_tp_writable_reject_nbd_invalid test relies on availability of the
+> nbd_send_request tracepoint, which is only present if the selftest kernel=
+ is
+> built with CONFIG_BLK_DEV_NBD=3Dy and the kernel built from current BPF s=
+elftests
+> config lacks.
 >
-> - HMAC self-test failures for empty messages
-> - AES-XTS returning success on zero-length input (should be -EINVAL)
-> - AES-CTR: partial final block causes the engine to stall, output IV
->   derivation was incorrect
-> - AES-XTS with key1 == key2 is not supported by the CE
-> - AES-CCM: partial final block and fragmented payload both stall the
->   engine
+> Without it, the bpf_raw_tracepoint_open() call always returns with -2, le=
+aving
+> raw_tp_writable_reject_nbd_invalid test always passing without exercising=
+ the
+> checks bpf_probe_register().
 >
-> All fixes were tested on an SM8650 QRD board with
-> CONFIG_CRYPTO_SELFTESTS=y and CONFIG_CRYPTO_SELFTESTS_FULL=y.
->
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+> Cc: <stable@vger.kernel.org> # 5.2.0
+> Link: https://lore.kernel.org/bpf/alRtilWhKw4zzMkI@u94a
+> Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
 > ---
-> Changes in v5:
-> - Dropped patch 1/8 that's already queued
-> - Use the pre-allocated fallback ahash for HMAC transforms (Herbert)
-> - Link to v4: https://patch.msgid.link/20260622-qce-fix-self-tests-v4-0-4f82ffa716c6@oss.qualcomm.com
->
-> Changes in v4:
-> - Remove remaining ECB and DES3 bits
-> - Pick up tags
-> - Link to v3: https://patch.msgid.link/20260617-qce-fix-self-tests-v3-0-ecc2b4dedcfd@oss.qualcomm.com
->
-> Changes in v3:
-> - Remove even more algorithms and dead code in patch 1/8
-> - Link to v2: https://patch.msgid.link/20260615-qce-fix-self-tests-v2-0-dc911f1aad42@oss.qualcomm.com
->
-> Changes in v2:
-> - Add fixes for the full suite of crypto self-tests
-> - Add Fixes and Cc tags
-> - Link to v1: https://patch.msgid.link/20260610-qce_selftest_fix-v1-0-1b0504783a46@oss.qualcomm.com/
->
+> Not sure if fixes tag is the right thing to use here, so use the cc
+> stable tag instead to get this config change propogated to other stable
+> branches to make stable BPF CI's job easier.
 > ---
-> Bartosz Golaszewski (5):
->       crypto: qce - Fix HMAC self-test failures for empty messages
->       crypto: qce - Reject empty messages for AES-XTS
->       crypto: qce - Use a fallback for AES-CTR with a partial final block
->       crypto: qce - Use a fallback for CCM with a partial final block
->       crypto: qce - Use fallback for CCM with a fragmented payload
+>  tools/testing/selftests/bpf/config | 1 +
+>  1 file changed, 1 insertion(+)
 >
-> Kuldeep Singh (2):
->       crypto: qce - Fix CTR-AES for partial block requests
->       crypto: qce - Fix xts-aes-qce for weak keys
->
->  drivers/crypto/qce/aead.c     | 32 +++++++++++++++++++++++++++++-
->  drivers/crypto/qce/cipher.h   |  1 +
->  drivers/crypto/qce/sha.c      | 23 ++++++++++++++++++++++
->  drivers/crypto/qce/skcipher.c | 46 ++++++++++++++++++++++++++++++++++---------
->  4 files changed, 92 insertions(+), 10 deletions(-)
-> ---
-> base-commit: 86855fca1d5d84fcfd6b93dfe8bff4eab6029ad3
-> change-id: 20260610-qce-fix-self-tests-492ffd2ef955
->
-> Best regards,
+> diff --git a/tools/testing/selftests/bpf/config b/tools/testing/selftests=
+/bpf/config
+> index adb25146e88c..e1797bd87904 100644
+> --- a/tools/testing/selftests/bpf/config
+> +++ b/tools/testing/selftests/bpf/config
+> @@ -1,4 +1,5 @@
+>  CONFIG_BLK_DEV_LOOP=3Dy
+> +CONFIG_BLK_DEV_NBD=3Dy
+>  CONFIG_BOOTPARAM_HARDLOCKUP_PANIC=3Dy
+>  CONFIG_BOOTPARAM_SOFTLOCKUP_PANIC=3D1
+>  CONFIG_BPF=3Dy
 > --
-> Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+> 2.54.0
 >
->
 
-Hi Herbert,
+I tested this on bpf/master at 7cbd0c4cebe4. With the patch
+applied, CONFIG_BLK_DEV_NBD=3Dy and the nbd_send_request
+tracepoint was present. raw_tp_writable_reject_nbd_invalid
+passed, and strace showed BPF_RAW_TRACEPOINT_OPEN failing
+with EINVAL rather than ENOENT.
 
-Gentle ping, if this looks good to you now, could you please queue it for v7.2?
-
-Thanks in advance,
-Bartosz
+Tested-by: Sun Jian <sun.jian.kdev@gmail.com>
 
