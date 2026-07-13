@@ -1,68 +1,102 @@
-Return-Path: <stable+bounces-273575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273577-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id /ueIC3GEVGpumwMAu9opvQ
-	(envelope-from <stable+bounces-273575-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 08:23:45 +0200
+	id 2s8SCpSHVGrUmwMAu9opvQ
+	(envelope-from <stable+bounces-273577-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 08:37:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78B89747822
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 08:23:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73C45747927
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 08:37:07 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=grrlz.net header.s=stigmate header.b=UUznlGlc;
-	dmarc=pass (policy=reject) header.from=grrlz.net;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273575-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-273575-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=suse.com header.s=google header.b=e6V3KcTt;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273577-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273577-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0ADEF300A102
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 06:23:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 24DA9302D0BA
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 06:35:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9FB93812F4;
-	Mon, 13 Jul 2026 06:23:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFD3537AA97;
+	Mon, 13 Jul 2026 06:35:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from confino.investici.org (confino.investici.org [93.190.126.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej2-f0.google.com (mail-ej2-f0.google.com [74.125.228.128])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4191235FF6C;
-	Mon, 13 Jul 2026 06:23:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1267F381E8B
+	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 06:35:30 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783923818; cv=none; b=Yvmhdmk3ahyyiDe9Na3jhK5+jb/BSsXkQVxXtVYyQ1f9ig10TryYM0iGJjCY1nYsSCC7DAtlvsurMXflTclj8gREzKFS0+yL37qm973T4DwL37HEL/o4WKH6aK1SYq6ncMytXZIYTXi0EfRmJ1S6j+V6akSv8rRuyUZ6Mwd4/XM=
+	t=1783924533; cv=none; b=iGcsBWM8V9gg0WqTMOFm9jZvAT25bMFkGAxB1OC1pLEv5ezHT9Q2lxZyf9HVteLbPQQ/hxhO9OjNUUG6/pET6MvcYhJUh9CJunwDlsqatnT+802iZT4vDue91Px6218A5sspokFtE3D1YzUXhs7Tke2rXxT2XR8W2foCasBtHZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783923818; c=relaxed/simple;
-	bh=RLb0pm+9yPK1nQ0g33//9x7B4x58nm2+I1LtLRLEdhE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XBnzNIT2h0zS1ltOTUlV1jSM3NNAvS1ymRssWModmre7kYi3BdlmJu6r9uK31s8uSggDWUg7730xbq8n/r9K8Bi2gBUSVGcz4NzDMvFPgw2AciIhRuEoH8RVaT2skerzehcdaGPsrEQOkug3FFFqqKwClAQRYCZUq8HpEt3A/sc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=grrlz.net; spf=pass smtp.mailfrom=grrlz.net; dkim=pass (1024-bit key) header.d=grrlz.net header.i=@grrlz.net header.b=UUznlGlc; arc=none smtp.client-ip=93.190.126.19
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=grrlz.net;
-	s=stigmate; t=1783923814;
-	bh=o26kPNK2GcAWLXC8xegg5XWjRtzp3asNmAkcVON04hg=;
-	h=From:To:Cc:Subject:Date:From;
-	b=UUznlGlcXLc16vzKnk7EOsKqUA+a66A9oatxT5gwzhOJmJ2q1mw+vSGE9FuoaReDf
-	 2sN+Bc1eid7GVdjTzCBDtFi3XXUxzAe6+pcuMjMZellKs+iVcWCnJi3bPEOPKdc/tz
-	 Rxmvq2C49Sro4xtNAa7tDL0U1906E/FU7zjyUfuE=
-Received: from mx1.investici.org (unknown [127.0.0.1])
-	by confino.investici.org (Postfix) with ESMTP id 4gzC7B16fqz10wc;
-	Mon, 13 Jul 2026 06:23:34 +0000 (UTC)
-Received: by mx1.investici.org (Postfix) id 4gzC791f5wz10wb;
-	Mon, 13 Jul 2026 06:23:33 +0000 (UTC)
-From: Bradley Morgan <include@grrlz.net>
-To: akpm@linux-foundation.org
-Cc: brauner@kernel.org,
-	peterz@infradead.org,
-	oleg@redhat.com,
-	tglx@kernel.org,
-	npiggin@gmail.com,
-	ebiederm@xmission.com,
-	pasha.tatashin@soleen.com,
-	kees@kernel.org,
-	stable@vger.kernel.org,
+	s=arc-20240116; t=1783924533; c=relaxed/simple;
+	bh=BEORnXxM6ZYhnHtAqG/+pG3egOgrrwmAumn/RU0cg3c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RaSzhaRlYL9xJuKfmlnRvT1hXAAE3dBYXRz9Jb88ysg1CNwGSITZwfwt0/FrQjIGtMRRe2/xp3BmEIdGWOqWc3WPgERLA3FcLn1mBbb20VTm3ZC00ENQK9L6tbE20oZJGAmlddWB9aR8U3rADVrmviQDQoKA501peRfEL0FxP+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=e6V3KcTt; arc=none smtp.client-ip=74.125.228.128
+Received: by mail-ej2-f0.google.com with SMTP id a640c23a62f3a-c15e57b7128so180127266b.0
+        for <stable@vger.kernel.org>; Sun, 12 Jul 2026 23:35:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1783924529; x=1784529329; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=h7vE7Szm3XNqCxlRDi2ZCo5mo4ITxmNYPLIe9N/Lh5s=;
+        b=e6V3KcTtU1nidHXUy0FCya7HuXMYKPCqDSrA6ShZ5fHZe6NelMvR9aHnFV4Nh1hUC9
+         HNIyOK6D+1Qf7JeQfL0FF1WoqhMo5sOEw7+kOgjsNyyrj2ziBVujWWBPK1UpgQ2sNQn5
+         tGolzTOesew44igiCUX0Sd1SzXDKiCAZ3trRlUCV7YS+/pQMIzKNptJDzqDVvn4Fcngg
+         vBj+vwEPzIyXm4ms+x98Ntw6iOaLQfB24t/isu0CUHd+YKcuSHelJX3Oqq8GTZxEGvxz
+         WMKuIPW+TDNBSHQUvD2fcobuamztg0OcvTHN+jyjXwY7J2CxbIuqxPs3Fial7aeqsIjS
+         3Y9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783924529; x=1784529329;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=h7vE7Szm3XNqCxlRDi2ZCo5mo4ITxmNYPLIe9N/Lh5s=;
+        b=fq9U8JS8+2vS2oVMqqUh46v7e828Ulq0T8Rs8hviM+YAU7J0FDgCWwMSVLdjFUk3sh
+         4mpTHnUy5/dgUMRxh2tZOohhWPb/023iE9u+6MNQ0wU23+Zc6BhtgCSN3FbOmexR2kna
+         oVEF+7MBG0JDyWAKcyPa+VKJkSjmkmf/MghhVxfgoZ7jWMfmTB7vy1fIf6hK6g5TefnD
+         K0l8B+awEFGt0OT8oNUMvnP3rLwBWDTQyd+ExySQYC/U/vu5vOXtkzJK8MEfWJe44F2f
+         fYHJ9xQQmPKq8MGOEYKCpeojThdAxiqI7b9NU40nP2HcLotwbtegZV0vyC/GVfXr4htk
+         bbKA==
+X-Forwarded-Encrypted: i=1; AHgh+RqZnVLkNscxzQaCXAd9EceI/o6LNIf3GESsBBEzFEVaNiDmlanH9gIg11+Dqm/Tq//Hs9MMX/E=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxa2U2JFJ3OTBaWSK9OTw9OXgRVXl5mBDFAGQMfxLrwmTcZDUIB
+	T2nXABAGUQig6C31xzcXBfQ7om1zJETPyPTJEPpt/P7GHI+DWhRsjQgzZBBCLe+uI2U=
+X-Gm-Gg: AfdE7cmGqdpnhp3RltMry7pkp7Y6kL58imjq9KtPrC4uuZWCH+dkeL7PqkBnwScBell
+	LBK1yDuFYRIg6G+7ftg9Ya7zYNzGUZfqFyI3XR3zCQ66S6JCqAQNiLoZ8i+OOe74mvC0f6hhK6s
+	4TEVUehHHiqNA+2Z/JJnlQwAWk9Q1WqPznLBZqk8EwGYq4qVICKhnxQrA7Eb5Q3Q1OSXe/PKfhC
+	pYFdm5trV6jjOSHSLlOjHAZkeW5rD0+DmOkNitDahiuAzuV04hcbPQWHmAOKmh0cu4WC1lw9iEq
+	3VvoM8od9uQShkkUwtNoc+H7qkKDxFOJGDULSCBWuWQ/hyPBz31kFcBq+rdG/BlyKrWTAPMaXE1
+	DgfI8U0MHPczuEZEtvifER164sVrgm3CxZckBPGdsTXCiRDX6oPZYkWshxdeqwnMrTZwOdxREYL
+	7QRQ4SZykvTEqtMbibTNFsQsAHshHJJskUppuS
+X-Received: by 2002:a17:907:e1d3:20b0:c15:c81c:d6fc with SMTP id a640c23a62f3a-c161e9416a9mr199248766b.9.1783924529478;
+        Sun, 12 Jul 2026 23:35:29 -0700 (PDT)
+Received: from localhost (27-51-9-144.adsl.fetnet.net. [27.51.9.144])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-4a42ae81f1esm5074320b6e.11.2026.07.12.23.35.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 12 Jul 2026 23:35:27 -0700 (PDT)
+From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+To: bpf@vger.kernel.org
+Cc: Shung-Hsi Yu <shung-hsi.yu@suse.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Shuah Khan <shuah@kernel.org>,
+	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	include@grrlz.net,
-	syzbot+8fdf0d8e10bdde1c2e88@syzkaller.appspotmail.com
-Subject: [PATCH] reboot: use make_task_dead for the halt and power off fallback
-Date: Mon, 13 Jul 2026 06:23:32 +0000
-Message-ID: <20260713062332.21131-1-include@grrlz.net>
-X-Mailer: git-send-email 2.53.0
+	sun jian <sun.jian.kdev@gmail.com>,
+	Matt Mullins <mmullins@mmlx.us>,
+	stable@vger.kernel.org
+Subject: [PATCH bpf 1/1] selftests/bpf: Enable BLK_DEV_NBD for raw_tp_writable_reject_nbd_invalid
+Date: Mon, 13 Jul 2026 14:35:11 +0800
+Message-ID: <20260713063513.215781-1-shung-hsi.yu@suse.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -73,111 +107,74 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[grrlz.net,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[grrlz.net:s=stigmate];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[kernel.org,infradead.org,redhat.com,gmail.com,xmission.com,soleen.com,vger.kernel.org,grrlz.net,syzkaller.appspotmail.com];
+	TAGGED_FROM(0.00)[bounces-273577-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:bpf@vger.kernel.org,m:shung-hsi.yu@suse.com,m:ast@kernel.org,m:daniel@iogearbox.net,m:andrii@kernel.org,m:eddyz87@gmail.com,m:memxor@gmail.com,m:martin.lau@linux.dev,m:song@kernel.org,m:yonghong.song@linux.dev,m:jolsa@kernel.org,m:emil@etsalapatis.com,m:shuah@kernel.org,m:linux-kselftest@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:sun.jian.kdev@gmail.com,m:mmullins@mmlx.us,m:stable@vger.kernel.org,m:sunjiankdev@gmail.com,s:lists@lfdr.de];
+	FREEMAIL_CC(0.00)[suse.com,kernel.org,iogearbox.net,gmail.com,linux.dev,etsalapatis.com,vger.kernel.org,mmlx.us];
+	RCPT_COUNT_TWELVE(0.00)[18];
 	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-273575-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER(0.00)[include@grrlz.net,stable@vger.kernel.org];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:akpm@linux-foundation.org,m:brauner@kernel.org,m:peterz@infradead.org,m:oleg@redhat.com,m:tglx@kernel.org,m:npiggin@gmail.com,m:ebiederm@xmission.com,m:pasha.tatashin@soleen.com,m:kees@kernel.org,m:stable@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:include@grrlz.net,m:syzbot+8fdf0d8e10bdde1c2e88@syzkaller.appspotmail.com,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[shung-hsi.yu@suse.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[include@grrlz.net,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[shung-hsi.yu@suse.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[grrlz.net:+];
+	DKIM_TRACE(0.00)[suse.com:+];
 	RCVD_COUNT_FIVE(0.00)[5];
-	ALIAS_RESOLVED(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[stable,8fdf0d8e10bdde1c2e88];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,grrlz.net:from_mime,grrlz.net:email,grrlz.net:mid,grrlz.net:dkim,syzkaller.appspot.com:url]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ALIAS_RESOLVED(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:from_mime,suse.com:email,suse.com:mid,suse.com:dkim,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 78B89747822
+X-Rspamd-Queue-Id: 73C45747927
 
-The reboot syscall calls do_exit(0) after kernel_halt() or
-kernel_power_off().  Those are expected to stop the machine and not
-return.  When they do return, the shutdown path has already disabled
-interrupts and torn down state, and do_exit() then hits its
-WARN_ON(irqs_disabled()).
 
-That is an error path, not a clean exit.  Use make_task_dead() instead
-of do_exit(0): it is built for this, fixes up the irqs disabled and
-preempt state, and bounds repeated failure via oops_limit.  This
-matches the make_task_dead pattern that exit.c already uses for the
-oops path.
+The raw_tp_writable_reject_nbd_invalid test relies on availability of the
+nbd_send_request tracepoint, which is only present if the selftest kernel is
+built with CONFIG_BLK_DEV_NBD=y and the kernel built from current BPF selftests
+config lacks.
 
-Splat from syzbot:
+Without it, the bpf_raw_tracepoint_open() call always returns with -2, leaving
+raw_tp_writable_reject_nbd_invalid test always passing without exercising the
+checks bpf_probe_register().
 
-  ACPI: PM: Preparing to enter system sleep state S5
-  kvm: exiting hardware virtualization
-  reboot: Power down
-  ------------[ cut here ]------------
-  irqs_disabled()
-  WARNING: kernel/exit.c:930 at do_exit+0x1cf7/0x2ae0 kernel/exit.c:930, CPU#0: init/6193
-  Tainted: [L]=SOFTLOCKUP
-  Call Trace:
-   <TASK>
-   __do_sys_reboot+0x36e/0x400 kernel/reboot.c:784
-   do_syscall_64+0x115/0x840 arch/x86/entry/syscall_64.c:94
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-   </TASK>
-
-Fixes: 001c28e57187 ("exit: Detect and fix irq disabled state in oops")
-Reported-by: syzbot+8fdf0d8e10bdde1c2e88@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=8fdf0d8e10bdde1c2e88
-Cc: stable@vger.kernel.org
-Signed-off-by: Bradley Morgan <include@grrlz.net>
+Cc: <stable@vger.kernel.org> # 5.2.0
+Link: https://lore.kernel.org/bpf/alRtilWhKw4zzMkI@u94a
+Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
 ---
- kernel/reboot.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+Not sure if fixes tag is the right thing to use here, so use the cc
+stable tag instead to get this config change propogated to other stable
+branches to make stable BPF CI's job easier.
+---
+ tools/testing/selftests/bpf/config | 1 +
+ 1 file changed, 1 insertion(+)
 
-Changes since v1: v1 enabled IRQs and kept do_exit, fixing the
-symptom.  Eric Biederman pointed out the real fix is to treat the
-returned halt or power off as the error path it is, and call
-make_task_dead instead.
-
-diff --git a/kernel/reboot.c b/kernel/reboot.c
-index bed6967bfa96..c10ac6a0200d 100644
---- a/kernel/reboot.c
-+++ b/kernel/reboot.c
-@@ -14,6 +14,7 @@
- #include <linux/kmod.h>
- #include <linux/kmsg_dump.h>
- #include <linux/reboot.h>
-+#include <linux/sched/task.h>
- #include <linux/suspend.h>
- #include <linux/syscalls.h>
- #include <linux/syscore_ops.h>
-@@ -777,11 +778,13 @@ SYSCALL_DEFINE4(reboot, int, magic1, int, magic2, unsigned int, cmd,
- 
- 	case LINUX_REBOOT_CMD_HALT:
- 		kernel_halt();
--		do_exit(0);
-+		/* machine_halt() was expected to not return. */
-+		make_task_dead(SIGKILL);
- 
- 	case LINUX_REBOOT_CMD_POWER_OFF:
- 		kernel_power_off();
--		do_exit(0);
-+		/* machine_power_off() was expected to not return. */
-+		make_task_dead(SIGKILL);
- 		break;
- 
- 	case LINUX_REBOOT_CMD_RESTART2:
+diff --git a/tools/testing/selftests/bpf/config b/tools/testing/selftests/bpf/config
+index adb25146e88c..e1797bd87904 100644
+--- a/tools/testing/selftests/bpf/config
++++ b/tools/testing/selftests/bpf/config
+@@ -1,4 +1,5 @@
+ CONFIG_BLK_DEV_LOOP=y
++CONFIG_BLK_DEV_NBD=y
+ CONFIG_BOOTPARAM_HARDLOCKUP_PANIC=y
+ CONFIG_BOOTPARAM_SOFTLOCKUP_PANIC=1
+ CONFIG_BPF=y
 -- 
-2.53.0
+2.54.0
 
 
