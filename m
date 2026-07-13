@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-273737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273741-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id HBlYLebnVGqpgwAAu9opvQ
-	(envelope-from <stable+bounces-273737-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:28:06 +0200
+	id fRqoMRTpVGoGhAAAu9opvQ
+	(envelope-from <stable+bounces-273741-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:33:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C0F374B92E
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:28:06 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2141874BA19
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:33:08 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=NkpgceKR;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273737-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-273737-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=xb0qNOMN;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273741-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-273741-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 499D730B1450
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 13:20:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5922131CAC4B
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 13:25:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F252E423A83;
-	Mon, 13 Jul 2026 13:19:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E184428828;
+	Mon, 13 Jul 2026 13:22:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76B07421F1B
-	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 13:19:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9479542F6FC
+	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 13:22:48 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783948795; cv=none; b=fGDw2GwS2k8G5YJyjbXpsM3Jw6BEHIZbVfg/fdTWSfWv61yLKBcVniPdkWmarmYY9flTEw3hB7bnIPhYWdeKQC0E7pcRorjOdvJNXuWRAJ9P3l6N03h/fMl98FiHCaVSnXVtbpCfsqSdF6MRDcqYBImznvpv3mheCJwA9ubn4YI=
+	t=1783948970; cv=none; b=kqyPZeLr0e/D+PgrMG5QesCvJo/oLp8lHglmJZ3e3eCbQiB0PS2K7TPH9Gh64Mf9lJpviashMNbsfFE1KLu/76fOtEwt7XPW1ukbSme7TbmIBWF4+pTFxEKdDlAfdGcO2NOaVxBi6n6LKLTrnPNIIxwCQHhUwwyvLdQQTHDOu/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783948795; c=relaxed/simple;
-	bh=tEHGawiwtwU2HYbT7+vVWl4KfdWZRSfpZ6h1R9BjYLc=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=jwgnBST57b7x0QEjgF9aZuuVfzdrVM2DuUwC56f+nuyJJNPQwXFLQ8piaeA3XXbs0QKX1nfGuX0kCj95I4MhTW1PyE9ArEGqMhEcfeNXowm818PRFdMbJOyldon5kHOG2kwDdzFJz9sMUYMJd1iMyojUTbtxRJA1uoBQLuLD6Oo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NkpgceKR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D32011F000E9;
-	Mon, 13 Jul 2026 13:19:53 +0000 (UTC)
+	s=arc-20240116; t=1783948970; c=relaxed/simple;
+	bh=ag9GABG/KCK2k1CiVkiRT6W4nQPOM+dhNq/pMnY2aTE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=rokQo/Jg0jIxXDWz3aOhn/zHwU8j9sgQ2XZFE36Qwk6EHIvulh98eoCmOolBf9k0rZu7EWPAOnw1A+E49uUb4+TpTGh0cE6xszVsXWmWxOYyaQblbHJ5+Eh6O6G24i+mjJe/UTN2Ci+KkVltkUh2Yy2TaFUyv84+53Lv17I4JfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xb0qNOMN; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0F5F1F000E9;
+	Mon, 13 Jul 2026 13:22:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783948794;
-	bh=0V+a7bhgD6X+9z92YAjEhUMTn6g2vY5Kp9u4gjLA8f4=;
+	s=korg; t=1783948968;
+	bh=xCgY36FxlqBph4rcw5fv3jVo4BU8EvFzKULc3t6r044=;
 	h=Subject:To:Cc:From:Date;
-	b=NkpgceKRBoMDHdVgBKZWwO0vxykB7P/N8NFmsqc8ez09IlP8+nOpuGZmsATZNgxWB
-	 scD2+723GNDX2ZPmUElEeLq1YqNXQNz0iSp8zcrFR/0feYmIT98RIdl3zaOwsInshC
-	 ZnREpEqqdIf9sEgGa+w/TAkHUcnYOPTmSvbK93/Y=
-Subject: FAILED: patch "[PATCH] binder: cache secctx size before release zeroes it" failed to apply to 6.18-stable tree
-To: clm@meta.com,aliceryhl@google.com,cmllamas@google.com,gregkh@linuxfoundation.org,stable@kernel.org
+	b=xb0qNOMNa6r4VGHo0GNWi4lnSm5ufyDxs4v4PRv7gRg57727u5uwFun/Alhjo7z2w
+	 TRfIN4twum0Ho+97t8tSxQZ50I7lEDVxRgUlonrFn7TQyyYiXpGH3wRS+9jomVAJXi
+	 oiEMEaeAtP2AhDgHTLAaTlUzxUWTwl8OD+ZfvMo0=
+Subject: FAILED: patch "[PATCH] rust_binder: fix BINDER_GET_EXTENDED_ERROR" failed to apply to 6.18-stable tree
+To: aliceryhl@google.com,cmllamas@google.com,gregkh@linuxfoundation.org,stable@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 13 Jul 2026 15:11:07 +0200
-Message-ID: <2026071307-outdated-speed-452e@gregkh>
+Date: Mon, 13 Jul 2026 15:12:31 +0200
+Message-ID: <2026071331-obstruct-sprig-4ee1@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,18 +62,18 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-273737-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-273741-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:aliceryhl@google.com,m:cmllamas@google.com,m:gregkh@linuxfoundation.org,m:stable@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:clm@meta.com,m:aliceryhl@google.com,m:cmllamas@google.com,m:gregkh@linuxfoundation.org,m:stable@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
@@ -87,11 +87,11 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:from_mime,linuxfoundation.org:email,linuxfoundation.org:dkim,gregkh:mid]
+	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:from_mime,linuxfoundation.org:email,linuxfoundation.org:dkim,gregkh:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5C0F374B92E
+X-Rspamd-Queue-Id: 2141874BA19
 
 
 The patch below does not apply to the 6.18-stable tree.
@@ -103,10 +103,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
 git checkout FETCH_HEAD
-git cherry-pick -x b34826e55aad3520ec813f1f367c11b24b29dc9f
+git cherry-pick -x 77bfebf110773f5a0d6b5ff8110896adb2c9c335
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026071307-outdated-speed-452e@gregkh' --subject-prefix 'PATCH 6.18.y' 'HEAD^..'
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026071331-obstruct-sprig-4ee1@gregkh' --subject-prefix 'PATCH 6.18.y' 'HEAD^..'
 
 Possible dependencies:
 
@@ -118,100 +118,278 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From b34826e55aad3520ec813f1f367c11b24b29dc9f Mon Sep 17 00:00:00 2001
-From: Chris Mason <clm@meta.com>
-Date: Wed, 3 Jun 2026 10:44:54 -0700
-Subject: [PATCH] binder: cache secctx size before release zeroes it
+From 77bfebf110773f5a0d6b5ff8110896adb2c9c335 Mon Sep 17 00:00:00 2001
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Fri, 5 Jun 2026 11:13:50 +0000
+Subject: [PATCH] rust_binder: fix BINDER_GET_EXTENDED_ERROR
 
-binder_transaction() bounds the scatter-gather buffer area with
-sg_buf_end_offset and subtracts the aligned LSM context size because
-the secctx is written at the tail of that area.  The subtraction reads
-lsmctx.len, but that field has already been cleared by the time the
-line runs:
+This code currently copies the ExtendedError struct to the stack,
+modifies the copy, and then doesn't modify the original. Thus, fix it.
 
-    security_secid_to_secctx(secid, &lsmctx)   /* lsmctx.len set */
-    lsmctx_aligned_size = ALIGN(lsmctx.len, sizeof(u64))
-    extra_buffers_size += lsmctx_aligned_size
-    ...
-    security_release_secctx(&lsmctx)            /* memset zeroes len */
-    ...
-    sg_buf_end_offset = sg_buf_offset + extra_buffers_size
-                        - ALIGN(lsmctx.len, sizeof(u64)) /* ALIGN(0,8) */
+Furthermore, errors when replying must be delivered directly to the
+remote thread, so update deliver_reply() to take an extended error
+argument.
 
-security_release_secctx() does memset(cp, 0, sizeof(*cp)), so lsmctx.len
-reads back as 0 and the subtraction contributes nothing, leaving
-sg_buf_end_offset too large by the aligned secctx size on every
-transaction to a txn_security_ctx node.
-
-Each BINDER_TYPE_PTR object then derives buf_left = sg_buf_end_offset -
-sg_buf_offset as the sole upper bound on its copy, so the inflated end
-offset lets the copy run into the bytes that already hold the secctx.
-
-The aligned size must therefore be cached before release rather than
-re-read from the now-cleared field.  Fix by caching it in
-lsmctx_aligned_size at function scope when it is first computed and
-subtracting lsmctx_aligned_size instead of re-reading lsmctx.len after
-release.  Reuse the same value for the earlier buf_offset computation.
-
-Fixes: 6fba89813ccf ("lsm: ensure the correct LSM context releaser")
 Cc: stable <stable@kernel.org>
-Assisted-by: kres:claude-opus-4-8
-Signed-off-by: Chris Mason <clm@meta.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 Acked-by: Carlos Llamas <cmllamas@google.com>
-Link: https://patch.msgid.link/20260603174506.1957278-1-clm@meta.com
+Link: https://patch.msgid.link/20260605-set-extended-error-v3-1-d60b69a75f97@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-diff --git a/drivers/android/binder.c b/drivers/android/binder.c
-index ec0ab4f28530..c48c22264266 100644
---- a/drivers/android/binder.c
-+++ b/drivers/android/binder.c
-@@ -3080,6 +3080,7 @@ static void binder_transaction(struct binder_proc *proc,
- 	int t_debug_id = atomic_inc_return(&binder_last_id);
- 	ktime_t t_start_time = ktime_get();
- 	struct lsm_context lsmctx = { };
-+	size_t lsmctx_aligned_size = 0;
- 	LIST_HEAD(sgc_head);
- 	LIST_HEAD(pf_head);
- 	const void __user *user_buffer = (const void __user *)
-@@ -3346,7 +3347,6 @@ static void binder_transaction(struct binder_proc *proc,
+diff --git a/drivers/android/binder/error.rs b/drivers/android/binder/error.rs
+index 45d85d4c2815..1296072c35d9 100644
+--- a/drivers/android/binder/error.rs
++++ b/drivers/android/binder/error.rs
+@@ -73,20 +73,17 @@ impl fmt::Debug for BinderError {
+     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+         match self.reply {
+             BR_FAILED_REPLY => match self.source.as_ref() {
+-                Some(source) => f
+-                    .debug_struct("BR_FAILED_REPLY")
+-                    .field("source", source)
+-                    .finish(),
++                Some(source) => source.fmt(f),
+                 None => f.pad("BR_FAILED_REPLY"),
+             },
+             BR_DEAD_REPLY => f.pad("BR_DEAD_REPLY"),
+             BR_FROZEN_REPLY => f.pad("BR_FROZEN_REPLY"),
+             BR_TRANSACTION_PENDING_FROZEN => f.pad("BR_TRANSACTION_PENDING_FROZEN"),
+             BR_TRANSACTION_COMPLETE => f.pad("BR_TRANSACTION_COMPLETE"),
+-            _ => f
+-                .debug_struct("BinderError")
+-                .field("reply", &self.reply)
+-                .finish(),
++            _ => match self.source.as_ref() {
++                Some(source) => source.fmt(f),
++                None => self.reply.fmt(f),
++            },
+         }
+     }
+ }
+diff --git a/drivers/android/binder/thread.rs b/drivers/android/binder/thread.rs
+index 97d5f31e8fe3..3b8520813941 100644
+--- a/drivers/android/binder/thread.rs
++++ b/drivers/android/binder/thread.rs
+@@ -495,9 +495,16 @@ pub(crate) fn debug_print(self: &Arc<Self>, m: &SeqFile, print_all: bool) -> Res
+         Ok(())
+     }
  
- 	if (target_node && target_node->txn_security_ctx) {
- 		u32 secid;
--		size_t added_size;
++    pub(crate) fn clear_extended_error(&self, debug_id: usize) {
++        self.inner.lock().extended_error = ExtendedError::new(debug_id as u32, BR_OK, 0);
++    }
++
+     pub(crate) fn get_extended_error(&self, data: UserSlice) -> Result {
+         let mut writer = data.writer();
+-        let ee = self.inner.lock().extended_error;
++        let mut inner = self.inner.lock();
++        let ee = inner.extended_error;
++        inner.extended_error = ExtendedError::new(0, BR_OK, 0);
++        drop(inner);
+         writer.write(&ee)?;
+         Ok(())
+     }
+@@ -1109,7 +1116,10 @@ fn unwind_transaction_stack(self: &Arc<Self>) {
+             inner.pop_transaction_to_reply(thread.as_ref())
+         } {
+             let reply = Err(BR_DEAD_REPLY);
+-            if !transaction.from.deliver_single_reply(reply, &transaction) {
++            if !transaction
++                .from
++                .deliver_single_reply(reply, &transaction, None)
++            {
+                 break;
+             }
  
- 		security_cred_getsecid(proc->cred, &secid);
- 		ret = security_secid_to_secctx(secid, &lsmctx);
-@@ -3358,9 +3358,9 @@ static void binder_transaction(struct binder_proc *proc,
- 			return_error_line = __LINE__;
- 			goto err_get_secctx_failed;
- 		}
--		added_size = ALIGN(lsmctx.len, sizeof(u64));
--		extra_buffers_size += added_size;
--		if (extra_buffers_size < added_size) {
-+		lsmctx_aligned_size = ALIGN(lsmctx.len, sizeof(u64));
-+		extra_buffers_size += lsmctx_aligned_size;
-+		if (extra_buffers_size < lsmctx_aligned_size) {
- 			binder_txn_error("%d:%d integer overflow of extra_buffers_size\n",
- 				thread->pid, proc->pid);
- 			return_error = BR_FAILED_REPLY;
-@@ -3397,7 +3397,7 @@ static void binder_transaction(struct binder_proc *proc,
- 		size_t buf_offset = ALIGN(tr->data_size, sizeof(void *)) +
- 				    ALIGN(tr->offsets_size, sizeof(void *)) +
- 				    ALIGN(extra_buffers_size, sizeof(void *)) -
--				    ALIGN(lsmctx.len, sizeof(u64));
-+				    lsmctx_aligned_size;
+@@ -1121,8 +1131,9 @@ pub(crate) fn deliver_reply(
+         &self,
+         reply: Result<DLArc<Transaction>, u32>,
+         transaction: &DArc<Transaction>,
++        extended_error: Option<ExtendedError>,
+     ) {
+-        if self.deliver_single_reply(reply, transaction) {
++        if self.deliver_single_reply(reply, transaction, extended_error) {
+             transaction.from.unwind_transaction_stack();
+         }
+     }
+@@ -1136,6 +1147,7 @@ fn deliver_single_reply(
+         &self,
+         reply: Result<DLArc<Transaction>, u32>,
+         transaction: &DArc<Transaction>,
++        extended_error: Option<ExtendedError>,
+     ) -> bool {
+         if let Ok(transaction) = &reply {
+             crate::trace::trace_transaction(true, transaction, Some(&self.task));
+@@ -1152,6 +1164,12 @@ fn deliver_single_reply(
+                 return true;
+             }
  
- 		t->security_ctx = t->buffer->user_data + buf_offset;
- 		err = binder_alloc_copy_to_buffer(&target_proc->alloc,
-@@ -3452,7 +3452,7 @@ static void binder_transaction(struct binder_proc *proc,
- 	off_end_offset = off_start_offset + tr->offsets_size;
- 	sg_buf_offset = ALIGN(off_end_offset, sizeof(void *));
- 	sg_buf_end_offset = sg_buf_offset + extra_buffers_size -
--		ALIGN(lsmctx.len, sizeof(u64));
-+		lsmctx_aligned_size;
- 	off_min = 0;
- 	for (buffer_offset = off_start_offset; buffer_offset < off_end_offset;
- 	     buffer_offset += sizeof(binder_size_t)) {
++            if let Some(ee) = extended_error {
++                if inner.extended_error.command == BR_OK {
++                    inner.extended_error = ee;
++                }
++            }
++
+             match reply {
+                 Ok(work) => {
+                     inner.push_work(work);
+@@ -1222,6 +1240,9 @@ fn read_transaction_info(
+         info.buffers_size = td.buffers_size as usize;
+         // SAFETY: Above `read` call initializes all bytes, so this union read is ok.
+         info.target_handle = unsafe { td.transaction_data.target.handle };
++
++        info.debug_id = super::next_debug_id();
++
+         Ok(())
+     }
+ 
+@@ -1230,6 +1251,8 @@ fn transaction(self: &Arc<Self>, cmd: u32, reader: &mut UserSliceReader) -> Resu
+         let mut info = TransactionInfo::zeroed();
+         self.read_transaction_info(cmd, reader, &mut info)?;
+ 
++        self.clear_extended_error(info.debug_id);
++
+         let ret = if info.is_reply {
+             self.reply_inner(&mut info)
+         } else if info.is_oneway() {
+@@ -1239,23 +1262,21 @@ fn transaction(self: &Arc<Self>, cmd: u32, reader: &mut UserSliceReader) -> Resu
+         };
+ 
+         if let Err(err) = ret {
++            self.push_return_work(err.reply);
+             if err.reply != BR_TRANSACTION_COMPLETE {
+                 info.reply = err.reply;
+-            }
++                if let Some(source) = &err.source {
++                    info.errno = source.to_errno();
+ 
+-            self.push_return_work(err.reply);
+-            if let Some(source) = &err.source {
+-                info.errno = source.to_errno();
+-                info.reply = err.reply;
+-
+-                {
+-                    let mut ee = self.inner.lock().extended_error;
+-                    ee.command = err.reply;
+-                    ee.param = source.to_errno();
++                    {
++                        let mut inner = self.inner.lock();
++                        inner.extended_error =
++                            ExtendedError::new(info.debug_id as u32, err.reply, source.to_errno());
++                    }
+                 }
+ 
+                 pr_warn!(
+-                    "{}:{} transaction to {} failed: {source:?}",
++                    "{}:{} transaction to {} failed: {err:?}",
+                     info.from_pid,
+                     info.from_tid,
+                     info.to_pid
+@@ -1320,18 +1341,24 @@ fn reply_inner(self: &Arc<Self>, info: &mut TransactionInfo) -> BinderResult {
+             let allow_fds = orig.flags & TF_ACCEPT_FDS != 0;
+             let reply = Transaction::new_reply(self, process, info, allow_fds)?;
+             self.inner.lock().push_work(completion);
+-            orig.from.deliver_reply(Ok(reply), &orig);
++            orig.from.deliver_reply(Ok(reply), &orig, None);
+             Ok(())
+         })()
+         .map_err(|mut err| {
+             // At this point we only return `BR_TRANSACTION_COMPLETE` to the caller, and we must let
+             // the sender know that the transaction has completed (with an error in this case).
++
+             pr_warn!(
+-                "Failure {:?} during reply - delivering BR_FAILED_REPLY to sender.",
+-                err
++                "{}:{} reply to {} failed: {err:?}",
++                info.from_pid,
++                info.from_tid,
++                info.to_pid
+             );
+-            let reply = Err(BR_FAILED_REPLY);
+-            orig.from.deliver_reply(reply, &orig);
++
++            let param = err.source.as_ref().map_or(0, |e| e.to_errno());
++            let ee = ExtendedError::new(info.debug_id as u32, err.reply, param);
++            orig.from
++                .deliver_reply(Err(BR_FAILED_REPLY), &orig, Some(ee));
+             err.reply = BR_TRANSACTION_COMPLETE;
+             err
+         });
+diff --git a/drivers/android/binder/transaction.rs b/drivers/android/binder/transaction.rs
+index 1d9b66920a21..0e5d07b7e6f0 100644
+--- a/drivers/android/binder/transaction.rs
++++ b/drivers/android/binder/transaction.rs
+@@ -42,6 +42,7 @@ pub(crate) struct TransactionInfo {
+     pub(crate) reply: u32,
+     pub(crate) oneway_spam_suspect: bool,
+     pub(crate) is_reply: bool,
++    pub(crate) debug_id: usize,
+ }
+ 
+ impl TransactionInfo {
+@@ -93,7 +94,6 @@ pub(crate) fn new(
+         from: &Arc<Thread>,
+         info: &mut TransactionInfo,
+     ) -> BinderResult<DLArc<Self>> {
+-        let debug_id = super::next_debug_id();
+         let allow_fds = node_ref.node.flags & FLAT_BINDER_FLAG_ACCEPTS_FDS != 0;
+         let txn_security_ctx = node_ref.node.flags & FLAT_BINDER_FLAG_TXN_SECURITY_CTX != 0;
+         let mut txn_security_ctx_off = if txn_security_ctx { Some(0) } else { None };
+@@ -101,7 +101,7 @@ pub(crate) fn new(
+         let mut alloc = match from.copy_transaction_data(
+             to.clone(),
+             info,
+-            debug_id,
++            info.debug_id,
+             allow_fds,
+             txn_security_ctx_off.as_mut(),
+         ) {
+@@ -128,7 +128,7 @@ pub(crate) fn new(
+         let data_address = alloc.ptr;
+ 
+         Ok(DTRWrap::arc_pin_init(pin_init!(Transaction {
+-            debug_id,
++            debug_id: info.debug_id,
+             target_node: Some(target_node),
+             from_parent,
+             sender_euid: Kuid::current_euid(),
+@@ -152,9 +152,8 @@ pub(crate) fn new_reply(
+         info: &mut TransactionInfo,
+         allow_fds: bool,
+     ) -> BinderResult<DLArc<Self>> {
+-        let debug_id = super::next_debug_id();
+         let mut alloc =
+-            match from.copy_transaction_data(to.clone(), info, debug_id, allow_fds, None) {
++            match from.copy_transaction_data(to.clone(), info, info.debug_id, allow_fds, None) {
+                 Ok(alloc) => alloc,
+                 Err(err) => {
+                     pr_warn!("Failure in copy_transaction_data: {:?}", err);
+@@ -165,7 +164,7 @@ pub(crate) fn new_reply(
+             alloc.set_info_clear_on_drop();
+         }
+         Ok(DTRWrap::arc_pin_init(pin_init!(Transaction {
+-            debug_id,
++            debug_id: info.debug_id,
+             target_node: None,
+             from_parent: None,
+             sender_euid: Kuid::current_euid(),
+@@ -394,7 +393,7 @@ fn do_work(
+         let send_failed_reply = ScopeGuard::new(|| {
+             if self.target_node.is_some() && self.flags & TF_ONE_WAY == 0 {
+                 let reply = Err(BR_FAILED_REPLY);
+-                self.from.deliver_reply(reply, &self);
++                self.from.deliver_reply(reply, &self, None);
+             }
+             self.drop_outstanding_txn();
+         });
+@@ -478,7 +477,7 @@ fn cancel(self: DArc<Self>) {
+         // If this is not a reply or oneway transaction, then send a dead reply.
+         if self.target_node.is_some() && self.flags & TF_ONE_WAY == 0 {
+             let reply = Err(BR_DEAD_REPLY);
+-            self.from.deliver_reply(reply, &self);
++            self.from.deliver_reply(reply, &self, None);
+         }
+ 
+         self.drop_outstanding_txn();
 
 
