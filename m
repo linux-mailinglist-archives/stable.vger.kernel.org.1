@@ -1,214 +1,275 @@
-Return-Path: <stable+bounces-273776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273811-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id gJfOCRfsVGohhQAAu9opvQ
-	(envelope-from <stable+bounces-273776-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:45:59 +0200
+	id DQGlDsbsVGpUhQAAu9opvQ
+	(envelope-from <stable+bounces-273811-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:48:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEDCC74BD3A
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:45:58 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9590F74BDE2
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:48:53 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="S nxlMej";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=KVZ4xmzq;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273776-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273776-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=none;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=yJSwfEXL;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273811-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273811-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DF9DE30705D3
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 13:38:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E620E304700C
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 13:46:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5BBB4314A5;
-	Mon, 13 Jul 2026 13:38:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A99343078E;
+	Mon, 13 Jul 2026 13:46:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from flow-b4-smtp.messagingengine.com (flow-b4-smtp.messagingengine.com [202.12.124.139])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CF6D4314A4;
-	Mon, 13 Jul 2026 13:38:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C714A42EEDE
+	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 13:46:18 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783949887; cv=none; b=qy4Aes3VK1WIX07lFa/4hW6uw9FMB4rKPPa8R0WVdptDM4VgltpE6ctyPU8ryEWUpiDb9SkcZeOFEMI4CZL5u1mI8ayOtXCwy00x84ub3oHORR/sKgabF7K5tHe7igcfQgz3YAxIoSFLOXbK1K8WI8R+Ti2NMF4X3bDIUMzKsGA=
+	t=1783950380; cv=none; b=VPT+p17cDfZm4JgZpcDdYNRjdpREq08s9K7jZUct8G3TNt834PzabK1wgsYogVQ12dXyJCvNhmfhNmHScjsVb8aKQVhoBhssur0FoZFy8/mmyd92VFVLf2FQX/nFme3mn+fi4xAoVRrgq4syNFPxGSXN/eQmIQNK3EwJqEFjFwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783949887; c=relaxed/simple;
-	bh=zbfTA2VJjWQfugM0y3HKDpUMdj5msjiIH2TZdK1WrjI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ie9frmCWcQgmKY75xMnwUdEl5Bnw2U8nDZm3dhjjwcG38eZ30rJCb2RcPtQFLWlETUuc5Yb91osb9KbIClsApeCTRZduGYaz+Frg8OQOPvNhFWEjcFtymCgfEVrPL0d12QLlYI+wAPTr4MoSS5wegwB+Q5i4XRLKPVZHAjHwHbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name; spf=pass smtp.mailfrom=shutemov.name; dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b=SnxlMej2; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=KVZ4xmzq; arc=none smtp.client-ip=202.12.124.139
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailflow.stl.internal (Postfix) with ESMTP id D5F5813000C4;
-	Mon, 13 Jul 2026 09:38:04 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Mon, 13 Jul 2026 09:38:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
-	:from:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1783949884; x=
-	1783957084; bh=112Yvu8MDmd9GxnWgYRo8OOQeNBIsEEGqTciWSFqlIs=; b=S
-	nxlMej2TTJEJdZQwyjy/QgeFh9+k1ounA0jahS6aksRxAnCMkuwOn6chkBxI6WzQ
-	5BhoUBci/xVzsuMMCCMnLzhikutgaZV+tMBfhRDgmXzFwJ5mwRpzwpgl90jAAUNT
-	aR1vH3HbN9gmbrmatrNiWHd51a43tLLdrMDqgD67/VkwA6Xz0lyP+1a68jDJgec5
-	vi6ViS1aNO8WV2sXi5I9xE+8/EyIf1RNE0aV4oEeTFzRHSCerA09CJeuejAcmBcW
-	XM7JoZt+b4jcYsA1nWCsvHdk/OxrbpHMZBqoj3kiu4y8WRHJCRrY0AdGm134J5o1
-	YxeqRTtozOZ6I2k25i9HQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm2; t=1783949884; x=1783957084; bh=1
-	12Yvu8MDmd9GxnWgYRo8OOQeNBIsEEGqTciWSFqlIs=; b=KVZ4xmzq8D226ZBsQ
-	4asGgbRqztjojoG9K+Ptvr2ESLfysvQV6Kx7pCaZL2e3+M96I6rCsX3b11vBTtQO
-	hdCtdaqg0RUj5uHD+CTmT2h9fwNDA8kYSz16RjdlxKUtvERTpIl0Bpp6APD/Jt4x
-	Mxf2+aKek2okYGMXzlkKQUmwJa+8cjJYsWyZWYKbnNKEX6VU7nKoUfdk4iplvCdP
-	jqoGS4vl0PIhd+1HvOstCbN17CwMm6TnIhk6ET+IcXz2pgBIqLXE0zH91BfEOWWN
-	y5m0cJ6PEsNNoaTdCoFAZIDJO+t0m+n0mdCGlXoVkTMsyDJ3Nh7yodX1RUwczJqj
-	rI6Nw==
-X-ME-Sender: <xms:POpUasU3WfQ8J9utIdv7h02WxmF7UFzfBh0w1S95h3nAhlEIcLcjzA>
-    <xme:POpUatwT7Ic0t1evl1iauSQcPG93VK1WXlJInLwd96rx-H_ndpa3zNtIbOWx8WRhk
-    fCzem0pMURg-amNBIrmTyy8lfSZUPyj1LE4a3K8-I2kvvy9jOwDLMTN>
-X-ME-Received: <xmr:POpUak6V4wf0DWDLByovSxtF0ZeaZqI1OguWuXp1GK23K1XnONjDDjqbqXZ_Vg>
-X-ME-Proxy-Cause: dmFkZTEW6S1SvXSlZs4OOnc4VahxjW69aaGDPVJd2EBjsmGIohL3aDaqbSu+8YkVanPFjR
-    tgfQDCCpmX969bn/U9UO+n3QFXz0q323naPF4jWiHMmRntzGcQhp3Vx2KAhMBucKBrMoVj
-    X5CwYvbDFJlTUkQTRAgKvI65LvTaLY14waW97LrBigSnkpE1VVt9mBrvLTUpmoEfS6d4eG
-    NKQd5S3QFjNq4Gy3l1vDGekWs+36+zmLytr+byevjqc4klRvGFU3gjURfoh9Tfq4eVG+a+
-    Cgqgl3n6aDHjUo+YCrNUfd8of0qgvvgGYEP4z2EH+IhHTWSStBT7XqcjOnyMOC1DkjQYMX
-    vH8zgGWR2ixyB/rEh8253RHKpjrS43SzwQtSH3LB3AZh6xNQY5gfxF4nBCzMk/8YR8HSoQ
-    fwW7D76ifB2ndnjsAGRCAZ6Xb26kxKS/6hOm30U77TwPv2NTc95nQQU2lzlkuW2z3qpd+I
-    JK3yXRpiyOtPFeS7RQ8K9pipl7bQDoiWczd/zPW2ao1maFXFG6lOiFrufnMqsxrBrskx95
-    CLTU1eJgfYwkBemJ6Sotnv+ZipxtQr5KLX9BjGTWdCKjL/ZLyGzzsGfObNSLwQhoByAGRq
-    82aKz2LNjMrhaG687s+bRC42Voc4QEgx3DqvsxcPq1HB2QzMN8ZZahDWNQhQ
-X-ME-Proxy: <xmx:POpUanituzHeGoASJzvZGmbF1FDFL8eayck3XMFWWm4HmaYHbCGjYQ>
-    <xmx:POpUaniRJCzRSBf63msiFbFX6_Bv4TlBbdLeSHf9EIekOk245ne_kA>
-    <xmx:POpUavlm9ZY5usq_RsqUkfFB8FhIZZ2CDwrtH_tcia48nEK3grP-2Q>
-    <xmx:POpUanEqh2oW6gQ6C8y_yzJ2TOTOZ6eCyXN4EOrze4C-FKriq0SnqA>
-    <xmx:POpUakt10YhM7s9lJZuMNT-i_znUd-TPIXPdsWCpCL48SSHrLRezflge>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 13 Jul 2026 09:38:03 -0400 (EDT)
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	x86@kernel.org
-Cc: Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Kai Huang <kai.huang@intel.com>,
-	Xiaoyao Li <xiaoyao.li@intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Binbin Wu <binbin.wu@linux.intel.com>,
-	David Laight <david.laight.linux@gmail.com>,
-	Andi Kleen <ak@linux.intel.com>,
-	Dan Williams <djbw@kernel.org>,
-	Borys Tsyrulnikov <tsyrulnikov.borys@gmail.com>,
-	kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	"Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Subject: [PATCH v6 3/3] x86/tdx: Fix zero-extension for 32-bit port I/O
-Date: Mon, 13 Jul 2026 14:37:53 +0100
-Message-ID: <20260713133753.223947-4-kirill@shutemov.name>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260713133753.223947-1-kirill@shutemov.name>
-References: <20260713133753.223947-1-kirill@shutemov.name>
+	s=arc-20240116; t=1783950380; c=relaxed/simple;
+	bh=2DvNLMh3zifwK2pkhOB64QhosJMNefcH2UjsRY5yWaA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=YJ8ssO5XBBZakI824lu9Yt106ZQK+d2URzOY774yko395iWQ9mOqqVZniI6VhAW1/r+bMCoxwZl0lVSr8kGvsdfbk9L/InROxh+C0THMu7c0bi5G/8+PcrCKl3mw5yqXUwzFa09AhU6VPN4c2KmFVAiiLKqt9c/bWrm//bIdLTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yJSwfEXL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37F071F000E9;
+	Mon, 13 Jul 2026 13:46:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1783950378;
+	bh=61PfXy1TDRU8LVmZX9D3JslTrEahZRWjxcgk6d1Cff8=;
+	h=Subject:To:Cc:From:Date;
+	b=yJSwfEXLw4pVm1iCKXQTwmvkd+ZQPXUhNmZt7ZMFdPk9Ao9A1Ky2kuNIEWPDdsem4
+	 xeYo/WcZ0rxRJtOfTOKG3cIAWZh9A4qlakcdJw3IrztaspgTRQvVANZSt1UfRP+91s
+	 Nw5VkNDJjP5XJDRtLufN0GO1wu8oSdBhdrhwBdVw=
+Subject: FAILED: patch "[PATCH] gpio: sch: use raw_spinlock_t in the irq startup path" failed to apply to 6.12-stable tree
+To: runyu.xiao@seu.edu.cn,andriy.shevchenko@intel.com,bartosz.golaszewski@oss.qualcomm.com,bigeasy@linutronix.de
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 13 Jul 2026 15:39:21 +0200
+Message-ID: <2026071321-providing-hatless-5452@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [1.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[shutemov.name:s=fm3,messagingengine.com:s=fm2];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-273811-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[21];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:runyu.xiao@seu.edu.cn,m:andriy.shevchenko@intel.com,m:bartosz.golaszewski@oss.qualcomm.com,m:bigeasy@linutronix.de,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-273776-lists,stable=lfdr.de];
-	FORGED_SENDER(0.00)[kirill@shutemov.name,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:dave.hansen@linux.intel.com,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:x86@kernel.org,m:seanjc@google.com,m:pbonzini@redhat.com,m:sathyanarayanan.kuppuswamy@linux.intel.com,m:kai.huang@intel.com,m:xiaoyao.li@intel.com,m:rick.p.edgecombe@intel.com,m:binbin.wu@linux.intel.com,m:david.laight.linux@gmail.com,m:ak@linux.intel.com,m:djbw@kernel.org,m:tsyrulnikov.borys@gmail.com,m:kvm@vger.kernel.org,m:linux-coco@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:kas@kernel.org,m:davidlaightlinux@gmail.com,m:tsyrulnikovborys@gmail.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
-	DMARC_NA(0.00)[shutemov.name];
-	FREEMAIL_CC(0.00)[google.com,redhat.com,linux.intel.com,intel.com,gmail.com,kernel.org,vger.kernel.org,lists.linux.dev];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kirill@shutemov.name,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[shutemov.name:+,messagingengine.com:+];
-	RCVD_COUNT_FIVE(0.00)[6];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_NONE(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,shutemov.name:from_mime,shutemov.name:dkim,shutemov.name:mid,vger.kernel.org:from_smtp,instruction.io:url,intel.com:email,messagingengine.com:dkim]
+	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,qualcomm.com:email,linutronix.de:email,intel.com:email,vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,seu.edu.cn:email,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CEDCC74BD3A
+X-Rspamd-Queue-Id: 9590F74BDE2
 
-From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 
-According to x86 architecture rules, 32-bit operations zero-extend the
-result to 64 bits. The current implementation of handle_in() only masks
-the lower 32 bits, which preserves the upper 32 bits of RAX when a
-32-bit port IN instruction is emulated.
+The patch below does not apply to the 6.12-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Use insn_assign_reg() to write the result back into RAX with proper
-partial-register-write semantics: 1- and 2-byte forms leave the upper
-bits untouched, the 4-byte form zero-extends to the full register.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Fixes: 03149948832a ("x86/tdx: Port I/O: Add runtime hypercalls")
-Reported-by: Borys Tsyrulnikov <tsyrulnikov.borys@gmail.com>
-Link: https://lore.kernel.org/all/CAKw_Dz96rfSQc6Rn+9QBcUFHhmkK+9zu+P=bxowfZwxrATCBRg@mail.gmail.com/
-Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git checkout FETCH_HEAD
+git cherry-pick -x 286533cb14a3c8a8bd39ff64ea2fc8e1aa0f638b
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026071321-providing-hatless-5452@gregkh' --subject-prefix 'PATCH 6.12.y' 'HEAD^..'
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 286533cb14a3c8a8bd39ff64ea2fc8e1aa0f638b Mon Sep 17 00:00:00 2001
+From: Runyu Xiao <runyu.xiao@seu.edu.cn>
+Date: Wed, 17 Jun 2026 23:40:34 +0800
+Subject: [PATCH] gpio: sch: use raw_spinlock_t in the irq startup path
+
+sch_irq_unmask() enables the GPIO IRQ and then updates the controller
+state through sch_irq_mask_unmask(), which takes sch->lock with
+spin_lock_irqsave().  The callback can be reached from irq_startup()
+while setting up a requested IRQ.  That path is not sleepable, but on
+PREEMPT_RT a regular spinlock_t becomes a sleeping lock.
+
+This issue was found by our static analysis tool and then manually
+reviewed against the current tree.
+
+The grounded PoC kept the request_threaded_irq() -> __setup_irq() ->
+irq_startup() -> sch_irq_unmask() -> sch_irq_mask_unmask() carrier and
+used the original spin_lock_irqsave(&sch->lock) edge.  Lockdep reported:
+
+  BUG: sleeping function called from invalid context
+  hardirqs last disabled at ... __setup_irq.constprop.0 ... [vuln_msv]
+  sch_rt_spin_lock_irqsave+0x1c/0x30 [vuln_msv]
+  sch_irq_mask_unmask.constprop.0+0x31/0x70 [vuln_msv]
+  __setup_irq.constprop.0+0xd/0x30 [vuln_msv]
+
+Convert the SCH controller lock to raw_spinlock_t.  The same lock is
+also used by the GPIO direction and value callbacks, but those critical
+sections only update MMIO-backed GPIO registers and do not contain
+sleepable operations.  Keeping this register lock non-sleeping is
+therefore appropriate for the irqchip callbacks and does not change the
+GPIO-side locking contract.
+
+Fixes: 7a81638485c1 ("gpio: sch: Add edge event support")
 Cc: stable@vger.kernel.org
----
- arch/x86/coco/tdx/tdx.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Link: https://patch.msgid.link/20260617154035.1199948-2-runyu.xiao@seu.edu.cn
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index b8bbd715fb62..f904a636d449 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -694,8 +694,8 @@ static bool handle_in(struct pt_regs *regs, int size, int port)
- 		.r13 = PORT_READ,
- 		.r14 = port,
- 	};
--	u64 mask = GENMASK(BITS_PER_BYTE * size - 1, 0);
- 	bool success;
-+	u64 val;
+diff --git a/drivers/gpio/gpio-sch.c b/drivers/gpio/gpio-sch.c
+index 966d16a6d515..5e361742a11a 100644
+--- a/drivers/gpio/gpio-sch.c
++++ b/drivers/gpio/gpio-sch.c
+@@ -39,7 +39,7 @@
+ struct sch_gpio {
+ 	struct gpio_chip chip;
+ 	void __iomem *regs;
+-	spinlock_t lock;
++	raw_spinlock_t lock;
+ 	unsigned short resume_base;
+ 
+ 	/* GPE handling */
+@@ -104,9 +104,9 @@ static int sch_gpio_direction_in(struct gpio_chip *gc, unsigned int gpio_num)
+ 	struct sch_gpio *sch = gpiochip_get_data(gc);
+ 	unsigned long flags;
+ 
+-	spin_lock_irqsave(&sch->lock, flags);
++	raw_spin_lock_irqsave(&sch->lock, flags);
+ 	sch_gpio_reg_set(sch, gpio_num, GIO, 1);
+-	spin_unlock_irqrestore(&sch->lock, flags);
++	raw_spin_unlock_irqrestore(&sch->lock, flags);
+ 	return 0;
+ }
+ 
+@@ -122,9 +122,9 @@ static int sch_gpio_set(struct gpio_chip *gc, unsigned int gpio_num, int val)
+ 	struct sch_gpio *sch = gpiochip_get_data(gc);
+ 	unsigned long flags;
+ 
+-	spin_lock_irqsave(&sch->lock, flags);
++	raw_spin_lock_irqsave(&sch->lock, flags);
+ 	sch_gpio_reg_set(sch, gpio_num, GLV, val);
+-	spin_unlock_irqrestore(&sch->lock, flags);
++	raw_spin_unlock_irqrestore(&sch->lock, flags);
+ 
+ 	return 0;
+ }
+@@ -135,9 +135,9 @@ static int sch_gpio_direction_out(struct gpio_chip *gc, unsigned int gpio_num,
+ 	struct sch_gpio *sch = gpiochip_get_data(gc);
+ 	unsigned long flags;
+ 
+-	spin_lock_irqsave(&sch->lock, flags);
++	raw_spin_lock_irqsave(&sch->lock, flags);
+ 	sch_gpio_reg_set(sch, gpio_num, GIO, 0);
+-	spin_unlock_irqrestore(&sch->lock, flags);
++	raw_spin_unlock_irqrestore(&sch->lock, flags);
  
  	/*
- 	 * Emulate the I/O read via hypercall. More info about ABI can be found
-@@ -703,11 +703,9 @@ static bool handle_in(struct pt_regs *regs, int size, int port)
- 	 * "TDG.VP.VMCALL<Instruction.IO>".
- 	 */
- 	success = !__tdx_hypercall(&args);
-+	val = success ? args.r11 : 0;
+ 	 * according to the datasheet, writing to the level register has no
+@@ -196,14 +196,14 @@ static int sch_irq_type(struct irq_data *d, unsigned int type)
+ 		return -EINVAL;
+ 	}
  
--	/* Update part of the register affected by the emulated instruction */
--	regs->ax &= ~mask;
--	if (success)
--		regs->ax |= args.r11 & mask;
-+	insn_assign_reg(&regs->ax, val, size);
+-	spin_lock_irqsave(&sch->lock, flags);
++	raw_spin_lock_irqsave(&sch->lock, flags);
  
- 	return success;
+ 	sch_gpio_reg_set(sch, gpio_num, GTPE, rising);
+ 	sch_gpio_reg_set(sch, gpio_num, GTNE, falling);
+ 
+ 	irq_set_handler_locked(d, handle_edge_irq);
+ 
+-	spin_unlock_irqrestore(&sch->lock, flags);
++	raw_spin_unlock_irqrestore(&sch->lock, flags);
+ 
+ 	return 0;
  }
--- 
-2.54.0
+@@ -215,9 +215,9 @@ static void sch_irq_ack(struct irq_data *d)
+ 	irq_hw_number_t gpio_num = irqd_to_hwirq(d);
+ 	unsigned long flags;
+ 
+-	spin_lock_irqsave(&sch->lock, flags);
++	raw_spin_lock_irqsave(&sch->lock, flags);
+ 	sch_gpio_reg_set(sch, gpio_num, GTS, 1);
+-	spin_unlock_irqrestore(&sch->lock, flags);
++	raw_spin_unlock_irqrestore(&sch->lock, flags);
+ }
+ 
+ static void sch_irq_mask_unmask(struct gpio_chip *gc, irq_hw_number_t gpio_num, int val)
+@@ -225,9 +225,9 @@ static void sch_irq_mask_unmask(struct gpio_chip *gc, irq_hw_number_t gpio_num,
+ 	struct sch_gpio *sch = gpiochip_get_data(gc);
+ 	unsigned long flags;
+ 
+-	spin_lock_irqsave(&sch->lock, flags);
++	raw_spin_lock_irqsave(&sch->lock, flags);
+ 	sch_gpio_reg_set(sch, gpio_num, GGPE, val);
+-	spin_unlock_irqrestore(&sch->lock, flags);
++	raw_spin_unlock_irqrestore(&sch->lock, flags);
+ }
+ 
+ static void sch_irq_mask(struct irq_data *d)
+@@ -268,12 +268,12 @@ static u32 sch_gpio_gpe_handler(acpi_handle gpe_device, u32 gpe, void *context)
+ 	int offset;
+ 	u32 ret;
+ 
+-	spin_lock_irqsave(&sch->lock, flags);
++	raw_spin_lock_irqsave(&sch->lock, flags);
+ 
+ 	core_status = ioread32(sch->regs + CORE_BANK_OFFSET + GTS);
+ 	resume_status = ioread32(sch->regs + RESUME_BANK_OFFSET + GTS);
+ 
+-	spin_unlock_irqrestore(&sch->lock, flags);
++	raw_spin_unlock_irqrestore(&sch->lock, flags);
+ 
+ 	pending = (resume_status << sch->resume_base) | core_status;
+ 	for_each_set_bit(offset, &pending, sch->chip.ngpio)
+@@ -343,7 +343,7 @@ static int sch_gpio_probe(struct platform_device *pdev)
+ 
+ 	sch->regs = regs;
+ 
+-	spin_lock_init(&sch->lock);
++	raw_spin_lock_init(&sch->lock);
+ 	sch->chip = sch_gpio_chip;
+ 	sch->chip.label = dev_name(dev);
+ 	sch->chip.parent = dev;
 
 
