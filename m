@@ -1,158 +1,183 @@
-Return-Path: <stable+bounces-273838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273825-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id KdzAGDTwVGprhgAAu9opvQ
-	(envelope-from <stable+bounces-273838-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 16:03:32 +0200
+	id NlZDEpftVGqDhQAAu9opvQ
+	(envelope-from <stable+bounces-273825-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:52:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C74C74C123
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 16:03:32 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F19E74BE6B
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:52:22 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=rCW+CkFb;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273838-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-273838-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	dkim=pass header.d=readmodwrite-com.20251104.gappssmtp.com header.s=20251104 header.b=y0btpEGD;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273825-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273825-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=none;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0BCEA30550AB
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 13:59:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0A51A30434D8
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 13:48:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4344B43712D;
-	Mon, 13 Jul 2026 13:58:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76B9D431496;
+	Mon, 13 Jul 2026 13:48:40 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9689437440
-	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 13:58:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76F5F4307B5
+	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 13:48:38 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783951127; cv=none; b=FEjZsPeuWP/n7pX7eLAnSRwCKDDvvYnihBG3TqV5hc7SHMzrn8LuN0H7ZurefmuMIaiozShRxM8APAjUuiMltBJA7A4MlpXJMBJ1bCvWB1Iz2J6h04+djyNXgeN1rvi7qcy+wKLFWffx1tnQSPgBusMqN4Zft4G115aZXv3aI5E=
+	t=1783950520; cv=none; b=KEZ098VIH5WVf1sXNeq2a7/zprJ3e41uc5kikLHosQzS3eGr7lo9DG5nMVH0wx9dmLVACMnQIArPJKpLx7tk75ta2M9/Ti4t/gjfv14Z5zqFb3pi1aDQsYL8IZ2npQVrgooKuwEtdEdaYuFMtZXCggUloTYKahb2agYNIN5ixDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783951127; c=relaxed/simple;
-	bh=OnybZcynIdt7zNyVpfLogG+WnBlEen9/wo8sEeXFAVQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=nR420m7+3zkfj3nSgE8KDUAM5x8qBAMqVGRZXdxtSHOCYA6xxaTi38lL1krLHeRhumaMQ7pevTHQQnuT9NE7Ds6qgX/HbvWqladWvSoBxuRzBZfJTFCLnK9WkAE2WVL6t8PcXLR7gsa5oMgg/zMUHERdqOsHnTkE6deuovz7W9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rCW+CkFb; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5949E1F000E9;
-	Mon, 13 Jul 2026 13:58:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783951125;
-	bh=9QHliI0Fc1x1uQ3N/7M/nTKcTgsj1CwolCJ+yUEb1Bo=;
-	h=Subject:To:Cc:From:Date;
-	b=rCW+CkFbh2E2lvXgG+1zhzczEhnkhRm0hbf16oG5jJGeNllR2HfyFn//OIFhqAxCK
-	 q57PjP8QXJKZ2P/s8s7jMLwoVvgBwk6PQvi9/jbML7ulG+Ll3b8KVcxIjs7jWFLPJi
-	 u0V4FlfO5xrI2dpjOKhLG95iIExuLNwfIFXK74LY=
-Subject: FAILED: patch "[PATCH] netfilter: ebtables: zero chainstack array" failed to apply to 6.6-stable tree
-To: fw@strlen.de
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 13 Jul 2026 15:48:35 +0200
-Message-ID: <2026071335-exemplify-sheet-ddd5@gregkh>
+	s=arc-20240116; t=1783950520; c=relaxed/simple;
+	bh=TZ3tsMwiJUiaaTsevwJ4o+L1EGJMO6hFNrbfM3qjrPE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HAzdkzFPznCwrxJEZbgen7/uA+h3ogOXBfqIES/dowciTr8xRlYuW+7r+ANut/9TIN+WOVyAZ2Byy2FP7g1h7etnbSxbKKhvgMdwMfw2snO1zxZTPozyGwKuRFiKM5Nw2I6fkuuAd6161Qh77u8CUumh9F+7CdV0ZRE+pBIyN34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=readmodwrite.com; spf=none smtp.mailfrom=readmodwrite.com; dkim=pass (2048-bit key) header.d=readmodwrite-com.20251104.gappssmtp.com header.i=@readmodwrite-com.20251104.gappssmtp.com header.b=y0btpEGD; arc=none smtp.client-ip=209.85.208.54
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-69c1220bd51so5305021a12.3
+        for <stable@vger.kernel.org>; Mon, 13 Jul 2026 06:48:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=readmodwrite-com.20251104.gappssmtp.com; s=20251104; t=1783950517; x=1784555317; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=C6DMbuqOtH23SHLzkFv4+Shmk8usPkwua39wHbFqGJE=;
+        b=y0btpEGDbt5xb744hsgMZGhHKUpiHWw9b4KFynYz0jcJ8dVx1IEWrEklT21Lyj4fUM
+         CFPIVyiqVQYrO8d3VlafwtzXvqmqR0gB7ONMopwOGiZip5fPUDvc+Zcyoqsb/R5E/Bsj
+         /e9qmHwqStA7aVraFVkxyMCAoguT4tQFh/3ooGqz6CCi6dg/V5+Zkt04uvQjkCq9N0Ae
+         lYMXa511DhWgy8HyBcCEGtnzM7DWxTJUnk+CwY8FdZgiNtdw/wav1RyQEt4bKqyt/Uv4
+         UZScHf1jzjTrc+83MBzcWDrrxPsrQkJ4Nkag/cxQ4dOvwsRDZT/17zWG4AwFwCodauUG
+         xoYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783950517; x=1784555317;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=C6DMbuqOtH23SHLzkFv4+Shmk8usPkwua39wHbFqGJE=;
+        b=LfID+h5hn0HXgd4TgElp2w90FoEkyiuyGqEwSZq69990Gb7UbcDjNQGhwSdfv22yve
+         vurFSjoTZldR6eJyyz1cYa2S0AgBuPj0p75yh2EDpSUNzjlmEZgF6s4w9ixha1Ri9jXm
+         q6LzR6p2dC+XRvjWVKY67+nBU43ZLS3p6AQP8m4gCh+QFmjCGfdHPsxoILjXQ1e6/icU
+         4BSAQZrJUyNkdU6ADcrGM2HA0TRD6kwaavxKZ0m8GhuzBRMsyo+QAVEsdR0skZ3DdJva
+         pjtrzzn1Qbhe5ojiWw0WxoiYmhUlfHG3toQhSrkMFDNN1mcc1u21Co3psdhjURF3s9yf
+         6EEg==
+X-Forwarded-Encrypted: i=1; AHgh+Rov0kMUk3oTHruLqlwMlw8BF3pdHQ5NbXdazm8vXm0CyVsi46FJ/xEOb3NdJov3m6WzVRvIYcY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy8e2INYyj5YBkkmXONCKxWulLKBfP+NKEdFL4zpGeFEyHniirF
+	T33RgIDm776r67PNp+9Q82SV87Hy5NqwGEwlloQWTHz2y2UFu7IUu8ot13/iMy246IL/2goXtF4
+	Yf2QMsQw=
+X-Gm-Gg: AfdE7ckj6T1aysnscVQYuNyEzDViDec9AOxOehp8Tqlw7N8xW/xe8PwoVH66cRH9gu3
+	j3XuyIosHy0QfUprzpbzJEImB/n6IcxUVImP2TxMN4qZ0J52Rw05sXmXpZoImTsKxoIUP8aufD0
+	izJEbI0V9z66Yg/bJ2ZkWY+qgpQyIgUWGbKmrAziIkEgcEo4VYwokACUIG7xFUxZ5FUlHM/yGnc
+	Z0uyve/P3/P0M/v/ixPS6eTmIvDA2eTCkGKm5lK/s2RxJFrnULxT6EU84mQAcUasjp2NOntj8GJ
+	4cVSKDcigtyPMbSBVWDJmP7UEiqcbuT3QgntKNcbsXDJ3moRC5W5f71L3AtaQ7SbtDmFyJ4fVfP
+	Jr0vSBpz7lQVRTCtTUTm3qVkUWj/To5GA3MrFBBV6zwquBHis78LTk952QYGVNxQ7ELjpsXnEc2
+	14
+X-Received: by 2002:a05:6402:3585:b0:698:62b7:a4cc with SMTP id 4fb4d7f45d1cf-69c5ef82f71mr4143024a12.5.1783950516676;
+        Mon, 13 Jul 2026 06:48:36 -0700 (PDT)
+Received: from localhost ([2a09:bac6:37a8:1f19::319:116])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-69aa6dba523sm9753669a12.0.2026.07.13.06.48.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Jul 2026 06:48:36 -0700 (PDT)
+Date: Mon, 13 Jul 2026 14:48:35 +0100
+From: Matt Fleming <matt@readmodwrite.com>
+To: Tejun Heo <tj@kernel.org>
+Cc: David Vernet <void@manifault.com>, Andrea Righi <arighi@nvidia.com>, 
+	Changwoo Min <changwoo@igalia.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Edward Adam Davis <eadavis@qq.com>, Chen Ridong <chenridong@huaweicloud.com>, 
+	Zhaoyang Huang <zhaoyang.huang@unisoc.com>, "ziwei . dai" <ziwei.dai@unisoc.com>, 
+	"ke . wang" <ke.wang@unisoc.com>, Matt Fleming <mfleming@cloudflare.com>, 
+	sched-ext@lists.linux.dev, cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, kernel-team@cloudflare.com
+Subject: Re: [PATCH 1/2] sched/psi: Create the psimon kthread outside of
+ cgroup_mutex
+Message-ID: <alTsERFTlUKCLw4C@matt-Precision-5490>
+References: <20260712174619.3553231-1-tj@kernel.org>
+ <20260712174619.3553231-2-tj@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260712174619.3553231-2-tj@kernel.org>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[readmodwrite-com.20251104.gappssmtp.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-273838-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWO(0.00)[2];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:fw@strlen.de,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_NONE(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS(0.00)[m:tj@kernel.org,m:void@manifault.com,m:arighi@nvidia.com,m:changwoo@igalia.com,m:hannes@cmpxchg.org,m:surenb@google.com,m:peterz@infradead.org,m:eadavis@qq.com,m:chenridong@huaweicloud.com,m:zhaoyang.huang@unisoc.com,m:ziwei.dai@unisoc.com,m:ke.wang@unisoc.com,m:mfleming@cloudflare.com,m:sched-ext@lists.linux.dev,m:cgroups@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:kernel-team@cloudflare.com,s:lists@lfdr.de];
+	DMARC_NA(0.00)[readmodwrite.com];
+	FORGED_SENDER(0.00)[matt@readmodwrite.com,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	TAGGED_FROM(0.00)[bounces-273825-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,gregkh:mid,vger.kernel.org:from_smtp,strlen.de:email,linuxfoundation.org:from_mime,linuxfoundation.org:dkim]
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[manifault.com,nvidia.com,igalia.com,cmpxchg.org,google.com,infradead.org,qq.com,huaweicloud.com,unisoc.com,cloudflare.com,lists.linux.dev,vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[matt@readmodwrite.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[readmodwrite-com.20251104.gappssmtp.com:+];
+	ALIAS_RESOLVED(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qq.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,cloudflare.com:email,matt-Precision-5490:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0C74C74C123
+X-Rspamd-Queue-Id: 9F19E74BE6B
 
+On Sun, Jul 12, 2026 at 07:46:18AM -1000, Tejun Heo wrote:
+> a5b98009f16d ("sched/psi: fix race between file release and pressure write")
+> made pressure_write() hold cgroup_mutex across psi_trigger_create(), which
+> forks the psimon kthread for the first rtpoll trigger. As kthread creation
+> depends on the whole fork path, the commit inadvertently created a lot of
+> unwanted locking dependencies from cgroup_mutex.
+> 
+> sched_ext got hit by one: its enable path blocks forks and then grabs
+> cgroup_mutex, so a pressure write racing a scheduler enable deadlocks, with
+> every other fork piling up behind.
+> 
+> Fix it by splitting trigger creation so that the worker is forked with
+> cgroup_mutex dropped and the kernfs active reference left broken. The latter
+> matters because rmdir and cgroup.pressure writes drain active references
+> under cgroup_mutex. Publishing the trigger last keeps error reporting
+> synchronous and preserves the of->priv lifetime rules.
+> 
+> The trigger registered in the first stage pins the group's rtpoll machinery
+> across the unlocked window, leaving only creation races to resolve. The
+> catch-up poll on installation covers scheduling attempts dropped while there
+> was no worker.
+> 
+> v2: Retagged sched/psi (was cgroup).
+> 
+> Fixes: a5b98009f16d ("sched/psi: fix race between file release and pressure write")
+> Cc: stable@vger.kernel.org
+> Cc: Johannes Weiner <hannes@cmpxchg.org>
+> Cc: Edward Adam Davis <eadavis@qq.com>
+> Cc: Chen Ridong <chenridong@huaweicloud.com>
+> Reported-by: Matt Fleming <mfleming@cloudflare.com>
+> Closes: https://lore.kernel.org/all/20260710100441.2653477-1-matt@readmodwrite.com/
+> Signed-off-by: Tejun Heo <tj@kernel.org>
+> ---
+>  include/linux/psi.h    |  4 ++-
+>  kernel/cgroup/cgroup.c | 23 +++++++++++++-
+>  kernel/sched/psi.c     | 69 ++++++++++++++++++++++++++++++++----------
+>  3 files changed, 78 insertions(+), 18 deletions(-)
 
-The patch below does not apply to the 6.6-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
-git checkout FETCH_HEAD
-git cherry-pick -x cbfe53599eebffd188938ab6774cc41794f6f9d5
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026071335-exemplify-sheet-ddd5@gregkh' --subject-prefix 'PATCH 6.6.y' 'HEAD^..'
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From cbfe53599eebffd188938ab6774cc41794f6f9d5 Mon Sep 17 00:00:00 2001
-From: Florian Westphal <fw@strlen.de>
-Date: Sat, 4 Jul 2026 10:23:31 +0200
-Subject: [PATCH] netfilter: ebtables: zero chainstack array
-
-sashiko reports:
- looking at ebtables table
- translation, could a sparse cpu_possible_mask lead to an uninitialized pointer
- free?
-
- If cpu_possible_mask is sparse (for example, CPU 0 and CPU 2 are possible,
- but CPU 1 is not), the allocation loop skips CPU 1. If vmalloc_node() fails at
- CPU 2, the cleanup loop will blindly decrement and call vfree() on
- newinfo->chainstack[1].
-
-Not a real-world bug, such allocation isn't expected to fail
-in the first place.
-
-Cc: stable@vger.kernel.org
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-
-diff --git a/net/bridge/netfilter/ebtables.c b/net/bridge/netfilter/ebtables.c
-index 5b74ff827493..48187598cdd0 100644
---- a/net/bridge/netfilter/ebtables.c
-+++ b/net/bridge/netfilter/ebtables.c
-@@ -921,8 +921,7 @@ static int translate_table(struct net *net, const char *name,
- 		 * if an error occurs
- 		 */
- 		newinfo->chainstack =
--			vmalloc_array(nr_cpu_ids,
--				      sizeof(*(newinfo->chainstack)));
-+			vcalloc(nr_cpu_ids, sizeof(*(newinfo->chainstack)));
- 		if (!newinfo->chainstack)
- 			return -ENOMEM;
- 		for_each_possible_cpu(i) {
-
+Tested-by: Matt Fleming <mfleming@cloudflare.com>
 
