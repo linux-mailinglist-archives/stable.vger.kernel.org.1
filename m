@@ -1,246 +1,140 @@
-Return-Path: <stable+bounces-273632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273634-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id KKnbG4i8VGpOqQMAu9opvQ
-	(envelope-from <stable+bounces-273632-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 12:23:04 +0200
+	id wcmnHpC+VGo7qgMAu9opvQ
+	(envelope-from <stable+bounces-273634-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 12:31:44 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6B73749BB8
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 12:23:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B917749DAE
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 12:31:44 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=ionos.com header.s=google header.b=hSjWmLei;
-	dmarc=pass (policy=reject) header.from=ionos.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273632-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-273632-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linux.dev header.s=key1 header.b=t7KmIKiI;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273634-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-273634-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B093E3025F44
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 10:22:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E047D3031C3D
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 10:28:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7788B3B6C09;
-	Mon, 13 Jul 2026 10:22:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26B6F3EBF19;
+	Mon, 13 Jul 2026 10:27:23 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4207B3E5ED7
-	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 10:22:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEA9C3E9C32
+	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 10:27:18 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783938165; cv=none; b=JWKFgutyVjB7GhP8k3Hzbu9seVRNaJIs85bcWcMKXSztrzp8UmyzuUQ21NrRACETbidC3iO98q0JirF8lL6utp4wBLKfDGHuS1zT8QUCzxiQJ+KxpjYvHHRgAXEQ7iY21+32HHuMn7KmjxWwYM+Evo/7U+SFVe23A/WNmbP6jh0=
+	t=1783938441; cv=none; b=EkUDn/NiwqO+RmcP829OrWZ6PRvu3sRaffbJSrziHLfVQRy9NzlHi+dctqeE1XhfttIJE+go7LGIvITbnhEQZrdQ0YJyZcfRxofc2n3LVw6kmZ0+QBkunN0fdqOcmymZCFu8WAlrjJeii3r4ipQ5jI0M23UZccxa8jIRHXHcyX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783938165; c=relaxed/simple;
-	bh=9fvUIivmZtSZeqhsriqjOUYwnTIOxzDzZNMxJw1Icx4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BbMBUa8DVmi2JNJLMOY97hgH4mBwoU+GDIuJeEv0M1J10U6Wh8eqH/RyAidoLF0fJYIH41YrhT6afrcGljbrZaQKGhZ8FGxKKyoYej9caXHYMawu+wcF4pd00+mudNW5r8GFCyJRYU+GoNIlTYt76e4vAfWssvST0qL0HLL7Y8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=hSjWmLei; arc=none smtp.client-ip=209.85.221.51
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-47ddf7b09aaso1929519f8f.3
-        for <stable@vger.kernel.org>; Mon, 13 Jul 2026 03:22:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1783938158; x=1784542958; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=BqAzbIa03EEwzYHiTtc0EGAOtlFJgcTmBpG0VFTldcE=;
-        b=hSjWmLei+vEEXiGvSF6MKPQ5rztV4dZbdHQ5vuz6E2uZGStiMuyfsW55ofVcyABPHR
-         Pymx7NlEe5BHrNQrHZQ9G4v9vZqJIBVAr6JwQBWp8c3O1efeUvLbzs2yL4vszBcBSt4P
-         D5kCSK+iRJXz7hJk03DiB6nYvYic4KfIoRTapxI8ryUcO+LwCo6lIa236F8JcJuc9w8h
-         R8p4MCKkOeaJUqDHOgyVu0Jj7iTrY/97joHgAR9dmYvDnXvzosfdRyFAmCiej9nM1ces
-         SATv9fjzd+eojNGJgzupeA1LnB8hAMxRNNwZcnCtLAYezVSTVCSfQuqvaOzSmtebGs4F
-         h3YQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783938158; x=1784542958;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=BqAzbIa03EEwzYHiTtc0EGAOtlFJgcTmBpG0VFTldcE=;
-        b=kgTEIh7r/RBb0OdzNnRzwP0Ezgw+VWzf5sgtJvYsxwuC4bXIhQneJB8LdYIObHfuO3
-         QmTAO1AVuT1fS9AeREQvFvkn4W14F0F9JLY8PnMTxYeYaQBz87EeY9G+6WOFFbZuC1MG
-         J+jVGgq5YN6uPs2toNDmk1Ad/simJmqwq3Uz1fhinW7F19R4gK38/wJy+kHfZqmFGv4y
-         xCrMBoGLZPyolMKU5VL6kb+hRzlGZWolQjQ2TP0IfS5p04idPa3dN54KgdCz07P6SQb4
-         tvASF7BzgJNQST86VEB6NErb8bsyE4bnpNOHxZY1mwv/lwYEQ9VSPkBknUpWxgnO0P20
-         VYOw==
-X-Forwarded-Encrypted: i=1; AHgh+Ro9OLc9hJmv4KbBsaU9nbed0LN0N3zdAk6CKbj0e61vIaJfO/sdFbnXpzlg6qTYfmnmuJIWqtE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzBrom9jN/Chtt3MJUTj+yZu82D+o3DNlIjePKnNcliIaHRvyd7
-	za02RnZ7r4HEDhqRkYl1L2Pwp/tgG8j4L8AN1RM0/CS3r7g2sOYKO+l3VoUF4sZ7GAE=
-X-Gm-Gg: AfdE7cmEmS1oz4/kwnWEYoCkcm+6fC7zD4zhHxaQB1rjr9Dsx4S6+NavxCe1/EMQty4
-	4oq1fXLpGDZBy+EDyChBMuc4u3adFtRM/JlY0HnjdiNPMDpfyLk15jJRTcQQP0oBI8YDs0x6phv
-	RBFYiHufMh3Hh3WC82Ut41ToCy3cYbx+WpvP4+ngjzgXy7JN1ZMaR4Mb/knu+pvkBZudSlfdYsK
-	ljnq3HEXHigf3mgltUhEgAnr5cmQhQ8dHO0Daq5rKIHnJB8hgcgpGGIu5OQGgPYwmS2VRf99XvN
-	OzTnPVyYbYnXPhn8LhQSHKDqsw9fGkjheHD68e4ORoERPCtAo9+9NAmk8s5zkvR1tGmQGEE3+YS
-	UWiV92DFV3N6ehJvxnDZR2XQDUG7HLRWs3/fDuYz2peUSfjqW52lNN3yT0UPr0srTZfEsZINeR3
-	R+E0iQBkEXYmN+9FJj58tDfZsTNRjqSTbOhLVMtHsFJI+t50tQCSi0qr2+EE86+t9K9klx/mUND
-	1oT7KyrarpNO5KV
-X-Received: by 2002:a05:6000:460f:b0:475:f0f0:9ef1 with SMTP id ffacd0b85a97d-47f2dd0d580mr8735399f8f.54.1783938157596;
-        Mon, 13 Jul 2026 03:22:37 -0700 (PDT)
-Received: from raven.intern.cm-ag (p200300dc6f484700023064fffe740809.dip0.t-ipconnect.de. [2003:dc:6f48:4700:230:64ff:fe74:809])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47aa09608d4sm84858344f8f.25.2026.07.13.03.22.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Jul 2026 03:22:36 -0700 (PDT)
-From: Max Kellermann <max.kellermann@ionos.com>
-To: tytso@mit.edu,
-	jack@suse.com,
-	linux-ext4@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Max Kellermann <max.kellermann@ionos.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 2/2] jbd2: bound shrinker scans by examined checkpoint buffers
-Date: Mon, 13 Jul 2026 12:22:29 +0200
-Message-ID: <20260713102229.1598812-3-max.kellermann@ionos.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260713102229.1598812-1-max.kellermann@ionos.com>
-References: <20260713102229.1598812-1-max.kellermann@ionos.com>
+	s=arc-20240116; t=1783938441; c=relaxed/simple;
+	bh=tlSStQRjz7IsgoduonWvy/BiNHcyY6I1VMddmxBXKcc=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=fYLXMBxHukSNH3yEqSQFZmLs9b8X5mO+BCjfALSXlZPc+QlfyC54fVAiGVyizIEBnlUxIpejE8PwViElPewIJfVAyY2fsV+RXCaQ3uK/6BshjQJRtqvxWon/Q4o/wdFtyhDpNMoSaei6Xeq1uHEz0Ptn/VpdpmTujLEWr/8lLto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=t7KmIKiI; arc=none smtp.client-ip=91.218.175.182
+Message-ID: <877c39be-d4d6-4d9c-b824-18d9463c62c7@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783938425;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hI0ulS+e7/Y2oO5fBiqc90A7kYsME7pKoySFXxv5Y8o=;
+	b=t7KmIKiIfaH9vl5ApL6tbaX1tiOn/PaCox8ALC8rjDdI01CWo4AmLTP0tK6BQlWieFWasG
+	0JO4hkTfq9GOdwbNl5DqBRt225BskLmxXZfbAVmz6vFMi2FQ7hPHhjyRUltdm1FqaK6hPs
+	48nvhCZmrCrmd0yqgcc0L3n3D12Qv8w=
+Date: Mon, 13 Jul 2026 18:26:58 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Cc: cui.tao@linux.dev, Johannes Weiner <hannes@cmpxchg.org>,
+ Michal Hocko <mhocko@kernel.org>, Muchun Song <muchun.song@linux.dev>,
+ cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, Guopeng Zhang <zhangguopeng@kylinos.cn>
+Subject: Re: [PATCH] mm: memcg-v1: account vmpressure event allocations
+To: Guopeng Zhang <guopeng.zhang@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Stanislav Fort <stanislav.fort@aisle.com>
+References: <20260713085520.2953121-1-guopeng.zhang@linux.dev>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Tao Cui <cui.tao@linux.dev>
+In-Reply-To: <20260713085520.2953121-1-guopeng.zhang@linux.dev>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-7.66 / 15.00];
-	WHITELIST_DMARC(-7.00)[ionos.com:D:+];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ionos.com,reject];
-	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[ionos.com:s=google];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:tytso@mit.edu,m:jack@suse.com,m:linux-ext4@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:max.kellermann@ionos.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER(0.00)[max.kellermann@ionos.com,stable@vger.kernel.org];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS(0.00)[m:cui.tao@linux.dev,m:hannes@cmpxchg.org,m:mhocko@kernel.org,m:muchun.song@linux.dev,m:cgroups@vger.kernel.org,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:zhangguopeng@kylinos.cn,m:guopeng.zhang@linux.dev,m:akpm@linux-foundation.org,m:roman.gushchin@linux.dev,m:shakeel.butt@linux.dev,m:stanislav.fort@aisle.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[3];
+	FORGED_SENDER(0.00)[cui.tao@linux.dev,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-273632-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	TAGGED_FROM(0.00)[bounces-273634-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[ionos.com:+];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[cui.tao@linux.dev,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux.dev:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[max.kellermann@ionos.com,stable@vger.kernel.org];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,ionos.com:from_mime,ionos.com:email,ionos.com:mid,ionos.com:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.dev:from_mime,linux.dev:dkim,linux.dev:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D6B73749BB8
+X-Rspamd-Queue-Id: 0B917749DAE
 
-The jbd2 shrinker currently accounts only checkpoint buffers that it
-successfully releases against nr_to_scan.  Busy buffers therefore do not
-consume the scan budget.
 
-If a checkpoint transaction contains mostly busy buffers, the shrinker
-can scan its entire checkpoint list while holding journal->j_list_lock.
-Large checkpoint lists can result in excessive lock hold times and leave
-other CPUs spinning on j_list_lock, causing soft lockups or RCU stalls.
 
-Pass nr_to_scan into journal_shrink_one_cp_list() and decrement it for
-every buffer examined, including busy buffers.  Pass NULL from checkpoint
-cleanup paths so their existing full-list behavior is preserved.
-
-This restores the scan-budget semantics that existed before
-journal_shrink_one_cp_list() was changed to always scan a complete
-checkpoint list.
-
-Fixes: b98dba273a0e ("jbd2: remove journal_clean_one_cp_list()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
----
- fs/jbd2/checkpoint.c | 25 +++++++++++++------------
- 1 file changed, 13 insertions(+), 12 deletions(-)
-
-diff --git a/fs/jbd2/checkpoint.c b/fs/jbd2/checkpoint.c
-index 5266017565ac..513273712010 100644
---- a/fs/jbd2/checkpoint.c
-+++ b/fs/jbd2/checkpoint.c
-@@ -358,15 +358,16 @@ int jbd2_cleanup_journal_tail(journal_t *journal)
- /*
-  * journal_shrink_one_cp_list
-  *
-- * Find all the written-back checkpoint buffers in the given list
-- * and try to release them. If the whole transaction is released, set
-- * the 'released' parameter. Return the number of released checkpointed
-- * buffers.
-+ * Find written-back checkpoint buffers in the given list and try to release
-+ * them. If 'nr_to_scan' is set, scan at most that many buffers. If the whole
-+ * transaction is released, set the 'released' parameter. Return the number of
-+ * released checkpointed buffers.
-  *
-  * Called with j_list_lock held.
-  */
- static unsigned long journal_shrink_one_cp_list(struct journal_head *jh,
- 						enum jbd2_shrink_type type,
-+						unsigned long *nr_to_scan,
- 						bool *released)
- {
- 	struct journal_head *last_jh;
-@@ -375,13 +376,15 @@ static unsigned long journal_shrink_one_cp_list(struct journal_head *jh,
- 	int ret;
- 
- 	*released = false;
--	if (!jh)
-+	if (!jh || (nr_to_scan && !*nr_to_scan))
- 		return 0;
- 
- 	last_jh = jh->b_cpprev;
- 	do {
- 		jh = next_jh;
- 		next_jh = jh->b_cpnext;
-+		if (nr_to_scan)
-+			(*nr_to_scan)--;
- 
- 		if (type == JBD2_SHRINK_DESTROY) {
- 			ret = __jbd2_journal_remove_checkpoint(jh);
-@@ -403,7 +406,7 @@ static unsigned long journal_shrink_one_cp_list(struct journal_head *jh,
- next:
- 		if (need_resched())
- 			break;
--	} while (jh != last_jh);
-+	} while (jh != last_jh && (!nr_to_scan || *nr_to_scan));
- 
- 	return nr_freed;
- }
-@@ -425,7 +428,6 @@ unsigned long jbd2_journal_shrink_checkpoint_list(journal_t *journal,
- 	tid_t first_tid = 0, last_tid = 0, next_tid = 0;
- 	tid_t tid = 0;
- 	unsigned long nr_freed = 0;
--	unsigned long freed;
- 	bool first_set = false;
- 
- again:
-@@ -458,10 +460,9 @@ unsigned long jbd2_journal_shrink_checkpoint_list(journal_t *journal,
- 		next_transaction = transaction->t_cpnext;
- 		tid = transaction->t_tid;
- 
--		freed = journal_shrink_one_cp_list(transaction->t_checkpoint_list,
--						   JBD2_SHRINK_BUSY_SKIP, &released);
--		nr_freed += freed;
--		(*nr_to_scan) -= min(*nr_to_scan, freed);
-+		nr_freed += journal_shrink_one_cp_list(transaction->t_checkpoint_list,
-+						       JBD2_SHRINK_BUSY_SKIP,
-+						       nr_to_scan, &released);
- 		if (*nr_to_scan == 0)
- 			break;
- 		if (need_resched() || spin_needbreak(&journal->j_list_lock))
-@@ -517,7 +518,7 @@ void __jbd2_journal_clean_checkpoint_list(journal_t *journal,
- 		transaction = next_transaction;
- 		next_transaction = transaction->t_cpnext;
- 		journal_shrink_one_cp_list(transaction->t_checkpoint_list,
--					   type, &released);
-+					   type, NULL, &released);
- 		/*
- 		 * This function only frees up some memory if possible so we
- 		 * dont have an obligation to finish processing. Bail out if
--- 
-2.47.3
+在 2026/7/13 16:55, Guopeng Zhang 写道:
+> From: Guopeng Zhang <zhangguopeng@kylinos.cn>
+> 
+> Commit 72797d218b43 ("mm/memcg: v1: account event registrations and drop
+> world-writable cgroup.event_control") accounted cgroup v1 event
+> registration allocations with GFP_KERNEL_ACCOUNT, but missed struct
+> vmpressure_event.
+> 
+> Use GFP_KERNEL_ACCOUNT for this allocation as well.
+> 
+> Fixes: 72797d218b43 ("mm/memcg: v1: account event registrations and drop world-writable cgroup.event_control")
+> Signed-off-by: Guopeng Zhang <zhangguopeng@kylinos.cn>
+> ---
+>  mm/memcontrol-v1.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
+> index e8b6e1560278..f8424ec3734b 100644
+> --- a/mm/memcontrol-v1.c
+> +++ b/mm/memcontrol-v1.c
+> @@ -1721,7 +1721,7 @@ int vmpressure_register_event(struct mem_cgroup *memcg,
+>  		mode = ret;
+>  	}
+>  
+> -	ev = kzalloc_obj(*ev);
+> +	ev = kzalloc_obj(*ev, GFP_KERNEL_ACCOUNT);
+>  	if (!ev) {
+>  		ret = -ENOMEM;
+>  		goto out;
+Acked-by: Tao Cui <cuitao@kylinos.cn>
 
 
