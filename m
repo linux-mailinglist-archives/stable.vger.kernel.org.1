@@ -1,137 +1,251 @@
-Return-Path: <stable+bounces-273951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273953-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id kqB7HMQrVWp0kwAAu9opvQ
-	(envelope-from <stable+bounces-273951-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 20:17:40 +0200
+	id 2+fRNHgtVWrNkwAAu9opvQ
+	(envelope-from <stable+bounces-273953-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 20:24:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D66374E69D
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 20:17:39 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3461074E738
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 20:24:56 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=byb5BROk;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273951-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273951-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=fail ("headers rsa verify failed") header.d=0sec.ai header.s=google header.b=akfdfwC1;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273953-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-273953-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=none;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 897333032F4F
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 18:14:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A175B306D820
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 18:19:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94E1635201A;
-	Mon, 13 Jul 2026 18:14:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A311352C4F;
+	Mon, 13 Jul 2026 18:19:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C24227F4F5;
-	Mon, 13 Jul 2026 18:14:57 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783966498; cv=none; b=aiZ0GZQkP7mh1oDQmeTpkz+vJOzFggHt31dgr+2GMrzUnJJ239CbBQCUsrqvGsHkdexDDnVJwQ77AOQVonSlFWnPFuBVk2pSv+TyuDTSYC6RtKpY6WqGmdcpJJRAcq1kHHnUZH90Eb1FkrS8mDtkLCbjgDngoWWXOoWaQ6hI19k=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783966498; c=relaxed/simple;
-	bh=p536q1fZMhD4VsIbp+AlHkFIuiGVNiIk3+r824wk/Ac=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=H5CoEOy1L49gK5DBAIBernT5qaDzsxGfJAsyGRcWNJml4TTghUmfRqmYCaDrmhe7QPOMSgR9gpsxJ/N5rDLK2Cp8fy2Z9sZUN9Fe2oXGo+nuGf3GPipMETHow2Mxlupbumv6ocpU80aDTE7p76JiFSN2iN2lDVY1KjF1vBCRAdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=byb5BROk; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78F1C1F000E9;
-	Mon, 13 Jul 2026 18:14:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783966497;
-	bh=JyASWAKAD6ak8FJcxWdDEg+sFNwuVoRQymBg/98oo+M=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References;
-	b=byb5BROkJpBcOzvzYTSnccebRDOp9+OET/OpjUZrjGZHZfc9R2wq7LMXGJdJ4XIjM
-	 5PRtd3cH6rYC9RmoqhiVrXGZjALT+HBoS6chP/efteMPq2MqXr4uLIWxbAy/tVcQSd
-	 cOKktWOZjtp4JEMNgjY5Mm9iYDH7CwVeoQ+2m16MSP24r6FkMg6SdYj55by4peeO0f
-	 fCwkbY6m2uGhHW6LX/kurmyI/FwWVvfY1/pUV1P9PeuiGIuOQnCPDWTXXoGnT38Ku4
-	 4cI6pzCGcqW+gHcc5Dy+LN5iB02lqDx5uXBiWRAeKCrLeXW8xlfTzJNCN12S+N/s01
-	 zVZUFJfR1v9/Q==
-Date: Mon, 13 Jul 2026 12:14:53 -0600 (MDT)
-From: Paul Walmsley <pjw@kernel.org>
-To: =?ISO-8859-15?Q?Thomas_Wei=DFschuh?= <thomas.weissschuh@linutronix.de>
-cc: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
-    Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
-    Nathan Chancellor <nathan@kernel.org>, 
-    Conor Dooley <conor.dooley@microchip.com>, Wende Tan <twd2.me@gmail.com>, 
-    Palmer Dabbelt <palmer@rivosinc.com>, linux-riscv@lists.infradead.org, 
-    linux-kernel@vger.kernel.org, Nam Cao <namcao@linutronix.de>, 
-    kernel test robot <lkp@intel.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] riscv: vdso: Do not use LTO for the vDSO
-In-Reply-To: <20260701-riscv-vdso-lto-v1-1-89db0cd82077@linutronix.de>
-Message-ID: <541aed79-b153-726c-87f9-cfd9f9304c46@kernel.org>
-References: <20260701-riscv-vdso-lto-v1-0-89db0cd82077@linutronix.de> <20260701-riscv-vdso-lto-v1-1-89db0cd82077@linutronix.de>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 178033090C4
+	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 18:19:11 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783966754; cv=pass; b=WwTFPJ1g+XIQuy3HDlvD5ASplvXjRoRfoS9BzHCuK3/CZNuK/PBnciJ8luk001EzuNo2qeGL925WesFvV6+1OEFP5OmZwPguNzl6AAlHLgWXVqCw1r0lgGdKfrpc1f/AyQaiIf5GlAwgq8Ye+f2pj462uRNqG50CxlXnwRLu9nY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783966754; c=relaxed/simple;
+	bh=a7J2o/Uawyqjxcq822ubh31HNGfGy3Dyi9p/J54OSA4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GscpQkQS1XT5lWspMn4wtyOiafFRcrbjOB/QRrcVDo6MQTIyI7SMhW+Q/qrAZfF0Ug9JVT88OOZwRZGffP2CGSIep0LMbfabl6uNBH9CDvkSvUKlULRd7dCA1pJcd3nX+OWHNDNBPc4iG/nwMY8jHfzTUs/LYB/QEI4qLYdj6xc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai; spf=pass smtp.mailfrom=0sec.ai; dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b=akfdfwC1; arc=pass smtp.client-ip=209.85.214.172
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2cc73e322dbso39396055ad.1
+        for <stable@vger.kernel.org>; Mon, 13 Jul 2026 11:19:11 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783966751; cv=none;
+        d=google.com; s=arc-20260327;
+        b=D1GQuJA4hRgj8fRfTDYW2oWIN0ktyfGoVzfAoYxXFhWw4VZzOCmWiosiPaWb7cTns/
+         HgZsWuaZ7i57hlc0kSSLuuIcEIybnwUQ+zvApHhjcC+nOml4naewNeRDpHWRwqRUZd0S
+         sL36vn+z6JE5MlFH6qUovyw67cP5WY/deEY1gjQDTGKZv8glplxDEpcMEAT5wsJd9glZ
+         GwYyYZ1+EwT7w9URdDXOihXtGvODgYM/D2ityBB09Orw5aeWQblHXebHmINV8ZV85H/v
+         FN9+OHSajlgTlnT5cMOC8fG47ylLa2a5p/TBlbbcjNyahDuBowBT0Z0lmQP6lvXVaM6u
+         rRwA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=oMyPiF7lny3DatTRlbMwq40lHfzP3eH6xTvYxwG42rU=;
+        fh=CPc9RWFT0ec6lEmFHXRWzCpaWu7wKRhRHIyRo9TlCzg=;
+        b=JMmJrLDWQQfcSbWxEM3rp3zVegevVJngnJUjFXSX4Fpo1Npka3JoH3uG5qq0KXvj/Q
+         4JqiXUWXvaD47kTWp7aVcBWoT8drTma4/8nPv7A89/DbXPfy833/Rq13oUtoQSPwObz3
+         2ieiTVEzavxYr/qoMCZX7x8CeTTRnVpg1TcrVTIdjlwniOr6nCZzYHs8ZCmVXv+XwtKo
+         hvBxeeNpoQsR/8QEAcLR2yMcHafQQ5wsV2HCAPlF16zgNgvfK1cBNqYt3Sbi1iZ4umpC
+         VbIKwZh+Mr1GxqeiJ2uXK7DLHaFRFvuwCBvSRb7Q5ROO8vgq7/8T8m5GInzxxlrA1HbZ
+         WFDQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=0sec.ai; s=google; t=1783966751; x=1784571551; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=oMyPiF7lny3DatTRlbMwq40lHfzP3eH6xTvYxwG42rU=;
+        b=akfdfwC1gWKnXlOaKIrr36v1gDkMDXb3e66zZbNTLs8iYvzO5smFEeG/755bf3KEPS
+         zDONj3HwK8nJC84vUIXOObk1HYVdSXnbGCZjI0FaOCcJuroaV3/9+18hGC2kfaAuZ3mk
+         eZWNxSXk8/q1lWnf5CBggcdOUSzBRgNzuZaCqg4qUl3vVxQNm+0v8X0x1vI3tnT05NI+
+         jG405xgRp2dcJUEIFjNw9c+MQLq46HAgq6KZ7qas+PpVnsfvARuFH7r7kcBQaIl7XWua
+         yo5fnimRe06QyVVY5DqTdjW1skDNLgIKCNir6aVSGxii2vkAmmf+SVEgB/Ez3kZI5VyM
+         toRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783966751; x=1784571551;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=oMyPiF7lny3DatTRlbMwq40lHfzP3eH6xTvYxwG42rU=;
+        b=Ml8CAucn+JigC8mfPYg5gih/5L9nciEu2vyejJ1M0GcL+4Co8B/FGRjOMarKbVxJUr
+         ta7k7kZr+mK9LS9CiBRy2sibmLK93m1GkFnF2vMXUkytHh/aWpSiBtn0nzXmJ+7lxeDO
+         3ag0h5x2SCCETDASOEefiY3qvZiB2hQpb64BZGYKM4443nxaJswBiVmaFQGuCfBrG/TA
+         3dvKFhGS9DB/X15zPaqBv/101txPUFfk7lrhCg0Y/a5huBaOk0XQ4vKyAdXXkadd4/mU
+         9MEZxnidWEvfPa9eeoiAPbZnAO04w3rh/2coZsLHpYkGRM4T4izSGtZCsFGFN6Hba0bX
+         M8QQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rrr7wDxreV4rcRM3vTMu/CIkVfT41HmOq5cudrFGP7Ewt8a9D9n7inJabAr8O4z/oH87vY4ybU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyfdVtx4AW5HRsOpU4D6AdKuTE42kMeh2QDXFjGXVOgiP+DmBmH
+	Nb6O9rNinz1m3vfvKv73Lw1ofrvXLtOFSIE53LPMcOaRbbUN9rdHf5MYHH03ISZAcAwUzpEw5pC
+	GUBm3/H7EriaIheuNifbL5RQAmPqNbnVFQ0rkjEvW/J0=
+X-Gm-Gg: AfdE7cnQ2Zi25/+tbMJgcSjEopDgphcbnozyR/TfwQfIA3jIQu/tm1Ehbeq8fnjL2fs
+	423bv8+4huxcHa59wLans80ursDEH9dFy8C5OJOZYt1PLLITd7pvtB+3TRFefrcm9yvgaPu4AV1
+	yhVfCFMAc4Be/Is3tLEHTnrPBqH3KpN1k/YO4jKpmJn+sGh0H9NI5sEiAFm2rWSZJPqV0KkPrCw
+	FIJPwnAhhy44OfjAu06BtI6z74ao4fUsxwtrXML5Y00zmHOnwYtBiwwsTTpWKhWtdGJBvdwMgW/
+	+/pfByqSMpzLMLH5btkfPE2FA8sHUp91+1E4atgJzNaNtUmPtmegFmEHJ9XFHgOQZcRRWd0=
+X-Received: by 2002:a17:902:d546:b0:2c9:cf62:6f61 with SMTP id
+ d9443c01a7336-2ce9eac212bmr103069735ad.17.1783966750843; Mon, 13 Jul 2026
+ 11:19:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323329-1762691194-1783966497=:1536112"
+References: <20260711071336.58324-1-doruk@0sec.ai> <779ee099-5132-4752-bdb8-354dfdc53926@oss.qualcomm.com>
+In-Reply-To: <779ee099-5132-4752-bdb8-354dfdc53926@oss.qualcomm.com>
+From: "Doruk (0sec)" <doruk@0sec.ai>
+Date: Mon, 13 Jul 2026 20:18:59 +0200
+X-Gm-Features: AVVi8CenKr8Md-_ghFq-SY_VTIPefNoGzVmvVLnHgY8iSBM67OYes4dP0hXi20g
+Message-ID: <CAPdMp1okStu9UiWn-Kb4xrTEdGj1POT4t+moh77JHpLSzD-pZQ@mail.gmail.com>
+Subject: Re: [PATCH] wifi: ath6kl: validate assoc info lengths in the WMI
+ connect event
+To: jeff.johnson@oss.qualcomm.com, linux-wireless@vger.kernel.org
+Cc: tristmd@gmail.com, johannes@sipsolutions.net, 
+	peddolla.reddy@oss.qualcomm.com, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	SUSPICIOUS_RECIPS(1.50)[];
-	CTYPE_MIXED_BOGUS(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+X-Spamd-Result: default: False [-0.46 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	R_DKIM_REJECT(1.00)[0sec.ai:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[multipart/mixed,text/plain];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-273953-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-273951-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[0sec.ai];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:thomas.weissschuh@linutronix.de,m:pjw@kernel.org,m:palmer@dabbelt.com,m:aou@eecs.berkeley.edu,m:alex@ghiti.fr,m:nathan@kernel.org,m:conor.dooley@microchip.com,m:twd2.me@gmail.com,m:palmer@rivosinc.com,m:linux-riscv@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:namcao@linutronix.de,m:lkp@intel.com,m:stable@vger.kernel.org,m:twd2me@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[pjw@kernel.org,stable@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+,1:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:jeff.johnson@oss.qualcomm.com,m:linux-wireless@vger.kernel.org,m:tristmd@gmail.com,m:johannes@sipsolutions.net,m:peddolla.reddy@oss.qualcomm.com,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[kernel.org,dabbelt.com,eecs.berkeley.edu,ghiti.fr,microchip.com,gmail.com,rivosinc.com,lists.infradead.org,vger.kernel.org,linutronix.de,intel.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pjw@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,sipsolutions.net,oss.qualcomm.com,vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[doruk@0sec.ai,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[0sec.ai:-];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MISSING_XM_UA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,linutronix.de:email]
+	FORGED_SENDER_FORWARDING(0.00)[];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[doruk@0sec.ai,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,qualcomm.com:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9D66374E69D
+X-Rspamd-Queue-Id: 3461074E738
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On 7/11/2026, Jeff Johnson wrote:
+> Some aspects of your patch are already addressed by:
+> https://lore.kernel.org/all/20260421135009.348084-3-tristmd@gmail.com
+> So you will need to rebase once that lands.
 
---8323329-1762691194-1783966497=:1536112
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
+Thanks for the heads up! One thing that looks like it may remain after
+Tristan's patch, in case it's useful: the aggregate check bounds the case
+where the declared lengths are too large, but ath6kl_cfg80211_connect_event=
+()
+still underflows when a length is too small. It does, on u8 values
+with no lower bound:
 
-On Wed, 1 Jul 2026, Thomas Weißschuh wrote:
+assoc_req_len -=3D assoc_req_ie_offset; /* -=3D 4 */
+assoc_resp_len -=3D assoc_resp_ie_offset; /* -=3D 6 */
 
-> With LTO enabled the compiler assumes that the vDSO functions are not
-> used and optimizes them away completely. Currently this happens to
-> __vdso_clock_getres(), __vdso_clock_gettime(), __vdso_getrandom(),
-> __vdso_gettimeofday() and __vdso_riscv_hwprobe().
-> 
-> Disable LTO for the vDSO, as these functions are hand-optimized anyways.
-> 
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202606301855.WvkSC4kD-lkp@intel.com/
-> Fixes: 021d23428bdb ("RISC-V: build: Allow LTO to be selected")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+so an assoc request/response shorter than the fixed offset wraps to ~250, a=
+nd
+cfg80211_connect_result()/cfg80211_roamed() then treat that as the IE lengt=
+h and
+copy that many bytes out of the small assoc_info buffer to user space. That=
+ path
+is separate from the aggregate over-read Tristan's check covers.
 
-Thanks, queued for v7.2-rc.
+Happy to send a small follow-on clamping those two subtractions on top of
+Tristan's series once it lands -- or Tristan, please feel free to fold it i=
+nto
+your series if you'd rather keep it together. Whatever's easiest for you bo=
+th.
+
+Best
+Doruk
+
+DORUK TAN =C3=96ZT=C3=9CRK
+
+Co-Founder
 
 
-- Paul
---8323329-1762691194-1783966497=:1536112--
+0sec
+
+Universit=C3=A4tstrasse 33
+
+8006 Z=C3=BCrich, Switzerland
+
+www.0sec.ai | doruk@0sec.ai | Linkedin
+
+
+
+On Sat, 11 Jul 2026 at 16:39, Jeff Johnson
+<jeff.johnson@oss.qualcomm.com> wrote:
+>
+> On 7/11/2026 12:13 AM, Doruk Tan Ozturk wrote:
+> > ath6kl_wmi_connect_event_rx() only checks that the received event is at
+> > least sizeof(struct wmi_connect_event); it never checks that the traili=
+ng
+> > beacon_ie_len + assoc_req_len + assoc_resp_len fields fit within the
+> > received buffer. Those attacker/AP-influenced lengths then drive two
+> > out-of-bounds accesses:
+> >
+> >   - The WMM information-element scan builds
+> >     peie =3D assoc_info + beacon_ie_len + assoc_req_len + assoc_resp_le=
+n
+> >     and walks up to it, reading past the end of the event buffer when t=
+he
+> >     declared lengths exceed the buffer. The walk also dereferences
+> >     pie[1..6] and pie[1] (for the advance) without checking they stay
+> >     within peie.
+> >
+> >   - ath6kl_cfg80211_connect_event() subtracts fixed offsets from
+> >     assoc_req_len (-=3D 4) and assoc_resp_len (-=3D 6), both u8, with n=
+o lower
+> >     bound. A short assoc request/response underflows the length to ~250=
+,
+> >     which cfg80211_connect_result() / cfg80211_roamed() then treat as t=
+he
+> >     IE length and copy out of bounds from the small assoc_info buffer,
+> >     disclosing adjacent slab memory to user space via nl80211.
+> >
+> > Bound the declared IE lengths against the received buffer, bound the WM=
+M
+> > element reads against peie, and clamp the assoc request/response length=
+s
+> > before the subtraction. The sibling wil6210 driver already performs the
+> > equivalent length check for the same WMI connect event.
+> >
+> > Found by 0sec (https://0sec.ai) using automated source analysis; the
+> > missing bounds are evident from source and cross-checked against the
+> > sibling wil6210 driver. Compile-tested.
+> >
+> > Fixes: bdcd81707973 ("Add ath6kl cleaned up driver")
+> > Cc: stable@vger.kernel.org
+> > Assisted-by: 0sec:claude-opus-4-8
+> > Signed-off-by: Doruk Tan Ozturk <doruk@0sec.ai>
+>
+> Some aspects of your patch are already addressed by:
+> https://lore.kernel.org/all/20260421135009.348084-3-tristmd@gmail.com
+>
+> So you will need to rebase once that lands.
+>
+> /jeff
 
