@@ -1,77 +1,76 @@
-Return-Path: <stable+bounces-273609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273611-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id g9yhHkaqVGpSpAMAu9opvQ
-	(envelope-from <stable+bounces-273609-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 11:05:10 +0200
+	id Szm5IQuqVGpGpAMAu9opvQ
+	(envelope-from <stable+bounces-273611-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 11:04:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAF29749173
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 11:05:09 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DAD974914D
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 11:04:11 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=intel.com header.s=Intel header.b=UTg2yDqU;
+	dkim=pass header.d=intel.com header.s=Intel header.b=cJDs5x8s;
 	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273609-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273609-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273611-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273611-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 50DD83029786
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 09:00:08 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 80B1F300F479
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 09:04:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E14E73D75C6;
-	Mon, 13 Jul 2026 09:00:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62D0F3DCDB1;
+	Mon, 13 Jul 2026 09:04:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B554F3BF66D;
-	Mon, 13 Jul 2026 09:00:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8253F3D0910;
+	Mon, 13 Jul 2026 09:04:06 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783933206; cv=none; b=PbS7LyVJIA0L51LcNITVZg+GPTIIxVZ0e30iEs9l505E7Ux8R/3cXfebxwiUhzkhYZHYF5FqJfAyn1QcDziGRRew07jhzmNjGENjjRxb4IkhHxuKQ6sCFzX5fB9fRfl9cG4sAxMQGeoVaxqAAWgdZyPdFdzAEzTs4UY23ZxlQMs=
+	t=1783933449; cv=none; b=Qu8Izlv37iQ6vCzyliU541UjSAsiP8DSZKNmuSnB68tfc5aXU8EiQc61hCd1vOVjR0yyEkXLxKkcFLksuTlUgXf/FjUTXjbnVPXomFFyRt1Ewf2QMeVfZZEvRrQHSR+yA07nCv6Yb63Hpg1fOBybcCdJ0sEZ9NEJzsQC4Mbz4XI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783933206; c=relaxed/simple;
-	bh=UuziIpDu90kRuOD7/BOwxh2+So0PzZ6qVPJ5csO42uA=;
+	s=arc-20240116; t=1783933449; c=relaxed/simple;
+	bh=K/B9Jar5GXEGS3ZtBkahTtghczLbjNej/Lz+ODFIUgg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ce5rxoW0U/17nIkHPBk4M0ypMEO6yU89jRefJhIl7e2rQD5gxwBvr1dfVoVOmVRc+jhGWvE8Xyt7ZpJSM/0B+jtQyCj1jXX0wY5rIUZB7cwVMAOu/kHq3Vkt2dOJ05cDwfhZ+eYChEKRWkYpp/IL7QVYUBJxL1PDYUpWl5K7r98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UTg2yDqU; arc=none smtp.client-ip=192.198.163.17
+	 Content-Type:Content-Disposition:In-Reply-To; b=ry8lRBQwxo/PGoLOLE15BlTDuXn6ofzELZtpWa2FhsaNeAQjxP93oyARvGG0+xHcuSxfA7/xTwkVmoc+EA8Tf4WCjpwoQdBq95vjpjWdjGF7/r8tg/NsAw7tCa62C2kwyd5CiCW9wNa5Gj4lSo8MDUJvBNOcmmLTtSHtbvXcFdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cJDs5x8s; arc=none smtp.client-ip=192.198.163.15
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1783933205; x=1815469205;
+  t=1783933447; x=1815469447;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=UuziIpDu90kRuOD7/BOwxh2+So0PzZ6qVPJ5csO42uA=;
-  b=UTg2yDqU+GwnisYCSy4BW4j7qTPZ9ny9DFnPw5ckbL/tSrC83S/37bRP
-   zCCKs38h1PdxqtgPYsTz75LSyPxg49VAPOHW7DxD68j7ZWHCwVfYDQo5c
-   n/aLt4gV9Rj20mJvjCixG8XThFCxGYoZxLiPMa6vsdbd+ZrFZ6FOlIuMu
-   7o38gTq9LynZ2pxdu46eSKdM4hj7s3yo98Ia9uFBf02agTrGU8JHa3pgP
-   L9wJLfrJqJdOYskwwB207YrzE9kJO3g8TZlDmMN1232A6949AbmaMjLyt
-   Up/Fbzg8ZfDrC5752puQF2QBYxn/LfTIl0OhxZymiuxKkgWDnOFGv8tSX
+  bh=K/B9Jar5GXEGS3ZtBkahTtghczLbjNej/Lz+ODFIUgg=;
+  b=cJDs5x8sl9nTT5hytYuLp767PoT4S2GhaB9NtS6EdE6m+QYtsu4rzk0H
+   VR9FuTCfNwu/juYUAf2hGlPViS41d26Coh8WZgf37z93BNEmy5SxfZeWY
+   jFVyJZ1nRTl4hN+khuhOAypoXbsJC2/pbwf427pSmWm8blo8NRz22q/Ts
+   dQFOkpvR51e+urcTgszLgGuclm/Q1Tx30D5qS160dYTk2zhHrngltDTtV
+   Gpe/JZosYDA4jr3nht41rX6OiJ0inP0Ovwrfbrdh9R10L6cyxguePB9lu
+   CMv4CB26ypuUROhfXm0p7UGltRxlYnifss8itEyvLRYGyS2COdsVsjy6j
    g==;
-X-CSE-ConnectionGUID: bzn/dBNnQQ2TzAFceAaKjw==
-X-CSE-MsgGUID: tNTNPBTNS6yDvlnvpfxGYQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="84416122"
+X-CSE-ConnectionGUID: s/dtWW/3Rfeg3bZS0FSXMQ==
+X-CSE-MsgGUID: 4HlOhMSoT2iZICO9AVbzdQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="84653689"
 X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
-   d="scan'208";a="84416122"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jul 2026 02:00:04 -0700
-X-CSE-ConnectionGUID: SONFLOagREuCQH2CVMlSAw==
-X-CSE-MsgGUID: BeKHladpTIOjpCNEL1MGnA==
+   d="scan'208";a="84653689"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jul 2026 02:04:05 -0700
+X-CSE-ConnectionGUID: +KxS+KV4TB2hftdK4O3/oA==
+X-CSE-MsgGUID: EINWM0ImSm2Tu/cxwgVEFw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
-   d="scan'208";a="259074510"
+   d="scan'208";a="249134004"
 Received: from black.igk.intel.com ([10.91.253.5])
-  by orviesa003.jf.intel.com with ESMTP; 13 Jul 2026 02:00:02 -0700
+  by fmviesa009.fm.intel.com with ESMTP; 13 Jul 2026 02:04:03 -0700
 Received: by black.igk.intel.com (Postfix, from userid 1008)
-	id B5EB495; Mon, 13 Jul 2026 11:00:01 +0200 (CEST)
-Date: Mon, 13 Jul 2026 12:00:00 +0300
+	id 6AAA695; Mon, 13 Jul 2026 11:04:02 +0200 (CEST)
+Date: Mon, 13 Jul 2026 12:04:00 +0300
 From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To: WenTao Liang <vulab@iscas.ac.cn>
+To: Shuangpeng Bai <shuangpeng.kernel@gmail.com>
 Cc: gregkh@linuxfoundation.org, linux-usb@vger.kernel.org,
 	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] fix: drivers/usb/typec/altmodes: dp_altmode_probe:
- missing typec_altmode_put_plug on error path
-Message-ID: <alSpEMgcTJx398UG@kuha>
-References: <20260627034143.59224-1-vulab@iscas.ac.cn>
+Subject: Re: [PATCH v2] usb: typec: class: drop PD lookup reference
+Message-ID: <alSqAJRbeeLpJ1P9@kuha>
+References: <20260704231436.4060902-1-shuangpeng.kernel@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -80,27 +79,28 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260627034143.59224-1-vulab@iscas.ac.cn>
+In-Reply-To: <20260704231436.4060902-1-shuangpeng.kernel@gmail.com>
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-4.66 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:shuangpeng.kernel@gmail.com,m:gregkh@linuxfoundation.org,m:linux-usb@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:shuangpengkernel@gmail.com,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER(0.00)[heikki.krogerus@linux.intel.com,stable@vger.kernel.org];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:vulab@iscas.ac.cn,m:gregkh@linuxfoundation.org,m:linux-usb@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-273609-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER(0.00)[heikki.krogerus@linux.intel.com,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-273611-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -112,37 +112,47 @@ X-Spamd-Result: default: False [-4.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.intel.com:from_mime,vger.kernel.org:from_smtp,kuha:mid,intel.com:dkim]
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp,intel.com:email,intel.com:dkim,linux.intel.com:from_mime,kuha:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CAF29749173
+X-Rspamd-Queue-Id: 0DAD974914D
 
-Hi,
-
-I hate complain about trivial things, but the subject line has a bit
-too much information. You have to improve it.
-
-Please take a look at how the previous commits were written. My
-suggestion is that you change it to, for example,
-        "usb: typec: displayport: Fix a plug altmode leak"
-or
-        "usb: typec: displayport: Add missing typec_altmode_put_plug call"
-
-Thanks,
-
-On Sat, Jun 27, 2026 at 11:41:43AM +0800, WenTao Liang kirjoitti:
-> In dp_altmode_probe(), typec_altmode_get_plug() acquires a reference on
-> plug. When the data role check fails (TYPEC_HOST check), the function
-> returns -EPROTO without calling typec_altmode_put_plug(plug), leaking the
-> plug reference. Other error paths (ENODEV, ENOMEM) correctly release the
-> reference.
+On Sat, Jul 04, 2026 at 07:14:36PM -0400, Shuangpeng Bai wrote:
+> usb_power_delivery_find() wraps class_find_device_by_name(). That helper
+> returns a device reference that must be released by the caller.
 > 
-> Add typec_altmode_put_plug(plug) before returning on the EPROTO error
-> path to fix the leak.
+> select_usb_power_delivery_store() only needs this reference while calling
+> the pd_set callback. Drop it once the callback returns. Otherwise the sysfs
+> write can pin the selected USB Power Delivery object and prevent it from
+> being released on unregister.
 > 
+> Fixes: a7cff92f0635 ("usb: typec: USB Power Delivery helpers for ports and partners")
 > Cc: stable@vger.kernel.org
-> Fixes: 41294342fad7 ("usb: typec: altmodes/displayport: do not enter mode if port is the UFP")
-> Signed-off-by: WenTao Liang <vulab@iscas.ac.cn>
+> Signed-off-by: Shuangpeng Bai <shuangpeng.kernel@gmail.com>
+
+Revieved-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+
+> ---
+> v2:
+> - Cc stable@vger.kernel.org as requested.
+> 
+>  drivers/usb/typec/class.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/usb/typec/class.c b/drivers/usb/typec/class.c
+> index 0977581ad1b6..0595e8cb83aa 100644
+> --- a/drivers/usb/typec/class.c
+> +++ b/drivers/usb/typec/class.c
+> @@ -1619,6 +1619,7 @@ static ssize_t select_usb_power_delivery_store(struct device *dev,
+>  		return -EINVAL;
+>  
+>  	ret = port->ops->pd_set(port, pd);
+> +	put_device(&pd->dev);
+>  	if (ret)
+>  		return ret;
+>  
+> -- 
+> 2.43.0
 
 -- 
 heikki
