@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-273813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273816-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id wD/eGqHsVGpLhQAAu9opvQ
-	(envelope-from <stable+bounces-273813-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:48:17 +0200
+	id CdNcKdvsVGpehQAAu9opvQ
+	(envelope-from <stable+bounces-273816-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:49:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16BEB74BDC2
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:48:17 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7E7774BDF7
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:49:14 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=t719KpNj;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273813-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273813-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="sQ1/HGUy";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273816-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-273816-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2E80B302FBDA
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 13:46:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 91708302D31A
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 13:46:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C3D442A7AA;
-	Mon, 13 Jul 2026 13:46:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91AD842DA37;
+	Mon, 13 Jul 2026 13:46:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D06C42DA37
-	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 13:46:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB81293C4E
+	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 13:46:31 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783950386; cv=none; b=eMM0m+yedZ4RXlJsymGEUonptdWjOOcyVJXhjuELGE7qpKUiVaA2plN79FDajp2um/p5PVsuRniV+9Ro6BS3LpnZP3nqdl746+bXzIeKBK80fB3Es9JBqgdbwYShpN3fnAQpnrJ84zoo43SDcHikQVV8AhVVEXi6myZCVc1Eqgg=
+	t=1783950393; cv=none; b=XEAHCGdli8vpQI/7AlLgwS2q+xtgXTItCSl0DATw5Siworwq4/1yWPEJK+CPffqxZxblB0tLoSl8sKFgZoscvJGMPLz3/30KANqQvWd75SKsOJx+RrN4O2lDnqOB7eFS3MPS8yC5sgKZ0vqs1FNv63NoDrnrSvW69NARrp6IAa8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783950386; c=relaxed/simple;
-	bh=0Mn5nBn/3CPOyisiTZNPLVW6TRP/dzMLieFokKHAosQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=urlAXShYsmtFjGzrFmxRdWt2bE47vxaYSl5++HXgyMpRX1hzqaEmybOWa4bghWO5KYNjgejBdhbn56JY+FLHbymgmf6rO1Ps57T0FGNsObR5bbUc2ZXRcWjAuYCtrIT+9zinJNiGPkW1+ipeY9R2BSv91iEfu8n33ycyZEk0arM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t719KpNj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 786021F000E9;
-	Mon, 13 Jul 2026 13:46:23 +0000 (UTC)
+	s=arc-20240116; t=1783950393; c=relaxed/simple;
+	bh=Lt8zab7uLiTrrpyz2JGLM3Sq5KLqEu1wi34EXXQeGcQ=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=APwRS0V9RcWYX2Xv6HGjmWleq2lCGg0FLRdf3C2Okck3F/X//HMTmyVUVB67HivQHXEdoOeoxaXSX+Af4EkxctZqMGf5gsjX16IRk5e7WEHppgMyu+fereP23Zv645GB6d65LO12M9SDLiK4CpSQggl4z7i1v1lBcbGXfLhrlLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sQ1/HGUy; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D5581F000E9;
+	Mon, 13 Jul 2026 13:46:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783950384;
-	bh=Cmw7zuSorGw9cxNNV0yKdmRWujIs2lBXXbppVHYpY+s=;
+	s=korg; t=1783950391;
+	bh=YsHL70N/6tNiT9V6Ss5He7mPVRnqxJ/B2L4OW2IhGFI=;
 	h=Subject:To:Cc:From:Date;
-	b=t719KpNj1LzvUQapVTlLMNMLPu9Qo0f//IdQ8BEiCinsHCBYsZdrrvd8cslWvelER
-	 TXSfIw/MXza9HSTNZWRtxW5GIDY/Y+PWcjLD85cE0cfmsJDuN8C85TG5DWKrGzs2Sw
-	 2jg0uF2TKqQR24zKb5DVVZj+Vqeukvl0rgOf8MLw=
-Subject: FAILED: patch "[PATCH] gpio: sch: use raw_spinlock_t in the irq startup path" failed to apply to 6.1-stable tree
-To: runyu.xiao@seu.edu.cn,andriy.shevchenko@intel.com,bartosz.golaszewski@oss.qualcomm.com,bigeasy@linutronix.de
+	b=sQ1/HGUyR3RLs4u87e85FDfpiVxaU2Fw9axq53E/6knXlOX+oR6E/RHqAx1XTv8Ke
+	 WlDYSY3Nfh70BWPHZEOT0iR6JeLn7Pdhh0dmaO9SweG+c1unuzJ2nL/fOFvoAr9jY1
+	 iDrAj4z3hMcaTU/10QMuroVC/nxG865Fkvst1FnQ=
+Subject: FAILED: patch "[PATCH] io_uring/rw: preserve partial result for iopoll" failed to apply to 6.12-stable tree
+To: michael@wigham.net,axboe@kernel.dk
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 13 Jul 2026 15:39:22 +0200
-Message-ID: <2026071322-humongous-drainable-d342@gregkh>
+Date: Mon, 13 Jul 2026 15:39:57 +0200
+Message-ID: <2026071357-gout-canyon-b50f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,20 +60,20 @@ X-Rspamd-Action: no action
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-273813-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-273816-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:michael@wigham.net,m:axboe@kernel.dk,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:runyu.xiao@seu.edu.cn,m:andriy.shevchenko@intel.com,m:bartosz.golaszewski@oss.qualcomm.com,m:bigeasy@linutronix.de,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
@@ -83,30 +83,30 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,gregkh:mid,qualcomm.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,seu.edu.cn:email,linutronix.de:email,intel.com:email]
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,gregkh:mid,vger.kernel.org:from_smtp,kernel.dk:email,wigham.net:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 16BEB74BDC2
+X-Rspamd-Queue-Id: E7E7774BDF7
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 286533cb14a3c8a8bd39ff64ea2fc8e1aa0f638b
+git cherry-pick -x c554246ff4c68abf71b61a89c6e39d3cf94f523e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026071322-humongous-drainable-d342@gregkh' --subject-prefix 'PATCH 6.1.y' 'HEAD^..'
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026071357-gout-canyon-b50f@gregkh' --subject-prefix 'PATCH 6.12.y' 'HEAD^..'
 
 Possible dependencies:
 
@@ -118,158 +118,53 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 286533cb14a3c8a8bd39ff64ea2fc8e1aa0f638b Mon Sep 17 00:00:00 2001
-From: Runyu Xiao <runyu.xiao@seu.edu.cn>
-Date: Wed, 17 Jun 2026 23:40:34 +0800
-Subject: [PATCH] gpio: sch: use raw_spinlock_t in the irq startup path
+From c554246ff4c68abf71b61a89c6e39d3cf94f523e Mon Sep 17 00:00:00 2001
+From: Michael Wigham <michael@wigham.net>
+Date: Sat, 13 Jun 2026 23:52:16 +0100
+Subject: [PATCH] io_uring/rw: preserve partial result for iopoll
 
-sch_irq_unmask() enables the GPIO IRQ and then updates the controller
-state through sch_irq_mask_unmask(), which takes sch->lock with
-spin_lock_irqsave().  The callback can be reached from irq_startup()
-while setting up a requested IRQ.  That path is not sleepable, but on
-PREEMPT_RT a regular spinlock_t becomes a sleeping lock.
+A partial read will store the completed byte count in io->bytes_done.
+The regular completion path applies io_fixup_rw_res() so that, when the
+following operation reaches EOF, the number of bytes already read is
+returned.
 
-This issue was found by our static analysis tool and then manually
-reviewed against the current tree.
+The iopoll completion path does not apply this fixup to the return value
+and can return zero instead.
 
-The grounded PoC kept the request_threaded_irq() -> __setup_irq() ->
-irq_startup() -> sch_irq_unmask() -> sch_irq_mask_unmask() carrier and
-used the original spin_lock_irqsave(&sch->lock) edge.  Lockdep reported:
+Use the fixup result when updating the CQE, and the raw result for the
+reissue check.
 
-  BUG: sleeping function called from invalid context
-  hardirqs last disabled at ... __setup_irq.constprop.0 ... [vuln_msv]
-  sch_rt_spin_lock_irqsave+0x1c/0x30 [vuln_msv]
-  sch_irq_mask_unmask.constprop.0+0x31/0x70 [vuln_msv]
-  __setup_irq.constprop.0+0xd/0x30 [vuln_msv]
-
-Convert the SCH controller lock to raw_spinlock_t.  The same lock is
-also used by the GPIO direction and value callbacks, but those critical
-sections only update MMIO-backed GPIO registers and do not contain
-sleepable operations.  Keeping this register lock non-sleeping is
-therefore appropriate for the irqchip callbacks and does not change the
-GPIO-side locking contract.
-
-Fixes: 7a81638485c1 ("gpio: sch: Add edge event support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Link: https://patch.msgid.link/20260617154035.1199948-2-runyu.xiao@seu.edu.cn
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Fixes: 4d9cb92ca41d ("io_uring/rw: fix short rw error handling")
+Signed-off-by: Michael Wigham <michael@wigham.net>
+Link: https://patch.msgid.link/20260613225240.34032-1-michael@wigham.net
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 
-diff --git a/drivers/gpio/gpio-sch.c b/drivers/gpio/gpio-sch.c
-index 966d16a6d515..5e361742a11a 100644
---- a/drivers/gpio/gpio-sch.c
-+++ b/drivers/gpio/gpio-sch.c
-@@ -39,7 +39,7 @@
- struct sch_gpio {
- 	struct gpio_chip chip;
- 	void __iomem *regs;
--	spinlock_t lock;
-+	raw_spinlock_t lock;
- 	unsigned short resume_base;
+diff --git a/io_uring/rw.c b/io_uring/rw.c
+index 0c4834645279..63b6519e498c 100644
+--- a/io_uring/rw.c
++++ b/io_uring/rw.c
+@@ -601,15 +601,15 @@ static void io_complete_rw_iopoll(struct kiocb *kiocb, long res)
+ {
+ 	struct io_rw *rw = container_of(kiocb, struct io_rw, kiocb);
+ 	struct io_kiocb *req = cmd_to_io_kiocb(rw);
++	int final_res = io_fixup_rw_res(req, res);
  
- 	/* GPE handling */
-@@ -104,9 +104,9 @@ static int sch_gpio_direction_in(struct gpio_chip *gc, unsigned int gpio_num)
- 	struct sch_gpio *sch = gpiochip_get_data(gc);
- 	unsigned long flags;
+ 	if (kiocb->ki_flags & IOCB_WRITE)
+ 		io_req_end_write(req);
+-	if (unlikely(res != req->cqe.res)) {
+-		if (res == -EAGAIN && io_rw_should_reissue(req))
+-			req->flags |= REQ_F_REISSUE | REQ_F_BL_NO_RECYCLE;
+-		else
+-			req->cqe.res = res;
+-	}
++
++	if (res == -EAGAIN && io_rw_should_reissue(req))
++		req->flags |= REQ_F_REISSUE | REQ_F_BL_NO_RECYCLE;
++	else if (unlikely(final_res != req->cqe.res))
++		req->cqe.res = final_res;
  
--	spin_lock_irqsave(&sch->lock, flags);
-+	raw_spin_lock_irqsave(&sch->lock, flags);
- 	sch_gpio_reg_set(sch, gpio_num, GIO, 1);
--	spin_unlock_irqrestore(&sch->lock, flags);
-+	raw_spin_unlock_irqrestore(&sch->lock, flags);
- 	return 0;
- }
- 
-@@ -122,9 +122,9 @@ static int sch_gpio_set(struct gpio_chip *gc, unsigned int gpio_num, int val)
- 	struct sch_gpio *sch = gpiochip_get_data(gc);
- 	unsigned long flags;
- 
--	spin_lock_irqsave(&sch->lock, flags);
-+	raw_spin_lock_irqsave(&sch->lock, flags);
- 	sch_gpio_reg_set(sch, gpio_num, GLV, val);
--	spin_unlock_irqrestore(&sch->lock, flags);
-+	raw_spin_unlock_irqrestore(&sch->lock, flags);
- 
- 	return 0;
- }
-@@ -135,9 +135,9 @@ static int sch_gpio_direction_out(struct gpio_chip *gc, unsigned int gpio_num,
- 	struct sch_gpio *sch = gpiochip_get_data(gc);
- 	unsigned long flags;
- 
--	spin_lock_irqsave(&sch->lock, flags);
-+	raw_spin_lock_irqsave(&sch->lock, flags);
- 	sch_gpio_reg_set(sch, gpio_num, GIO, 0);
--	spin_unlock_irqrestore(&sch->lock, flags);
-+	raw_spin_unlock_irqrestore(&sch->lock, flags);
- 
- 	/*
- 	 * according to the datasheet, writing to the level register has no
-@@ -196,14 +196,14 @@ static int sch_irq_type(struct irq_data *d, unsigned int type)
- 		return -EINVAL;
- 	}
- 
--	spin_lock_irqsave(&sch->lock, flags);
-+	raw_spin_lock_irqsave(&sch->lock, flags);
- 
- 	sch_gpio_reg_set(sch, gpio_num, GTPE, rising);
- 	sch_gpio_reg_set(sch, gpio_num, GTNE, falling);
- 
- 	irq_set_handler_locked(d, handle_edge_irq);
- 
--	spin_unlock_irqrestore(&sch->lock, flags);
-+	raw_spin_unlock_irqrestore(&sch->lock, flags);
- 
- 	return 0;
- }
-@@ -215,9 +215,9 @@ static void sch_irq_ack(struct irq_data *d)
- 	irq_hw_number_t gpio_num = irqd_to_hwirq(d);
- 	unsigned long flags;
- 
--	spin_lock_irqsave(&sch->lock, flags);
-+	raw_spin_lock_irqsave(&sch->lock, flags);
- 	sch_gpio_reg_set(sch, gpio_num, GTS, 1);
--	spin_unlock_irqrestore(&sch->lock, flags);
-+	raw_spin_unlock_irqrestore(&sch->lock, flags);
- }
- 
- static void sch_irq_mask_unmask(struct gpio_chip *gc, irq_hw_number_t gpio_num, int val)
-@@ -225,9 +225,9 @@ static void sch_irq_mask_unmask(struct gpio_chip *gc, irq_hw_number_t gpio_num,
- 	struct sch_gpio *sch = gpiochip_get_data(gc);
- 	unsigned long flags;
- 
--	spin_lock_irqsave(&sch->lock, flags);
-+	raw_spin_lock_irqsave(&sch->lock, flags);
- 	sch_gpio_reg_set(sch, gpio_num, GGPE, val);
--	spin_unlock_irqrestore(&sch->lock, flags);
-+	raw_spin_unlock_irqrestore(&sch->lock, flags);
- }
- 
- static void sch_irq_mask(struct irq_data *d)
-@@ -268,12 +268,12 @@ static u32 sch_gpio_gpe_handler(acpi_handle gpe_device, u32 gpe, void *context)
- 	int offset;
- 	u32 ret;
- 
--	spin_lock_irqsave(&sch->lock, flags);
-+	raw_spin_lock_irqsave(&sch->lock, flags);
- 
- 	core_status = ioread32(sch->regs + CORE_BANK_OFFSET + GTS);
- 	resume_status = ioread32(sch->regs + RESUME_BANK_OFFSET + GTS);
- 
--	spin_unlock_irqrestore(&sch->lock, flags);
-+	raw_spin_unlock_irqrestore(&sch->lock, flags);
- 
- 	pending = (resume_status << sch->resume_base) | core_status;
- 	for_each_set_bit(offset, &pending, sch->chip.ngpio)
-@@ -343,7 +343,7 @@ static int sch_gpio_probe(struct platform_device *pdev)
- 
- 	sch->regs = regs;
- 
--	spin_lock_init(&sch->lock);
-+	raw_spin_lock_init(&sch->lock);
- 	sch->chip = sch_gpio_chip;
- 	sch->chip.label = dev_name(dev);
- 	sch->chip.parent = dev;
+ 	/* order with io_iopoll_complete() checking ->iopoll_completed */
+ 	smp_store_release(&req->iopoll_completed, 1);
 
 
