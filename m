@@ -1,88 +1,64 @@
-Return-Path: <stable+bounces-273940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273936-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id OJj1NucoVWq1kgAAu9opvQ
-	(envelope-from <stable+bounces-273940-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 20:05:27 +0200
+	id NyAPADgoVWqTkgAAu9opvQ
+	(envelope-from <stable+bounces-273936-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 20:02:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4BE874E4A4
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 20:05:26 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C648574E42E
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 20:02:31 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=BOrOsyE2;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273940-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273940-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q+IpVSWE;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273936-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273936-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D0CF5300722E
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 18:05:23 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 10A5D301ABBB
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 18:02:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC3EC351C02;
-	Mon, 13 Jul 2026 18:05:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AB36351C31;
+	Mon, 13 Jul 2026 18:02:22 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 314B1344DB9
-	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 18:05:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4D8134D3A9;
+	Mon, 13 Jul 2026 18:02:20 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783965921; cv=none; b=iNfYinNVGUxhszPpODgdMLko151/yTgvDaS1YNKRElfN9ZVMjg6goqq/jCEjqK5t47GHjgy9vA94wd0HxCw2c57TTm28ARgnjSvAGF0qe0OFfMAR8ERiKwgL/nfb6q286j1URZzhX21UHatY2EKpUwbM5VKtgYeCHU09MXR/yDQ=
+	t=1783965742; cv=none; b=oRgWTST0MmJWUf4a64HvKotGcKLlPyzicK0stk4eN+BmFFT0ll1B59S4bbbzJZArX1iw9jvxN26ZMMjU2GcFRemNMOxuISn1XfPD90HG0nmC8ycuV9U8sOYNnWbuDX1E61TJylDnRKNVwzXHF6fFiRffwkjJx1Gv/mw1+7jtNzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783965921; c=relaxed/simple;
-	bh=XeZnVF8VMOIq8NowPgSjmvHb8AkE7i+WvqIK6N6ANjs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Y4dOhVOOQ5GPQeZxgUo5oDiXSKYRB8bjdT1+5k8cAgeOw24H45sE/nxdj02mh8D1M4Yyn+YNydLnfxW41dVDrHLKw10a1mu0BUR84YHQsUl6UTCkwinqBBLgkqAc7St6+dwqQAUWrpGda/9Mm3prn7W6CfLVKEoCvk4IGL8TbF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BOrOsyE2; arc=none smtp.client-ip=209.85.221.41
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-4798bea72f9so1870768f8f.1
-        for <stable@vger.kernel.org>; Mon, 13 Jul 2026 11:05:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783965918; x=1784570718; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=DPs2lHQRfpK+TsWOFRy9KnqkkNN7TxB0PRSoapXl1VE=;
-        b=BOrOsyE2uxxPpM+zui5vnSpr9UHpb4i+2dHjRQqlNk9zn5KE1MWyDihPWmO8r64qZn
-         joQFso2weVNFzGNkZjmAJq+HhHZyS9FpOwq27b8BORtWeljy5xAFWfjeWT1mtxsn6Puo
-         +uaXpNzcbHPKdj4KyikDbQ/nJYf9RaaaISxDczqVd40x+OGJ+ibZIfga4nJnx8PAgovm
-         NuSCrfXid4+ERkCN4XUMWoHxIn7zhwVGzLowXTXuJ/YYJ6tZH4qHoxIG3lUDPpCG6B9X
-         VE/acyvQdqw/e4xz6LZYdc5KWLrMQbFthP9uA5hJdstGuWGYBIGaodCshMeJ0E/bJMf6
-         GNtw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783965918; x=1784570718;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=DPs2lHQRfpK+TsWOFRy9KnqkkNN7TxB0PRSoapXl1VE=;
-        b=RR19YwIfYw30xX51Q8gxH8IH3/SZpF3zhUG0MKz7VRn7MR9l0uwl5ozIQGfvhUCoEk
-         2jUD1o8M+ZHtedZ71NwJ5v9NJhE8+680U08tlTIyN2CD7blBwd/SfW6NYmuqeJtYcmDi
-         t3zVvDJG31RuUPSNc5OvF7Eete7Jrh0CII+kIJLudNmKHJDnCkKzfHZy3nOQUwK82t2G
-         QgNnqM0VeSRVzuXRiW0mpeaHadL4fxsZdf9Ce1z0b9t7eLEn/yyAINcZRMlIMj6xQn5A
-         7OZaKnxmG6RZfXn1ivz4Uc2feMm/dJgS7u3P5qRT3RK9KLr9LGUm7PIVNjDephWRw+km
-         me5Q==
-X-Gm-Message-State: AOJu0YyC1hZmrXdKXRxSn/vKhCOFBXQyN3DBjE7Q5BEHrqYHQj7awyiJ
-	Zo60ogDNj4glaoEwzU7mn5Vela626IuQ07/Egqhpup/lpXTBJnM+60XcJsD5V/p7648=
-X-Gm-Gg: AfdE7cnylWDfIClS+tau61Rp158I3nqK3SHSo9kH9gxPbaR8SzWSPpYH+WuBu6GtzX4
-	4lPa4tVOq7Mp/znAnfk0Thi3Mc42dr8f18AALeO0rSu2Qi60x/2kOeFsY2OidTFkWQA2z9Eau6s
-	lQZmeeaYKPaEVPr3wxvrWUf1fzvUJV1MzgBcUrlWXTcDoZFA3iS0foD02A3ovRA7EEvrLA0m3h2
-	gLzHKxDDjb63IY5rLbMfkvoAofDjqbQ8J4DbOldmTXH/kWzIl7IWkBbfof+BR42+ydX/FVnXb/5
-	ZZCd6VHhqkWBVtxOn3tfazpqip3G4Wz0Z34SB2uAH7XkB7Th7Wji1ST0neCKRhQDGReDN87R6Rm
-	SxN8kuT4Eii1Up+0um4Q3EezohUzwaz3r8KA/H74JXB4QzABGOp1QOHc+WXN6shVNmaj5qwIjNR
-	Gd91ou3smbCS51j6+bhepl9PcDsz5PjUmgaw==
-X-Received: by 2002:a5d:64c4:0:b0:462:e086:35f with SMTP id ffacd0b85a97d-47f2dc88af5mr12536623f8f.21.1783965918210;
-        Mon, 13 Jul 2026 11:05:18 -0700 (PDT)
-Received: from archlinux.tailbe3ea7.ts.net ([46.1.111.57])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f4635aa34sm1230690f8f.15.2026.07.13.11.05.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Jul 2026 11:05:17 -0700 (PDT)
-From: Ismail Tarim <ismailtarim7@gmail.com>
-To: stable@vger.kernel.org
-Cc: Felix Fietkau <nbd@nbd.name>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	linux-wireless@vger.kernel.org,
-	linux-mediatek@lists.infradead.org
-Subject: [stable backport request] wifi: mt76: mt7921/mt7925: fix NULL dereference in CSA beacon
-Date: Mon, 13 Jul 2026 21:01:37 +0300
-Message-ID: <20260713180433.52394-1-ismailtarim7@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	s=arc-20240116; t=1783965742; c=relaxed/simple;
+	bh=BeOXUDr/kv2WzNFdRg+92KWiqkvRAsJbfzlhEOqNMTA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=TUfQuRHO6g9h0l1dVEBU+fnAYCKd6QsXcTNRKTnofGwkzUuNDZRLLfCzNe4gXvs5b3wVvQrRf3Ob92RxAlEHletZFG3prpyskWnoZK9pxdFJAAyTrsbKT0zI3V5EbIrtgOHzPokMRltngUrEmYZY9pku38HTrnQk0OzvrmW1ys4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q+IpVSWE; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 842E81F00A3D;
+	Mon, 13 Jul 2026 18:02:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783965740;
+	bh=M/9xkFzTJN6MchzaNzn3CvlAokWR07Ud0R0Iaok52ys=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Q+IpVSWEmNzwLfYFkQbN6Rk6zN6/KZqfXIMAvlUTiMAvBthWmvJW2l8kqU68UXWyf
+	 8lEgeB46yYGX6j3fpuJITal6EoxQV6LKOaop8BNSc7ZtezApTFIXyh8YOIiS3IwX7d
+	 0bH4zyHsaLYgnvFXIAJnvOPT5F4do9YeD+7V0qCZq/07K/dXsr++XIa9I1DYpE+1h7
+	 ZyI1GFMA6m2ZfphWP1SCaHSpaddl23/wkJ617Xi2900Ku8jq+sYLZJ18waEF/tIuVM
+	 fKOjxdJYIu6onJ3X27ZWnXkh/qgcDoXpQy8vjnFjhIhLhad+dHt1ZY0DPfQgMILerO
+	 oJKMMIIZhMzkQ==
+From: Yosry Ahmed <yosry@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Yosry Ahmed <yosry@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH v3 1/2] KVM: x86: Check EFER validity on KVM_SET_SREGS*
+Date: Mon, 13 Jul 2026 18:01:52 +0000
+Message-ID: <20260713180153.2728382-2-yosry@kernel.org>
+X-Mailer: git-send-email 2.55.0.141.g00534a21ce-goog
+In-Reply-To: <20260713180153.2728382-1-yosry@kernel.org>
+References: <20260713180153.2728382-1-yosry@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -91,89 +67,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-3.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-273940-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:nbd@nbd.name,m:lorenzo@kernel.org,m:linux-wireless@vger.kernel.org,m:linux-mediatek@lists.infradead.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-273936-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:seanjc@google.com,m:pbonzini@redhat.com,m:kvm@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:yosry@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[ismailtarim7@gmail.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_SENDER(0.00)[yosry@kernel.org,stable@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ismailtarim7@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[yosry@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D4BE874E4A4
+X-Rspamd-Queue-Id: C648574E42E
 
-Hi,
+When handling userspace SREGS writes, check the validity of EFER (i.e.
+allowed bits) before writing the new value of EFER through the
+per-vendor set_efer callbacks. This prevents userspace from writing
+bogus values (e.g. EFER.SVME=1 with nested=0).
 
-Please consider backporting the following mainline commit to the stable
-trees:
+Note: on KVM_SET_MSRS, KVM only checks EFER validity in terms of KVM
+caps, not guest caps, so it is possible to set EFER bits that are
+supported by KVM but not by the guest CPUID. Potentially allowing
+userspace to set msrs before CPUID.
 
-  commit 351dd7d2c80d ("wifi: mt76: mt7921/mt7925: fix NULL dereference in CSA beacon")
+However, for KVM_SET_SREGS*, check the validity of the set bits against
+both KVM and guest caps. This is consistent with other validity checks
+(e.g. for CR4) that check validity against guest caps, which already
+imposes the need to set CPUID before SREGS.
 
-The commit carries a Fixes: tag but was not marked Cc: stable, so it has
-not been picked up for the stable trees automatically. The tip of
-linux-7.1.y still lacks it.
+Cc: stable@vger.kernel.org
+Change-Id: I45701ec440e4fdd8f086eb70db0c0845fb0ed509
+Signed-off-by: Yosry Ahmed <yosry@kernel.org>
+---
+ arch/x86/kvm/regs.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Why it should be applied:
+diff --git a/arch/x86/kvm/regs.c b/arch/x86/kvm/regs.c
+index bd8147798cc3e..8f66438989e47 100644
+--- a/arch/x86/kvm/regs.c
++++ b/arch/x86/kvm/regs.c
+@@ -564,7 +564,8 @@ static bool kvm_is_valid_sregs(struct kvm_vcpu *vcpu, struct kvm_sregs *sregs)
+ 	}
+ 
+ 	return kvm_is_valid_cr4(vcpu, sregs->cr4) &&
+-	       kvm_is_valid_cr0(vcpu, sregs->cr0);
++	       kvm_is_valid_cr0(vcpu, sregs->cr0) &&
++	       kvm_valid_efer(vcpu, sregs->efer);
+ }
+ 
+ static int __set_sregs_common(struct kvm_vcpu *vcpu, struct kvm_sregs *sregs,
+-- 
+2.55.0.141.g00534a21ce-goog
 
-It fixes a NULL pointer dereference in mt7921_channel_switch_rx_beacon()
-(and the identical mt7925 path). When an AP sends a Channel Switch
-Announcement (CSA) beacon, cfg80211 queues a wiphy work item that later
-calls the driver's channel_switch_rx_beacon(); if the station
-disconnects or the channel context is torn down in between,
-dev->new_ctx has already been cleared to NULL and is then dereferenced
-unconditionally. This is triggered by ordinary AP behaviour (channel
-switch / DFS), so it is easy to hit in the field, and it hangs the
-machine: the crash happens in a workqueue worker that exits with IRQs
-disabled, wedging the cfg80211 workqueue and progressively locking up
-userspace until a hard reboot. It affects the very common MT7921 /
-MT7922 / MT7902 chipsets.
-
-Reproduced on linux-7.1.y (Arch Linux 7.1.3-arch1-1), MT7902
-[14c3:7902] driven by mt7921e:
-
-  BUG: kernel NULL pointer dereference, address: 0000000000000000
-  RIP: 0010:mt7921_channel_switch_rx_beacon+0x18/0xa0 [mt7921_common]
-  Call Trace:
-   ieee80211_sta_process_chanswitch+0x682/0xc30 [mac80211]
-   ieee80211_rx_mgmt_beacon+0x7ec/0x19c0 [mac80211]
-   ieee80211_iface_work+0x4c4/0x630 [mac80211]
-   cfg80211_wiphy_work+0x13f/0x1e0 [cfg80211]
-   process_one_work+0x19f/0x390
-   worker_thread+0x1b1/0x310
-   kthread+0xe4/0x120
-  note: kworker/u64:15 exited with irqs disabled
-
-The offending code was introduced by
-  8aa2f59260eb ("wifi: mt76: mt7921: introduce CSA support")
-
-Please apply 351dd7d2c80d to linux-7.1.y and any other supported stable
-tree that contains 8aa2f59260eb.
-
-Thanks,
-Ismail Tarim
 
