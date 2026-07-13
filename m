@@ -1,87 +1,87 @@
-Return-Path: <stable+bounces-273562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273564-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id mopmFcp1VGoLmQMAu9opvQ
-	(envelope-from <stable+bounces-273562-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 07:21:14 +0200
+	id Puy+EhR4VGpqmQMAu9opvQ
+	(envelope-from <stable+bounces-273564-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 07:31:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46BA77473C6
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 07:21:13 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B5CC747426
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 07:30:59 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Ajj7AkiG;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=nKyQg85G;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273562-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273562-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273564-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-273564-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7338F30046A8
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 05:21:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0C3FD301D05C
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 05:30:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7221C35FF5B;
-	Mon, 13 Jul 2026 05:21:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39012360ECA;
+	Mon, 13 Jul 2026 05:30:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E878D235C01
-	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 05:21:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7C17191F98
+	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 05:30:44 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783920067; cv=none; b=AJibS2Ih80rghUDgN/H2A3JcD3NuubX+WCvjWCQjes+RzbMKgeN86TX9hM/2LCrBASSubCOVolyIyAkF3qrrqYlH78aClvxqE75WvOkipgTP2P2NT+KoNcrQAGcglkYT5tit7mYbVYn3CYdDHet7Rjb7SwOAmXjtDzbuyUejopE=
+	t=1783920646; cv=none; b=Xqd0rw1Y152e7fw0+1EmWiVC7/Bmu9NjJ5SnbVADTd15VIsmiWZhxlOzIfM6J09FzIZXZQgfuNK6aHuKo1uicVOCo3k7kVZDrzROnyQXxBrRNcHFRhwLIvowl64T7xl8zSnfurRrLpfLhDPlahu5mEKYv6Sg+OArG0/+8nl/d4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783920067; c=relaxed/simple;
-	bh=hQxFD7i4yXKbNXdf7zrLnrm2u0tzyOUDotsrRF+73YU=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=PdlMlkVnJ0rd92nX3SUTnN8u5KijbO/CicRLXjh+GF7LAKc4ImYyb6cbnWE/7cyeXhaFNJw/5E560IZTX1D+qCsNBW5vCx7R3sDFPsA/6amrbHRnrc+wHV/Tols+lcjcoH/16eFrDLlK58n7rgmq7FMGFPEg2kFbhIZHBJiUzj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ajj7AkiG; arc=none smtp.client-ip=209.85.216.51
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-381018b9375so3133588a91.0
-        for <stable@vger.kernel.org>; Sun, 12 Jul 2026 22:21:05 -0700 (PDT)
+	s=arc-20240116; t=1783920646; c=relaxed/simple;
+	bh=xTH8pl/pkhgHglj+EdDSLptEUidvChW4AX+XQg+FNPY=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=W9sH+8sXtuu/SeF81TagNtw4AJan12ZDFkB95DZ/t63W1w2t5VjzuPdkruHEMXhQhK/WZ2m1DEswlwfZL0eoJTXx2S+hEnjgxtZ+Yn2goP8+KLZVvNq/1MW5k/oXtJ6JDEa6AXLpv5Y7ggnI8+5t/DW77b0BeESoOHhfsOXwsPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nKyQg85G; arc=none smtp.client-ip=209.85.215.179
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-ca80d708489so1619578a12.1
+        for <stable@vger.kernel.org>; Sun, 12 Jul 2026 22:30:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783920065; x=1784524865; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1783920644; x=1784525444; darn=vger.kernel.org;
         h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=NgrUijC43NZjO9+tarpgdkIMgwBwcs7VglIntyvaAbA=;
-        b=Ajj7AkiGrhbqE8ptQn7IjU9adPXU9L9VPVfJTdqpsmbLdPm3pFOQX02DZj4j7Yg23X
-         y3BuU4cELZXzY/95YKB5MxQgAwp5VkXQdwJS0oDriyJeEegLWLJQfAZv16a8GFRgZF/H
-         peWGgoFo/jRdjGwjJnLA3me7axcxgWbsqPKRSdjPN8LlyYNcYabsZYaHKyQfFcqJgis4
-         m1FYK4C+rMpEgD8trDgWU3eEzK6R6xOVK1GwCXkQFXlhW5EmbcPjlJVkDJhTaShbAoO2
-         celHEFv2UiGCcJrcZCsQkTxBNeDyOZUFc0BZeghMnYRnYWiKYovEXdqYPnOtvHJIEggG
-         5wCw==
+        bh=n42GLElRxWFrSJ2rh+rVMDepVJ0T/L4DPFkt7qgjRVU=;
+        b=nKyQg85GcnYj1aEXIEiisMIoam6xWcBWMs6/MdDy6U3v0oNgQ6DGxOvGd8475DzCWt
+         L4Dk+mUknV/gVjJi2f7IzRhx3KGvorMz51Kd1aNn+gTQXfuvOhbr+AmUxTPv4osJSmXj
+         v/IjUrqDyx3VONIPne9IbUFTdsz9dNBOpc7RXA1X7Gvy6XsPZYTNBubsNzbDFUWrKffc
+         2sigJndhrJTIgfnVXqO0ygFYf7/vFDRH1wxJGfNvM3rbTVfTQZMW5PShfHTM8T+uyLFi
+         Rdjy/cdE9LgtZat4wv2/eqsd8UquBxgI6qVCRwQYwWidJTY86VjVyaNXAlHCQQvSMX1r
+         9DCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783920065; x=1784524865;
+        d=1e100.net; s=20251104; t=1783920644; x=1784525444;
         h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=NgrUijC43NZjO9+tarpgdkIMgwBwcs7VglIntyvaAbA=;
-        b=oAXSuKkz2N+4+CVcNNwVK4iLV9/0UmFgcHwjHiUbeCZqEkVPCugiD46xfd1gI/QA7t
-         vxhlITnzTjhjMfk11nCJ2iBYdEALudH++KVLwkOOHbx+emIHOfpgn7JKJd5Lx0t0I3rW
-         pTGrHLSd7aKBkd7bymIJmwYlrUS50d/iKiqNZQbT/zLkxciDNLS5FfWeOTaDndhNCSMs
-         8YvwCoyaxWiAlurSyJGAeObxIw+dcd1+4ocLacRFYf96+FpS2bADL3+r390SFr5pRDzA
-         v9LQiwjs/PQVrWUdhlhyE9XpxkceFquPy4LjzpZ/sxZTSuMsiAcN7fgK91I+XL2Vpe/7
-         hp+g==
-X-Forwarded-Encrypted: i=1; AHgh+RoPnHUmxjTxD8goXLAcMZFwtet52QEvZFQmTcrqzQlCCdVISPJFndmoaRfDJolz98t4zjQUgps=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw3D5io0KEbmHoUFM+XLKUJSc7p4dXgGKFU4ZU97mJzacWLKQ+2
-	NTw2b074jATk1VhCa4HVAYJrqA/5UAXc291XyG8QbXtH0jUYnOobvP/M
-X-Gm-Gg: AfdE7cnQ4oCg/2eI2WEih7Q0oaNHijQyEN+iTYmpIZHtXgKQel7VXJiQbduXOFm1/hq
-	RMV8xqYe2pppxPN8klwvC8gwYLL06nFGjFcYFUnMx4NufiBqdNtH3Aou92RWyZQL9Kf4jJZDCrF
-	UFCtlaMjpvbV9YEOtcCZi+/SEZL8eqjty/Az/Ham87CecCmpxbkvZlNvMJVw/QUk0Yc0Bnq6047
-	5IpscAc7QfcEE0mlvYNZsvDq6d3Z4zDf91VA8VgPrp+tjrsLE++0yA7FCiNK5US0bNgHWbnat22
-	lstMhsbp+Qqrmuk6cBurB0AL3oUO110NqUoMpiADpGThFA1lSHg/vh6t94EsxAblq6on0KAzxDJ
-	9rfT2Hkb7cgcYsC4u2pjRxeVTieTy171crg6FdKVTYdDb1zoyUHqnwUoDdh+ZCnIkA1J6u8ncRi
-	9cknoQjJt8u/M=
-X-Received: by 2002:a17:90b:2f0f:b0:38d:f710:63f0 with SMTP id 98e67ed59e1d1-38df7106443mr2705726a91.43.1783920065185;
-        Sun, 12 Jul 2026 22:21:05 -0700 (PDT)
+        bh=n42GLElRxWFrSJ2rh+rVMDepVJ0T/L4DPFkt7qgjRVU=;
+        b=FrFWKFHGDBynim66orGaUIFhxRPdy4GbIo8/+jDOhel5nmJ5cqK8/3qfUpF+Ppno/a
+         sEVPANFfzR1A90nZT/nHp7/Vi5ddAXmsjJPnEY2DSvEddbp6wMMX9qCzLuH6GEauE0T5
+         cC5hNrXakDUKE47HpC3ZHa7UmaTGfhGvpgjrOOVbu5aWtNj3qvNi4JUpFWgBtDPrEjcL
+         ugL4CuqK0Id+JwlDizwID1mjWVevjPDtDWrj7t10fSkvyxBW+73eLMzpFoIiywkp4EFK
+         fTvy1c9dTi3BN6pXPn+pnAhULtWx3CNpOySqzR5TbbhjH9RvpT+0br9QS2Ft97oULVBc
+         rrng==
+X-Forwarded-Encrypted: i=1; AHgh+Rp8qa4h7kEW0gNGoOte1YF8X7zYb/eiKkk2hI0XKOR7fjHik1aN3WnhnpAyBVhfRf9pm8XvlFQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzJ6g8p8QnwHrH7PW6JUNqoYZPlxgbRc7JteZcQowuBqI5T2koq
+	JAdBwbfIK42LO9jo/bQWFVGoecgC2B0kPBc+jF+B95fATKfHpnihTEdCsrQeaw==
+X-Gm-Gg: AfdE7ckwaSZPI0kSthbqevwzloDheXdMTtR/AV+D7Pt0GFSHekJpgiz2rkwzLV43Z6s
+	nPlB1FvQzw3CmNWU1BxYpPw/1zH/XH8E8SdCiX9uDneN98TV7PsLkb8gUKel2aXAxFpfcr8D8B+
+	itluyDOBNa+Fi4rSI5vrCFTFMI1VzrnyNVs2C1s3wjopxB9WyzwdQhNHVNdfILmwiXtyBs7XeOx
+	ITi6C9zeZm8MWt/m+cNMAvB+X2Vu+SCcz6MEYqq2PCz6jxQm474Bh8lDN68qpXA0h+7W8eEPcDy
+	5JiXkRG4COzXMl6eNIYHK70tRlRaNPHvE+0qc8v7CItfakM78O2TmsCtthFTJFCCVvZyne8Z2Fv
+	uabh4jxGnJQBQGcwFTAK2cSYcx43Y6FQ2d9KFHL3xeHT1r3kFqWYfVDaW4FGcN4oqf8Tn9ZXpmC
+	so+GrPkebWvsk=
+X-Received: by 2002:a05:6a20:a104:b0:3bf:ecf8:abe with SMTP id adf61e73a8af0-3c0f049ad18mr13393163637.0.1783920644181;
+        Sun, 12 Jul 2026 22:30:44 -0700 (PDT)
 Received: from pve-server ([49.205.216.49])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3117d847e17sm65148262eec.18.2026.07.12.22.20.59
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13b8deb2a21sm18756761c88.3.2026.07.12.22.30.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 12 Jul 2026 22:21:04 -0700 (PDT)
+        Sun, 12 Jul 2026 22:30:43 -0700 (PDT)
 From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 To: Sourabh Jain <sourabhjain@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com, mpe@ellerman.id.au
-Cc: npiggin@gmail.com, chleroy@kernel.org, shivangu@linux.ibm.com, hbathini@linux.ibm.com, mahesh@linux.ibm.com, adityag@linux.ibm.com, venkat88@linux.ibm.com, stable@vger.kernel.org, Sourabh Jain <sourabhjain@linux.ibm.com>, Mahesh Kumar G <mahe657@linux.ibm.com>
-Subject: Re: [PATCH v2 3/3] powerpc/crash: stop watchdogs before booting kdump kernel
-In-Reply-To: <20260713035954.1559605-4-sourabhjain@linux.ibm.com>
-Date: Mon, 13 Jul 2026 10:40:06 +0530
-Message-ID: <o6gbv5jl.ritesh.list@gmail.com>
-References: <20260713035954.1559605-1-sourabhjain@linux.ibm.com> <20260713035954.1559605-4-sourabhjain@linux.ibm.com>
+Cc: npiggin@gmail.com, chleroy@kernel.org, shivangu@linux.ibm.com, hbathini@linux.ibm.com, mahesh@linux.ibm.com, adityag@linux.ibm.com, venkat88@linux.ibm.com, stable@vger.kernel.org, Sourabh Jain <sourabhjain@linux.ibm.com>
+Subject: Re: [PATCH v2 0/3] powerpc/crash: protect kdump from active watchdogs
+In-Reply-To: <20260713035954.1559605-1-sourabhjain@linux.ibm.com>
+Date: Mon, 13 Jul 2026 10:51:10 +0530
+Message-ID: <mrvvv515.ritesh.list@gmail.com>
+References: <20260713035954.1559605-1-sourabhjain@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -93,22 +93,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-273562-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[14];
+	TAGGED_FROM(0.00)[bounces-273564-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	FREEMAIL_CC(0.00)[gmail.com,kernel.org,linux.ibm.com,vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:sourabhjain@linux.ibm.com,m:linuxppc-dev@lists.ozlabs.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:shivangu@linux.ibm.com,m:hbathini@linux.ibm.com,m:mahesh@linux.ibm.com,m:adityag@linux.ibm.com,m:venkat88@linux.ibm.com,m:stable@vger.kernel.org,m:mahe657@linux.ibm.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:sourabhjain@linux.ibm.com,m:linuxppc-dev@lists.ozlabs.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:shivangu@linux.ibm.com,m:hbathini@linux.ibm.com,m:mahesh@linux.ibm.com,m:adityag@linux.ibm.com,m:venkat88@linux.ibm.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[riteshlist@gmail.com,stable@vger.kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MISSING_XM_UA(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
@@ -122,118 +122,40 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 46BA77473C6
+X-Rspamd-Queue-Id: 9B5CC747426
 
 Sourabh Jain <sourabhjain@linux.ibm.com> writes:
 
-> On pseries LPAR systems, watchdog timers configured from userspace can
-> remain active after a kernel panic. When a panic triggers kdump, the
-> crashing kernel jumps directly to the kdump kernel without stopping
-> active watchdogs. As a result, the watchdogs remain active after the
-> kdump kernel starts.
+> Changelog:
+> ==========
 >
-> If dump capture takes longer than the watchdog timeout, PHYP resets the
-> LPAR before the dump is fully captured, causing dump capture to fail.
->
-> Fix this by issuing the `H_WATCHDOG` hcall during the crash shutdown
-> sequence to stop all active watchdogs before booting the kdump kernel.
->
-> Fixes: 69472ffa6575 ("watchdog/pseries-wdt: initial support for H_WATCHDOG-based watchdog timers")
-> Reported-by: Mahesh Kumar G <mahe657@linux.ibm.com>
-> Suggested-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-> ---
->  arch/powerpc/include/asm/papr-watchdog.h |  2 ++
->  arch/powerpc/platforms/pseries/setup.c   | 18 ++++++++++++++++++
->  2 files changed, 20 insertions(+)
->
-> diff --git a/arch/powerpc/include/asm/papr-watchdog.h b/arch/powerpc/include/asm/papr-watchdog.h
-> index fb3a511aa861..84bbe1ddd56f 100644
-> --- a/arch/powerpc/include/asm/papr-watchdog.h
-> +++ b/arch/powerpc/include/asm/papr-watchdog.h
-> @@ -55,4 +55,6 @@
->  #define PSERIES_WDTQ_MIN_TIMEOUT(cap)	(((cap) >> 48) & 0xffff)
->  #define PSERIES_WDTQ_MAX_NUMBER(cap)	(((cap) >> 32) & 0xffff)
->  
-> +#define PSERIES_WDT_NUM_ALL	((unsigned long)-1)
-> +
-
-minor nit:
-
-This should be defined at the end of the H_WATCHDOG Input section.
-/*
- * H_WATCHDOG Input
- *
-
-<...>
-
-Something like this maybe?
-
-/*
- * R5: "watchdogNumber":
- *       PAPR says use -1 (all ones) to stop all watchdogs.
- */
-#define PSERIES_WDT_NUM_ALL	((unsigned long)-1)
-
-/*
- * H_WATCHDOG Output
- *
- * R3: Return code
- *
- <...> 
-
->  #endif /* _ASM_POWERPC_CRASHDUMP_PPC64_H */
-> diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
-> index bbb2813f8ede..2e40a9dba637 100644
-> --- a/arch/powerpc/platforms/pseries/setup.c
-> +++ b/arch/powerpc/platforms/pseries/setup.c
-> @@ -77,6 +77,7 @@
->  #include <asm/dtl.h>
->  #include <asm/hvconsole.h>
->  #include <asm/setup.h>
-> +#include <asm/papr-watchdog.h>
->  
->  #include "pseries.h"
->  
-> @@ -185,6 +186,18 @@ static void __init fwnmi_init(void)
->  #endif
->  }
->  
-> +#ifdef CONFIG_CRASH_DUMP
-> +static void pseries_crash_stop_watchdogs(void)
-> +{
-> +	long rc;
-> +
-> +	rc = plpar_hcall_norets_notrace(H_WATCHDOG, PSERIES_WDTF_OP_STOP,
-> +					PSERIES_WDT_NUM_ALL);
-> +	if (rc != H_SUCCESS && rc != H_NOOP)
-> +		pr_warn("Could not stop watchdogs before kdump rc=%ld\n", rc);
-> +}
-> +#endif /* CONFIG_CRASH_DUMP */
-> +
->  /*
->   * Affix a device for the first timer to the platform bus if
->   * we have firmware support for the H_WATCHDOG hypercall.
-> @@ -203,6 +216,11 @@ static __init int pseries_wdt_init(void)
->  		return PTR_ERR(pseries_wdt_dev);
->  	}
->  
-> +#ifdef CONFIG_CRASH_DUMP
-> +	if (crash_shutdown_register(pseries_crash_stop_watchdogs))
-> +		pr_warn("Could not register watchdog crash shutdown handler\n");
-> +#endif
-> +
-
-minor nit:
-I don't think we need any of the #ifdef. All definitions used inside
-pseries_crash_stop_watchdogs are already available and
-crash_shutdown_register() already exists for !CONFIG_CRASH_DUMP, so we
-may as well drop all of the ifdefs.
+> v2:
+>  - Move H_WATCHDOG definitions to a common header for shared use
+>    across pseries code. 1/3
+>  - Added a new patch to handle pseries watchdog device registration
+>    failure. 2/3
+>  - Stop active watchdogs in crash hanlder. 3/3 Ritesh
+>  - Add suggested-by tag 1/3 & 3/3
 
 
-Otherwise LGTM, so feel free to add:
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Reviewed the changes and mostly looks good with some minor nits added to
+the individual patches.
+
+Small request -
+Could you please also update test results with v3 in your changelog
+(since you mentioned we are able to reproduce the issue easily with your
+test code).
+
+
+aah one other thing I just noticed since you are ccing stable and you
+added a Fixes tag in patch-3.
+Patch-3 alone cannot be easily backported now due to patch-1 and
+patch-2. There must be a way to define the dependencies if you are
+looking for backporting the fix patch to stable tree, please check that
+and follow that accordingly in v3.
+
+-ritesh
 
 
