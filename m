@@ -1,232 +1,337 @@
-Return-Path: <stable+bounces-273548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273551-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id +Bz0OOFdVGq7lAMAu9opvQ
-	(envelope-from <stable+bounces-273548-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 05:39:13 +0200
+	id bJQyB/piVGqolQMAu9opvQ
+	(envelope-from <stable+bounces-273551-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 06:00:58 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C2D9746F88
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 05:39:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A1ED7470C3
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 06:00:57 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=VnUzuhzA;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273548-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273548-lists+stable=lfdr.de@vger.kernel.org";
-	arc=reject ("cv is fail on i=2")
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=MaahYQex;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273551-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273551-lists+stable=lfdr.de@vger.kernel.org";
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AFCC4300A8C4
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 03:39:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E29633011BC5
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 04:00:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0A58336897;
-	Mon, 13 Jul 2026 03:39:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62CA31DF26E;
+	Mon, 13 Jul 2026 04:00:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012051.outbound.protection.outlook.com [40.107.200.51])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 368101F3BA4;
-	Mon, 13 Jul 2026 03:39:07 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783913949; cv=fail; b=OYfpLq9AueLeIU+5vQiO3h+Pp+ol/orzuiKJJNRKbj11CyGRQWLVBkmoL9b0AmbfN4uT424zf5EqRJ8Rt0IRTF0pWcSt0FeEjhfDvuQ8mhpsmaDcriCqSrVpVbGQU3DQawLKhKgO7R4hrQA9gcK9/Aaz2A8ERLm9aryayHo1UD4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783913949; c=relaxed/simple;
-	bh=TvUQ2s4lS1MGkHUYBtEQlGKm/VKkWD/n9WNr2oGghCI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=UIx0JgHxaWcMi3ToPtX1FOgnda7B1+8Xs8LrXS2mp1ON2r7a/2KX9aWxIXRaBF/pGwYQpOwKQPMHxAWwI1GywkzOB6pWjPQzOcq/Sr4LRzCr/ua2bMoxDpSFSy/Xa7ZUY6X41F9d+e+Mtv6lRHBC6Yna7XnHeZbumaLKPKd1sGU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=VnUzuhzA; arc=fail smtp.client-ip=40.107.200.51
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=luKDnQaj0GyoC1lmy0cU1KvHTzOQCvajPf3WIx+H4ShhIkpf2kSk8SfuncYxImHFAmKSRe0bjZG3vYQb9ToFAJMw/y+H5NWeXMTSkoHiTuUJ+mEjX6ctDNTY/uBN6ZNUD2fdHvEop4GreJ/TLXR/9X+BPoHWgDkptNBMvDAHsRfV+/wsP9F7X//TmFPBzWtkhzlXaCjXHB6fgAInnUBVdTQyMqW9Cyc5ypUGtnPXkKUlz/D+vKhWA1miGSfgs7himNpSuedhaiCBH3eAfTyIcBVyfgVvEOSRYWr/sg82RqJiFNW5zdOtLiO3xbF9k0EdS9Sx0D9pqz83K7p84vgCsw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NNa9qIiKhIOr3utpxmBrWEX1h2v+nBZWK5oNzswzf/o=;
- b=Lz4Xm8IvaNzHZg8J6CA3VUoWiz2igmoR1lRN5ITBysUPLJbA0+DMSqdpGOUWM+XgMim/HVKg4cOe6bUf6VcleJUBExU2LXUWy97MLna/HIjVM46+TPK0UsKwpHzPoWL7sKx3sd/8jG2qRfc90jwjY7d7OxJFfa0Tr39k/4VDXBHJACvj3yaX4CBVpGyMjmw0fL0+DYYtOEmxvtT+8DwjUmh8KmpNM1pNgKUkepL+I3S2T24XKnGeuArRJ0HSj4XQnPsm5+I9OZaS3pIrpkiYvh43EXUHZsBBt9Mt4SpTfGrkY63rwhoqnaUQHljtWP90E7omTuRxeqY6aCEHEbHgVA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NNa9qIiKhIOr3utpxmBrWEX1h2v+nBZWK5oNzswzf/o=;
- b=VnUzuhzAyrnpW3NmnPQXcbxrl4y92dFj6j4nx/i72n5L6rgXAR28qMBxOXxpOLFPB0/8dTzPQsNgwHWuPV8xtm72IwHz1ZvBMu6GQ8LBtYk34/sSyMKmNGPQEIoD2mqwzxigX2kCQox0mJxqtavZI1QXrAq8JQfI+6OOXTQyWLlrLZLAJHxGhtoxTKrazm2oXqjnBc4oWhL4RqsjtMQeQLZ/Mql+j7HgQrB5VMSzFoS/N8Ltc6n7Ml+srynZXxgYStK8fxt/XA2ikE3cKeS6UYiAQrANYlJ9kHX4p8JmfNrRCxe6CZadbCb5W4V5Uhd2BNGSAlTEEhfdy5gVZ15MCA==
-Received: from CH2PR12MB5001.namprd12.prod.outlook.com (2603:10b6:610:61::18)
- by DM4PR12MB6327.namprd12.prod.outlook.com (2603:10b6:8:a2::9) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.181.23; Mon, 13 Jul 2026 03:39:01 +0000
-Received: from CH2PR12MB5001.namprd12.prod.outlook.com
- ([fe80::89e3:6df0:de90:8dfe]) by CH2PR12MB5001.namprd12.prod.outlook.com
- ([fe80::89e3:6df0:de90:8dfe%3]) with mapi id 15.21.0181.014; Mon, 13 Jul 2026
- 03:39:01 +0000
-Date: Mon, 13 Jul 2026 13:38:56 +1000
-From: Balbir Singh <balbirs@nvidia.com>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, apopple@nvidia.com, 
-	baohua@kernel.org, baolin.wang@linux.alibaba.com, byungchul@sk.com, 
-	david@kernel.org, dev.jain@arm.com, gourry@gourry.net, jannh@google.com, 
-	joshua.hahnjy@gmail.com, lance.yang@linux.dev, liam@infradead.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org, matthew.brost@intel.com, 
-	npache@redhat.com, rakie.kim@sk.com, ryan.roberts@arm.com, vbabka@kernel.org, 
-	ying.huang@linux.alibaba.com, ziy@nvidia.com, shakeel.butt@linux.dev, hannes@cmpxchg.org, 
-	sashiko-bot <sashiko-bot@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH v3 1/3] mm/mempolicy: skip non-present PMDs when queueing
- folios
-Message-ID: <alRdvU1CGaqGn7re@parvat>
-References: <20260710105557.1987433-1-usama.arif@linux.dev>
- <20260710105557.1987433-2-usama.arif@linux.dev>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260710105557.1987433-2-usama.arif@linux.dev>
-X-ClientProxiedBy: MEWP282CA0177.AUSP282.PROD.OUTLOOK.COM
- (2603:10c6:220:1cd::20) To CH2PR12MB5001.namprd12.prod.outlook.com
- (2603:10b6:610:61::18)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3E25233937
+	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 04:00:29 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783915231; cv=none; b=Exr3Yi5Xoo2Y8sWRZ/UpA0bN/OaNIY2wFVQdLPfXC3EBMUu3hESbCmGKc4m0ToSMAfWMLrwG7LxEhYw09Akf/TwfyX1Vq/0fh5fGesXt5dI47IToQDRolEPkSY252XPFBZAqO4KGPAe8n32Ee9ErQDJHIiBPj6gWcJB8XnqyEmk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783915231; c=relaxed/simple;
+	bh=jfmyXq/xdOSYlzbwqm++BXMv/l5HuzXdEbA9n/YRNnE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Mxw+IyqNqyBL6pqxvenQr5GhhhtHCnkMRSn4KR8BI5zKeXumgD+vE8OWxuU/Y3n8pSvS0b4QTn0qM53zKvDmcSNv15Jl3kjgZDaDn9jCQBtH4Sm/uPxNItQjAG7DWOH9AXl4eaBekbDDw0hi9kchAF/UJJ1c8v06kKIwQMjlems=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=MaahYQex; arc=none smtp.client-ip=148.163.156.1
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66D3CerA1285034;
+	Mon, 13 Jul 2026 04:00:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=TcvkY5jQJWy2eqfpBuatDJifMVq1igm6aF/4dCdVp
+	Es=; b=MaahYQexuTghk+jm5Uz7FIag0nM4D7vFMBtIyqiSZaWxqG6Yt8f7Y/sCp
+	vB3hYo03bfPGKWG9p9IrxrPGASaQYY8o8VmseeF3AJOeSeR1lvlvo21+zEYhViAH
+	ccZ00nfOTg/37CFBQXb6S6eXvjFeaXwsngygT/PEAGkAmI44vNLCLxLwzhiolCgw
+	7rLeJoY6dn+Mazy5CETC5g/Yu7Dv7cg1aM86auntiqSRAFZjpwnbIO5iszLViLVO
+	RPkK9gR4GzJ6BmvGyKUywoXmyGA4zFF5KlPFZTBJSb1RYjCDGngLGVKxLC8tLk6b
+	ccChk81IxYtjB28ISESfMEZFmYGzw==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fber86gmj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 13 Jul 2026 04:00:06 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66D3ns8h032189;
+	Mon, 13 Jul 2026 04:00:05 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fc2uxummx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 13 Jul 2026 04:00:05 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66D401IK44892656
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 13 Jul 2026 04:00:01 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4A2402004B;
+	Mon, 13 Jul 2026 04:00:01 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F296E20040;
+	Mon, 13 Jul 2026 03:59:57 +0000 (GMT)
+Received: from li-4f5ba44c-27d4-11b2-a85c-a08f5b49eada.bl1-in.ibm.com (unknown [9.123.14.142])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 13 Jul 2026 03:59:57 +0000 (GMT)
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com, mpe@ellerman.id.au,
+        ritesh.list@gmail.com
+Cc: npiggin@gmail.com, chleroy@kernel.org, shivangu@linux.ibm.com,
+        hbathini@linux.ibm.com, mahesh@linux.ibm.com, adityag@linux.ibm.com,
+        venkat88@linux.ibm.com, stable@vger.kernel.org,
+        Sourabh Jain <sourabhjain@linux.ibm.com>
+Subject: [PATCH v2 0/3] powerpc/crash: protect kdump from active watchdogs
+Date: Mon, 13 Jul 2026 09:29:51 +0530
+Message-ID: <20260713035954.1559605-1-sourabhjain@linux.ibm.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB5001:EE_|DM4PR12MB6327:EE_
-X-MS-Office365-Filtering-Correlation-Id: b7c6c419-16e0-4a01-6bf3-08dee0904768
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|23010399003|7416014|376014|56012099006|11063799006|4143699003|6133799003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	hr3zG1iDw1J+i/KqSMXfmzgDRumblVNJwmIwtYQ5sJ4JUOqISubN0sE2t2ZGs9ZBLr6OQiAkEshhc4Uk8kZhilm/RQhFDP7QPFYLYIeinnyh1D4Fe+flZbacUFmLZ3TTc/1CSWRXAldNGa9jmqVOl5TEGHK2OJCDYTWYB/QFv2n2HE+6fcAUtP5CXFNsPs8hjCskEyu0mlfIDZkzmAuloHH0554pWnDkKsWCTSbNy49IKIfXotkzN4th5SCvgkSriLa6UvV6CCpJPQXwpV/VLny+tAK3Oe8BSsJ4f63hvcp25uhmML4OjP9HxDTHnoDvE1fgNAphA4NB6Bd58d8XkXCFGbCXuZvVKM7nWDkPNptM+TIiCgCGXD+r43xQWHIjOEIZXEawcEkBqj9zpAlvFU3iZ6KQctsI12+EWaMyXThcxKKQlFlbSyEtdVMZUKx8zrtfEnoF13M9m1zvD1ng6AiM8AoPXbM7FSNjfD9M6SZx1d3s1a+pOTuIqEg/GjQ45jyuVNgQLk9DNxytH9GvHdGSba9n65Zsa4TMewfrdLknfkGpnox8E5yqT133HJGY5JrNrNd466pQ54Johv5SxDFjt2MxbE8yyTKHeAnC2p4KqXR2ms+ve0sqTVve05RgyGNQZ6hQ6DBFZOgwoK2RjPkONL+L0rxEdMOEwRe/ONg=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB5001.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(7416014)(376014)(56012099006)(11063799006)(4143699003)(6133799003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?v+ssguYM1DA3lsOxuKft6ajVbw3zi0tr3Ji2KMF8FTdeDL6pYwstsTa8SAfe?=
- =?us-ascii?Q?dw2yEUdqZ+07TpUE34TVK7U34K/mF7PXOKYmtPt1ajLP17AiGsUl5D2+/9lR?=
- =?us-ascii?Q?r6DhTbQwPXAdlwKP/lrAa1GguoPQtF6wdZPbWGaS7f4o8zgdxyUx1SNILygR?=
- =?us-ascii?Q?MVQztiujRU8c1n8E9BY2cPo+UAQIgG7Jhov68MGYg4BZBeN4e25RN62nrbge?=
- =?us-ascii?Q?NSxHR4hTShNDOkCgy4SwYUewJHMgeOytyIarh3N07PjkdZHtOIskqzGo5Dsq?=
- =?us-ascii?Q?2WbUMcgO4+33hh5eSXsdJcJ8Gy0q/GCznqSpfvZ/86FjU6Psq3RDJPn8mKD6?=
- =?us-ascii?Q?rmh4066xORjVCPDEDJKuiL5gqxrie+e4//1VtfnOtikiu28A3634k/jCv4FZ?=
- =?us-ascii?Q?Ha7b5o6jOvDnhAoQtZ74XDO5ExJbAFK+4dbzZxAfdUA+Qtt82Kj1C1AoSjNh?=
- =?us-ascii?Q?AfmFbF5marX/pXYdtk/rCNEtNJpLhsHTuGaC7PZI9bsKxWA0J44wSy39Zb+D?=
- =?us-ascii?Q?5Tik5XVTvJjzbxUB4+WA4WH2R7Xdu9Sz/GXQHvbqso4uUH/UlpMiiNdChvN/?=
- =?us-ascii?Q?yRCKVu+bYBv7rpxCdJEuVFXC/GigvSBpUMgzK06YNLgEeEA6XDLMSnHmjDX3?=
- =?us-ascii?Q?yWtgFt4fX9oAICTwoOmn2PqFMw1/LQ1idMeK9XnGxM/SsuRm2BF82vKH1iUL?=
- =?us-ascii?Q?NKiTqa5bJf3vJU+3uN6bepRwVZawOei7JAgcDvNQGSGwWhraq65TGsbK2xYN?=
- =?us-ascii?Q?rYrKoeq+CLo00qAjMw/t4YhPOjfoKRQivy0g0cp0dm/xeN3yTbEURgTUTzP0?=
- =?us-ascii?Q?gLtTwuzlSsvDtFoOK4mo0E7kPGfgiCxU3OnKI3HvwNhTCPuGjQ7ppXu7NVs3?=
- =?us-ascii?Q?qe3F19ONXSUKYZfA97gDbxeWWO7XBwMD5EJOts7px8XGVYu11sYSIc6FGeg7?=
- =?us-ascii?Q?JL38apfdnniTRd71GisYew/iJKf00/5zreH1PUtbadX+LD1gPyj0c062noFt?=
- =?us-ascii?Q?A79XoKMeB+pbSwHJclFAkpYqPzMlsKnmIV1z+jM+wiP7+astcu+hxwvrhm8d?=
- =?us-ascii?Q?PXIABQ1m7UkydYsI2cFxiIvsP+MYQXkFXz6Rl+aiyxGNQJ0jXOz6UkkOYo5K?=
- =?us-ascii?Q?ZiMcJnMlEKmr7BCsXj12h2YHMHqwTomAbtfu47YC43HaPwTtBPbun57afoYt?=
- =?us-ascii?Q?Ky/Yujp1x3IuBR74zRuBy8aXVrz998wV9CAGoubeyT4p/AxP/1qnZjOeuba0?=
- =?us-ascii?Q?lcoe36ULVDDRZkPuZ18Z8t7j22iJDpNVLRBEAj3D6FY8bf2cC1C+w1Nc7vyG?=
- =?us-ascii?Q?aZ0pOWiR8jWo0EQUehgGJwxrM8k5CJ88nEJ+zwozf2474rIPIBR0VNthYx1r?=
- =?us-ascii?Q?lFuSatR7KdJkhtW3otsGnsInyyD/e415/maOHgy+3apFzXlJHWuJ+fhfusMy?=
- =?us-ascii?Q?Pf3ZQlZYSZx1iUZNJSQv5anFcRXJINWdC7F2SURYPRFtIys4W5FEC0NPWxnY?=
- =?us-ascii?Q?RN2yHLn1zCwj/7dTUFfeWRk1suRsKPdJ+gpW7XHAo31/iAdN89t9ZiIYXn9w?=
- =?us-ascii?Q?iG5hvCjU6CQtaeJg0VzIcttWgg1O7nJvLjgU4R8kjTWi6vh9f6y8NJ+GReqA?=
- =?us-ascii?Q?554RJlS3WACPy5oTrEPNzKEsyytTepKNG1p0AXmyq291I5JeMJ1IDVsz6VlH?=
- =?us-ascii?Q?Olm7XM4JKDPC9fiZVdALnxH2B50YAZ3yeS29dBUvK09Q3vy9a1ALGGP9Hccq?=
- =?us-ascii?Q?mGxnFbUANw=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b7c6c419-16e0-4a01-6bf3-08dee0904768
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB5001.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jul 2026 03:39:01.3071
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: eYT7IWLpWLkIaPYw1woROCil7jvMwIR8iyU4cDHDXh02/hQiyygcneNlw65GdO8nhPGREiKuJGYbgW/4SCgbJA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6327
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzEzMDAzNCBTYWx0ZWRfXwEeaK+HBr3fT
+ R/jXEmFaR/nrr/cvix9zA8/Oobo40TLdg+165clZLe4KoqC2Q9TTeXv4eKvDtavsKjxCbyUv++w
+ A69lX6X5mtfLCO0rxc3ZlYOandNsJ9NpfCxjfhGAYRQ+2dFDbSr41RaZiHAHMy18HXtMwEDDlls
+ FJFuWQmpD2Tckg2+11iqE2jaaSYbK7ygW977+IK0g3z+r2N2Ys3CHHBR5Gv70/MBDV8G9kp5JZ0
+ p/QeyQL1nD9UCoxYxMGyVLz9Rmk4ZyzWjUA2V9+oAeQkv1TStuqFwWbB1HqeOjSkukx4bncYDCy
+ 7XJ+FFT73/geaDnkjzsWHCXVpiCLEvqqPlRn4RlKotivIG9Cz3zr8TSiGjZnsxdzFkyij7daE4O
+ 1G9f/nFYwd+U3lXQxzMrI/Qstqi5RyYguSLl2emtyTM72dhnhsAxXMi7Q4friDlferycBpM2lOv
+ QB6AGZqRtTQQnQznvzQ==
+X-Proofpoint-ORIG-GUID: HtxwFtt75lm-fJeRFP11dfwJSDN7oMiO
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzEzMDAzNCBTYWx0ZWRfXzyUOwROZQDqK
+ 69lbJR33v/2uvUiwYfRo27VojjBCooLANROkGAWwoUfTm9eCWoxuifOe+tgzSBdHeYkh5elMoP4
+ Fe0q6KqNQm+6nvKOVV83N29yoBPdfZk=
+X-Authority-Analysis: v=2.4 cv=TpzWQjXh c=1 sm=1 tr=0 ts=6a5462c6 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=uAbxVGIbfxUO_5tXvNgY:22 a=Gk6Qg7I2AAAA:20 a=iox4zFpeAAAA:8 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=akTv58P-d981-2rlXkgA:9 a=O8hF6Hzn-FEA:10
+ a=WzC6qhA0u3u7Ye7llzcV:22 a=bA3UWDv6hWIuX7UZL3qL:22
+X-Proofpoint-GUID: UvoKfOaP_kROOzZAEsPq8YPjXuEqrb9Q
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-13_01,2026-07-10_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 priorityscore=1501 impostorscore=0 malwarescore=0 bulkscore=0
+ lowpriorityscore=0 adultscore=0 spamscore=0 clxscore=1015 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607130034
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-5.16 / 15.00];
-	WHITELIST_DMARC(-7.00)[nvidia.com:D:+];
+X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
-	MID_RHS_NOT_FQDN(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-273548-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:usama.arif@linux.dev,m:akpm@linux-foundation.org,m:apopple@nvidia.com,m:baohua@kernel.org,m:baolin.wang@linux.alibaba.com,m:byungchul@sk.com,m:david@kernel.org,m:dev.jain@arm.com,m:gourry@gourry.net,m:jannh@google.com,m:joshua.hahnjy@gmail.com,m:lance.yang@linux.dev,m:liam@infradead.org,m:linux-kernel@vger.kernel.org,m:linux-mm@kvack.org,m:ljs@kernel.org,m:matthew.brost@intel.com,m:npache@redhat.com,m:rakie.kim@sk.com,m:ryan.roberts@arm.com,m:vbabka@kernel.org,m:ying.huang@linux.alibaba.com,m:ziy@nvidia.com,m:shakeel.butt@linux.dev,m:hannes@cmpxchg.org,m:sashiko-bot@kernel.org,m:stable@vger.kernel.org,m:joshuahahnjy@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[27];
-	FORGED_SENDER(0.00)[balbirs@nvidia.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-273551-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[lists.ozlabs.org,linux.ibm.com,ellerman.id.au,gmail.com];
 	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	RCVD_TLS_LAST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[Nvidia.com:+];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[balbirs@nvidia.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linux-foundation.org,nvidia.com,kernel.org,linux.alibaba.com,sk.com,arm.com,gourry.net,google.com,gmail.com,linux.dev,infradead.org,vger.kernel.org,kvack.org,intel.com,redhat.com,cmpxchg.org];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER(0.00)[sourabhjain@linux.ibm.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:linuxppc-dev@lists.ozlabs.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:ritesh.list@gmail.com,m:npiggin@gmail.com,m:chleroy@kernel.org,m:shivangu@linux.ibm.com,m:hbathini@linux.ibm.com,m:mahesh@linux.ibm.com,m:adityag@linux.ibm.com,m:venkat88@linux.ibm.com,m:stable@vger.kernel.org,m:sourabhjain@linux.ibm.com,m:riteshlist@gmail.com,s:lists@lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org,linux.ibm.com,vger.kernel.org];
+	DKIM_TRACE(0.00)[ibm.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sourabhjain@linux.ibm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.ibm.com:mid,linux.ibm.com:from_mime,suse.com:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,Nvidia.com:dkim,nvidia.com:from_mime,nvidia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:email,parvat:mid,sashiko.dev:url]
+	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_SEVEN(0.00)[11]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3C2D9746F88
+X-Rspamd-Queue-Id: 8A1ED7470C3
 
-On Fri, Jul 10, 2026 at 03:55:21AM -0700, Usama Arif wrote:
-> queue_folios_pmd() is called under pmd_trans_huge_lock(), whose
-> pmd_is_huge() check returns true for any non-present, non-none PMD
-> softleaf. Passing such a PMD to pmd_folio() treats the softleaf encoding
-> as a hardware PFN and can return a bogus folio pointer.
-> 
-> Mirror queue_folios_pte_range(): handle non-present entries before
-> looking up a folio. Keep migration entries counted as failures, but skip
-> other non-present PMDs such as device-private entries.
-> 
-> Potential trigger: an HMM-based GPU driver migrates an anonymous THP
-> folio to device memory via migrate_vma_pages(), leaving a device-private
-> PMD. Userspace then calls mbind(), migrate_pages() or
-> set_mempolicy_home_node() on that range.
-> 
-> Reported-by: sashiko-bot <sashiko-bot@kernel.org>
-> Link: https://sashiko.dev/#/patchset/20260703173903.3789516-1-usama.arif%40linux.dev?part=6
-> Fixes: 368076f52ebe ("mm/huge_memory: add device-private THP support to PMD operations")
-> Cc: <stable@vger.kernel.org>
-> Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: Usama Arif <usama.arif@linux.dev>
-> ---
->  mm/mempolicy.c | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
-> 
-> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-> index 914f81863db5..69a00a324ef5 100644
-> --- a/mm/mempolicy.c
-> +++ b/mm/mempolicy.c
-> @@ -654,12 +654,14 @@ static void queue_folios_pmd(pmd_t *pmd, struct mm_walk *walk)
->  {
->  	struct folio *folio;
->  	struct queue_pages *qp = walk->private;
-> +	pmd_t pmdval = pmdp_get(pmd);
->  
-> -	if (unlikely(pmd_is_migration_entry(*pmd))) {
-> -		qp->nr_failed++;
-> +	if (unlikely(!pmd_present(pmdval))) {
-> +		if (pmd_is_migration_entry(pmdval))
-> +			qp->nr_failed++;
->  		return;
->  	}
-> -	folio = pmd_folio(*pmd);
-> +	folio = pmd_folio(pmdval);
->  	if (is_huge_zero_folio(folio)) {
->  		walk->action = ACTION_CONTINUE;
->  		return;
-> -- 
+On pseries LPAR systems in a high-availability environment using the
+SBD[1][2] service, I observed that the system abruptly rebooted before
+dump capture could complete.
 
-Reviewed-by: Balbir Singh <balbirs@nvidia.com>
+Further investigation showed that SBD had configured a watchdog with
+a 30-second timeout. Since the kernel crashes directly into the
+kdump kernel without shutting down userspace services, the watchdog
+remained active during dump capture. Once the watchdog timeout
+expired, PHYP reset the LPAR, causing dump capture to fail.
+
+The issue was reproducible only when the watchdog was active. Dump
+capture completed successfully after disabling the watchdog,
+stopping the SBD service, or increasing the watchdog timeout value.
+
+This patch fixes the issue by stopping all active watchdogs on the
+crash shutdown path before booting the kdump kernel.
+
+Driver that export the hardware watchdog device is:
+drivers/watchdog/pseries-wdt.c
+
+[1] https://github.com/clusterlabs/sbd/blob/main/man/sbd.8.pod.in
+[2] https://documentation.suse.com/sle-ha/15-SP4/html/SLE-HA-all/cha-ha-storage-protect.html
+
+Changelog:
+==========
+
+v2:
+ - Move H_WATCHDOG definitions to a common header for shared use
+   across pseries code. 1/3
+ - Added a new patch to handle pseries watchdog device registration
+   failure. 2/3
+ - Stop active watchdogs in crash hanlder. 3/3 Ritesh
+ - Add suggested-by tag 1/3 & 3/3
+
+v1:
+https://lore.kernel.org/all/20260603070217.483696-1-sourabhjain@linux.ibm.com/
+
+
+This issue can be reproduce using below program:
+------------------------------------------------
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <signal.h>
+#include <errno.h>
+#include <sys/ioctl.h>
+#include <linux/watchdog.h>
+
+#define WATCHDOG_DEV    "/dev/watchdog"
+#define TIMEOUT         10
+#define PET_INTERVAL    1
+
+static int wdt_fd = -1;
+
+static void watchdog_close(int disarm)
+{
+    int flags;
+
+    if (wdt_fd < 0)
+        return;
+
+    if (disarm) {
+        flags = WDIOS_DISABLECARD;
+        if (ioctl(wdt_fd, WDIOC_SETOPTIONS, &flags) < 0)
+            printf("WDIOS_DISABLECARD failed: %m (nowayout may be set)\n");
+        else
+            printf("Watchdog disabled via WDIOS_DISABLECARD\n");
+
+        if (write(wdt_fd, "V", 1) < 0)
+            printf("Magic 'V' write failed: %m\n");
+        else
+            printf("Magic 'V' written\n");
+    } else {
+        printf("Closing WITHOUT disarming - watchdog keeps running!\n");
+    }
+
+    close(wdt_fd);
+    wdt_fd = -1;
+    printf("Watchdog fd closed\n");
+}
+
+static void safe_exit(int sig)
+{
+    printf("\nSignal %d received - disarming watchdog...\n", sig);
+    watchdog_close(1);
+    exit(0);
+}
+
+static int watchdog_init(void)
+{
+    int flags, timeout = TIMEOUT;
+    struct watchdog_info ident;
+
+    printf("Opening %s...\n", WATCHDOG_DEV);
+    wdt_fd = open(WATCHDOG_DEV, O_WRONLY);
+    if (wdt_fd < 0) {
+        printf("Failed to open %s: %m\n", WATCHDOG_DEV);
+        return -1;
+    }
+    printf("Watchdog opened and ARMED\n");
+
+    flags = WDIOS_ENABLECARD;
+    if (ioctl(wdt_fd, WDIOC_SETOPTIONS, &flags) < 0)
+        /* ENOTTY = driver always enabled, that's fine */
+        printf("WDIOS_ENABLECARD: %m (ok if ENOTTY)\n");
+    else
+        printf("Watchdog enabled via WDIOS_ENABLECARD\n");
+
+    if (ioctl(wdt_fd, WDIOC_SETTIMEOUT, &timeout) < 0)
+        printf("WDIOC_SETTIMEOUT failed: %m\n");
+    else
+        printf("Timeout set to %d seconds\n", timeout);
+
+    /* verify what the driver actually set */
+    if (ioctl(wdt_fd, WDIOC_GETTIMEOUT, &timeout) == 0)
+        printf("Actual timeout  : %d seconds\n", timeout);
+
+    if (ioctl(wdt_fd, WDIOC_GETSUPPORT, &ident) == 0)
+        printf("Identity        : %s\n", ident.identity);
+
+    return 0;
+}
+
+static void watchdog_tickle(void)
+{
+    int timeleft = 0;
+
+    if (ioctl(wdt_fd, WDIOC_KEEPALIVE, 0) < 0) {
+        printf("WDIOC_KEEPALIVE failed: %m - falling back to write\n");
+        write(wdt_fd, "1", 1);
+    }
+
+    if (ioctl(wdt_fd, WDIOC_GETTIMELEFT, &timeleft) == 0)
+        printf("Petted watchdog. Timeleft: %d sec\n", timeleft);
+    else
+        printf("Petted watchdog.\n");
+}
+
+int main(void)
+{
+    signal(SIGINT,  safe_exit);
+    signal(SIGTERM, safe_exit);
+
+    if (watchdog_init() < 0)
+        return 1;
+
+    printf("\nPetting every %d seconds. Ctrl+C to safely stop.\n\n",
+           PET_INTERVAL);
+
+    while (1) {
+        watchdog_tickle();
+        sleep(PET_INTERVAL);
+    }
+
+    return 0;
+}
+
+Steps to reproduce the issue:
+-----------------------------
+1. Load kdump kernel
+2. Insert pseries-wdt driver
+3. Compile the above proram and run the binary
+4. Crash the kernel (echo c > /proc/sysrq-trigger)
+
+Sourabh Jain (3):
+  powerpc/pseries: Move H_WATCHDOG definitions to a common header
+  powerpc/pseries: Handle and log pseries-wdt registration failures
+  powerpc/crash: stop watchdogs before booting kdump kernel
+
+ arch/powerpc/include/asm/papr-watchdog.h | 60 ++++++++++++++++++++++++
+ arch/powerpc/platforms/pseries/setup.c   | 32 ++++++++++++-
+ drivers/watchdog/pseries-wdt.c           | 53 +--------------------
+ 3 files changed, 91 insertions(+), 54 deletions(-)
+ create mode 100644 arch/powerpc/include/asm/papr-watchdog.h
+
+-- 
+2.52.0
+
 
