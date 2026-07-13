@@ -1,90 +1,90 @@
-Return-Path: <stable+bounces-274024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274026-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Na/pJ0NgVWp/ngAAu9opvQ
-	(envelope-from <stable+bounces-274024-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 00:01:39 +0200
+	id F+oLLetfVWpRngAAu9opvQ
+	(envelope-from <stable+bounces-274026-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 00:00:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F121374F672
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 00:01:38 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B533374F649
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 00:00:10 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=0sec.ai header.s=google header.b=d4Ba279q;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274024-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274024-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=0sec.ai header.s=google header.b=Jb9wKmyN;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274026-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274026-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=none;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 89D0D303A726
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 21:59:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 03291300EB93
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 22:00:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C42B036F90D;
-	Mon, 13 Jul 2026 21:59:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34C6F37188B;
+	Mon, 13 Jul 2026 21:59:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0FFA36A358
-	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 21:59:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B161236C0AB
+	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 21:59:54 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783979983; cv=none; b=qp590P+SHSpBdOjF3NUw7PFGWjRL8jkspAL7ptU0kB1yhMCJIBW/tlqh0SBi+VJ1JCEwMSOaE3bQ/sL5W3SY7bH7i9zgD9s/XfrruScn+C24dyGiAtuArVyRAolVBnDRZBA/PSSwhOu1r7DhtVvRikI87DBba2HNqBflviNJmZg=
+	t=1783979997; cv=none; b=ahOTY1lbdKg67mVZVveKsxm6Se+xk9+jEj7+YenXvaQpgeBPaZXELToYhYTSJo/2TJ5Ele+b2T2AZeEXou8OsApXdJ0LACCOs1rvbm50m1Z1kCLxE9DuaLvSB7PsVoLe3CPyzIPL7IWTrrp8N0pNBz1tvyFeOjlza5befFbV8tc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783979983; c=relaxed/simple;
-	bh=CHryohLe/fnBYpOI8e4BvVaoKUdQxQ7HJ+W2ldsPKKc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nl+9EvZ+F5msR+7S/4rKkhNJGcEBPrYKSOUv3QmEzLtfRxtCPD0m0CtEcEa9xiIGkjk8aJ2tdHLpXvt1XQA9JAyDqJtj3DIsV00dGmBE92fDZJI4Ioan1rarckKs0/82Heq1IIaSWpaURmcw522/OSfx6QmFvID4V1/2QcJlANQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai; spf=pass smtp.mailfrom=0sec.ai; dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b=d4Ba279q; arc=none smtp.client-ip=209.85.128.44
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-493ba701891so2338835e9.3
-        for <stable@vger.kernel.org>; Mon, 13 Jul 2026 14:59:41 -0700 (PDT)
+	s=arc-20240116; t=1783979997; c=relaxed/simple;
+	bh=v3Z0OcIqKbNS7Ql2czcz/92okPIx5idf7ktDBvk6Vuw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=c4D2gj3mF+MAm7xWtruBXnZsjUqiexByPqVgZuA77juHVu3Fg1DntU2cZ3Mzk+rsJM9GVGL+DG9FFIKj/qvV78DL4yUtmFT1YcU0R+zoGEd9QZTW9CNahc7lAlXkOgdM1lGYs+wUiIHjMfm39pstgWHfQHGUaLZU3+maM5dJClA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai; spf=pass smtp.mailfrom=0sec.ai; dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b=Jb9wKmyN; arc=none smtp.client-ip=209.85.128.51
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-493bc8fda98so2452825e9.0
+        for <stable@vger.kernel.org>; Mon, 13 Jul 2026 14:59:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=0sec.ai; s=google; t=1783979980; x=1784584780; darn=vger.kernel.org;
+        d=0sec.ai; s=google; t=1783979993; x=1784584793; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=37p3VfmrrNMS4akxO403NRH36eKSLE6Wn3AfUCl+4gA=;
-        b=d4Ba279qNkP/UzpnjQeR3R07VNfGiC7musfQDHgXQlPqo/ZZtjEKD23esT9dGQ91Tn
-         V4qnX13+i8lyy4l1VYJDvtctc9g7MdmxVeMT1i37ee2iw10bnVJoG/DKd/qJy6eGTLaD
-         VNcZCeKLzKS0rVxAd6q2nXeB7VvAWJ2TLSQyS/fbLTZ/ic9dP286KML7L8TXikk0u36k
-         wJQrOHY+9D4yfNz2hCypcXChHxyzaNEdPT3/ftsiiqEEyoujBeWrRn2wkPmciZ/21VqJ
-         3A3Mfc/A1RHvUz1lOoAUr3HG4Bcrr1zmpVVgctWaPFYuYwqr708BM/whR6LQ4qR6qdJp
-         2GmA==
+        bh=ozUQUJeqe9DZGBHibEEkam6Vr/TczHQ5MXdbtGwigeo=;
+        b=Jb9wKmyN48+TPIOCsgcG8KyOJ5WfbmcWEw6Rjx+Yvp6Y/lUkXSTfcRwRpRq2h3/G3j
+         Z6deVMRYfXSqlBwFeMNV9rb7wMak48/AM5yIFPWNpSrK5qDo/QVMUX8hwQU2bp8WNFKU
+         hg3i5R0hWSGx5jowZK9EAV0Q2iczfYow+BoqZLVpa3KjbznMQW3kU8eT2Udp92JL99x1
+         uQQrt/xcbiiy17zLzjOlJgopY2UP8lPCw/EL8QH/xuEK+IS5x6hT+u5NIkLKNXDwH7lw
+         0l4VOPqRG9wsVUxIpEC2LxPFmuexxtm6deN1iLo8QVvA7eEwrpYhrKAsHChTGLf76bpD
+         +1tg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783979980; x=1784584780;
+        d=1e100.net; s=20251104; t=1783979993; x=1784584793;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=37p3VfmrrNMS4akxO403NRH36eKSLE6Wn3AfUCl+4gA=;
-        b=Aim32RId8ZscFfugjYsCv1xTUc7OhDKWr3XYmMQfsLzdUpKlm+elh3r02tZNhRpqrA
-         YT/kD3UMkef1aksnQPHfwTQXGKTbwQh2Bg4NfISBOlafZF1XvqPFyaySqR5515Y5492B
-         J3Svz23xKqzS8I/Sf9AmjrQbtiNEjPPkAK4aSXol4l8f+yFzKqCHw4zkCE0dvF5Z08mG
-         7WuzkJluS1Z5ezdsM9CjCNaZV3Zl+3triPg8TmHRSLrTmWDow1/4k25LD6iWGXWdNpW8
-         M1N2L5mLdSDAHFEPcwdKglTvAjTC8jJ4eRHX5Jhc0fsCbJwFc4BoDxJAfILPxbMMedp/
-         XSTQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rpy1OU9u1GDb84xuDGdjxq2mOcGpFgTO/6YKXe2+2ETlv08dy8MMrVIWm8yXQsN/Czh67Lbx54=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwV+l5QWFYA4KwmJUJ7MdLKy+DJ7LNGF1OHLAMiMsKcUhB7Qt45
-	1q1QizxIK7X6capNbJQ1CGWs43wQUP3Z/spaQlT5mgiqWMfvPBwzieMLfULOWPlcXCrRhbthwoy
-	2AJ/+dcjW
-X-Gm-Gg: AfdE7ckXYBR90NuTqFH4O52Q1jJorHinkutgucxqw7vxHR17HqfYOaCGXjtGYbHSCNb
-	kGhqHCPPKtJPsjUOVAuM7fPOmtgv6z3ckmuqM7Pcid5JeYj3xbimnf0NbNVTDtiWe/KGUlBdnfg
-	4G21DmI7npOChXxEXYpqI3dEX6C0V+NWKHG53mYJrRI4aL/YmM6IRvb2ZrSONC/3QCZ5t8XMlC9
-	1ruqaMvcno3a/S8d9hHZV/SdeH9AtGoxHXSWNEwCN2WbwFslzkut2K9wIvevQErwdlf9Uxk/gaR
-	6TQsTS9xFhRuz7havBYtnmmEY/Drx1QigkEJ4H84LnUWQE4o4SEW+Zy4tXgw2oIuDB0fExSdvch
-	kPzH/Y7/zbJKKth5WEYf17wgDrcIavy4NV56AtVlchXBfRsuTOC+n7U0Tou++ITjckuLtw7i0dj
-	rgKZPbwSUUAYyR2sicdEEkP4Y9Y8sjfqeDX0Y49pPO41iqcB0eXdeSXgwXvSqHzVLUKQHrs1hPA
-	2FI3d0T9LmEcIEJEwa5j0XXWCy5qU+As3s=
-X-Received: by 2002:a05:600c:b90:b0:493:b967:178d with SMTP id 5b1f17b1804b1-493f881d05emr112865375e9.19.1783979980087;
-        Mon, 13 Jul 2026 14:59:40 -0700 (PDT)
+        bh=ozUQUJeqe9DZGBHibEEkam6Vr/TczHQ5MXdbtGwigeo=;
+        b=g9FpRQ993R8EzCqLYRRpcmdVZUgNUP4ElhNdFtCrtJsuLavvBSfTK2hJlwGlY0WrJE
+         zhdW1K1CNAEeu6TpuFPcVzpP2KCxyWQzFPA/0CjI6WAnNefWQyUbsWI+j+cOzLQsAnFf
+         /QF/olTY3otV8zya/eJg7qXZEbSoUtwmnqSYTExpsjH7P6EejY7vg9ISuQ2FGA/9LkTC
+         MgJksey1ANHUbrfcfedUUIE1i8BlDugNcJ32TGpVC76obxfmueg7qkTmcXgWxNHK5x5Y
+         DJ4fCPm3hgGioqB7AWQ4VIzHO1TYCu78wXg1enCudSjHhAnNnq792Zo8CN7SZb178fbF
+         IP6g==
+X-Forwarded-Encrypted: i=1; AHgh+RphRgnEmlPxkft0rWZWC/S3ahHGgSX4dBQO58NpgUH2Dg2oHtDLaP6DuiNkdC9d+9tXZSV4uqA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxFgV59SOeOnspSxUY/Zse0g+gesFeL0nt77DpMBbi8Bv7/Zxfz
+	EMJO4q43+SPdAz3EgHncuFEHMnB/luHE50UwrcZQyb8Ff6ggpwq9GUVivKKe+mOQFmdP
+X-Gm-Gg: AfdE7clSqDBmHu0zsspezUt4yHGvZb7h4QEg/uGJEgcbOiX9g1fm/RR7kIwDD6ODt9T
+	3R8F9MGWinJmzSYjlzA/sJhFXQqDEd7UBZvuzGyleAm9opS37MlQF8s3Wy0SIm309m5HvNQ42ZS
+	dPycUFmstXUH4pX593S+n0lgZ8DqPudNW6vaoUsB8b0CtzzmdsgA1W+9HvoKDbULoPMas5zdIdS
+	mVaRJSPWkQBGKhABJa26xdpPtV5/EzPrMKuW8H9jlxmuDfH29Dg+clDcDsCDqPmEZJrytgEhXXp
+	i860OtR32jy4wEQVK8PHn4G8YSpMJtMgDKC6e5ty6Ltj3yBY/FCrng4f/OJjbWoUaqCJm1zzAVZ
+	8sW0fMM0Q1DEoSm7N7Ae5lbVlXG329C7AIzngjuuwzvqL6W1I6YvBrvtRCotR8xKcP5YIIvlkzB
+	xkjA5nz2T9iHBXF0yqHTDGtNg6iaB4wuyZg+yCiFXMYDvAwor7GwQvuxl/y3oCaOIbzdJmSfzSS
+	jqBj9Z/7QC8usPzNRVBSa624LHsgBAsSKc=
+X-Received: by 2002:a05:600c:6989:b0:493:bfbf:1da4 with SMTP id 5b1f17b1804b1-493f881de65mr105429795e9.22.1783979992654;
+        Mon, 13 Jul 2026 14:59:52 -0700 (PDT)
 Received: from PeakBook-Mini.tail8e484.ts.net ([178.197.218.188])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4950a2f9402sm28390785e9.13.2026.07.13.14.59.37
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f4635a63esm2584715f8f.9.2026.07.13.14.59.51
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 13 Jul 2026 14:59:39 -0700 (PDT)
+        Mon, 13 Jul 2026 14:59:52 -0700 (PDT)
 From: Doruk Tan Ozturk <doruk@0sec.ai>
-To: David Heidelberg <david@ixit.cz>
-Cc: oe-linux-nfc@lists.linux.dev,
-	netdev@vger.kernel.org,
+To: Jiri Kosina <jikos@kernel.org>,
+	Benjamin Tissoires <bentiss@kernel.org>
+Cc: Nikolai Kondrashov <spbnick@gmail.com>,
+	linux-input@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH net] nfc: microread: validate CARD_FOUND event length before parsing targets
-Date: Mon, 13 Jul 2026 23:59:36 +0200
-Message-ID: <20260713215936.23137-1-doruk@0sec.ai>
+Subject: [PATCH v3 1/2] HID: uclogic: fix UAF on inrange_timer at teardown and probe error
+Date: Mon, 13 Jul 2026 23:59:49 +0200
+Message-ID: <20260713215950.24193-1-doruk@0sec.ai>
 X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -98,145 +98,115 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[0sec.ai:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-274024-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:david@ixit.cz,m:oe-linux-nfc@lists.linux.dev,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	DMARC_NA(0.00)[0sec.ai];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER(0.00)[doruk@0sec.ai,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-274026-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[0sec.ai:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS(0.00)[m:jikos@kernel.org,m:bentiss@kernel.org,m:spbnick@gmail.com,m:linux-input@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[doruk@0sec.ai,stable@vger.kernel.org];
+	DMARC_NA(0.00)[0sec.ai];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[doruk@0sec.ai,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[0sec.ai:+];
 	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	ALIAS_RESOLVED(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,0sec.ai:email,0sec.ai:dkim,0sec.ai:url,0sec.ai:from_mime,0sec.ai:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp,0sec.ai:email,0sec.ai:dkim,0sec.ai:url,0sec.ai:from_mime,0sec.ai:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: F121374F672
+X-Rspamd-Queue-Id: B533374F649
 
-microread_target_discovered() parses a device-supplied MREAD_CARD_FOUND
-event into a struct nfc_target, reading fixed offsets and -- for the
-ISO-A and ISO-A-3 gates -- a variable-length NFCID1 straight out of the
-event skb. The only length check is nfcid1_len vs sizeof(targets->nfcid1);
-skb->len itself is never validated, so a short event makes every gate
-case read out of bounds past the skb:
+uclogic_probe() arms a per-device timer whose callback
+uclogic_inrange_timeout() dereferences drvdata->pen_input, and
+uclogic_raw_event_pen() re-arms it with a 100 ms timeout on every
+in-range pen report.
 
-  - ISO-A / ISO-A-3: fixed ATQA/SAK/LEN reads plus a memcpy of an
-    attacker-controlled nfcid1_len bytes from the NFCID1 offset;
-  - ISO-B / NFC-T1 / NFC-T3: a fixed 4- or 8-byte NFCID1 memcpy from a
-    fixed offset.
+uclogic_remove() drained the timer with timer_delete_sync() before
+hid_hw_stop().  timer_delete_sync() does not block re-arming: a pen
+report delivered before hid_hw_stop() kills the URBs can re-arm the timer
+after it was drained.  hid_hw_stop() then frees the hidinput pen_input
+(via hidinput_disconnect() -> input_unregister_device()), and the pending
+timer fires on freed memory.
 
-The copied nfcid1 is exported to user space via nfc_targets_found(), so
-the over-read is an information leak (and a possible oops on an unmapped
-page).
+Use timer_shutdown_sync() instead, still before hid_hw_stop().  It drains
+the callback while pen_input is still valid and permanently blocks
+re-arming, so an in-flight raw_event cannot revive the timer; hid_hw_stop()
+then frees pen_input with the timer already dead.
 
-Reject events too short for the fields each gate case reads.
+The probe error path had the same exposure: if hid_hw_start() started I/O
+and then failed, raw_event may have armed the timer, which would fire on
+the devm-freed drvdata after probe returns.  Shut the timer down there too.
+
+Unlike letsketch, whose input devices are devm-allocated and outlive
+hid_hw_stop(), uclogic's pen_input is freed inside hid_hw_stop(), so the
+timer must be shut down before it rather than after.
 
 Found by 0sec (https://0sec.ai).
 
-Fixes: cfad1ba87150 ("NFC: Initial support for Inside Secure microread")
+Fixes: 01309e29eb95 ("HID: uclogic: Support in-range reporting emulation")
 Cc: stable@vger.kernel.org
 Assisted-by: 0sec
 Signed-off-by: Doruk Tan Ozturk <doruk@0sec.ai>
 ---
- drivers/nfc/microread/microread.c | 31 +++++++++++++++++++++++++++++--
- 1 file changed, 29 insertions(+), 2 deletions(-)
+v3: resend as a 2-patch series. 1/2 is the v2 timer fix, unchanged. 2/2 adds
+    the desc_ptr leak fix in the probe error path, flagged by the Sashiko AI
+    review on v2. No functional change to this patch since v2.
+v2: shut the timer down on the probe error path too, and clarify in the commit
+    message why uclogic differs from the letsketch precedent (pen_input is
+    freed inside hid_hw_stop(), so the timer must be shut down before it).
 
-diff --git a/drivers/nfc/microread/microread.c b/drivers/nfc/microread/microread.c
-index 4149c5d735bd..9a7a4fd6796b 100644
---- a/drivers/nfc/microread/microread.c
-+++ b/drivers/nfc/microread/microread.c
-@@ -483,13 +483,19 @@ static void microread_target_discovered(struct nfc_hci_dev *hdev, u8 gate,
+ drivers/hid/hid-uclogic-core.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/hid/hid-uclogic-core.c b/drivers/hid/hid-uclogic-core.c
+index b73f09d26688..d74f98efa879 100644
+--- a/drivers/hid/hid-uclogic-core.c
++++ b/drivers/hid/hid-uclogic-core.c
+@@ -267,6 +267,13 @@ static int uclogic_probe(struct hid_device *hdev,
+ 	/* Assume "remove" might not be called if "probe" failed */
+ 	if (params_initialized)
+ 		uclogic_params_cleanup(&drvdata->params);
++	/*
++	 * If hid_hw_start() started I/O and then failed, raw_event may have
++	 * armed the timer; shut it down so it cannot fire on the devm-freed
++	 * drvdata after probe returns.
++	 */
++	if (drvdata)
++		timer_shutdown_sync(&drvdata->inrange_timer);
+ 	return rc;
+ }
  
- 	switch (gate) {
- 	case MICROREAD_GATE_ID_MREAD_ISO_A:
-+		if (skb->len < MICROREAD_EMCF_A_UID) {
-+			r = -EINVAL;
-+			goto exit_free;
-+		}
-+
- 		targets->supported_protocols =
- 		      nfc_hci_sak_to_protocol(skb->data[MICROREAD_EMCF_A_SAK]);
- 		targets->sens_res =
- 			 be16_to_cpu(*(u16 *)&skb->data[MICROREAD_EMCF_A_ATQA]);
- 		targets->sel_res = skb->data[MICROREAD_EMCF_A_SAK];
- 		targets->nfcid1_len = skb->data[MICROREAD_EMCF_A_LEN];
--		if (targets->nfcid1_len > sizeof(targets->nfcid1)) {
-+		if (targets->nfcid1_len > sizeof(targets->nfcid1) ||
-+		    skb->len - MICROREAD_EMCF_A_UID < targets->nfcid1_len) {
- 			r = -EINVAL;
- 			goto exit_free;
- 		}
-@@ -497,13 +503,19 @@ static void microread_target_discovered(struct nfc_hci_dev *hdev, u8 gate,
- 		       targets->nfcid1_len);
- 		break;
- 	case MICROREAD_GATE_ID_MREAD_ISO_A_3:
-+		if (skb->len < MICROREAD_EMCF_A3_UID) {
-+			r = -EINVAL;
-+			goto exit_free;
-+		}
-+
- 		targets->supported_protocols =
- 		      nfc_hci_sak_to_protocol(skb->data[MICROREAD_EMCF_A3_SAK]);
- 		targets->sens_res =
- 			 be16_to_cpu(*(u16 *)&skb->data[MICROREAD_EMCF_A3_ATQA]);
- 		targets->sel_res = skb->data[MICROREAD_EMCF_A3_SAK];
- 		targets->nfcid1_len = skb->data[MICROREAD_EMCF_A3_LEN];
--		if (targets->nfcid1_len > sizeof(targets->nfcid1)) {
-+		if (targets->nfcid1_len > sizeof(targets->nfcid1) ||
-+		    skb->len - MICROREAD_EMCF_A3_UID < targets->nfcid1_len) {
- 			r = -EINVAL;
- 			goto exit_free;
- 		}
-@@ -511,11 +523,21 @@ static void microread_target_discovered(struct nfc_hci_dev *hdev, u8 gate,
- 		       targets->nfcid1_len);
- 		break;
- 	case MICROREAD_GATE_ID_MREAD_ISO_B:
-+		if (skb->len < MICROREAD_EMCF_B_UID + 4) {
-+			r = -EINVAL;
-+			goto exit_free;
-+		}
-+
- 		targets->supported_protocols = NFC_PROTO_ISO14443_B_MASK;
- 		memcpy(targets->nfcid1, &skb->data[MICROREAD_EMCF_B_UID], 4);
- 		targets->nfcid1_len = 4;
- 		break;
- 	case MICROREAD_GATE_ID_MREAD_NFC_T1:
-+		if (skb->len < MICROREAD_EMCF_T1_UID + 4) {
-+			r = -EINVAL;
-+			goto exit_free;
-+		}
-+
- 		targets->supported_protocols = NFC_PROTO_JEWEL_MASK;
- 		targets->sens_res =
- 			le16_to_cpu(*(u16 *)&skb->data[MICROREAD_EMCF_T1_ATQA]);
-@@ -523,6 +545,11 @@ static void microread_target_discovered(struct nfc_hci_dev *hdev, u8 gate,
- 		targets->nfcid1_len = 4;
- 		break;
- 	case MICROREAD_GATE_ID_MREAD_NFC_T3:
-+		if (skb->len < MICROREAD_EMCF_T3_UID + 8) {
-+			r = -EINVAL;
-+			goto exit_free;
-+		}
-+
- 		targets->supported_protocols = NFC_PROTO_FELICA_MASK;
- 		memcpy(targets->nfcid1, &skb->data[MICROREAD_EMCF_T3_UID], 8);
- 		targets->nfcid1_len = 8;
+@@ -548,7 +555,15 @@ static void uclogic_remove(struct hid_device *hdev)
+ {
+ 	struct uclogic_drvdata *drvdata = hid_get_drvdata(hdev);
+ 
+-	timer_delete_sync(&drvdata->inrange_timer);
++	/*
++	 * timer_delete_sync() does not prevent re-arming, so a pen report
++	 * delivered before hid_hw_stop() kills the URBs could re-arm the
++	 * timer; hid_hw_stop() then frees the hidinput pen_input and the
++	 * pending timer fires on freed memory.  timer_shutdown_sync() drains
++	 * the callback while pen_input is still valid and permanently blocks
++	 * re-arming, so an in-flight raw_event cannot revive it.
++	 */
++	timer_shutdown_sync(&drvdata->inrange_timer);
+ 	hid_hw_stop(hdev);
+ 	kfree(drvdata->desc_ptr);
+ 	uclogic_params_cleanup(&drvdata->params);
 -- 
 2.43.0
 
