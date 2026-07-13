@@ -1,145 +1,146 @@
-Return-Path: <stable+bounces-273833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273841-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ow4HEo/uVGq+hQAAu9opvQ
-	(envelope-from <stable+bounces-273833-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:56:31 +0200
+	id V3crHYb2VGpFiAAAu9opvQ
+	(envelope-from <stable+bounces-273841-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 16:30:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D241274BF25
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:56:30 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A564774C683
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 16:30:29 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FzJ62VPZ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273833-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273833-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Y5R975aO;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273841-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273841-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7A371300E294
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 13:56:26 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1089B3069E2F
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 13:59:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B537A436379;
-	Mon, 13 Jul 2026 13:56:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8404C43B3D7;
+	Mon, 13 Jul 2026 13:58:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D0C3436374;
-	Mon, 13 Jul 2026 13:56:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03292437465;
+	Mon, 13 Jul 2026 13:58:45 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783950983; cv=none; b=nFvYDSRtTcwZMJ3NMSGCL+RKZXbw+bVksGRkZYUXlH/B6HtXKRl2RkQN2FF1qKY+jtXTVJY3qRBL0N2Q6HbtshZuixWOLBAyM9UTu6rBdk0A31mofE0jnhtfolS5InLKKDRyHwDnZ++hHyykHpnLdufCCpM9S1sYRL5amNnir9k=
+	t=1783951128; cv=none; b=Q3ufc94JJZdi3ITXqRrEFK+N9OC8XM3TifoTpZWIZoEkQfxHRwfpNDmAsGKIFegqtJtmm82IzlVn6LVkS2IjQ+PHsGrKOalS5EK9Mmez0pfNY8rU0ZlPg4OzZaJ6F1D1m/sQZGvgZOonBuLXtVTf2K93RfyV/meDTHF4hGZU7qI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783950983; c=relaxed/simple;
-	bh=ctXtTx3qimC8EAxLk6QfcovSqIz+Q0zr+wiWw4PtNkI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GjnzfoegSwC0L2sBl57j48BM09CQg+5aEmjRTdS489lbwWWvHAD6fcAfcpCmsIvthaQRb0aG/SNOzbhwklblMHZjyMPa4SuUQQeSVwORK7CrUP1Vv6qBoN9qIWbmjSsZqMKlqqQ3xuGvaKxavQ0lw7vqgP1C5mEoDEIr0bR7CoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FzJ62VPZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47F661F00A3A;
-	Mon, 13 Jul 2026 13:56:21 +0000 (UTC)
+	s=arc-20240116; t=1783951128; c=relaxed/simple;
+	bh=NMKcm1pkCs64lfIHYa2THibb8WzHVI8aMRYFrV5tuv8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=c3gr9jE+00ENba2MuQL2IktcD7lu0GjIOyFphrELgsR9lSoY3I/j1ObITTh1uRYPWDHjY47ebruGVGiiBPSq+8BwFJLPmI2O/LYsqr7/BSknEsGak3FiVSFmkE83+FMF+X0vYcrgPgTFp8+9QUyMKlkE+tWWHiRNsCeuddtqxyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y5R975aO; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60A171F00A3A;
+	Mon, 13 Jul 2026 13:58:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783950981;
-	bh=jN2Uqyqlk4BlB1zGW5Bw3R7JyKk82NVHi1lz3053mrA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=FzJ62VPZgdUAUQmiLBMA+9B94QtywjBJVEiCmeTsr5MglH2TgGMUQpuPtxjxtwlbH
-	 9MQA6kk33gFAdx2LG8KWQAQcjMWaLnqHI370mEp0J44O6UaKFLSyrpJkp9AhHPMKvu
-	 vFt27QaijnH6K66ijOMHSS7oqiA0xDP+HJJ/RAGLx5I6mz0zLQUZ+jc9TroeaU/GxY
-	 KuiFHu9WqX95/NNMxDqB1uZA/7RIuuUotFj6rAQVAwwraZpkl7acyV1RYmbl8zmmRH
-	 znCPiEDJVsQ/nklC2VsRzVjPUBc6meF1hdkWmCB58n8Dmw+2MZWZNOoPfEc4uNTZ8R
-	 OPAra+BHvl9sw==
-Received: from johan by xi.lan with local (Exim 4.99.4)
-	(envelope-from <johan@kernel.org>)
-	id 1wjH8t-0000000527P-02yL;
-	Mon, 13 Jul 2026 15:56:19 +0200
-Date: Mon, 13 Jul 2026 15:56:19 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Guangshuo Li <lgs201920130244@gmail.com>
-Cc: Chun-Kuang Hu <chunkuang.hu@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	CK Hu <ck.hu@mediatek.com>,
-	Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>,
-	dri-devel@lists.freedesktop.org, linux-mediatek@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3] drm/mediatek: mtk_hdmi: Fix DDC adapter double put in
- v2
-Message-ID: <alTugxmHG_s4kY4E@hovoldconsulting.com>
-References: <20260713112957.884640-1-lgs201920130244@gmail.com>
+	s=k20260515; t=1783951125;
+	bh=kw48eNAzxFRXO6yZLVXQ5NvQIurCQHZvh9V8CBG541c=;
+	h=From:To:Cc:Subject:Date;
+	b=Y5R975aOCRLNoN4CCClsQVWkZ2zFMRMZznKjqildidyehZoUelNcs6ATVc3mjonKW
+	 A18YnBR5cIur/f3whvlhNNuah1hRPblBSy1hd3uqGawgTIQFjpK+WXqn/lFZmdHfA2
+	 hZEcSj/xhioRp4fTT47PJGTQHhCt1xIcGj91Jo1AhY21n675b+mlSokY3/0KnQNC1i
+	 PlifB5A1j0TlHIPDT47wu/8VYo+584fQQ68909KnlC4UIHGc5BQ06b41eVdHz1xi7b
+	 E7s5eufe1vv68EP5xHYuv3576UvvEuz4n1x4kIaCmpuFtoH7tt5JQutxxgYLpKfgCO
+	 BRMhdprJ47juw==
+From: SJ Park <sj@kernel.org>
+To: 
+Cc: SJ Park <sj@kernel.org>,
+	stable@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@davidgow.net>,
+	Fernand Sieber <sieberf@amazon.com>,
+	Leonard Foerster <foersleo@amazon.de>,
+	SeongJae Park <sjpark@amazon.de>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	damon@lists.linux.dev,
+	kunit-dev@googlegroups.com,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [RFC PATCH v1.2 0/5] mm/damon: unurgent fixes for infinite loop, NULL de-ref and races
+Date: Mon, 13 Jul 2026 06:58:31 -0700
+Message-ID: <20260713135838.32730-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260713112957.884640-1-lgs201920130244@gmail.com>
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-3.66 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-273833-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:lgs201920130244@gmail.com,m:chunkuang.hu@kernel.org,m:p.zabel@pengutronix.de,m:airlied@gmail.com,m:simona@ffwll.ch,m:matthias.bgg@gmail.com,m:angelogioacchino.delregno@collabora.com,m:ck.hu@mediatek.com,m:louisalexis.eyraud@collabora.com,m:dri-devel@lists.freedesktop.org,m:linux-mediatek@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:stable@vger.kernel.org,m:matthiasbgg@gmail.com,s:lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[johan@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-273841-lists,stable=lfdr.de];
 	RCPT_COUNT_TWELVE(0.00)[14];
-	FREEMAIL_TO(0.00)[gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:sj@kernel.org,m:stable@vger.kernel.org,m:akpm@linux-foundation.org,m:brendan.higgins@linux.dev,m:davidgow@davidgow.net,m:sieberf@amazon.com,m:foersleo@amazon.de,m:sjpark@amazon.de,m:shakeel.butt@linux.dev,m:damon@lists.linux.dev,m:kunit-dev@googlegroups.com,m:linux-kernel@vger.kernel.org,m:linux-kselftest@vger.kernel.org,m:linux-mm@kvack.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[sj@kernel.org,stable@vger.kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[kernel.org,pengutronix.de,gmail.com,ffwll.ch,collabora.com,mediatek.com,lists.freedesktop.org,lists.infradead.org,vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,stable@vger.kernel.org];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D241274BF25
+X-Rspamd-Queue-Id: A564774C683
 
-On Mon, Jul 13, 2026 at 07:29:57PM +0800, Guangshuo Li wrote:
-> mtk_hdmi_common_probe() gets the DDC adapter with
-> of_find_i2c_adapter_by_node() and registers a devm action to release the
-> adapter device reference with put_device().
-> 
-> The HDMI v2 remove callback also calls i2c_put_adapter() on the same DDC
-> adapter. This is not paired with of_find_i2c_adapter_by_node(): it drops
-> the adapter device reference before the devm action drops it again, and
-> it also puts a module reference that was never taken.
-> 
-> Remove the extra i2c_put_adapter() call and drop the now-empty HDMI v2
-> remove callback. The common devm action releases the adapter device
-> reference.
-> 
-> Fixes: 8d0f79886273 ("drm/mediatek: Introduce HDMI/DDC v2 for MT8195/MT8188")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Johan Hovold <johan@kernel.org>
-> Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-> ---
-> v3:
->   - Add Reviewed-by tag from Johan Hovold.
->   - No code changes.
+Sashiko found a few issues in DAMON that could cause infinite loop, NULL
+dereference and monitoring results degradation.  The first two sounds
+scary but the infinite loop happens only under unreasonable user setup.
+The NULL dereference is only in a unit test.  Monitoring results
+degradation is trivial since it is only best-effort, and those happens
+from only unlikely races.  Still those are bugs that better to fix if
+possible. Fix those.
 
-No need to resend just to add a tag. It will be added when the patch is
-applied.
+Changes from RFC v1.1
+- RFC v1.1: https://lore.kernel.org/20260712170328.91144-1-sj@kernel.org
+- Remove same_target param from __damon_va_check_access().
+Changes from RFC
+- RFC: https://lore.kernel.org/20260711180409.82093-1-sj@kernel.org
+- Rebase to mm-new.
 
-Johan
+SJ Park (5):
+  mm/damon/core: avoid infinite kdamond_merge_regions() internal loop
+  mm/damon/tests/core-kunit: catch test failure in
+    test_merge_regions_of()
+  mm/damon/vaddr: drop last same folio access check optimization
+  mm/damon/paddr: drop last same folio access check reuse optimization
+  mm/damon/sysfs: read ops_id only once
+
+ mm/damon/core.c             | 13 +++++++++----
+ mm/damon/paddr.c            | 20 ++++----------------
+ mm/damon/sysfs.c            |  6 ++++--
+ mm/damon/tests/core-kunit.h |  3 +++
+ mm/damon/vaddr.c            | 33 ++++++---------------------------
+ 5 files changed, 26 insertions(+), 49 deletions(-)
+
+
+base-commit: 9d192aa422c3f9c503a40e5eb98093df671accf8
+-- 
+2.47.3
 
