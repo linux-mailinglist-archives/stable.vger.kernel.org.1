@@ -1,83 +1,66 @@
-Return-Path: <stable+bounces-273935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273927-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id AcWdD6MoVWqokgAAu9opvQ
-	(envelope-from <stable+bounces-273935-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 20:04:19 +0200
+	id kmSHHR8mVWoQkgAAu9opvQ
+	(envelope-from <stable+bounces-273927-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 19:53:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A84C74E471
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 20:04:18 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70A9C74E2C1
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 19:53:34 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=astralinux.ru header.s=mail header.b=ZstIlkRU;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273935-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-273935-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=astralinux.ru;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n0SJgrP+;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273927-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273927-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 10EEB306AEB9
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 18:02:13 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8AB2030055EA
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 17:53:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A548B34D3B0;
-	Mon, 13 Jul 2026 18:02:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC0A634C990;
+	Mon, 13 Jul 2026 17:53:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-gw01.astralinux.ru (mail-gw01.astralinux.ru [37.230.196.243])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 417BE33E36A;
-	Mon, 13 Jul 2026 18:02:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65C40345CC0
+	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 17:53:27 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783965732; cv=none; b=tjqGQRuNtJx+KSjWPlXMBXo4kZ5y51gbYxeaWaTbYyZjuJWq5+9f/MICUsthA7qWxZ0XESlh6BjGT8+EsoBQtEitTDN55R93nUDIpZgTNtJGr8xVenoe5kuJdMoBwFYIDjqaXjLT0taUEmV0uVsgxvmvwjMHqBs8LpYaj4t1GKY=
+	t=1783965208; cv=none; b=MF6PoO92J3I1P1D4sFmM0D5lNX910OKzXAnJfY7JweiiVrAUvfi8/Yt8hzkKd34Ns6i42hDJvf11PuuhHayNpEv9YE08zkgAKutBOkgJ+m9c/hIFcbXrs5XWxdN1SlXOPFx68Txsf0ig717MtqE57VL4feqACeYuI2yxX7O3XKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783965732; c=relaxed/simple;
-	bh=qTFbrJO1EIURj5coHE7P8jfs+T3R57WvmR8hoGJitbA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=a3FAbyroIjTV6TLo5a8NMwfDl8T9+Xz4zKhYGNszS03/Ms11eaTUItBclq7pkhHxUIi321OJ7lPH8YWxxPVy41lTB88YuM1tBPlgWD7MykL75fQtjdB733cKAx7xh27uF41RyXOAjKmNncWMQaIU68YWTR6En8dexuVkHcYI+aM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=astralinux.ru; spf=pass smtp.mailfrom=astralinux.ru; dkim=pass (2048-bit key) header.d=astralinux.ru header.i=@astralinux.ru header.b=ZstIlkRU; arc=none smtp.client-ip=37.230.196.243
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=astralinux.ru;
-	s=mail; t=1783965174;
-	bh=qTFbrJO1EIURj5coHE7P8jfs+T3R57WvmR8hoGJitbA=;
-	h=From:To:Cc:Subject:Date:From;
-	b=ZstIlkRUUKnGElVKoX+VXKqW/ZCcdaYL9K0C8NptQI04CCWLg6skHvRWVwN4hvVxw
-	 AtXlTUkZjwuPyrLHyraOorUqq5fARQKq/PnNvJt9zSsZK2M+/aXVEVPJ0XoK6BGmut
-	 fbx4LSUyDm1xYXVuiOwgrtbR+3RM9zt10s92N8R12vO9qGClVWHBk9uepx9ePWDhaF
-	 alyGrQOA8GiThkO9E8ejQqkrAiSU9wKy6C1QuicS/Okg682M3/HKtz3Dr9MUIHofQm
-	 tDbUAzMe3NvxBo+RJH3Vyn8SiCy/Hx9Y4GYahgQCrGeNCJAKXnBvqsQm8bQh0iqnBn
-	 k+LoE3rhl85Mw==
-Received: from gca-sc-a-srv-ksmg01.astralinux.ru (localhost [127.0.0.1])
-	by mail-gw01.astralinux.ru (Postfix) with ESMTP id 934B425596;
-	Mon, 13 Jul 2026 20:52:54 +0300 (MSK)
-Received: from new-mail.astralinux.ru (unknown [10.205.207.5])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail-gw01.astralinux.ru (Postfix) with ESMTPS;
-	Mon, 13 Jul 2026 20:52:50 +0300 (MSK)
-Received: from rbta-spb-lt-115149.astralinux.ru (rbta-spb-lt-115149.astralinux.ru [10.198.24.8])
-	by new-mail.astralinux.ru (Postfix) with ESMTPA id 4gzVQT3vP9z4lNf;
-	Mon, 13 Jul 2026 20:52:49 +0300 (MSK)
-From: Elizaveta Tereshkina <etereshkina@astralinux.ru>
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Elizaveta Tereshkina <etereshkina@astralinux.ru>,
-	Chen-Yu Tsai <wens@kernel.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	dri-devel@lists.freedesktop.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-sunxi@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	Ethan Tidmore <ethantidmore06@gmail.com>
-Subject: [PATCH 5.10/5.15] drm/sun4i: backend: fix error pointer dereference
-Date: Mon, 13 Jul 2026 20:52:37 +0300
-Message-Id: <20260713175238.715526-1-etereshkina@astralinux.ru>
-X-Mailer: git-send-email 2.39.2
+	s=arc-20240116; t=1783965208; c=relaxed/simple;
+	bh=4q+rPGvFaceGERu0IfaIeQ6Oy23iH81RRw/LHfg1CYc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=NCaMutG7pmibrmmG6b/uq4J1DQ15wj9FJcFyRfyqesWjl3BYMT/p0n24IHsSlA7hihcADxOJn9rSzUak1T4/6CUiomfSfDsjB4I6Fvy1yhY1H6tJU8sUZevqXNeV4Qz4MsLN0yQs/aqtKeIC9uyrmTWInYxzQnV+lpI7cL0WWzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n0SJgrP+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 254F21F000E9;
+	Mon, 13 Jul 2026 17:53:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783965207;
+	bh=YO8JHCLItKs2MpQnNQb1oTsaANzXjznH4gQOI5znc+w=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=n0SJgrP+fO0NkxqiW9laNSa8ORbmI6LNZ3k6HhJyTxS4GqMYhrJKEJqXtjizv/R1M
+	 kkgY4FwvNGL9vchP8ZcVwIB9za+RjZ288JueUdrs9z485kRUeWKn3rDguToaw3QzxP
+	 MbFO/1AhU8l20OH40BySx5+iNdqv8oyqr9lRdsp2DziHad6+NtN2GJRL44QEnfiCJz
+	 5Ad0mvQSi2G9253XCjVeboskI03D7aLi0Rf+nzyjU6LeV7ETiIMTIA3rA3Fgsh26gx
+	 qMOVrq02OOYQ3s+zEB0T6Q6bjPy/uCKort+ESWCcPiyd+aZzu9qVNgmSnhaTqIhz7m
+	 k08Ef3iC+ZfNA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Zhang Lixu <lixu.zhang@intel.com>,
+	Jiri Kosina <jkosina@suse.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <jic23@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.1.y 1/2] HID: sensor-hub: Add sensor_hub_input_attr_read_values() for multi-byte reads
+Date: Mon, 13 Jul 2026 13:53:23 -0400
+Message-ID: <20260713175324.1902799-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026071306-financial-slept-710f@gregkh>
+References: <2026071306-financial-slept-710f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -85,96 +68,223 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-KSMG-AntiPhishing: NotDetected, bases: 2026/07/13 17:19:00
-X-KSMG-AntiSpam-Auth: dkim=none
-X-KSMG-AntiSpam-Envelope-From: etereshkina@astralinux.ru
-X-KSMG-AntiSpam-Info: LuaCore: 112 0.3.112 7c8d497b0e572fbfa504a2ee62037c045a8cb4ec, {Tracking_ml_letters}, {Tracking_one_susp_tld}, {Tracking_uf_ne_domains}, {Tracking_internal2}, {Tracking_from_domain_doesnt_match_to}, patch.msgid.link:7.1.1;127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;astralinux.ru:7.1.1;new-mail.astralinux.ru:7.1.1, FromAlignment: s
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiSpam-Lua-Profiles: 204404 [Jul 13 2026]
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Version: 6.1.1.22
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.0.7854, bases: 2026/07/13 15:36:00 #28439953
-X-KSMG-AntiVirus-Status: NotDetected, skipped
-X-KSMG-LinksScanning: NotDetected, bases: 2026/07/13 17:19:00
-X-KSMG-Message-Action: skipped
-X-KSMG-Rule-ID: 1
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-3.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[astralinux.ru,quarantine];
-	R_DKIM_ALLOW(-0.20)[astralinux.ru:s=mail];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:srinivas.pandruvada@linux.intel.com,m:lixu.zhang@intel.com,m:jkosina@suse.com,m:andriy.shevchenko@intel.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	FREEMAIL_CC(0.00)[astralinux.ru,kernel.org,linux.intel.com,suse.de,gmail.com,ffwll.ch,sholland.org,linaro.org,lists.freedesktop.org,lists.infradead.org,lists.linux.dev,vger.kernel.org,linuxtesting.org];
-	TAGGED_FROM(0.00)[bounces-273935-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-273927-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:etereshkina@astralinux.ru,m:wens@kernel.org,m:maarten.lankhorst@linux.intel.com,m:mripard@kernel.org,m:tzimmermann@suse.de,m:airlied@gmail.com,m:simona@ffwll.ch,m:jernej.skrabec@gmail.com,m:samuel@sholland.org,m:neil.armstrong@linaro.org,m:dri-devel@lists.freedesktop.org,m:linux-arm-kernel@lists.infradead.org,m:linux-sunxi@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:lvc-project@linuxtesting.org,m:ethantidmore06@gmail.com,m:jernejskrabec@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[etereshkina@astralinux.ru,stable@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[etereshkina@astralinux.ru,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[astralinux.ru:+];
-	RCVD_COUNT_FIVE(0.00)[6];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,suse.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7A84C74E471
+X-Rspamd-Queue-Id: 70A9C74E2C1
 
-From: Ethan Tidmore <ethantidmore06@gmail.com>
+From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 
-commit 06277983eca4a31d3c2114fa33d99a6e82484b11 upstream.
+[ Upstream commit f784fcea450617055d2d12eec5b2f6e0e38bf878 ]
 
-The function drm_atomic_get_plane_state() can return an error pointer
-and is not checked for it. Add error pointer check.
+sensor_hub_input_attr_get_raw_value() is limited to returning a single
+32-bit value, which is insufficient for sensors that report data larger
+than 32 bits, such as a quaternion with four s16 elements.
 
-Detected by Smatch:
-drivers/gpu/drm/sun4i/sun4i_backend.c:496 sun4i_backend_atomic_check() error:
-'plane_state' dereferencing possible ERR_PTR()
+Add sensor_hub_input_attr_read_values() that accepts a caller-provided
+buffer and accumulates incoming data until the buffer is full. The two
+paths are distinguished in sensor_hub_raw_event() by pending.max_raw_size
+being non-zero, preserving backward compatibility.
 
-Fixes: 96180dde23b79 ("drm/sun4i: backend: Add a custom atomic_check for the frontend")
-Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
-Reviewed-by: Chen-Yu Tsai <wens@kernel.org>
-Link: https://patch.msgid.link/20260217014801.60760-1-ethantidmore06@gmail.com
-Signed-off-by: Chen-Yu Tsai <wens@kernel.org>
-Signed-off-by: Elizaveta Tereshkina <etereshkina@astralinux.ru>
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Co-developed-by: Zhang Lixu <lixu.zhang@intel.com>
+Signed-off-by: Zhang Lixu <lixu.zhang@intel.com>
+Acked-by: Jiri Kosina <jkosina@suse.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <jic23@kernel.org>
+Stable-dep-of: 3ce8d099e0af ("iio: hid-sensor-rotation: Fix stale or zero output when reading raw values")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-Backport fix for CVE-2026-53066
- drivers/gpu/drm/sun4i/sun4i_backend.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/hid/hid-sensor-hub.c   | 77 +++++++++++++++++++++++++++++++---
+ include/linux/hid-sensor-hub.h | 25 +++++++++++
+ 2 files changed, 96 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/sun4i/sun4i_backend.c b/drivers/gpu/drm/sun4i/sun4i_backend.c
-index d935f36a24dd..b3741827c6c3 100644
---- a/drivers/gpu/drm/sun4i/sun4i_backend.c
-+++ b/drivers/gpu/drm/sun4i/sun4i_backend.c
-@@ -507,6 +507,9 @@ static int sun4i_backend_atomic_check(struct sunxi_engine *engine,
- 	drm_for_each_plane_mask(plane, drm, crtc_state->plane_mask) {
- 		struct drm_plane_state *plane_state =
- 			drm_atomic_get_plane_state(state, plane);
-+		if (IS_ERR(plane_state))
-+			return PTR_ERR(plane_state);
+diff --git a/drivers/hid/hid-sensor-hub.c b/drivers/hid/hid-sensor-hub.c
+index 90666ff629defa..34f710c465b80a 100644
+--- a/drivers/hid/hid-sensor-hub.c
++++ b/drivers/hid/hid-sensor-hub.c
+@@ -286,6 +286,54 @@ int sensor_hub_get_feature(struct hid_sensor_hub_device *hsdev, u32 report_id,
+ }
+ EXPORT_SYMBOL_GPL(sensor_hub_get_feature);
+ 
++int sensor_hub_input_attr_read_values(struct hid_sensor_hub_device *hsdev,
++				      u32 usage_id, u32 attr_usage_id,
++				      u32 report_id,
++				      enum sensor_hub_read_flags flag,
++				      u32 buffer_size, u8 *buffer)
++{
++	struct sensor_hub_data *data = hid_get_drvdata(hsdev->hdev);
++	struct hid_report *report;
++	unsigned long flags;
++	long cycles;
++	int ret;
 +
- 		struct sun4i_layer_state *layer_state =
- 			state_to_sun4i_layer_state(plane_state);
- 		struct drm_framebuffer *fb = plane_state->fb;
++	report = sensor_hub_report(report_id, hsdev->hdev, HID_INPUT_REPORT);
++	if (!report)
++		return -EINVAL;
++
++	mutex_lock(hsdev->mutex_ptr);
++	if (flag == SENSOR_HUB_SYNC) {
++		memset(&hsdev->pending, 0, sizeof(hsdev->pending));
++		init_completion(&hsdev->pending.ready);
++		hsdev->pending.usage_id = usage_id;
++		hsdev->pending.attr_usage_id = attr_usage_id;
++		hsdev->pending.max_raw_size = buffer_size;
++		hsdev->pending.raw_data = buffer;
++
++		spin_lock_irqsave(&data->lock, flags);
++		hsdev->pending.status = true;
++		spin_unlock_irqrestore(&data->lock, flags);
++	}
++	mutex_lock(&data->mutex);
++	hid_hw_request(hsdev->hdev, report, HID_REQ_GET_REPORT);
++	mutex_unlock(&data->mutex);
++	ret = 0;
++	if (flag == SENSOR_HUB_SYNC) {
++		cycles = wait_for_completion_interruptible_timeout(&hsdev->pending.ready,
++								   HZ * 5);
++		if (cycles == 0)
++			ret = -ETIMEDOUT;
++		else if (cycles < 0)
++			ret = cycles;
++
++		hsdev->pending.status = false;
++	}
++	mutex_unlock(hsdev->mutex_ptr);
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(sensor_hub_input_attr_read_values);
+ 
+ int sensor_hub_input_attr_get_raw_value(struct hid_sensor_hub_device *hsdev,
+ 					u32 usage_id,
+@@ -478,6 +526,8 @@ static int sensor_hub_raw_event(struct hid_device *hdev,
+ 	struct hid_collection *collection = NULL;
+ 	void *priv = NULL;
+ 	struct hid_sensor_hub_device *hsdev = NULL;
++	u32 copy_size;
++	u32 avail;
+ 
+ 	hid_dbg(hdev, "sensor_hub_raw_event report id:0x%x size:%d type:%d\n",
+ 			 report->id, size, report->type);
+@@ -518,12 +568,27 @@ static int sensor_hub_raw_event(struct hid_device *hdev,
+ 					      hsdev->pending.attr_usage_id ==
+ 					      report->field[i]->logical)) {
+ 			hid_dbg(hdev, "data was pending ...\n");
+-			hsdev->pending.raw_data = kmemdup(ptr, sz, GFP_ATOMIC);
+-			if (hsdev->pending.raw_data)
+-				hsdev->pending.raw_size = sz;
+-			else
+-				hsdev->pending.raw_size = 0;
+-			complete(&hsdev->pending.ready);
++			if (hsdev->pending.max_raw_size) {
++				if (hsdev->pending.index < hsdev->pending.max_raw_size) {
++					avail = hsdev->pending.max_raw_size - hsdev->pending.index;
++					copy_size = clamp(sz, 0U, avail);
++
++					memcpy(hsdev->pending.raw_data + hsdev->pending.index,
++					       ptr, copy_size);
++					hsdev->pending.index += copy_size;
++					if (hsdev->pending.index >= hsdev->pending.max_raw_size) {
++						hsdev->pending.raw_size = hsdev->pending.index;
++						complete(&hsdev->pending.ready);
++					}
++				}
++			} else {
++				hsdev->pending.raw_data = kmemdup(ptr, sz, GFP_ATOMIC);
++				if (hsdev->pending.raw_data)
++					hsdev->pending.raw_size = sz;
++				else
++					hsdev->pending.raw_size = 0;
++				complete(&hsdev->pending.ready);
++			}
+ 		}
+ 		if (callback->capture_sample) {
+ 			if (report->field[i]->logical)
+diff --git a/include/linux/hid-sensor-hub.h b/include/linux/hid-sensor-hub.h
+index e7105655310850..ab5cc8db3fbb3b 100644
+--- a/include/linux/hid-sensor-hub.h
++++ b/include/linux/hid-sensor-hub.h
+@@ -43,6 +43,8 @@ struct hid_sensor_hub_attribute_info {
+  * @attr_usage_id:	Usage Id of a field, e.g. X-axis for a gyro.
+  * @raw_size:		Response size for a read request.
+  * @raw_data:		Place holder for received response.
++ * @index:		Current write index into raw_data for multi-byte reads.
++ * @max_raw_size:	Total buffer size for multi-byte reads; 0 for single-value reads.
+  */
+ struct sensor_hub_pending {
+ 	bool status;
+@@ -51,6 +53,8 @@ struct sensor_hub_pending {
+ 	u32 attr_usage_id;
+ 	int raw_size;
+ 	u8  *raw_data;
++	u32 index;
++	u32 max_raw_size;
+ };
+ 
+ /**
+@@ -183,6 +187,27 @@ int sensor_hub_input_attr_get_raw_value(struct hid_sensor_hub_device *hsdev,
+ 					bool is_signed
+ );
+ 
++/**
++ * sensor_hub_input_attr_read_values() - Synchronous multi-byte read request
++ * @hsdev:		Hub device instance.
++ * @usage_id:		Attribute usage id of parent physical device as per spec
++ * @attr_usage_id:	Attribute usage id as per spec
++ * @report_id:		Report id to look for
++ * @flag:		Synchronous or asynchronous read
++ * @buffer_size:	Size of the buffer in bytes
++ * @buffer:		Buffer to store the read data
++ *
++ * Issues a synchronous or asynchronous read request for an input attribute,
++ * accumulating data into the provided buffer until it is full.
++ * Return: 0 on success, -ETIMEDOUT if the device did not respond, or a
++ * negative error code.
++ */
++int sensor_hub_input_attr_read_values(struct hid_sensor_hub_device *hsdev,
++				      u32 usage_id, u32 attr_usage_id,
++				      u32 report_id,
++				      enum sensor_hub_read_flags flag,
++				      u32 buffer_size, u8 *buffer);
++
+ /**
+ * sensor_hub_set_feature() - Feature set request
+ * @hsdev:	Hub device instance.
 -- 
-2.39.2
+2.53.0
 
 
