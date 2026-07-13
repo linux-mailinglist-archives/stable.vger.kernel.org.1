@@ -1,79 +1,79 @@
-Return-Path: <stable+bounces-273698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273708-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id BazRBRHhVGpMgQAAu9opvQ
-	(envelope-from <stable+bounces-273698-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 14:58:57 +0200
+	id u1jwFrnkVGqXggAAu9opvQ
+	(envelope-from <stable+bounces-273708-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:14:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94F5574B2F8
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 14:58:56 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBEC274B67E
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:14:32 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=LNaqAOaO;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273698-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-273698-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="IiFfFNT/";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273708-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273708-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3A2DF307E2FA
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 12:56:33 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 301CE3091605
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 13:08:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3858F40E8E9;
-	Mon, 13 Jul 2026 12:56:32 +0000 (UTC)
-X-Original-To: Stable@vger.kernel.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72ED941611E;
+	Mon, 13 Jul 2026 13:08:18 +0000 (UTC)
+X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB78D21773D
-	for <Stable@vger.kernel.org>; Mon, 13 Jul 2026 12:56:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0726D40E8F1
+	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 13:08:16 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783947392; cv=none; b=YAzynXVwPv2a6H4TpcW1zmaBh+h3GzvykRn8zhiv34QeyqoKqb2CpyMVxVqVqpMbkApTVVGxmlaD7E7wVpTPaeOW38NyWgXv2pjXhE+g/T5hhxWconqs5ZzX0/rmU00wWrfLFwU3yQaR6aq6faqcCM2JqPDa+Pm3CMap4O+MHVw=
+	t=1783948098; cv=none; b=jgy8j6c5+6Lpus4cHeLZqqc7NEXTxikA5KozmjALZfgRccEC7BMFJJE2+eiwZT72iT6WSr6iCC1ZCyO5tIe4/RRDGltMfNsi6A0BsGtdPOAUXfAdB9ZEFybjcaMS0d4K/sRN83bJohWd0amYaxt1oHSrA63fOQdkwVInTmFj0JY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783947392; c=relaxed/simple;
-	bh=CUfCTkb9MjfaV7cuKDmW8HlK6vaKzh01ZxB9rxzSEhY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=D53lVJtQcITlDEu5IGalI+MrPeQsSeUYLvQQ2pozK3AKGl+vLnbWKQ7foPsPIWDPY1GDWewDf/GtmwgWUYbwwXhiXB4s8LYyZbufl+ZCGkEEkkgdzDPVBYcujKOjLO7qbu4Unbay+8hQjkt2iXHRNVbkycIb+AD7Bh1XTrMCRN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LNaqAOaO; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 038791F000E9;
-	Mon, 13 Jul 2026 12:56:29 +0000 (UTC)
+	s=arc-20240116; t=1783948098; c=relaxed/simple;
+	bh=Alw8mjOtEK6QfSAeHLi9Fby1ao7jUjz80XugbFbpSMQ=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=OuG+aiTGoTAvm2Kaj6wfi39VboTsLvUBCWC45S5clHm8hHzqkWqQXnwToHYVI6m9/E9u1lF7RHImZLnq4iTa0tl9cGb8PZniBkiNP2Yvxd3aSTl4RGVe+4B45BCBSyNcNFR+KaBkyEwyWUkBFQDvzmBZWAGznA7XZGB0WeQh47w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IiFfFNT/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ADCD1F000E9;
+	Mon, 13 Jul 2026 13:08:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783947390;
-	bh=C8pjlXorFjHfE4xskua82m+r4EqdRfJFhwZ8GOnZaaQ=;
+	s=korg; t=1783948096;
+	bh=/kYy2PSnk5Mg1gzvZfAQRIforw8cB49BoGBFLHUqNs8=;
 	h=Subject:To:Cc:From:Date;
-	b=LNaqAOaOMpah8gswe5AT/0IWsgumM4GKU7CXyB3VU0hag+gZ1moRCSeEsEB/vKxte
-	 VRJfY2LIzT3jJPlcod8c4btaC7gRL3xEgOl1G+VoZRoEMMaJtgCbqbT8+c27bLWv3C
-	 cT1rVwZGVqN3et89qJg4Qw8pN3l1XYt4jXGjzLT8=
-Subject: FAILED: patch "[PATCH] iio: hid-sensor-rotation: Fix stale or zero output when" failed to apply to 5.15-stable tree
-To: lixu.zhang@intel.com,Stable@vger.kernel.org,andriy.shevchenko@intel.com,jic23@kernel.org
+	b=IiFfFNT/HkDorVum0UdfQjR2KGUZ9iziTgrmESITu5iL2s9RVFc8uxPkGcNZ7RNNs
+	 Lo/YNxV9OzTmMSKcK/diRSACqyB8nfXNmVpQE1m1CAyDcZz9cy7ji+5fFFMna780RL
+	 vhWCGv6OsWNAJqzAIcmuYAneE/BDQAOIKtFEvixI=
+Subject: FAILED: patch "[PATCH] iio: common: st_sensors: honour channel endianness in" failed to apply to 6.1-stable tree
+To: github.com@herrie.org,andriy.shevchenko@intel.com,jic23@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 13 Jul 2026 14:56:08 +0200
-Message-ID: <2026071307-campus-semester-8833@gregkh>
+Date: Mon, 13 Jul 2026 14:57:49 +0200
+Message-ID: <2026071349-oppose-radiantly-81a4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-273698-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-273708-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:github.com@herrie.org,m:andriy.shevchenko@intel.com,m:jic23@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:lixu.zhang@intel.com,m:Stable@vger.kernel.org,m:andriy.shevchenko@intel.com,m:jic23@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
@@ -83,30 +83,30 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,gregkh:mid,intel.com:email,vger.kernel.org:from_smtp]
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,gregkh:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,herrie.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 94F5574B2F8
+X-Rspamd-Queue-Id: EBEC274B67E
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 3ce8d099e0afc5a7da75a2007a67f67c4f5a4af1
+git cherry-pick -x 55052184ac9011db2ea983e54d6c21f0b1079a12
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026071307-campus-semester-8833@gregkh' --subject-prefix 'PATCH 5.15.y' 'HEAD^..'
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026071349-oppose-radiantly-81a4@gregkh' --subject-prefix 'PATCH 6.1.y' 'HEAD^..'
 
 Possible dependencies:
 
@@ -118,85 +118,108 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 3ce8d099e0afc5a7da75a2007a67f67c4f5a4af1 Mon Sep 17 00:00:00 2001
-From: Zhang Lixu <lixu.zhang@intel.com>
-Date: Wed, 10 Jun 2026 16:29:10 +0800
-Subject: [PATCH] iio: hid-sensor-rotation: Fix stale or zero output when
- reading raw values
+From 55052184ac9011db2ea983e54d6c21f0b1079a12 Mon Sep 17 00:00:00 2001
+From: Herman van Hazendonk <github.com@herrie.org>
+Date: Tue, 16 Jun 2026 15:02:04 +0200
+Subject: [PATCH] iio: common: st_sensors: honour channel endianness in
+ read_axis_data
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-When reading the raw quaternion attribute (in_rot_quaternion_raw), the
-driver currently returns either all zeros (if the sensor was never enabled)
-or stale data (if the sensor was previously enabled) because it reads from
-the internal buffer without explicitly requesting a new sample from the
-sensor.
+st_sensors_read_axis_data() unconditionally decoded multi-byte
+results with get_unaligned_le16() / get_unaligned_le24() regardless
+of the channel's declared scan_type.endianness.
 
-To fix this, power up the sensor, call sensor_hub_input_attr_read_values()
-to issue a synchronous GET_REPORT and receive the full quaternion data
-directly into a local buffer, then decode the four components.
+For every ST sensor that has used this helper since it was introduced
+this happened to be fine because the ST IMU/accel/gyro/pressure
+families publish their data registers as little-endian and the
+channel specs in those drivers declare IIO_LE accordingly.
 
-Fixes: fc18dddc0625 ("iio: hid-sensors: Added device rotation support")
-Signed-off-by: Zhang Lixu <lixu.zhang@intel.com>
+The LSM303DLH magnetometer however publishes its X/Y/Z output as a
+pair of big-endian bytes (the H register sits at the lower address,
+0x03/0x05/0x07, and the L register immediately after), and its
+channel specs in st_magn_core.c correctly declare IIO_BE -- but
+read_axis_data() ignored that and decoded as little-endian, swapping
+the high and low bytes of every magnetometer sample. The LSM303DLHC
+and LSM303DLM share the same st_magn_16bit_channels (IIO_BE) and
+were therefore byte-swapped by the same bug; users of those parts
+will see different in_magn_*_raw values after this fix lands.
+
+The bug is most visible on a stationary chip: in earth's field the
+true X reading is small and the high byte sits at 0x00, so swapping
+the bytes pins sysfs X at exactly the low byte's pattern (e.g. 0x00F0
+= 240). Y and Z still appear "to vary" because their magnitudes are
+larger and the noise in the low byte produces big swings in the
+swapped high byte:
+
+  before (LSM303DLH flat, sysfs in_magn_*_raw):
+      X=240 (stuck), Y= 12032..23296, Z=-16128..-9728
+
+  after (direct i2c-dev big-endian decode, same chip same orientation):
+      X≈-4096, Y≈210, Z≈80     (sensible values reflecting earth's
+                                ambient field at low gauss range)
+
+Fix read_axis_data() to dispatch on ch->scan_type.endianness and
+call get_unaligned_be16() / get_unaligned_be24() when the channel
+declares IIO_BE. Existing IIO_LE consumers (st_accel, st_gyro,
+st_pressure, st_lsm6dsx and others) are unaffected because their
+channel specs already declare IIO_LE and the LE path is unchanged.
+
+While restructuring the branches, replace the previously implicit
+silent-success-with-uninitialised-*data fall-through for
+byte_for_channel outside 1..3 with an explicit return -EINVAL. No
+in-tree ST sensor publishes such a channel, but the new behaviour
+is strictly safer than handing userspace garbage.
+
+Fixes: 23491b513bcd ("iio:common: Add STMicroelectronics common library")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-7 sparse smatch clang-analyzer coccinelle checkpatch
+Assisted-by: Sashiko:claude-opus-4-7
+Signed-off-by: Herman van Hazendonk <github.com@herrie.org>
 Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <jic23@kernel.org>
 
-diff --git a/drivers/iio/orientation/hid-sensor-rotation.c b/drivers/iio/orientation/hid-sensor-rotation.c
-index 4a11e4555099..1c6f02374f3c 100644
---- a/drivers/iio/orientation/hid-sensor-rotation.c
-+++ b/drivers/iio/orientation/hid-sensor-rotation.c
-@@ -86,6 +86,13 @@ static int dev_rot_read_raw(struct iio_dev *indio_dev,
- 				long mask)
- {
- 	struct dev_rot_state *rot_state = iio_priv(indio_dev);
-+	struct hid_sensor_hub_device *hsdev = rot_state->common_attributes.hsdev;
-+	struct hid_sensor_hub_attribute_info *info = &rot_state->quaternion;
-+	u32 usage_id = HID_USAGE_SENSOR_ORIENT_QUATERNION;
-+	union {
-+		s16 val16[4];
-+		s32 val32[4];
-+	} raw_buf;
- 	int ret_type;
- 	int i;
+diff --git a/drivers/iio/common/st_sensors/st_sensors_core.c b/drivers/iio/common/st_sensors/st_sensors_core.c
+index dbc5e16fbde4..76f91696f66a 100644
+--- a/drivers/iio/common/st_sensors/st_sensors_core.c
++++ b/drivers/iio/common/st_sensors/st_sensors_core.c
+@@ -498,6 +498,7 @@ static int st_sensors_read_axis_data(struct iio_dev *indio_dev,
+ 	u8 *outdata;
+ 	struct st_sensor_data *sdata = iio_priv(indio_dev);
+ 	unsigned int byte_for_channel;
++	u32 tmp;
  
-@@ -95,8 +102,37 @@ static int dev_rot_read_raw(struct iio_dev *indio_dev,
- 	switch (mask) {
- 	case IIO_CHAN_INFO_RAW:
- 		if (size >= 4) {
--			for (i = 0; i < 4; ++i)
--				vals[i] = rot_state->scan.sampled_vals[i];
-+			if (info->size <= 0 || info->size > sizeof(raw_buf))
-+				return -EINVAL;
-+
-+			hid_sensor_power_state(&rot_state->common_attributes, true);
-+
-+			ret_type = sensor_hub_input_attr_read_values(hsdev,
-+								     hsdev->usage,
-+								     usage_id,
-+								     info->report_id,
-+								     SENSOR_HUB_SYNC,
-+								     info->size,
-+								     (u8 *)&raw_buf);
-+
-+			hid_sensor_power_state(&rot_state->common_attributes, false);
-+
-+			if (ret_type < 0)
-+				return ret_type;
-+
-+			switch (info->size) {
-+			case sizeof(raw_buf.val16):
-+				for (i = 0; i < ARRAY_SIZE(raw_buf.val16); i++)
-+					vals[i] = raw_buf.val16[i];
-+				break;
-+			case sizeof(raw_buf.val32):
-+				for (i = 0; i < ARRAY_SIZE(raw_buf.val32); i++)
-+					vals[i] = raw_buf.val32[i];
-+				break;
-+			default:
-+				return -EINVAL;
-+			}
-+
- 			ret_type = IIO_VAL_INT_MULTIPLE;
- 			*val_len =  4;
- 		} else
+ 	byte_for_channel = DIV_ROUND_UP(ch->scan_type.realbits +
+ 					ch->scan_type.shift, 8);
+@@ -508,12 +509,22 @@ static int st_sensors_read_axis_data(struct iio_dev *indio_dev,
+ 	if (err < 0)
+ 		return err;
+ 
+-	if (byte_for_channel == 1)
+-		*data = (s8)*outdata;
+-	else if (byte_for_channel == 2)
+-		*data = (s16)get_unaligned_le16(outdata);
+-	else if (byte_for_channel == 3)
+-		*data = (s32)sign_extend32(get_unaligned_le24(outdata), 23);
++	if (byte_for_channel == 1) {
++		tmp = *outdata;
++	} else if (byte_for_channel == 2) {
++		if (ch->scan_type.endianness == IIO_BE)
++			tmp = get_unaligned_be16(outdata);
++		else
++			tmp = get_unaligned_le16(outdata);
++	} else if (byte_for_channel == 3) {
++		if (ch->scan_type.endianness == IIO_BE)
++			tmp = get_unaligned_be24(outdata);
++		else
++			tmp = get_unaligned_le24(outdata);
++	} else {
++		return -EINVAL;
++	}
++	*data = sign_extend32(tmp, BYTES_TO_BITS(byte_for_channel) - 1);
+ 
+ 	return 0;
+ }
 
 
