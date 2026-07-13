@@ -1,175 +1,400 @@
-Return-Path: <stable+bounces-273911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273919-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id zWkcDkMhVWo6kQAAu9opvQ
-	(envelope-from <stable+bounces-273911-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 19:32:51 +0200
+	id hJ/MOHAhVWpFkQAAu9opvQ
+	(envelope-from <stable+bounces-273919-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 19:33:36 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B83A374E0A7
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 19:32:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FA5074E0D3
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 19:33:36 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=0sec.ai header.s=google header.b=PXUAqGMG;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273911-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273911-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=none;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=C+SvWVcs;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273919-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273919-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1D246304FA92
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 17:30:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5B7913006500
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 17:32:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB136349CCD;
-	Mon, 13 Jul 2026 17:30:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70A5434A3DB;
+	Mon, 13 Jul 2026 17:32:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BAAF3491E1
-	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 17:30:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0724D349CDC
+	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 17:31:59 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783963848; cv=none; b=mqBD/Aw2jk1E0dmo05ON6NGFGiBDr/impR/UaxdLPyPixx97kSGl2+dEBHD2yfjuKoEPN+6EFfrbcHoWpvQuo+HdtMiMUtC8hUiOUbofnf+05+xrCSfOIjUDzuZCF/YL+KzNuHOn1GD0mwtZ1IoUHreCgNNULtxrGEPZc4yXew0=
+	t=1783963920; cv=none; b=pMhfb1AYfNYrbsf80rPuhOSrIgYZiEZ+YyH2wIpJAKu//RI8120aBYglQ6z1TJTPKAKYEndCWWBqP+1kQm0J+Gbc6XCfhrG9UXSOFXL1Q5qVH3mcpC0VbUvK6iOUrX01g1xMsfKzQJak4AwmcS094VkXXBXeyTpL7XgOL9KukMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783963848; c=relaxed/simple;
-	bh=1die7bI0OcCIcn1bppUSBazJU6X5SGKun1KXOThfxSQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gta8B6KrtferRPIRng7Np9rv+3cawv13MpEKauLb4seG0Jvmnpg127flbd1rgISfpwtXMDuzyIJAc/3dwBWW8evQww1y7jyvgRUTl8L5bFxMrC6WqReMfNPeuwnLfjX1bzzHIiS/h4Ae3ZcAlWxI8ae0KZiQR2i1OviwQMNQu08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai; spf=pass smtp.mailfrom=0sec.ai; dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b=PXUAqGMG; arc=none smtp.client-ip=209.85.128.42
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-493c52cde9eso30584705e9.3
-        for <stable@vger.kernel.org>; Mon, 13 Jul 2026 10:30:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=0sec.ai; s=google; t=1783963835; x=1784568635; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=bhFRmtEAl63b5XEQYkBemzUeown6Ez5I0lj5DtalopQ=;
-        b=PXUAqGMGt9VdATqyXceiAh1SejsxG5hJ3b/DFrxKlOMynHIb7j1rxTZudsGZu6laFG
-         kTZRi1Ml3G7gDQXTgrjfd1oN+qZZBew6/oQSx+HuPI9tzzZ8eEtGJthJNn5yyZRbqefK
-         3nFkELcDsNxCOVAsDf4Er8Lx5trgNdtRM/+ZY419GOnhlbOVunb+itoM4Cwvhk4R2XtM
-         AAhDllS39/XpSku1k44zwf5qnP5+V79OJYzqTokB41U75PcEYq4WYD2q8pVYR92fz5pD
-         a6uTw7Vx+NkqjXk/tKcDqKqXdlL9MK+TJ5+TRcUG8OQipWT5o10Pm5878M0gVh0HttiB
-         A+ZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783963835; x=1784568635;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=bhFRmtEAl63b5XEQYkBemzUeown6Ez5I0lj5DtalopQ=;
-        b=oVb2mPmxH+RjELKPhtd1OQMyPGyzn4Ze+MkjHSAH+dj/7O5qzeGaLL5gyr92L0nuNT
-         awTfLtxu7HWgILUAWyqwMnsIRhITCDqGy+fizWRhn2zU4+OFj8/E1Vcm7Kcg+I5RDYyD
-         OasVdNzqu/LF4hvW+LhCjuxFZv411ocqJtRik3ICsGPhYwLsTrjNa/N/Zn5tw5NWIltO
-         tT0shZFYw4ITk3CV1O2VKAQSVqvX+sCcUpEPCeMhbhyBo2stSP6a5YgLyvR84jFjrKU6
-         wgRbpVuES9wj6cjpE7ERI0K3KKe4vVmRUy0xwb5RjKkHUxcJY6ZQRlQnC44omeuJlujs
-         1h/g==
-X-Forwarded-Encrypted: i=1; AHgh+Rq/fd6ZMP1HT7shKPP+xI/1oe9isVfsopemIt3hEgfjv6q5Gu/YYlDwbPPvOJxSfxXDu1cyhD8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyWs1hobOJ4PM2DaVPf+sMeBauKUv7x4Q6Z7zKUoO+bGO7qGTU1
-	Z8AAldhWuls+wdLO4aLTS1w7zaiLMoXjViUc6g+1XaWcH/ffTvc6bKPmuqCueDsTMC85
-X-Gm-Gg: AfdE7clNKGhgX8rd5j5iLlBdlag305IzwfoqsEhw5GgITn4C6xLsJEDrxRKKKXqLP3O
-	Wcfr0J8e5AXkBIFOdkWfvcIGfrcK2LDURnfooqP8JMHG9LlPbeqU5gUSS0zBHS/Z+xJYZT7exq4
-	QjD6rsfIDUwrt9SNb+YLIREBp44rWopDbrI3y1kR85z8QEgsz0n3pW2U4AMOnIrwfM3OjsqQjYS
-	mDNmhapazV22hCMnSemll3yjVV5oFRum9K2Cg9QS03Nbcac/lThfuehvuqn2QfJMyedzpRv3swl
-	YHnvqAmCqU9ellY8I51VggxVBW+PnHUgA2dn5yTkanOLINfDuAXfjhpg34hK7XVMPZFsrws9zAD
-	76Z5h6TN4TwbQTllrZCbe/OBc0eCgraJhq2IlxQ2PfQb+k4xvLA/ik1PGtl5AY/xpOHhnhhTwPN
-	dBuq3bmXlJP3TLg+UkELLFXpne3/9g2P28lwXYDcIdSOdMA/pVQUsB2DbgGoQhujr7IxF/v2K9B
-	QyiFg71/vhso/wZfH4QHJ/EDezxZ1QMYzAajQroHiEBLg==
-X-Received: by 2002:a05:600c:8718:b0:493:c1a1:68f0 with SMTP id 5b1f17b1804b1-493f881f0f1mr96584005e9.20.1783963834676;
-        Mon, 13 Jul 2026 10:30:34 -0700 (PDT)
-Received: from PeakBook-Mini.tail8e484.ts.net ([178.197.218.188])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493f3a60404sm260075855e9.1.2026.07.13.10.30.33
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 13 Jul 2026 10:30:34 -0700 (PDT)
-From: Doruk Tan Ozturk <doruk@0sec.ai>
-To: Min Ma <mamin506@gmail.com>,
-	Lizhi Hou <lizhi.hou@amd.com>,
-	Oded Gabbay <ogabbay@kernel.org>
-Cc: dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	Doruk Tan Ozturk <doruk@0sec.ai>,
-	stable@vger.kernel.org
-Subject: [PATCH 2/2] accel/amdxdna: reject command submission on devices without a submit op
-Date: Mon, 13 Jul 2026 19:30:29 +0200
-Message-ID: <20260713173030.87541-3-doruk@0sec.ai>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260713173030.87541-1-doruk@0sec.ai>
-References: <20260713173030.87541-1-doruk@0sec.ai>
+	s=arc-20240116; t=1783963920; c=relaxed/simple;
+	bh=LzOFD7MJcPHTC+KsLKmUlPURpzH9kweKX0DL+Hadqdk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Ko9BkjX6ye9itiBBAtDOq+AeiTCEjoMnAC0XIiy8PWFY35qMVsUaUp36VkUEKX3w0JGM32YhaKAIflWiLiXyz4eOEz1fTyNOc6xtNSx2orrkqAuP7oGhUg0i3rS/5BQ/8NwP4gSe+1ACAskm0bjygPO20MryyLwqgG/nJsfVMQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C+SvWVcs; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E9961F000E9;
+	Mon, 13 Jul 2026 17:31:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1783963918;
+	bh=pC3x48BkVZnQlXhvifS5MmTZdKjyw55Osb6neNTg4l4=;
+	h=Subject:To:Cc:From:Date;
+	b=C+SvWVcsNMBClytF4NYdDBT29TlWC1YteJa3FFLDbhxJgjvqZYynauhJ5t1wS3Kyi
+	 ow5m+qE9aGysDhrpGAMeDrarapl60OxHNwb63rhkmRwU171r/PNpq8SHScc1vAklD7
+	 0syTGh5d+ng/FTG5nvGeA8+55itd+/HRCKN2J1t8=
+Subject: FAILED: patch "[PATCH] Bluetooth: hci_conn: Fix null ptr deref in hci_abort_conn()" failed to apply to 6.12-stable tree
+To: oss@fourdim.xyz,luiz.von.dentz@intel.com,xiaowu.417@qq.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 13 Jul 2026 19:31:53 +0200
+Message-ID: <2026071353-angular-magical-b4f5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[0sec.ai:s=google];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:mamin506@gmail.com,m:lizhi.hou@amd.com,m:ogabbay@kernel.org,m:dri-devel@lists.freedesktop.org,m:linux-kernel@vger.kernel.org,m:doruk@0sec.ai,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-273919-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[0sec.ai];
-	FORGED_SENDER(0.00)[doruk@0sec.ai,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-273911-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[gmail.com,amd.com,kernel.org];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[doruk@0sec.ai,stable@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:oss@fourdim.xyz,m:luiz.von.dentz@intel.com,m:xiaowu.417@qq.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[fourdim.xyz,intel.com,qq.com];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	TO_DN_NONE(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	DKIM_TRACE(0.00)[0sec.ai:+];
+	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	TAGGED_RCPT(0.00)[stable];
+	FROM_NO_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[0sec.ai:email,0sec.ai:dkim,0sec.ai:url,0sec.ai:from_mime,0sec.ai:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:from_mime,linuxfoundation.org:dkim,intel.com:email,gregkh:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,fourdim.xyz:email,qq.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B83A374E0A7
+X-Rspamd-Queue-Id: 6FA5074E0D3
 
-amdxdna_cmd_submit() calls xdna->dev_info->ops->cmd_submit()
-unconditionally, but only aie2_dev_ops defines that callback.
-aie4_vf_ops (the AIE4 SR-IOV virtual function) does not, so a user
-AMDXDNA_EXEC_CMD ioctl on an AIE4 device reaches a NULL function-pointer
-call and oopses the kernel. AIE4 submits work through a mapped user queue
-and doorbell, not this ioctl path.
 
-Reject the submission early with -EOPNOTSUPP when the device provides no
-cmd_submit op, so the shared EXEC ioctl is a clean no-op on such devices.
+The patch below does not apply to the 6.12-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Fixes: aac243092b70 ("accel/amdxdna: Add command execution")
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git checkout FETCH_HEAD
+git cherry-pick -x 12917f591cea1af36087dba5b9ec888652f0b42a
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026071353-angular-magical-b4f5@gregkh' --subject-prefix 'PATCH 6.12.y' 'HEAD^..'
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 12917f591cea1af36087dba5b9ec888652f0b42a Mon Sep 17 00:00:00 2001
+From: Siwei Zhang <oss@fourdim.xyz>
+Date: Mon, 15 Jun 2026 11:33:05 -0400
+Subject: [PATCH] Bluetooth: hci_conn: Fix null ptr deref in hci_abort_conn()
+
+hci_abort_conn() read hci_skb_event(hdev->sent_cmd) when a connection
+was pending, but hdev->sent_cmd can be NULL while req_status is still
+HCI_REQ_PEND, leading to a NULL pointer dereference and a general
+protection fault from the hci_rx_work() receive path.
+
+Instead of inspecting hdev->sent_cmd, track the in-flight create
+connection command with a new per-connection HCI_CONN_CREATE flag and
+route all cancellation through hci_cancel_connect_sync(), which
+dispatches to a dedicated per-type cancel function. The create command
+is in exactly one of two states: still queued, or in flight. The cancel
+function holds cmd_sync_work_lock across the whole decision: the worker
+takes this lock to dequeue every entry, so while it is held a queued
+command cannot start running and an in-flight command cannot complete
+and let the next command become pending. This keeps the flag test and
+hci_cmd_sync_cancel() atomic with respect to the worker, so a queued
+command is simply dequeued, and an in-flight command owned by this
+connection is cancelled without the risk of cancelling an unrelated
+command that became pending in the meantime. CIS uses the same flag
+mechanism via HCI_CONN_CREATE_CIS but cannot be dequeued per-connection.
+
+hci_acl_create_conn_sync() and hci_le_create_conn_sync() clear
+HCI_CONN_CREATE after the create command completes, but the command
+status handler can free conn via hci_conn_del() (for example when the
+controller rejects the connection) while the worker is still blocked on
+the connection complete event. Hold a reference on conn across the
+create command so the flag can be cleared without a use-after-free.
+
+Fixes: a13f316e90fd ("Bluetooth: hci_conn: Consolidate code for aborting connections")
 Cc: stable@vger.kernel.org
-Found by 0sec automated security-research tooling (https://0sec.ai).
-Assisted-by: 0sec:claude-opus-4-8
-Signed-off-by: Doruk Tan Ozturk <doruk@0sec.ai>
----
- drivers/accel/amdxdna/amdxdna_ctx.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Suggested-by: XIAO WU <xiaowu.417@qq.com>
+Assisted-by: Claude:claude-opus-4-8
+Signed-off-by: Siwei Zhang <oss@fourdim.xyz>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-diff --git a/drivers/accel/amdxdna/amdxdna_ctx.c b/drivers/accel/amdxdna/amdxdna_ctx.c
-index a5c8c2c4de6d..bdbd3db12a6c 100644
---- a/drivers/accel/amdxdna/amdxdna_ctx.c
-+++ b/drivers/accel/amdxdna/amdxdna_ctx.c
-@@ -590,6 +590,10 @@ int amdxdna_cmd_submit(struct amdxdna_client *client,
- 	int ret, idx;
+diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
+index 7e15da47fe3a..4ca09298e11a 100644
+--- a/include/net/bluetooth/hci_core.h
++++ b/include/net/bluetooth/hci_core.h
+@@ -985,6 +985,7 @@ enum {
+ 	HCI_CONN_AUTH_FAILURE,
+ 	HCI_CONN_PER_ADV,
+ 	HCI_CONN_BIG_CREATED,
++	HCI_CONN_CREATE,
+ 	HCI_CONN_CREATE_CIS,
+ 	HCI_CONN_CREATE_BIG_SYNC,
+ 	HCI_CONN_BIG_SYNC,
+diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
+index c335372e4062..1966cd153d97 100644
+--- a/net/bluetooth/hci_conn.c
++++ b/net/bluetooth/hci_conn.c
+@@ -3178,26 +3178,11 @@ int hci_abort_conn(struct hci_conn *conn, u8 reason)
  
- 	XDNA_DBG(xdna, "Command BO hdl %d, Arg BO count %d", cmd_bo_hdl, arg_bo_cnt);
+ 	conn->abort_reason = reason;
+ 
+-	/* If the connection is pending check the command opcode since that
+-	 * might be blocking on hci_cmd_sync_work while waiting its respective
+-	 * event so we need to hci_cmd_sync_cancel to cancel it.
+-	 *
+-	 * hci_connect_le serializes the connection attempts so only one
+-	 * connection can be in BT_CONNECT at time.
++	/* Cancel the connect attempt. A return of 0 means the create command
++	 * was still queued and got dequeued, so there is nothing to disconnect.
+ 	 */
+-	if (conn->state == BT_CONNECT && READ_ONCE(hdev->req_status) == HCI_REQ_PEND) {
+-		switch (hci_skb_event(hdev->sent_cmd)) {
+-		case HCI_EV_CONN_COMPLETE:
+-		case HCI_EV_LE_CONN_COMPLETE:
+-		case HCI_EV_LE_ENHANCED_CONN_COMPLETE:
+-		case HCI_EVT_LE_CIS_ESTABLISHED:
+-			hci_cmd_sync_cancel(hdev, ECANCELED);
+-			break;
+-		}
+-	/* Cancel connect attempt if still queued/pending */
+-	} else if (!hci_cancel_connect_sync(hdev, conn)) {
++	if (!hci_cancel_connect_sync(hdev, conn))
+ 		return 0;
+-	}
+ 
+ 	/* Run immediately if on cmd_sync_work since this may be called
+ 	 * as a result to MGMT_OP_DISCONNECT/MGMT_OP_UNPAIR which does
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index 3be8c3581c6c..c896d4edd013 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -6633,6 +6633,11 @@ static int hci_le_create_conn_sync(struct hci_dev *hdev, void *data)
+ 
+ 	bt_dev_dbg(hdev, "conn %p", conn);
+ 
++	/* Hold a reference so conn stays valid for the HCI_CONN_CREATE
++	 * clear_bit() at done.
++	 */
++	hci_conn_get(conn);
 +
-+	if (!xdna->dev_info->ops->cmd_submit)
-+		return -EOPNOTSUPP;
+ 	clear_bit(HCI_CONN_SCANNING, &conn->flags);
+ 	conn->state = BT_CONNECT;
+ 
+@@ -6645,6 +6650,7 @@ static int hci_le_create_conn_sync(struct hci_dev *hdev, void *data)
+ 		    hdev->le_scan_type == LE_SCAN_ACTIVE &&
+ 		    !hci_dev_test_flag(hdev, HCI_LE_SIMULTANEOUS_ROLES)) {
+ 			hci_conn_del(conn);
++			hci_conn_put(conn);
+ 			return -EBUSY;
+ 		}
+ 
+@@ -6690,6 +6696,12 @@ static int hci_le_create_conn_sync(struct hci_dev *hdev, void *data)
+ 					     &own_addr_type);
+ 	if (err)
+ 		goto done;
 +
- 	job = kzalloc_flex(*job, bos, arg_bo_cnt);
- 	if (!job)
- 		return -ENOMEM;
--- 
-2.43.0
++	/* Mark create connection in flight so hci_cancel_connect_sync() can
++	 * cancel it while blocking on the connection complete event.
++	 */
++	set_bit(HCI_CONN_CREATE, &conn->flags);
++
+ 	/* Send command LE Extended Create Connection if supported */
+ 	if (use_ext_conn(hdev)) {
+ 		err = hci_le_ext_create_conn_sync(hdev, conn, own_addr_type);
+@@ -6725,11 +6737,14 @@ static int hci_le_create_conn_sync(struct hci_dev *hdev, void *data)
+ 				       conn->conn_timeout, NULL);
+ 
+ done:
++	clear_bit(HCI_CONN_CREATE, &conn->flags);
++
+ 	if (err == -ETIMEDOUT)
+ 		hci_le_connect_cancel_sync(hdev, conn, 0x00);
+ 
+ 	/* Re-enable advertising after the connection attempt is finished. */
+ 	hci_resume_advertising_sync(hdev);
++	hci_conn_put(conn);
+ 	return err;
+ }
+ 
+@@ -7004,10 +7019,25 @@ static int hci_acl_create_conn_sync(struct hci_dev *hdev, void *data)
+ 	else
+ 		cp.role_switch = 0x00;
+ 
+-	return __hci_cmd_sync_status_sk(hdev, HCI_OP_CREATE_CONN,
+-					sizeof(cp), &cp,
+-					HCI_EV_CONN_COMPLETE,
+-					conn->conn_timeout, NULL);
++	/* Hold a reference so conn stays valid for the HCI_CONN_CREATE
++	 * clear_bit() below.
++	 */
++	hci_conn_get(conn);
++
++	/* Mark create connection in flight so hci_cancel_connect_sync() can
++	 * cancel it while blocking on the connection complete event.
++	 */
++	set_bit(HCI_CONN_CREATE, &conn->flags);
++
++	err = __hci_cmd_sync_status_sk(hdev, HCI_OP_CREATE_CONN,
++				       sizeof(cp), &cp,
++				       HCI_EV_CONN_COMPLETE,
++				       conn->conn_timeout, NULL);
++
++	clear_bit(HCI_CONN_CREATE, &conn->flags);
++	hci_conn_put(conn);
++
++	return err;
+ }
+ 
+ int hci_connect_acl_sync(struct hci_dev *hdev, struct hci_conn *conn)
+@@ -7059,22 +7089,97 @@ int hci_connect_le_sync(struct hci_dev *hdev, struct hci_conn *conn)
+ 	return (err == -EEXIST) ? 0 : err;
+ }
+ 
+-int hci_cancel_connect_sync(struct hci_dev *hdev, struct hci_conn *conn)
++static int hci_acl_cancel_create_conn_sync(struct hci_dev *hdev,
++					   struct hci_conn *conn)
+ {
+-	if (conn->state != BT_OPEN)
+-		return -EINVAL;
++	struct hci_cmd_sync_work_entry *entry;
++	int err = -EBUSY;
+ 
+-	switch (conn->type) {
+-	case ACL_LINK:
+-		return !hci_cmd_sync_dequeue_once(hdev,
+-						  hci_acl_create_conn_sync,
+-						  conn, NULL);
+-	case LE_LINK:
+-		return !hci_cmd_sync_dequeue_once(hdev, hci_le_create_conn_sync,
+-						  conn, create_le_conn_complete);
++	/* cmd_sync_work_lock makes the HCI_CONN_CREATE test and the cancel
++	 * atomic against the worker, which takes this lock to dequeue every
++	 * entry: while it is held no other command can become pending, so
++	 * hci_cmd_sync_cancel() cannot cancel an unrelated command.
++	 */
++	mutex_lock(&hdev->cmd_sync_work_lock);
++
++	/* In flight: this connection owns the pending request, cancel it. */
++	if (test_bit(HCI_CONN_CREATE, &conn->flags)) {
++		hci_cmd_sync_cancel(hdev, ECANCELED);
++		goto unlock;
+ 	}
+ 
+-	return -ENOENT;
++	/* Still queued: a successful dequeue means it never started, so there
++	 * is nothing to disconnect.
++	 */
++	entry = _hci_cmd_sync_lookup_entry(hdev, hci_acl_create_conn_sync, conn,
++					   NULL);
++	if (entry) {
++		_hci_cmd_sync_cancel_entry(hdev, entry, -ECANCELED);
++		err = 0;
++	}
++
++unlock:
++	mutex_unlock(&hdev->cmd_sync_work_lock);
++	return err;
++}
++
++static int hci_le_cancel_create_conn_sync(struct hci_dev *hdev,
++					  struct hci_conn *conn)
++{
++	struct hci_cmd_sync_work_entry *entry;
++	int err = -EBUSY;
++
++	/* cmd_sync_work_lock keeps the HCI_CONN_CREATE test and the cancel
++	 * atomic against the cmd_sync worker.
++	 */
++	mutex_lock(&hdev->cmd_sync_work_lock);
++
++	if (test_bit(HCI_CONN_CREATE, &conn->flags)) {
++		hci_cmd_sync_cancel(hdev, ECANCELED);
++		goto unlock;
++	}
++
++	entry = _hci_cmd_sync_lookup_entry(hdev, hci_le_create_conn_sync, conn,
++					   create_le_conn_complete);
++	if (entry) {
++		_hci_cmd_sync_cancel_entry(hdev, entry, -ECANCELED);
++		err = 0;
++	}
++
++unlock:
++	mutex_unlock(&hdev->cmd_sync_work_lock);
++	return err;
++}
++
++static int hci_cis_cancel_create_conn_sync(struct hci_dev *hdev,
++					   struct hci_conn *conn)
++{
++	/* LE Create CIS is shared by the whole CIG and cannot be dequeued
++	 * per-connection, so only an in-flight command can be cancelled.
++	 * cmd_sync_work_lock keeps the test and the cancel atomic against the
++	 * cmd_sync worker.
++	 */
++	mutex_lock(&hdev->cmd_sync_work_lock);
++
++	if (test_bit(HCI_CONN_CREATE_CIS, &conn->flags))
++		hci_cmd_sync_cancel(hdev, ECANCELED);
++
++	mutex_unlock(&hdev->cmd_sync_work_lock);
++	return -EBUSY;
++}
++
++int hci_cancel_connect_sync(struct hci_dev *hdev, struct hci_conn *conn)
++{
++	switch (conn->type) {
++	case ACL_LINK:
++		return hci_acl_cancel_create_conn_sync(hdev, conn);
++	case LE_LINK:
++		return hci_le_cancel_create_conn_sync(hdev, conn);
++	case CIS_LINK:
++		return hci_cis_cancel_create_conn_sync(hdev, conn);
++	default:
++		return -ENOENT;
++	}
+ }
+ 
+ int hci_le_conn_update_sync(struct hci_dev *hdev, struct hci_conn *conn,
 
 
