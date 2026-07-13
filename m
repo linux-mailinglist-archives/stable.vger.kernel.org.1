@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-273671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273672-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ZCL7BhzeVGpXgAAAu9opvQ
-	(envelope-from <stable+bounces-273671-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 14:46:20 +0200
+	id rP9uME/eVGp4gAAAu9opvQ
+	(envelope-from <stable+bounces-273672-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 14:47:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B3E474B108
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 14:46:19 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24FD574B14B
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 14:47:11 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=EDaU712e;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273671-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273671-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=KX0LWkzD;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273672-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273672-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8F3683018D13
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 12:46:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 66D52302847D
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 12:46:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F148040E8E7;
-	Mon, 13 Jul 2026 12:46:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A0AB410D19;
+	Mon, 13 Jul 2026 12:46:56 +0000 (UTC)
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB7E340C5C5
-	for <Stable@vger.kernel.org>; Mon, 13 Jul 2026 12:46:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEAD340FDAF
+	for <Stable@vger.kernel.org>; Mon, 13 Jul 2026 12:46:53 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783946767; cv=none; b=nPkULRaLOjXFv4CeMznUxfsZ0I2Je1SMC04U03mly3GqYn+1ivk9qnXe+OaNgBMJuZ4JyGHrcYrxVmQoLxjYciZ5+qBqgvUWsN3YNbGexULytGlrA2A6ktS3uH3Xzef0eN5gcW/XDgBrXAOEjf5InOBKX4oX7gyqmvwu9dtH6mE=
+	t=1783946815; cv=none; b=vEjm28zX/NzwLnWUYqoQthe7h+tEZANv1LLYMR4f4V6tVGYqLpKLjtAmViPC7akcridZUMdjHcTB0kKa8g1IL3BXD7zYUKvnJxqxEB7NKr3eNdpdsCIGjTwt4ms5f5/KwXR+NraW6DnWsDG3EbT/6ka3J8Dg6SNsbaDkMbwhWaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783946767; c=relaxed/simple;
-	bh=zSuLuB8YtnExfLzHz7M/afVpgUkHrbd77m53thGvkcU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Xp2fHkdcTGniaIeG/XqnnAemqkXjB4AOUlQhq+3XGVxDwn1Po15MrJ4YApzr2Dns09uPSawvf0OTkBTwL8Y9N6V/9gkUBOHcIH1uypkJSHoLDp89EtokFpZrZ5fuhYCbdz5iS+8j0MOvrn7lxuRHj9HgeqPkC+spIGeq1Pv5FtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EDaU712e; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13B451F000E9;
-	Mon, 13 Jul 2026 12:46:01 +0000 (UTC)
+	s=arc-20240116; t=1783946815; c=relaxed/simple;
+	bh=UnsZcAc6QneCiswXB/04ds2Pg6uvmpqPE4vtOikW0rs=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=nnUqH2x2uYbshlx7UdjwOqp9mtgcqkbTZkF5OnPsuGvV1MGrJDejkQ5mMrQG/C2qtan8JoxGStq6uyJAbEuuuZ7RLn9hQ3DDLgUPHlB0mOvuqrjcpoVhyPPF5uSpHCKPtWNiSvHQaj4Mi2KTUShMT22+KpzElf7lvjj3XzF/DJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KX0LWkzD; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 348D41F00A3D;
+	Mon, 13 Jul 2026 12:46:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783946762;
-	bh=K4SQB9MdFJ0UJ/yoNxNIKzBNERCN8x4bxLFw91S3m64=;
+	s=korg; t=1783946812;
+	bh=+kKStmpabwFdJ7OkNdkv0dZiqIyfYY8X8nU6OAI8UTM=;
 	h=Subject:To:Cc:From:Date;
-	b=EDaU712e008XQabb0RRKH7xYIF9NetVVcqUDwRk03MmArO4x8VVVc74wC+/pefoM6
-	 A76uOe5nKc/5nCpxdJMddZgo3WkOWO53vycc6Q4qibLbatMlIzPxX1AX6lfETPdYMd
-	 B/FW/3hMGFPU2aaWSas2vzLowAsI3HtEWgjTgBis=
-Subject: FAILED: patch "[PATCH] iio: adc: ad7380: select REGMAP" failed to apply to 6.12-stable tree
-To: samuel.moelius@trailofbits.com,Stable@vger.kernel.org,andriy.shevchenko@intel.com,jic23@kernel.org,nuno.sa@analog.com
+	b=KX0LWkzD7IEb2VblY7Tsym9lV5it8KNblB66GF586x2hZnKQyEj8ITlmPTOfKkf4z
+	 Cbkb7wuRCTWVeWiUvb/1Ja00TaRylBqZPcANfHZIUq21V9b7x0Eh6cU/UqMMrMA8TV
+	 d6+hvaiu9z10uDCU+tj0xwXai0xGx2SXGzOA3P2E=
+Subject: FAILED: patch "[PATCH] iio: adc: spear: Initialize completion before requesting IRQ" failed to apply to 5.10-stable tree
+To: m32285159@gmail.com,Stable@vger.kernel.org,bookyungwook@gmail.com,jic23@kernel.org,jjy600901@snu.ac.kr,sangyun.kim@snu.ac.kr,vz@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 13 Jul 2026 14:45:54 +0200
-Message-ID: <2026071354-cannabis-broadness-e866@gregkh>
+Date: Mon, 13 Jul 2026 14:46:47 +0200
+Message-ID: <2026071347-duplex-theatrics-64bf@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [2.34 / 15.00];
@@ -62,20 +62,20 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-273671-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-273672-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:samuel.moelius@trailofbits.com,m:Stable@vger.kernel.org,m:andriy.shevchenko@intel.com,m:jic23@kernel.org,m:nuno.sa@analog.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:m32285159@gmail.com,m:Stable@vger.kernel.org,m:bookyungwook@gmail.com,m:jic23@kernel.org,m:jjy600901@snu.ac.kr,m:sangyun.kim@snu.ac.kr,m:vz@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org,kernel.org,snu.ac.kr];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
@@ -84,29 +84,30 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,trailofbits.com:email,linuxfoundation.org:from_mime,linuxfoundation.org:dkim]
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,gregkh:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9B3E474B108
+X-Rspamd-Queue-Id: 24FD574B14B
 
 
-The patch below does not apply to the 6.12-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 6697091b386a4e2830bdd38512c87a4befff2b32
+git cherry-pick -x 3ee2128b6f0eb0be7b6cb8f6e0f1f113a65201a0
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026071354-cannabis-broadness-e866@gregkh' --subject-prefix 'PATCH 6.12.y' 'HEAD^..'
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026071347-duplex-theatrics-64bf@gregkh' --subject-prefix 'PATCH 5.10.y' 'HEAD^..'
 
 Possible dependencies:
 
@@ -118,39 +119,71 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 6697091b386a4e2830bdd38512c87a4befff2b32 Mon Sep 17 00:00:00 2001
-From: Samuel Moelius <samuel.moelius@trailofbits.com>
-Date: Tue, 2 Jun 2026 16:45:39 +0000
-Subject: [PATCH] iio: adc: ad7380: select REGMAP
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From 3ee2128b6f0eb0be7b6cb8f6e0f1f113a65201a0 Mon Sep 17 00:00:00 2001
+From: Maxwell Doose <m32285159@gmail.com>
+Date: Fri, 12 Jun 2026 19:58:11 -0500
+Subject: [PATCH] iio: adc: spear: Initialize completion before requesting IRQ
 
-The AD7380 driver uses generic regmap types and APIs. However, its
-Kconfig entry does not select REGMAP.
+In the report from Jaeyoung Chung:
 
-As a result, AD7380 can be enabled from an allnoconfig-derived config
-with SPI_MASTER=y while REGMAP remains unset, causing ad7380.o to fail
-to build.
+"spear_adc_probe() in drivers/iio/adc/spear_adc.c registers its
+interrupt handler with devm_request_irq() before it initializes
+st->completion with init_completion(). If an interrupt arrives after
+devm_request_irq() and before init_completion(), the handler calls
+complete() on an uninitialized completion, causing a kernel panic.
 
-Fixes: b095217c104b ("iio: adc: ad7380: new driver for AD7380 ADCs")
-Signed-off-by: Samuel Moelius <samuel.moelius@trailofbits.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+The probe path, in spear_adc_probe():
+
+    iodev = devm_iio_device_alloc(&pdev->dev, sizeof(*st)); /* st kzalloc-zeroed */
+    ...
+    retval = devm_request_irq(&pdev->dev, irq, spear_adc_isr, 0,
+                              LPC32XXAD_NAME, st);           /* register handler */
+    ...
+    init_completion(&st->completion);                       /* initialize completion */
+
+spear_adc_isr() calls complete():
+
+    complete(&st->completion);
+
+If the device raises an interrupt before init_completion() runs,
+complete() acquires the uninitialized wait.lock and walks the zeroed
+task_list in swake_up_locked(). The zeroed task_list makes list_empty()
+return false, so swake_up_locked() dereferences a NULL list entry,
+triggering a KASAN wild-memory-access."
+
+Fix the chance of a spurious IRQ causing an uninitialized pointer
+dereference by moving init_completion() above devm_request_irq().
+
+Fixes: b586e5d9eee0 ("staging:iio:adc:spear rename device specific state structure to _state")
+Reported-by: Sangyun Kim <sangyun.kim@snu.ac.kr>
+Reported-by: Kyungwook Boo <bookyungwook@gmail.com>
+Reported-by: Jaeyoung Chung <jjy600901@snu.ac.kr>
+Closes: https://lore.kernel.org/linux-iio/20260610115700.774689-1-jjy600901@snu.ac.kr/
+Signed-off-by: Maxwell Doose <m32285159@gmail.com>
+Reviewed-by: Vladimir Zapolskiy <vz@kernel.org>
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <jic23@kernel.org>
 
-diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-index 1c663c98c6c9..6fb0766ca27a 100644
---- a/drivers/iio/adc/Kconfig
-+++ b/drivers/iio/adc/Kconfig
-@@ -328,6 +328,7 @@ config AD7298
- config AD7380
- 	tristate "Analog Devices AD7380 ADC driver"
- 	depends on SPI_MASTER
-+	select REGMAP
- 	select SPI_OFFLOAD
- 	select IIO_BUFFER
- 	select IIO_BUFFER_DMAENGINE
+diff --git a/drivers/iio/adc/spear_adc.c b/drivers/iio/adc/spear_adc.c
+index 4be722406bb5..ab02a14682ed 100644
+--- a/drivers/iio/adc/spear_adc.c
++++ b/drivers/iio/adc/spear_adc.c
+@@ -283,6 +283,7 @@ static int spear_adc_probe(struct platform_device *pdev)
+ 	st = iio_priv(indio_dev);
+ 	st->dev = dev;
+ 
++	init_completion(&st->completion);
+ 	mutex_init(&st->lock);
+ 
+ 	/*
+@@ -329,8 +330,6 @@ static int spear_adc_probe(struct platform_device *pdev)
+ 
+ 	spear_adc_configure(st);
+ 
+-	init_completion(&st->completion);
+-
+ 	indio_dev->name = SPEAR_ADC_MOD_NAME;
+ 	indio_dev->info = &spear_adc_info;
+ 	indio_dev->modes = INDIO_DIRECT_MODE;
 
 
