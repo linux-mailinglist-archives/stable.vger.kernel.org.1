@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-273685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273686-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Nvj5F3bfVGrAgAAAu9opvQ
-	(envelope-from <stable+bounces-273685-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 14:52:06 +0200
+	id 7ELRF4ffVGrCgAAAu9opvQ
+	(envelope-from <stable+bounces-273686-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 14:52:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3D9874B20B
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 14:52:05 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A156974B211
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 14:52:22 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=KXLYW1hI;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273685-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-273685-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=HLLL+Koa;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273686-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273686-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3FFE03015864
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 12:52:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 74835300E271
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 12:52:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D81C284693;
-	Mon, 13 Jul 2026 12:52:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05682388E4E;
+	Mon, 13 Jul 2026 12:52:21 +0000 (UTC)
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9CDC2DA74A
-	for <Stable@vger.kernel.org>; Mon, 13 Jul 2026 12:52:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7FDE64
+	for <Stable@vger.kernel.org>; Mon, 13 Jul 2026 12:52:19 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783947123; cv=none; b=o7uLVZVYxy9QLSJ5pIqP8ti3KFjmbKkdbqFpeGQxe04yI9j9HzCV2Qpk/VDvpSCWt/FfwJZhXsoXNKRhWrpKfB7wxHtm11zU7lYhRgO/2Da5px7pLu0VXfruGfPwSRuNknUN7sIpRGVDmiiNyl1LjTRvYmopWLIQkesV3jlgaIo=
+	t=1783947140; cv=none; b=LofAri/5qNheOImZvH9AByNUlBv1VN/pF7ehbJoxDSqFNqSg33q9ZicbFrxP8clIrjJu42M9C4G5eWe98ErsIrm0hAXX73M9nRQHB5x+iJ+/q/t2AbOiV+BGlTHDsXd1a85c1kGZRvumXc6Wv6cDn9hOmws55MfDAiYn3sa6df0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783947123; c=relaxed/simple;
-	bh=sY1EXu6XJriY3tvu/gmi6LhrdEZ8H92YFE4m8GycJTI=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=YXZ0uHuKl1Y6Ton6PN8Ta0HpB+Lf7Dudqq8rRAb4VrtWh1OCT0QtlcodVHUUPfE3XolAAC9QziZ8qxbdWGWdvkM+5WNcFLiY4VCpJgOanKAk+6nN32EfGFoxC564D0+nAAEIcus10ixD9HBc2D2bFVVu8mixviPKhXxfurvRxpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KXLYW1hI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01CA71F000E9;
-	Mon, 13 Jul 2026 12:52:01 +0000 (UTC)
+	s=arc-20240116; t=1783947140; c=relaxed/simple;
+	bh=W73DXZX2FpOTFrwwr/nHvHR+Rnw3lA9eQqK463Txz/U=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=rwITibhcLBzPbgCEAExEv+J9WeHXpYufriBCcwOz2FXjZh7ZSiY1YuU/Qi7b/JJdQbxAqV8QwkBwPslLfy/mCPG70dvLdNEFJ5IBluuKbL/MR8kjbVcCOJlcp8O+1t6e/CMONfKvehdVHgOnYn7jfkSSWFjjdwik3cidS7nseLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HLLL+Koa; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D33131F000E9;
+	Mon, 13 Jul 2026 12:52:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783947122;
-	bh=iZd98J5YgAnCLq+Tk3SZTHTaRJTaRDADL04455H4UCs=;
+	s=korg; t=1783947139;
+	bh=JpaaSNIUyIRTpeIck4VNcfa7g65FQ1aEd8GaD8NXufQ=;
 	h=Subject:To:Cc:From:Date;
-	b=KXLYW1hIIY4lK2hF2ibaVI7JsMwLC7e5oGwiqheR98XgbGsFDsNCPlfAT1vS0evuq
-	 XFdIkOEhSyaBuvZRwKcD8ri9yPtnuOMrxfIadpC60pa1Rvd954mHjbq7uTAWIl+H9/
-	 f3iXMWEs35SHdep0Vwui5re+Y86NU7ISKs/SAmYU=
-Subject: FAILED: patch "[PATCH] iio: temperature: ltc2983: Fix n_wires default bypassing" failed to apply to 6.6-stable tree
+	b=HLLL+Koayn0UpI3/8GXrlirWFOR9HfjaaVUDvmSB712uSdK+sQmJrGD3eGZ0KxETe
+	 GZtf4BBrqp91239pD8a3x2MYbfRjSmm6lt4DKm6/2xaG/UuseAHFblKt7KtDXeReul
+	 ET2OBrpISkb0wXvByLKmgv1HzOMgwv6pAy8yDUw8=
+Subject: FAILED: patch "[PATCH] iio: temperature: ltc2983: Fix n_wires default bypassing" failed to apply to 6.1-stable tree
 To: liviu.stan@analog.com,Stable@vger.kernel.org,jic23@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 13 Jul 2026 14:51:45 +0200
-Message-ID: <2026071345-neutron-revert-03cc@gregkh>
+Date: Mon, 13 Jul 2026 14:51:57 +0200
+Message-ID: <2026071357-boat-germproof-a30c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,14 +62,14 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-273685-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-273686-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS(0.00)[m:liviu.stan@analog.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -88,25 +88,25 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:mid,vger.kernel.org:from_smtp,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,analog.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,analog.com:email,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,gregkh:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C3D9874B20B
+X-Rspamd-Queue-Id: A156974B211
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 434c150752675f44dc52c384a7fa22e5176bc35a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026071345-neutron-revert-03cc@gregkh' --subject-prefix 'PATCH 6.6.y' 'HEAD^..'
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026071357-boat-germproof-a30c@gregkh' --subject-prefix 'PATCH 6.1.y' 'HEAD^..'
 
 Possible dependencies:
 
