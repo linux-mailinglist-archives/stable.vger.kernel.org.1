@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-273807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273809-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Q6vnIpTsVGpJhQAAu9opvQ
-	(envelope-from <stable+bounces-273807-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:48:04 +0200
+	id k0W9JZnsVGpKhQAAu9opvQ
+	(envelope-from <stable+bounces-273809-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:48:09 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A78F74BDB9
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:48:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BB2074BDBD
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:48:09 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=GBW148mq;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273807-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-273807-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=z2DIIpNf;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273809-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-273809-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9DE6430363DF
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 13:46:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3433F3040416
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 13:46:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0C7C426425;
-	Mon, 13 Jul 2026 13:46:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D67693876D0;
+	Mon, 13 Jul 2026 13:46:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46BA43EB7F8
-	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 13:46:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB791430785
+	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 13:46:13 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783950369; cv=none; b=TgyaZQ3z+cAB0D08M/tD7A/7kkHkc2MvleHYWP+/GNAzRvDYaT/h7GIe8O/l9eTgeXSxkba6DOpof3r2rhvdphB9ycMt2WdcVXE5wG6kE/VECmMcDHObTrxFjaObD+wO05R2rVRR/bFXfbCWfsxVlZio+9WCBv9vvcTOEIZbni8=
+	t=1783950376; cv=none; b=VZwbC+8xwK5tt1Lg49Znoj6l4WFtA/MBpybSDGBygnpv9YNW5YOHaT3jslArr3TYV2dVr+Duf8fATF3SluhxQU1mYKo/P5FXXKNm80poXTwt/gR6JZxKsXpcy1weSB/H+UAROAUHM0osWbcDp+m9SfVOOgTBpEUMkzzA8HzbIyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783950369; c=relaxed/simple;
-	bh=GZAx/ZgbQklPEbA3bbcsfWTDU7xKH7Tw1CfTuKfGyiE=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ZJQDTNwkpupyc4eEu3WjT2XFCgSvFDYfY8eTMS0+Wx5ApVuKYEIh5byh13dVDejgCP3e+PblGPy2Z2HQmRl1QZ77PAi0eehfYj4jWrLlOn4rD/KLW/XkrPX8y3RFc8zYhTf/AXTjJ+WP6GQPURUH8gslhMyVGpYiI+K3PgAP7/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GBW148mq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3FC21F000E9;
-	Mon, 13 Jul 2026 13:46:07 +0000 (UTC)
+	s=arc-20240116; t=1783950376; c=relaxed/simple;
+	bh=Oa0Q1qNT1dXVjH+ViAMvtUdrDdzZgtwFLkPVXbBHXOM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=LjymwxLvB/Ozpu4MRMmx8MxLEDfRcC4ZsciU0M+GPh4MiM5fI7nKUEes5tKIeCEWDbonO/gc4u/YjE8vUhyycz+jQAWxs4NxdIdPbsR/tEX5eu/PxoeJo/hpvFn/nhmRMAvzm2moP04MB51VeKnoK+W5iM5O1qDzQeJI1tfT2KY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z2DIIpNf; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECCA21F000E9;
+	Mon, 13 Jul 2026 13:46:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783950368;
-	bh=JK8ATcpZLeuW3nF4tfG1WQtnEDxLLxUHQhp6HDonFf0=;
+	s=korg; t=1783950373;
+	bh=I9x2nNVlF/CQ9OAMCsIC6JvnsR/9Bcf/3eBrzheuZcE=;
 	h=Subject:To:Cc:From:Date;
-	b=GBW148mqOP3STgG+taUqKJClAvtOZoW7PQQgTsEq/JB2Khf9+6QEHN8mzAGomtVpb
-	 Rbp8vqYNg7fcqdaHRZ9kEgFWXeWuOAZegkdfJoEtPYPY3YpIr4mmLaA0N92q7HXe90
-	 X476WjjtwPJHT4yyVyWfCw4Nzyo8rlJzQEgC8heE=
-Subject: FAILED: patch "[PATCH] coresight: etb10: restore atomic_t for shared reading state" failed to apply to 5.15-stable tree
+	b=z2DIIpNfpuTuOywks24d5zzCCudfSDRQqlmFmXStuyCa42HPucv1QVdpqH/7PK4cw
+	 cXMKfPEqWGcwSN4t+oLxHKkiPJba3BX9xDvG14785ZUcOciLWMmQSIeWx1zs5TuHCM
+	 z38UToT1ZRCCto5ttM2mTYaT7hiU72w7IP72y0NY=
+Subject: FAILED: patch "[PATCH] coresight: etb10: restore atomic_t for shared reading state" failed to apply to 5.10-stable tree
 To: runyu.xiao@seu.edu.cn,james.clark@linaro.org,suzuki.poulose@arm.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 13 Jul 2026 15:36:24 +0200
-Message-ID: <2026071324-silt-managing-86e8@gregkh>
+Date: Mon, 13 Jul 2026 15:36:25 +0200
+Message-ID: <2026071325-earthly-clothes-8ff0@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-273807-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-273809-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS(0.00)[m:runyu.xiao@seu.edu.cn,m:james.clark@linaro.org,m:suzuki.poulose@arm.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -89,24 +89,24 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MIME_TRACE(0.00)[0:+];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,vger.kernel.org:from_smtp,arm.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,gregkh:mid,arm.com:email,vger.kernel.org:from_smtp,seu.edu.cn:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2A78F74BDB9
+X-Rspamd-Queue-Id: 0BB2074BDBD
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x fa09f08ede3db3050ae16ae1ed92c902d0cada23
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026071324-silt-managing-86e8@gregkh' --subject-prefix 'PATCH 5.15.y' 'HEAD^..'
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026071325-earthly-clothes-8ff0@gregkh' --subject-prefix 'PATCH 5.10.y' 'HEAD^..'
 
 Possible dependencies:
 
