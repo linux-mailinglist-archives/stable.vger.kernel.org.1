@@ -1,177 +1,199 @@
-Return-Path: <stable+bounces-273780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273771-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id cigkEnfuVGq7hQAAu9opvQ
-	(envelope-from <stable+bounces-273780-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:56:07 +0200
+	id kjwzOLbsVGpShQAAu9opvQ
+	(envelope-from <stable+bounces-273771-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:48:38 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4178F74BF18
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:56:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0046E74BDDA
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:48:37 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="kwpl1/5a";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273780-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273780-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HaxJIDin;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273771-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273771-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2A7D7302BBC4
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 13:44:59 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4A7DB3076788
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 13:32:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABCD142DFE8;
-	Mon, 13 Jul 2026 13:44:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F861429827;
+	Mon, 13 Jul 2026 13:32:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6202F42B746
-	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 13:44:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19CA04218B1;
+	Mon, 13 Jul 2026 13:32:12 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783950298; cv=none; b=UpiHFOlMjC8eJfjIFlBvrVJ7z1EsNxUTmsNN2mHlQNDIQY5W3cRoFA9xgelppwKP54Bnbf9xiZBS96lvzxHyFU/xAnaI1fqWDVO/I4utR58vbzmyofSEY7uk0zyURc2oWvOncqLCyVoyKQoRRkzQPrZ1XBFcNu6s3WHWHRUggtQ=
+	t=1783949534; cv=none; b=aySLHdO0roYZr3G8Qy/6AjkOQbsV19+rNtnTflV7UyAg3aTT1h4rRa49rKXo0seczaLZlLvXisA0DhXcxDbthvIxooynuZjAM/XXL8PjVo9Anl9/CpEKudrwD8GVJjz4ILuT1nWB/Zz+Q5JdX8C/ZylRDTDK8qZ1qdx1S+ArAe4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783950298; c=relaxed/simple;
-	bh=FR2Sxa6kIIeJr1mL4LmNIy/cyGB0x3f09WKR8D+91Gc=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=F3+N7UAHn3dNwzoZFe8MevWf2OgwE0n69nh+7hhrg6ns2ySvhVQIX1vdtGMPQiIPPaLPF/2PzAcETqAiQuUGsTXtPQjAMzKYQhDeGROBpnSb1SkCXbp3k8JA/AkyFdEgFS/C9Gp+fHjm9XsCsf6MCpBnmTIpImXYn75iVtdaw8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kwpl1/5a; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 861D71F000E9;
-	Mon, 13 Jul 2026 13:44:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783950297;
-	bh=sYBPLO2O3cDlmoy6UwelYNXwHOBAJ7+7EjxKSpEKEqY=;
-	h=Subject:To:Cc:From:Date;
-	b=kwpl1/5aTCI98IrIPtjLLUhmyrPK60w5i48P4Wm3Bov6aHfSQELQNeni/O3kq4sQq
-	 m9znbWlKInCLjSGKDdh481lHZlbTWklx406tadoOC+A4OOOMGw0bOxWqrAptph5eP1
-	 Mid1Aj5RwVaQkFsIYefra7XIhBBjYS5JJQxsLVC4=
-Subject: FAILED: patch "[PATCH] staging: media: atomisp: reduce load_primary_binaries() stack" failed to apply to 5.10-stable tree
-To: arnd@arndb.de,andriy.shevchenko@intel.com,sakari.ailus@linux.intel.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 13 Jul 2026 15:32:04 +0200
-Message-ID: <2026071304-opulently-outburst-4960@gregkh>
+	s=arc-20240116; t=1783949534; c=relaxed/simple;
+	bh=RMBNf0nz6UqVKObHbtRoALMqXm0jYPaVeg/zELKfVqI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UyC8EigVemr2f6e5jXwJZHd4ilLjfdYPSwBkur8aJLUDg9CbxlI8TDH8WLVkvHVUAZ+hdZYcQXrBsC3iLLAmK97rB6iodWjaTgotOXgR0873lFhiI2kv6Dnx2kSmHXO/1sWmJT7IAoR2HKEZe0+NUNBxc13+AqpLk3FOUcVqzzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HaxJIDin; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA9BD1F000E9;
+	Mon, 13 Jul 2026 13:32:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783949532;
+	bh=HebesSjqW6Ei186xyy2KHgsVFXclOSjyLdpPX4+hId0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=HaxJIDinBW7qhd8TWrNK4s8T3PTUfLTXFXS85kDKWcN4pWvtuL6xy0nsCIx7iq40O
+	 QxcAYjybAjwroqbFOs9TRta3swb5bYhfKBvWawcyqH0Zge2Lx6VdtiZhiBafycuXNH
+	 i4/Vlvk4FSU2fyS8bhx8BrQr4NQvM3DRQrVhBKQMkp91hb5Fa4g7Pw14ueQNVgVdTi
+	 /h2k/N+9tWkQ4UDofeftbfgEXnxzcX8poyxZ4F8EiUKIMqeXWUW1W0KUWktE6mpRmX
+	 RGfWv776A9M5DdWrONyX3UluBAo//ouIVD4GlnqfJmLYmgxG+cxXo7deuEwlEEEjCb
+	 MiFOa9IU3UB2A==
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfauth.phl.internal (Postfix) with ESMTP id DF046F40119;
+	Mon, 13 Jul 2026 09:32:10 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Mon, 13 Jul 2026 09:32:10 -0400
+X-ME-Sender: <xms:2uhUajOJ6o0IkHECCjHAkKUVhPE0Boq32n16IxuwUb8qx_me03fgwg>
+    <xme:2uhUaua0NvhWILEF9Sxf9_9wz151PQ8fPiEp73LaeMgWC-DQJaiXxn4HYApdFNqVD
+    pkxd-bsOBJpRWdPvlmMSXRDek6HhjKp5vhX3BvtHxdpR6RBZu_qS1H->
+X-ME-Received: <xmr:2uhUajtAPLpWxfCImZEQ7-lfeyLnIftK-qeVlUcWfWQghfbRNQiHsjuNUz5QMA>
+X-ME-Proxy-Cause: dmFkZTGZpmVpeDsjZ8Vo2Jq64/2U20HFa/JrgfKn6CiNifuBo1pzPMXk0a4NqT0VMciG8K
+    SugdcXNhzIz2GGRAcNPbldLn+3yx1gRLwC0eqh8SjcuMzzoyAOiQcW15pHkFoUU8sU93Ol
+    20upXRjRc9bBvKSvF+ldu18a4Su7mlFUTAvgOHmfQ4EOLFyHDZ9CXRB5B0cLlRIRNNuJ69
+    LDPcIZFQurDXONw9w7x2l+i30vbvXOnao60OZfbfVAcAC/fcUzZNKRbLUxuPN7zU2u+h2L
+    lu3b55TVWwqQsO6vcM7WnlDCmGUWatjBJ4CSoYLZcP+x21iYiTGDYJ0lfqOuP9kAzP2JPg
+    j8w8DwhG5wOdhN2Rk3Rdg8n9nLNaujJTGC620J5zoH7n5t3hX39aCaLsRBN9JGDO7mcmWL
+    IzaLYY9N+V442PvDjYSTXuP4EHvI6v+fcV6Q/yTDaPZDQgnHPe1yyzGNJzxCUjaYKCCdpO
+    z/OkCkLFvQT3MiYbDmeWq3a8qm4Z/Agi5IGGkB4PZs8GgeaaaXu1uHQ/ufm4VZ9+64V+QE
+    8QtfNFMPv+xm7WYMT9O2psU2UIaozivzoRxbp2UTRKG5DvsMUoVZyOCnD4i8d0NJq/Rqe9
+    jTIL8srd7T6/FERCHRYF/A9blfowGsOrxRZc+ML2aNnL8IwcxIqNnPaId1jw
+X-ME-Proxy: <xmx:2uhUanuCa_oH3IVyt_HoThgNWUvv1acMMJfbjC90H2Nq77p1x1F7Lw>
+    <xmx:2uhUaq189DO0V2p_spqOaFhIiqFBrCec7III9gjx4U0IMtDvOnqvgQ>
+    <xmx:2uhUasO-I4V3wpEwkUedoK1wopX28y3s7esdQvgnTjYsrDF-dVm1hg>
+    <xmx:2uhUan593b1xCOHaLKH3StbrybHDors6AC91jhpaHmP9qnHIgWbSqw>
+    <xmx:2uhUara1OWRFLjD_9gN1CsUt5A0pYmkwSJBsl-81U2gW-oJMg0OqiWDs>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 13 Jul 2026 09:32:09 -0400 (EDT)
+Date: Mon, 13 Jul 2026 14:32:09 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ 	Suren Baghdasaryan <surenb@google.com>,
+ "Liam R. Howlett" <liam@infradead.org>,
+ 	Vlastimil Babka <vbabka@kernel.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ 	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Michal Hocko <mhocko@suse.com>, 	Uladzislau Rezki <urezki@gmail.com>,
+ Toshi Kani <toshi.kani@hpe.com>,
+ 	Dave Hansen <dave.hansen@linux.intel.com>,
+ Andy Lutomirski <luto@kernel.org>,
+ 	Peter Zijlstra <peterz@infradead.org>,
+ Thomas Gleixner <tglx@kernel.org>, 	Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+ 	"H. Peter Anvin" <hpa@zytor.com>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ 	Will Deacon <will@kernel.org>, Dev Jain <dev.jain@arm.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, 	David Carlier <devnexen@gmail.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, 	bpf@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org,
+ 	syzbot+fd95a72470f5a44e464c@syzkaller.appspotmail.com
+Subject: Re: [PATCH mm-hotfixes v2 0/4] mm: fix UAF caused by race between
+ ptdump and vmap pgtable freeing
+Message-ID: <alTn7NguEW_4bodu@thinkstation>
+References: <20260712-series-vmap-race-fix-v2-0-ad134cc3a12a@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260712-series-vmap-race-fix-v2-0-ad134cc3a12a@kernel.org>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-3.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-273771-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-273780-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:arnd@arndb.de,m:andriy.shevchenko@intel.com,m:sakari.ailus@linux.intel.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_NONE(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp,thinkstation:mid];
+	FORGED_SENDER(0.00)[kas@kernel.org,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[30];
+	FORGED_RECIPIENTS(0.00)[m:ljs@kernel.org,m:akpm@linux-foundation.org,m:surenb@google.com,m:liam@infradead.org,m:vbabka@kernel.org,m:shakeel.butt@linux.dev,m:david@kernel.org,m:rppt@kernel.org,m:mhocko@suse.com,m:urezki@gmail.com,m:toshi.kani@hpe.com,m:dave.hansen@linux.intel.com,m:luto@kernel.org,m:peterz@infradead.org,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:x86@kernel.org,m:hpa@zytor.com,m:catalin.marinas@arm.com,m:will@kernel.org,m:dev.jain@arm.com,m:ryan.roberts@arm.com,m:devnexen@gmail.com,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:bpf@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:stable@vger.kernel.org,m:syzbot+fd95a72470f5a44e464c@syzkaller.appspotmail.com,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linux-foundation.org,google.com,infradead.org,kernel.org,linux.dev,suse.com,gmail.com,hpe.com,linux.intel.com,redhat.com,alien8.de,zytor.com,arm.com,kvack.org,vger.kernel.org,lists.infradead.org,syzkaller.appspotmail.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[kas@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ALIAS_RESOLVED(0.00)[];
+	TAGGED_RCPT(0.00)[stable,fd95a72470f5a44e464c];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:mid,vger.kernel.org:from_smtp,intel.com:email,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,arndb.de:email]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4178F74BF18
+X-Rspamd-Queue-Id: 0046E74BDDA
 
+On Sun, Jul 12, 2026 at 11:42:23AM +0100, Lorenzo Stoakes wrote:
+> This series addresses the issue by having the vmap huge promotion
+> logic acquire the mmap read lock while both setting the huge page
+> table entry and freeing the prior leaf page table.
 
-The patch below does not apply to the 5.10-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Hi Lorenzo,
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Before we settle on the mmap lock scheme, have you considered handling
+this the way GUP-fast handles page table freeing -- RCU-defer the free
+and make ptdump a lockless walker?
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
-git checkout FETCH_HEAD
-git cherry-pick -x f4d51e55dd47ef467fbe37d8575e20eee41b092d
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026071304-opulently-outburst-4960@gregkh' --subject-prefix 'PATCH 5.10.y' 'HEAD^..'
+The locking here is inverted from what one would normally expect
+(walker takes the write lock, mutators take read locks, mutators safe
+against each other only by range ownership). It works, but it is
+subtle, it is what produced the arm64 deadlock and the ifdeffery, and
+it depends on every current and future freeing site remembering the
+rule -- patch 3 exists because two walkers did not fit the scheme.
 
-Possible dependencies:
+The free side looks cheap: kernel page table freeing already funnels
+through pagetable_free_kernel(), which already has a deferred path
+(used for IOMMU SVA). Adding a grace period there -- synchronize_rcu()
+in the worker, amortized over the batch -- covers every freeing site
+by construction.
 
+On the walk side, nothing on the ptdump path can sleep -- the pagewalk
+core only allocates for install_pte ops, kernel PTE level uses
+pte_offset_kernel(), and the arch note_page() implementations are
+seq_printf()/printk() into a preallocated buffer. So the walk could run
+under rcu_read_lock() as is. The real work is bounding the read-side
+sections: a full walk can take dozens of seconds on a KASAN kernel per
+the comment in mm/ptdump.c, so it would need to drop RCU and
+cond_resched() periodically, re-descending from the top. Note we
+currently hold the init_mm mmap write lock across those same dozens of
+seconds, and this series makes that load-bearing: during a long walk
+every promotion trylock fails, silently degrading vmalloc to small
+pages, and CPA collapse blocks.
 
+That would give us: no inverted locking, no arm64 deadlock possibility
+(your patch 4 stands on its own), the patch 3 walkers covered
+structurally rather than by locking init_mm as well, and ptdump
+invisible to production paths.
 
-thanks,
+Given the live UAF, this could also be a follow-up rather than a
+respin. But I would like to hear whether you see a fatal flaw in the
+approach first.
 
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From f4d51e55dd47ef467fbe37d8575e20eee41b092d Mon Sep 17 00:00:00 2001
-From: Arnd Bergmann <arnd@arndb.de>
-Date: Wed, 25 Mar 2026 13:59:43 +0100
-Subject: [PATCH] staging: media: atomisp: reduce load_primary_binaries() stack
- usage
-
-The load_primary_binaries() function is overly complex and has som large
-variables on the stack, which can cause warnings depending on CONFIG_FRAME_WARN
-setting:
-
-drivers/staging/media/atomisp/pci/sh_css.c: In function 'load_primary_binaries':
-drivers/staging/media/atomisp/pci/sh_css.c:5260:1: error: the frame size of 1560 bytes is larger than 1536 bytes [-Werror=frame-larger-than=]
-
-Half of the stack usage is for the prim_descr[] array, but only one
-member of the array is used at any given time.
-
-Reduce the stack usage by turning the array into a single structure.
-
-Fixes: a49d25364dfb ("staging/atomisp: Add support for the Intel IPU v2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-
-diff --git a/drivers/staging/media/atomisp/pci/sh_css.c b/drivers/staging/media/atomisp/pci/sh_css.c
-index c6838772553d..792379407828 100644
---- a/drivers/staging/media/atomisp/pci/sh_css.c
-+++ b/drivers/staging/media/atomisp/pci/sh_css.c
-@@ -5019,7 +5019,6 @@ static int load_primary_binaries(
- 	struct ia_css_capture_settings *mycs;
- 	unsigned int i;
- 	bool need_extra_yuv_scaler = false;
--	struct ia_css_binary_descr prim_descr[MAX_NUM_PRIMARY_STAGES];
- 
- 	IA_CSS_ENTER_PRIVATE("");
- 	assert(pipe);
-@@ -5188,15 +5187,16 @@ static int load_primary_binaries(
- 
- 	/* Primary */
- 	for (i = 0; i < mycs->num_primary_stage; i++) {
-+		struct ia_css_binary_descr prim_descr;
- 		struct ia_css_frame_info *local_vf_info = NULL;
- 
- 		if (pipe->enable_viewfinder[IA_CSS_PIPE_OUTPUT_STAGE_0] &&
- 		    (i == mycs->num_primary_stage - 1))
- 			local_vf_info = &vf_info;
--		ia_css_pipe_get_primary_binarydesc(pipe, &prim_descr[i],
-+		ia_css_pipe_get_primary_binarydesc(pipe, &prim_descr,
- 						   &prim_in_info, &prim_out_info,
- 						   local_vf_info, i);
--		err = ia_css_binary_find(&prim_descr[i], &mycs->primary_binary[i]);
-+		err = ia_css_binary_find(&prim_descr, &mycs->primary_binary[i]);
- 		if (err) {
- 			IA_CSS_LEAVE_ERR_PRIVATE(err);
- 			return err;
-
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
