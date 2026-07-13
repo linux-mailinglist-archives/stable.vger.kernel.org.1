@@ -1,230 +1,154 @@
-Return-Path: <stable+bounces-273862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273864-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id psw3EwIEVWq7iwAAu9opvQ
-	(envelope-from <stable+bounces-273862-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 17:28:02 +0200
+	id 19kWH3oEVWrUiwAAu9opvQ
+	(envelope-from <stable+bounces-273864-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 17:30:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1F9574D086
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 17:28:01 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E89A74D0E5
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 17:30:01 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=google.com header.s=20251104 header.b=LBwS5OCo;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273862-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-273862-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=JQNMR5ST;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273864-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-273864-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 922D7306C3C5
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:19:57 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 95E6F3048841
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:23:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61150395AF5;
-	Mon, 13 Jul 2026 15:19:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DA5039A079;
+	Mon, 13 Jul 2026 15:23:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B3FF3CF213
-	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 15:19:47 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783955989; cv=pass; b=JAzRFm4dIKVnZbP0V/9oX8BQixLqqwBQzRHHoAKcyAzG3vuyNCiBcWMrDUdILPSZD1rFgo9FZ/clhtB2k8Wr8wOKrFCcHFtsR9GhvaaqLRluzYS/PdQT4OBeEH83xUwNRl4mpWG5ydVxPS1wohSFxxxiS4VZlxPAZC/uKy5CHcE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783955989; c=relaxed/simple;
-	bh=cztgTTQFKjXX5TAy7SRyfnZPJ0Acz6gWoCC/Gtf5ItY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Odwk6Pz9nNzbxsGuPsfNYtzNpsHWkYyLGV4N2Dd7bkvNiS0a3H6ip4NKI5owTl+IO9x6xsOUlAxcZ4sse95owW9A4TCqwS9Bfl1lVH0zgqpCeQtJWvo79j0AGiAAFIYj+QJnkgj++t+MKLHJrU5HNngPIvHhX1yMCKN6PuRtp7w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LBwS5OCo; arc=pass smtp.client-ip=209.85.208.52
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-69a19eb2e6dso5853a12.1
-        for <stable@vger.kernel.org>; Mon, 13 Jul 2026 08:19:47 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783955986; cv=none;
-        d=google.com; s=arc-20260327;
-        b=bKXxeTWzyMUbw7fp5gXmlyQueSBauJ20m/Zm5fNPWS15f5DLsdginTG41yooWALXEt
-         AyfOTNNAiNC5Vr67BygHztUz1whDB7QpsKmAr9Y1WceoP6GWCLvAeUvsyc2fwerE0sdI
-         oO1RocguDXYF1DF4MIE64YKNa81tuo6awqJlqB6kYjrh/zJwHipYPGjFi8+Fitzi7JPp
-         o6hVkGVj6sLIShaoRZpQPZGteWpYKPl5K/21e361fGveUIcMp9T8FiIAUBiEW1CuZW7C
-         R5w90HISXL4K7DcR42r2msGx9/lNQis5tMM72evLrgbk6aIZPhWFlHRqcN3e3pD8cu5u
-         5Sbg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=PlW85ZthPVYK+ZqbEqZBFSpb5hf+319IJ7QsaNTPeyE=;
-        fh=tUsYnnqZwhvRMuT0abjged41PBfAZgaIZBM//KqaW7g=;
-        b=SmDsahzmKMyPSndmrzYxCn0LnNhAWQW+sJ+KM7gIEnfncdICkYgZ98H5oUDlttp4gG
-         0BiB/ISqE1aGYq21XYZDNxamMJR7p2Dvy3iIBxdT3MXHkj/aL/iwfJuig9RxoM+bMHil
-         KhYKCqv8CO/r/jRS2+tTn9sq4MNTUseqmtfh9Dqgkd45iBhbG+mwxQgEyMkcK4HM79Tv
-         VvH5tU5AtpJmETstCijv6XIqtZzf8kvwMD4CopgFX1FWThw0rbsXFv+sVmNGKgkSfYIH
-         LbKqG3ro5vBELlWIA/JFV3gSL/EiZFl3gG0T/n0hlPBcbzu2jqdZqvVALFiLxfe3/vhG
-         nZtQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783955986; x=1784560786; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=PlW85ZthPVYK+ZqbEqZBFSpb5hf+319IJ7QsaNTPeyE=;
-        b=LBwS5OCo3puiW5rivqXv/7ys44bNuZhyUlnN6Laz//4m0lMkDCD4gyq+1lXuUVmbdJ
-         SjRXAG0DEuU1fzH6OpArc46H3QywTpVhpVpmlln1eDL30dO/VZuQgDzCE0qBXgpO9hV8
-         Awil/+H3LbE/If8WQzQ8RGVob8n5U79GAJvwIEtYVIDlchOrhIXI/PmQLTOYjUkcBT3f
-         FXdbT12QTAD/cO21GNSy4zN3zA60u+Xdx+nWSanuH/pTTAOvTSvORstDEM5sE/c7+Ii/
-         qFJnYKUmXy3MxaV1AiRgFcjnD2iy4+J+AEKEcZQ2M4HroOJ4TattRlGhOcD3HabrgnMC
-         lFEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783955986; x=1784560786;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=PlW85ZthPVYK+ZqbEqZBFSpb5hf+319IJ7QsaNTPeyE=;
-        b=jb3hGagHuHgOQT361uUBGmiEEqC+4NEWrcTKhgE9DsCPDguJiCV1np23Eo/kN3RHcN
-         hGCBPAC0ke2bdYKd0INBgMG0ntawYC5azBuSFKVhszF64SA1ZQTpY7AxAz0ObgprQ2vQ
-         xnpp2duo2oICzMIQwtpf59MTi29dG1iVrOBqNIY6ShW420yFcLIjxmOiJjbZK9Er0bbv
-         hCwR7H0n0rd+3FSDnY5s2vYqH/kGhrm5L3UAbbtjKxccty09dDElcfpei0aF0y6ncfAb
-         ddPjUyB/xai4L9ULytcgWrJfkdoQVBUS9Y4Ng8hf1mqaiJuYfzVXx/skJB1wRRWim+95
-         jeSQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrcY7qphZlyqzmXT4WIvDMwtrQF2Zhle0UfV3SRoLHHZlHEMBwKGracloKvHBZ+CmSS9M5anWc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy2PZ4u2O8JQDeqWj5B6Zbzyw76Jdt947ZLA8UU6ELDQZu1lOr6
-	5HIVByV0T5Wi4vnlVBjR67hDgj5Mj5ykhMxGfGXFPptncg2xjPo55X69sKuo4zVtzB1IYI6ljZL
-	O9jOisoq3RdiMcsuraRjcy/tbq4gvcSJnL7CLgb6E
-X-Gm-Gg: AfdE7clH5QN9LKkEWlScq4/jwV4BnHVDfiJWe2r6bArD1dWpndogzPSUrzHZvWqkVk1
-	SpsDnAxVr9MMkURMH6J0JZw/COr45bhCEJ/uXd7yKBWqtuYbtjftonXzMhPHdMU2dH3iQR1oAcH
-	5avi4aOv9GwEuHZssx7iybcSBGP8RAvEq0ly9tHxEyvqZwInGLhtu1dWpSB+MpqPwQ3QlJvs8CA
-	9V78D72HHFmegaEo3T9hYMTjRBvkSWRxhk74b8HveubedleRSvy1wSeJEJAKERtKt1fC1M=
-X-Received: by 2002:a05:6402:14da:b0:69c:3005:12aa with SMTP id
- 4fb4d7f45d1cf-69ccf0cfb26mr24416a12.6.1783955985293; Mon, 13 Jul 2026
- 08:19:45 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F0DC388E59
+	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 15:23:02 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783956184; cv=none; b=u2Bc2f73t8y+iv26yQJd58i+IZtAWipk7oiittsCP29/YR+UhHtmqwyswW63HrNmPij2grFFbY4PoglezXZX8XruHDmrvBAp6dT8VwM2N+GGFGVTga/BNCyZysrGWmCuAmev8rdpJK0xCx36eZGoeE7APLe/rIthVo4Jgs8lv8g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783956184; c=relaxed/simple;
+	bh=pxO70Oc/7Mk7MUgfChs5VC7q9aAXUGXyF0rwI8TudCM=;
+	h=From:To:cc:Subject:MIME-Version:Content-Type:Date:Message-ID; b=gHQgf37hZXHMbJ9ziuMkqcSZg0UO1ESChNMyTA+9+yDajQPJS3bjGhHg7xMYDlAVTNoc4uy/xRX+0j32mHBTmGx1FSCicavpRXAXCQV+Ub0lsCXPMTrXNl7VANWYwc0G5YQm/oXF1mp2nAi19YkjyxhukstspmPTfsZ9FmlJ67Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JQNMR5ST; arc=none smtp.client-ip=170.10.133.124
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1783956181;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=bRJR2hCY2tQVI4Mc4/g5ZA+qJMCDSGcRxieL1eYGlyg=;
+	b=JQNMR5ST4AaaiIlPNj8Ou8ZthURPqwjGyz7ecnG7BkGlnTLtl5bEH35+w1E5NGAEoac5XO
+	0mB2q0pUBB4gbVNsj0RtgLIyLVDH+VoppNilEyYDSIDVSWKhhqUOTGoUNytxd0nMkyMivH
+	hxrO81hKqm++8iT91CzmWzhDkduyCSk=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-654-4riqNSTHM2ONXUBjMHQeZA-1; Mon,
+ 13 Jul 2026 11:23:00 -0400
+X-MC-Unique: 4riqNSTHM2ONXUBjMHQeZA-1
+X-Mimecast-MFC-AGG-ID: 4riqNSTHM2ONXUBjMHQeZA_1783956178
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 565541956096;
+	Mon, 13 Jul 2026 15:22:58 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.44.33.159])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 53017180067D;
+	Mon, 13 Jul 2026 15:22:56 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+To: Christian Brauner <brauner@kernel.org>
+cc: dhowells@redhat.com, Marc Dionne <marc.dionne@auristor.com>,
+    linux-afs@lists.infradead.org, linux-fsdevel@vger.kernel.org,
+    stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] afs: Fix afs_edit_dir_remove() to get, not find, block 0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260712174619.3553231-1-tj@kernel.org> <20260712174619.3553231-3-tj@kernel.org>
- <20260713105655.GC276793@cmpxchg.org> <CAJuCfpEocgh+s_R_C6K25ESaSub=-vx6ZwqE-5HJddfBPMt7NA@mail.gmail.com>
-In-Reply-To: <CAJuCfpEocgh+s_R_C6K25ESaSub=-vx6ZwqE-5HJddfBPMt7NA@mail.gmail.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Mon, 13 Jul 2026 08:19:32 -0700
-X-Gm-Features: AUfX_mxGk_ykJQVoQ6GijNCWPdkmagBjFjBbdAci75lut8r9PEZbC2gUZjRpWQw
-Message-ID: <CAJuCfpFcqmWnaUe4d8q1UNRpww6QLh40MX-C3-ajgDRjzBLM9Q@mail.gmail.com>
-Subject: Re: [PATCH 2/2] sched/psi: Shut down rtpoll_timer in psi_cgroup_free()
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Tejun Heo <tj@kernel.org>, Matt Fleming <matt@readmodwrite.com>, 
-	David Vernet <void@manifault.com>, Andrea Righi <arighi@nvidia.com>, 
-	Changwoo Min <changwoo@igalia.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Edward Adam Davis <eadavis@qq.com>, Chen Ridong <chenridong@huaweicloud.com>, 
-	Zhaoyang Huang <zhaoyang.huang@unisoc.com>, "ziwei . dai" <ziwei.dai@unisoc.com>, 
-	"ke . wang" <ke.wang@unisoc.com>, Matt Fleming <mfleming@cloudflare.com>, sched-ext@lists.linux.dev, 
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	kernel-team@cloudflare.com, Sashiko AI <sashiko-bot@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <2380758.1783956175.1@warthog.procyon.org.uk>
 Content-Transfer-Encoding: quoted-printable
+Date: Mon, 13 Jul 2026 16:22:55 +0100
+Message-ID: <2380759.1783956175@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-273862-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-273864-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:brauner@kernel.org,m:dhowells@redhat.com,m:marc.dionne@auristor.com,m:linux-afs@lists.infradead.org,m:linux-fsdevel@vger.kernel.org,m:stable@vger.kernel.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[surenb@google.com,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	FORGED_RECIPIENTS(0.00)[m:hannes@cmpxchg.org,m:tj@kernel.org,m:matt@readmodwrite.com,m:void@manifault.com,m:arighi@nvidia.com,m:changwoo@igalia.com,m:peterz@infradead.org,m:eadavis@qq.com,m:chenridong@huaweicloud.com,m:zhaoyang.huang@unisoc.com,m:ziwei.dai@unisoc.com,m:ke.wang@unisoc.com,m:mfleming@cloudflare.com,m:sched-ext@lists.linux.dev,m:cgroups@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:kernel-team@cloudflare.com,m:sashiko-bot@kernel.org,s:lists@lfdr.de];
+	HAS_ORG_HEADER(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER(0.00)[dhowells@redhat.com,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[kernel.org,readmodwrite.com,manifault.com,nvidia.com,igalia.com,infradead.org,qq.com,huaweicloud.com,unisoc.com,cloudflare.com,lists.linux.dev,vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[surenb@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,mail.gmail.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,cmpxchg.org:email]
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dhowells@redhat.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,infradead.org:email,vger.kernel.org:from_smtp,sashiko.dev:url,warthog.procyon.org.uk:mid,auristor.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D1F9574D086
+X-Rspamd-Queue-Id: 6E89A74D0E5
 
-On Mon, Jul 13, 2026 at 7:07=E2=80=AFAM Suren Baghdasaryan <surenb@google.c=
-om> wrote:
->
-> On Mon, Jul 13, 2026 at 3:56=E2=80=AFAM Johannes Weiner <hannes@cmpxchg.o=
-rg> wrote:
-> >
-> > On Sun, Jul 12, 2026 at 07:46:19AM -1000, Tejun Heo wrote:
-> > > psi_schedule_rtpoll_work() is called locklessly from the scheduler ho=
-tpath
-> > > and can race psi_trigger_destroy() taking down the last rtpoll trigge=
-r under
-> > > rtpoll_trigger_lock:
-> > >
-> > >   psi_schedule_rtpoll_work()        psi_trigger_destroy()
-> > >
-> > >   rcu_read_lock();
-> > >   task =3D rcu_dereference(rtpoll_task);
-> > >                                     rcu_assign_pointer(rtpoll_task, N=
-ULL);
-> > >                                     timer_delete(&rtpoll_timer);
-> > >   mod_timer(&rtpoll_timer, ...);
-> > >   rcu_read_unlock();
-> > >                                     synchronize_rcu();
-> > >                                     kthread_stop(task_to_destroy);
-> > >
-> > > The group can then be freed with the re-armed timer still pending, an=
-d
-> > > poll_timer_fn() runs on freed memory.
-> > >
-> > > 461daba06bdc ("psi: eliminate kthread_worker from psi trigger schedul=
-ing
-> > > mechanism") deleted the timer synchronously after the synchronize_rcu=
-(),
-> > > which prevented this but raced trigger creation instead: the deletion=
- could
-> > > cancel the timer that a new trigger set armed during the grace period=
- and,
-> > > as creation also reinitialized the timer at the time, corrupt it.
-> > > 8f91efd870ea ("psi: Fix race between psi_trigger_create/destroy") mov=
-ed the
-> > > initialization into group_init() and the deletion into the locked sec=
-tion,
-> > > trading the creation races for the window above.
-> > >
-> > > Neither placement in the destruction path works. A pending timer firi=
-ng
-> > > while the group is alive is harmless though. poll_timer_fn() just wak=
-es the
-> > > rtpoll waitqueue and doesn't re-arm itself. Bind the timer to the gro=
-up's
-> > > lifetime instead and shut it down in psi_cgroup_free(). Nothing can a=
-rm it
-> > > by then. timer_shutdown_sync() because the timer is never armed again=
+Fix afs_edit_dir_remove() to use afs_dir_get_block() to get block 0 rather
+than afs_dir_find_block() as the latter caches the found block in the
+afs_dir_iter and may[*] switch out the page it's on if another
+afs_dir_find_block() is done.  This parallels what afs_edit_dir_add() does=
 .
-> > >
-> > > Fixes: 8f91efd870ea ("psi: Fix race between psi_trigger_create/destro=
-y")
-> > > Cc: stable@vger.kernel.org # v5.10+
-> > > Reported-by: Sashiko AI <sashiko-bot@kernel.org>
-> > > Closes: https://lore.kernel.org/all/20260711000434.36C4A1F000E9@smtp.=
-kernel.org/
-> > > Signed-off-by: Tejun Heo <tj@kernel.org>
-> >
-> > Acked-by: Johannes Weiner <hannes@cmpxchg.org>
 
-Acked-by: Suren Baghdasaryan <surenb@google.com>
+[*] There's more than one block per page.
 
+Fixes: a5b5beebcf96 ("afs: Use the contained hashtable to search a directo=
+ry")
+Closes: https://sashiko.dev/#/patchset/20260706153408.1231650-1-dhowells%4=
+0redhat.com
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+cc: linux-fsdevel@vger.kernel.org
+cc: stable@vger.kernel.org
+---
+ fs/afs/dir_edit.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> >
-> > Both these patches look good to me, but Suren can you please also take
-> > a look?
->
-> Yes, I'm on it. Need some time to remind myself of all the details of
-> the implementation.
+diff --git a/fs/afs/dir_edit.c b/fs/afs/dir_edit.c
+index b3e80c5c434f..01c6265e8865 100644
+--- a/fs/afs/dir_edit.c
++++ b/fs/afs/dir_edit.c
+@@ -411,7 +411,7 @@ void afs_edit_dir_remove(struct afs_vnode *vnode,
+ 	if (!afs_dir_init_iter(&iter, name))
+ 		return;
+ =
+
+-	meta =3D afs_dir_find_block(&iter, 0);
++	meta =3D afs_dir_get_block(&iter, 0);
+ 	if (!meta)
+ 		return;
+ =
+
 
