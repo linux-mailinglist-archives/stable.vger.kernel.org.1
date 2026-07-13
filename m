@@ -1,141 +1,180 @@
-Return-Path: <stable+bounces-273926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273935-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id XuWiFvsjVWqykQAAu9opvQ
-	(envelope-from <stable+bounces-273926-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 19:44:27 +0200
+	id AcWdD6MoVWqokgAAu9opvQ
+	(envelope-from <stable+bounces-273935-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 20:04:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A305E74E1F4
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 19:44:26 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A84C74E471
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 20:04:18 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=YVQX6Csy;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273926-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273926-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=astralinux.ru header.s=mail header.b=ZstIlkRU;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273935-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-273935-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=astralinux.ru;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 45F033037DC6
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 17:44:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 10EEB306AEB9
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 18:02:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1F1C34BA5A;
-	Mon, 13 Jul 2026 17:44:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A548B34D3B0;
+	Mon, 13 Jul 2026 18:02:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-gw01.astralinux.ru (mail-gw01.astralinux.ru [37.230.196.243])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FC6834B43F
-	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 17:44:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 417BE33E36A;
+	Mon, 13 Jul 2026 18:02:05 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783964653; cv=none; b=j67KpkKLZtbgAjZHcCH7zA8+519RPlbU/vlAbnn25aG392jK/QCxZZcy6P4KmmkyWy0FMuGRwa66dh2u7MsxP17dbxjGDUdVGM0lSDzD+S0N2V4f6qNrmAQnfkrMJUNvA3hMJIS+X284OptR8zaEaHCbL0PKzgsWz2T46uDrRnc=
+	t=1783965732; cv=none; b=tjqGQRuNtJx+KSjWPlXMBXo4kZ5y51gbYxeaWaTbYyZjuJWq5+9f/MICUsthA7qWxZ0XESlh6BjGT8+EsoBQtEitTDN55R93nUDIpZgTNtJGr8xVenoe5kuJdMoBwFYIDjqaXjLT0taUEmV0uVsgxvmvwjMHqBs8LpYaj4t1GKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783964653; c=relaxed/simple;
-	bh=Eo8mcJx96u8VH4jn7nXN0WzI3pTAqmoosY5GMUzgLRE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=b/jaxvd12WKpZI2wGuJ82Sw9ByijQD0z3mAwgSUpEhQ/9WqfyXmfbrJZjgaozf7W08hOEqKm4qJRTuC53ogFjvKeeFO9IENCY+0Qw3xPfb9eof9Z40Lu6tx1vDMh/igQDogU7TatzDY8x902t3J7mGxxmKTFdG1LQVlD2J8+owc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YVQX6Csy; arc=none smtp.client-ip=209.85.214.180
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2ce7d2adef4so638425ad.3
-        for <stable@vger.kernel.org>; Mon, 13 Jul 2026 10:44:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783964652; x=1784569452; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Eo8mcJx96u8VH4jn7nXN0WzI3pTAqmoosY5GMUzgLRE=;
-        b=YVQX6Csyxrsc4YDfTiO/wM2Xzc+sFs4Um+BKRypZBuETxe13r2I+w+qu8bXfrCdvJb
-         x7pRrnz4RPPgnPb+LoKZ6qXW9w/4GcGtxoiCyhmEvaBbU7Hm5wNY5IXv48FIQrATJACp
-         LMdBGAunfEtRZzhHUnh3LwOohpeAGkQtbWjuqz8cX4idECnkSlfwknUnptJ4htk+WVBt
-         XwwPPJXS0PW+sQcxOJMhMy6bPJSUKR12jpNR2oKKZvnanGmS5W+GUcDCYtzRwiHyJXt0
-         sncbXRrUfvqnvEGqARDM1LVqz4CdhbFm6lMI48/hgeeGlq365iSChbrpiYdzC8zWWARY
-         wEqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783964652; x=1784569452;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Eo8mcJx96u8VH4jn7nXN0WzI3pTAqmoosY5GMUzgLRE=;
-        b=ccgeMu4e1uvaLFiZnFusQeM0Q40ji0ylSZD4m23vSCHNHMmaoPxxB9lzhHWjd4HC2w
-         j0wJN8wYkSPd/7WSOsjlEyXzm5Rj1PppeRWx1+hJ/DjlSoPXiTQHKJ1tCKcponWcMLBe
-         /Fs/IaCisoco0ldIYJbJVnETVDvb+dQ0/lfM/Tmq3PtGb93FmDDNH0ee/VqBVSh4CYya
-         tu8SVnpH7ePUMq5RaWAYrl39kP3P/QJoy23rjgcNRFnpZZoDK74rR3JgdL9ONXw6s763
-         vPCynIHq3ErFH+3PCAfIPpxoLCxqNf1oSiTR0lvXoH02ADqyOlYkoQU8HENLZPcOH+IP
-         pgfA==
-X-Gm-Message-State: AOJu0YzxYj9fgJ0Hq6lsjDbZVhhYNxn2EoLf0XIP6qSJcUNaXaV4vOBC
-	ladsCRaql+kjAo561I8zP+3u2cOztvLIrVzPjNjt5HTP3p7NUj0bQtIW
-X-Gm-Gg: AfdE7ckHrJSbCaA0GLQbwBuaEE6yXalHbWKOefXwDbuGwr8i24b5Hd42E04ANI49Z98
-	vkGEnEFlWc9sz7QKmd75hFzycJGyirHwMyd6im9qlxutArwapbNrniTnQGO6j1pK3gznJRK5M/L
-	q1qPmswrbyFzIBpVvvOXwXm+Ad/APyRVsGRJ9p2DwvNgUY89H7oKpbEnzhM5MLdmj8YQ5sqXm2k
-	q9F/jFeiP9Uron5Q/ca3lAXbrI4bepcSI+WqfFMB3L/eNE6kUR6EkXaFWYEXuVdhQw52qKmbKg2
-	2qr1isgqqv2rginRa6wZTR8FVBdujZzlcDgLTaUcUqLu7vdOII4Lkir/W9Htl6iFu4CTB7/m3kq
-	qNZ1SsAVDM+mYT/9GvNm9kPgGFsMNB4UAY1HznA4fVT8YijBX947B+tscdXmur/kjc5uOI/uCqY
-	CihQCB0tIm4qzI5jVtbDRj35UgttYvFMcShqMRe0LCeHIXIeEC+RvrqtWFMZDw8/uR18U=
-X-Received: by 2002:a05:6a21:890d:b0:3c3:2e2b:2a0c with SMTP id adf61e73a8af0-3c32e2b4e6amr4647038637.18.1783964651871;
-        Mon, 13 Jul 2026 10:44:11 -0700 (PDT)
-Received: from [10.69.74.200] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13b84d6ce15sm32086520c88.5.2026.07.13.10.44.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 13 Jul 2026 10:44:11 -0700 (PDT)
-Message-ID: <ed34e55e-c391-40a6-b381-6898f53ea20a@gmail.com>
-Date: Mon, 13 Jul 2026 10:43:54 -0700
+	s=arc-20240116; t=1783965732; c=relaxed/simple;
+	bh=qTFbrJO1EIURj5coHE7P8jfs+T3R57WvmR8hoGJitbA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=a3FAbyroIjTV6TLo5a8NMwfDl8T9+Xz4zKhYGNszS03/Ms11eaTUItBclq7pkhHxUIi321OJ7lPH8YWxxPVy41lTB88YuM1tBPlgWD7MykL75fQtjdB733cKAx7xh27uF41RyXOAjKmNncWMQaIU68YWTR6En8dexuVkHcYI+aM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=astralinux.ru; spf=pass smtp.mailfrom=astralinux.ru; dkim=pass (2048-bit key) header.d=astralinux.ru header.i=@astralinux.ru header.b=ZstIlkRU; arc=none smtp.client-ip=37.230.196.243
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=astralinux.ru;
+	s=mail; t=1783965174;
+	bh=qTFbrJO1EIURj5coHE7P8jfs+T3R57WvmR8hoGJitbA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ZstIlkRUUKnGElVKoX+VXKqW/ZCcdaYL9K0C8NptQI04CCWLg6skHvRWVwN4hvVxw
+	 AtXlTUkZjwuPyrLHyraOorUqq5fARQKq/PnNvJt9zSsZK2M+/aXVEVPJ0XoK6BGmut
+	 fbx4LSUyDm1xYXVuiOwgrtbR+3RM9zt10s92N8R12vO9qGClVWHBk9uepx9ePWDhaF
+	 alyGrQOA8GiThkO9E8ejQqkrAiSU9wKy6C1QuicS/Okg682M3/HKtz3Dr9MUIHofQm
+	 tDbUAzMe3NvxBo+RJH3Vyn8SiCy/Hx9Y4GYahgQCrGeNCJAKXnBvqsQm8bQh0iqnBn
+	 k+LoE3rhl85Mw==
+Received: from gca-sc-a-srv-ksmg01.astralinux.ru (localhost [127.0.0.1])
+	by mail-gw01.astralinux.ru (Postfix) with ESMTP id 934B425596;
+	Mon, 13 Jul 2026 20:52:54 +0300 (MSK)
+Received: from new-mail.astralinux.ru (unknown [10.205.207.5])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail-gw01.astralinux.ru (Postfix) with ESMTPS;
+	Mon, 13 Jul 2026 20:52:50 +0300 (MSK)
+Received: from rbta-spb-lt-115149.astralinux.ru (rbta-spb-lt-115149.astralinux.ru [10.198.24.8])
+	by new-mail.astralinux.ru (Postfix) with ESMTPA id 4gzVQT3vP9z4lNf;
+	Mon, 13 Jul 2026 20:52:49 +0300 (MSK)
+From: Elizaveta Tereshkina <etereshkina@astralinux.ru>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Elizaveta Tereshkina <etereshkina@astralinux.ru>,
+	Chen-Yu Tsai <wens@kernel.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	dri-devel@lists.freedesktop.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-sunxi@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	Ethan Tidmore <ethantidmore06@gmail.com>
+Subject: [PATCH 5.10/5.15] drm/sun4i: backend: fix error pointer dereference
+Date: Mon, 13 Jul 2026 20:52:37 +0300
+Message-Id: <20260713175238.715526-1-etereshkina@astralinux.ru>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] drivers: base: Remove statistics group if encryption
- group not created
-To: "Ewan D. Milne" <emilne@redhat.com>, linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org, justin.tee@broadcom.com,
- sarah.catania@broadcom.com, "paul.ely@broadcom.com" <paul.ely@broadcom.com>
-References: <20260713173318.3060047-1-emilne@redhat.com>
-Content-Language: en-US
-From: Justin Tee <justintee8345@gmail.com>
-In-Reply-To: <20260713173318.3060047-1-emilne@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-KSMG-AntiPhishing: NotDetected, bases: 2026/07/13 17:19:00
+X-KSMG-AntiSpam-Auth: dkim=none
+X-KSMG-AntiSpam-Envelope-From: etereshkina@astralinux.ru
+X-KSMG-AntiSpam-Info: LuaCore: 112 0.3.112 7c8d497b0e572fbfa504a2ee62037c045a8cb4ec, {Tracking_ml_letters}, {Tracking_one_susp_tld}, {Tracking_uf_ne_domains}, {Tracking_internal2}, {Tracking_from_domain_doesnt_match_to}, patch.msgid.link:7.1.1;127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;astralinux.ru:7.1.1;new-mail.astralinux.ru:7.1.1, FromAlignment: s
+X-KSMG-AntiSpam-Interceptor-Info: scan successful
+X-KSMG-AntiSpam-Lua-Profiles: 204404 [Jul 13 2026]
+X-KSMG-AntiSpam-Method: none
+X-KSMG-AntiSpam-Rate: 0
+X-KSMG-AntiSpam-Status: not_detected
+X-KSMG-AntiSpam-Version: 6.1.1.22
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.0.7854, bases: 2026/07/13 15:36:00 #28439953
+X-KSMG-AntiVirus-Status: NotDetected, skipped
+X-KSMG-LinksScanning: NotDetected, bases: 2026/07/13 17:19:00
+X-KSMG-Message-Action: skipped
+X-KSMG-Rule-ID: 1
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[astralinux.ru,quarantine];
+	R_DKIM_ALLOW(-0.20)[astralinux.ru:s=mail];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:emilne@redhat.com,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:justin.tee@broadcom.com,m:sarah.catania@broadcom.com,m:paul.ely@broadcom.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[justintee8345@gmail.com,stable@vger.kernel.org];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	FREEMAIL_CC(0.00)[astralinux.ru,kernel.org,linux.intel.com,suse.de,gmail.com,ffwll.ch,sholland.org,linaro.org,lists.freedesktop.org,lists.infradead.org,lists.linux.dev,vger.kernel.org,linuxtesting.org];
+	TAGGED_FROM(0.00)[bounces-273935-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-273926-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:etereshkina@astralinux.ru,m:wens@kernel.org,m:maarten.lankhorst@linux.intel.com,m:mripard@kernel.org,m:tzimmermann@suse.de,m:airlied@gmail.com,m:simona@ffwll.ch,m:jernej.skrabec@gmail.com,m:samuel@sholland.org,m:neil.armstrong@linaro.org,m:dri-devel@lists.freedesktop.org,m:linux-arm-kernel@lists.infradead.org,m:linux-sunxi@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:lvc-project@linuxtesting.org,m:ethantidmore06@gmail.com,m:jernejskrabec@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[etereshkina@astralinux.ru,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[justintee8345@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[etereshkina@astralinux.ru,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[astralinux.ru:+];
+	RCVD_COUNT_FIVE(0.00)[6];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ALIAS_RESOLVED(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,broadcom.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A305E74E1F4
+X-Rspamd-Queue-Id: 7A84C74E471
 
-Reviewed-by: Justin Tee <justin.tee@broadcom.com>
+From: Ethan Tidmore <ethantidmore06@gmail.com>
 
-Regards,
-Justin
+commit 06277983eca4a31d3c2114fa33d99a6e82484b11 upstream.
+
+The function drm_atomic_get_plane_state() can return an error pointer
+and is not checked for it. Add error pointer check.
+
+Detected by Smatch:
+drivers/gpu/drm/sun4i/sun4i_backend.c:496 sun4i_backend_atomic_check() error:
+'plane_state' dereferencing possible ERR_PTR()
+
+Fixes: 96180dde23b79 ("drm/sun4i: backend: Add a custom atomic_check for the frontend")
+Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
+Reviewed-by: Chen-Yu Tsai <wens@kernel.org>
+Link: https://patch.msgid.link/20260217014801.60760-1-ethantidmore06@gmail.com
+Signed-off-by: Chen-Yu Tsai <wens@kernel.org>
+Signed-off-by: Elizaveta Tereshkina <etereshkina@astralinux.ru>
+---
+Backport fix for CVE-2026-53066
+ drivers/gpu/drm/sun4i/sun4i_backend.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/gpu/drm/sun4i/sun4i_backend.c b/drivers/gpu/drm/sun4i/sun4i_backend.c
+index d935f36a24dd..b3741827c6c3 100644
+--- a/drivers/gpu/drm/sun4i/sun4i_backend.c
++++ b/drivers/gpu/drm/sun4i/sun4i_backend.c
+@@ -507,6 +507,9 @@ static int sun4i_backend_atomic_check(struct sunxi_engine *engine,
+ 	drm_for_each_plane_mask(plane, drm, crtc_state->plane_mask) {
+ 		struct drm_plane_state *plane_state =
+ 			drm_atomic_get_plane_state(state, plane);
++		if (IS_ERR(plane_state))
++			return PTR_ERR(plane_state);
++
+ 		struct sun4i_layer_state *layer_state =
+ 			state_to_sun4i_layer_state(plane_state);
+ 		struct drm_framebuffer *fb = plane_state->fb;
+-- 
+2.39.2
+
 
