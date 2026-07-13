@@ -1,97 +1,72 @@
-Return-Path: <stable+bounces-273827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273833-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id rdEqCDXtVGpvhQAAu9opvQ
-	(envelope-from <stable+bounces-273827-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:50:45 +0200
+	id ow4HEo/uVGq+hQAAu9opvQ
+	(envelope-from <stable+bounces-273833-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:56:31 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0034D74BE27
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:50:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D241274BF25
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:56:30 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=readmodwrite-com.20251104.gappssmtp.com header.s=20251104 header.b="VE3W/5CL";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273827-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273827-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=none;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FzJ62VPZ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273833-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273833-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1BB133029CEF
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 13:50:05 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7A371300E294
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 13:56:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17C33433E8B;
-	Mon, 13 Jul 2026 13:50:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B537A436379;
+	Mon, 13 Jul 2026 13:56:23 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7BF0433E81
-	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 13:49:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D0C3436374;
+	Mon, 13 Jul 2026 13:56:21 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783950601; cv=none; b=EpbWQwk2qYRjODd8PPostC7a5JfNtIcRIOfd1EzvmUjvPVychV2ya6qH0LHT9lQPFyo+5Sh4O9q93oQI5XIbfE0TsxRl/OQnh/sA9Z/O1f/78fs75Vwx6GgqlNjo4h8O5wscmmh8vDGWe+tAfaLNWc+zrj7a3uvn3dHb8Om9Sso=
+	t=1783950983; cv=none; b=nFvYDSRtTcwZMJ3NMSGCL+RKZXbw+bVksGRkZYUXlH/B6HtXKRl2RkQN2FF1qKY+jtXTVJY3qRBL0N2Q6HbtshZuixWOLBAyM9UTu6rBdk0A31mofE0jnhtfolS5InLKKDRyHwDnZ++hHyykHpnLdufCCpM9S1sYRL5amNnir9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783950601; c=relaxed/simple;
-	bh=+lMCCcsL9KhGqzAnvde2v5Etjt6yi8xbmgjj8iFutzQ=;
+	s=arc-20240116; t=1783950983; c=relaxed/simple;
+	bh=ctXtTx3qimC8EAxLk6QfcovSqIz+Q0zr+wiWw4PtNkI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tjy34xcOTpWR7rJa8BqIwoh/SjwC2veKm0vJVJeuH7mVYb83+ePSOA0+7DHxAvezi++tuS24MYwzhBKwS6as6nlpvrfqKMoQ6w6+DwUfsENr4ZDBOzI9z8VqvdS/yFAzcpMoolRFyChWMyInZR6+Wzq7k+0idqf69mjLde2P+s0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=readmodwrite.com; spf=none smtp.mailfrom=readmodwrite.com; dkim=pass (2048-bit key) header.d=readmodwrite-com.20251104.gappssmtp.com header.i=@readmodwrite-com.20251104.gappssmtp.com header.b=VE3W/5CL; arc=none smtp.client-ip=209.85.218.54
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-c15cd3fd760so369449666b.2
-        for <stable@vger.kernel.org>; Mon, 13 Jul 2026 06:49:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=readmodwrite-com.20251104.gappssmtp.com; s=20251104; t=1783950597; x=1784555397; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=gHaZPwi3IrnhWNTxPLfcIu6e1zyZHnrUTB5eDWHk9VE=;
-        b=VE3W/5CLfwjnt5rRAWRRQBWyjvHP58SuUMw7ueNsskTOU0DyKAq/wIVdkopYq21JQu
-         k4v/2XpwCwHWfAHk6NQZQQNqFXTXEqFIxBkMLjy5/CwcPHSBgK2xc2rEbWOVmja2etow
-         QDFS1HIa9W7yHBrFAPCC+rznXdYolMGUlTXW4LVRd/VxdOVL8I3to6WHP3mYYN4dFfVh
-         uVqGEFkI87ACwMd5yCef/2yozObT62LHYzAdwvkc+uzRn0+TmaTjf6LhNKXhcnyhFLMy
-         t+fX3tnzH33Mkp0ORNLg6HZSQE6oUA4cSZiMKuEcz20Crv6xfnp49cOpuATaWI/4gZYY
-         b4tA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783950597; x=1784555397;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=gHaZPwi3IrnhWNTxPLfcIu6e1zyZHnrUTB5eDWHk9VE=;
-        b=AjoxT5ecuyvSTevb5IEXTNm0yqJhinXT7qbU6Of583aENBwodfpJRk5b1Zae1V7eHD
-         fhDU8NwGjKJVF26hPMlLCZXiRHI7mS9ueib4PyoMiusTYBuG5HmQ81X+9q57fKC75Fu9
-         3hlAA/6isPmi+eBNYJsvI6f7fgpXw/xyduk7lLwl8A1FC8BOiwA95ETd5xDrdLUKa9s8
-         vTbGTAkdSQYDOcX4IiNZwV6RJtg1FfyhWBFi3gW+3qFxJ08TICA2xr6JeBIZ1LPz+5MQ
-         BRoflfl8ldJTeRKnQ0SHIbe64yAEZVSl7oCvmL0ZoxJUEDEaSBxr78S66oT0vv0EkBFP
-         eVZA==
-X-Forwarded-Encrypted: i=1; AHgh+Rp1KwjjvjSkF3FMetZzPOocUBBF1UL6/kqheb8CxwNqHaWFMXCuJSImj7Wvo5HY2xa4KCHGxoI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyAbRPexJV6wEWswjHT1A9kUy42CeQt3M6tw6uaGr/5q6cAxnsH
-	BcMStGQJP3sI91lH73aPb4XFNY7VGJT3Ty+/D4gcCzMmixQeITqxwxZ6C6YgpF2dGLY=
-X-Gm-Gg: AfdE7cmkQsh3Q8vYEEOPvcZWSI7nK149jYUl8bemGwnXEMVHBjTyuCoAJYQdUKxtgxY
-	yEOecdlveJSaDMPHZJIBrzA1BAB5GmtZbxNTDzcukpO3JC9HoXUwWKEOCqja5V/vO91Hj/6I15p
-	4FDDJLvqCVvBjbDXhQzBxYL2puFPfNg4aVDn4XEW7jAiV4cGlYBptdjduWoj9U0hiyb+WDVcgPL
-	jA4l0YSa9KySueV6floQuH6567oHZYSaV+5DEk7qIJ7sbF/NHO62kTWBxY9+W+05OyTrW0s8JWU
-	ZXhZkvEgb1EhXlByapstJNfAQVlnzghjoG9yQROKhKuXA5GAvSPyDsAHOP483iP8/c/dz00sPDy
-	3Q3JuTpoIf8KxlecBdmcFaSNUTLeGOv80Q/3UC/1OXXi/fx3K3t2UTRG8FMW9GOqVav71+uMlgr
-	bi
-X-Received: by 2002:a17:907:95a8:b0:c16:581a:2a51 with SMTP id a640c23a62f3a-c16581a50bemr62872666b.12.1783950597109;
-        Mon, 13 Jul 2026 06:49:57 -0700 (PDT)
-Received: from localhost ([2a09:bac6:37a8:1f19::319:116])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c15ca1bd81asm819021466b.30.2026.07.13.06.49.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Jul 2026 06:49:56 -0700 (PDT)
-Date: Mon, 13 Jul 2026 14:49:55 +0100
-From: Matt Fleming <matt@readmodwrite.com>
-To: Tejun Heo <tj@kernel.org>
-Cc: David Vernet <void@manifault.com>, Andrea Righi <arighi@nvidia.com>, 
-	Changwoo Min <changwoo@igalia.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Edward Adam Davis <eadavis@qq.com>, Chen Ridong <chenridong@huaweicloud.com>, 
-	Zhaoyang Huang <zhaoyang.huang@unisoc.com>, "ziwei . dai" <ziwei.dai@unisoc.com>, 
-	"ke . wang" <ke.wang@unisoc.com>, Matt Fleming <mfleming@cloudflare.com>, 
-	sched-ext@lists.linux.dev, cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, kernel-team@cloudflare.com
-Subject: Re: [PATCHSET v2] sched/psi: Fix psimon fork deadlock and
- rtpoll_timer UAF
-Message-ID: <alTs1drVX4kb124h@matt-Precision-5490>
-References: <20260712174619.3553231-1-tj@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=GjnzfoegSwC0L2sBl57j48BM09CQg+5aEmjRTdS489lbwWWvHAD6fcAfcpCmsIvthaQRb0aG/SNOzbhwklblMHZjyMPa4SuUQQeSVwORK7CrUP1Vv6qBoN9qIWbmjSsZqMKlqqQ3xuGvaKxavQ0lw7vqgP1C5mEoDEIr0bR7CoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FzJ62VPZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47F661F00A3A;
+	Mon, 13 Jul 2026 13:56:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783950981;
+	bh=jN2Uqyqlk4BlB1zGW5Bw3R7JyKk82NVHi1lz3053mrA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=FzJ62VPZgdUAUQmiLBMA+9B94QtywjBJVEiCmeTsr5MglH2TgGMUQpuPtxjxtwlbH
+	 9MQA6kk33gFAdx2LG8KWQAQcjMWaLnqHI370mEp0J44O6UaKFLSyrpJkp9AhHPMKvu
+	 vFt27QaijnH6K66ijOMHSS7oqiA0xDP+HJJ/RAGLx5I6mz0zLQUZ+jc9TroeaU/GxY
+	 KuiFHu9WqX95/NNMxDqB1uZA/7RIuuUotFj6rAQVAwwraZpkl7acyV1RYmbl8zmmRH
+	 znCPiEDJVsQ/nklC2VsRzVjPUBc6meF1hdkWmCB58n8Dmw+2MZWZNOoPfEc4uNTZ8R
+	 OPAra+BHvl9sw==
+Received: from johan by xi.lan with local (Exim 4.99.4)
+	(envelope-from <johan@kernel.org>)
+	id 1wjH8t-0000000527P-02yL;
+	Mon, 13 Jul 2026 15:56:19 +0200
+Date: Mon, 13 Jul 2026 15:56:19 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Guangshuo Li <lgs201920130244@gmail.com>
+Cc: Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	CK Hu <ck.hu@mediatek.com>,
+	Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>,
+	dri-devel@lists.freedesktop.org, linux-mediatek@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v3] drm/mediatek: mtk_hdmi: Fix DDC adapter double put in
+ v2
+Message-ID: <alTugxmHG_s4kY4E@hovoldconsulting.com>
+References: <20260713112957.884640-1-lgs201920130244@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -100,67 +75,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260712174619.3553231-1-tj@kernel.org>
+In-Reply-To: <20260713112957.884640-1-lgs201920130244@gmail.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-3.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[readmodwrite-com.20251104.gappssmtp.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:tj@kernel.org,m:void@manifault.com,m:arighi@nvidia.com,m:changwoo@igalia.com,m:hannes@cmpxchg.org,m:surenb@google.com,m:peterz@infradead.org,m:eadavis@qq.com,m:chenridong@huaweicloud.com,m:zhaoyang.huang@unisoc.com,m:ziwei.dai@unisoc.com,m:ke.wang@unisoc.com,m:mfleming@cloudflare.com,m:sched-ext@lists.linux.dev,m:cgroups@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:kernel-team@cloudflare.com,s:lists@lfdr.de];
-	DMARC_NA(0.00)[readmodwrite.com];
-	FORGED_SENDER(0.00)[matt@readmodwrite.com,stable@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	TAGGED_FROM(0.00)[bounces-273827-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-273833-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:lgs201920130244@gmail.com,m:chunkuang.hu@kernel.org,m:p.zabel@pengutronix.de,m:airlied@gmail.com,m:simona@ffwll.ch,m:matthias.bgg@gmail.com,m:angelogioacchino.delregno@collabora.com,m:ck.hu@mediatek.com,m:louisalexis.eyraud@collabora.com,m:dri-devel@lists.freedesktop.org,m:linux-mediatek@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:stable@vger.kernel.org,m:matthiasbgg@gmail.com,s:lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER(0.00)[johan@kernel.org,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	FREEMAIL_TO(0.00)[gmail.com];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[manifault.com,nvidia.com,igalia.com,cmpxchg.org,google.com,infradead.org,qq.com,huaweicloud.com,unisoc.com,cloudflare.com,lists.linux.dev,vger.kernel.org];
+	FREEMAIL_CC(0.00)[kernel.org,pengutronix.de,gmail.com,ffwll.ch,collabora.com,mediatek.com,lists.freedesktop.org,lists.infradead.org,vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[matt@readmodwrite.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[readmodwrite-com.20251104.gappssmtp.com:+];
+	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,matt-Precision-5490:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,readmodwrite.com:from_mime,readmodwrite-com.20251104.gappssmtp.com:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0034D74BE27
+X-Rspamd-Queue-Id: D241274BF25
 
-On Sun, Jul 12, 2026 at 07:46:17AM -1000, Tejun Heo wrote:
-> Hello,
+On Mon, Jul 13, 2026 at 07:29:57PM +0800, Guangshuo Li wrote:
+> mtk_hdmi_common_probe() gets the DDC adapter with
+> of_find_i2c_adapter_by_node() and registers a devm action to release the
+> adapter device reference with put_device().
 > 
-> v2: - Retagged sched/psi (was cgroup) (patch 1).
->     - Added a fix for a pre-existing rtpoll_timer use-after-free that the
->       Sashiko AI review flagged on the previous posting (patch 2).
+> The HDMI v2 remove callback also calls i2c_put_adapter() on the same DDC
+> adapter. This is not paired with of_find_i2c_adapter_by_node(): it drops
+> the adapter device reference before the devm action drops it again, and
+> it also puts a module reference that was never taken.
 > 
-> v1: https://lore.kernel.org/r/20260710134945-psimon-fix-tj@kernel.org
+> Remove the extra i2c_put_adapter() call and drop the now-empty HDMI v2
+> remove callback. The common devm action releases the adapter device
+> reference.
 > 
-> a5b98009f16d ("sched/psi: fix race between file release and pressure
-> write") made pressure_write() fork the psimon kthread while holding
-> cgroup_mutex, which deadlocks against the sched_ext enable path blocking
-> forks before grabbing cgroup_mutex. Patch 1 moves the fork outside
-> cgroup_mutex. Patch 2 fixes the use-after-free from a schedule attempt
-> re-arming group->rtpoll_timer behind psi_trigger_destroy() by shutting
-> down the timer when the group is freed.
-> 
-> Matt, patch 1 is unchanged from the previous posting except for the
-> subject prefix, so test results against that posting still apply.
+> Fixes: 8d0f79886273 ("drm/mediatek: Introduce HDMI/DDC v2 for MT8195/MT8188")
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Johan Hovold <johan@kernel.org>
+> Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+> ---
+> v3:
+>   - Add Reviewed-by tag from Johan Hovold.
+>   - No code changes.
 
-I ended up testing both patches. This resolves the issue for me!
+No need to resend just to add a tag. It will be added when the patch is
+applied.
 
-Thanks,
-Matt
+Johan
 
