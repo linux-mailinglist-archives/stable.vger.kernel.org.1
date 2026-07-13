@@ -1,145 +1,185 @@
-Return-Path: <stable+bounces-273652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273657-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id yx0MJhrOVGo8fAAAu9opvQ
-	(envelope-from <stable+bounces-273652-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 13:38:02 +0200
+	id MbQLL9DPVGqmfAAAu9opvQ
+	(envelope-from <stable+bounces-273657-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 13:45:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BCC274A6DD
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 13:38:01 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 057B574A7C6
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 13:45:20 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lwsqz1Ru;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273652-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-273652-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=I4PRoorD;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273657-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273657-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6E4D0300A590
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 11:37:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C6A2E30D663E
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 11:41:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 239253E9589;
-	Mon, 13 Jul 2026 11:37:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3585B3EAC76;
+	Mon, 13 Jul 2026 11:41:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC0713E866B;
-	Mon, 13 Jul 2026 11:37:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBFFA38D40D
+	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 11:41:14 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783942674; cv=none; b=H9zsGQvXZghr0Jx6LM1w5vDbRPOfm43MDpqqCmzrkjhDBGSIwrnrATgcx95ZMBK6Ku5b3nqOy5I9NAFlWRHGjcg5pa0tDbg0A1ZVjdciN4ZJOEsZFE9aY4WAc2pkiWwJdREXpxTWcvhgEp4BFQo0urQqQ9fqxnmyRoFbyilJIAs=
+	t=1783942876; cv=none; b=BBziCglQF+u+1P1wWV/FpEbRs9qrdNMYfky1CNciyTnx+C51jDGrmWFdNo0bLBH260kMzEuDM8kr/qcdFU+NyUOT0yj7ivyG7DziuULtKfp0MJs4mkc8Z//Bt844c2xG5HnAydC0+AhT/JJ+anuKrLCVNAtHDxMeJC3JN+NCvoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783942674; c=relaxed/simple;
-	bh=T9I9LggSZGnd+opeAplGGNQctxNzn/jhs9k9J87eSGg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=b1MhnXsx/MXEN9FG+xPazoEZij0FKTIu2rnbdS9kP/tJ5V2xHIm7MMsR0cVrsNi961wCvKsTMib78bSDcb/I5/uJ3Jc8NX9KHA8XQLfdF2HZAzwkkKSBbnvMFLf5wIiZsDQpGBU6cjinVmN46GBhCTlrEks+SHN6wVBnoF4lx2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lwsqz1Ru; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 126A51F000E9;
-	Mon, 13 Jul 2026 11:37:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783942673;
-	bh=/BjtT2J2J6zXKuxGY/oNhYmRT76YRdnfRvP+EVhF3Q0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=lwsqz1RuU3/1+c0OVzE60Yb3p9ZEdRyv87rOvJQj2jHlLDEJ9FJh3edRHAabzd8wG
-	 camah820QByAwHgAARZVVejvD11aO+S9Ik8ny9LouWcULNkE1aQXCemywImUs6WKfe
-	 GDEVgH7ZgoNJI7HcE1g7bcNYXDtt8CrQ/eWnGg2fEWMwktPX7Fww8DmwHln3sdp12T
-	 D3uAw0aHU9doRMgRKZY8ITJ7+5ZQAQtLaK2rBS+h//zPXpg/FDXOpqa8jixTrT3CLp
-	 7T5xptgnEXNSjzGBE9uqCjgtRrEMT7yXfCEDCtOh+IFFSelv4KHvpqcfasikBCvYr5
-	 LvZXZRZnbq1mQ==
-Date: Mon, 13 Jul 2026 12:37:46 +0100
-From: Will Deacon <will@kernel.org>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Dev Jain <dev.jain@arm.com>, Andrew Morton <akpm@linux-foundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	David Hildenbrand <david@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Toshi Kani <toshi.kani@hpe.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	David Carlier <devnexen@gmail.com>,
-	Ryan Roberts <ryan.roberts@arm.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	stable@vger.kernel.org,
-	syzbot+fd95a72470f5a44e464c@syzkaller.appspotmail.com
-Subject: Re: [PATCH 0/2] mm: fix UAF caused by race between ptdump and vmap
- pgtable freeing
-Message-ID: <alTOCtzQh9RMfWbc@willie-the-truck>
-References: <20260710-series-vmap-race-fix-v1-0-5b3794c113fe@kernel.org>
- <8e320b30-9658-4e9f-ac4c-f99dcf855944@arm.com>
- <alNQccqtx5-QApup@lucifer>
+	s=arc-20240116; t=1783942876; c=relaxed/simple;
+	bh=DF8JWJfNh6M1Sw4cPR6Hjd+QCs0193pYYptH/jXmmFE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rlXi9FzMmZaGC1IrltnZuQbApINsiHYwEya5OELeB4Nk9NzUITRKc29EaDEN9PiDniZfUr4WQ9aXatsjtk6JYXF3z+oMoexCeKhOGB+1geRPVNPmztPqBR9DqINvOhnhJQyxdc/u+Q5FmOMvoW3tMluNuX+Dgd8TvJNBjtKEkT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I4PRoorD; arc=none smtp.client-ip=209.85.214.182
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2cca0c5799eso30343395ad.0
+        for <stable@vger.kernel.org>; Mon, 13 Jul 2026 04:41:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783942874; x=1784547674; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Bjup8tkbZReyLVbx7owWNWJpf0WRCU5BarQCoUzbWwU=;
+        b=I4PRoorDO4Oia6Gdwk/Kc/D0+f8ToiOYMGTUk6lTcb7FsTAqOMEkCjZlap27qNdGUd
+         pTL21PqGoj4S8mZIWr8Z1j+qRCSgi0IJw20qAACd5co6Ay6PT3iCu3vSzCA/Nyo+y2yK
+         t8qYUWpKln5W1rLNGUtwUp9L3MttmDPhfPf7phjh8RDCwe0KlKbkQ8qvgL4Pz/Ut+6Rq
+         t4NmddTc167tRLSXEW1JVdybAjE3K0iIaJP8A9guPUzD0uE6+KLw3djuIp5n/U5NOEbk
+         9Y/0vMyC5FIg96LRDdpr6JSjpbc3kfABhrqBEM/FsuS7ZTFwbC6yoJPhYfeVl1BcfTIv
+         TefQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783942874; x=1784547674;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Bjup8tkbZReyLVbx7owWNWJpf0WRCU5BarQCoUzbWwU=;
+        b=UUADFWTvmdJ7+45jgxcELgHMYKVwaNIfIkr1t2iBeNKeqG3Jn8gOtGH8CTjOdLq6GC
+         iGYLFMavXtS6EPzo+8h+cEQ7KGHe5vk6ewKZNOSaEj5h2Ip5umD4BnE0gSn57kBca8ot
+         Nw+xz6WXpKuBD7akOa9NeAmuZQnNELukqwlFs0TG/PcFXKQk5dET6y9aUmWiHbmZICUw
+         JqogcCTpckd2jbM+Uv4zwJz6lCx5z+SO9hU8kBCvA15fRgRPxDD6pKBc21DkEVm2Zhrg
+         nbfG8RsYoajZRRuSz4gJNNh5zBuzAtdj6kwgMX6TgyUrXLiJ50n7uqlkXVEuMwxPiwLx
+         v4gw==
+X-Gm-Message-State: AOJu0YzY2rnAdGwI3TSZ2BS2QeU+ekHD9PZKTqjksEOQ398hy+zeFErV
+	vsWo515NJUAcaaBp4kjL5j3jZHEoomBiqoXO6+R29/WBKo0PHtRuod72
+X-Gm-Gg: AfdE7cn6XU9IEWy6/nWTf7llvhyMRhHQ3ckW6yaWXDAgHILH5GdfZDCw5f1CzUI7rP+
+	L5DN+rbus47A1r00snBLcD2sq4IF1jXbTNpNOfxFKAN0WhPniRpRZCAgC0iLl3mnQD+bNpqHyeh
+	EZtjqQtCRWnrwXblaieypimZmirO0I6uppD8hslc6NQSCKgFQ6u114tQW5tuv0Fuu2XQGin8NRA
+	8gEGOcsPYzpoXzdUD6uOgvO7HlN4Fi71iHiNrrCi4MVoWvvnHxOQOR9zyoZYeoEs8TdOA1va9CJ
+	9h8bRVHv4KOqdDbdLbNDmU7tYF4xePM+SZM3mJQfVOWdSHDQXdYlpD6OO/KgcL1SDdz1ggYAIOK
+	azrYe1B6BGxFIfeH+f3QeX8Tx76GlRQJjUV2bEwv9WM5CykInxwWvvrgTZsoDZQ2MRAvwZHq2lQ
+	1lX6AmTg==
+X-Received: by 2002:a17:902:ea03:b0:2c0:e2ea:6b0c with SMTP id d9443c01a7336-2ce9ed181f6mr81660085ad.21.1783942873961;
+        Mon, 13 Jul 2026 04:41:13 -0700 (PDT)
+Received: from lgs.. ([2001:250:5800:1000::f280])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc9d59e33sm95978515ad.74.2026.07.13.04.41.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Jul 2026 04:41:13 -0700 (PDT)
+From: Guangshuo Li <lgs201920130244@gmail.com>
+To: Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Johan Hovold <johan@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	Guangshuo Li <lgs201920130244@gmail.com>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Marco Crivellari <marco.crivellari@suse.com>,
+	linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH v2] media: platform: mtk-mdp3: Fix SCP device refcounting
+Date: Mon, 13 Jul 2026 19:38:59 +0800
+Message-ID: <20260713113859.921358-1-lgs201920130244@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <alNQccqtx5-QApup@lucifer>
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[20];
+	TAGGED_FROM(0.00)[bounces-273657-lists,stable=lfdr.de];
+	FORGED_SENDER(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:mchehab@kernel.org,m:matthias.bgg@gmail.com,m:angelogioacchino.delregno@collabora.com,m:hverkuil+cisco@kernel.org,m:nicolas.dufresne@collabora.com,m:johan@kernel.org,m:kees@kernel.org,m:lgs201920130244@gmail.com,m:thomas.weissschuh@linutronix.de,m:marco.crivellari@suse.com,m:linux-media@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-mediatek@lists.infradead.org,m:stable@vger.kernel.org,m:matthiasbgg@gmail.com,m:hverkuil@kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:ljs@kernel.org,m:dev.jain@arm.com,m:akpm@linux-foundation.org,m:surenb@google.com,m:liam@infradead.org,m:vbabka@kernel.org,m:shakeel.butt@linux.dev,m:david@kernel.org,m:rppt@kernel.org,m:mhocko@suse.com,m:urezki@gmail.com,m:toshi.kani@hpe.com,m:catalin.marinas@arm.com,m:devnexen@gmail.com,m:ryan.roberts@arm.com,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:stable@vger.kernel.org,m:syzbot+fd95a72470f5a44e464c@syzkaller.appspotmail.com,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[kernel.org,gmail.com,collabora.com,linutronix.de,suse.com,vger.kernel.org,lists.infradead.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-273652-lists,stable=lfdr.de];
-	FORGED_SENDER(0.00)[will@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[will@kernel.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[arm.com,linux-foundation.org,google.com,infradead.org,kernel.org,linux.dev,suse.com,gmail.com,hpe.com,kvack.org,vger.kernel.org,lists.infradead.org,syzkaller.appspotmail.com];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable,fd95a72470f5a44e464c];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,willie-the-truck:mid]
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ALIAS_RESOLVED(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,cisco];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7BCC274A6DD
+X-Rspamd-Queue-Id: 057B574A7C6
 
-On Sun, Jul 12, 2026 at 09:46:46AM +0100, Lorenzo Stoakes wrote:
-> On Sun, Jul 12, 2026 at 12:50:08PM +0530, Dev Jain wrote:
-> > Will Deacon had pushed back on a similar approach:
-> > https://lore.kernel.org/all/20250530123527.GA30463@willie-the-truck/
-> >
-> > Although now when I read back that thread, it feels more so like my
-> > incompetency to convince :) because:
-> 
-> No haha not so, I think more like this stuff is fiddly.
+mdp_probe() first tries to get the SCP handle with scp_get(). When that
+fails, it falls back to looking up the SCP platform device with
+__get_pdev_by_id() and then reads its driver data.
 
-Yup, not disputing that this is hard to get right.
+The fallback lookup returns the platform device with a reference, just
+like scp_get() does. However, the fallback path currently drops that
+reference immediately after platform_get_drvdata(). The driver later
+still calls scp_put(mdp->scp) unconditionally from the probe error path
+and from mdp_video_device_release(), which drops the SCP device
+reference again.
 
-Conceptually, adding locking purely to deal with a vanishingly rare,
-debug reader does turn my head but I'm _far_ less concerned about it if
-it's done in the core code, as is the case here. x86 needs it and we're
-recently running into related locking issues with the set_memory_*()
-APIs if we want to collapse the page-table on arm64 [1]. If the overhead
-is flagged as an issue, we can see if it's worth generalising the static
-key trick that the second patch reverts but I definitely wouldn't start
-from that position.
+Keep the fallback reference until the existing scp_put() call, so that
+the fallback path follows the same ownership rules as the scp_get()
+path.
 
-Will
+Fixes: 8f6f3aa21517 ("media: platform: mtk-mdp3: fix device leaks at probe")
+Cc: stable@vger.kernel.org
+Reviewed-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+---
+v2:
+  - Add Cc stable.
+  - Add Reviewed-by tag from Johan Hovold.
+  - No code changes.
 
-[1] https://lore.kernel.org/linux-arm-kernel/799181c3-a1a1-4de7-bc6a-576d3282efb0@arm.com/
+ drivers/media/platform/mediatek/mdp3/mtk-mdp3-core.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/drivers/media/platform/mediatek/mdp3/mtk-mdp3-core.c b/drivers/media/platform/mediatek/mdp3/mtk-mdp3-core.c
+index 8f4da4cf55d2..121b1006ffdc 100644
+--- a/drivers/media/platform/mediatek/mdp3/mtk-mdp3-core.c
++++ b/drivers/media/platform/mediatek/mdp3/mtk-mdp3-core.c
+@@ -294,7 +294,6 @@ static int mdp_probe(struct platform_device *pdev)
+ 			goto err_destroy_clock_wq;
+ 		}
+ 		mdp->scp = platform_get_drvdata(mm_pdev);
+-		put_device(&mm_pdev->dev);
+ 	}
+ 
+ 	mdp->rproc_handle = scp_get_rproc(mdp->scp);
+-- 
+2.43.0
+
 
