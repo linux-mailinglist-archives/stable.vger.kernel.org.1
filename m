@@ -1,137 +1,167 @@
-Return-Path: <stable+bounces-273608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273610-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 2GPMLwepVGr7owMAu9opvQ
-	(envelope-from <stable+bounces-273608-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 10:59:51 +0200
+	id xq/jCKiqVGp1pAMAu9opvQ
+	(envelope-from <stable+bounces-273610-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 11:06:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DCC97490A0
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 10:59:51 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D4C37491B6
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 11:06:47 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VCPm2n9U;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273608-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-273608-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=smail.nju.edu.cn header.s=iohv2404 header.b=FghWGFBu;
+	dmarc=pass (policy=reject) header.from=smail.nju.edu.cn;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273610-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273610-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5C2E83038D37
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 08:55:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6F171300C939
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 09:01:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4297A3D47A0;
-	Mon, 13 Jul 2026 08:55:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE7703DD502;
+	Mon, 13 Jul 2026 09:01:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+Received: from smtpbgjp3.qq.com (smtpbgjp3.qq.com [54.92.39.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D4263B7759
-	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 08:55:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53BDD3101D0;
+	Mon, 13 Jul 2026 09:01:30 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783932950; cv=none; b=opp2SAgCY/EfMvB7WtzR6vps5eQUDJPzFkpF6K5dwht96RcbHF7ll0yTP5v8bZgpCO/1p1tcccKP83vrf0Cau2VyQ303TynjrDp0oRsZpxolp2BvBcY6BnU7RKm7D5LpoCWb4rZB6aGVhccijrwCh28oKbXbfjQMDRzzP4NmPYI=
+	t=1783933296; cv=none; b=Z3O+hlOP1uQ5Sw++EmdW0Wq3hAFnvsjp0I0JePAPBMbTjEGLy5bV8wBZ7+MKBxH/ig9NCasEoiX56swxMP9idWaqrMqvA/Zr4rpIs3gL6KBFZCGZji5aVdNRdDwEDprTBA4tjIrE93HOTP456V+tLNb6duBczlrDJwCjvNjw+u8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783932950; c=relaxed/simple;
-	bh=9WcLLEUTfH5DXwDE4U4LjhiDFTxdCugGyLPUB06Q4Xk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VkGVQMW3KIdpWq4TJn980dGS5pDUWI4ycW/2ty0AEeNFmjK5lsnP0w947gcVcgA9bZJtnOqxSF+fV2JdDwDDVouJNxFUGuSTnOaEEXd/djxK3Brlf4w8AIEmD4s4BnPrtwO5+gfk19/2H0cXtp/6hrRMA9mvbfJR6qcmEHvuCbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=VCPm2n9U; arc=none smtp.client-ip=91.218.175.184
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783932936;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=lRQmt4fwY1pc83IFqnyeFa3xOFtn7qun/zE5d+hdHz8=;
-	b=VCPm2n9UQKVR4xjj4T1LbYJORcayH6qqLMp+hCPm9RGeN+6D0xu8GSkBowu/PS2guv5m+b
-	Xwu9j1vMNww/fxb6P1mSg1LquSQuJ6REZqA0NFDLFyHXJRaLs5Pv6QD0ngboHOKkLPQjIc
-	SqKb1sHStxIMiionF5pejh9FjoMr5js=
-From: Guopeng Zhang <guopeng.zhang@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Stanislav Fort <stanislav.fort@aisle.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Guopeng Zhang <zhangguopeng@kylinos.cn>
-Subject: [PATCH] mm: memcg-v1: account vmpressure event allocations
-Date: Mon, 13 Jul 2026 16:55:20 +0800
-Message-ID: <20260713085520.2953121-1-guopeng.zhang@linux.dev>
+	s=arc-20240116; t=1783933296; c=relaxed/simple;
+	bh=brG4punToi/QVZMcOiAxFIY3tK8FArsXXfXKOAc1Lh0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TvamSODN5B8zOHxawt1goQQRbO34lf5BuMh0SVVEwy8eGxW5Aava2ENRYAmcR+ZArn7xhYp2SD1MEB3x5l56TFgmKVU++YtB0IT2sAlJNBMnCXy7Kr80wUa+cjsDh20mRHRbDwuNtG4+c2t1M+CEBpB/R0tpyMx2G0U71tbFKEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=smail.nju.edu.cn; spf=pass smtp.mailfrom=smail.nju.edu.cn; dkim=pass (1024-bit key) header.d=smail.nju.edu.cn header.i=@smail.nju.edu.cn header.b=FghWGFBu; arc=none smtp.client-ip=54.92.39.34
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smail.nju.edu.cn;
+	s=iohv2404; t=1783933182;
+	bh=BFMvyiC2DCtmPYg5QWCM+o3YaMaFN7Rp9m1r80pW+l0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From;
+	b=FghWGFBu/KT/mqxO9CBg92ra28jfl/l4d82Hw8cP/kgJbC76OfebIy6IQuBJSbZsN
+	 Inwv1/jKPb/m6HfigoH3l+t+VlHE5MzetcetCGIQkPClXZvdmLAUBnwwduYnKldh5A
+	 IHV6dAonM984mEErpGXAxnXXXII7tDKKlWzQhnak=
+X-QQ-mid: zesmtpgz9t1783933181t06373724
+X-QQ-Originating-IP: PL47oaHtcBmq07klp3P7KVA6E5BJWjci0tMvgqd6WM8=
+Received: from [127.0.0.1] ( [36.152.24.145])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Mon, 13 Jul 2026 16:59:39 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 5298362049264850985
+Message-ID: <45448501516EA311+ca2ef796-7533-4bab-92ad-ee2dbc4cb003@smail.nju.edu.cn>
+Date: Mon, 13 Jul 2026 16:59:38 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] iommufd: Reject DMABUF pages from the access pin path
+To: "Tian, Kevin" <kevin.tian@intel.com>, "jgg@ziepe.ca" <jgg@ziepe.ca>
+Cc: "joro@8bytes.org" <joro@8bytes.org>, "will@kernel.org" <will@kernel.org>,
+ "iommu@lists.linux.dev" <iommu@lists.linux.dev>,
+ "robin.murphy@arm.com" <robin.murphy@arm.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "syzkaller@googlegroups.com" <syzkaller@googlegroups.com>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <E8540D7D05768C91+8b2ef227-3368-494e-909d-7b28e1489dfb@smail.nju.edu.cn>
+ <CD68F549BF3761B7+20260709050800.520607-1-peiyang_he@smail.nju.edu.cn>
+ <CO1PR11MB48356388B36743AE8E083A3B8CFA2@CO1PR11MB4835.namprd11.prod.outlook.com>
+Content-Language: en-US
+From: Peiyang He <peiyang_he@smail.nju.edu.cn>
+In-Reply-To: <CO1PR11MB48356388B36743AE8E083A3B8CFA2@CO1PR11MB4835.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpgz:smail.nju.edu.cn:qybglogicsvrsz:qybglogicsvrsz4b-0
+X-QQ-XMAILINFO: Nl7eTg5yGHnwq5BHGlfQ52lnSdLbiyRf5Xc9U1uTQkcvjhe7CKYLk3o+
+	YX+miOIT45Zt2Z/d8laqBVuF+BK3usFhzSUxnReRkZFwEP3GMKoW1Ucrr9UgEUz4oh7SEV1
+	833MdLdT09LzIq/uCyStJt7T91RgK8fUzSIDVhYz1gX6+xkuuL3kQSLelxmi1W/ipLvx5bM
+	ABkCZy76oglFjoKRUDpPEyUYJxX0OVP6u8zOpKi92jB/wGw8zGNG00nRrxo3XsCF5fu2VDk
+	z9TUQR20lsLOM8SvTI2Vjb7RZwMKEpQqVMaSQY+gr1GNac6gAiAkaBSfpTzj6TyxMADTuOi
+	AFXZMyHkLxwKjWmaRLK4KqAp7aTFNpO6LeP0prwaChmGM3FZQVuGY2IUamBPGJIoi36LhU2
+	E+ayVo/tfZ1Sm1puKSPz4kQ+IMoaVWcu2zZxjJCGK/ku016QLYoH7HYnL7rgWiy4BPdb9Zl
+	/ir6huh0QCo5Iok0dVsij50svHlrb6hkbnmGPuybmLNghMYq9f04BH0z7jghHEY/2epAndv
+	wG76sZQ1Sm2o1OBcQRgM+RMD4/2TPLUe7Wyqu75VVG8QgDeR61uuK2xa+6DOHDxXslfidE+
+	2PFZjB7VXZwPVlxZIr/92IxsD0Z1vew2lZCK6tIdKDAMFyW6gXwEiolIq/rcn2PyW8fyGyX
+	ep6fLuBcYZqF66wPDQ6NqcWDnlkF5XUACu8wqXsYgbXpmmn1S0/qnDmZKMqjnWShFbV0XGz
+	B820XA83QVq8/Xi8yHpw67rpe0RwDVSBgMIYsiOdpv+f9azeoo1grd1nLhLj+Hp/yHTPhQ2
+	7iTw2/7a6wq+8SL53PR07bcnkmO8TffyghfzcKjX7M33lgZBLTTSYBF6M2ZXuY2qXOuFVXC
+	2GVWoVHruQS8OCibOU/tqEUPzxAUFAqb8Yu/oFDqDlJ6k6tt1D1iEw8IOyPMN2PzEcaxyMT
+	woxs+yxwTm/mWY2EFbMpNxg9oN3CdnxGyLibmgaaI0PkC+OBY4LvjYgmySzkbvAQ6dM3cCy
+	WzoYHoUk1a89Mg/M8CdB3fAqBWzvDHzoA6225jbhKTo5q/2SBQfl5mKPxADL0wqphdVBsQr
+	XPNCJLvqEd8ocf9dVu/YFQ=
+X-QQ-XMRINFO: NI4Ajvh11aEjEMj13RCX7UuhPEoou2bs1g==
+X-QQ-RECHKSPAM: 0
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	DMARC_POLICY_ALLOW(-0.50)[smail.nju.edu.cn,reject];
+	R_DKIM_ALLOW(-0.20)[smail.nju.edu.cn:s=iohv2404];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-273608-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:akpm@linux-foundation.org,m:roman.gushchin@linux.dev,m:shakeel.butt@linux.dev,m:stanislav.fort@aisle.com,m:hannes@cmpxchg.org,m:mhocko@kernel.org,m:muchun.song@linux.dev,m:cgroups@vger.kernel.org,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:zhangguopeng@kylinos.cn,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[guopeng.zhang@linux.dev,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[guopeng.zhang@linux.dev,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linux.dev:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:kevin.tian@intel.com,m:jgg@ziepe.ca,m:joro@8bytes.org,m:will@kernel.org,m:iommu@lists.linux.dev,m:robin.murphy@arm.com,m:linux-kernel@vger.kernel.org,m:syzkaller@googlegroups.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-273610-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[peiyang_he@smail.nju.edu.cn,stable@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_MUA_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[smail.nju.edu.cn:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[peiyang_he@smail.nju.edu.cn,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,linux.dev:from_mime,linux.dev:dkim,linux.dev:mid,vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[smail.nju.edu.cn:from_mime,smail.nju.edu.cn:dkim,smail.nju.edu.cn:mid,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2DCC97490A0
+X-Rspamd-Queue-Id: 6D4C37491B6
 
-From: Guopeng Zhang <zhangguopeng@kylinos.cn>
+On 2026/7/13 14:10, Tian, Kevin wrote:
+>> From: Peiyang He <peiyang_he@smail.nju.edu.cn>
+>> Sent: Thursday, July 9, 2026 1:08 PM
+>>
+>> DMABUF pages are not supported for iommufd access pinning.
+>> iommufd_access_pin_pages() returns struct page pointers for
+>> in-kernel CPU access, but DMABUF-backed iopt_pages do not carry
+>> a userspace address that can be passed to the GUP path.
+>>
+>> iopt_pages_rw_access() already rejects IOPT_ADDRESS_DMABUF before
+>> doing
+>> CPU access. Apply the same rejection to iopt_area_add_access() before it
+>> takes pages->mutex and calls iopt_pages_fill_xarray().
+>> Otherwise a DMABUF-backed iopt_pages can reach the hole-fill path, where
+>> pfn_reader_user_pin() interprets the union as uptr and
+>> calls pin_user_pages_fast()/pin_user_pages_remote().
+>>
+>> This fix also avoids the lockdep warning reported from that path, where
+>> pages_dmabuf_mutex_key is held while gup_fast_fallback() may acquire
+>> mmap_lock.
+>>
+>> Reported-by: Peiyang He <peiyang_he@smail.nju.edu.cn>
+> 
+> this is not required when you are the author
 
-Commit 72797d218b43 ("mm/memcg: v1: account event registrations and drop
-world-writable cgroup.event_control") accounted cgroup v1 event
-registration allocations with GFP_KERNEL_ACCOUNT, but missed struct
-vmpressure_event.
+Hi Kevin,
+Thanks for your reply! Will send a V2 patch fixing this.
 
-Use GFP_KERNEL_ACCOUNT for this allocation as well.
+Best,
+Peiyang
 
-Fixes: 72797d218b43 ("mm/memcg: v1: account event registrations and drop world-writable cgroup.event_control")
-Signed-off-by: Guopeng Zhang <zhangguopeng@kylinos.cn>
----
- mm/memcontrol-v1.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
-index e8b6e1560278..f8424ec3734b 100644
---- a/mm/memcontrol-v1.c
-+++ b/mm/memcontrol-v1.c
-@@ -1721,7 +1721,7 @@ int vmpressure_register_event(struct mem_cgroup *memcg,
- 		mode = ret;
- 	}
- 
--	ev = kzalloc_obj(*ev);
-+	ev = kzalloc_obj(*ev, GFP_KERNEL_ACCOUNT);
- 	if (!ev) {
- 		ret = -ENOMEM;
- 		goto out;
--- 
-2.43.0
 
 
