@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-273734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273735-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id m1v7K9XnVGqlgwAAu9opvQ
-	(envelope-from <stable+bounces-273734-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:27:49 +0200
+	id XKuPF/DpVGpChAAAu9opvQ
+	(envelope-from <stable+bounces-273735-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:36:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68CF774B920
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:27:49 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFC0374BAD0
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:36:47 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=yjG+Hiul;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273734-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-273734-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=XQOoSWeS;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273735-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273735-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0496B3043D83
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 13:19:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 01AB131382FA
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 13:19:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA410423A66;
-	Mon, 13 Jul 2026 13:19:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F41E7421F1B;
+	Mon, 13 Jul 2026 13:19:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 888284252A3
-	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 13:19:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D753421EED
+	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 13:19:49 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783948787; cv=none; b=iqTK56UNHgwgcWh59oipjHGxf3xvEseDr3Xc/3rPrZjQZ3UoxFSUgbqlwnFBU+6W0L62Ag/oYDvciwfFgVlKzGNHDH7YmhzsCViDcQH4Nm4nD++fBiwgAesExk+tl6toFsw8BtXCk/c+6l/tJ8Ck/XsyaRyasNOIRmHKtfSBBzs=
+	t=1783948790; cv=none; b=ehTHkl2EPGwwUnxdAe+hRzAk2uwDueolso3G08AqYllItv9jTN7zaj7+lYkwdGoJTxIPOdihtDGlybLOZRLR0fg4ZEiBgpiCKxGtL0OqqewxiIY+XyGJ0uOIiu06akXs2pwn3Glb7SIz8GOYTZdMl0zngZ+iXDfXywaaIs1UaE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783948787; c=relaxed/simple;
-	bh=BMvlu5B/0/j+YqBAY/jPokxed+JzXtP1Y2zYTb1yXBo=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=NaKAoy2d8K5Szsh/kJKj/ypuzwe0V+SxsI+c18i70AbWIoeSa2vxv99fldyj14pJ4mUln8NrBpv3CKIPkp0cf2oZiGvhDIa31SI9RNCkuSU3km/vZjSTQcIJAPSdVsMCEJQ00tdnwiEUgOKyzJaxkkNcPI0MIbcszlM5/V+afHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yjG+Hiul; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECFBB1F000E9;
-	Mon, 13 Jul 2026 13:19:45 +0000 (UTC)
+	s=arc-20240116; t=1783948790; c=relaxed/simple;
+	bh=3+1mivJwklpWaK8tyHqywP73/wBdbkwulJ+Xu62QU9Q=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=K7RnYc39ASmWYUaoXKV/mccuDUeVzUyOcXXoRJP5Gwa+UtUX8jDnFZ3rZYF9SOao3And+TlMIEnv6rXAl83Qjaiufb+Ml9aa/Ik5sJriO6psTDMky6+vrm7h4V3rgl52NhnWM84bunpeje63cnP+usebjChR/8CI4scr1fYZ8d4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XQOoSWeS; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9749D1F000E9;
+	Mon, 13 Jul 2026 13:19:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783948786;
-	bh=d10WHfZAdMpVo4qE+icuLbhfqMLU3OJbWeiP6MzbMEM=;
+	s=korg; t=1783948789;
+	bh=yJKkpIxFaTNbXttvxxWTsyu9670D8e7QgN355iC3Jo4=;
 	h=Subject:To:Cc:From:Date;
-	b=yjG+HiulGSqvCx9Q+cLtW+uvFfyKfZjfke+Y1LwV2EwXOE7xq6/VGwufdv3OfJlZ7
-	 W07Nekr5KBLhWaWrIorem56FJ2PObvBSlbDJJEir0tdYRu/tLCNnf6BSjjVySxhsBr
-	 AcxzKx0Krd7RwuNBwQ3paaaHWErs2Cz+KZx83HEY=
-Subject: FAILED: patch "[PATCH] Bluetooth: btusb: fix wakeup source leak on probe failure" failed to apply to 5.10-stable tree
-To: johan@kernel.org,luiz.von.dentz@intel.com,rajatja@google.com
+	b=XQOoSWeS1me8Y1oSs0ajVakzqQ9IicHeqcY4ZV9iCmwto5+vc7unM3EzyKLOcwm8J
+	 LAlpVrd8TIuVEV2qFaWvv0tkpkUzJxaUd5culbfzH36x0VcG5yg05mQX22Zb3rwgxj
+	 7UrmC9y8RzX5nbrL5vaSU4MzPJ646jb2gKBY9Fdg=
+Subject: FAILED: patch "[PATCH] binder: fix UAF in binder_free_transaction()" failed to apply to 5.10-stable tree
+To: cmllamas@google.com,aliceryhl@google.com,gregkh@linuxfoundation.org,stable@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 13 Jul 2026 15:09:41 +0200
-Message-ID: <2026071341-glamorous-shower-90f7@gregkh>
+Date: Mon, 13 Jul 2026 15:10:59 +0200
+Message-ID: <2026071359-voyage-hassle-bb34@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,38 +60,39 @@ X-Rspamd-Action: no action
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-273735-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-273734-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:johan@kernel.org,m:luiz.von.dentz@intel.com,m:rajatja@google.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:cmllamas@google.com,m:aliceryhl@google.com,m:gregkh@linuxfoundation.org,m:stable@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	URIBL_MULTI_FAIL(0.00)[sea.lore.kernel.org:server fail,vger.kernel.org:server fail,linuxfoundation.org:server fail,gregkh:server fail,msgid.link:server fail];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_NONE(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,gregkh:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,intel.com:email]
+	FROM_NO_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:from_mime,linuxfoundation.org:email,linuxfoundation.org:dkim,gregkh:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 68CF774B920
+X-Rspamd-Queue-Id: AFC0374BAD0
 
 
 The patch below does not apply to the 5.10-stable tree.
@@ -103,10 +104,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 3d93e1bb0fb881fe3ef961d1120556658e9cac4d
+git cherry-pick -x f223d27a546c1e1f48d38fd67760e78f068fe8c4
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026071341-glamorous-shower-90f7@gregkh' --subject-prefix 'PATCH 5.10.y' 'HEAD^..'
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026071359-voyage-hassle-bb34@gregkh' --subject-prefix 'PATCH 5.10.y' 'HEAD^..'
 
 Possible dependencies:
 
@@ -118,77 +119,94 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 3d93e1bb0fb881fe3ef961d1120556658e9cac4d Mon Sep 17 00:00:00 2001
-From: Johan Hovold <johan@kernel.org>
-Date: Thu, 4 Jun 2026 08:37:38 +0200
-Subject: [PATCH] Bluetooth: btusb: fix wakeup source leak on probe failure
+From f223d27a546c1e1f48d38fd67760e78f068fe8c4 Mon Sep 17 00:00:00 2001
+From: Carlos Llamas <cmllamas@google.com>
+Date: Fri, 19 Jun 2026 18:52:31 +0000
+Subject: [PATCH] binder: fix UAF in binder_free_transaction()
 
-Make sure to disable wakeup on probe failure to avoid leaking the wakeup
-source.
+In binder_free_transaction(), the t->to_proc is read under the t->lock.
+However, once the t->lock is dropped, the to_proc can die in parallel.
+This leads to a use-after-free error when we attempt to acquire its
+inner lock right afterwards:
 
-Fixes: fd913ef7ce61 ("Bluetooth: btusb: Add out-of-band wakeup support")
-Cc: stable@vger.kernel.org	# 4.11
-Cc: Rajat Jain <rajatja@google.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+  ==================================================================
+  BUG: KASAN: slab-use-after-free in _raw_spin_lock+0xe4/0x1a0
+  Write of size 4 at addr ffff00001125da70 by task B/672
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index 669fb3ebde4c..966e017ac1df 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -3013,6 +3013,11 @@ static int marvell_config_oob_wake(struct hci_dev *hdev)
+  CPU: 20 UID: 0 PID: 672 Comm: B Not tainted 7.1.0-rc6-00284-g8e65320d91cd #4 PREEMPT
+  Hardware name: linux,dummy-virt (DT)
+  Call trace:
+   _raw_spin_lock+0xe4/0x1a0
+   binder_free_transaction+0x8c/0x320
+   binder_send_failed_reply+0x21c/0x2f8
+   binder_thread_release+0x488/0x7e0
+   binder_ioctl+0x12c0/0x29a0
+  [...]
+
+  Allocated by task 675:
+   __kmalloc_cache_noprof+0x174/0x444
+   binder_open+0x118/0xb70
+   do_dentry_open+0x374/0x1040
+   vfs_open+0x58/0x3bc
+  [...]
+
+  Freed by task 212:
+   __kasan_slab_free+0x58/0x80
+   kfree+0x1a0/0x4a4
+   binder_proc_dec_tmpref+0x32c/0x5e0
+   binder_deferred_func+0xc48/0x104c
+   process_one_work+0x53c/0xbc0
+  [...]
+  ==================================================================
+
+To prevent this, pin the target thread (t->to_thread) to guarantee the
+target process remains alive. Undelivered transactions without a target
+thread are already safe, as the target process can only be the current
+context in those paths.
+
+Cc: stable <stable@kernel.org>
+Reported-by: Alice Ryhl <aliceryhl@google.com>
+Closes: https://lore.kernel.org/all/aikJKVuny_eOivwN@google.com/
+Fixes: a370003cc301 ("binder: fix possible UAF when freeing buffer")
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Link: https://patch.msgid.link/20260619185233.2194678-2-cmllamas@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+diff --git a/drivers/android/binder.c b/drivers/android/binder.c
+index 013e2bfab070..8f2ef1bd539f 100644
+--- a/drivers/android/binder.c
++++ b/drivers/android/binder.c
+@@ -1658,10 +1658,19 @@ static void binder_txn_latency_free(struct binder_transaction *t)
  
- 	return 0;
- }
-+#else
-+static inline int marvell_config_oob_wake(struct hci_dev *hdev)
-+{
-+	return 0;
-+}
- #endif
+ static void binder_free_transaction(struct binder_transaction *t)
+ {
++	struct binder_thread *target_thread;
+ 	struct binder_proc *target_proc;
  
- static int btusb_set_bdaddr_marvell(struct hci_dev *hdev,
-@@ -3855,6 +3860,11 @@ static int btusb_config_oob_wake(struct hci_dev *hdev)
- 	bt_dev_info(hdev, "OOB Wake-on-BT configured at IRQ %u", irq);
- 	return 0;
- }
-+#else
-+static inline int btusb_config_oob_wake(struct hci_dev *hdev)
-+{
-+	return 0;
-+}
- #endif
+ 	spin_lock(&t->lock);
+ 	target_proc = t->to_proc;
++	target_thread = t->to_thread;
++	/*
++	 * Pin target_thread to keep target_proc alive. Undelivered
++	 * transactions with !target_thread are safe, as target_proc
++	 * can only be the current context there.
++	 */
++	if (target_thread)
++		atomic_inc(&target_thread->tmp_ref);
+ 	spin_unlock(&t->lock);
  
- static void btusb_check_needs_reset_resume(struct usb_interface *intf)
-@@ -4191,7 +4201,6 @@ static int btusb_probe(struct usb_interface *intf,
- 	hdev->wakeup  = btusb_wakeup;
- 	hdev->hci_drv = &btusb_hci_drv;
- 
--#ifdef CONFIG_PM
- 	err = btusb_config_oob_wake(hdev);
- 	if (err)
- 		goto out_free_dev;
-@@ -4200,9 +4209,9 @@ static int btusb_probe(struct usb_interface *intf,
- 	if (id->driver_info & BTUSB_MARVELL && data->oob_wake_irq) {
- 		err = marvell_config_oob_wake(hdev);
- 		if (err)
--			goto out_free_dev;
-+			goto err_disable_wakeup;
+ 	if (target_proc) {
+@@ -1676,6 +1685,10 @@ static void binder_free_transaction(struct binder_transaction *t)
+ 			t->buffer->transaction = NULL;
+ 		binder_inner_proc_unlock(target_proc);
  	}
--#endif
 +
- 	if (id->driver_info & BTUSB_CW6622)
- 		hci_set_quirk(hdev, HCI_QUIRK_BROKEN_STORED_LINK_KEY);
- 
-@@ -4447,6 +4456,9 @@ static int btusb_probe(struct usb_interface *intf,
- 	}
- err_kill_tx_urbs:
- 	usb_kill_anchored_urbs(&data->tx_anchor);
-+err_disable_wakeup:
-+	if (data->oob_wake_irq)
-+		device_init_wakeup(&data->udev->dev, false);
- out_free_dev:
- 	if (data->reset_gpio)
- 		gpiod_put(data->reset_gpio);
++	if (target_thread)
++		binder_thread_dec_tmpref(target_thread);
++
+ 	if (trace_binder_txn_latency_free_enabled())
+ 		binder_txn_latency_free(t);
+ 	/*
 
 
