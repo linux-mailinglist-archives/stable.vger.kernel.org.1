@@ -1,142 +1,208 @@
-Return-Path: <stable+bounces-273707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273731-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id wmizHZ/kVGqOggAAu9opvQ
-	(envelope-from <stable+bounces-273707-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:14:07 +0200
+	id xQKEHJbnVGqLgwAAu9opvQ
+	(envelope-from <stable+bounces-273731-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:26:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0AB574B65B
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:14:06 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C486574B8E3
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 15:26:45 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M6WsI97x;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273707-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-273707-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ENJWee1s;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-273731-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-273731-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CC9F9308DB44
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 13:08:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 432063319387
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 13:19:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 874B44189AF;
-	Mon, 13 Jul 2026 13:07:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0698A423A66;
+	Mon, 13 Jul 2026 13:19:40 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FC6B4189A5;
-	Mon, 13 Jul 2026 13:07:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A47DA4252D0
+	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 13:19:38 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783948069; cv=none; b=HQSajkx0DtrFz49uGxtONAlMW2D70fNTiyQPM73wBXeVkYvLF4/IuvpoHZUs9SM9JjV5CdRZNDWlja1ekHsniVZ5tVme8mk9fpFrmv3CBv1vDeA8QzaNU9VFt8DqP20/PO3GUieeBX5gUZtBFurUyZ6Z8bMocyOhjLI/UV7z1bo=
+	t=1783948779; cv=none; b=SixwZSHXwQ9yoCIv3psVJXvcifyAlurJOeW0KWxlJNiXx8M9aBSZgQ66zKo2uRpst91PORNG5aQo+KkdFVa8Z6Kc//5f0KiEQIyuomsDgzwDrBPtJ8+3xE30RGpYmuzmwVU8ZK1jIlpbuVeSa/M/H06jzPCMIqB+W40Kk/Oh0JY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783948069; c=relaxed/simple;
-	bh=eZDb2Tb0TorVW6SVUJBl2A+95nQMtBtkxZCbkSWL+D0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hYIbyf1wRiJj9ruU/axq9hyLB+HGrlm6TIhFXZv8IaG687QuwhRJGa8Gq4zYgoVXqV+gL0Y7UCP3DeRn8kpwIJypGChzaLamG5FUwAveWLxakUIxnui+bS9bn4WAYjzUY2iW/MHdURXQxRMIY4Sxwad8ebaWHmKTcU4VGMwrLQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M6WsI97x; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D30F1F00A3D;
-	Mon, 13 Jul 2026 13:07:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783948067;
-	bh=kXQnTwBPub3tZDUV3lE7n/0kdw8aNXe/OrgkdMgIWss=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=M6WsI97x0WTAWfxR3KXWh9Utq+r9um1NRRAO4gUwOERZBkLePwAAszdV6RYGWd7RV
-	 +GUZ6+s/4IFenPdHEgtOuSZaWu1zexnaqtBQ9rNpkPj4dQ/azMsiskt9R2rkXIpiwO
-	 U9MSPRqaaVLtSVTffHNFxadDfVgQFogfJBZ6ikjx72rWfHBHJqQ9fXYnST9pD26a1L
-	 aTKGHKrQB1MHm2r0WQdku6WYSh4P3NPyF3Asg0gLr7bRTHf996+1SxZ1Lm3W1y0TCJ
-	 rBKyMAKxCMh5lgwcp/hkHlX8Jli69z+gP4qguXLv5HvPylT2D8Fv7p6S0uMmLx5WW+
-	 NMAh5Kt/NVtFw==
-Date: Mon, 13 Jul 2026 09:07:45 -0400
-From: Eric Biggers <ebiggers@kernel.org>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: demiobenour@gmail.com, Russell King <linux@armlinux.org.uk>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-crypto@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] drivers/crypto: Mark QCE as BROKEN
-Message-ID: <20260713130745.GA2254@quark>
-References: <20260712-qce-broken-v2-1-b2dfff47f7f5@gmail.com>
- <2026071312-uncover-refining-8cac@gregkh>
+	s=arc-20240116; t=1783948779; c=relaxed/simple;
+	bh=l8X0672jEDBhvFII8sAijx/NPR5pqAKdKY+f7IcKmAQ=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=PyWtiB4psN47w39pG/HMNcfsmbnfUqI2VoCnPxGzUn5AykHrjQ76IlZrc7Q0FO4VHVnIrRy9Q9an2xiyXz27gdlCdhsvjUi37b4DTwJMZR4RhjJlr4XZA8SPyC9XnOMNSZms7f7s2cDp5kqh1xF1mwFeZuqtFX2+rspgQudc7E8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ENJWee1s; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15EC61F000E9;
+	Mon, 13 Jul 2026 13:19:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1783948778;
+	bh=LPG7+AgcLDo0tbT7Kfy6/tqBGIagqbUbcXQxbn7+ZOY=;
+	h=Subject:To:Cc:From:Date;
+	b=ENJWee1sQZveBSqHUTPYGy7Z+xhwYfUTA3nhjubgiG7tLbdvBd00XHnmBlhIWBSYv
+	 8bQkwWzXnpsumNES5DP79neKVBFgOBQq2N6BYX/q4ln5/JReKngP5HT+X1ccsEWxIK
+	 b47hyvZf2/4dd/L8duDuvu4HYiyEgKWGwK5nynQM=
+Subject: FAILED: patch "[PATCH] vfio/mlx5: Fix racy bitfields and tighten struct layout" failed to apply to 6.6-stable tree
+To: alex.williamson@nvidia.com,alex@shazbot.org,kevin.tian@intel.com,yishaih@nvidia.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 13 Jul 2026 15:07:51 +0200
+Message-ID: <2026071351-hypnotist-breeching-8539@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2026071312-uncover-refining-8cac@gregkh>
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-273707-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-273731-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:demiobenour@gmail.com,m:linux@armlinux.org.uk,m:herbert@gondor.apana.org.au,m:davem@davemloft.net,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:linux-crypto@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FREEMAIL_CC(0.00)[gmail.com,armlinux.org.uk,gondor.apana.org.au,davemloft.net,lists.infradead.org,vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:alex.williamson@nvidia.com,m:alex@shazbot.org,m:kevin.tian@intel.com,m:yishaih@nvidia.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[ebiggers@kernel.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ebiggers@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
+	TO_DN_NONE(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,quark:mid]
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,vger.kernel.org:from_smtp,gregkh:mid,shazbot.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,intel.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: F0AB574B65B
+X-Rspamd-Queue-Id: C486574B8E3
 
-On Mon, Jul 13, 2026 at 06:47:07AM +0200, Greg KH wrote:
-> On Sun, Jul 12, 2026 at 05:31:31PM -0400, Demi Marie Obenour via B4 Relay wrote:
-> > From: Demi Marie Obenour <demiobenour@gmail.com>
-> > 
-> > This driver is harmful:
-> > 
-> > - It is much slower than the CPU [1] [2].
-> > - It Has a history of bugs [2] [3].
-> > - It does not have exclusive access to the hardware [4], causing races
-> >   with the secure world.
-> > - It register its implementations with too low a cra_priority for them
-> >   to be actually used [5].
-> > 
-> > Therefore, disable it to ensure that nobody builds it into kernels they
-> > intend to ship.
-> > 
-> > In the future, the driver will be used for processing restricted media
-> > content.  However, the kernel does not currently support this.  Since
-> > the driver will have future uses, allow building it if COMPILE_TEST is
-> > enabled.
-> 
-> Why not just delete it now, and then bring it back when it is needed in
-> the future?  Otherwise this will just trip up the static code checkers
-> who will attempt to "fix" things in it.
 
-That makes sense to me, but Qualcomm pushed back on deletion:
-https://lore.kernel.org/linux-crypto/20260602-qcom-qce-broken-v1-1-a4ef756089e0@oss.qualcomm.com/
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-But I've still not seen any evidence that this driver is useful for
-anything or has any users.  Even Qualcomm seems to be unwilling to make
-such claims; they only claim that the IP is used (i.e., not in Linux)
-and that new features are planned.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-- Eric
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x f2365a63b02ddea32e7db78b742c2503ec7b81f1
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026071351-hypnotist-breeching-8539@gregkh' --subject-prefix 'PATCH 6.6.y' 'HEAD^..'
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From f2365a63b02ddea32e7db78b742c2503ec7b81f1 Mon Sep 17 00:00:00 2001
+From: Alex Williamson <alex.williamson@nvidia.com>
+Date: Mon, 15 Jun 2026 13:12:32 -0600
+Subject: [PATCH] vfio/mlx5: Fix racy bitfields and tighten struct layout
+
+Bitfield operations are not atomic, they use a read-modify-write
+pattern, therefore we should be careful not to pack bitfields that
+can be concurrently updated into the same storage unit.
+
+This split takes a binary approach: flags that are only modified
+pre/post open/close remain bitfields, flags modified from user
+action, including actions that reach across to another device (ex.
+reset) use dedicated storage units.
+
+Note mlx5_vhca_page_tracker.status is relocated to fill the alignment
+hole this split exposes.
+
+Bitfield justifications:
+
+  migrate_cap: written only in mlx5vf_cmd_set_migratable() at probe
+  chunk_mode: written only in mlx5vf_cmd_set_migratable() at probe
+  mig_state_cap: written only in mlx5vf_cmd_set_migratable() at probe
+
+Dedicated storage units:
+
+  mdev_detach: written in the VF attach/detach event notifier
+               mlx5fv_vf_event() at runtime
+  log_active: written in mlx5vf_start_page_tracker()/
+              mlx5vf_stop_page_tracker() during runtime dirty tracking
+  deferred_reset: written in mlx5vf_state_mutex_unlock()/
+                  mlx5vf_pci_aer_reset_done() during runtime reset handling
+  is_err: set by tracker error handling and dirty-log polling at runtime
+  object_changed: set by tracker event handling and cleared by dirty-log
+                  polling at runtime
+
+Fixes: 61a2f1460fd0 ("vfio/mlx5: Manage the VF attach/detach callback from the PF")
+Fixes: 79c3cf279926 ("vfio/mlx5: Init QP based resources for dirty tracking")
+Fixes: f886473071d6 ("vfio/mlx5: Add support for tracker object change event")
+Cc: Yishai Hadas <yishaih@nvidia.com>
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-8
+Signed-off-by: Alex Williamson <alex.williamson@nvidia.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Link: https://lore.kernel.org/r/20260615191241.688297-5-alex.williamson@nvidia.com
+Signed-off-by: Alex Williamson <alex@shazbot.org>
+
+diff --git a/drivers/vfio/pci/mlx5/cmd.h b/drivers/vfio/pci/mlx5/cmd.h
+index deed0f132f39..c86d8b243a52 100644
+--- a/drivers/vfio/pci/mlx5/cmd.h
++++ b/drivers/vfio/pci/mlx5/cmd.h
+@@ -158,26 +158,29 @@ struct mlx5_vhca_qp {
+ struct mlx5_vhca_page_tracker {
+ 	u32 id;
+ 	u32 pdn;
+-	u8 is_err:1;
+-	u8 object_changed:1;
++	/* Flags modified at runtime - dedicated storage unit */
++	u8 is_err;
++	u8 object_changed;
++	int status;
+ 	struct mlx5_uars_page *uar;
+ 	struct mlx5_vhca_cq cq;
+ 	struct mlx5_vhca_qp *host_qp;
+ 	struct mlx5_vhca_qp *fw_qp;
+ 	struct mlx5_nb nb;
+-	int status;
+ };
+ 
+ struct mlx5vf_pci_core_device {
+ 	struct vfio_pci_core_device core_device;
+ 	int vf_id;
+ 	u16 vhca_id;
++	/* Flags only modified on setup/release - bitfield ok */
+ 	u8 migrate_cap:1;
+-	u8 deferred_reset:1;
+-	u8 mdev_detach:1;
+-	u8 log_active:1;
+ 	u8 chunk_mode:1;
+ 	u8 mig_state_cap:1;
++	/* Flags modified at runtime - dedicated storage unit */
++	u8 mdev_detach;
++	u8 log_active;
++	u8 deferred_reset;
+ 	struct completion tracker_comp;
+ 	/* protect migration state */
+ 	struct mutex state_mutex;
+
 
