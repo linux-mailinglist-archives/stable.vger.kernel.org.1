@@ -1,196 +1,138 @@
-Return-Path: <stable+bounces-273635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274039-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 6E6bEjPBVGrjHQAAu9opvQ
-	(envelope-from <stable+bounces-273635-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 12:42:59 +0200
+	id OlKfLpZ0VWqPogAAu9opvQ
+	(envelope-from <stable+bounces-274039-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 01:28:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAF37749ED4
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 12:42:58 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17B6074FB69
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 01:28:22 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b="dcB/RAqB";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-273635-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-273635-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=vPYDZZPm;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274039-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274039-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=mailbox.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 79B04304227F
-	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 10:41:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 84CC030B912E
+	for <lists+stable@lfdr.de>; Mon, 13 Jul 2026 23:27:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4104839EF12;
-	Mon, 13 Jul 2026 10:41:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE89E3D1A82;
+	Mon, 13 Jul 2026 23:27:22 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BE173368AA
-	for <stable@vger.kernel.org>; Mon, 13 Jul 2026 10:41:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A80713B8111;
+	Mon, 13 Jul 2026 23:27:20 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783939305; cv=none; b=iyGXNLXbs6qmgAXT5Cc+amcybgNYoncbUfIaZgdbhE1LYzR77AhTLPHNcmfoJFxQfhrCwMqgoIsNkq27voPca7ntqV2ZH4m1t5jddhgNYSZuAbnfRXgzbg/sVaJH4N80cF3/jnpqmwED3GB6ml1jrI6ER7kTjnxQmXluBIZmhFk=
+	t=1783985242; cv=none; b=rixVQZDlz5F9xs8adXHpzoca7tZtVAjUDdk1uasLQRHyvudynAC6apAAEvmGw2qTrHC+IJn/ev3n8FWUhU2kXNJRgeVTbsimi86V+akOWV4q61RyZI0sOAMZdShv+Hayy0uC8HjBK6QGQIIcXNhQkNnb+JDYGEFal8YQar53sUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783939305; c=relaxed/simple;
-	bh=9OwuFF7+/jzfb+mWPqzlkgj5ZqG7UgrX3Yt9wiO5b84=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HS29pw/lgPdukbNFphD+8ML5PE3c5F9xR9I+zDGK371r98ltSiPvEYCG/PlP7kGu5KZLItNIF6wxdjhlRA4fBV7BPaGtUauZ7SDjyqiRhaCi3NpcqBVzrNnqOZKfU6EUQbYgKvtCb/9FNsoJzMHZENeUJ5TlAE9zW7OYZGsqCUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmpxchg.org; spf=pass smtp.mailfrom=cmpxchg.org; dkim=pass (2048-bit key) header.d=cmpxchg.org header.i=@cmpxchg.org header.b=dcB/RAqB; arc=none smtp.client-ip=209.85.221.44
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-47d6c634f45so1540235f8f.3
-        for <stable@vger.kernel.org>; Mon, 13 Jul 2026 03:41:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1783939300; x=1784544100; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=GYEvHk/YQwaSKZb15XTEhRLqDQdjnw2zpv1OC/g28DM=;
-        b=dcB/RAqBb+PSyJKjR4JQ8zH27dKzbTL9xxlaUE0vCpAp8QbWUVzXAhBW2bmx1FaVNi
-         P8+0CDzYPcwsadVLq09aMC7M/C34rWFmhMO/qMtm2k4nbOJxdGCEhFFeSwkq9mzs/HAU
-         TbyJjVR97MFRn0EeVlY6vSh4WiZ5mR5GRRlREYOz0rrAS1xFifosscUg145AM+p+5e4p
-         oHv11Tx5S9QQdfXSWPn55L365QII6LWAjyacKVGkvgZ1E1Ah7fyHwnxh3rVw/qo8HGi1
-         0xByqMHq635F01rdTUXXcOm+5lxITdLjy39+ooMEZmHro+UU6KeN2rlcZSQfI1lzgef4
-         n3rw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783939300; x=1784544100;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=GYEvHk/YQwaSKZb15XTEhRLqDQdjnw2zpv1OC/g28DM=;
-        b=JFxtJK8bfU7ClaJ68iWVWy/44m5Vv4D96A65JElKjvTuehg9x9HIDyMu9Biy+dN5KJ
-         Roq305RNE0YUt6M8SFi4PkKwuoz6qojeHqwirj7GMwkJppxgVbzcfGOKSzJXM+pJIWNP
-         XSRLPEbWOc9OuBZNcf9bYfqweGxFzyxW6l3EfHYtVOAzHldqOxWDpSJnHsnD/sZRopMf
-         ZmUXbOTFmea4jMFp603Z2C98bvO0+2zvFW4EM90RMtNtu4q2Mv+EuPvI7OUv7N1b/gLf
-         JcFwpiThasSLWB2RyF1dacREt3OurISWjWG8dpJFzbu1rhwH6814ee8q0bN6rT8pubbv
-         8ckg==
-X-Forwarded-Encrypted: i=1; AHgh+RoIIAh/7BDgaT1mNRzyRMvJdlFBdG12zUIrY/0lTbYmKfFezMDD0CkPxGK0ZKOT0f/YI1M38Co=@vger.kernel.org
-X-Gm-Message-State: AOJu0YycWOvStrG9NwYBYgRY/KQFVna/BeGE3OfA+CrC4bP3l02epeJa
-	FbAvhbmowQZ79WrysIJ5ouC/9HrFvlVmjta7qOOZw3mKaYCJh9ptXg27D7i6dKZCKyA=
-X-Gm-Gg: AfdE7cmETIw6jxv4B61bAq20I1C0GJ0vUxSNGRiB6d5cpyryqw3jAuzNS1jOSNessZF
-	1kEN038E1RWy6h/QKWJdPeR/B/YebGsUKgOCb3iRnNercR0tRfIXC4i9fs4IowlvfBNGPYAK9GR
-	ugsy8ApmwvYIOKmGMVQn1wGI4+ubkV6qG0fxXOC7jQLDQCBF9NY5YH2OzzhKHhbhWkQ5oqYofMV
-	tZBo7ptel01mrwSI1ZlpUjLZy0170voBDfzBHZhujuSSMBhWv+ezA2b+c9thD3pSjjSf5h80Rsj
-	yWnxm2DNaX3N7FgiJMU1YHEneK1tOmV6L//0T+m2zVyRi2SpVQ0ZiMuSYk2ctOaGve5vUtew+dJ
-	V/FZyruK3neZBlclygMZCmIvzJblw7SBz8YIofy3X/yT1WOk3qV+YqcXQ+jvZhsJ5QZ4l9bxgeq
-	gKN4woTiycxQ==
-X-Received: by 2002:a5d:64e7:0:b0:472:aaba:faed with SMTP id ffacd0b85a97d-47f2dcc6bd5mr9999848f8f.31.1783939299409;
-        Mon, 13 Jul 2026 03:41:39 -0700 (PDT)
-Received: from localhost ([2a02:8071:6401:180:d892:bf43:a0b4:83b])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47aa039af67sm95258224f8f.17.2026.07.13.03.41.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Jul 2026 03:41:38 -0700 (PDT)
-Date: Mon, 13 Jul 2026 06:41:34 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Qi Zheng <qi.zheng@linux.dev>
-Cc: akpm@linux-foundation.org, david@kernel.org, kasong@tencent.com,
-	shakeel.butt@linux.dev, baohua@kernel.org, axelrasmussen@google.com,
-	yuanchu@google.com, weixugc@google.com, harry@kernel.org,
-	muchun.song@linux.dev, peiyang_he@smail.nju.edu.cn,
-	mhocko@kernel.org, roman.gushchin@linux.dev, ljs@kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Qi Zheng <zhengqi.arch@bytedance.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v5] mm: mglru: fix stale batch updates after memcg
- reparenting
-Message-ID: <20260713104134.GA276793@cmpxchg.org>
-References: <20260710154318.75388-1-qi.zheng@linux.dev>
+	s=arc-20240116; t=1783985242; c=relaxed/simple;
+	bh=cUBIquBOEoGi3tb6mT6fwEKQy+VY2dI1DlOzD1iD7G8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OLPWMK4RUWShtEf7KJ0L4lFqujINiwA5axQY8fiSH7vd4Z8emaPiWMfpSz9sfLsHWqA3R7KUDneKcMll0aDrKw9sEu+O29K4yZ47AqdSeUz4lXLIJPAq5WONwW3RmcUd3NdENmfI/paH/951QIFuJyReTUgUoCIwIEuCtS1O9yE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=vPYDZZPm; arc=none smtp.client-ip=80.241.56.172
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA512)
+	(No client certificate requested)
+	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4gzdrH2v6qzMlQr;
+	Tue, 14 Jul 2026 01:27:11 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1783985231;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XA2dLptzhu0nUEfqFTnwynbh4jwI52oxA+77WXPT/Rk=;
+	b=vPYDZZPmJmDS9iIJcsWwKna8dAANTT51a58D8WjMr3kqcnWVjk+s4RjYjYvXrYeAbPMZup
+	PHI6FHWZzDXCVqIkddK6tQIMeam9f4UBy/5xvSOsoP87MAaW4+Ia/suy865xgWQ5a2yYks
+	seW5S9Dc6upEIkp9fdhvnT0d9awgaG8KLs4EWTJdyisKSn6oSxK15DlVA7fSbvVEFdH1Lu
+	FoPs6NPDjvO9ih8wzeo3y7diICtCAqPx7VcxW+8y9Igu+a1oPsdp8muN0uPaJR4p22gq0a
+	RaNl9wWVSIh1SusamdDaP//0Rt89C01HVQn9OOAESBnyPIY5VepWZZvCSXs75A==
+Message-ID: <1d0d4074-90ca-4b33-9bd3-ff27aa0fd4d4@mailbox.org>
+Date: Mon, 13 Jul 2026 12:43:18 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260710154318.75388-1-qi.zheng@linux.dev>
+Subject: Re: [PATCH v2] arm64: dts: renesas: ironhide: Describe inline ECC
+ carveouts
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org,
+ Conor Dooley <conor+dt@kernel.org>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Magnus Damm
+ <magnus.damm@gmail.com>, Rob Herring <robh@kernel.org>,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-renesas-soc@vger.kernel.org
+References: <20260710160450.64967-1-marek.vasut+renesas@mailbox.org>
+ <CAMuHMdUQJ8mzUi0birB5f1KnCMX_QufHTgYB7AW=d3ZoFer+Yg@mail.gmail.com>
+Content-Language: en-US
+From: Marek Vasut <marek.vasut@mailbox.org>
+In-Reply-To: <CAMuHMdUQJ8mzUi0birB5f1KnCMX_QufHTgYB7AW=d3ZoFer+Yg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-MBO-RS-META: jkiushhrxt7zs11gobawxupzowtdgffm
+X-MBO-RS-ID: f81c410024f901d45b4
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[cmpxchg.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[cmpxchg.org:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[mailbox.org,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[mailbox.org:s=mail20150812];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-274039-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-273635-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:qi.zheng@linux.dev,m:akpm@linux-foundation.org,m:david@kernel.org,m:kasong@tencent.com,m:shakeel.butt@linux.dev,m:baohua@kernel.org,m:axelrasmussen@google.com,m:yuanchu@google.com,m:weixugc@google.com,m:harry@kernel.org,m:muchun.song@linux.dev,m:peiyang_he@smail.nju.edu.cn,m:mhocko@kernel.org,m:roman.gushchin@linux.dev,m:ljs@kernel.org,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:zhengqi.arch@bytedance.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[172.234.253.10:from];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[lists.infradead.org,vger.kernel.org,kernel.org,glider.be,gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	DKIM_TRACE(0.00)[cmpxchg.org:+];
+	FORGED_RECIPIENTS(0.00)[m:geert@linux-m68k.org,m:linux-arm-kernel@lists.infradead.org,m:stable@vger.kernel.org,m:conor+dt@kernel.org,m:geert+renesas@glider.be,m:krzk+dt@kernel.org,m:magnus.damm@gmail.com,m:robh@kernel.org,m:devicetree@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-renesas-soc@vger.kernel.org,m:conor@kernel.org,m:geert@glider.be,m:krzk@kernel.org,m:magnusdamm@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[hannes@cmpxchg.org,stable@vger.kernel.org];
+	FORGED_SENDER(0.00)[marek.vasut@mailbox.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	DNSWL_BLOCKED(0.00)[100.90.174.1:received,2a02:8071:6401:180:d892:bf43:a0b4:83b:received,172.234.253.10:from,209.85.221.44:received];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hannes@cmpxchg.org,stable@vger.kernel.org];
-	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[100.90.174.1:received,209.85.221.44:received,2a02:8071:6401:180:d892:bf43:a0b4:83b:received];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[marek.vasut@mailbox.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[mailbox.org:+];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	TAGGED_RCPT(0.00)[stable,dt,renesas];
 	TO_DN_SOME(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DWL_DNSWL_BLOCKED(0.00)[cmpxchg.org:dkim];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bytedance.com:email,cmpxchg.org:from_mime,cmpxchg.org:mid,cmpxchg.org:email,cmpxchg.org:dkim,vger.kernel.org:from_smtp]
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DAF37749ED4
+X-Rspamd-Queue-Id: 17B6074FB69
 
-On Fri, Jul 10, 2026 at 11:43:18PM +0800, Qi Zheng wrote:
-> From: Qi Zheng <zhengqi.arch@bytedance.com>
-> 
-> The mglru page table walker batches per-generation size deltas in
-> walk->nr_pages while walking page tables without holding the lruvec lock.
-> The reset_batch_size() later folds those deltas into walk->lruvec under
-> the lruvec lock.
-> 
-> The page table walker can run concurrently with the memcg reparenting path
-> as follows:
-> 
-> CPU0                           CPU1
-> ====                           ====
-> 
-> walk_mm
-> --> walk_page_range
->     --> update_batch_size
->         --> walk->nr_pages += delta
-> 
->                               mem_cgroup_css_offline
->                               --> memcg_reparent_objcgs
->                                   --> lock lruvec
->                                       lru_gen_reparent_memcg
->                                       --> reparent child folios to parent
->                                       unlock lruvec
-> 
->     lock lruvec
->     reset_batch_size
->     --> child lrugen->nr_pages += delta
-> 
-> This will trigger the following warning in lru_gen_exit_memcg():
-> 
-> 	VM_WARN_ON_ONCE(memchr_inv(lruvec->lrugen.nr_pages, 0,
-> 				   sizeof(lruvec->lrugen.nr_pages)));
-> 
-> And the user-visible impact of underestimated nr_pages in MGLRU was
-> premature OOMs because MGLRU does not try to reclaim memory when nr_pages
-> reaches zero, but there are still more pages.
-> 
-> To fix it, make reset_batch_size() check CSS_DYING under RCU before
-> flushing the pending batch. A non-dying memcg keeps the original lruvec
-> stable against RCU-delayed offlining; a dying memcg redirects the deltas
-> to the first non-dying ancestor.
-> 
-> Reported-by: Peiyang He <peiyang_he@smail.nju.edu.cn>
-> Closes: https://lore.kernel.org/all/5A9E929D82717101+12fcf643-efb8-4b9a-a53a-1e28cc894f0b@smail.nju.edu.cn
-> Fixes: f304652609ea ("mm: vmscan: prepare for reparenting MGLRU folios")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-> Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
+On 7/13/26 11:11 AM, Geert Uytterhoeven wrote:
 
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Hello Geert,
+
+>> +               ecc@1e66660000 {
+>> +                       reg = <0x1e 0x66660000 0x0 0x999a0000>;
+>> +                       no-map;
+>> +               };
+> 
+> Given all DB[0-7]FSDRAMECCAREA00 registers on Ironhide contain
+> 0x0000cccc (md.l e98[0-3][7f]450 1), I think the last 3 regions should
+> start at offset 0xcccc0000 instead of 0x66660000, too.
+> As a bonus, we get 4.8 GiB back ;-)
+I asked about that part internally already, and yes, it does take away a 
+lot of DRAM. I think it is safer to reserve more DRAM and have a stable 
+system than reserve less DRAM and deal with potential stability issues. 
+I also think we can always update the reserved memory nodes in the 
+future and shrink them to make more DRAM available, once we know that it 
+is safe to do so.
 
