@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-274132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274133-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 75i2N1TRVWrLtwAAu9opvQ
-	(envelope-from <stable+bounces-274132-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 08:04:04 +0200
+	id V6yhDFrRVWrMtwAAu9opvQ
+	(envelope-from <stable+bounces-274133-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 08:04:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4403D7514F2
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 08:04:04 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68BDA7514F7
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 08:04:09 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nda4NQu4;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274132-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274132-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ebEQkADR;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274133-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-274133-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 075C83030244
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 06:04:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AC020302EED1
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 06:04:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 551133BD651;
-	Tue, 14 Jul 2026 06:03:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 275C23D413F;
+	Tue, 14 Jul 2026 06:04:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 242631FFC59;
-	Tue, 14 Jul 2026 06:03:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5F2A36A033;
+	Tue, 14 Jul 2026 06:04:03 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784009039; cv=none; b=TqnSCqJuFUrJJUL083MAn1KJWxf6wLGLnfZi3MHsl35+yZ4YCbIiwiFfDD11C4HrmyFhOfBOGmOhNTlJI186dsaQkPBnhSkMiQ8v+oQ8ag+2nIWL5a4ASpYAJ7xFMrYVTNY2hLrzRJ92JN0kfg1KmMl03AbLHGx08qAaCpoDoRc=
+	t=1784009044; cv=none; b=arQqcJZmjjSI3ZML9LTXsXydUCY+cJH0xAMtJy8P3kL11T+e7XqrUyamfXd0gmqyWfFguGbH7u3K3qN22Cb21IPkCCcZTKBoCExm8He+lqEhXJZRVcms5ddBLG/c+mE6pehkiaKuTGpimKiZKqRvIrG5IfQZVazxgV7XUbDTWOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784009039; c=relaxed/simple;
-	bh=n4V8g3/xAGJ3QXCe6t90uCoV3YhkVCIteU3JdGY18yo=;
-	h=Date:Subject:From:To:Cc:Message-ID:MIME-Version:Content-Type; b=XpyngbLXw1m9eyB3GTSgTB+5wtZjw2oqtdmBN0sG1uVyvCMc0IFrVhDNyrnQkSv3wuvMNwiud/egni4Xbm9Fx7iCZO29IHXwq9RGD70PBex8rR2+NV1RVWQIIy5aT4LYOPPQbig8ilnjKuz0mohzB3tWnbSsxclUhvUrTnrwtS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nda4NQu4; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id B02001F000E9;
-	Tue, 14 Jul 2026 06:03:57 +0000 (UTC)
+	s=arc-20240116; t=1784009044; c=relaxed/simple;
+	bh=XEet/Yhf5u+Dah0mMfPPmN2UrgcXmKkMJom1pIG6asc=;
+	h=Date:Subject:From:To:Cc:Message-ID:MIME-Version:Content-Type; b=eNpv3q0cabubpKitvFBSPb6uecOtjeJbuvPpMSQaFAzuL4utSqjDcx5Owplv2kuu8d23x5aAjJHyJW7IBrq0UGa3FHB/m/vANujZ3xUj6bqQDNp6e34cu9Aa7vSVViIxTmxpno1QK6FhNL7NnWOpunuqLlfX4Wh8twPdQqhrFhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ebEQkADR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 639C71F000E9;
+	Tue, 14 Jul 2026 06:04:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784009037;
-	bh=y6HDB+LkIWrLbng22LKCJQJGo4JTbKj4Gu2qxbwSnZ4=;
+	s=k20260515; t=1784009043;
+	bh=/mwz+MuzSS8mjqhjss8aYLDK/ZKmFw0IGY09/TVcqfo=;
 	h=Date:Subject:From:To:Cc;
-	b=nda4NQu4IXR82lykvHQ2esPrUaIkJMrcP9/i3iVOqhGUsxCwbJQd496r4JA0n4asB
-	 kbvrFAok8dMYCRYjFAqCRmFaxGTjjcel/J1C59bDvDUgSDKxAtmcY4dXve2LfjZI88
-	 YGnHkqzk/FT5U5YLKEcJP3Zfag1Ya5/m+9j9wfSNJX9j85uy8wqjNXRfQ7cqJajYNK
-	 Oqy9NZuKxW627B9/pOvvfXFQks5hdak5XA25EEwl1ERXqvQtA6EHpVFVypQY4S+UNe
-	 jyr0qPk4vy9wngMl6q5Y8Bn5IlQMVxdHwaRUC75b2y0HCVsLVWKpXmru5r6ubV90c8
-	 fU1SrwuVZAceg==
-Date: Mon, 13 Jul 2026 23:03:57 -0700
-Subject: [PATCHSET v3 1/2] xfs: LLM-inspired bug fixes, part 1
+	b=ebEQkADRaylu333yHNGA8Pvw77UX9o2ybnvRgUhwTj9IeDMjUvZgsn51XEwpkfs+m
+	 AdplLaToJ2H0irECimJRLnLqzMl3LtP9fg2X/ZsTcnNoKTa9IJd3e3Rcn6kdBuIt7C
+	 8JS33cLrm5hDHkyucEjUoFoqqvRiIR25E/D0RIxF5QcnF78CJwYtnC+0LCR0WP3VFU
+	 U78jM6r1rfUV+2sA3aBYHSBXs0LNVIXw80skO0KOQxxuHNI/O5zElCE/QO8GAJXA83
+	 yxzJWL5iNPAhO5yrn+7IzXzlUrn8GbqVFWFo5G77vQ7r7zki5AMPjQOu7LR+/xv87Z
+	 tsF5Ws23BZpDQ==
+Date: Mon, 13 Jul 2026 23:04:02 -0700
+Subject: [PATCHSET 2/2] xfs: LLM-inspired bug fixes, part 2
 From: "Darrick J. Wong" <djwong@kernel.org>
 To: djwong@kernel.org, cem@kernel.org, hch@lst.de
 Cc: stable@vger.kernel.org, linux-xfs@vger.kernel.org
-Message-ID: <178400716321.267810.14342805775513660564.stgit@frogsfrogsfrogs>
+Message-ID: <178400716782.268162.4846177784022689546.stgit@frogsfrogsfrogs>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,7 +65,7 @@ X-Spamd-Result: default: False [-4.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -76,7 +76,7 @@ X-Spamd-Result: default: False [-4.66 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[djwong@kernel.org,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-274132-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-274133-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS(0.00)[m:djwong@kernel.org,m:cem@kernel.org,m:hch@lst.de,m:stable@vger.kernel.org,m:linux-xfs@vger.kernel.org,s:lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,28 +90,15 @@ X-Spamd-Result: default: False [-4.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,frogsfrogsfrogs:mid]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,frogsfrogsfrogs:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4403D7514F2
+X-Rspamd-Queue-Id: 68BDA7514F7
 
 Hi all,
 
-Someone gave me a pretty generous license for a large language model, so
-I pointed it at every single file under fs/xfs and told it to find bugs.
-After personally filtering out the errors and garbage, here are fixes
-for the real bugs that I think it found.
-
-Most of these fixes target the online fsck code because I'm most
-familiar with it, but the LLM will read other parts of the xfs codebase
-so there are miscellaneous bug fixes.
-
-I'm sending these out as smallish bundles of bug fixes.  There's no
-particular order or grouping.
-
-v3: add rvb tags
-v2: add debugging patch to make it easier to test new cow repair code,
-    move cow fork replacement function to xfs_bmap_util.c.
+Here's a second batch of xfs fixes resulting from a LLaMma.  Mwa mwa
+mwa...
 
 If you're going to start using this code, I strongly recommend pulling
 from my git trees, which are linked below.
@@ -122,27 +109,22 @@ Comments and questions are, as always, welcome.
 --D
 
 kernel git tree:
-https://git.kernel.org/cgit/linux/kernel/git/djwong/xfs-linux.git/log/?h=llm-fixes-1
+https://git.kernel.org/cgit/linux/kernel/git/djwong/xfs-linux.git/log/?h=llm-fixes-2
 ---
 Commits in this patchset:
- * xfs: don't replace the wrong part of the cow fork
- * xfs: make cow repair somewhat flaky when debugging knob enabled
- * xfs: move cow_replace_mapping to xfs_bmap_util.c
- * xfs: don't wrap around quota ids in dqiterate
- * xfs: use rtrefcount btree cursor in xchk_xref_is_rt_cow_staging
- * xfs: use the rt version of the cow staging checker
- * xfs: write the rg superblock when fixing it
- * xfs: grab rtrmap btree when checking rgsuper
+ * xfs: set xfarray killable sort correctly
+ * xfs: fix off-by-one error when calling xchk_xref_has_rt_owner
+ * xfs: handle non-inode owners for rtrmap record checking
+ * xfs: fully check the parent handle when it points to the rootdir
+ * xfs: clamp timestamp nanoseconds correctly
+ * xfs: don't zap bmbt forks if they are MAXLEVELS tall
 ---
- fs/xfs/scrub/trace.h      |   35 ---------
- fs/xfs/xfs_bmap_util.h    |    4 +
- fs/xfs/xfs_trace.h        |   41 ++++++++++
- fs/xfs/scrub/cow_repair.c |  179 ++++++++++++++++++++++-----------------------
- fs/xfs/scrub/dqiterate.c  |    2 -
- fs/xfs/scrub/rgsuper.c    |   14 +++-
- fs/xfs/scrub/rtrefcount.c |    2 -
- fs/xfs/scrub/rtrmap.c     |    2 -
- fs/xfs/xfs_bmap_util.c    |   89 ++++++++++++++++++++++
- 9 files changed, 236 insertions(+), 132 deletions(-)
+ fs/xfs/scrub/scrub.h        |    6 +++---
+ fs/xfs/scrub/dirtree.c      |   16 ++++++++--------
+ fs/xfs/scrub/inode_repair.c |    4 ++--
+ fs/xfs/scrub/rtbitmap.c     |    2 +-
+ fs/xfs/scrub/rtrmap.c       |    6 ++++++
+ fs/xfs/scrub/xfarray.c      |    3 +--
+ 6 files changed, 21 insertions(+), 16 deletions(-)
 
 
