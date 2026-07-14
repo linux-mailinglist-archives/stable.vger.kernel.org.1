@@ -1,180 +1,152 @@
-Return-Path: <stable+bounces-274562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274910-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id UASlMiioVmo2/wAAu9opvQ
-	(envelope-from <stable+bounces-274562-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 23:20:40 +0200
+	id A1YIH5RwV2oqOAEAu9opvQ
+	(envelope-from <stable+bounces-274910-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 13:35:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6109758F12
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 23:20:39 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC09B75D987
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 13:35:47 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=eOJQqa1H;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274562-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-274562-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="DU7gCO/h";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274910-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-274910-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AB27C3013187
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 21:20:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 827A9302E324
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 11:35:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28534384CEE;
-	Tue, 14 Jul 2026 21:20:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1367D448D02;
+	Wed, 15 Jul 2026 11:35:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8775A37E5F3
-	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 21:20:33 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784064034; cv=pass; b=IbeIin3on2sVWRGvey20yHFANS1mgVTnoEPVKaCKWAyR0WftaKBVhYtlhu7UiUTUup5GGQnnuKo7q6JiEj76uelEZ1xT/dvZ3efX1aF7iATJdDD79wdGu65hghPnJdKxqPrqEPKe2MqRYZcbSP12fqt3yOcBpdA3ssLWkAN1A0k=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784064034; c=relaxed/simple;
-	bh=hddCSl8K5yEbYW+RhdQ4nffsoSSo6DwUp+GcNtpnl7k=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=kTJPCPf1z/s+1oyN62k9LuKkIzx4vhnuOsi0yqRDUCf0gfbCfMY3HOrOvev7U3uwgZA4VSsaRVkI4Z+We8SE80/onpi+jwaMgD/z11Z5SoTiSalZWHDp2tEB3EpA6jTrV/GDfYZQJIzbpzbw/t3MXMKIWAYLfxawVBEVwaokNt8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eOJQqa1H; arc=pass smtp.client-ip=209.85.208.41
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-697564cb69eso2922579a12.0
-        for <stable@vger.kernel.org>; Tue, 14 Jul 2026 14:20:33 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784064032; cv=none;
-        d=google.com; s=arc-20260327;
-        b=hpMoJzfw2/K0fAWeNrfZPxATA4BQTalwQW638QXwZbVxJAfcsgroBx3pPEb7D+KVj3
-         mDW9VOcr47RQq+0M47bhi0elI9QTSZ/RXqXKXr2akvtgNbcCM8cdKSniHFzxVXmwXPDL
-         YAjmr5vi/eZCEHk/xibzaDTwVqFUOIuFmh1GkVrg5h7XLNAJ+LbeYRBYPmTVmjAXHA17
-         ENOVrB3DUFgfq+bAHo7iqSBUxIntxj6HriUGAP+kvJKrpJniulE1rGy1Y576v6vLgRS7
-         4QpMNh0rxUlL+xz/+94mf2QJuzmmZVMQAhuVbrJ4scXxga8QK+JOkMxvIAe4rIPGMbmn
-         mJ3g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=nVWtztErcXTCFQc7KRT5oZ+Lc/OFVJJ7HabIUDmfN1M=;
-        fh=Lo0wYNsoVChOlHJtZO4g2Kd1kbo+0tPstRrC4d/jnNs=;
-        b=HjWHutHgWAS8eTKz9hivRRbJvgv5GDO7lOwiARj2NkiimzNwYL5QAg7qMW2t8gBKJf
-         bUQ7Dwv2q6VlL2p3gSrhXxYT5ZNDoqww+niVRijUw3h7qF1Qo95yMpFYhRoQe+yEWoZr
-         1U0SAaWl8w17TGTVh0mSovAk04wNUPt741wcfU/QSeb0ZquSgDkqtzOH1g09D+ko1ml+
-         0hnC8a2/yfKo9L+SKqMZ+h3maP3UtRuGH1q5oZ6nIoi+SnXRgqmbL2GRxZCoVNCRKr0S
-         gIpgp8oKyvwkKq4sSx/1p+A0pMs7fUtMq6z1SdhcVDQeFCVg+7hicx+ZgaykjMEoPfsT
-         4AUg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784064032; x=1784668832; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=nVWtztErcXTCFQc7KRT5oZ+Lc/OFVJJ7HabIUDmfN1M=;
-        b=eOJQqa1HW3C3E0qUlwJmgLD0HVIeVxCj+4ITpFXOS0Y5Gt9uhtCYoK5VzRcEq+RAgE
-         KRwbZfH/nZrQdjbHm4Qb2RU/8e5xHYiMiMj6JfjRZvEl5JLKho+ngu2g2crKsXi047wo
-         pmUmFFsDUNX6lXX6KTBG/dZPWcc+n52XEjolyz7cKnSQOGjgjUN/cRcciuwiNo2KmnMJ
-         /OedpYT1dzqE+E+gRwjbbTxqbSp3uDUdbn0mA/XX2KgFiEp2GNd8mcHaozr/fsTXCIUh
-         tvjbukEh1aYx92njDEHNR0qg1m32Q1MOv7g531Q5TWoAGJJMK5y6CNstqUAVJthM2451
-         Z6DQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784064032; x=1784668832;
-        h=content-type:cc:to:subject:message-id:date:from:mime-version
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=nVWtztErcXTCFQc7KRT5oZ+Lc/OFVJJ7HabIUDmfN1M=;
-        b=F39LF8m1/Mp5WayQrnHicMEow0+iVLCebZicg11ZRpOR4FKpKQvQ4v3RpKns2RKfsa
-         lK+BDvuBB9A4G5ctEYI7QfKb0WC/8LNmAhkjXbhHfOgDcnaFgb/8DEii7hfGYRhIZDo0
-         KxylXnWpD8uD2KFfcHGSZ0il0UmmPMqUti/SGPcv6ImHAHQ27lGnHPFbxSXLwOE4JrEB
-         LC2mt8rbJIjn/Aaahq9I4KC9ZddUH9C778Co0M1pR6oN/DTQ6jjRUAHaJdDvj4pxolom
-         fxoBNJnWiAYEV5Pa7ufGKPP7s9oK39faOK6J01ZNbPcw2N4yZPwsQEfUSKo6MGc8YXVP
-         C2GQ==
-X-Gm-Message-State: AOJu0YxZ5eskDZpXPRRY34kfiwi8kMJh6g4fOFMGOjEkyo4HqM0jZzif
-	vOfO4HA7wFg6u16wFvmq109bujxIoxZjGZm/vO8fqok4ifpBdzcrLTJHwKNQSP4xNuF3nnFC+5P
-	fphoRo96nmJSjvDKItMP2fmSlZ22a7YlhYHrw
-X-Gm-Gg: AfdE7clfK5jE5zYiO9cKjqRFfXgIzAPCnMAPlGEIi6m4P3oD/3gYggX8DM2JIKBOkIj
-	he4cDzbU/cGdrPvZIbSYcIeurV3rX0fAnYCP3F8LJuEy6S8Qw+eIjGM7yzPmLJYTnwX9i5Ql9jK
-	vjjDEAl4XPDL8PLvENmRMz7uKnZC8e4YpFKdeyR8YUYs/7x7PSQclAfMzXTYTjx5y4L4ezTO8Qx
-	IiXO3pqKxK9800VOk84JOrS2xE4cQmrI6tfUGXWrdh/jDi6OKFlucB/DUvKtiT3EBuk4OcNALBw
-	1bmkFdHt
-X-Received: by 2002:a05:6402:a502:10b0:69e:1294:36dd with SMTP id
- 4fb4d7f45d1cf-69e129439a1mr400580a12.0.1784064031479; Tue, 14 Jul 2026
- 14:20:31 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB0884483BE;
+	Wed, 15 Jul 2026 11:35:33 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784115335; cv=none; b=MxWDRW90l3z+QzJwY+8O2r1hI/NLwasJM4YzQPAor6IoOr3V8KmIKNZbG0fYwK+4QSw5UC2Dk7f4N7dVqV9Dn7qdLLc7sJXQ5XTHG/L1rfjxZO/OMElsXKtTrGOVmjZfa1m5kroOm64KC1zTaz7faKsYXNXv7Cij6E/n2o/V008=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784115335; c=relaxed/simple;
+	bh=sNEXueWVdWEvfYKYwZZOPFDO+l6YsE+OW3Ra6F4e6zw=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=TNjTWbYLAS4YVCJX/YjnrvmMYK+SznEY+th5Z4WZ3Ori7jGDw/1AkhkPCtumC8HGiOpgTnbh9qYP1uf/sZXYhyomGWr8oD/T/y5WYYgScNed1jRUsaPc2YvWF1TOKJ27HjdCYHhkGJYX8Osy9kYaZsfsoFQFOVb+6Pkk2nvvOfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DU7gCO/h; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 711331F000E9;
+	Wed, 15 Jul 2026 11:35:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784115333;
+	bh=jesZuPeWaeL9z/PHoWJHtu6Qq+AFb40j5P16AfqJxyA=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=DU7gCO/hsLqTwwk7TrDDgi6SxLThPZZUBTDgrO/vIreh//foqleLzkS3qXzkElWtB
+	 CQKaJF8wR03T1QTKHvCbSFm/OO8G6JR8351ZvqQ+kJLjx6xlt3W4hgFzvdQti/56z8
+	 AdAl7uEqWLmVf0QiQAuxA4DZzP2OppKvovPu4dVvbzk60+2W591kBra8i7MQarcQhV
+	 4WlAiIpr83zDimSizShclQeutXvBhvTeOXE0a+il4DdprKWBqwrQT7lW/+ViVJty6H
+	 W36kWw2XuxnRh12PUqcjsBdUtsNN6cg06zSSPMCEBMj3vuMZE4NIWePo6cy6a9P3o7
+	 FucInxpg9bLog==
+From: Mark Brown <broonie@kernel.org>
+To: shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, festevam@gmail.com, 
+ nicoleotsuka@gmail.com, lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com, 
+ Frank.Li@nxp.com, Chancel Liu <chancel.liu@oss.nxp.com>
+Cc: kernel@pengutronix.de, linuxppc-dev@lists.ozlabs.org, 
+ linux-sound@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org
+In-Reply-To: <20260710031333.3491445-1-chancel.liu@oss.nxp.com>
+References: <20260710031333.3491445-1-chancel.liu@oss.nxp.com>
+Subject: Re: [PATCH] ASoC: fsl: imx-card: Skip sysclk reset for active DAIs
+ in shutdown
+Message-Id: <178406418862.7661.7096078031628027721.b4-ty@b4>
+Date: Tue, 14 Jul 2026 22:23:08 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Chao S <coshi036@gmail.com>
-Date: Tue, 14 Jul 2026 17:20:19 -0400
-X-Gm-Features: AUfX_mwdXHC84lIfayW2825hY9WbzW5Zgx0wfAfISp3WrzfX02KOKLazvoNoLsU
-Message-ID: <CACd_6n3dExLLL8fziY0ha+nDupfb+q45VCbjA7aAYNnj-YkY8g@mail.gmail.com>
-Subject: Please backport 49f06cff50a4 ("block: skip sync_blockdev() on
- surprise removal in bdev_mark_dead()") to 6.6.y, 6.12.y, 6.18.y
-To: stable@vger.kernel.org
-Cc: Weidong Zhu <weizhu@fiu.edu>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1149; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=sNEXueWVdWEvfYKYwZZOPFDO+l6YsE+OW3Ra6F4e6zw=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqV3CBctjQmNjrs8DaxHnHGNriWx0pEgtvGK67Z
+ 99Q7E7K7dSJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCaldwgQAKCRAk1otyXVSH
+ 0Lv2B/9iwsllDW7+fFWuMbcXDu+pjbFkmouDD7PciHiUfac0zJWqUb8SwEPVm7oGXMOibcDq2Kq
+ YYouaK3iixM869F51GmvpQGgKWcu5tKldP5a1KGcQLcD5SfJvvsd4oYraV7jkS2zWaKToBwYBjM
+ mhXSdzMOSNTZyFo1oH7Dt2gv7gI9vW9Q4UHyxpFoY6/Lz0VPCcAzVfNRPImPqiCWBNUZ5irG833
+ J69er+PQAizp+0z8ltrK5Coa9q3+igR48mHEgGulXvStCD73JTM2MYHoao8/eJFV9ueYHpT27sO
+ IO1bOopuY7+1+mIo9ncpEwxUoLEhRN4sVHiQpy6KO7RHgqTe
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+X-Spamd-Result: default: False [-3.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FORGED_RECIPIENTS(0.00)[m:shengjiu.wang@gmail.com,m:Xiubo.Lee@gmail.com,m:festevam@gmail.com,m:nicoleotsuka@gmail.com,m:lgirdwood@gmail.com,m:perex@perex.cz,m:tiwai@suse.com,m:Frank.Li@nxp.com,m:chancel.liu@oss.nxp.com,m:kernel@pengutronix.de,m:linuxppc-dev@lists.ozlabs.org,m:linux-sound@vger.kernel.org,m:imx@lists.linux.dev,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:shengjiuwang@gmail.com,m:XiuboLee@gmail.com,s:lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[16];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:weizhu@fiu.edu,s:lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER(0.00)[coshi036@gmail.com,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-274562-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
+	FREEMAIL_TO(0.00)[gmail.com,perex.cz,suse.com,nxp.com,oss.nxp.com];
+	FORWARDED(0.00)[lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[broonie@kernel.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[coshi036@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-274910-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,mail.gmail.com:mid]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B6109758F12
+X-Rspamd-Queue-Id: DC09B75D987
 
-Hi stable team,
+On Fri, 10 Jul 2026 12:13:33 +0900, Chancel Liu wrote:
+> ASoC: fsl: imx-card: Skip sysclk reset for active DAIs in shutdown
 
-Please consider the following mainline commit for the stable trees:
+Applied to
 
-  commit 49f06cff50a4ccf3b7a1a662ceb892b3b21a527a
-  Author: Chao Shi <coshi036@gmail.com>
-  "block: skip sync_blockdev() on surprise removal in bdev_mark_dead()"
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-7.2
 
-Why it should be applied:
-On surprise removal (@surprise == true) the device is already gone, but the
-bare block-device path in bdev_mark_dead() (no ->mark_dead holder op) calls
-sync_blockdev() unconditionally. It can then hang forever in
-folio_wait_writeback() waiting on writeback that can never complete. We hit
-this via nvme_reset_work()'s "I/O queues lost" path
-(nvme_mark_namespaces_dead -> blk_mark_disk_dead -> bdev_mark_dead(bdev, true)),
-which wedges the reset worker and every task serialized behind it -- an
-unrecoverable hung-task/DoS (multiple tasks blocked >120s, reproduced several
-times under fuzzing). The fix simply skips the futile sync on surprise removal,
-matching fs_bdev_mark_dead(); invalidate_bdev() still runs and orderly removal
-is unchanged.
+Thanks!
 
-Affected versions:
-  Fixes: d8530de5a6e8 ("block: call into the file system for bdev_mark_dead")
-which first shipped in v6.6 (it dropped the pre-existing !surprise guard from
-the bare-bdev path). So the bug is present in v6.6 through the fix.
-v7.0+ already
-carries the fix, and pre-6.6 trees still have the original guard, so
-this is only
-needed for the 6.6.y, 6.12.y and 6.18.y stable trees.
+[1/1] ASoC: fsl: imx-card: Skip sysclk reset for active DAIs in shutdown
+      https://git.kernel.org/broonie/sound/c/9f86aea99256
 
-The change is a self-contained one-line guard (plus a comment) in
-bdev_mark_dead()
-and should cherry-pick cleanly onto all three; happy to send adjusted backports
-if any tree conflicts.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
 Thanks,
-Chao Shi
+Mark
+
 
