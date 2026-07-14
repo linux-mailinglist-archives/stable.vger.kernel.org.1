@@ -1,184 +1,191 @@
-Return-Path: <stable+bounces-274487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274488-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id TZ3XE4B0Vmqc5wAAu9opvQ
-	(envelope-from <stable+bounces-274487-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 19:40:16 +0200
+	id OQSUEA12Vmpc6AAAu9opvQ
+	(envelope-from <stable+bounces-274488-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 19:46:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB2F67578C1
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 19:40:15 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DACC8757984
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 19:46:52 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=auditcode.ai header.s=zmail header.b=iD7OvwSq;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274487-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274487-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=auditcode.ai;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BjCGqZ9j;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274488-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-274488-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AEA5C301F7B6
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 17:40:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 93AC531BB7A5
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 17:42:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AE762F12AB;
-	Tue, 14 Jul 2026 17:40:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6BC92FC01B;
+	Tue, 14 Jul 2026 17:42:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from sender-op-o14.zoho.eu (sender-op-o14.zoho.eu [136.143.169.14])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 688543A7F4B;
-	Tue, 14 Jul 2026 17:39:57 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784050802; cv=pass; b=BLm3XZQcfWW33gws9S3dfnJEEXy6g4XuQ8jwNsQIADeX0vL2cTwA23RURVDSDDrrFA3UeThWGMF8V0RbhThv3EEDXReYHz5IeUNt0NfA+58ot5M6nSG0/dT4EyE7gA4I6mLHFt1fHIV9bqj1b7ECllfbcrih1ZVOq/uO/MPOEgc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784050802; c=relaxed/simple;
-	bh=psdTSGF3AKaU67y+gQSLLEMXasE1wXT987xSlmhpyrU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pyB+1pYqorEi8t520NxtFEHUkOQ3cDayEoYjFhmG+VBU7dbwuSEPQLulkHm9eEIdGbKAzHIUhlW1pFwEQ+Tksy5+FQ57pOVQkHl3PQBtwTiqD5s09nDk7vfkKwSHfhuulawYUuG4bHUsiaxmkwPHIXlfC8n9VhJMubXKQCsZFdY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=auditcode.ai; spf=pass smtp.mailfrom=auditcode.ai; dkim=pass (1024-bit key) header.d=auditcode.ai header.i=security@auditcode.ai header.b=iD7OvwSq; arc=pass smtp.client-ip=136.143.169.14
-ARC-Seal: i=1; a=rsa-sha256; t=1784050791; cv=none; 
-	d=zohomail.eu; s=zohoarc; 
-	b=L8WeP8q9Ox7GjzwsAMHqW0IK2uYhn49P3F4Lr9J8x61MQK1RA6ag3f8MKhxntoZT91DDsTdqTUDtOn6wQGCQZcBPeuwr7Nzh8FJTp1mVkLwkNhWqQ2cuFKQqCfgpwLZRC4rNieWZ7oM3dVxIUT0TynrhdTNIHFRFpVUDlsO4Sjk=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-	t=1784050791; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=zFqWeZ3Jt02eSvrNeae5L96Sq+f9ZDi+/NYNKF2lYa4=; 
-	b=BUyeVuTVtczmiS8z0zVBTC4vRjGvSD56sto0srgQcTNvL0vVFdIrAlpbb3GY0KMztEHovboPOBtYvxwWg5bCniKGsHgHhasTBdNsCYpoQEDBapNY9xZ98P1lC2fwG/MrSJVlPkmTGxvfycUqeqJsE9LGTjp//zlY+LwZ9CpwSjs=
-ARC-Authentication-Results: i=1; mx.zohomail.eu;
-	dkim=pass  header.i=auditcode.ai;
-	spf=pass  smtp.mailfrom=security@auditcode.ai;
-	dmarc=pass header.from=<security@auditcode.ai>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1784050791;
-	s=zmail; d=auditcode.ai; i=security@auditcode.ai;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=zFqWeZ3Jt02eSvrNeae5L96Sq+f9ZDi+/NYNKF2lYa4=;
-	b=iD7OvwSqQInDfUCjRUglxFZpGtnweUONh70GNz8sHTb7YpUb78xmzWfbwpsIIYd5
-	l2L6GjQvvBT2yHWzvnIxzfmHACKJc6aNUMfqhrH4QBpTFB14MPFmfwRfZspCveC8a7b
-	hh2/7JA0bYhqBGZUDIcod/hdvLMFHYjGIXSD3/1w=
-Received: by mx.zoho.eu with SMTPS id 1784050788969306.9952263238945;
-	Tue, 14 Jul 2026 19:39:48 +0200 (CEST)
-From: Ibrahim Hashimov <security@auditcode.ai>
-To: jikos@kernel.org,
-	bentiss@kernel.org
-Cc: linux-input@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v2] HID: uclogic: fix use-after-free of inrange_timer on remove
-Date: Tue, 14 Jul 2026 19:39:46 +0200
-Message-ID: <20260714173946.73773-1-security@auditcode.ai>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260713121042.2321-1-security@auditcode.ai>
-References: <20260713121042.2321-1-security@auditcode.ai>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5FB9417BFE
+	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 17:42:31 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784050959; cv=none; b=cuWmUs0JhUpmVQv6XStOl1N5XhRlBNY2V+i+jSFZrQ20PeAJxISp7/cJNcyz/7C/XV1rYks6ZCCwpVoOuZBX0sS6/KRpCaX2Ow63ebi1faW0su4aDMYtk5Mss5Q/HFftcd/rUFXWBrkfqng0Fwt/6mCSpv9xn43boDSGOwPMz9Q=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784050959; c=relaxed/simple;
+	bh=KA7yxA87EpUa70BsOJGm3jGECo/kO/v5dEvRZOSkHJ8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XOVzSK18rZVBCIqAAxQMHXJfmDwY0dcThRuWUic5BHnfmBk4ELsZegqtu8Iu6TaEpFe75KBewiPrxLh3ZqhCAONRPOKyZn+z8OGRU3aGV7deKyeqpKZIaCgSCgh19sb5lccWgE8b6jNK3gFX76urQZtmqqYVhinVMqSMJMtloxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BjCGqZ9j; arc=none smtp.client-ip=170.10.129.124
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1784050948;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0XneA0CYM00BRNRTb4B9DVpDpuR42nW+B7bPBHZY/xY=;
+	b=BjCGqZ9j9poFa/STKDDLcclY7VvpgjDsEQbK/QaLxjOjxtq1kImMAz5agygwx6lhjyhxVg
+	GYaYGBEzYzJLymuATXTGohg1qaUwJGcNcwqsMEGSm+KGwN7+OEIedWEdum6/n1ev3TKOaR
+	4zhZtjrEAoCqg/sDDQpuggpxTS7cWbQ=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-596-uuGR4G2DNMuxPlmcgrn2Dw-1; Tue, 14 Jul 2026 13:41:18 -0400
+X-MC-Unique: uuGR4G2DNMuxPlmcgrn2Dw-1
+X-Mimecast-MFC-AGG-ID: uuGR4G2DNMuxPlmcgrn2Dw_1784050878
+Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-8ec45d9628aso23416916d6.1
+        for <stable@vger.kernel.org>; Tue, 14 Jul 2026 10:41:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784050878; x=1784655678;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=0XneA0CYM00BRNRTb4B9DVpDpuR42nW+B7bPBHZY/xY=;
+        b=LkzSLQJobfJhcVgUnNGIljP5BbWwcTRUlKar5UYD4KGqZfDsQrBu3814+jzr6FMWFJ
+         x6ZGuyUU6nA6otezUHRtuoR2kpM2lLyJDP1z0aVV4VvYg1X/cKpA77Ew/6cxUNoQpqN9
+         jF0ZfSSX0oj+OhMK08pnlxUFCIY7ruUMku/QWKhH+1D1+PVzSFZUKU9Dfqz34mzjUO0J
+         YaaprunClRQnohSdavJnlDNlvsehkxyaoCP/M8LqYDOwlPTq1YWzmzP66ss1XpIfEJ0U
+         XfZiHOOVGiJ6zvM8UngECqWm624rnR5gIxZbEsKYRY99W398iF53kbcxgNO7Mc5b2tAo
+         eJLA==
+X-Forwarded-Encrypted: i=1; AHgh+Rpp4ZpUZ+HQ2VZjX6jtV2qeVYscIfDbhBHYnYh3ZxtUAnw1ZP5RAz/0bPo2ojmiqWFnQ06I1LA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyv2eKmUPabD1TFTlHwmPIgVeaUJ2aDOoc5lpvxhTWVS6Q/tSLB
+	PUk3xpdgE3TkB5k6hYUE6wUsibtnf8jpEAyc6smBDo4knBKkATcSL8dT1gJ0yKmIcwQ+Qk0zgNT
+	NvIRrONNP0GwygoVXSem8a9HM/xtBKG2IX068olDwmtno2L8RfEmjlZbs6Q==
+X-Gm-Gg: AfdE7ckW/KZfSx15rvZHLZH0haw65otyJLozh9irnXSQz/R7/kCcR6qeojO9DHAzgUE
+	Wbeud5DjB88xXOyyuZHiHAwhTikb5/ZlS5U5sl/hCr6SAzt4nvLxV8/MRfwSdgQeLOmBICcgU6o
+	2nkV0XIPcmCYJx+wY9yfHv82E78/AWy+ewVXG/73RsG53j3iooRjeahWBnuDpBjQytF7HldxRDz
+	Ovt+E9rSrRq5EXXHqBkh1ehOhOQqF0huYe6fTYkExiPKZFWIuHp5UtzA+Ienwp90c4dm39JeF5A
+	TAPX1hqoH9DfM3CW6hwl05336Wcezb8BiT9C87GChY7XgqLwqiPbqAdYHItZ+sWtJtZnuby+p8F
+	iDkyBb2PccZVwT2vpvqxUSjfbFrUn8Odfrsqe9U5e+U9vC+opmih5mdFabrvGx7eFWvY49T0Y
+X-Received: by 2002:a05:6214:130b:b0:8ea:efae:ab26 with SMTP id 6a1803df08f44-903fdd64832mr161430616d6.0.1784050877663;
+        Tue, 14 Jul 2026 10:41:17 -0700 (PDT)
+X-Received: by 2002:a05:6214:130b:b0:8ea:efae:ab26 with SMTP id 6a1803df08f44-903fdd64832mr161430346d6.0.1784050877267;
+        Tue, 14 Jul 2026 10:41:17 -0700 (PDT)
+Received: from [192.168.2.110] (bras-base-aylmpq0104w-grc-61-70-49-81-60.dsl.bell.ca. [70.49.81.60])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ffd7c1fd2bsm175197236d6.27.2026.07.14.10.41.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 14 Jul 2026 10:41:16 -0700 (PDT)
+Message-ID: <690257d2-2126-4a8e-86de-b0882e282431@redhat.com>
+Date: Tue, 14 Jul 2026 13:41:16 -0400
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm/util: don't read __page_2 for order-1 folios in
+ snapshot_page()
+To: Aboorva Devarajan <aboorvad@linux.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
+ <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Sourabh Jain <sourabhjain@linux.ibm.com>,
+ Ritesh Harjani <ritesh.list@gmail.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260708201954.686111-1-aboorvad@linux.ibm.com>
+Content-Language: en-US, en-CA
+From: Luiz Capitulino <luizcap@redhat.com>
+In-Reply-To: <20260708201954.686111-1-aboorvad@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[auditcode.ai,none];
-	R_DKIM_ALLOW(-0.20)[auditcode.ai:s=zmail];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-274487-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER(0.00)[security@auditcode.ai,stable@vger.kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	TAGGED_FROM(0.00)[bounces-274488-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:aboorvad@linux.ibm.com,m:akpm@linux-foundation.org,m:david@kernel.org,m:ljs@kernel.org,m:liam@infradead.org,m:vbabka@kernel.org,m:rppt@kernel.org,m:surenb@google.com,m:mhocko@suse.com,m:sourabhjain@linux.ibm.com,m:ritesh.list@gmail.com,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:riteshlist@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:jikos@kernel.org,m:bentiss@kernel.org,m:linux-input@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[security@auditcode.ai,stable@vger.kernel.org];
+	FORGED_SENDER(0.00)[luizcap@redhat.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[kernel.org,infradead.org,google.com,suse.com,linux.ibm.com,gmail.com,kvack.org,vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[auditcode.ai:+];
-	TO_DN_NONE(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[luizcap@redhat.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[redhat.com:+];
 	ALIAS_RESOLVED(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BB2F67578C1
+X-Rspamd-Queue-Id: DACC8757984
 
-uclogic_remove() cancels the pen in-range timer and then stops the
-device:
+On 2026-07-08 16:19, Aboorva Devarajan wrote:
+> snapshot_page() currently reads __page_2 after checking nr_pages > 1,
+> but it should only do so when nr_pages > 2.
+> 
+> During DLPAR memory remove on a 22 TB ppc64le LPAR, snapshot_page()
+> oopsed on the page isolation path while reading an order-1 folio's
+> __page_2 from an adjacent absent section (unmapped vmemmap).
+> 
+> Fix this to avoid reading memmap that doesn't exist (e.g., a vmemmap
+> hole).
 
-	timer_delete_sync(&drvdata->inrange_timer);
-	hid_hw_stop(hdev);
+Reviewed-by: Luiz Capitulino <luizcap@redhat.com>
 
-timer_delete_sync() only guarantees the timer is idle at that instant.
-uclogic_raw_event_pen() keeps delivering pen reports until hid_hw_stop()
-stops the transport several lines later, and every report with
-pen->inrange == UCLOGIC_PARAMS_PEN_INRANGE_NONE re-arms the timer:
+> 
+> Fixes: 31a31da8a618 ("mm: move _pincount in folio to page[2] on 32bit")
+> Cc: stable@vger.kernel.org # v6.15+
+> Reported-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+> Signed-off-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
+> ---
+> v1 -> v2:
+>   - Condense the commit message.
+>   - Drop the code comment.
+> 
+>   mm/util.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/mm/util.c b/mm/util.c
+> index af2c2103f0d95..34cb43b3eaa4c 100644
+> --- a/mm/util.c
+> +++ b/mm/util.c
+> @@ -1353,7 +1353,7 @@ void snapshot_page(struct page_snapshot *ps, const struct page *page)
+>   	if (ps->idx < MAX_FOLIO_NR_PAGES) {
+>   		memcpy(&ps->folio_snapshot, foliop, 2 * sizeof(struct page));
+>   		nr_pages = folio_nr_pages(&ps->folio_snapshot);
+> -		if (nr_pages > 1)
+> +		if (nr_pages > 2)
+>   			memcpy(&ps->folio_snapshot.__page_2, &foliop->__page_2,
+>   			       sizeof(struct page));
+>   		set_ps_flags(ps, foliop, page);
 
-	mod_timer(&drvdata->inrange_timer, jiffies + msecs_to_jiffies(100));
-
-A report landing between the timer_delete_sync() call and the transport
-teardown in hid_hw_stop() re-arms inrange_timer after it was cancelled.
-uclogic_remove() then returns and the devm drvdata is freed, while
-hid_hw_stop() has already freed the input device drvdata->pen_input
-points at, so when the timer fires ~100 ms later
-uclogic_inrange_timeout() dereferences freed memory -- a use-after-free
-in timer-softirq context.
-
-Swapping the two calls is not a fix: stopping the device first frees
-drvdata->pen_input via hidinput_disconnect() while the timer may still
-be pending, so a timer already armed before removal fires on the freed
-input device in the window before timer_delete_sync() runs.
-
-Use timer_shutdown_sync() before hid_hw_stop() instead. It cancels the
-timer, waits for a running callback while pen_input is still valid, and
-prevents any further re-arming -- a later mod_timer() from an in-flight
-report is silently ignored -- so the timer is provably dead before
-hid_hw_stop() frees the inputs. This is the ordering the timer core
-documents for this "timer re-armed from another path" teardown case.
-
-Fixes: 01309e29eb95 ("HID: uclogic: Support in-range reporting emulation")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ibrahim Hashimov <security@auditcode.ai>
-Assisted-by: AuditCode-AI:2026.07
----
-v2: v1 reordered hid_hw_stop() before timer_delete_sync(), which traded
-    the re-arm use-after-free for one on the freed input device (thanks
-    to sashiko-bot for spotting it). Keep the original order and use
-    timer_shutdown_sync() to disarm the timer, which closes the re-arm
-    race without ever touching pen_input after it is freed.
-
- drivers/hid/hid-uclogic-core.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/hid/hid-uclogic-core.c b/drivers/hid/hid-uclogic-core.c
-index b73f09d26688..0b8a83fa6c5b 100644
---- a/drivers/hid/hid-uclogic-core.c
-+++ b/drivers/hid/hid-uclogic-core.c
-@@ -548,7 +548,17 @@ static void uclogic_remove(struct hid_device *hdev)
- {
- 	struct uclogic_drvdata *drvdata = hid_get_drvdata(hdev);
- 
--	timer_delete_sync(&drvdata->inrange_timer);
-+	/*
-+	 * Shut the in-range timer down before stopping the device.
-+	 * uclogic_raw_event_pen() re-arms inrange_timer on every pen report
-+	 * and keeps running until hid_hw_stop() stops the transport, so a
-+	 * plain timer_delete_sync() here can be undone by a report landing in
-+	 * the window before hid_hw_stop().  timer_shutdown_sync() cancels the
-+	 * timer and makes any later re-arm a no-op, so it is provably dead
-+	 * before hid_hw_stop() frees the input device drvdata->pen_input
-+	 * points at.
-+	 */
-+	timer_shutdown_sync(&drvdata->inrange_timer);
- 	hid_hw_stop(hdev);
- 	kfree(drvdata->desc_ptr);
- 	uclogic_params_cleanup(&drvdata->params);
--- 
-2.50.1 (Apple Git-155)
 
