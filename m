@@ -1,64 +1,63 @@
-Return-Path: <stable+bounces-274572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274574-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id quaeE2KyVmouAQEAu9opvQ
-	(envelope-from <stable+bounces-274572-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 00:04:18 +0200
+	id bumIIoqyVmpAAQEAu9opvQ
+	(envelope-from <stable+bounces-274574-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 00:04:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBEBA7591CD
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 00:04:17 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55F337591F7
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 00:04:55 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GMFGHblt;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274572-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-274572-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QkomFVIb;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274574-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274574-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 21D993022B47
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 22:04:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 053B83062833
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 22:04:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B97FC42BC34;
-	Tue, 14 Jul 2026 22:04:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC404331A63;
+	Tue, 14 Jul 2026 22:04:17 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 657653DC4A4
-	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 22:04:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69D6026D4DD
+	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 22:04:16 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784066652; cv=none; b=WoHb5WuCVdxZ+RqLhLvlZlUqLtugU3ZI9ngL8LvFCSUZwhoGX3ByKNRvg+55ld2yzIfC+lymgLi6aZ7pi7HaH5MvzxkhtQWHgOpc4KRYABag9ODrGKeNLtEuotai9RemjbGq8cjCV2W7K9e+t10JMmvKr576ttcsXQ6sj4if8ng=
+	t=1784066657; cv=none; b=GsKhdJ5ieNOan8mfPMOQkgKNwTn8aSXIkRmFDZQj3dLQELQc8MwQ5nEEKI0wdoYrF5SI8gLEkra7JEaOgiBocRCdkfmQxv6uHCbS1GFuy38Q9mTTglVE5dDhonnoOlayHxAjZ7fqkno8ufZ84qdK9VF4hMsbODnHD4UdoW10+HU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784066652; c=relaxed/simple;
-	bh=/87EZRullkkGi1XwD4I/Pzwm+sj5PzwkmmWH2vKcYRM=;
+	s=arc-20240116; t=1784066657; c=relaxed/simple;
+	bh=OS0ag4j7C9JvHfwmEnACSlK649h+wyCfVeqxRfwcyIE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iOlb9QcJWSkxti1H7Vo6uoGMIGpwyvbCrIi1NXMBzhGE4QsS/1vSy1BoJn9TfiR4d1ioOMEuva/DRB4F0J//79jse9vBO3g84kwUksdIBWtwiT21zigQYYiCneNA3G1BsoLUywrOM8aC9rlB1WS5/tkaiRDslO5i9kLvTN+fBnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GMFGHblt; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B4C01F00A3F;
-	Tue, 14 Jul 2026 22:04:10 +0000 (UTC)
+	 MIME-Version; b=kYGFsG6VwCwOb7JgqqbHjotmUEew7x7v77kL9FpzGCyLW/DlzgyBVr8FnBXOsVqjuFR/58I4yqRPhTOMCHEj+Bw5l4xb8/SO0qHnbHDReoG2ij/+1qbLut2x1VkwedMJDWcZPI4Tw7UXpawVIuFOErDAijJslCKzwtx4OBGMfpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QkomFVIb; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6F431F000E9;
+	Tue, 14 Jul 2026 22:04:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784066651;
-	bh=VZNIZk+Hf5P9w8M5f27VDcIyZSzBYW3lcVvRgzDmAZ8=;
+	s=k20260515; t=1784066656;
+	bh=97Z42/pLFNCiuUbM9ZCVtRUPMgMF425kimaA3QuDwy0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=GMFGHbltRCt/MkDJ5Cy4KiW8gmCshXlNKMFLMNgE5DJTY6YwB557Pu1yVuB3vqRkT
-	 ouUSD5QJzWxYP89BGUJij7WsGeqGelyEACgNqsUL8ziiDaONc17LQa4CaRrVK7qGfN
-	 wVVqadotqVailmHHWBcqcL9/vxurgPidf+b+J6jwEQsLH3Hcnay8EcWoQbdvGkSBkw
-	 9Mwektl4zhbOdMo8eQoBV6l9+MryO3F/cVZ0Gl6yFkIf7TatHf7dSKe6729rQ2qlWu
-	 uNL/JI1pdN/HfhTWqllxRc4h2PUJwfnfjlMTfBX/syjTXdbiBUawKbPRX8rpvqnCLq
-	 OzpDdn5daSscQ==
+	b=QkomFVIbZgZ2I1l60q2csfBZoqhFwfZXs5y/ag2VmaD3OfoOPrHMdazscvQHWkRWm
+	 off0nVidFl6zB9wjL0oEjWJw3o18g+Xswiw+9tziiWUvYk1oWP7oGaaPGRhaZBqeff
+	 3jenVjoGwthjkdBFGkDYB7zYcG1xsSzjKCZGfMcmmXuXKBx4d9EWYb9zGui84UwHRo
+	 Bdap+M4ZjPRBu+cnapwZ22T0u0FFoceXRINzvkE3ZCSsu2b5Sy5RdMQy4gotEp3SeW
+	 vav7cFSlcTRUcaMqlYv/ns/HvQs7evqT0e3zf3VVISzKw9AeRfZZSqkMRTeHyQbf4l
+	 RPQloO6VU2uWQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Richard Zhu <hongxing.zhu@nxp.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
+Cc: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Bjorn Helgaas <bhelgaas@google.com>,
-	Frank Li <Frank.Li@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] PCI: imx6: Fix IMX6SX_GPR12_PCIE_TEST_POWERDOWN handling
-Date: Tue, 14 Jul 2026 18:04:08 -0400
-Message-ID: <20260714220408.3333635-1-sashal@kernel.org>
+Subject: [PATCH 6.6.y 1/4] PCI: controller: Use dev_fwnode() instead of of_fwnode_handle()
+Date: Tue, 14 Jul 2026 18:04:11 -0400
+Message-ID: <20260714220414.3333873-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026071312-buffalo-salvation-f750@gregkh>
-References: <2026071312-buffalo-salvation-f750@gregkh>
+In-Reply-To: <2026071354-duvet-skimming-764e@gregkh>
+References: <2026071354-duvet-skimming-764e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -73,22 +72,22 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-274572-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-274574-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:hongxing.zhu@nxp.com,m:mani@kernel.org,m:bhelgaas@google.com,m:Frank.Li@nxp.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:jirislaby@kernel.org,m:arnd@arndb.de,m:bhelgaas@google.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -97,60 +96,161 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,arndb.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DBEBA7591CD
+X-Rspamd-Queue-Id: 55F337591F7
 
-From: Richard Zhu <hongxing.zhu@nxp.com>
+From: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
 
-[ Upstream commit aad953fb4eed0df5486cd54ccad80ac197678e01 ]
+[ Upstream commit a103d2dede5683dabbac2c3374bc24b6a9434478 ]
 
-The IMX6SX_GPR12_PCIE_TEST_POWERDOWN bit does not control the PCIe
-reference clock on i.MX6SX. Instead, it is part of i.MX6SX PCIe core
-reset sequence.
+All irq_domain functions now accept fwnode instead of of_node. But many
+PCI controllers still extract dev to of_node and then of_node to fwnode.
 
-Move the IMX6SX_GPR12_PCIE_TEST_POWERDOWN assertion/deassertion into
-the core reset functions to properly reflect its purpose. Remove the
-.enable_ref_clk() callback for i.MX6SX since it was incorrectly
-manipulating this bit.
+Instead, clean this up and simply use the dev_fwnode() helper to extract
+fwnode directly from dev. Internally, it still does dev => of_node =>
+fwnode steps, but it's now hidden from the users.
 
-Fixes: e3c06cd063d6 ("PCI: imx6: Add initial imx6sx support")
-Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+In the case of altera, this also removes an unused 'node' variable that is
+only used when CONFIG_OF is enabled:
+
+  drivers/pci/controller/pcie-altera.c: In function 'altera_pcie_init_irq_domain':
+  drivers/pci/controller/pcie-altera.c:855:29: error: unused variable 'node' [-Werror=unused-variable]
+    855 |         struct device_node *node = dev->of_node;
+
+Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>	# altera
+[bhelgaas: squash together, rebase to precede msi-parent]
 Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260319090844.444987-1-hongxing.zhu@nxp.com
+Link: https://patch.msgid.link/20250521163329.2137973-1-arnd@kernel.org
+Link: https://patch.msgid.link/20250611104348.192092-16-jirislaby@kernel.org
+Link: https://patch.msgid.link/20250723065907.1841758-1-jirislaby@kernel.org
+Stable-dep-of: f865a57896bd ("PCI: mediatek: Fix IRQ domain leak when port fails to enable")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pci-imx6.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/pci/controller/dwc/pcie-designware-host.c    | 2 +-
+ drivers/pci/controller/mobiveil/pcie-mobiveil-host.c | 8 +++-----
+ drivers/pci/controller/pcie-altera-msi.c             | 2 +-
+ drivers/pci/controller/pcie-altera.c                 | 3 +--
+ drivers/pci/controller/pcie-mediatek-gen3.c          | 4 ++--
+ drivers/pci/controller/pcie-mediatek.c               | 2 +-
+ drivers/pci/controller/pcie-xilinx-nwl.c             | 2 +-
+ 7 files changed, 10 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-index a68c7e273586af..c239a9117dfede 100644
---- a/drivers/pci/controller/dwc/pci-imx6.c
-+++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -428,9 +428,6 @@ static int imx6_pcie_enable_ref_clk(struct imx6_pcie *imx6_pcie)
- 			dev_err(dev, "unable to enable pcie_axi clock\n");
- 			break;
- 		}
+diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
+index a7170fd0e847ad..84ed77a44d6dd0 100644
+--- a/drivers/pci/controller/dwc/pcie-designware-host.c
++++ b/drivers/pci/controller/dwc/pcie-designware-host.c
+@@ -233,7 +233,7 @@ static const struct irq_domain_ops dw_pcie_msi_domain_ops = {
+ int dw_pcie_allocate_domains(struct dw_pcie_rp *pp)
+ {
+ 	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+-	struct fwnode_handle *fwnode = of_node_to_fwnode(pci->dev->of_node);
++	struct fwnode_handle *fwnode = dev_fwnode(pci->dev);
+ 
+ 	pp->irq_domain = irq_domain_create_linear(fwnode, pp->num_vectors,
+ 					       &dw_pcie_msi_domain_ops, pp);
+diff --git a/drivers/pci/controller/mobiveil/pcie-mobiveil-host.c b/drivers/pci/controller/mobiveil/pcie-mobiveil-host.c
+index 45b97a4b14dbd0..ac0881659e7643 100644
+--- a/drivers/pci/controller/mobiveil/pcie-mobiveil-host.c
++++ b/drivers/pci/controller/mobiveil/pcie-mobiveil-host.c
+@@ -442,7 +442,7 @@ static const struct irq_domain_ops msi_domain_ops = {
+ static int mobiveil_allocate_msi_domains(struct mobiveil_pcie *pcie)
+ {
+ 	struct device *dev = &pcie->pdev->dev;
+-	struct fwnode_handle *fwnode = of_node_to_fwnode(dev->of_node);
++	struct fwnode_handle *fwnode = dev_fwnode(dev);
+ 	struct mobiveil_msi *msi = &pcie->rp.msi;
+ 
+ 	mutex_init(&msi->lock);
+@@ -468,13 +468,11 @@ static int mobiveil_allocate_msi_domains(struct mobiveil_pcie *pcie)
+ static int mobiveil_pcie_init_irq_domain(struct mobiveil_pcie *pcie)
+ {
+ 	struct device *dev = &pcie->pdev->dev;
+-	struct device_node *node = dev->of_node;
+ 	struct mobiveil_root_port *rp = &pcie->rp;
+ 
+ 	/* setup INTx */
+-	rp->intx_domain = irq_domain_add_linear(node, PCI_NUM_INTX,
+-						&intx_domain_ops, pcie);
 -
--		regmap_update_bits(imx6_pcie->iomuxc_gpr, IOMUXC_GPR12,
--				   IMX6SX_GPR12_PCIE_TEST_POWERDOWN, 0);
- 		break;
- 	case IMX6QP:
- 	case IMX6Q:
-@@ -557,6 +554,8 @@ static void imx6_pcie_deassert_core_reset(struct imx6_pcie *imx6_pcie)
- 		imx7d_pcie_wait_for_phy_pll_lock(imx6_pcie);
- 		break;
- 	case IMX6SX:
-+		regmap_clear_bits(imx6_pcie->iomuxc_gpr, IOMUXC_GPR12,
-+				  IMX6SX_GPR12_PCIE_TEST_POWERDOWN);
- 		regmap_update_bits(imx6_pcie->iomuxc_gpr, IOMUXC_GPR5,
- 				   IMX6SX_GPR5_PCIE_BTNRST_RESET, 0);
- 		break;
++	rp->intx_domain = irq_domain_create_linear(dev_fwnode(dev), PCI_NUM_INTX, &intx_domain_ops,
++						   pcie);
+ 	if (!rp->intx_domain) {
+ 		dev_err(dev, "Failed to get a INTx IRQ domain\n");
+ 		return -ENOMEM;
+diff --git a/drivers/pci/controller/pcie-altera-msi.c b/drivers/pci/controller/pcie-altera-msi.c
+index 6ad5427490b524..7f2115f35e997c 100644
+--- a/drivers/pci/controller/pcie-altera-msi.c
++++ b/drivers/pci/controller/pcie-altera-msi.c
+@@ -171,7 +171,7 @@ static const struct irq_domain_ops msi_domain_ops = {
+ 
+ static int altera_allocate_domains(struct altera_msi *msi)
+ {
+-	struct fwnode_handle *fwnode = of_node_to_fwnode(msi->pdev->dev.of_node);
++	struct fwnode_handle *fwnode = dev_fwnode(&msi->pdev->dev);
+ 
+ 	msi->inner_domain = irq_domain_add_linear(NULL, msi->num_of_vectors,
+ 					     &msi_domain_ops, msi);
+diff --git a/drivers/pci/controller/pcie-altera.c b/drivers/pci/controller/pcie-altera.c
+index a9536dc4bf96bc..a90486e1084e26 100644
+--- a/drivers/pci/controller/pcie-altera.c
++++ b/drivers/pci/controller/pcie-altera.c
+@@ -667,10 +667,9 @@ static void altera_pcie_isr(struct irq_desc *desc)
+ static int altera_pcie_init_irq_domain(struct altera_pcie *pcie)
+ {
+ 	struct device *dev = &pcie->pdev->dev;
+-	struct device_node *node = dev->of_node;
+ 
+ 	/* Setup INTx */
+-	pcie->irq_domain = irq_domain_add_linear(node, PCI_NUM_INTX,
++	pcie->irq_domain = irq_domain_create_linear(dev_fwnode(dev), PCI_NUM_INTX,
+ 					&intx_domain_ops, pcie);
+ 	if (!pcie->irq_domain) {
+ 		dev_err(dev, "Failed to get a INTx IRQ domain\n");
+diff --git a/drivers/pci/controller/pcie-mediatek-gen3.c b/drivers/pci/controller/pcie-mediatek-gen3.c
+index 822d9b8e09f60d..e0733a7219256b 100644
+--- a/drivers/pci/controller/pcie-mediatek-gen3.c
++++ b/drivers/pci/controller/pcie-mediatek-gen3.c
+@@ -661,8 +661,8 @@ static int mtk_pcie_init_irq_domains(struct mtk_gen3_pcie *pcie)
+ 	/* Setup MSI */
+ 	mutex_init(&pcie->lock);
+ 
+-	pcie->msi_bottom_domain = irq_domain_add_linear(node, PCIE_MSI_IRQS_NUM,
+-				  &mtk_msi_bottom_domain_ops, pcie);
++	pcie->msi_bottom_domain = irq_domain_create_linear(dev_fwnode(dev), PCIE_MSI_IRQS_NUM,
++							   &mtk_msi_bottom_domain_ops, pcie);
+ 	if (!pcie->msi_bottom_domain) {
+ 		dev_err(dev, "failed to create MSI bottom domain\n");
+ 		ret = -ENODEV;
+diff --git a/drivers/pci/controller/pcie-mediatek.c b/drivers/pci/controller/pcie-mediatek.c
+index 82e575e4d3877a..bff186c8270e52 100644
+--- a/drivers/pci/controller/pcie-mediatek.c
++++ b/drivers/pci/controller/pcie-mediatek.c
+@@ -493,7 +493,7 @@ static struct msi_domain_info mtk_msi_domain_info = {
+ 
+ static int mtk_pcie_allocate_msi_domains(struct mtk_pcie_port *port)
+ {
+-	struct fwnode_handle *fwnode = of_node_to_fwnode(port->pcie->dev->of_node);
++	struct fwnode_handle *fwnode = dev_fwnode(port->pcie->dev);
+ 
+ 	mutex_init(&port->lock);
+ 
+diff --git a/drivers/pci/controller/pcie-xilinx-nwl.c b/drivers/pci/controller/pcie-xilinx-nwl.c
+index 5b82098f32b7c7..61bbd169bcb270 100644
+--- a/drivers/pci/controller/pcie-xilinx-nwl.c
++++ b/drivers/pci/controller/pcie-xilinx-nwl.c
+@@ -502,7 +502,7 @@ static int nwl_pcie_init_msi_irq_domain(struct nwl_pcie *pcie)
+ {
+ #ifdef CONFIG_PCI_MSI
+ 	struct device *dev = pcie->dev;
+-	struct fwnode_handle *fwnode = of_node_to_fwnode(dev->of_node);
++	struct fwnode_handle *fwnode = dev_fwnode(dev);
+ 	struct nwl_msi *msi = &pcie->msi;
+ 
+ 	msi->dev_domain = irq_domain_add_linear(NULL, INT_PCI_MSI_NR,
 -- 
 2.53.0
 
