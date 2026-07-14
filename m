@@ -1,62 +1,100 @@
-Return-Path: <stable+bounces-274126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274128-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 0bMlLjTGVWrPsgAAu9opvQ
-	(envelope-from <stable+bounces-274126-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 07:16:36 +0200
+	id E1+0CEfHVWpbswAAu9opvQ
+	(envelope-from <stable+bounces-274128-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 07:21:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32F097510FA
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 07:16:36 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8277475115F
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 07:21:10 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ufuW9pbH;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274126-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274126-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	dkim=pass header.d=kroah.com header.s=fm2 header.b=nT7mpWVv;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=ickbgmOF;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274128-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274128-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=kroah.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7362630BBFF1
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 05:12:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8E877302F691
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 05:21:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41C7B2F39B9;
-	Tue, 14 Jul 2026 05:12:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35BE6318ECD;
+	Tue, 14 Jul 2026 05:21:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from fout-a2-smtp.messagingengine.com (fout-a2-smtp.messagingengine.com [103.168.172.145])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06EF12F5A0E;
-	Tue, 14 Jul 2026 05:12:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDA41315D3E
+	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 05:21:04 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784005941; cv=none; b=rDXxC3mb/8ku2jw6cYZTVFfI4BpFj8FHCqmoMwDSaHCxG60B2m2/EhNhcXF4hpu6COgRPDBKj/Pqew5JWb+lPM8QR2ZmnkO3hScd4RYpzBksJeq8esV/h0ZT5jTeQa88VWJzcPec45kwx8XVgLexvaopvSUslFgBtxnGLdbGpec=
+	t=1784006467; cv=none; b=Z0XTERALcEpKDiAMAgrrDA3FMBneMAZrn0ohraI0Luvv6NIRNNuDPCLlCl7ZgD39JfTiCxAyuYF02T+QbDrc/qxkCGKeW9ISpUKEzDfrt3znkPvJmySkLb04NB/T+JKmgXzPkXyogDgdg+jvDB7E5F8M/XbqMNddK0D6VVYqgHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784005941; c=relaxed/simple;
-	bh=QKLHpYC9cD10hDiGlFe4/QTrEv2pYoWptLgAsLjXIE8=;
+	s=arc-20240116; t=1784006467; c=relaxed/simple;
+	bh=ZI10RsFHefOClL7s49H3P8q1oB3YAwWHiPRL4Hqrnbc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KtWHCTnzkKdRq2peF921RuAtrk7a4F+RT7BvD1y8EuQ6Lm+a0UcH0sLjrAOaeqgjSOM88fkB1AstIKSFjByU9rmTCAP3jZCmtc9OrTVclZdnJSypsGCIzBat5v4aytOfQFLoIkNBpj724osso/YRjrPIOyrv2r6Xo04cfLfTByk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ufuW9pbH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36DE51F000E9;
-	Tue, 14 Jul 2026 05:12:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1784005939;
-	bh=TMXzA4wrYATAkRbd0MtGWCT8lsBcidpH7evOMPd0N8M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ufuW9pbH7t+BO068AtApQMfa4+R7cKxsBYRakma1PEbq7EB76XZ69ffufKfWQMuem
-	 f85rZKZBc6EuYiVdHJSbXn1izuXBuR+2eXapNX2n9Og9RT1CeamIHN7/upL3odkuGa
-	 MVa20/aJOfYrBOAFuzn5EHWR0Oi5pGxxGx0gd9zA=
-Date: Tue, 14 Jul 2026 07:11:00 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Qi Xi <xiqi2@huawei.com>
-Cc: Naoya Horiguchi <naoya.horiguchi@nec.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>,
-	Jane Chu <jane.chu@oracle.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, sunnanyong@huawei.com,
-	wangkefeng.wang@huawei.com, stable@vger.kernel.org
-Subject: Re: [PATCH stable/linux-6.6.y] mm/memory-failure: fix missing
- ->mf_stats count when hugetlb folio already poisoned
-Message-ID: <2026071451-geologic-handprint-89d1@gregkh>
-References: <20260706084118.1284271-1-xiqi2@huawei.com>
- <6a756801-f4a5-44a5-abfd-e9ae57432c56@huawei.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=dYFKQDynvxu6BbkfG3IH0MN++r0Lt+AdnvdlqQkweuFDHxn43wkDITG2nbUDuuwBvlwBHqCup0igrreb3KjIFUGfpym/8PV8otfpvBxEBSv8osiKlutUZDe+x5Zot5Fgl+00Qr0x5BEheF9bgXvckV+oM1NdGCDuQ3G2M4cswIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=nT7mpWVv; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ickbgmOF; arc=none smtp.client-ip=103.168.172.145
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfout.phl.internal (Postfix) with ESMTP id ECB4DEC01C6;
+	Tue, 14 Jul 2026 01:21:03 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Tue, 14 Jul 2026 01:21:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm2; t=1784006463; x=1784092863; bh=UetucyJhGG
+	vtfnGy4WVN9y3ft5gRI1F3ms4FVT7cIfM=; b=nT7mpWVvWFTW9TU1RAE83Hgx6M
+	heyFFTxBkyDGl6FxrSFZeiGihjADJ+LfuFLhX938oUxMnKNCuTvWk3Ln4+3NEiez
+	Iz4q1G1aeLFdDlmNEF5zAN51KJHCKmloXdf1akdadjZ1nKAkZanhhW3vm7wBrpuU
+	WrEshEaWLlvG+gHRlW6dvzvJXoG7oawHouOnPRXA55/0TNn/LcHsjWMzS1WpGUsS
+	SFh/ugypAlN8Z8K8rWKF5X3R/h5ipdZ7sy9HGCtbrMAIp3tKOF2J3DnlCsoyf5ar
+	gb08Ree1pytZcj1pB9QPY/VUsTEWO9KdsK3fCh+Nr2pBy4fsBt49+IAtVNCg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1784006463; x=1784092863; bh=UetucyJhGGvtfnGy4WVN9y3ft5gRI1F3ms4
+	FVT7cIfM=; b=ickbgmOFepbMg7R6f/rmWhGglpOgQGD6SZN0et6NNF7SmcEVDbL
+	glf5TJlTfISyKEUBBMFBW4Ie6Ie6omFlPrnvJr3gClmFiabO6rs7DLwQGhuwKH3I
+	bpqCsPlKXMuVgrv2mHtuWBdT2++qH5gnWNXi8jfbv4KWjPpXceoG9X9DKuWC/WaM
+	YoeKIlAbrFe8D+3wnJE5tdJ2ZvUTmL91ZsKrdts3G7CbpFXm+4heFBfTEkBolU7f
+	FZh89xiIc0O+2cQd9yPOj6YlsbGi8pIjmvd82T5aQWSju09TGLZrbBJ4YFap/IRL
+	+s7Fl1RSenp+wEnOHOGyrIbrVU2bNNyPbwg==
+X-ME-Sender: <xms:P8dVatAPiTC3dXpsgxA5GTm8xBvK-G3Qbg9K3qjVeG_XH9mCaC4NQQ>
+    <xme:P8dVaumcxfK6aDsEV9zSzY6p8RdrAYAZKNZbiySo8PxnxnjcTUTCQDi1yI017ZbV0
+    a-jwhE-JsDrrFh8Wrt3RzOow9l68hz-VcG8LTP55TECwnOB>
+X-ME-Received: <xmr:P8dVajP9BvoYwA-O9dXI2JFMMuNVCnMcnE0WoBMvSJT7r6Q2yqbqlUtNHlqnv9R6_TgS26dyEGy0evwUOh_51xIBbg>
+X-ME-Proxy-Cause: dmFkZTFeA6w2FVY6wnLS9lvZG8zFBA1I5eBONRD4qc5zIi4+uATJ1wzBj2qGkN+TDA5VnT
+    EJRzB0yvCkBnxfF8MPxLWtNLAXWQ0WFiHSTZYB+MggxMyncsZvMYLun0TD+qguc2dUeWUh
+    NEjP2Puc8Qp/1MfSGJjMoRnzw1uzcY9fDMmD0v0lWlzgr92YK8+yx9xqi9xkwB2zSr1wQ1
+    XxtA+uW5CIy9QuF/QF6dIBtnfqreJr/Ko9/UMRqT3QamQCvanxh6nmXYvkKMX0JyElO46R
+    39SQvH83+WvmLfOYYTcKEUX1CLN5vSlVlIJgefb4RT4LeFGzcWH5t/Y/TX2prWRShRodA0
+    g8A+UCNwBK1cMM2YtjhEKuSJ/Mxkq6QN05Jt1Gnt18CDI+CimGi5B4wuGetZkFgQKxYPAc
+    Gb1pNPD4xKEi3wrkB7cKkHmU2erGxsbNR+AcCTrEpogaaTlBnj6/ui2ROUlNvFHJXNop/2
+    V03AtOMioFtPzxKHzFIYdWcp6QorxAfchXvLZHSkLvNYcyZ9/LqtocR5Vg1KcJjVRQpzjb
+    FORL2LTNDmR775b/n/lpX/G3stfgYv3BAd/mR4gFtjzaLB/3+fita+2/NuLLeAoc+nsUG6
+    nAJsjFJeEHIXfaNRrmUC+s4uhkhk4Z7DkM8WUYozRzR7Fm+fy+FiDwcOu0Cg
+X-ME-Proxy: <xmx:P8dVaj8YfDpB7wBfshjgNrz1mJVqc1KHm7PujaNG1apG0RFjP_059Q>
+    <xmx:P8dVatFVc_Qql2PCyAYzhi8sxD4j2qK6GyfvzDdRWwa5nB4bHVh7kg>
+    <xmx:P8dVaqhgU9HCXcuwadg8kx6grLLwMBdarXfw6tO6DW1Gor4wNRLKog>
+    <xmx:P8dVaqvZsV3qKcdeui0FGLUMmDeXYtgN-K2hfbQvMIiA7sKCGrRDPw>
+    <xmx:P8dVajCXXiXPwtTl0QJB77X4apyh9KrxeRWyWWC3PvIUBJCgZ6G6CUH4>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 14 Jul 2026 01:21:03 -0400 (EDT)
+Date: Tue, 14 Jul 2026 07:19:44 +0200
+From: Greg KH <greg@kroah.com>
+To: Mario Limonciello <superm1@kernel.org>
+Cc: stable@vger.kernel.org, Anisse Astier <an.astier@criteo.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Mario Limonciello <mario.limonciello@amd.com>
+Subject: Re: [PATCH 6.1.y] efivarfs: expose used and total size
+Message-ID: <2026071421-uncheck-talcum-0f7d@gregkh>
+References: <20260714043329.3510162-1-superm1@kernel.org>
+ <2026071408-vividness-saga-4987@gregkh>
+ <3ea09dad-9688-4f50-9939-059b8c6177fc@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,53 +103,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <6a756801-f4a5-44a5-abfd-e9ae57432c56@huawei.com>
+In-Reply-To: <3ea09dad-9688-4f50-9939-059b8c6177fc@kernel.org>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kroah.com,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[kroah.com:s=fm2,messagingengine.com:s=fm2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-274126-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-274128-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER(0.00)[greg@kroah.com,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:superm1@kernel.org,m:stable@vger.kernel.org,m:an.astier@criteo.com,m:ardb@kernel.org,m:mario.limonciello@amd.com,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:xiqi2@huawei.com,m:naoya.horiguchi@nec.com,m:akpm@linux-foundation.org,m:sashal@kernel.org,m:linmiaohe@huawei.com,m:jane.chu@oracle.com,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:sunnanyong@huawei.com,m:wangkefeng.wang@huawei.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORWARDED(0.00)[lists@lfdr.de];
+	DKIM_TRACE(0.00)[kroah.com:+,messagingengine.com:+];
 	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[greg@kroah.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,gregkh:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:mid,vger.kernel.org:from_smtp,messagingengine.com:dkim,hughsie.com:email,criteo.com:email,kroah.com:from_mime,kroah.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 32F097510FA
+X-Rspamd-Queue-Id: 8277475115F
 
-On Tue, Jul 14, 2026 at 09:45:03AM +0800, Qi Xi wrote:
-> Add stable@ to Cc.
+On Tue, Jul 14, 2026 at 12:03:19AM -0500, Mario Limonciello wrote:
+> 
+> 
+> On 7/13/26 11:58 PM, Greg KH wrote:
+> > On Mon, Jul 13, 2026 at 11:33:29PM -0500, Mario Limonciello (AMD) wrote:
+> > > From: Anisse Astier <an.astier@criteo.com>
+> > > 
+> > > When writing EFI variables, one might get errors with no other message
+> > > on why it fails. Being able to see how much is used by EFI variables
+> > > helps analyzing such issues.
+> > > 
+> > > Since this is not a conventional filesystem, block size is intentionally
+> > > set to 1 instead of PAGE_SIZE.
+> > > 
+> > > x86 quirks of reserved size are taken into account; so that available
+> > > and free size can be different, further helping debugging space issues.
+> > > 
+> > > With this patch, one can see the remaining space in EFI variable storage
+> > > via efivarfs, like this:
+> > > 
+> > >     $ df -h /sys/firmware/efi/efivars/
+> > >     Filesystem      Size  Used Avail Use% Mounted on
+> > >     efivarfs        176K  106K   66K  62% /sys/firmware/efi/efivars
+> > > 
+> > > Signed-off-by: Anisse Astier <an.astier@criteo.com>
+> > > [ardb: - rename efi_reserved_space() to efivar_reserved_space()
+> > >         - whitespace/coding style tweaks]
+> > > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> > > (cherry-picked from d86ff3333cb1 ("efivarfs: expose used and total size"))
+> > > Adjusted for headers in linux-6.1.y
+> > > Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> > > ---
+> > > Cc:Steve McIntyre <steve@einval.com>
+> > > Cc:Richard Hughes <richard@hughsie.com>
+> > > 
+> > > Background for this backport is that fwupd needs to be able to do CA
+> > > updates on Debian oldstable (bookworm) which tracks 6.1.7.  The CA update
+> > > process checks for free storage, and needs this function to do it.
+> > 
+> > What is the git id of this commit?
+> 
+> Oh I mentioned it above between Ard's S-o-b and mine:
+> 
+> d86ff3333cb1 ("efivarfs: expose used and total size")
 
-<formletter>
-
-This is not the correct way to submit patches for inclusion in the
-stable kernel tree.  Please read:
-    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-for how to do this properly.
-
-</formletter>
+ick, you did, sorry, I missed it as that's not the "normal" cherry-pick
+output, my fault
 
