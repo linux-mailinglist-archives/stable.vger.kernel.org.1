@@ -1,384 +1,255 @@
-Return-Path: <stable+bounces-274430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274432-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id EOFUFudhVmrn4QAAu9opvQ
-	(envelope-from <stable+bounces-274430-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 18:20:55 +0200
+	id x6PfOjFjVmpe4gAAu9opvQ
+	(envelope-from <stable+bounces-274432-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 18:26:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF160756E1B
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 18:20:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42C13756E9F
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 18:26:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kuHZfKis;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274430-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-274430-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=cirrus.com header.s=PODMain02222019 header.b=CGfWanr9;
+	dkim=pass header.d=cirrus4.onmicrosoft.com header.s=selector2-cirrus4-onmicrosoft-com header.b=WmDrEI7R;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274432-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-274432-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=cirrus.com;
+	arc=reject ("cv is fail on i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 40B6F30333CC
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 16:20:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8AA623115B32
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 16:23:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98F944ADD80;
-	Tue, 14 Jul 2026 16:20:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4749A4B8DE8;
+	Tue, 14 Jul 2026 16:23:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-001ae601.pphosted.com (mx0b-001ae601.pphosted.com [67.231.152.168])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 202DF360EF2;
-	Tue, 14 Jul 2026 16:20:51 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784046052; cv=none; b=Q175IGYfdFVkDXIYmE4f2DCQlmwzJm+oR2adCfRni3+AdPqKejp2Lw8ZLPhqGAjJoWAjg0mDQqbO4JZP1VSYPLxCLsmy4QcjZO1ypxWl74qx2KDGM5G5FnGk5lqqou0DkHtjI2wkbozDRXc4gGzb1b17o2jhr8f+MVE5vbMEMPs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784046052; c=relaxed/simple;
-	bh=SUyUQrgy2yWNm9tM/EcU7HxX1xhhYMI4KEsnz3S2+8k=;
-	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
-	 References:Date:Message-Id; b=lGrqnHIlvm8KtUlEOuhP1lhJr+AFLTTBCe5WkhR3UM0VmUOd9FIiewRsEYm+DiP4jWbbG9LFbd0eb3RB0kJiA77oifhl4doE6vCdC1RPEtN28lBafMRDhRzzMzG6RU+IYqMRWBnOOZG7t1MD/Lp0jsDTs6IJc8AObM01zwZk2pg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kuHZfKis; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2568A1F000E9;
-	Tue, 14 Jul 2026 16:20:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784046051;
-	bh=3bS/S6koA4Jxx17fNiWxR1Ope7iKRUf0fhgm/1SQfJs=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=kuHZfKisQYi6/6IIe03EHfuYkzdWZ9lBBSqYr+XNliC0MCr3Z/SWkFbj0E4KSs0wi
-	 lXn4uHkQMT+ygO//Qn5855VedTDtQk1Mr7f09vHeKfF6ibnOxhlg2mJ62peFap3Tme
-	 5uc0BjOF/wJMI4A/1LyhtgxipaJGcf7HEU2XRzF3IAhQPGudLQC/Lk+YB8qkhOusRA
-	 PUCAOLq68H7TwyJqtxUPl2OARAXiA85uta2tWvZOe63a5I02/lDkqFFPKliCZzG77o
-	 4sXyMHNP4Tl0F7Wxa6a4X9kncQbPZgvmv678KAfJwjC0HE3VU1P+UxRujIJRSjt50R
-	 cqchA+BNxzskw==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83C914B8DE3;
+	Tue, 14 Jul 2026 16:23:17 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784046199; cv=fail; b=FNRZRsYhnkTNG8oHDR37+DIqt/Evon0B3ThHXoa7LnGzEEmjNZaAy5znwI5p2pCxrLc68kEPP3w3TdUEyaIqSYtnbJhwVVTBBEPH3hTRpkOJLFhkhlQWoB34sIzv0GlfbIb4fAxl/hHp5BhiSpKX9ZDCoLJZhaTb4rYiucsGHOY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784046199; c=relaxed/simple;
+	bh=1M2wJEyRjEYwfus1CKXXO3juC5sdNISBcVnYThUB9hY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jpwsSHUNcsu8qBJqZxfmUx/TG+GdHxRjZJdaDBxDUov0M+GLAW3GMVuKiv2PBjXClmC7ObSMm7IpOTYFqtxhkSoyNP79KRjlwY2JCNednL59XjJpv4s9xdlsKRa/5kcxhb0qZ4i5vZYlNO2UeehqOWQfxLVUEqVD6xTkehS+fUY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com; spf=pass smtp.mailfrom=opensource.cirrus.com; dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b=CGfWanr9; dkim=pass (1024-bit key) header.d=cirrus4.onmicrosoft.com header.i=@cirrus4.onmicrosoft.com header.b=WmDrEI7R; arc=fail smtp.client-ip=67.231.152.168
+Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
+	by mx0b-001ae601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66E4J2pX3590165;
+	Tue, 14 Jul 2026 11:23:08 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	PODMain02222019; bh=R1/Rrv5RCyyCHOidMr67Vulsh4MZEoT4g1CDelDLQsg=; b=
+	CGfWanr9E0zXtjuU6gLFSzNW1eawX1U0l6pdsEYBaAJaEw/6iOM3TvhJNJNscPbJ
+	ztEI/HWFcuxhsRx/JKnQ/7LcxSZQgKes3IiI/ayjYpv/FT4z171OMdf60BTO4660
+	OTeME5VuPPq/YK0lGC07FU+Axa2on15w/gZmteW3VMM68Vxu2ULMxkoanXOa9hzj
+	w/WpPm1GoGTIw4JbIW6d6lHawbLyztwizGdCXL/mfs/hkSOMPyquCp8HQLAWmIKM
+	Ehkt+/tNoYrR36JMbQRBAjMOu73FQsgdMJRz2ywW0s4et3ytuZ3PSQpldQomWbk+
+	b4cbNlVzKHYq+3PpLWwcrw==
+Received: from co1pr03cu002.outbound.protection.outlook.com (mail-westus2azon11020119.outbound.protection.outlook.com [52.101.46.119])
+	by mx0b-001ae601.pphosted.com (PPS) with ESMTPS id 4fbj8fm7t6-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Tue, 14 Jul 2026 11:23:08 -0500 (CDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=n8pfeESQdUnCGAbanAREKhkLy/hyKIaoHeIi1U0y+7yg1FOOGYYPdxyyd9CjnuuNn0s3vSw5OqHSgGLFnDb2YIVNYPhJu/UYwLzeuj5NSYbJseJIsJScMkJ7By+Ifbbc/vuOKX4fK6GLre58RPdXSbV2ANw0rNOFLfktH9A8eGVmVkT/Ox/95i2KoDiao8jNKIP4k2/jFE4lyFjwP1tSbRBKiz0XnlTqTg3vZdnOgnv2W8s0/iPFQKCZhDpYT21kAogVOUXybIuxYzgBQbvAKaGJl0jXdIrXpEO1WAHNmpXnBLS8D62Kn3xwDsFhjArjPRft+9E497AO+iI3OiM5+Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=R1/Rrv5RCyyCHOidMr67Vulsh4MZEoT4g1CDelDLQsg=;
+ b=Q8ws5GfsL9QyW7g/zlz2UdKcI0D0WR9lhZh4FN2R2pcobGA6ci3z/0LM3dMQpg7GQsaF9Vqlw6iA27GzpBdfpKv8ozrT9mRA2xbPP3CdAnpy4q1po2/eIXI4dqarTS0cZzi1x44ub9Q9eBzklaZePk2t46YTxn3ZDnh3atwfrmty19IrndRvkVWijTP+BDHQLPwXmOMi9tZDptFaZOGHpZR07qD8PhUi0J2g7EwTo725+i3eimta+u4CTxdDtBzi3fA7nahf2+vhxlU5TzY5GR8EGl4UH6z7FfLLdxkfXFtSnTnmUtgz7rkuJIY3t8Siw+O0ubCl0+bECNJne2Akdg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=softfail (sender ip
+ is 84.19.233.75) smtp.rcpttodomain=callumwong.com
+ smtp.mailfrom=opensource.cirrus.com; dmarc=fail (p=reject sp=reject pct=100)
+ action=oreject header.from=opensource.cirrus.com; dkim=none (message not
+ signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cirrus4.onmicrosoft.com; s=selector2-cirrus4-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=R1/Rrv5RCyyCHOidMr67Vulsh4MZEoT4g1CDelDLQsg=;
+ b=WmDrEI7RWQzvhsN1sVlGFucvheFOLiyUMSXpIrbG4Idi3aT7ejtDLq2l22BCLSeBiMnjDZOjA8oTMvwxGo96whe09kFa/sYqksenhxZRbLiN/Cu8VENhljb8QcuqQvuJ91gc/muB/oAbqMxjhzW1gqhQIjml2Cxc1HO9p7gvhQU=
+Received: from SJ0PR03CA0208.namprd03.prod.outlook.com (2603:10b6:a03:2ef::33)
+ by PH3PPF341685865.namprd19.prod.outlook.com (2603:10b6:518:1::c12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.202.19; Tue, 14 Jul
+ 2026 16:23:00 +0000
+Received: from CO1PEPF00012E7D.namprd03.prod.outlook.com
+ (2603:10b6:a03:2ef:cafe::6d) by SJ0PR03CA0208.outlook.office365.com
+ (2603:10b6:a03:2ef::33) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.202.19 via Frontend Transport; Tue,
+ 14 Jul 2026 16:23:00 +0000
+X-MS-Exchange-Authentication-Results: spf=softfail (sender IP is 84.19.233.75)
+ smtp.mailfrom=opensource.cirrus.com; dkim=none (message not signed)
+ header.d=none;dmarc=fail action=oreject header.from=opensource.cirrus.com;
+Received-SPF: SoftFail (protection.outlook.com: domain of transitioning
+ opensource.cirrus.com discourages use of 84.19.233.75 as permitted sender)
+Received: from edirelay1.ad.cirrus.com (84.19.233.75) by
+ CO1PEPF00012E7D.mail.protection.outlook.com (10.167.249.52) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.223.9
+ via Frontend Transport; Tue, 14 Jul 2026 16:22:59 +0000
+Received: from ediswmail9.ad.cirrus.com (ediswmail9.ad.cirrus.com [198.61.86.93])
+	by edirelay1.ad.cirrus.com (Postfix) with ESMTPS id 77DAD406541;
+	Tue, 14 Jul 2026 16:22:58 +0000 (UTC)
+Received: from [198.61.68.151] (LONNCK4V044.ad.cirrus.com [198.61.68.151])
+	by ediswmail9.ad.cirrus.com (Postfix) with ESMTPSA id 3A97F82025A;
+	Tue, 14 Jul 2026 16:22:58 +0000 (UTC)
+Message-ID: <3e90fe96-dac2-4e95-ae61-100f9121b96e@opensource.cirrus.com>
+Date: Tue, 14 Jul 2026 17:22:57 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] ALSA: hda: cs35l41: Support HP OmniBook 7 Laptop
+ 14-fr0xxx
+To: Callum Wong <mail@callumwong.com>, tiwai@suse.com, perex@perex.cz
+Cc: linux-sound@vger.kernel.org, patches@opensource.cirrus.com,
+        rf@opensource.cirrus.com, david.rhodes@cirrus.com,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260705142535.186028-1-mail@callumwong.com>
+ <0108019f32ada4d0-8ff2c576-8eb9-4ac4-803e-8ff4e1ce57d3-000000@ap-southeast-2.amazonses.com>
+Content-Language: en-US
+From: Stefan Binding <sbinding@opensource.cirrus.com>
+In-Reply-To: <0108019f32ada4d0-8ff2c576-8eb9-4ac4-803e-8ff4e1ce57d3-000000@ap-southeast-2.amazonses.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH mm-hotfixes v2 0/4] mm: fix UAF caused by race between
- ptdump and vmap pgtable freeing
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- Suren Baghdasaryan <surenb@google.com>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Shakeel Butt <shakeel.butt@linux.dev>, David Hildenbrand <david@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
- Uladzislau Rezki <urezki@gmail.com>, Toshi Kani <toshi.kani@hpe.com>, 
- Dave Hansen <dave.hansen@linux.intel.com>, 
- Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
- Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
- "H. Peter Anvin" <hpa@zytor.com>, Catalin Marinas <catalin.marinas@arm.com>, 
- Will Deacon <will@kernel.org>, Dev Jain <dev.jain@arm.com>, 
- Ryan Roberts <ryan.roberts@arm.com>, David Carlier <devnexen@gmail.com>, 
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org, 
- syzbot+fd95a72470f5a44e464c@syzkaller.appspotmail.com
-In-Reply-To: <alUNiWcygLd4rqBo@thinkstation>
-References: <20260712-series-vmap-race-fix-v2-0-ad134cc3a12a@kernel.org>
- <alTn7NguEW_4bodu@thinkstation> <alTq4V50767L-s5H@lucifer>
- <alUNiWcygLd4rqBo@thinkstation>
-Date: Tue, 14 Jul 2026 17:20:29 +0100
-Message-Id: <178404602957.85099.8935151447302412515.b4-reply@b4>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=9287; i=ljs@kernel.org;
- h=from:subject:message-id; bh=SUyUQrgy2yWNm9tM/EcU7HxX1xhhYMI4KEsnz3S2+8k=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLLCEs8bbplyYPOEPyuivvDqeljNOh6xKGPvhdjyI8UTw
- yJ/lenO7ChlYRDjYpAVU2R5/kV8f5BI2LzOC/5uMHNYmUCGMHBxCsBErG4wMjzfdl1jirdrws6j
- bPFbbik1SiufPOLLwqFnwDv/YletbB0jQ9MC6+/ds5N2KLCmhNbqzBGZJ9u4wCFGLGX9I2t95l1
- 7OQE=
-X-Developer-Key: i=ljs@kernel.org; a=openpgp;
- fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PEPF00012E7D:EE_|PH3PPF341685865:EE_
+X-MS-Office365-Filtering-Correlation-Id: f52d835c-dd0e-4c7b-becb-08dee1c42c0d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|376014|82310400026|23010399003|61400799027|22082099003|16102099003|18002099003|6133799003|4143699003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	5GbedorBOedrI2fdSIUKpyaR9OSIEeeM0D9lPY3I2/PrZAmZzgosBZd16tfvRpmuIorifxk2tu2oa8R5o5jo/lo5YS6wVM9IPFjQN8FnZqk+gZa1mhnvnfYYSQw52S2nXIcrmCYf37sZbkwFj0ppZjbqnhhicRCqGP9nC+Ot6v9WMAnp7eJYv0xfKmK9514PuzkFt2cLwjCPbiBqma4GBZeB10jZaQ4CCoVKf+EnjM0sgIoHjcLNoYJ80bI/lDVAOwvdKIwp2j0vxrJ7Z9126n5CRclsAUcxS2czCg/5Dr1SV/Foufjn6hHsddiqzIOHlkmIpq0/Mwm4YsG+D5IrgNiKyheLJH7saXwJSztbzeGpnxLdFckU1cZRNgjU6E3RHc3/j1Fb2kmloG9CAE6Ksh5pv2aSauYGIAo1+d+HQ+Od7j/xNY7jNJbWdWNQab/+89/KwT5KjqnW8005PG1AOY05O2LUs1ScqB7NP4HmoVJ6cND0DwwqrsOwK+AiONWJz37bU2kzGR6lBzxCbJoWkAo/2dLEUOpBWvkjE5U5UA49vklhEoOEo/LW7T8vaoMrXT760iLBShhAZz4lu9ys+Mm0OwVO4xno1M5vXyqAcw96nyEgDpFLxbQxbaDs8+BvKYAQY8gLZHTFWx93dHsODf1Cp7zf5+FGeRyfkJtu29THOKUuWuWfddLF7sUrIbcKfxVJt+L+DYbjMZd4MyOH0A==
+X-Forefront-Antispam-Report:
+	CIP:84.19.233.75;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:edirelay1.ad.cirrus.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(376014)(82310400026)(23010399003)(61400799027)(22082099003)(16102099003)(18002099003)(6133799003)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	n9rqI7XWu44rhtqqSuclVYBW69UN5RRdj5kdUosFRdH26Uuu2dGPbaganQNHqi1DuFWmIheZjyr5lKRIrHnav1sf6i/5tQdVP92QYhB2oT1mGlJBGJcjEuo1q6eOmigYtsGb1Er/coIueHxuzhPlcw0EYP+Za4zsS7kXGIo49/n8P6Xh9qET/68u2dyrRAhKOlZ2TwtCmd/kJ7nPp8i61HbeU6O2JvFcyfrNX6p7IwRQrwU9BYCvVArz64HAK8m+mCLhYIb6lGgrvoOPLl+4JgxjjzODd3MFawc4xz0Yn5/Me9u5D0xH99xFDj1tSkqpSwAmupEN31yqHAIMZ2d1TAINTI4zzbpxgHkcV8YViLnTo03zFn5rbe16WN33Kta1G96LHrYJpuOSqiZ0Nz0/eb0YejVQsDWlrSnbbcaF7XxZeB7q9D6iX1p27HBP3BCW
+X-Exchange-RoutingPolicyChecked:
+	hXIbpjt6LvTKd/9AYP475ts5DDcMxwaCNZIQlpIPKKbU8WGV6AEK8kfxJtHZJ+qIa0yx/NaHKaOs+I0ASEqOOPROyef092OYU3H3cB+p4geIXGtERwu6I8oliooWPSjQEBuk32Ve9YymGe9kfn5922X778+gmHb47a+h5m6h3qUWznZZp2xs3KDj9GCS5U3VGtg4kEmPfEgK716HArRLAWPjtrAFt4Ml/VO7SNoEHsFjcH/LAujEX4XhV8N9Z9Lc//g4N0wsy6F8WdmBXK4mRUNCq55Ky2X5NqGEFN7MhDqnP2tOOqDv6ScKO5ZcYlm3GzCDOF8RDEHMDLCR+Iqyfg==
+X-OriginatorOrg: opensource.cirrus.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jul 2026 16:22:59.8850
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: f52d835c-dd0e-4c7b-becb-08dee1c42c0d
+X-MS-Exchange-CrossTenant-Id: bec09025-e5bc-40d1-a355-8e955c307de8
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=bec09025-e5bc-40d1-a355-8e955c307de8;Ip=[84.19.233.75];Helo=[edirelay1.ad.cirrus.com]
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: TreatMessagesAsInternal-CO1PEPF00012E7D.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH3PPF341685865
+X-Proofpoint-GUID: kRjYEbVvsGChO-PrIsAvgHAIpI5qsgZU
+X-Proofpoint-ORIG-GUID: kRjYEbVvsGChO-PrIsAvgHAIpI5qsgZU
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE0MDE3MCBTYWx0ZWRfX0D7+YKg2ysG/
+ H9ZD1LKzgNtxutjVTegFYB19rFU/xUDwUZttaWNk9ieibtNCJjvBULem4dGYLWwaeK3yaa3jInJ
+ DDj6Ukf0WV/V7K1pyllxIDGMyWcrP8k=
+X-Authority-Analysis: v=2.4 cv=M7597Sws c=1 sm=1 tr=0 ts=6a56626c cx=c_pps
+ a=dV5UnTNaioTBtvBhj0ZdMg==:117 a=h1hSm8JtM9GN1ddwPAif2w==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=s63m1ICgrNkA:10 a=RWc_ulEos4gA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=iX4cTi3TZMoOKdANLEfx:22 a=KfkQE9S9VqCBgivYGm0O:22
+ a=VwQbUJbxAAAA:8 a=cjmvyQrpAAAA:8 a=odvQGuxNvgiL9BEm7AUA:9 a=QEXdDO2ut3YA:10
+ a=4T_fOvN0JJhqAbruqPar:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE0MDE3MCBTYWx0ZWRfX79CuqoPHebHJ
+ s22Os+n+V6W5n2Squb8p+bbjfD+T8SeJqerMlARMa06HG8diHJs6AqdHgH7+UKk54Ki7ZGdK5g6
+ 5bBlD63lH923b3qt8wfpHC4pIFJSfPfR2UQglLJ5K6E0MRMS72o2NYcIArtKPuk7ICNOiI6jaBY
+ NRZ1VUZAV9/ESKaWc02rZ3Flva+HYm++9tgsZWZy8vCUwMdljkptAA/DEJChswyYhGk4wq1SIPe
+ mpN3w0Hc4cySbh3wATG61HpyXU1fpsx5WVqOxzzkCEsZHYA2k/UCzXfiKXiaegCtYapyAdIv8yX
+ +gwtGN7P54pOZo/nUWaBPe+d7jrVRH2XzzF+ud0/nPVFLRzNROPDACPk0GKXrollJNRqG/4OQms
+ 5y4sa2O2jLerrD0dTAvpbuogkWiCoNU0LZNQPwHv2mEqmViOzBkpWb4hnXfoKFSlhsWYnspyu0a
+ j6LNtJhKhuNEnHn193g==
+X-Proofpoint-Spam-Reason: safe
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[cirrus.com,reject];
+	R_DKIM_ALLOW(-0.20)[cirrus.com:s=PODMain02222019,cirrus4.onmicrosoft.com:s=selector2-cirrus4-onmicrosoft-com];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-274430-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER(0.00)[ljs@kernel.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:kas@kernel.org,m:ljs@kernel.org,m:akpm@linux-foundation.org,m:surenb@google.com,m:liam@infradead.org,m:vbabka@kernel.org,m:shakeel.butt@linux.dev,m:david@kernel.org,m:rppt@kernel.org,m:mhocko@suse.com,m:urezki@gmail.com,m:toshi.kani@hpe.com,m:dave.hansen@linux.intel.com,m:luto@kernel.org,m:peterz@infradead.org,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:x86@kernel.org,m:hpa@zytor.com,m:catalin.marinas@arm.com,m:will@kernel.org,m:dev.jain@arm.com,m:ryan.roberts@arm.com,m:devnexen@gmail.com,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:bpf@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:stable@vger.kernel.org,m:syzbot+fd95a72470f5a44e464c@syzkaller.appspotmail.com,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[31];
+	TAGGED_FROM(0.00)[bounces-274432-lists,stable=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,cirrus4.onmicrosoft.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,cirrus.com:dkim,opensource.cirrus.com:from_mime,opensource.cirrus.com:mid,callumwong.com:email];
+	FORGED_RECIPIENTS(0.00)[m:mail@callumwong.com,m:tiwai@suse.com,m:perex@perex.cz,m:linux-sound@vger.kernel.org,m:patches@opensource.cirrus.com,m:rf@opensource.cirrus.com,m:david.rhodes@cirrus.com,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ljs@kernel.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[kernel.org,linux-foundation.org,google.com,infradead.org,linux.dev,suse.com,gmail.com,hpe.com,linux.intel.com,redhat.com,alien8.de,zytor.com,arm.com,kvack.org,vger.kernel.org,lists.infradead.org,syzkaller.appspotmail.com];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable,fd95a72470f5a44e464c];
+	DKIM_TRACE(0.00)[cirrus.com:+,cirrus4.onmicrosoft.com:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[sbinding@opensource.cirrus.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sbinding@opensource.cirrus.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_SEVEN(0.00)[10]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CF160756E1B
+X-Rspamd-Queue-Id: 42C13756E9F
 
-On 2026-07-13 17:32 +0100, Kiryl Shutsemau wrote:
-> On Mon, Jul 13, 2026 at 04:54:27PM +0100, Lorenzo Stoakes (ARM) wrote:
-> > On Mon, Jul 13, 2026 at 02:32:09PM +0100, Kiryl Shutsemau wrote:
-> > > On Sun, Jul 12, 2026 at 11:42:23AM +0100, Lorenzo Stoakes wrote:
-> > > > This series addresses the issue by having the vmap huge promotion
-> > > > logic acquire the mmap read lock while both setting the huge page
-> > > > table entry and freeing the prior leaf page table.
-> > >
-> > > Hi Lorenzo,
-> > >
-> > > Before we settle on the mmap lock scheme, have you considered handling
-> > > this the way GUP-fast handles page table freeing -- RCU-defer the free
-> > > and make ptdump a lockless walker?
-> >
-> > Overall I like the idea of eventually moving this to _all_ being
-> > RCU-free-able :)
-> >
-> > BUT... I don't like it as a fix for this bug that has to be backported.
-> >
-> > I think there's a lot of subtleties to worry about and I don't want to
-> > worry about having to maintain tht as a backport.
-> >
-> > But also, we have an unfortunate situation with ptdump where it also walks
-> > userland ranges on x86 (and ranges for efi_mm on both x86 and arm64).
-> >
-> > And for userland ranges you have to have the mmap write lock to exclude a
-> > downgraded mmap read lock munmap() operation (which gives rise to the weird
-> > inversion you mention).
-> >
-> > So the walker still has to take the write lock in this case.
+Hi,
+
+I believe the _DSD for this laptop is very wrong, and the settings used here are not correct.
+
+Unfortunately, it looks like several laptops have a similar issue, though we don't know exactly which ones.
+
+Since this affects several laptops in a similar way, we will likely make a patch to support all of these laptops all at once, ensuring we use the correct settings.
+
+Thanks,
+
+Stefan
+
+On 05/07/2026 15:27, Callum Wong wrote:
+> The HP OmniBook 7 Laptop 14-fr0xxx (SSID 103C8E3B) has two CS35L41
+> amplifiers connected over I2C. The firmware provides a _DSD, but as with
+> the other HP laptops already handled by this driver the properties are
+> not exposed to the generic ACPI path, so the amplifiers fail to probe
+> with "Platform not supported" and the speakers only play at a much lower
+> volume. Provide the configuration through cs35l41_hda_property.c
+> instead, so the amplifiers probe and drive the speakers at full volume.
 >
-> I think the userland side is fixable too.
+> The values are taken from the machine's _DSD. There are two amplifiers
+> using internal boost (1000 nH, 4500 mA, 24 uF) with the speakers wired
+> right/left, the reset line at _CRS GPIO index 0 and the speaker-id line
+> at index 1.
 >
-> My first thought was to walk only VMA-backed ranges, which would make
-> the mmap read lock sufficient: munmap() detaches VMAs under the write
-> lock before downgrading, and free_pgtables() only frees tables
-> exclusively covering the detached range.
-
-Right, but some architectures have non-VMA ranges in userland (yuck), and
-ptdump is the only case where we really do this. It sucks really.
-
-I'm not sure if it's ok to just stop outputting this information.
-
-But as you say, we don't actually have to worry about this if we're RCU
-freeing.
-
+> Fixes: 7150d57c370f ("ALSA: hda/realtek: Add support for HP Agusta using CS35L41 HDA")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Callum Wong <mail@callumwong.com>
+> ---
+>  sound/hda/codecs/side-codecs/cs35l41_hda_property.c | 2 ++
+>  1 file changed, 2 insertions(+)
 >
-> But that is an unnecessary limitation on MMU_GATHER_RCU_TABLE_FREE
-> architectures -- which is every architecture with generic ptdump
-> support. There, user page table freeing is already RCU-deferred; it is
-
-The arches are powerpc, s390, arm64, x86 and riscv and indeed all set
-MMU_GATHER_RCU_TABLE_FREE.
-
-But it's more complicated than that unfortunately. As per mmu_gather.c -
-'Semi RCU freeing of the page directories'.
-
-And MMU_GATHER_RCU_TABLE_FREE != RCU page table freeing.
-
-You can see the complexity in Qi's commit 718b13861d22 ("x86: mm: free page
-table pages by RCU instead of semi RCU").
-
-Basically you need the IRQs disabled to get the semi-RCU behaviour and to
-be able to safely traverse page tables that way.
-
-So with CONFIG_PT_RECLAIM you're safe to RCU traverse PTEs only.
-
-Looking at the Kconfig entry:
-
-config PT_RECLAIM
-	def_bool y
-	depends on MMU_GATHER_RCU_TABLE_FREE && !HAVE_ARCH_TLB_REMOVE_TABLE
-
-And indeed, we fall back to just freeing PTE page tables immediately
-(relying on IPI sync) if it's not set:
-
-#ifdef CONFIG_PT_RECLAIM
-static inline void __tlb_remove_table_one_rcu(struct rcu_head *head)
-{
-	struct ptdesc *ptdesc;
-
-	ptdesc = container_of(head, struct ptdesc, pt_rcu_head);
-	__tlb_remove_table(ptdesc);
-}
-
-static inline void __tlb_remove_table_one(void *table)
-{
-	struct ptdesc *ptdesc;
-
-	ptdesc = table;
-	call_rcu(&ptdesc->pt_rcu_head, __tlb_remove_table_one_rcu);
-}
-#else
-static inline void __tlb_remove_table_one(void *table)
-{
-	tlb_remove_table_sync_rcu();
-	__tlb_remove_table(table);
-}
-#endif /* CONFIG_PT_RECLAIM */
-
-HAVE_ARCH_TLB_REMOVE_TABLE is set for powerpc, which also enables PTDUMP :)
-and that's because it actually tracks multiple PTE page tables together as
-a fragment.
-
-So in general - it's unfortunately not so easy, and we can't just rely on
-RCU.
-
-Obviously the above is moreso about userland mappings, but it suggests that
-_just_ removing page tables under RCU isn't sufficient here.
-
-You'd also need a lockless ptdump walker to carefully handle the weird edge
-cases as per pmdp_get_lockless() and ptep_get_lockless(), which the kernel
-page table wlakers not currently using.
-
-In the case of kernel page tables we can just always RCU defer page table
-freeing (having audited all callers to make sure nobody's freeing them in a
-broken way).
-
-But I wonder how the PPC fragment page tables stuff would interact with
-that, it's something that'd need to be audited.
-
-
-> what GUP-fast relies on to walk user page tables blindly with no mmap
-> lock. khugepaged retracting PTE tables under the pmd lock is likewise
-> covered by pte_free_defer().
-
-See above.
-
->
-> So the downgraded munmap() teardown you mention is already safe to race
-> with -- for a walker inside an RCU read-side section. The write lock is
-> only needed today because ptdump walks outside of one, so the deferred
-> freeing does nothing for it.
-
-Yup.
-
->
-> That would make the end state: the whole of ptdump -- userland, efi_mm
-> and kernel ranges -- walks under RCU with no mmap lock taken at all,
-> and the kernel-side freeing conversion we discussed is the only
-> missing piece.
-
-Yes the ideal situation is that we don't have to worry about an mmap or VMA
-lock at all and can stabilise on RCU only.
-
-Well only for ptdump.
-
-
-
->
-> > I spoke a bit about it overall at [0].
->
-> I think you forgot to paste [0] :)
-
-Yeah sorry! It's kinda immaterial now anyway :P as we're discussing in
-detail here.
-
-
->
-> > We already have this mmap lock convention as a requirement for kernel
-> > ranges, and it was being violated by CPA and vmalloc.
-> >
-> > So I'd prefer we keep this as the proximate fix to solve the bug here, and
-> > then revisit this later (alongside moving to RCU page table freeing
-> > _overall_, though one doesn't have to block the other).
->
-> No argument, let's do it as a follow-up.
->
-> I will give the current patchset a proper review.
-
-Thanks!
-
->
-> > > The free side looks cheap: kernel page table freeing already funnels
-> > > through pagetable_free_kernel(), which already has a deferred path
-> > > (used for IOMMU SVA). Adding a grace period there -- synchronize_rcu()
-> > > in the worker, amortized over the batch -- covers every freeing site
-> > > by construction.
-> >
-> > Well I did want to say btw that CPA doesn't actually mark the page tables
-> > as kernel, was going to chase up with something on that when I got a chance
-> > :)
->
-> You are right. CPA allocates the split tables with bare
-> pagetable_alloc(), so ptdesc_test_kernel() is false and collapse frees
-> them via __pagetable_free() directly. Note this also means they skip
-> the IOMMU SVA KVA invalidation that ASYNC_KERNEL_PGTABLE_FREE is there
-> for -- that looks like a bug today, independent of ptdump.
-
-Yeah it is, I'll send a patch.
-
->
-> >
-> > synchronize_rcu() is a very bug hammer, you can just use call_rcu() (and
-> > the ptdesc already has an rcu_head I think).
->
-> Sure, call_rcu().
->
-> > Keeping in mind that vmap can (in theory) span PUDs and even P4Ds it
-> > becomes a bit tricky.
->
-> Since the walker only reads, I think it is enough to re-descend from
-> the pgd with fresh READ_ONCE() at each level after dropping RCU --
-> whatever level got promoted in the meantime, we see either the new leaf
-> or the old table. But agreed this is the part that needs the most care.
-
-There could be torn writes observed that would need careful revalidation
-checks though couldn't there potentially?
-
-See e.g. contpte_ptep_get_lockless() and pmdp_get_lockless() if
-CONFIG_GUP_GET_PXX_LOW_HIGH.
-
-And things are complicated in kernel code obviously by the fact you have no
-PTL guarantees anymore.
-
-And OK maybe we can prove the huge promotion case is OK, this assumes that
-we won't in future free kernel page tables under some other
-circumstances... :)
-
-I'm not saying it's not doable though, just that we have to be _very
-careful_ how we do it if we're going to try to do this under RCU!
-
->
-> >
-> > But also I worry about whether the entries in the page table will actually
-> > be valid at the point the walker reads them.
-> >
-> > For vmap/CPA pretty much yes they are, but if something was to actually
-> > unmap them in future then that might no longer be the case. RCU will only
-> > guarantee that the page tables stick around, not that they contain anything
-> > valid.
->
-> For a walker that only reads, I don't think staleness is a problem as
-> long as frees are RCU-deferred: the walker can only reach a table via
-> an entry it read within its RCU section, and freeing requires unlinking
-> that entry first, so the grace period covers any walker that saw the
-> old pointer. Stale leaf contents are harmless for a dumper. It does
-> become a problem for anything that dereferences through leaf entries --
-> agreed that the general case needs more care than ptdump does.
-
-Well I wonder about torn writes actually, you'd need to be careful about
-revalidating in the walk.
-
->
-> --
->   Kiryl Shutsemau / Kirill A. Shutemov
->
-
-In general Ithink all the problems are ultimately solveable, they're just
-fiddly :)
-
-Cheers, Lorenzo
-
+> diff --git a/sound/hda/codecs/side-codecs/cs35l41_hda_property.c b/sound/hda/codecs/side-codecs/cs35l41_hda_property.c
+> index 416d7bf3e289..1d2a83b47cde 100644
+> --- a/sound/hda/codecs/side-codecs/cs35l41_hda_property.c
+> +++ b/sound/hda/codecs/side-codecs/cs35l41_hda_property.c
+> @@ -85,6 +85,7 @@ static const struct cs35l41_config cs35l41_config_table[] = {
+>  	{ "103C8C51", 2, INTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, 1, -1, 1000, 4100, 24 },
+>  	{ "103C8CDD", 2, INTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, 1, -1, 1000, 4100, 24 },
+>  	{ "103C8CDE", 2, INTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, 1, -1, 1000, 3900, 24 },
+> +	{ "103C8E3B", 2, INTERNAL, { CS35L41_RIGHT, CS35L41_LEFT, 0, 0 }, 0, 1, -1, 1000, 4500, 24 },
+>  	{ "104312AF", 2, INTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 1, 2, 0, 1000, 4500, 24 },
+>  	{ "10431433", 2, INTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, 1, -1, 1000, 4500, 24 },
+>  	{ "10431463", 2, INTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, 1, -1, 1000, 4500, 24 },
+> @@ -511,6 +512,7 @@ static const struct cs35l41_prop_model cs35l41_prop_model_table[] = {
+>  	{ "CSC3551", "103C8C6A", hp_i2c_int_2amp_dual_spkid },
+>  	{ "CSC3551", "103C8CDD", generic_dsd_config },
+>  	{ "CSC3551", "103C8CDE", generic_dsd_config },
+> +	{ "CSC3551", "103C8E3B", generic_dsd_config },
+>  	{ "CSC3551", "104312AF", generic_dsd_config },
+>  	{ "CSC3551", "10431433", generic_dsd_config },
+>  	{ "CSC3551", "10431463", generic_dsd_config },
 
