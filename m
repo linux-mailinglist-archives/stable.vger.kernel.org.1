@@ -1,175 +1,185 @@
-Return-Path: <stable+bounces-274182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274183-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id D6E6CrP7VWqGxQAAu9opvQ
-	(envelope-from <stable+bounces-274182-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 11:04:51 +0200
+	id +ccCFg78VWqcxQAAu9opvQ
+	(envelope-from <stable+bounces-274183-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 11:06:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A09A5752A95
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 11:04:50 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0717752AB3
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 11:06:21 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=google.com header.s=20251104 header.b=djxYHHrk;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274182-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-274182-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=U2W7GE1q;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=dZ4pgaqi;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274183-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274183-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linutronix.de;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C163E3023517
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 09:04:41 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1032A3020BCA
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 09:06:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69B0F43B6E1;
-	Tue, 14 Jul 2026 09:04:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C44E43C058;
+	Tue, 14 Jul 2026 09:06:17 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5214426ED3
-	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 09:04:38 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784019880; cv=pass; b=DCuCRriqq2JVfsvhPkwaAQLgH/BHbt/ENwVdbRRuNFJghiG9XxHTEAATcpxxO1QVSOIC7sUHJRUYuidRCPjLpGb02mL9REgwuSN/08yk5WTZkkfTalxX/oD/7AJUSjgk3Y4tjkkb86kliiRVmkRTNTB4njA+7wJjfSf92cQ/bdQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784019880; c=relaxed/simple;
-	bh=iaQmmVCiE7NdWy753PwYNnwaKukj8zYSbeXA4Z5zlkQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OJ5/nRrqYgY8X8nwSaBYJ3YbU4ODXymEG+C7o2HAZPgoMr+mktCi7NXEJXAvtGhpTFdQXYrHE/bxAl12EHYzkTpIkg6aEdj7OPBZV4OTbBJZuIDAU8CPuDj0CiUlr0wmA9yZU+Sx8/6S48wTniArJjyCpXwiRBw6T7lT8DOnNdg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=djxYHHrk; arc=pass smtp.client-ip=209.85.160.180
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-51c2a449c57so33588951cf.1
-        for <stable@vger.kernel.org>; Tue, 14 Jul 2026 02:04:38 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784019878; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Ha0dRjPNMFzkWTQSNcCpo/HywzdnFuA77KAZjzarAMdWex/KahDjdDAUUroPEnbZEX
-         tfjzEvzCG+a4dt4hQMfGVvNO1Ue2ZNwKwM8XbaSj/svVNE7u4DqAFtG8HM38dpz1NVFT
-         LO1Kq9c8+fK+FF5Z5CjsJaw93fmWobXp+NM170bkfuv6E4qhT+jPTSMecESvDrgZsyhs
-         i+w1cNEIMVVuhcl+GTfIFQlanR7dhGJcE4BLuuUqJDgpkwrHz4pLwhvYqxw5qOMpj1r/
-         nh9V2toij0VxAvxtiElN1lfdp4mBJ8VbZBcP1X/me3NsEJP7SYH3Aq5zk/Wv8mPrNlQK
-         dYWw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=XZTtUNxO6z9f4mwqOUjyr9bIYNiAKbPXuXL1XYYWBu4=;
-        fh=6OtQz/PWZWMR5X5VnVJfB76n2A8lO3FW/URxqJWHjXw=;
-        b=UFhyeXF0OHuPZCEPGAsRZ9UuqKVqbje1noCWv0ihpLMBLoY91hPalNd6cKDDbLb8oE
-         2UYHUMnbqF11AhBId8s9QXCPSani+cIQ9Xp6ZNNWxbXnbr2WKEYI3Th2sH8GbZJGlfPG
-         06T3YXWrtN85Zs0AXzw1dYsrEryzY5kxluwT2YgS+L2USAAG+X5jes1Ex96cyHaGTUnv
-         QluASuHEbwVFb3hhscLDwDCwexY9q1nV9vEwm4HTQ04RCOuJdQSVbwByjBNuJ+yC/7SY
-         vehX8g3/dbwF/DpFiLHGwpPE8/67ObDj1IrvV+VwvJTLSuR7Ihi03WqjXbo4Oi76PhvH
-         yIDw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784019878; x=1784624678; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=XZTtUNxO6z9f4mwqOUjyr9bIYNiAKbPXuXL1XYYWBu4=;
-        b=djxYHHrkjcgPgG7FwxC2dKlRb010Re0sfYlj5GUrAxkc//RLUzPHU9O2a1MnNWxRD2
-         JBixs7jPtAnau8tL1SxG2Rj/wUsl6sLyLvKpiis9jCKXstJK4m6/93+0BDzMQn2h7eaS
-         4ErGB30lWwyL6TFHuB6j4NcVBBnYtGIHvch85romvZIjDeaSrnYOBnoQE5vRc1nDJcMy
-         sNkVKGkGRd0aN6WWwMattICCPl3f3Z3IGiKVaAHh9nNagzvXss7RRvYszvgJMqOeO8EC
-         ue6c7d5ufHW5BZdjLgWhWWlBxqfhmOvcD1uY/4E4+oGlvzWk6SUW9l2xUsCvhAgubskC
-         DUAw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784019878; x=1784624678;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=XZTtUNxO6z9f4mwqOUjyr9bIYNiAKbPXuXL1XYYWBu4=;
-        b=k37zxOYLE3ivRuPVUtQhse4NKp3SZAsuV2yC2YFxuyeW0BcD9iD7WiWSbtt23c09Lq
-         Jl2yvNQ1ld7idiwGZ+o6DtfUD9LfmzGA1a5oEPD5sZvmkC/H97Urd69loMtF3q6XIfhQ
-         F1FikvdI4nmULGL5cpwp7YLKus3UmHh08/AhqJl1dVW/L8mf8cTxwzu1px5XbxMA9eAh
-         a9kmxrDj+aaQjofqsNKSfinK3ADPVWamm+VeMyk+hi12dTp96y/8tv10Fa1TL8Zu9GGu
-         vKvBw8E7Md7ZwiEFeIY6idoQ4nZmqXXljUsZikqkltkvQ45RXyse5PM9pWuR9DIIaRbV
-         NgSw==
-X-Forwarded-Encrypted: i=1; AHgh+Rqp7QCi9A+ttCdRAtvw6YVor4mKneb8w8YryILkYAnhuZ0oSdJiSYIzlvMRq2Ds2O1hqywOYto=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxYPqgnRbcf0Itc6PuDmX+c456OjXkKXktVxDe8VIV6C50ByGj7
-	qz4z5HEYp5LlghP4RRNipq40S+JE6S9ZYUxNDpuZ+txO7TYf4FU8UtL9vdp+PNgn3xt9CwU0ML5
-	1Ty1Zor5RWxQzTA7kmI+cHsF9jHV3pbZuqY/CrZiJ
-X-Gm-Gg: AfdE7clNVEzTzo1WbQoBX9s9WDNyYrVMyknciHnIx2nKfsjNS7jwj9/m3WGu9qKKqeW
-	TccpRNRFEVbPKKiExZfNPUnRm5M+Uuw3cj6cIhzMEgANew3zquzwb1BV1efP9huIauG6l0XOtEU
-	G4FfOiGFQzWqxKhblWPw4wXfENf9Bw/2oIS+9dZNYy/AxByiUkzd7kyRF9vLwddfYIN116APiDY
-	iSp664OJ0JUW98moIsWD0EVaRnwO3bGXuXVRvlHSh7sqfyDfh1NJHVql9VoND9rUSNe75FtvkUS
-	/tSfjMH2qh6t4JIWgDIanPib5RAQYRRz/EoWLhdjwaPhniFOP37fDohRzF+MvBQZwRumi3cB+gn
-	XIZGI/HhFHpw=
-X-Received: by 2002:a05:622a:11d2:b0:51c:e14:87ae with SMTP id
- d75a77b69052e-51e3c1d28d6mr27490681cf.34.1784019877100; Tue, 14 Jul 2026
- 02:04:37 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75B0C426ED3;
+	Tue, 14 Jul 2026 09:06:15 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784019976; cv=none; b=Q2B2eCUUhm8sqIimTZWNBlnm93pV0fr49jGri777vfvdruCB7F67fbMPExjyCOZVDtBiQdq8I3Eat8TqQeEI1ZHocm+i03XW4Q7BFZDnNCN0uT2Hjyw0eOZxzbmfguYY+F6r6FzXKyW+afe/zfia9/Wt14cYfe303dpbQd7P9XI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784019976; c=relaxed/simple;
+	bh=kaoxXX0jAstSfaSlXnlO4sW/eHscmBEnQsohmFJRh5E=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=pWUeznGm1g4WB5TzSMyJ+9kTTsRqTk3Q6q1ra1fno30t/qy1gtn7vjFIuk9Z4PJwNjNtsKGjKqrVjE4y5YACbJ+rVRyDC33YJgkJ00Ww+5Prch7bAWtrIufZrj6PcheNV1uH5zvegKdZkKHxR6xugYAEz4ij9nt9NdkKVOsLzSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=U2W7GE1q; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=dZ4pgaqi; arc=none smtp.client-ip=193.142.43.55
+Date: Tue, 14 Jul 2026 09:06:11 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1784019973;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=uc1n7R7SS3CkocN0qbaxkTdnlUlunyItCVNa07EcMi4=;
+	b=U2W7GE1q9FKMUYwQq6M8eba3aMMwK7h90sP1kw84W4VcxwfsmOOGULEnUjhdMgTKifnNiC
+	nd2kuIuW9CjaKxYsis3Nqh4Fe8OEs+7K+EPD0oFhNBplLYCngZvGlGzgXkWaNXBQO06oBy
+	yi5gHTdVFRFe/PfGZVuIvwfJ7CuFl0D1YLIA8Gx6nQKcNSTHaOGSGoZKEb/1PaU8B9VXCX
+	nhtBr4L+RoVuDdaiKwGqtdatV0QwAOrm78K+HHkRr/hpQaT9CoBiMMYKhQ4uZJVUYpgNIi
+	W92rHQgxq+RXTmMmLHGpo8bgQ7VLno2+q6qoEnXroqiXzA6Ta6QP9EUs7q9gRg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1784019973;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=uc1n7R7SS3CkocN0qbaxkTdnlUlunyItCVNa07EcMi4=;
+	b=dZ4pgaqi6dHniVGWwL4/sw1ndYWHl+GwB45P6G3/RZy0ySsD/2Ky4aLjaIeYp9Xb/k44KA
+	LPFsaONZl9t4LdBg==
+From: "tip-bot2 for Thorsten Blum" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/urgent] x86/boot: Validate console=uart8250 baud rate to
+ fix early boot hang
+Cc: Thorsten Blum <thorsten.blum@linux.dev>, Ingo Molnar <mingo@kernel.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, stable@vger.kernel.org, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20260713194924.126472-3-thorsten.blum@linux.dev>
+References: <20260713194924.126472-3-thorsten.blum@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260713105631.8616-1-zhaoyz24@mails.tsinghua.edu.cn>
-In-Reply-To: <20260713105631.8616-1-zhaoyz24@mails.tsinghua.edu.cn>
-From: Eric Dumazet <edumazet@google.com>
-Date: Tue, 14 Jul 2026 11:04:19 +0200
-X-Gm-Features: AVVi8Cdwh5_lQBrDRf_glhh8Szsib8QIaD1yn44tVc0VeL-V8w9Ji-fQmVY1sNQ
-Message-ID: <CANn89iJo9U6TQbu3aVcn2YY=2CGTTf8+CAhwYh4i9EyG8cnayg@mail.gmail.com>
-Subject: Re: [PATCH net v2] tcp: initialize standalone TCP-AO response padding
-To: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-Cc: netdev@vger.kernel.org, Neal Cardwell <ncardwell@google.com>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, "David S. Miller" <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	linux-kernel@vger.kernel.org, Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>, 
-	Ao Wang <wangao@seu.edu.cn>, Xuewei Feng <fengxw06@126.com>, Qi Li <qli01@tsinghua.edu.cn>, 
-	Ke Xu <xuke@tsinghua.edu.cn>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Message-ID: <178401997162.1844600.12790933633191960716.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@kernel.org> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:zhaoyz24@mails.tsinghua.edu.cn,m:netdev@vger.kernel.org,m:ncardwell@google.com,m:kuniyu@google.com,m:davem@davemloft.net,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:linux-kernel@vger.kernel.org,m:yangyx22@mails.tsinghua.edu.cn,m:wangao@seu.edu.cn,m:fengxw06@126.com,m:qli01@tsinghua.edu.cn,m:xuke@tsinghua.edu.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-274182-lists,stable=lfdr.de];
+	REPLYTO_DOM_EQ_TO_DOM(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[edumazet@google.com,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[vger.kernel.org,google.com,davemloft.net,kernel.org,redhat.com,mails.tsinghua.edu.cn,seu.edu.cn,126.com,tsinghua.edu.cn];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:linux-tip-commits@vger.kernel.org,m:thorsten.blum@linux.dev,m:mingo@kernel.org,m:hpa@zytor.com,m:stable@vger.kernel.org,m:x86@kernel.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[tip-bot2@linutronix.de,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-274183-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linutronix.de:+];
+	HAS_REPLYTO(0.00)[linux-kernel@vger.kernel.org];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[edumazet@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tip-bot2@linutronix.de,stable@vger.kernel.org];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,mail.gmail.com:mid]
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,vger.kernel.org:from_smtp,vger.kernel.org:replyto,msgid.link:url,linutronix.de:from_mime,linutronix.de:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A09A5752A95
+X-Rspamd-Queue-Id: C0717752AB3
 
-On Mon, Jul 13, 2026 at 12:56=E2=80=AFPM Yizhou Zhao
-<zhaoyz24@mails.tsinghua.edu.cn> wrote:
->
-> tcp_v4_send_ack() and tcp_v6_send_response() construct standalone TCP
-> responses with TCP-AO options.  The option length carries the actual MAC
-> length, but the TCP header length includes the option rounded up to a
-> four-byte boundary.
->
-> tcp_ao_hash_hdr() writes the MAC only.  Thus, when the MAC length is not
-> four-byte aligned, the one to three bytes after the MAC are left
-> uninitialized and may be transmitted.  For the normal TCP-AO hashing
-> mode, those bytes also have to be initialized before computing the MAC.
->
-> Initialize only the alignment padding in the TCP-AO branches, before
-> hashing the header.  Use TCPOPT_NOP, as in the normal TCP-AO output path.
-> This avoids adding work to non-AO TCP responses while preserving a valid
-> authenticated header.
->
+The following commit has been merged into the x86/urgent branch of tip:
 
-Reviewed-by: Eric Dumazet <edumazet@google.com>
+Commit-ID:     ffa0aa5b625fe0bed7463ac613f8b06676ff4542
+Gitweb:        https://git.kernel.org/tip/ffa0aa5b625fe0bed7463ac613f8b06676f=
+f4542
+Author:        Thorsten Blum <thorsten.blum@linux.dev>
+AuthorDate:    Mon, 13 Jul 2026 21:49:25 +02:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Tue, 14 Jul 2026 11:01:33 +02:00
+
+x86/boot: Validate console=3Duart8250 baud rate to fix early boot hang
+
+When the baud rate is empty, 0, invalid, or overflows to 0 when stored
+as an int, the system will hang during early boot because of a division
+by zero in early_serial_init().
+
+Fall back to DEFAULT_BAUD when the resulting baud rate is 0 to prevent
+an early system hang.
+
+Fixes: ce0aa5dd20e4 ("x86, setup: Make the setup code also accept console=3Du=
+art8250")
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260713194924.126472-3-thorsten.blum@linux.dev
+---
+ arch/x86/boot/early_serial_console.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
+
+diff --git a/arch/x86/boot/early_serial_console.c b/arch/x86/boot/early_seria=
+l_console.c
+index 023bf1c..5b83bea 100644
+--- a/arch/x86/boot/early_serial_console.c
++++ b/arch/x86/boot/early_serial_console.c
+@@ -117,7 +117,7 @@ static unsigned int probe_baud(int port)
+ static void parse_console_uart8250(void)
+ {
+ 	char optstr[64], *options;
+-	int baud =3D DEFAULT_BAUD;
++	int baud;
+ 	int port =3D 0;
+=20
+ 	/*
+@@ -136,10 +136,13 @@ static void parse_console_uart8250(void)
+ 	else
+ 		return;
+=20
+-	if (options && (options[0] =3D=3D ','))
+-		baud =3D simple_strtoull(options + 1, &options, 0);
+-	else
++	if (options && (options[0] =3D=3D ',')) {
++		baud =3D simple_strtoull(options + 1, NULL, 0);
++		if (!baud)
++			baud =3D DEFAULT_BAUD;
++	} else {
+ 		baud =3D probe_baud(port);
++	}
+=20
+ 	if (port)
+ 		early_serial_init(port, baud);
 
