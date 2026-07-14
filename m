@@ -1,164 +1,201 @@
-Return-Path: <stable+bounces-274129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274156-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id EGV8Al3LVWrTtQAAu9opvQ
-	(envelope-from <stable+bounces-274129-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 07:38:37 +0200
+	id AeosB3/UVWpJuAAAu9opvQ
+	(envelope-from <stable+bounces-274156-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 08:17:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFE3275135B
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 07:38:35 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 702BC75166A
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 08:17:34 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=dBZA3v7+;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274129-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274129-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=NCjRekVa;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274156-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-274156-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=intel.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B6DAD300601D
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 05:38:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D38DD303CD37
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 06:17:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E70E63403F9;
-	Tue, 14 Jul 2026 05:38:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3CEB374185;
+	Tue, 14 Jul 2026 06:17:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from va-1-114.ptr.blmpb.com (va-1-114.ptr.blmpb.com [209.127.230.114])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A75C33F38B
-	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 05:38:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68F92343D9D;
+	Tue, 14 Jul 2026 06:17:26 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784007507; cv=none; b=E2ikJ5pYRaH7mCpWcmV7SFX7Y1vhZvvMsH7QhupZGHAXgk0p4504qu0lYOXiVKQeGf8oztYCVmfIIASL41U2kxsPX0EWW0lvfesstO3VW22Gzq4jPQOyZ/tbmnmUOHisaPRUv9X/L0ckmdcaOK6iAtjbOR5EeMTu1Z+NmdD8mys=
+	t=1784009848; cv=none; b=HEigPvtV7CaU6PtyBHSoUWkdvqWXkykx0kY5saf63AHzX6ljQVG3Fc/SsfyDQe0u+U9NQE9rXtpLauTZn6wcgA8pVas1a4hkvbN8YFvbZwdIA4ua8Cw2OIU97K8kxRuh4m0Hgrx7UNdFGdE2NM+Q8PV5j5SECstQSZYx5UTvWK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784007507; c=relaxed/simple;
-	bh=wsgxB8d0Z97OA5/TGi1FFx1r8lmXJ//VHZT91Rx6Ync=;
-	h=References:In-Reply-To:Content-Type:To:Cc:Subject:From:
-	 Mime-Version:Date:Message-Id; b=dPm7Jz3H3ezwOAU14n7aC2MFZy0Oqvcv2TE363s/VlmYyzaLanWyhgchHGlfsvmY/JgRZ7Mc+Cq1tJ5w4r15fnLyVCZiQXmocgrqRN566FklyyTaq+ybZa9tTowe+ZG+WWzTGd9IFGzhpJP4MLSrOyzj+KAJkVRfZ2MRwpNuXhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=dBZA3v7+; arc=none smtp.client-ip=209.127.230.114
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1784007495; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=wsgxB8d0Z97OA5/TGi1FFx1r8lmXJ//VHZT91Rx6Ync=;
- b=dBZA3v7+aGsuoB3duAzisIi3dANAf7WGtd2Z/pLrvkz6tcEVgpLZWpVCPxpx/bBFdOTw0X
- ZaAfV/65CZRIIbRfSgndbycKbL5nGEfIKIa91/ucBFhDXkHco/fCWBf6ZUao2Hrm0Cus3r
- a1O0u4aB0ZFhvaZ3qZhdIHLxcvXtQEvDXLc+FKaVANg3JIBEGq+zfCP7ZYRkD18TksX06/
- re3cvehicW9LOuDmawyor2pWUFAK6aW5HvC6x6nRphrWgEz09K12U//e2qmdAsra3eahXR
- c7wa5sEyOXSLTSbgrALT2d1KXF/6Fg8ox7xXioqxFFeUEHSwANPBMCdj4idAbw==
-X-Lms-Return-Path: <lba+16a55cb45+335d26+vger.kernel.org+caixiangfeng@bytedance.com>
-References: <20260713171456.300518-1-caixiangfeng@bytedance.com> <20260713171456.300518-3-caixiangfeng@bytedance.com>
-	<1C8560A1-1F70-488E-BB62-2407B115F7B5@linux.dev>
-In-Reply-To: <1C8560A1-1F70-488E-BB62-2407B115F7B5@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-To: "Muchun Song" <muchun.song@linux.dev>
-Cc: <akpm@linux-foundation.org>, <osalvador@suse.de>, <david@kernel.org>, 
-	<richard.weiyang@linux.alibaba.com>, <baoquan.he@linux.dev>, 
-	<shuah@kernel.org>, <linux-mm@kvack.org>, 
-	<linux-kselftest@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
-	<stable@vger.kernel.org>
-Subject: Re: [PATCH 2/2] selftests/mm: add hugetlb_region_cache_race regression test
-From: =?utf-8?q?=E8=94=A1=E7=BF=94=E5=B3=B0?= <caixiangfeng@bytedance.com>
+	s=arc-20240116; t=1784009848; c=relaxed/simple;
+	bh=yPJi8dqAeqIB4aBsYSEWntf2un8xrRXwoxXijOHtDEo=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=qnZSIEfKzqo8GHferNJSZdjN3FYZmLY7FGjT1NdHkp35WOPiGDJziBjKBs/C99H+XBFzTSQA0SFBbdxgeiyi9ETYpI3K1gm8iaeYnMY7ns8fTFyItP2VBaFxGp71F7+FTIm1CSr2tRu7vpeQ4Ovh0S+sruRGBjU37RHXItTFl7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NCjRekVa; arc=none smtp.client-ip=192.198.163.11
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784009846; x=1815545846;
+  h=from:date:subject:mime-version:content-transfer-encoding:
+   message-id:to:cc;
+  bh=yPJi8dqAeqIB4aBsYSEWntf2un8xrRXwoxXijOHtDEo=;
+  b=NCjRekVa+IHfGyueB1J6gT14KR7koIj5OHu+ZtOoikvWomoCYNY9nJoH
+   NwxvGTLqhHXh6sAbsO35QYCU72HyK4G82EUXonPd3IjxY8lcQ8pIvCrjE
+   k5oxXjoqsO34EYNh+bE0QkvGvIRYoCUWYHUBq0yaHY0yBOuwur7cUEjSt
+   y/f2p78ScYOI8K5whoz0QKmYc9TpYpqORAoGCiCyM1oCXAJkDd/IDoMI9
+   nfVPyeFNEyQgXI60qiGHm3TafXK4uBJpWlnNWPqY60yJppoYlXb8mIy7L
+   vw74Aqk1OiLSm/Lyru9qfqigv2iIs1/33hZhNywx4QcU9DRJk7b+LtIuX
+   Q==;
+X-CSE-ConnectionGUID: cS0TMVj5RHOFnX184q0+Xw==
+X-CSE-MsgGUID: HsCtZASTR0qCF9jk6hn2ug==
+X-IronPort-AV: E=McAfee;i="6800,10657,11846"; a="95227334"
+X-IronPort-AV: E=Sophos;i="6.25,163,1779174000"; 
+   d="scan'208";a="95227334"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jul 2026 23:17:26 -0700
+X-CSE-ConnectionGUID: Qf5lIy5bRy2ZZHWUUqr0fA==
+X-CSE-MsgGUID: BZJf3tSWS8Gb7gK15xa2DA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,163,1779174000"; 
+   d="scan'208";a="251809889"
+Received: from sannilnx-dsk.jer.intel.com (HELO [127.0.1.1]) ([10.12.231.107])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jul 2026 23:17:23 -0700
+From: Alexander Usyskin <alexander.usyskin@intel.com>
+Date: Tue, 14 Jul 2026 08:54:17 +0300
+Subject: [PATCH v2] drm/xe/nvm: fix writable override for CRI
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Date: Tue, 14 Jul 2026 13:38:12 +0800
-Message-Id: <bedeaa5bba0bd040e3b7612739f2bb2229e881de.c970df5e.7173.4d68.84c0.4372a6c03178@bytedance.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260714-cri_nvm_fdo_flip-v2-1-14580e71b58e@intel.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/32NQQ6CMBBFr0JmbQ3tAEVX3sMQonSQSaAlLWk0p
+ He3cgCX7yX//R0CeaYA12IHT5EDO5tBnQoYpod9kWCTGVSpmlKXrRg89zYu/WhcP868CkR81lV
+ N0pgW8mz1NPL7SN67zBOHzfnP8RDlz/6JRSmk0BeFGptGI1Y3thvN58Et0KWUvlJDQFOwAAAA
+X-Change-ID: 20260708-cri_nvm_fdo_flip-333b545e1dd8
+To: Matthew Brost <matthew.brost@intel.com>, 
+ =?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, David Airlie <airlied@gmail.com>, 
+ Simona Vetter <simona@ffwll.ch>
+Cc: intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Alexander Usyskin <alexander.usyskin@intel.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784008475; l=2208;
+ i=alexander.usyskin@intel.com; s=20260315; h=from:subject:message-id;
+ bh=yPJi8dqAeqIB4aBsYSEWntf2un8xrRXwoxXijOHtDEo=;
+ b=JQHtEsrvNDL7FiH3ZfVzZUo4fLLtwJWDYSOuLDPlhh7akUtWo+p1mOi3Vwj780IE8h8NmmJVt
+ BHEN//o76UVA16e/h48/bGJhHUaiQSKcmc293bfSCyqMQ1O/jm8wEQy
+X-Developer-Key: i=alexander.usyskin@intel.com; a=ed25519;
+ pk=X+qoF/nFCdDOV04IForWSxnkyoCAbUE10egZi6PSfcU=
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-5.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[bytedance.com,quarantine];
-	MV_CASE(0.50)[];
-	R_DKIM_ALLOW(-0.20)[bytedance.com:s=2212171451];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-274156-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-274129-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:muchun.song@linux.dev,m:akpm@linux-foundation.org,m:osalvador@suse.de,m:david@kernel.org,m:richard.weiyang@linux.alibaba.com,m:baoquan.he@linux.dev,m:shuah@kernel.org,m:linux-mm@kvack.org,m:linux-kselftest@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:matthew.brost@intel.com,m:thomas.hellstrom@linux.intel.com,m:rodrigo.vivi@intel.com,m:airlied@gmail.com,m:simona@ffwll.ch,m:intel-xe@lists.freedesktop.org,m:dri-devel@lists.freedesktop.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:alexander.usyskin@intel.com,s:lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[caixiangfeng@bytedance.com,stable@vger.kernel.org];
+	FORGED_SENDER(0.00)[alexander.usyskin@intel.com,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[3];
+	FREEMAIL_TO(0.00)[intel.com,linux.intel.com,gmail.com,ffwll.ch];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[bytedance.com:+];
-	MISSING_XM_UA(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[caixiangfeng@bytedance.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[alexander.usyskin@intel.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:from_mime,intel.com:mid,intel.com:email,intel.com:dkim,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: EFE3275135B
+X-Rspamd-Queue-Id: 702BC75166A
 
-> > On Jul 14, 2026, at 01:14, Xiangfeng Cai <caixiangfeng@bytedance.com> w=
-rote:
-> >=C2=A0
-> > Add a regression test for the list corruption in
-> > allocate_file_region_entries() fixed by the previous patch
-> > ("mm/hugetlb: fix list corruption in allocate_file_region_entries()").
-> >=C2=A0
-> > Triggering the bug requires a concurrent reservation operation to drain
-> > resv->region_cache while allocate_file_region_entries() has dropped
-> > resv->lock for its GFP_KERNEL allocation, forcing its retry loop to run
-> > again. =C2=A0As the mmap() and fallocate(PUNCH_HOLE) paths serialise on
-> > inode_lock, the cache has to be drained by faults from a separate addre=
-ss
-> > space. =C2=A0The test forks several processes sharing one hugetlb inode=
- via
-> > memfd_create(MFD_HUGETLB); each mmap()s and faults ranges and punches h=
-oles
-> > to keep the shared resv_map fragmented.
-> >=C2=A0
-> > Two modes are provided:
-> >=C2=A0
-> > - default: a safe single-process functional check that exercises the bu=
-ggy
-> > =C2=A0 line without forcing a second loop iteration; safe on any kernel=
-.
-> >=C2=A0
-> > - --trigger: the concurrent reproducer, which panics a vulnerable
-> > =C2=A0 CONFIG_DEBUG_LIST=3Dy kernel and is therefore opt-in. =C2=A0It f=
-aults pages in,
-> > =C2=A0 so it needs as many free huge pages as the file is large.
-> >=C2=A0
-> > Assisted-by: Claude:claude-opus-4-8
-> > Signed-off-by: Xiangfeng Cai <caixiangfeng@bytedance.com>
->=C2=A0
-> It looks like this is a regression test case for a very specific instance=
- of
-> list corruption.
->=C2=A0
-> In my opinion, selftests should focus more on functional testing with cle=
-ar
-> expected behaviors and results to users. I don't think it's worth maintai=
-ning
-> a test case for a minor issue like this, especially since code changes ha=
-ppen
-> so quickly. Once the code evolves, this specific list corruption might ne=
-ver
-> occur again, and the function itself could even be deleted during a refac=
-tor.
->=C2=A0
-> Therefore, I wouldn't recommend adding this as a selftest.
+The witable override should be set when FDO_MODE bit is enabled.
+Fix the comparison to distingush this case from legacy systems
+where bit should be disabled to have override.
 
-That makes sense to me.=C2=A0 This test is quite specific to the previous i=
-nternal
-list corruption, so I agree it is probably not a good fit for selftests.
-I'll drop it.
+Cc: stable@vger.kernel.org
+Fixes: 9dde74fd9e65 ("drm/xe/nvm: enable cri platform")
+Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
+---
+Changes in v2:
+- avoid multiple assignments
+- Link to v1: https://lore.kernel.org/r/20260708-cri_nvm_fdo_flip-v1-1-792373667334@intel.com
+---
+ drivers/gpu/drm/xe/xe_nvm.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-Thanks for the review.
+diff --git a/drivers/gpu/drm/xe/xe_nvm.c b/drivers/gpu/drm/xe/xe_nvm.c
+index 33487e91f366..1ea67eaeae24 100644
+--- a/drivers/gpu/drm/xe/xe_nvm.c
++++ b/drivers/gpu/drm/xe/xe_nvm.c
+@@ -60,35 +60,40 @@ static bool xe_nvm_writable_override(struct xe_device *xe)
+ 	struct xe_mmio *mmio = xe_root_tile_mmio(xe);
+ 	bool writable_override;
+ 	struct xe_reg reg;
+-	u32 test_bit;
++	u32 test_bit, test_val;
+ 
+ 	switch (xe->info.platform) {
+ 	case XE_CRESCENTISLAND:
+ 		reg = PCODE_SCRATCH(0);
+ 		test_bit = FDO_MODE;
++		test_val = FDO_MODE;
+ 		break;
+ 	case XE_BATTLEMAGE:
+ 		reg = HECI_FWSTS2(DG2_GSC_HECI2_BASE);
+ 		test_bit = HECI_FW_STATUS_2_NVM_ACCESS_MODE;
++		test_val = 0;
+ 		break;
+ 	case XE_PVC:
+ 		reg = HECI_FWSTS2(PVC_GSC_HECI2_BASE);
+ 		test_bit = HECI_FW_STATUS_2_NVM_ACCESS_MODE;
++		test_val = 0;
+ 		break;
+ 	case XE_DG2:
+ 		reg = HECI_FWSTS2(DG2_GSC_HECI2_BASE);
+ 		test_bit = HECI_FW_STATUS_2_NVM_ACCESS_MODE;
++		test_val = 0;
+ 		break;
+ 	case XE_DG1:
+ 		reg = HECI_FWSTS2(DG1_GSC_HECI2_BASE);
+ 		test_bit = HECI_FW_STATUS_2_NVM_ACCESS_MODE;
++		test_val = 0;
+ 		break;
+ 	default:
+ 		drm_err(&xe->drm, "Unknown platform\n");
+ 		return true;
+ 	}
+ 
+-	writable_override = !(xe_mmio_read32(mmio, reg) & test_bit);
++	writable_override = (xe_mmio_read32(mmio, reg) & test_bit) == test_val;
+ 	if (writable_override)
+ 		drm_info(&xe->drm, "NVM access overridden by jumper\n");
+ 	return writable_override;
 
-Xiangfeng
+---
+base-commit: 8cdeaa50eae8dad34885515f62559ee83e7e8dda
+change-id: 20260708-cri_nvm_fdo_flip-333b545e1dd8
+
+Best regards,
+-- 
+Alexander Usyskin <alexander.usyskin@intel.com>
+
 
