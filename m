@@ -1,216 +1,148 @@
-Return-Path: <stable+bounces-274217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274564-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id D1RZJFcoVmou0QAAu9opvQ
-	(envelope-from <stable+bounces-274217-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 14:15:19 +0200
+	id qq8ND3ipVmqD/wAAu9opvQ
+	(envelope-from <stable+bounces-274564-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 23:26:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C07187545FE
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 14:15:18 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94F68758FA0
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 23:26:15 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Ym1S2jkQ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274217-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274217-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DXc3N3wO;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274564-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274564-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A0D043020B6B
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 12:08:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4891D3094255
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 21:24:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B34C539150A;
-	Tue, 14 Jul 2026 12:07:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC967429CDA;
+	Tue, 14 Jul 2026 21:24:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AB322737E3
-	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 12:07:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C9AF426EA8;
+	Tue, 14 Jul 2026 21:24:37 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784030876; cv=none; b=FgRO4ndv3lZMAIGI8HdPgH+nsb0JPAZMlmTrfhicZhp+/UHrtJZHhpWRirSsUOb1fl6VD9fYp7ecTnItBLLV9OeiDAKBycfamw6Y9vr34x92zIdRnMUMni4l0mWLU/86rxUdfq/87zbfnn0x3KD0Pc93CCsQjGoHfJxMq/VcGYM=
+	t=1784064278; cv=none; b=kAKjCFoidac1FeyHbmJL774IQ+pdFiqGr1EtAy+8UGf3c2BT7LrQ5ADYAyVWm/aUHIkcCgh3C6c/PXpsTR0WMRmRnJSbUAQKG/AwBfhrdrp+6s3A6dSeNd8WGCfHLKkQ9q6pRogjQnen/F8TIh+Qf9StYfkyEkh75DHj0PFFN5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784030876; c=relaxed/simple;
-	bh=OMgrFuAHO48rjnve0IC7BkW6T1cWgVV5IqCaIa4ACps=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K3eV4D3jgz43f+dJVjUjxvAtu2JJStfOLy7pWfyW+rTTKkw9pQJ88YsgywDpS3cSZw/4mJWjyuNFihCfKo9fRP8uzi7I0CA0CL9LgK9Vcm4jrSuwdNB8X+K6si6EtXhhg3sQzlX7Q6e3vsmxw+KIOSljrBwqUtEL0Bk5DM13gRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ym1S2jkQ; arc=none smtp.client-ip=209.85.210.54
-Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-7e9dc546f40so562673a34.1
-        for <stable@vger.kernel.org>; Tue, 14 Jul 2026 05:07:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784030874; x=1784635674; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=rBtlx7iHFHOhX9UuDDBDnXkrtPmiJE4QMJttkANYWxs=;
-        b=Ym1S2jkQ3rodfkYBfpZ076IJbKQQVkMe5Kuqr6FjFVopmfSS9VRACdnAm+a/fgjFis
-         eVzx/bCmqjtZ+PiHUAbkkFGlBZqbYaaIvA6xG1XLruvJZc8i1J1F8e4Kao9o1H00s3iV
-         R1v0RaSyFmtaLJGZCczITdVJCDWLUWu5IOaCOk4BOsZTcLiCa+gYX32nF5TLtexkyJFH
-         EwWtT/up56cBmdp+kvtlpqt5i6d03i/uO6Jci9S/0d5LPHcr5vEs4zwG/VbVM7hoQREb
-         nt3TlX+M5YJZ9YThD3PTwsss2ph/hVVkkLymsSH46u3+LLFm14gJkxhYZQ1tyjgXu/xc
-         2mJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784030874; x=1784635674;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=rBtlx7iHFHOhX9UuDDBDnXkrtPmiJE4QMJttkANYWxs=;
-        b=HHg75oBYcMCUfpW7JKUZEkb9s6grcJUSoY4icyByYb4HBdw1ThstRjyDQgcmjGH80g
-         YRRR5Zs8Ro26ucUywLML0Y783AAK99OzNnOs9bggHDjH3rrL5nTnLahM3bE0GdeHKNIk
-         pLCN+bw+8kNXeh1oD2yRWJ/18LrtUg8TESTsdyBYnY44mEeP5U/Pun19Ev8o7xgNI7+a
-         QJW7vp9qRn4Ll3KrPPE4Y8VJ68vyxeYRL2+y5UP2MzlxHEZ3q2+Wyxep88tPeRwzfO4A
-         /uMAboBMoK7IemOgxhHrrWzrr7c54iLa3mxwvzryMWc0ggfy8F/km7SVsOLUvZvERweT
-         V2Og==
-X-Forwarded-Encrypted: i=1; AFNElJ8hJ0qNoVX/ooEhYWwpoUiYBBGBk4zstWZmFRpj+tNU+lv8sTpkNYwCBHE3Qrw3RObdTavx/L8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxnLl1YsGCeu75V50UaiJzqOIqcJO11h9G9sJNUsB01YOMkkWUc
-	aZn8+yLNfB2jcK60vIFuz/lpirisIuPiP1qt8lX1mTN+1+kpvAXTpppS
-X-Gm-Gg: AfdE7cmHXxz0Y/4hShQZKbwadVoAKDMqcOQqeD6DqZ6r7hGm38G2vK8yf8qFnNaGJh+
-	mWCJOXbWmT7qUK91tazjpcSVgBcBLFN/6Vu0/y5t18g7cOj1URhSsXJNN3PvGyXR8Hhg2Zyk4ci
-	T7CQ5jOszUhKjYTc9DBTGJl9zN/q5kw36HNJZO5J6W2p6Ibwj2Ha9oH4t1GXK8WSPH3t5W/csja
-	83tA+BVrYcdQjuwrkiDpw0VVgZiJ/W/DV0upSRPiRWEmntPQsPaFml4kyeRO7/WKyq1/MW9KR57
-	VOhPD9yx5j2JzC+/7WjlOfhmpX0vx8kKtRs2HN83NcLIeEJ6pEco4cFxwOhj5cX0ce+Lv/DeSvx
-	DayUAC9ap0R8R0PiQhpZFuG28raILTA7mYmg1fTu34kys38S6AH2FJ27HfpIcPCnZQhZN80jZ94
-	lQ9LyrRH5U9W6kwVCilo0pfujA0A==
-X-Received: by 2002:a05:6820:1627:b0:6a1:50f8:abb5 with SMTP id 006d021491bc7-6a39bee703cmr6227343eaf.32.1784030873900;
-        Tue, 14 Jul 2026 05:07:53 -0700 (PDT)
-Received: from localhost ([74.80.182.78])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7ebcb3f2b86sm14964026a34.26.2026.07.14.05.07.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Jul 2026 05:07:51 -0700 (PDT)
-Date: Tue, 14 Jul 2026 15:07:46 +0300
-From: Dan Carpenter <error27@gmail.com>
-To: "Taedcke, Christian" <christian.taedcke-oss@weidmueller.com>
-Cc: christian.taedcke@weidmueller.com, Vinod Koul <vkoul@kernel.org>,
-	Frank Li <Frank.Li@kernel.org>, dmaengine@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v3] dmaengine: nbpfaxi: Fix setting channel irqs in
- probe()
-Message-ID: <alYmkuGtjGRvMqup@stanley.mountain>
-References: <20260703-upstreaming-nbpfaxi-v1-v3-1-24f7f9aa102f@weidmueller.com>
- <ak96OkpYvJrK1Vbt@stanley.mountain>
- <84676bd8-3815-433b-b531-2715b8e8693f@weidmueller.com>
+	s=arc-20240116; t=1784064278; c=relaxed/simple;
+	bh=Zh49ItfkjMR5OV68dFco2V5vyH1fTNPdViDEVG1Erg0=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=GrKsw08YRGQLrAhfYDCW6OxddB2Oc6UmQ7HEa/yh7ZIE4WI65jsZ3PE2yMaIviZvJSZhEwpMH8yzBjQjbigkoKq1fc3SbOTyoUzomZ8hPW73lD/e9egzbQxHgP12EMzOBm1OsdMkjO89kyn80ioKe4inqifziKDTqPn0h6tOZt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DXc3N3wO; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6AA11F000E9;
+	Tue, 14 Jul 2026 21:24:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784064277;
+	bh=9yrBidhowcLcYZLhMqPaZjXxwNQQl2yRRVBpP23H6lg=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=DXc3N3wOPk9OwRfqHvUT4umnjofMQXIIFdTIOdodfJU6KUzpiB2K7BswZiirzRWss
+	 v3MC4goDcb770zrI2jTlgYpj83H89DZmXADebcSIWCFTOFZrv1ZFqN7rvk71GjtLCB
+	 GWErs7RFroLurYQ399mArg2xdGWtWcwzyaaFgs8UC52icgClM8O+lF6oov3rL7oZwV
+	 CBasW6NqVL60ISmo9ud6F6Ic7XiITtydAEElSwiqlshMy7vhrapeVQX670kUMfd9Bi
+	 oVZMf+DYG8TpgTIZ2LldRHYr1tgbXS1bYwHDSkEJFSvRviTQusOsKuhGP3w5qbnTR9
+	 cn8pocY13VA5A==
+From: Mark Brown <broonie@kernel.org>
+To: linux-spi@vger.kernel.org, 
+ Srikanth Boyapally <srikanth.boyapally@amd.com>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Miquel Raynal <miquel.raynal@bootlin.com>, 
+ Pratyush Yadav <pratyush@kernel.org>, git@amd.com
+In-Reply-To: <20260708045148.2993313-1-srikanth.boyapally@amd.com>
+References: <20260708045148.2993313-1-srikanth.boyapally@amd.com>
+Subject: Re: [PATCH] spi: cadence-quadspi: Fix indirect write timeout when
+ DMA read mode is enabled
+Message-Id: <178403160898.7661.2328502058732415955.b4-ty@b4>
+Date: Tue, 14 Jul 2026 13:20:08 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <84676bd8-3815-433b-b531-2715b8e8693f@weidmueller.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1176; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=Zh49ItfkjMR5OV68dFco2V5vyH1fTNPdViDEVG1Erg0=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqVqkSE1i2BA0BT5boSZfIj7g2sQ6+ifsZe/l4l
+ jv3W5zOqfSJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCalapEgAKCRAk1otyXVSH
+ 0FdsB/4gc7ifi0U4gQQLmeOj6jWIxVXEjBACtptKdj64as31aQ4EHUDFDa9wbqWlAb71uNLrJ1e
+ PnTlStUUMl5G+XQsJdYD2Y0EAEPsUTq/eDTFJIu/JohbFXz51tkAhCMDvP3UwJO/AZceHW75Hx0
+ WdFSJP3zO2gPbky8bQYdtY6z1m3SfCr7QoiDwM+gIli919AoYBhPXuQnGKDAz0gMTFeZqBsK+7F
+ lS8VQUYbPioH1lXR0FTuy3BuHSm7GBzOG7Em1sDkBmA9JRYc/qfz0YOY02XVwyNs9uopXj5qw2l
+ jJ9RP0EA2MOPpHkn79MSr++WRZHBQvSSv5YydxrZC1gXA2uN
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-4.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-274217-lists,stable=lfdr.de];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[error27@gmail.com,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:christian.taedcke-oss@weidmueller.com,m:christian.taedcke@weidmueller.com,m:vkoul@kernel.org,m:Frank.Li@kernel.org,m:dmaengine@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[error27@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:linux-spi@vger.kernel.org,m:srikanth.boyapally@amd.com,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:miquel.raynal@bootlin.com,m:pratyush@kernel.org,m:git@amd.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[broonie@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-274564-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,stanley.mountain:mid,weidmueller.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C07187545FE
+X-Rspamd-Queue-Id: 94F68758FA0
 
-On Tue, Jul 14, 2026 at 01:58:53PM +0200, Taedcke, Christian wrote:
-> 
-> 
-> On 7/9/2026 12:38 PM, Dan Carpenter wrote:
-> > On Fri, Jul 03, 2026 at 09:56:12AM +0200, Christian Taedcke via B4 Relay wrote:
-> >> From: Christian Taedcke <christian.taedcke@weidmueller.com>
-> >>
-> >> When one irq is used for errors and each channel gets a dedicated irq,
-> >> the total number of irqs is num_channels + 1. If the error irq is not
-> >> the last entry in irqbuf[] but an earlier one, the loop assigning
-> >> per-channel irqs terminates one iteration too early and the last
-> >> channel is left without an irq.
-> >>
-> >> Iterate over all collected irqs instead of num_channels so the
-> >> error-irq skip does not shorten the effective channel count.
-> >>
-> >> Fixes: 188c6ba1dd92 ("dmaengine: nbpfaxi: Fix memory corruption in probe()")
-> >> Cc: stable@vger.kernel.org
-> >> Signed-off-by: Christian Taedcke <christian.taedcke@weidmueller.com>
-> >> ---
-> >> Changes in v3:
-> >> - Guard against out-of-bound writes to chan in case of an invalid eirq.
-> >> - Link to v2: https://patch.msgid.link/20260702-upstreaming-nbpfaxi-v1-v2-1-e6d6b178a278@weidmueller.com
-> >>
-> >> Changes in v2:
-> >> - Advance chan only when assigning a real irq to fix out-of-bounds
-> >>   memory access.
-> >> - Remove now redundant ARRAY_SIZE(irqbuf) check.
-> >> - Link to v1: https://patch.msgid.link/20260702-upstreaming-nbpfaxi-v1-v1-1-fd8ea8830cea@weidmueller.com
-> >>
-> >> To: christian.taedcke-oss@weidmueller.com
-> >> To: Vinod Koul <vkoul@kernel.org>
-> >> To: Frank Li <Frank.Li@kernel.org>
-> >> To: Dan Carpenter <error27@gmail.com>
-> >> Cc: dmaengine@vger.kernel.org
-> >> Cc: linux-kernel@vger.kernel.org
-> >> ---
-> >>  drivers/dma/nbpfaxi.c | 8 ++++----
-> >>  1 file changed, 4 insertions(+), 4 deletions(-)
-> >>
-> >> diff --git a/drivers/dma/nbpfaxi.c b/drivers/dma/nbpfaxi.c
-> >> index 05d7321629cc..b1f06f0bd0d5 100644
-> >> --- a/drivers/dma/nbpfaxi.c
-> >> +++ b/drivers/dma/nbpfaxi.c
-> >> @@ -1374,14 +1374,14 @@ static int nbpf_probe(struct platform_device *pdev)
-> >>  		if (irqs == num_channels + 1) {
-> >>  			struct nbpf_channel *chan;
-> >>  
-> >> -			for (i = 0, chan = nbpf->chan; i < num_channels;
-> >> -			     i++, chan++) {
-> >> +			for (i = 0, chan = nbpf->chan; i < irqs; i++) {
-> >>  				/* Skip the error IRQ */
-> >>  				if (irqbuf[i] == eirq)
-> >> -					i++;
-> >> -				if (i >= ARRAY_SIZE(irqbuf))
-> >> +					continue;
-> >> +				if (chan >= nbpf->chan + num_channels)
-> > 
-> > Prefer my check, but sure...
-> 
-> I tested changing the condition back to check for i. But after a few different approaches, i think the check in v3 (chan >= nbpf->chan + num_channels) is more robust.
-> 
-> It handles the following cases well:
-> 1. eirq is the last entry in irqbuf[]
-> 2. eirq is not in irqbuf[] (which is not expected)
-> 
-> This check also makes it clear that the write destination is verified.
-> 
-> -> i would prefer to keep the v3 patch as is.
-> 
+On Wed, 08 Jul 2026 10:21:48 +0530, Srikanth Boyapally wrote:
+> spi: cadence-quadspi: Fix indirect write timeout when DMA read mode is enabled
 
-Ah, yeah.  You're right.  v3 is good.
+Applied to
 
-Reviewed-by: Dan Carpenter <error27@gmail.com>
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.2
 
-regards,
-dan carpenter
+Thanks!
+
+[1/1] spi: cadence-quadspi: Fix indirect write timeout when DMA read mode is enabled
+      https://git.kernel.org/broonie/spi/c/e919ca35a6e8
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 
 
