@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-274600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274602-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id hTH9LX7HVmp1BAEAu9opvQ
-	(envelope-from <stable+bounces-274600-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 01:34:22 +0200
+	id /V6MG4bHVmp3BAEAu9opvQ
+	(envelope-from <stable+bounces-274602-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 01:34:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53127759748
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 01:34:22 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0B1B759750
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 01:34:29 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aT2zsrQv;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274600-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-274600-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=St1rRmEb;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274602-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274602-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7E74E3030E94
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 23:34:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8D553304DCB7
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 23:34:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A828423EAF;
-	Tue, 14 Jul 2026 23:34:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BE35369D51;
+	Tue, 14 Jul 2026 23:34:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F51837DEAD
-	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 23:34:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5761B2DB78C
+	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 23:34:12 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784072052; cv=none; b=KjKI3pc96rocWgjBxpARjiu6QNdnErJgDbmIv3m45VG4QnCWpIb7TKKS9q3H3E36Y9PlubkrFWWVPaViCI1gqvstl3a+B+dcwr6W5CanBF0n7hE8e/KNbHUfxkkXnyt1tsXW7/VJWfPCRLes705GIKLMDWLBj4fL7+c+15OQH5g=
+	t=1784072054; cv=none; b=LSJsd/WMrbTRiTJK7U1utmwbz8eN2VgiREjoHIn6n/KmH4ppzqMiz7ngYsgJv8Qkz8FTCfSBH8Pc/BXuI6yZvf/2nPoSwQafE0+RbKQHv7V8yypIi2PfHjxmm0fInOmnbbO74nG9emQDxDc8VGtpC6ltPaVuhAbs8aFYz/DbnZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784072052; c=relaxed/simple;
-	bh=cggMucP8+GR0wsDSFZOvNVLRKB57y7JQYNASyVp+eN0=;
+	s=arc-20240116; t=1784072054; c=relaxed/simple;
+	bh=SVjSJW2snB8AkyAoDjzSkZEwiXlZmJ/CA5vzqHZQ4W0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R5DMH/rBDBfEz/2nD6o1d5ytsLBF3BcZoP0MPBRzEYeUD/W19SxIks9KTAREgZJ01LVdfV/EbZu+xOQGYLwe8BNnJUhsyqOIv/YTA8z7WWHHFcjh/ng6aGmFIXG39BTUXng91OBqN1RujLS6qY1O/PQbOCmjBt8+OMJcWlnb0Dc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aT2zsrQv; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 847341F00A3D;
-	Tue, 14 Jul 2026 23:34:10 +0000 (UTC)
+	 MIME-Version; b=C0kOAaSL/S1KR+S29ZmlL/KjNajJIp40MIjAzl3JDQS4geVdKPFw49Fxqj/RUhlomlfuXojwCaafNypVsHas8o9GM0EaydpLqwj5UvbLNY0HdcvOqyR9jBoVVzqKE/+V4fAnlPjB0E6IKThqsfMayIOa52Q2ZcuXCSYoUKPOILI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=St1rRmEb; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 561611F00A3E;
+	Tue, 14 Jul 2026 23:34:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1784072051;
-	bh=dqw5SL0KmXVaqyY0K6ox6ogQFnnAylbRcpI8AZX+VAU=;
+	bh=n4xUergNUu3Si6CHBNPhrMnlQLAvMbGMUJri3RhC/cU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=aT2zsrQv0wkS5VYvZ67AtVzj35EwM7AsnEvZF22FLum3oRPpviTQ0nyUyqCOnjnz+
-	 j/BPLuIJ664gmQ/2thllRkMgF3mpZixswQ+9+UDaSF2kChv/RddDTs/Bfl9Yf7Dy47
-	 OBqED+rMLAMiOpAjdrYoOrKSoU3P5hrT0GsdbRd5nI7w1NLe5o+EP0NPOhccOwzQPS
-	 mnQ7Q1yLIxeLCcyzzM3fGAf1LBLdcSjN2xqMhoRzSi5nYCvwbzXZfvyjcnVatS5hvb
-	 pbba47E8yBXLm9TZg+ze1ZzxMYHCHwZ3+ghkZkXo8EV2r/fXwyIJUfVMjMVsh7Ef3+
-	 xZNmHi9fEfKbA==
+	b=St1rRmEb9zorsVhG0sX6xFtJLXaokhGamcmk5lvz1I1dkHGXEttJUgJFjt/iyi5vu
+	 4/VymAP0WuJk+Q1uXb61Wn2ZXQULzZq050NLBEAXx571yGL/2NEY3F1CheQJndhTH4
+	 7uGw1qfJTECj++poBDLRnlrBGMNbK/ho7ihtEiB4PkWGkFC1B8dvc98p6iy82cxYNs
+	 yXf0bKH4jPCs0BGjzyPR+pWhUaDNdGipE57u3011TZngFwW1pr4fqOPW2yIGjcBSHM
+	 cvYEYOYb3lt3Q6KI1PSMoqxPqtBplDP9Y7l29Of/3nq3QhfKS8VOkNptCeHBHFXpgN
+	 VgAOqliH6DmHQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Fabio Aiuto <fabioaiuto83@gmail.com>,
 	Hans de Goede <hdegoede@redhat.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y 3/8] staging: rtl8723bs: remove all 5Ghz network types
-Date: Tue, 14 Jul 2026 19:34:02 -0400
-Message-ID: <20260714233407.3591885-3-sashal@kernel.org>
+Subject: [PATCH 5.10.y 4/8] staging: rtl8723bs: remove 5Ghz code related to channel plan definition
+Date: Tue, 14 Jul 2026 19:34:03 -0400
+Message-ID: <20260714233407.3591885-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260714233407.3591885-1-sashal@kernel.org>
 References: <2026071352-wreckage-humorless-3481@gregkh>
@@ -73,13 +73,13 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-274600-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-274602-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -98,489 +98,507 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 53127759748
+X-Rspamd-Queue-Id: E0B1B759750
 
 From: Fabio Aiuto <fabioaiuto83@gmail.com>
 
-[ Upstream commit 708180a92cd8bff18b3d2ac05172815bcc0b6b9a ]
+[ Upstream commit ec84d0ae54a6774091b3b7d1e9da32589f48b2f9 ]
 
-remove all 5Ghz network types. rtl8723bs works on
-802.11bgn standards and on 2.4Ghz band.
-
-So remove all code related to 802.11a and 802.11ac
-standards, which the device doesn't support.
+remove 5Ghz code related to channel plan definition.
 
 Acked-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Fabio Aiuto <fabioaiuto83@gmail.com>
-Link: https://lore.kernel.org/r/7e4644a71d0ba2819370171b3dc78bfc755f6313.1624367071.git.fabioaiuto83@gmail.com
+Link: https://lore.kernel.org/r/17a707952cec951893748d2cb59d02a294cdd1be.1624367071.git.fabioaiuto83@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Stable-dep-of: a1fc19d61f66 ("staging: rtl8723bs: fix WEP length underflow and OOB read in OnAuth()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/rtl8723bs/core/rtw_ap.c       | 11 +---
- .../staging/rtl8723bs/core/rtw_ieee80211.c    | 22 ++------
- drivers/staging/rtl8723bs/core/rtw_mlme.c     | 10 ----
- drivers/staging/rtl8723bs/core/rtw_mlme_ext.c | 55 -------------------
- .../staging/rtl8723bs/core/rtw_wlan_util.c    | 14 +----
- drivers/staging/rtl8723bs/hal/odm.c           | 30 ----------
- drivers/staging/rtl8723bs/hal/odm.h           |  3 -
- .../rtl8723bs/hal/odm_EdcaTurboCheck.c        |  4 +-
- drivers/staging/rtl8723bs/hal/sdio_halinit.c  |  5 --
- drivers/staging/rtl8723bs/include/hal_phy.h   |  3 -
- drivers/staging/rtl8723bs/include/ieee80211.h | 22 +-------
- drivers/staging/rtl8723bs/include/wifi.h      |  1 -
- drivers/staging/rtl8723bs/os_dep/os_intfs.c   |  2 +-
- 13 files changed, 14 insertions(+), 168 deletions(-)
+ drivers/staging/rtl8723bs/core/rtw_mlme_ext.c | 210 ++++++++----------
+ .../staging/rtl8723bs/hal/hal_com_phycfg.c    |  34 ---
+ .../staging/rtl8723bs/include/rtw_mlme_ext.h  |   6 +-
+ .../staging/rtl8723bs/os_dep/ioctl_cfg80211.c |   2 -
+ .../staging/rtl8723bs/os_dep/ioctl_linux.c    |   1 -
+ 5 files changed, 94 insertions(+), 159 deletions(-)
 
-diff --git a/drivers/staging/rtl8723bs/core/rtw_ap.c b/drivers/staging/rtl8723bs/core/rtw_ap.c
-index 4f270d509ad303..08317df2c4f306 100644
---- a/drivers/staging/rtl8723bs/core/rtw_ap.c
-+++ b/drivers/staging/rtl8723bs/core/rtw_ap.c
-@@ -427,11 +427,7 @@ void add_RATid(struct adapter *padapter, struct sta_info *psta, u8 rssi_level)
- 	shortGIrate = query_ra_short_GI(psta);
- 
- 	if (pcur_network->Configuration.DSConfig > 14) {
--		if (tx_ra_bitmap & 0xffff000)
--			sta_band |= WIRELESS_11_5N;
--
--		if (tx_ra_bitmap & 0xff0)
--			sta_band |= WIRELESS_11A;
-+		sta_band |= WIRELESS_INVALID;
- 	} else {
- 		if (tx_ra_bitmap & 0xffff000)
- 			sta_band |= WIRELESS_11_24N;
-@@ -503,7 +499,7 @@ void update_bmc_sta(struct adapter *padapter)
- 		} else if (network_type == WIRELESS_INVALID) { /*  error handling */
- 
- 			if (pcur_network->Configuration.DSConfig > 14)
--				network_type = WIRELESS_11A;
-+				network_type = WIRELESS_INVALID;
- 			else
- 				network_type = WIRELESS_11B;
- 		}
-@@ -1254,9 +1250,6 @@ int rtw_check_beacon_data(struct adapter *padapter, u8 *pbuf,  int len)
- 	case WIRELESS_11BG_24N:
- 		pbss_network->NetworkTypeInUse = Ndis802_11OFDM24;
- 		break;
--	case WIRELESS_11A:
--		pbss_network->NetworkTypeInUse = Ndis802_11OFDM5;
--		break;
- 	default:
- 		pbss_network->NetworkTypeInUse = Ndis802_11OFDM24;
- 		break;
-diff --git a/drivers/staging/rtl8723bs/core/rtw_ieee80211.c b/drivers/staging/rtl8723bs/core/rtw_ieee80211.c
-index ac6e947214cbe0..f27044a1418277 100644
---- a/drivers/staging/rtl8723bs/core/rtw_ieee80211.c
-+++ b/drivers/staging/rtl8723bs/core/rtw_ieee80211.c
-@@ -96,10 +96,7 @@ bool rtw_is_cckratesonly_included(u8 *rate)
- int rtw_check_network_type(unsigned char *rate, int ratelen, int channel)
- {
- 	if (channel > 14) {
--		if (rtw_is_cckrates_included(rate))
--			return WIRELESS_INVALID;
--		else
--			return WIRELESS_11A;
-+		return WIRELESS_INVALID;
- 	} else { /*  could be pure B, pure G, or B/G */
- 		if (rtw_is_cckratesonly_included(rate))
- 			return WIRELESS_11B;
-@@ -275,10 +272,6 @@ void rtw_set_supported_rate(u8 *SupportedRates, uint mode)
- 		break;
- 
- 	case WIRELESS_11G:
--	case WIRELESS_11A:
--	case WIRELESS_11_5N:
--	case WIRELESS_11A_5N:/* Todo: no basic rate for ofdm ? */
--	case WIRELESS_11_5AC:
- 		memcpy(SupportedRates, WIFI_OFDMRATES, IEEE80211_NUM_OFDM_RATESLEN);
- 		break;
- 
-@@ -336,14 +329,7 @@ int rtw_generate_ie(struct registry_priv *pregistrypriv)
- 	ie = rtw_set_ie(ie, _SSID_IE_, pdev_network->Ssid.SsidLength, pdev_network->Ssid.Ssid, &sz);
- 
- 	/* supported rates */
--	if (pregistrypriv->wireless_mode == WIRELESS_11ABGN) {
--		if (pdev_network->Configuration.DSConfig > 14)
--			wireless_mode = WIRELESS_11A_5N;
--		else
--			wireless_mode = WIRELESS_11BG_24N;
--	} else {
--		wireless_mode = pregistrypriv->wireless_mode;
--	}
-+	wireless_mode = pregistrypriv->wireless_mode;
- 
- 	rtw_set_supported_rate(pdev_network->SupportedRates, wireless_mode);
- 
-@@ -368,8 +354,8 @@ int rtw_generate_ie(struct registry_priv *pregistrypriv)
- 	}
- 
- 	/* HT Cap. */
--	if (((pregistrypriv->wireless_mode&WIRELESS_11_5N) || (pregistrypriv->wireless_mode&WIRELESS_11_24N))
--		&& (pregistrypriv->ht_enable == true)) {
-+	if ((pregistrypriv->wireless_mode & WIRELESS_11_24N) &&
-+	    (pregistrypriv->ht_enable == true)) {
- 		/* todo: */
- 	}
- 
-diff --git a/drivers/staging/rtl8723bs/core/rtw_mlme.c b/drivers/staging/rtl8723bs/core/rtw_mlme.c
-index 7cc3a0e4e08934..71be5dc0216c20 100644
---- a/drivers/staging/rtl8723bs/core/rtw_mlme.c
-+++ b/drivers/staging/rtl8723bs/core/rtw_mlme.c
-@@ -2438,16 +2438,6 @@ void rtw_update_registrypriv_dev_network(struct adapter *adapter)
- 	case WIRELESS_11BG_24N:
- 		pdev_network->NetworkTypeInUse = (Ndis802_11OFDM24);
- 		break;
--	case WIRELESS_11A:
--	case WIRELESS_11A_5N:
--		pdev_network->NetworkTypeInUse = (Ndis802_11OFDM5);
--		break;
--	case WIRELESS_11ABGN:
--		if (pregistrypriv->channel > 14)
--			pdev_network->NetworkTypeInUse = (Ndis802_11OFDM5);
--		else
--			pdev_network->NetworkTypeInUse = (Ndis802_11OFDM24);
--		break;
- 	default:
- 		/*  TODO */
- 		break;
 diff --git a/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c b/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
-index 183c4c2f553101..dd8043e4f7b785 100644
+index dd8043e4f7b785..db5abaafa91a2f 100644
 --- a/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
 +++ b/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
-@@ -4918,61 +4918,6 @@ static void process_80211d(struct adapter *padapter, struct wlan_bssid_ex *bssid
- 			}
- 		}
+@@ -123,93 +123,93 @@ static RT_CHANNEL_PLAN_5G	RTW_ChannelPlan5G[RT_CHANNEL_DOMAIN_5G_MAX] = {
  
--		if (pregistrypriv->wireless_mode & WIRELESS_11A) {
--			do {
--				if ((i == MAX_CHANNEL_NUM) ||
--					(chplan_sta[i].ChannelNum == 0))
+ static RT_CHANNEL_PLAN_MAP	RTW_ChannelPlanMap[RT_CHANNEL_DOMAIN_MAX] = {
+ 	/*  0x00 ~ 0x1F , Old Define ===== */
+-	{0x02, 0x20},	/* 0x00, RT_CHANNEL_DOMAIN_FCC */
+-	{0x02, 0x0A},	/* 0x01, RT_CHANNEL_DOMAIN_IC */
+-	{0x01, 0x01},	/* 0x02, RT_CHANNEL_DOMAIN_ETSI */
+-	{0x01, 0x00},	/* 0x03, RT_CHANNEL_DOMAIN_SPAIN */
+-	{0x01, 0x00},	/* 0x04, RT_CHANNEL_DOMAIN_FRANCE */
+-	{0x03, 0x00},	/* 0x05, RT_CHANNEL_DOMAIN_MKK */
+-	{0x03, 0x00},	/* 0x06, RT_CHANNEL_DOMAIN_MKK1 */
+-	{0x01, 0x09},	/* 0x07, RT_CHANNEL_DOMAIN_ISRAEL */
+-	{0x03, 0x09},	/* 0x08, RT_CHANNEL_DOMAIN_TELEC */
+-	{0x03, 0x00},	/* 0x09, RT_CHANNEL_DOMAIN_GLOBAL_DOAMIN */
+-	{0x00, 0x00},	/* 0x0A, RT_CHANNEL_DOMAIN_WORLD_WIDE_13 */
+-	{0x02, 0x0F},	/* 0x0B, RT_CHANNEL_DOMAIN_TAIWAN */
+-	{0x01, 0x08},	/* 0x0C, RT_CHANNEL_DOMAIN_CHINA */
+-	{0x02, 0x06},	/* 0x0D, RT_CHANNEL_DOMAIN_SINGAPORE_INDIA_MEXICO */
+-	{0x02, 0x0B},	/* 0x0E, RT_CHANNEL_DOMAIN_KOREA */
+-	{0x02, 0x09},	/* 0x0F, RT_CHANNEL_DOMAIN_TURKEY */
+-	{0x01, 0x01},	/* 0x10, RT_CHANNEL_DOMAIN_JAPAN */
+-	{0x02, 0x05},	/* 0x11, RT_CHANNEL_DOMAIN_FCC_NO_DFS */
+-	{0x01, 0x21},	/* 0x12, RT_CHANNEL_DOMAIN_JAPAN_NO_DFS */
+-	{0x00, 0x04},	/* 0x13, RT_CHANNEL_DOMAIN_WORLD_WIDE_5G */
+-	{0x02, 0x10},	/* 0x14, RT_CHANNEL_DOMAIN_TAIWAN_NO_DFS */
+-	{0x00, 0x21},	/* 0x15, RT_CHANNEL_DOMAIN_ETSI_NO_DFS */
+-	{0x00, 0x22},	/* 0x16, RT_CHANNEL_DOMAIN_KOREA_NO_DFS */
+-	{0x03, 0x21},	/* 0x17, RT_CHANNEL_DOMAIN_JAPAN_NO_DFS */
+-	{0x06, 0x08},	/* 0x18, RT_CHANNEL_DOMAIN_PAKISTAN_NO_DFS */
+-	{0x02, 0x08},	/* 0x19, RT_CHANNEL_DOMAIN_TAIWAN2_NO_DFS */
+-	{0x00, 0x00},	/* 0x1A, */
+-	{0x00, 0x00},	/* 0x1B, */
+-	{0x00, 0x00},	/* 0x1C, */
+-	{0x00, 0x00},	/* 0x1D, */
+-	{0x00, 0x00},	/* 0x1E, */
+-	{0x06, 0x04},	/* 0x1F, RT_CHANNEL_DOMAIN_WORLD_WIDE_ONLY_5G */
++	{0x02},	/* 0x00, RT_CHANNEL_DOMAIN_FCC */
++	{0x02},	/* 0x01, RT_CHANNEL_DOMAIN_IC */
++	{0x01},	/* 0x02, RT_CHANNEL_DOMAIN_ETSI */
++	{0x01},	/* 0x03, RT_CHANNEL_DOMAIN_SPAIN */
++	{0x01},	/* 0x04, RT_CHANNEL_DOMAIN_FRANCE */
++	{0x03},	/* 0x05, RT_CHANNEL_DOMAIN_MKK */
++	{0x03},	/* 0x06, RT_CHANNEL_DOMAIN_MKK1 */
++	{0x01},	/* 0x07, RT_CHANNEL_DOMAIN_ISRAEL */
++	{0x03},	/* 0x08, RT_CHANNEL_DOMAIN_TELEC */
++	{0x03},	/* 0x09, RT_CHANNEL_DOMAIN_GLOBAL_DOAMIN */
++	{0x00},	/* 0x0A, RT_CHANNEL_DOMAIN_WORLD_WIDE_13 */
++	{0x02},	/* 0x0B, RT_CHANNEL_DOMAIN_TAIWAN */
++	{0x01},	/* 0x0C, RT_CHANNEL_DOMAIN_CHINA */
++	{0x02},	/* 0x0D, RT_CHANNEL_DOMAIN_SINGAPORE_INDIA_MEXICO */
++	{0x02},	/* 0x0E, RT_CHANNEL_DOMAIN_KOREA */
++	{0x02},	/* 0x0F, RT_CHANNEL_DOMAIN_TURKEY */
++	{0x01},	/* 0x10, RT_CHANNEL_DOMAIN_JAPAN */
++	{0x02},	/* 0x11, RT_CHANNEL_DOMAIN_FCC_NO_DFS */
++	{0x01},	/* 0x12, RT_CHANNEL_DOMAIN_JAPAN_NO_DFS */
++	{0x00},	/* 0x13, RT_CHANNEL_DOMAIN_WORLD_WIDE_5G */
++	{0x02},	/* 0x14, RT_CHANNEL_DOMAIN_TAIWAN_NO_DFS */
++	{0x00},	/* 0x15, RT_CHANNEL_DOMAIN_ETSI_NO_DFS */
++	{0x00},	/* 0x16, RT_CHANNEL_DOMAIN_KOREA_NO_DFS */
++	{0x03},	/* 0x17, RT_CHANNEL_DOMAIN_JAPAN_NO_DFS */
++	{0x06},	/* 0x18, RT_CHANNEL_DOMAIN_PAKISTAN_NO_DFS */
++	{0x02},	/* 0x19, RT_CHANNEL_DOMAIN_TAIWAN2_NO_DFS */
++	{0x00},	/* 0x1A, */
++	{0x00},	/* 0x1B, */
++	{0x00},	/* 0x1C, */
++	{0x00},	/* 0x1D, */
++	{0x00},	/* 0x1E, */
++	{0x06},	/* 0x1F, RT_CHANNEL_DOMAIN_WORLD_WIDE_ONLY_5G */
+ 	/*  0x20 ~ 0x7F , New Define ===== */
+-	{0x00, 0x00},	/* 0x20, RT_CHANNEL_DOMAIN_WORLD_NULL */
+-	{0x01, 0x00},	/* 0x21, RT_CHANNEL_DOMAIN_ETSI1_NULL */
+-	{0x02, 0x00},	/* 0x22, RT_CHANNEL_DOMAIN_FCC1_NULL */
+-	{0x03, 0x00},	/* 0x23, RT_CHANNEL_DOMAIN_MKK1_NULL */
+-	{0x04, 0x00},	/* 0x24, RT_CHANNEL_DOMAIN_ETSI2_NULL */
+-	{0x02, 0x04},	/* 0x25, RT_CHANNEL_DOMAIN_FCC1_FCC1 */
+-	{0x00, 0x01},	/* 0x26, RT_CHANNEL_DOMAIN_WORLD_ETSI1 */
+-	{0x03, 0x0C},	/* 0x27, RT_CHANNEL_DOMAIN_MKK1_MKK1 */
+-	{0x00, 0x0B},	/* 0x28, RT_CHANNEL_DOMAIN_WORLD_KCC1 */
+-	{0x00, 0x05},	/* 0x29, RT_CHANNEL_DOMAIN_WORLD_FCC2 */
+-	{0x00, 0x00},	/* 0x2A, */
+-	{0x00, 0x00},	/* 0x2B, */
+-	{0x00, 0x00},	/* 0x2C, */
+-	{0x00, 0x00},	/* 0x2D, */
+-	{0x00, 0x00},	/* 0x2E, */
+-	{0x00, 0x00},	/* 0x2F, */
+-	{0x00, 0x06},	/* 0x30, RT_CHANNEL_DOMAIN_WORLD_FCC3 */
+-	{0x00, 0x07},	/* 0x31, RT_CHANNEL_DOMAIN_WORLD_FCC4 */
+-	{0x00, 0x08},	/* 0x32, RT_CHANNEL_DOMAIN_WORLD_FCC5 */
+-	{0x00, 0x09},	/* 0x33, RT_CHANNEL_DOMAIN_WORLD_FCC6 */
+-	{0x02, 0x0A},	/* 0x34, RT_CHANNEL_DOMAIN_FCC1_FCC7 */
+-	{0x00, 0x02},	/* 0x35, RT_CHANNEL_DOMAIN_WORLD_ETSI2 */
+-	{0x00, 0x03},	/* 0x36, RT_CHANNEL_DOMAIN_WORLD_ETSI3 */
+-	{0x03, 0x0D},	/* 0x37, RT_CHANNEL_DOMAIN_MKK1_MKK2 */
+-	{0x03, 0x0E},	/* 0x38, RT_CHANNEL_DOMAIN_MKK1_MKK3 */
+-	{0x02, 0x0F},	/* 0x39, RT_CHANNEL_DOMAIN_FCC1_NCC1 */
+-	{0x00, 0x00},	/* 0x3A, */
+-	{0x00, 0x00},	/* 0x3B, */
+-	{0x00, 0x00},	/* 0x3C, */
+-	{0x00, 0x00},	/* 0x3D, */
+-	{0x00, 0x00},	/* 0x3E, */
+-	{0x00, 0x00},	/* 0x3F, */
+-	{0x02, 0x10},	/* 0x40, RT_CHANNEL_DOMAIN_FCC1_NCC2 */
+-	{0x05, 0x00},	/* 0x41, RT_CHANNEL_DOMAIN_GLOBAL_NULL */
+-	{0x01, 0x12},	/* 0x42, RT_CHANNEL_DOMAIN_ETSI1_ETSI4 */
+-	{0x02, 0x05},	/* 0x43, RT_CHANNEL_DOMAIN_FCC1_FCC2 */
+-	{0x02, 0x11},	/* 0x44, RT_CHANNEL_DOMAIN_FCC1_NCC3 */
+-	{0x00, 0x13},	/* 0x45, RT_CHANNEL_DOMAIN_WORLD_ETSI5 */
+-	{0x02, 0x14},	/* 0x46, RT_CHANNEL_DOMAIN_FCC1_FCC8 */
+-	{0x00, 0x15},	/* 0x47, RT_CHANNEL_DOMAIN_WORLD_ETSI6 */
+-	{0x00, 0x16},	/* 0x48, RT_CHANNEL_DOMAIN_WORLD_ETSI7 */
+-	{0x00, 0x17},	/* 0x49, RT_CHANNEL_DOMAIN_WORLD_ETSI8 */
+-	{0x00, 0x18},	/* 0x50, RT_CHANNEL_DOMAIN_WORLD_ETSI9 */
+-	{0x00, 0x19},	/* 0x51, RT_CHANNEL_DOMAIN_WORLD_ETSI10 */
+-	{0x00, 0x1A},	/* 0x52, RT_CHANNEL_DOMAIN_WORLD_ETSI11 */
+-	{0x02, 0x1B},	/* 0x53, RT_CHANNEL_DOMAIN_FCC1_NCC4 */
+-	{0x00, 0x1C},	/* 0x54, RT_CHANNEL_DOMAIN_WORLD_ETSI12 */
+-	{0x02, 0x1D},	/* 0x55, RT_CHANNEL_DOMAIN_FCC1_FCC9 */
+-	{0x00, 0x1E},	/* 0x56, RT_CHANNEL_DOMAIN_WORLD_ETSI13 */
+-	{0x02, 0x1F},	/* 0x57, RT_CHANNEL_DOMAIN_FCC1_FCC10 */
++	{0x00},	/* 0x20, RT_CHANNEL_DOMAIN_WORLD_NULL */
++	{0x01},	/* 0x21, RT_CHANNEL_DOMAIN_ETSI1_NULL */
++	{0x02},	/* 0x22, RT_CHANNEL_DOMAIN_FCC1_NULL */
++	{0x03},	/* 0x23, RT_CHANNEL_DOMAIN_MKK1_NULL */
++	{0x04},	/* 0x24, RT_CHANNEL_DOMAIN_ETSI2_NULL */
++	{0x02},	/* 0x25, RT_CHANNEL_DOMAIN_FCC1_FCC1 */
++	{0x00},	/* 0x26, RT_CHANNEL_DOMAIN_WORLD_ETSI1 */
++	{0x03},	/* 0x27, RT_CHANNEL_DOMAIN_MKK1_MKK1 */
++	{0x00},	/* 0x28, RT_CHANNEL_DOMAIN_WORLD_KCC1 */
++	{0x00},	/* 0x29, RT_CHANNEL_DOMAIN_WORLD_FCC2 */
++	{0x00},	/* 0x2A, */
++	{0x00},	/* 0x2B, */
++	{0x00},	/* 0x2C, */
++	{0x00},	/* 0x2D, */
++	{0x00},	/* 0x2E, */
++	{0x00},	/* 0x2F, */
++	{0x00},	/* 0x30, RT_CHANNEL_DOMAIN_WORLD_FCC3 */
++	{0x00},	/* 0x31, RT_CHANNEL_DOMAIN_WORLD_FCC4 */
++	{0x00},	/* 0x32, RT_CHANNEL_DOMAIN_WORLD_FCC5 */
++	{0x00},	/* 0x33, RT_CHANNEL_DOMAIN_WORLD_FCC6 */
++	{0x02},	/* 0x34, RT_CHANNEL_DOMAIN_FCC1_FCC7 */
++	{0x00},	/* 0x35, RT_CHANNEL_DOMAIN_WORLD_ETSI2 */
++	{0x00},	/* 0x36, RT_CHANNEL_DOMAIN_WORLD_ETSI3 */
++	{0x03},	/* 0x37, RT_CHANNEL_DOMAIN_MKK1_MKK2 */
++	{0x03},	/* 0x38, RT_CHANNEL_DOMAIN_MKK1_MKK3 */
++	{0x02},	/* 0x39, RT_CHANNEL_DOMAIN_FCC1_NCC1 */
++	{0x00},	/* 0x3A, */
++	{0x00},	/* 0x3B, */
++	{0x00},	/* 0x3C, */
++	{0x00},	/* 0x3D, */
++	{0x00},	/* 0x3E, */
++	{0x00},	/* 0x3F, */
++	{0x02},	/* 0x40, RT_CHANNEL_DOMAIN_FCC1_NCC2 */
++	{0x05},	/* 0x41, RT_CHANNEL_DOMAIN_GLOBAL_NULL */
++	{0x01},	/* 0x42, RT_CHANNEL_DOMAIN_ETSI1_ETSI4 */
++	{0x02},	/* 0x43, RT_CHANNEL_DOMAIN_FCC1_FCC2 */
++	{0x02},	/* 0x44, RT_CHANNEL_DOMAIN_FCC1_NCC3 */
++	{0x00},	/* 0x45, RT_CHANNEL_DOMAIN_WORLD_ETSI5 */
++	{0x02},	/* 0x46, RT_CHANNEL_DOMAIN_FCC1_FCC8 */
++	{0x00},	/* 0x47, RT_CHANNEL_DOMAIN_WORLD_ETSI6 */
++	{0x00},	/* 0x48, RT_CHANNEL_DOMAIN_WORLD_ETSI7 */
++	{0x00},	/* 0x49, RT_CHANNEL_DOMAIN_WORLD_ETSI8 */
++	{0x00},	/* 0x50, RT_CHANNEL_DOMAIN_WORLD_ETSI9 */
++	{0x00},	/* 0x51, RT_CHANNEL_DOMAIN_WORLD_ETSI10 */
++	{0x00},	/* 0x52, RT_CHANNEL_DOMAIN_WORLD_ETSI11 */
++	{0x02},	/* 0x53, RT_CHANNEL_DOMAIN_FCC1_NCC4 */
++	{0x00},	/* 0x54, RT_CHANNEL_DOMAIN_WORLD_ETSI12 */
++	{0x02},	/* 0x55, RT_CHANNEL_DOMAIN_FCC1_FCC9 */
++	{0x00},	/* 0x56, RT_CHANNEL_DOMAIN_WORLD_ETSI13 */
++	{0x02},	/* 0x57, RT_CHANNEL_DOMAIN_FCC1_FCC10 */
+ };
+ 
+  /* use the combination for max channel numbers */
+-static RT_CHANNEL_PLAN_MAP RTW_CHANNEL_PLAN_MAP_REALTEK_DEFINE = {0x03, 0x02};
++static RT_CHANNEL_PLAN_MAP RTW_CHANNEL_PLAN_MAP_REALTEK_DEFINE = {0x03};
+ 
+ /* Search the @param ch in given @param ch_set
+  * @ch_set: the given channel set
+@@ -231,23 +231,6 @@ int rtw_ch_set_search_ch(RT_CHANNEL_INFO *ch_set, const u32 ch)
+ 	return i;
+ }
+ 
+-/* Check the @param ch is fit with setband setting of @param adapter
+- * @adapter: the given adapter
+- * @ch: the given channel number
+- *
+- * return true when check valid, false not valid
+- */
+-bool rtw_mlme_band_check(struct adapter *adapter, const u32 ch)
+-{
+-	if (adapter->setband == GHZ24_50 /* 2.4G and 5G */
+-		|| (adapter->setband == GHZ_24 && ch < 35) /* 2.4G only */
+-		|| (adapter->setband == GHZ_50 && ch > 35) /* 5G only */
+-	) {
+-		return true;
+-	}
+-	return false;
+-}
+-
+ /****************************************************************************
+ 
+ Following are the initialization functions for WiFi MLME
+@@ -424,7 +407,6 @@ static u8 init_channel_set(struct adapter *padapter, u8 ChannelPlan, RT_CHANNEL_
+ 				else if ((channel_set[chanset_size].ChannelNum  >= 12 && channel_set[chanset_size].ChannelNum  <= 14))
+ 					channel_set[chanset_size].ScanType  = SCAN_PASSIVE;
+ 			} else if (RT_CHANNEL_DOMAIN_WORLD_WIDE_13 == ChannelPlan ||
+-				RT_CHANNEL_DOMAIN_WORLD_WIDE_5G == ChannelPlan ||
+ 				RT_CHANNEL_DOMAIN_2G_WORLD == Index2G) { /*  channel 12~13, passive scan */
+ 				if (channel_set[chanset_size].ChannelNum <= 11)
+ 					channel_set[chanset_size].ScanType = SCAN_ACTIVE;
+@@ -4938,10 +4920,6 @@ static void process_80211d(struct adapter *padapter, struct wlan_bssid_ex *bssid
+ 	while ((i < MAX_CHANNEL_NUM) && (chplan_new[i].ChannelNum != 0)) {
+ 		if (chplan_new[i].ChannelNum == channel) {
+ 			if (chplan_new[i].ScanType == SCAN_PASSIVE) {
+-				/* 5G Bnad 2, 3 (DFS) doesn't change to active scan */
+-				if (channel >= 52 && channel <= 144)
 -					break;
 -
--				if ((j == chplan_ap.Len) || (chplan_ap.Channel[j] == 0))
--					break;
+ 				chplan_new[i].ScanType = SCAN_ACTIVE;
+ 				RT_TRACE(_module_rtl871x_mlme_c_, _drv_notice_,
+ 						 ("%s: change channel %d scan type from passive to active\n",
+@@ -6250,7 +6228,6 @@ static int rtw_scan_ch_decision(struct adapter *padapter, struct rtw_ieee80211_c
+ 		set_idx = rtw_ch_set_search_ch(pmlmeext->channel_set, in[i].hw_value);
+ 		if (in[i].hw_value && !(in[i].flags & RTW_IEEE80211_CHAN_DISABLED)
+ 			&& set_idx >= 0
+-			&& rtw_mlme_band_check(padapter, in[i].hw_value)
+ 		) {
+ 			if (j >= out_num) {
+ 				DBG_871X_LEVEL(_drv_always_, FUNC_ADPT_FMT" out_num:%u not enough\n",
+@@ -6275,21 +6252,18 @@ static int rtw_scan_ch_decision(struct adapter *padapter, struct rtw_ieee80211_c
+ 
+ 			DBG_871X(FUNC_ADPT_FMT" ch:%u\n", FUNC_ADPT_ARG(padapter), pmlmeext->channel_set[i].ChannelNum);
+ 
+-			if (rtw_mlme_band_check(padapter, pmlmeext->channel_set[i].ChannelNum)) {
 -
--				if (chplan_sta[i].ChannelNum == chplan_ap.Channel[j]) {
--					chplan_new[k].ChannelNum = chplan_ap.Channel[j];
--					chplan_new[k].ScanType = SCAN_ACTIVE;
--					i++;
--					j++;
--					k++;
--				} else if (chplan_sta[i].ChannelNum < chplan_ap.Channel[j]) {
--					chplan_new[k].ChannelNum = chplan_sta[i].ChannelNum;
--/* 					chplan_new[k].ScanType = chplan_sta[i].ScanType; */
--					chplan_new[k].ScanType = SCAN_PASSIVE;
--					i++;
--					k++;
--				} else if (chplan_sta[i].ChannelNum > chplan_ap.Channel[j]) {
--					chplan_new[k].ChannelNum = chplan_ap.Channel[j];
--					chplan_new[k].ScanType = SCAN_ACTIVE;
--					j++;
--					k++;
+-				if (j >= out_num) {
+-					DBG_871X_LEVEL(_drv_always_, FUNC_ADPT_FMT" out_num:%u not enough\n",
+-						FUNC_ADPT_ARG(padapter), out_num);
+-					break;
 -				}
--			} while (1);
--
--			/*  change AP not support channel to Passive scan */
--			while ((i < MAX_CHANNEL_NUM) && (chplan_sta[i].ChannelNum != 0)) {
--				chplan_new[k].ChannelNum = chplan_sta[i].ChannelNum;
--/* 				chplan_new[k].ScanType = chplan_sta[i].ScanType; */
--				chplan_new[k].ScanType = SCAN_PASSIVE;
--				i++;
--				k++;
--			}
--
--			/*  add channel AP supported */
--			while ((j < chplan_ap.Len) && (chplan_ap.Channel[j] != 0)) {
--				chplan_new[k].ChannelNum = chplan_ap.Channel[j];
--				chplan_new[k].ScanType = SCAN_ACTIVE;
++			if (j >= out_num) {
++				DBG_871X_LEVEL(_drv_always_, FUNC_ADPT_FMT" out_num:%u not enough\n",
++					FUNC_ADPT_ARG(padapter), out_num);
++				break;
++			}
+ 
+-				out[j].hw_value = pmlmeext->channel_set[i].ChannelNum;
++			out[j].hw_value = pmlmeext->channel_set[i].ChannelNum;
+ 
+-				if (pmlmeext->channel_set[i].ScanType == SCAN_PASSIVE)
+-					out[j].flags |= RTW_IEEE80211_CHAN_PASSIVE_SCAN;
++			if (pmlmeext->channel_set[i].ScanType == SCAN_PASSIVE)
++				out[j].flags |= RTW_IEEE80211_CHAN_PASSIVE_SCAN;
+ 
 -				j++;
--				k++;
 -			}
--		} else {
--			/*  keep original STA 5G channel plan */
--			while ((i < MAX_CHANNEL_NUM) && (chplan_sta[i].ChannelNum != 0)) {
--				chplan_new[k].ChannelNum = chplan_sta[i].ChannelNum;
--				chplan_new[k].ScanType = chplan_sta[i].ScanType;
--				i++;
--				k++;
--			}
--		}
--
- 		pmlmeext->update_channel_plan_by_ap_done = 1;
- 
- #ifdef DEBUG_RTL871X
-diff --git a/drivers/staging/rtl8723bs/core/rtw_wlan_util.c b/drivers/staging/rtl8723bs/core/rtw_wlan_util.c
-index 372ce17c3569b8..7db28f5853809a 100644
---- a/drivers/staging/rtl8723bs/core/rtw_wlan_util.c
-+++ b/drivers/staging/rtl8723bs/core/rtw_wlan_util.c
-@@ -62,9 +62,6 @@ u8 networktype_to_raid_ex(struct adapter *adapter, struct sta_info *psta)
- 
- 	if (cur_rf_type == RF_1T1R) {
- 		rf_type = RF_1T1R;
--	} else if (IsSupportedVHT(psta->wireless_mode)) {
--		if (psta->ra_mask & 0xffc00000)
--			rf_type = RF_2T2R;
- 	} else if (IsSupportedHT(psta->wireless_mode)) {
- 		if (psta->ra_mask & 0xfff00000)
- 			rf_type = RF_2T2R;
-@@ -74,7 +71,6 @@ u8 networktype_to_raid_ex(struct adapter *adapter, struct sta_info *psta)
- 	case WIRELESS_11B:
- 		raid = RATEID_IDX_B;
- 		break;
--	case WIRELESS_11A:
- 	case WIRELESS_11G:
- 		raid = RATEID_IDX_G;
- 		break;
-@@ -82,8 +78,6 @@ u8 networktype_to_raid_ex(struct adapter *adapter, struct sta_info *psta)
- 		raid = RATEID_IDX_BG;
- 		break;
- 	case WIRELESS_11_24N:
--	case WIRELESS_11_5N:
--	case WIRELESS_11A_5N:
- 	case WIRELESS_11G_24N:
- 		if (rf_type == RF_2T2R)
- 			raid = RATEID_IDX_GN_N2SS;
-@@ -810,7 +804,7 @@ void WMMOnAssocRsp(struct adapter *padapter)
- 
- 		AIFS = aSifsTime + (2 * pmlmeinfo->slotTime);
- 
--		if (pmlmeext->cur_wireless_mode & (WIRELESS_11G | WIRELESS_11A)) {
-+		if (pmlmeext->cur_wireless_mode & WIRELESS_11G) {
- 			ECWMin = 4;
- 			ECWMax = 10;
- 		} else if (pmlmeext->cur_wireless_mode & WIRELESS_11B) {
-@@ -1695,7 +1689,7 @@ void update_capinfo(struct adapter *Adapter, u16 updateCap)
- 		pmlmeinfo->slotTime = NON_SHORT_SLOT_TIME;
- 	else {
- 		/* Filen: See 802.11-2007 p.90 */
--		if (pmlmeext->cur_wireless_mode & (WIRELESS_11_24N | WIRELESS_11A | WIRELESS_11_5N | WIRELESS_11AC))
-+		if (pmlmeext->cur_wireless_mode & (WIRELESS_11_24N))
- 			pmlmeinfo->slotTime = SHORT_SLOT_TIME;
- 		else if (pmlmeext->cur_wireless_mode & (WIRELESS_11G)) {
- 			if ((updateCap & cShortSlotTime) /* && (!(pMgntInfo->pHTInfo->RT2RT_HT_Mode & RT_HT_CAP_USE_LONG_PREAMBLE)) */)
-@@ -1724,9 +1718,7 @@ void update_wireless_mode(struct adapter *padapter)
- 	if ((pmlmeinfo->HT_info_enable) && (pmlmeinfo->HT_caps_enable))
- 		pmlmeinfo->HT_enable = 1;
- 
--	if (pmlmeinfo->VHT_enable)
--		network_type = WIRELESS_11AC;
--	else if (pmlmeinfo->HT_enable)
-+	if (pmlmeinfo->HT_enable)
- 		network_type = WIRELESS_11_24N;
- 
- 	if (rtw_is_cckratesonly_included(rate))
-diff --git a/drivers/staging/rtl8723bs/hal/odm.c b/drivers/staging/rtl8723bs/hal/odm.c
-index f2a9e95a1563e8..d85b479c1dbef6 100644
---- a/drivers/staging/rtl8723bs/hal/odm.c
-+++ b/drivers/staging/rtl8723bs/hal/odm.c
-@@ -975,7 +975,6 @@ u32 ODM_Get_Rate_Bitmap(
- 		break;
- 
- 	case (ODM_WM_G):
--	case (ODM_WM_A):
- 		if (rssi_level == DM_RATR_STA_HIGH)
- 			rate_bitmap = 0x00000f00;
- 		else
-@@ -994,7 +993,6 @@ u32 ODM_Get_Rate_Bitmap(
- 	case (ODM_WM_B|ODM_WM_G|ODM_WM_N24G):
- 	case (ODM_WM_B|ODM_WM_N24G):
- 	case (ODM_WM_G|ODM_WM_N24G):
--	case (ODM_WM_A|ODM_WM_N5G):
- 		if (pDM_Odm->RFType == ODM_1T2R || pDM_Odm->RFType == ODM_1T1R) {
- 			if (rssi_level == DM_RATR_STA_HIGH)
- 				rate_bitmap = 0x000f0000;
-@@ -1020,34 +1018,6 @@ u32 ODM_Get_Rate_Bitmap(
++			j++;
  		}
- 		break;
+ 	}
  
--	case (ODM_WM_AC|ODM_WM_G):
--		if (rssi_level == 1)
--			rate_bitmap = 0xfc3f0000;
--		else if (rssi_level == 2)
--			rate_bitmap = 0xfffff000;
--		else
--			rate_bitmap = 0xffffffff;
--		break;
--
--	case (ODM_WM_AC|ODM_WM_A):
--
--		if (pDM_Odm->RFType == RF_1T1R) {
--			if (rssi_level == 1)				/*  add by Gary for ac-series */
--				rate_bitmap = 0x003f8000;
--			else if (rssi_level == 2)
--				rate_bitmap = 0x003ff000;
--			else
--				rate_bitmap = 0x003ff010;
--		} else {
--			if (rssi_level == 1)				/*  add by Gary for ac-series */
--				rate_bitmap = 0xfe3f8000;       /*  VHT 2SS MCS3~9 */
--			else if (rssi_level == 2)
--				rate_bitmap = 0xfffff000;       /*  VHT 2SS MCS0~9 */
--			else
--				rate_bitmap = 0xfffff010;       /*  All */
--		}
--		break;
--
+diff --git a/drivers/staging/rtl8723bs/hal/hal_com_phycfg.c b/drivers/staging/rtl8723bs/hal/hal_com_phycfg.c
+index 10250642d30ae7..f806b3c7ee6ae7 100644
+--- a/drivers/staging/rtl8723bs/hal/hal_com_phycfg.c
++++ b/drivers/staging/rtl8723bs/hal/hal_com_phycfg.c
+@@ -2062,139 +2062,105 @@ void Hal_ChannelPlanToRegulation(struct adapter *Adapter, u16 ChannelPlan)
+ 		break;
+ 	case RT_CHANNEL_DOMAIN_FCC1_FCC1:
+ 		pHalData->Regulation2_4G = TXPWR_LMT_FCC;
+-		pHalData->Regulation5G = TXPWR_LMT_FCC;
+ 		break;
+ 	case RT_CHANNEL_DOMAIN_WORLD_ETSI1:
+ 		pHalData->Regulation2_4G = TXPWR_LMT_FCC;
+-		pHalData->Regulation5G = TXPWR_LMT_ETSI;
+ 		break;
+ 	case RT_CHANNEL_DOMAIN_MKK1_MKK1:
+ 		pHalData->Regulation2_4G = TXPWR_LMT_MKK;
+-		pHalData->Regulation5G = TXPWR_LMT_MKK;
+ 		break;
+ 	case RT_CHANNEL_DOMAIN_WORLD_KCC1:
+ 		pHalData->Regulation2_4G = TXPWR_LMT_FCC;
+-		pHalData->Regulation5G = TXPWR_LMT_MKK;
+ 		break;
+ 	case RT_CHANNEL_DOMAIN_WORLD_FCC2:
+ 		pHalData->Regulation2_4G = TXPWR_LMT_FCC;
+-		pHalData->Regulation5G = TXPWR_LMT_FCC;
+ 		break;
+ 	case RT_CHANNEL_DOMAIN_WORLD_FCC3:
+ 		pHalData->Regulation2_4G = TXPWR_LMT_FCC;
+-		pHalData->Regulation5G = TXPWR_LMT_FCC;
+ 		break;
+ 	case RT_CHANNEL_DOMAIN_WORLD_FCC4:
+ 		pHalData->Regulation2_4G = TXPWR_LMT_FCC;
+-		pHalData->Regulation5G = TXPWR_LMT_FCC;
+ 		break;
+ 	case RT_CHANNEL_DOMAIN_WORLD_FCC5:
+ 		pHalData->Regulation2_4G = TXPWR_LMT_FCC;
+-		pHalData->Regulation5G = TXPWR_LMT_FCC;
+ 		break;
+ 	case RT_CHANNEL_DOMAIN_WORLD_FCC6:
+ 		pHalData->Regulation2_4G = TXPWR_LMT_FCC;
+-		pHalData->Regulation5G = TXPWR_LMT_FCC;
+ 		break;
+ 	case RT_CHANNEL_DOMAIN_FCC1_FCC7:
+ 		pHalData->Regulation2_4G = TXPWR_LMT_FCC;
+-		pHalData->Regulation5G = TXPWR_LMT_FCC;
+ 		break;
+ 	case RT_CHANNEL_DOMAIN_WORLD_ETSI2:
+ 		pHalData->Regulation2_4G = TXPWR_LMT_FCC;
+-		pHalData->Regulation5G = TXPWR_LMT_FCC;
+ 		break;
+ 	case RT_CHANNEL_DOMAIN_WORLD_ETSI3:
+ 		pHalData->Regulation2_4G = TXPWR_LMT_FCC;
+-		pHalData->Regulation5G = TXPWR_LMT_FCC;
+ 		break;
+ 	case RT_CHANNEL_DOMAIN_MKK1_MKK2:
+ 		pHalData->Regulation2_4G = TXPWR_LMT_MKK;
+-		pHalData->Regulation5G = TXPWR_LMT_FCC;
+ 		break;
+ 	case RT_CHANNEL_DOMAIN_MKK1_MKK3:
+ 		pHalData->Regulation2_4G = TXPWR_LMT_MKK;
+-		pHalData->Regulation5G = TXPWR_LMT_FCC;
+ 		break;
+ 	case RT_CHANNEL_DOMAIN_FCC1_NCC1:
+ 		pHalData->Regulation2_4G = TXPWR_LMT_FCC;
+-		pHalData->Regulation5G = TXPWR_LMT_FCC;
+ 		break;
+ 	case RT_CHANNEL_DOMAIN_FCC1_NCC2:
+ 		pHalData->Regulation2_4G = TXPWR_LMT_FCC;
+-		pHalData->Regulation5G = TXPWR_LMT_FCC;
+ 		break;
+ 	case RT_CHANNEL_DOMAIN_GLOBAL_NULL:
+ 		pHalData->Regulation2_4G = TXPWR_LMT_WW;
+-		pHalData->Regulation5G = TXPWR_LMT_WW;
+ 		break;
+ 	case RT_CHANNEL_DOMAIN_ETSI1_ETSI4:
+ 		pHalData->Regulation2_4G = TXPWR_LMT_ETSI;
+-		pHalData->Regulation5G = TXPWR_LMT_ETSI;
+ 		break;
+ 	case RT_CHANNEL_DOMAIN_FCC1_FCC2:
+ 		pHalData->Regulation2_4G = TXPWR_LMT_FCC;
+-		pHalData->Regulation5G = TXPWR_LMT_FCC;
+ 		break;
+ 	case RT_CHANNEL_DOMAIN_FCC1_NCC3:
+ 		pHalData->Regulation2_4G = TXPWR_LMT_FCC;
+-		pHalData->Regulation5G = TXPWR_LMT_FCC;
+ 		break;
+ 	case RT_CHANNEL_DOMAIN_WORLD_ETSI5:
+ 		pHalData->Regulation2_4G = TXPWR_LMT_ETSI;
+-		pHalData->Regulation5G = TXPWR_LMT_ETSI;
+ 		break;
+ 	case RT_CHANNEL_DOMAIN_FCC1_FCC8:
+ 		pHalData->Regulation2_4G = TXPWR_LMT_FCC;
+-		pHalData->Regulation5G = TXPWR_LMT_FCC;
+ 		break;
+ 	case RT_CHANNEL_DOMAIN_WORLD_ETSI6:
+ 		pHalData->Regulation2_4G = TXPWR_LMT_ETSI;
+-		pHalData->Regulation5G = TXPWR_LMT_ETSI;
+ 		break;
+ 	case RT_CHANNEL_DOMAIN_WORLD_ETSI7:
+ 		pHalData->Regulation2_4G = TXPWR_LMT_ETSI;
+-		pHalData->Regulation5G = TXPWR_LMT_ETSI;
+ 		break;
+ 	case RT_CHANNEL_DOMAIN_WORLD_ETSI8:
+ 		pHalData->Regulation2_4G = TXPWR_LMT_ETSI;
+-		pHalData->Regulation5G = TXPWR_LMT_ETSI;
+ 		break;
+ 	case RT_CHANNEL_DOMAIN_WORLD_ETSI9:
+ 		pHalData->Regulation2_4G = TXPWR_LMT_ETSI;
+-		pHalData->Regulation5G = TXPWR_LMT_ETSI;
+ 		break;
+ 	case RT_CHANNEL_DOMAIN_WORLD_ETSI10:
+ 		pHalData->Regulation2_4G = TXPWR_LMT_ETSI;
+-		pHalData->Regulation5G = TXPWR_LMT_ETSI;
+ 		break;
+ 	case RT_CHANNEL_DOMAIN_WORLD_ETSI11:
+ 		pHalData->Regulation2_4G = TXPWR_LMT_ETSI;
+-		pHalData->Regulation5G = TXPWR_LMT_ETSI;
+ 		break;
+ 	case RT_CHANNEL_DOMAIN_FCC1_NCC4:
+ 		pHalData->Regulation2_4G = TXPWR_LMT_FCC;
+-		pHalData->Regulation5G = TXPWR_LMT_FCC;
+ 		break;
+ 	case RT_CHANNEL_DOMAIN_WORLD_ETSI12:
+ 		pHalData->Regulation2_4G = TXPWR_LMT_ETSI;
+-		pHalData->Regulation5G = TXPWR_LMT_ETSI;
+ 		break;
+ 	case RT_CHANNEL_DOMAIN_FCC1_FCC9:
+ 		pHalData->Regulation2_4G = TXPWR_LMT_FCC;
+-		pHalData->Regulation5G = TXPWR_LMT_FCC;
+ 		break;
+ 	case RT_CHANNEL_DOMAIN_WORLD_ETSI13:
+ 		pHalData->Regulation2_4G = TXPWR_LMT_ETSI;
+-		pHalData->Regulation5G = TXPWR_LMT_ETSI;
+ 		break;
+ 	case RT_CHANNEL_DOMAIN_FCC1_FCC10:
+ 		pHalData->Regulation2_4G = TXPWR_LMT_FCC;
+-		pHalData->Regulation5G = TXPWR_LMT_FCC;
+ 		break;
+ 	case RT_CHANNEL_DOMAIN_REALTEK_DEFINE: /* Realtek Reserve */
+ 		pHalData->Regulation2_4G = TXPWR_LMT_WW;
+-		pHalData->Regulation5G = TXPWR_LMT_WW;
+ 		break;
  	default:
- 		if (pDM_Odm->RFType == RF_1T2R)
- 			rate_bitmap = 0x000fffff;
-diff --git a/drivers/staging/rtl8723bs/hal/odm.h b/drivers/staging/rtl8723bs/hal/odm.h
-index a8d232245227b2..2503e989a4eb0a 100644
---- a/drivers/staging/rtl8723bs/hal/odm.h
-+++ b/drivers/staging/rtl8723bs/hal/odm.h
-@@ -541,11 +541,8 @@ typedef enum tag_Wireless_Mode_Definition {
- 	ODM_WM_UNKNOWN    = 0x0,
- 	ODM_WM_B          = BIT0,
- 	ODM_WM_G          = BIT1,
--	ODM_WM_A          = BIT2,
- 	ODM_WM_N24G       = BIT3,
--	ODM_WM_N5G        = BIT4,
- 	ODM_WM_AUTO       = BIT5,
--	ODM_WM_AC         = BIT6,
- } ODM_WIRELESS_MODE_E;
- 
- /*  ODM_CMNINFO_BAND */
-diff --git a/drivers/staging/rtl8723bs/hal/odm_EdcaTurboCheck.c b/drivers/staging/rtl8723bs/hal/odm_EdcaTurboCheck.c
-index b7ebce7a6ff929..4fe32332e414ac 100644
---- a/drivers/staging/rtl8723bs/hal/odm_EdcaTurboCheck.c
-+++ b/drivers/staging/rtl8723bs/hal/odm_EdcaTurboCheck.c
-@@ -142,12 +142,10 @@ void odm_EdcaTurboCheckCE(void *pDM_VOID)
- 		} else if ((iot_peer == HT_IOT_PEER_CISCO) &&
- 			   ((wirelessmode == ODM_WM_G) ||
- 			    (wirelessmode == (ODM_WM_B | ODM_WM_G)) ||
--			    (wirelessmode == ODM_WM_A) ||
- 			    (wirelessmode == ODM_WM_B))) {
- 			EDCA_BE_DL = edca_setting_DL_GMode[iot_peer];
- 		} else if ((iot_peer == HT_IOT_PEER_AIRGO) &&
--			   ((wirelessmode == ODM_WM_G) ||
--			    (wirelessmode == ODM_WM_A))) {
-+			   (wirelessmode == ODM_WM_G)) {
- 			EDCA_BE_DL = 0xa630;
- 		} else if (iot_peer == HT_IOT_PEER_MARVELL) {
- 			EDCA_BE_DL = edca_setting_DL[iot_peer];
-diff --git a/drivers/staging/rtl8723bs/hal/sdio_halinit.c b/drivers/staging/rtl8723bs/hal/sdio_halinit.c
-index e048b5c5dc4505..05aa70fb1e3b6a 100644
---- a/drivers/staging/rtl8723bs/hal/sdio_halinit.c
-+++ b/drivers/staging/rtl8723bs/hal/sdio_halinit.c
-@@ -599,8 +599,6 @@ static void _InitOperationMode(struct adapter *padapter)
- 	case WIRELESS_MODE_B:
- 		regBwOpMode = BW_OPMODE_20MHZ;
  		break;
--	case WIRELESS_MODE_A:
--		break;
- 	case WIRELESS_MODE_G:
- 		regBwOpMode = BW_OPMODE_20MHZ;
- 		break;
-@@ -612,9 +610,6 @@ static void _InitOperationMode(struct adapter *padapter)
- 		/*  CCK rate will be filtered out only when associated AP does not support it. */
- 		regBwOpMode = BW_OPMODE_20MHZ;
- 		break;
--	case WIRELESS_MODE_N_5G:
--		regBwOpMode = BW_OPMODE_5G;
--		break;
+diff --git a/drivers/staging/rtl8723bs/include/rtw_mlme_ext.h b/drivers/staging/rtl8723bs/include/rtw_mlme_ext.h
+index 1567831caf914a..3df957c71f51a2 100644
+--- a/drivers/staging/rtl8723bs/include/rtw_mlme_ext.h
++++ b/drivers/staging/rtl8723bs/include/rtw_mlme_ext.h
+@@ -255,7 +255,6 @@ typedef struct _RT_CHANNEL_PLAN_5G {
  
- 	default: /* for MacOSX compiler warning. */
- 		break;
-diff --git a/drivers/staging/rtl8723bs/include/hal_phy.h b/drivers/staging/rtl8723bs/include/hal_phy.h
-index ed0caa0574e393..b2a5e0176c4efb 100644
---- a/drivers/staging/rtl8723bs/include/hal_phy.h
-+++ b/drivers/staging/rtl8723bs/include/hal_phy.h
-@@ -118,13 +118,10 @@ enum HW_BLOCK {
+ typedef struct _RT_CHANNEL_PLAN_MAP {
+ 	unsigned char Index2G;
+-	unsigned char Index5G;
+ } RT_CHANNEL_PLAN_MAP, *PRT_CHANNEL_PLAN_MAP;
  
- enum WIRELESS_MODE {
- 	WIRELESS_MODE_UNKNOWN = 0x00,
--	WIRELESS_MODE_A = 0x01,
- 	WIRELESS_MODE_B = 0x02,
- 	WIRELESS_MODE_G = 0x04,
- 	WIRELESS_MODE_AUTO = 0x08,
- 	WIRELESS_MODE_N_24G = 0x10,
--	WIRELESS_MODE_N_5G = 0x20,
--	WIRELESS_MODE_AC_5G = 0x40,
- 	WIRELESS_MODE_AC_24G  = 0x80,
- 	WIRELESS_MODE_AC_ONLY  = 0x100,
- };
-diff --git a/drivers/staging/rtl8723bs/include/ieee80211.h b/drivers/staging/rtl8723bs/include/ieee80211.h
-index b7c4b1cf204e1f..4d24a85722cbdd 100644
---- a/drivers/staging/rtl8723bs/include/ieee80211.h
-+++ b/drivers/staging/rtl8723bs/include/ieee80211.h
-@@ -157,33 +157,20 @@ enum NETWORK_TYPE {
- 	/* Sub-Element */
- 	WIRELESS_11B = BIT(0), /*  tx: cck only , rx: cck only, hw: cck */
- 	WIRELESS_11G = BIT(1), /*  tx: ofdm only, rx: ofdm & cck, hw: cck & ofdm */
--	WIRELESS_11A = BIT(2), /*  tx: ofdm only, rx: ofdm only, hw: ofdm only */
- 	WIRELESS_11_24N = BIT(3), /*  tx: MCS only, rx: MCS & cck, hw: MCS & cck */
--	WIRELESS_11_5N = BIT(4), /*  tx: MCS only, rx: MCS & ofdm, hw: ofdm only */
- 	WIRELESS_AUTO = BIT(5),
--	WIRELESS_11AC = BIT(6),
+ enum Associated_AP {
+@@ -360,13 +359,13 @@ struct FW_Sta_Info {
+  * When the driver scanned RTW_SCAN_NUM_OF_CH channels, it would switch back to AP's operating channel for
+  * RTW_STAY_AP_CH_MILLISECOND * SURVEY_TO milliseconds.
+  * Example:
+- * For chip supports 2.4G + 5GHz and AP mode is operating in channel 1,
++ * For chip supports 2.4G and AP mode is operating in channel 1,
+  * RTW_SCAN_NUM_OF_CH is 8, RTW_STAY_AP_CH_MILLISECOND is 3 and SURVEY_TO is 100.
+  * When it's STA mode gets set_scan command,
+  * it would
+  * 1. Doing the scan on channel 1.2.3.4.5.6.7.8
+  * 2. Back to channel 1 for 300 milliseconds
+- * 3. Go through doing site survey on channel 9.10.11.36.40.44.48.52
++ * 3. Go through doing site survey on channel 9.10.11
+  * 4. Back to channel 1 for 300 milliseconds
+  * 5. ... and so on, till survey done.
+  */
+@@ -423,7 +422,6 @@ typedef struct _RT_CHANNEL_INFO {
+ } RT_CHANNEL_INFO, *PRT_CHANNEL_INFO;
  
- 	/* Combination */
- 	/* Type for current wireless mode */
- 	WIRELESS_11BG = (WIRELESS_11B|WIRELESS_11G), /*  tx: cck & ofdm, rx: cck & ofdm & MCS, hw: cck & ofdm */
- 	WIRELESS_11G_24N = (WIRELESS_11G|WIRELESS_11_24N), /*  tx: ofdm & MCS, rx: ofdm & cck & MCS, hw: cck & ofdm */
--	WIRELESS_11A_5N = (WIRELESS_11A|WIRELESS_11_5N), /*  tx: ofdm & MCS, rx: ofdm & MCS, hw: ofdm only */
- 	WIRELESS_11B_24N = (WIRELESS_11B|WIRELESS_11_24N), /*  tx: ofdm & cck & MCS, rx: ofdm & cck & MCS, hw: ofdm & cck */
- 	WIRELESS_11BG_24N = (WIRELESS_11B|WIRELESS_11G|WIRELESS_11_24N), /*  tx: ofdm & cck & MCS, rx: ofdm & cck & MCS, hw: ofdm & cck */
--	WIRELESS_11_24AC = (WIRELESS_11G|WIRELESS_11AC),
--	WIRELESS_11_5AC = (WIRELESS_11A|WIRELESS_11AC),
--
--
--	/* Type for registry default wireless mode */
--	WIRELESS_11AGN = (WIRELESS_11A|WIRELESS_11G|WIRELESS_11_24N|WIRELESS_11_5N), /*  tx: ofdm & MCS, rx: ofdm & MCS, hw: ofdm only */
--	WIRELESS_11ABGN = (WIRELESS_11A|WIRELESS_11B|WIRELESS_11G|WIRELESS_11_24N|WIRELESS_11_5N),
--	WIRELESS_MODE_24G = (WIRELESS_11B|WIRELESS_11G|WIRELESS_11_24N|WIRELESS_11AC),
--	WIRELESS_MODE_MAX = (WIRELESS_11A|WIRELESS_11B|WIRELESS_11G|WIRELESS_11_24N|WIRELESS_11_5N|WIRELESS_11AC),
- };
+ int rtw_ch_set_search_ch(RT_CHANNEL_INFO *ch_set, const u32 ch);
+-bool rtw_mlme_band_check(struct adapter *adapter, const u32 ch);
  
- #define SUPPORTED_24G_NETTYPE_MSK (WIRELESS_11B | WIRELESS_11G | WIRELESS_11_24N)
+ /*  P2P_MAX_REG_CLASSES - Maximum number of regulatory classes */
+ #define P2P_MAX_REG_CLASSES 10
+diff --git a/drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c b/drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c
+index b7993e25764d51..65bb060b0958fd 100644
+--- a/drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c
++++ b/drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c
+@@ -77,7 +77,6 @@ static struct ieee80211_rate rtw_rates[] = {
+ #define RTW_G_RATES_NUM	12
  
--#define IsLegacyOnly(NetType)  ((NetType) == ((NetType) & (WIRELESS_11BG|WIRELESS_11A)))
-+#define IsLegacyOnly(NetType)  ((NetType) == ((NetType) & (WIRELESS_11BG)))
+ #define RTW_2G_CHANNELS_NUM 14
+-#define RTW_5G_CHANNELS_NUM 37
  
- #define IsSupported24G(NetType) ((NetType) & SUPPORTED_24G_NETTYPE_MSK ? true : false)
+ static struct ieee80211_channel rtw_2ghz_channels[] = {
+ 	CHAN2G(1, 2412, 0),
+@@ -1422,7 +1421,6 @@ void rtw_cfg80211_surveydone_event_callback(struct adapter *padapter)
  
-@@ -195,11 +182,8 @@ enum NETWORK_TYPE {
- #define IsSupportedRxHT(NetType) IsEnableHWOFDM(NetType)
+ 		/* report network only if the current channel set contains the channel to which this network belongs */
+ 		if (rtw_ch_set_search_ch(padapter->mlmeextpriv.channel_set, pnetwork->network.Configuration.DSConfig) >= 0
+-			&& rtw_mlme_band_check(padapter, pnetwork->network.Configuration.DSConfig) == true
+ 			&& true == rtw_validate_ssid(&(pnetwork->network.Ssid))
+ 		)
+ 		{
+diff --git a/drivers/staging/rtl8723bs/os_dep/ioctl_linux.c b/drivers/staging/rtl8723bs/os_dep/ioctl_linux.c
+index 083ff72976cf04..fa167c68d9b5cc 100644
+--- a/drivers/staging/rtl8723bs/os_dep/ioctl_linux.c
++++ b/drivers/staging/rtl8723bs/os_dep/ioctl_linux.c
+@@ -1462,7 +1462,6 @@ static int rtw_wx_get_scan(struct net_device *dev, struct iw_request_info *a,
  
- #define IsSupportedTxCCK(NetType) (((NetType) & (WIRELESS_11B)) ? true : false)
--#define IsSupportedTxOFDM(NetType) (((NetType) & (WIRELESS_11G|WIRELESS_11A)) ? true : false)
--#define IsSupportedHT(NetType) (((NetType) & (WIRELESS_11_24N|WIRELESS_11_5N)) ? true : false)
--
--#define IsSupportedVHT(NetType) (((NetType) & (WIRELESS_11AC)) ? true : false)
--
-+#define IsSupportedTxOFDM(NetType) (((NetType) & (WIRELESS_11G) ? true : false)
-+#define IsSupportedHT(NetType) (((NetType) & (WIRELESS_11_24N)) ? true : false)
+ 		/* report network only if the current channel set contains the channel to which this network belongs */
+ 		if (rtw_ch_set_search_ch(padapter->mlmeextpriv.channel_set, pnetwork->network.Configuration.DSConfig) >= 0
+-			&& rtw_mlme_band_check(padapter, pnetwork->network.Configuration.DSConfig) == true
+ 			&& true == rtw_validate_ssid(&(pnetwork->network.Ssid))) {
  
- struct ieee_param {
- 	u32 cmd;
-diff --git a/drivers/staging/rtl8723bs/include/wifi.h b/drivers/staging/rtl8723bs/include/wifi.h
-index 3a7dd2ed26a822..dc631adef697cf 100644
---- a/drivers/staging/rtl8723bs/include/wifi.h
-+++ b/drivers/staging/rtl8723bs/include/wifi.h
-@@ -457,7 +457,6 @@ static inline int IsFrameTypeCtrl(unsigned char *pframe)
- #define _PRE_ALLOCICVHDR_		5
- #define _PRE_ALLOCMICHDR_		6
- 
--#define _SIFSTIME_				((priv->pmib->dot11BssType.net_work_type&WIRELESS_11A)?16:10)
- #define _ACKCTSLNG_				14	/* 14 bytes long, including crclng */
- #define _CRCLNG_				4
- 
-diff --git a/drivers/staging/rtl8723bs/os_dep/os_intfs.c b/drivers/staging/rtl8723bs/os_dep/os_intfs.c
-index 27f990a01a23fd..a7c4ad1c7cb986 100644
---- a/drivers/staging/rtl8723bs/os_dep/os_intfs.c
-+++ b/drivers/staging/rtl8723bs/os_dep/os_intfs.c
-@@ -24,7 +24,7 @@ static int rtw_lbkmode;/* RTL8712_AIR_TRX; */
- static int rtw_network_mode = Ndis802_11IBSS;/* Ndis802_11Infrastructure;infra, ad-hoc, auto */
- /* struct ndis_802_11_ssid	ssid; */
- static int rtw_channel = 1;/* ad-hoc support requirement */
--static int rtw_wireless_mode = WIRELESS_MODE_MAX;
-+static int rtw_wireless_mode = WIRELESS_11BG_24N;
- static int rtw_vrtl_carrier_sense = AUTO_VCS;
- static int rtw_vcs_type = RTS_CTS;/*  */
- static int rtw_rts_thresh = 2347;/*  */
+ 			ev = translate_scan(padapter, a, pnetwork, ev, stop);
 -- 
 2.53.0
 
