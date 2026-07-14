@@ -1,84 +1,85 @@
-Return-Path: <stable+bounces-274353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274355-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Z0z+LMBNVmqF3AAAu9opvQ
-	(envelope-from <stable+bounces-274353-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 16:54:56 +0200
+	id 51dwDf5OVmrJ3AAAu9opvQ
+	(envelope-from <stable+bounces-274355-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 17:00:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CDC7756207
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 16:54:56 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1C757562E4
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 17:00:13 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=TnKQwCjA;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274353-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274353-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=E7tNK+he;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274355-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-274355-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 785B13013470
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 14:54:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 17E60304F892
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 14:58:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C92AD47B409;
-	Tue, 14 Jul 2026 14:54:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31DF348AE3D;
+	Tue, 14 Jul 2026 14:58:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 536AF480968
-	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 14:54:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08BB44921A7
+	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 14:58:14 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784040894; cv=none; b=Yuwf9v1tXO6hKiugNdJPOh+SbwPx0AO7g2ZVEGsIWCf/wURDIB2eVChIsCqP9DxzEOMHGtN9kV1Wa5Dn20BpCftTA4ZCO/GumRhyZJg+14oZpqIR/nt66sjfaH78jw7mrFZHSzh8EJgC1QGoGzk9sxgVvro6UJTC4yhBHAMOcqY=
+	t=1784041095; cv=none; b=i0wTWW2qrEvZsWz59Z5u21c3gzD5TzMwtaa0/Pufzx+u1ZU1f2Xp6+iere4+2Ro6h20S5n2rq1HDKo92zYLMm7xwB1Rsddhl2phSTqqUkPkFPqLRDVRgHXrLP7dpCTLYzAiT91I0avKwcT4lZkpUGlFJO90DEe11YtKd0DuHWeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784040894; c=relaxed/simple;
-	bh=MvofQzrsbJtJmlwyY5gJB+PEmE/XPVrnWIbOjUSkjhg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ORLYalghauQ8ioqU41glaE5ZQDq6YX3M5H63hr8QzEgxyPckWcxpqr27zKqM/wUGw1HLE/Zr5KMYAjyikYqaJu+/IyS2gsMgG0DTbqysLU/0dghYyHTc3pXzbf5JgXObgm9YaYMH5g8wqFCDdjvU2wv5Las74oBUoCYSNGZPlos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TnKQwCjA; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B83A61F000E9;
-	Tue, 14 Jul 2026 14:54:52 +0000 (UTC)
+	s=arc-20240116; t=1784041095; c=relaxed/simple;
+	bh=YSdWWEOQHkkTCX2BsG02AIp9ajsyyr2wLhD4hoo7TiQ=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=g+MF6FnHENHhmDlQRqr9ik6EAv3XS7rZF9SPqy6m+BbinaXFa/BuqJrjlFIJEKl4fzOBzcmGaydyAwFm08IJ7kVIvof/JzP7F2QI7xCR2AQWonhWap0pIQfm5EIZB4I2/xlNL8LO75HVKM6CKNcOKNQVTNMG+MXOtVKa8CNidZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E7tNK+he; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5149A1F00A3A;
+	Tue, 14 Jul 2026 14:58:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1784040893;
-	bh=nQBbSLbW+NXSRTwtnkhi6tvjgH+s/vxR2x9I+XCX4bk=;
+	s=korg; t=1784041093;
+	bh=ADBAsJDYAzfFdhUaVT9pBsk8LlEoKYy1OLHGVwPf3ac=;
 	h=Subject:To:Cc:From:Date;
-	b=TnKQwCjAIYOyoagPV9lEd0+hS9CbZHvjkrihuLP8Eqff7f1RdIHMQiJXzeum8y4sM
-	 K0Ft5U+5aV3SjPPe7THvR7YYyTjaK3iQGcL6OMbas56Jn/RHYBt4IvqiqyFwh3EUvX
-	 u9FR0g2BkmrQ+ZwWlwNf2dmsDQvRVnj2udSIfTu0=
-Subject: FAILED: patch "[PATCH] HID: appleir: fix UAF on pending key_up_timer in remove()" failed to apply to 5.10-stable tree
-To: maskmemanish@gmail.com,jkosina@suse.com
+	b=E7tNK+hemTLlQTRnV0MpZcxABRkgCCEVpkDCwSv7L/NhLzeF47y7eyUljAy2Xb0Rk
+	 gj8h3ynZTkaV//EwmDUftVKpFWqtJz1Ac9fS4ntxrvKPKW4gJTOV1Bx1jI8qBQDsmv
+	 wH/hUSXt3Dr6pphvs1N7n7GUUAGGUAD+GN3fHLmQ=
+Subject: FAILED: patch "[PATCH] HID: pidff: Use correct effect type in effect update" failed to apply to 6.6-stable tree
+To: oleg@makarenk.ooo,jkosina@suse.com,lemon.xah@gmail.com,oroundtree1@gmail.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 14 Jul 2026 16:54:31 +0200
-Message-ID: <2026071431-undefined-extenuate-7534@gregkh>
+Date: Tue, 14 Jul 2026 16:55:45 +0200
+Message-ID: <2026071445-massive-dimple-368f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [2.34 / 15.00];
+X-Spamd-Result: default: False [3.84 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-274353-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-274355-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:maskmemanish@gmail.com,m:jkosina@suse.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,suse.com];
+	FREEMAIL_TO(0.00)[makarenk.ooo,suse.com,gmail.com];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:oleg@makarenk.ooo,m:jkosina@suse.com,m:lemon.xah@gmail.com,m:oroundtree1@gmail.com,m:stable@vger.kernel.org,m:lemonxah@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_NONE(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -86,28 +87,28 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
 	FROM_NO_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp,gregkh:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,gregkh:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.com:email,linuxfoundation.org:from_mime,linuxfoundation.org:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5CDC7756207
+X-Rspamd-Queue-Id: A1C757562E4
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 75fe87e19d8aff81eb2c64d15d244ab8da4de945
+git cherry-pick -x b251598b8bf37300510868f739a79e07800d41ce
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026071431-undefined-extenuate-7534@gregkh' --subject-prefix 'PATCH 5.10.y' 'HEAD^..'
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026071445-massive-dimple-368f@gregkh' --subject-prefix 'PATCH 6.6.y' 'HEAD^..'
 
 Possible dependencies:
 
@@ -119,145 +120,42 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 75fe87e19d8aff81eb2c64d15d244ab8da4de945 Mon Sep 17 00:00:00 2001
-From: Manish Khadka <maskmemanish@gmail.com>
-Date: Fri, 15 May 2026 23:17:52 +0545
-Subject: [PATCH] HID: appleir: fix UAF on pending key_up_timer in remove()
+From b251598b8bf37300510868f739a79e07800d41ce Mon Sep 17 00:00:00 2001
+From: Oleg Makarenko <oleg@makarenk.ooo>
+Date: Tue, 9 Jun 2026 19:00:27 +0300
+Subject: [PATCH] HID: pidff: Use correct effect type in effect update
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-appleir_remove() runs hid_hw_stop() before timer_delete_sync().
-hid_hw_stop() synchronously unregisters the HID input device via
-hid_disconnect() -> hidinput_disconnect() -> input_unregister_device(),
-which drops the last reference and frees the underlying input_dev when
-no userspace handle holds it open.
+When updating an existing effect, the effect type from the last created
+effect was sent to the device instead of the updated one.
+This caused incorrect reports when a game creates multiple different
+effects and updates only one that is not the last created.
 
-key_up_tick() reads appleir->input_dev and calls input_report_key() /
-input_sync() on it.  The timer is armed from appleir_raw_event() with
-a HZ/8 (~125 ms) timeout on every keydown and key-repeat report.  If a
-key was pressed shortly before the device is disconnected, the timer
-can fire after hid_hw_stop() has freed input_dev but before the
-teardown drains it.
+Fixes FFB in multiple games that create multiple simultaneous effects
+(Forza Horizon 5/6).
 
-A simple reorder is not sufficient.  Putting the timer drain first
-still leaves a window where a USB URB completion (raw_event) running
-during hid_hw_stop() can call mod_timer() and re-arm the timer, which
-then fires after hidinput_disconnect() has freed input_dev.  The same
-URB-completion window also lets raw_event() reach key_up(), key_down()
-and battery_flat() directly, all of which dereference
-appleir->input_dev.
-
-Introduce a 'removing' flag on struct appleir, gated by the existing
-spinlock.  appleir_remove() sets the flag under the lock and then
-shuts down the timer with timer_shutdown_sync(), which both drains any
-in-flight callback and permanently disables further mod_timer() calls.
-appleir_raw_event() and key_up_tick() bail out early if the flag is
-set, so no path can arm or run the timer, or dereference
-appleir->input_dev, after remove() has started tearing down.
-
-The keyrepeat and flatbattery branches of appleir_raw_event()
-previously called into the input layer without holding the spinlock;
-take it now so the flag check is well-defined.  This incidentally
-closes a pre-existing read-side race on appleir->current_key in the
-keyrepeat branch.
-
-This bug is structurally a sibling of commit 4db2af929279 ("HID:
-appletb-kbd: fix UAF in inactivity-timer cleanup path") and has been
-present since the driver was introduced.
-
-Fixes: 9a4a5574ce42 ("HID: appleir: add support for Apple ir devices")
+Fixes: 224ee88fe395 ("Input: add force feedback driver for PID devices")
 Cc: stable@vger.kernel.org
-Signed-off-by: Manish Khadka <maskmemanish@gmail.com>
+Tested-by: Oliver Roundtree <oroundtree1@gmail.com>
+Co-developed-by: Ryno Kotzé <lemon.xah@gmail.com>
+Signed-off-by: Ryno Kotzé <lemon.xah@gmail.com>
+Signed-off-by: Oleg Makarenko <oleg@makarenk.ooo>
 Signed-off-by: Jiri Kosina <jkosina@suse.com>
 
-diff --git a/drivers/hid/hid-appleir.c b/drivers/hid/hid-appleir.c
-index 5e8ced7bc05a..adaa44a858ed 100644
---- a/drivers/hid/hid-appleir.c
-+++ b/drivers/hid/hid-appleir.c
-@@ -109,9 +109,10 @@ struct appleir {
- 	struct hid_device *hid;
- 	unsigned short keymap[ARRAY_SIZE(appleir_key_table)];
- 	struct timer_list key_up_timer;	/* timer for key up */
--	spinlock_t lock;		/* protects .current_key */
-+	spinlock_t lock;		/* protects .current_key, .removing */
- 	int current_key;		/* the currently pressed key */
- 	int prev_key_idx;		/* key index in a 2 packets message */
-+	bool removing;			/* set during teardown; gates input_dev access */
- };
+diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
+index c45f182d0448..5f4395f7c645 100644
+--- a/drivers/hid/usbhid/hid-pidff.c
++++ b/drivers/hid/usbhid/hid-pidff.c
+@@ -522,7 +522,7 @@ static void pidff_set_effect_report(struct pidff_device *pidff,
+ 	pidff->set_effect[PID_EFFECT_BLOCK_INDEX].value[0] =
+ 		pidff->block_load[PID_EFFECT_BLOCK_INDEX].value[0];
+ 	pidff->set_effect_type->value[0] =
+-		pidff->create_new_effect_type->value[0];
++		pidff_get_effect_type_id(pidff, effect);
  
- static int get_key(int data)
-@@ -172,7 +173,7 @@ static void key_up_tick(struct timer_list *t)
- 	unsigned long flags;
- 
- 	spin_lock_irqsave(&appleir->lock, flags);
--	if (appleir->current_key) {
-+	if (!appleir->removing && appleir->current_key) {
- 		key_up(hid, appleir, appleir->current_key);
- 		appleir->current_key = 0;
- 	}
-@@ -195,6 +196,10 @@ static int appleir_raw_event(struct hid_device *hid, struct hid_report *report,
- 		int index;
- 
- 		spin_lock_irqsave(&appleir->lock, flags);
-+		if (appleir->removing) {
-+			spin_unlock_irqrestore(&appleir->lock, flags);
-+			goto out;
-+		}
- 		/*
- 		 * If we already have a key down, take it up before marking
- 		 * this one down
-@@ -229,17 +234,25 @@ static int appleir_raw_event(struct hid_device *hid, struct hid_report *report,
- 	appleir->prev_key_idx = 0;
- 
- 	if (!memcmp(data, keyrepeat, sizeof(keyrepeat))) {
--		key_down(hid, appleir, appleir->current_key);
--		/*
--		 * Remote doesn't do key up, either pull them up, in the test
--		 * above, or here set a timer which pulls them up after 1/8 s
--		 */
--		mod_timer(&appleir->key_up_timer, jiffies + HZ / 8);
-+		spin_lock_irqsave(&appleir->lock, flags);
-+		if (!appleir->removing) {
-+			key_down(hid, appleir, appleir->current_key);
-+			/*
-+			 * Remote doesn't do key up, either pull them up, in
-+			 * the test above, or here set a timer which pulls them
-+			 * up after 1/8 s
-+			 */
-+			mod_timer(&appleir->key_up_timer, jiffies + HZ / 8);
-+		}
-+		spin_unlock_irqrestore(&appleir->lock, flags);
- 		goto out;
- 	}
- 
- 	if (!memcmp(data, flatbattery, sizeof(flatbattery))) {
--		battery_flat(appleir);
-+		spin_lock_irqsave(&appleir->lock, flags);
-+		if (!appleir->removing)
-+			battery_flat(appleir);
-+		spin_unlock_irqrestore(&appleir->lock, flags);
- 		/* Fall through */
- 	}
- 
-@@ -318,8 +331,20 @@ static int appleir_probe(struct hid_device *hid, const struct hid_device_id *id)
- static void appleir_remove(struct hid_device *hid)
- {
- 	struct appleir *appleir = hid_get_drvdata(hid);
-+	unsigned long flags;
-+
-+	/*
-+	 * Mark the driver as tearing down so that any concurrent raw_event
-+	 * (e.g. from a USB URB completion that hid_hw_stop() has not yet
-+	 * killed) and the key_up_timer softirq stop touching input_dev
-+	 * before hid_hw_stop() frees it via hidinput_disconnect().
-+	 */
-+	spin_lock_irqsave(&appleir->lock, flags);
-+	appleir->removing = true;
-+	spin_unlock_irqrestore(&appleir->lock, flags);
-+
-+	timer_shutdown_sync(&appleir->key_up_timer);
- 	hid_hw_stop(hid);
--	timer_delete_sync(&appleir->key_up_timer);
- }
- 
- static const struct hid_device_id appleir_devices[] = {
+ 	pidff_set_duration(&pidff->set_effect[PID_DURATION],
+ 			   effect->replay.length);
 
 
