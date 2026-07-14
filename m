@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-274329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274332-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id UJa5MH9OVmql3AAAu9opvQ
-	(envelope-from <stable+bounces-274329-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 16:58:07 +0200
+	id zPlGIc1NVmqK3AAAu9opvQ
+	(envelope-from <stable+bounces-274332-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 16:55:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C32C475627E
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 16:58:06 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E88E575621D
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 16:55:08 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="FerxFu/I";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274329-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-274329-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=bHBO1T81;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274332-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-274332-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 292F3302365F
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 14:51:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 75266307EACA
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 14:51:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C37D744684C;
-	Tue, 14 Jul 2026 14:51:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08CA643F8D1;
+	Tue, 14 Jul 2026 14:51:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 337113E6DD2
-	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 14:51:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A4AB47DD79
+	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 14:51:25 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784040684; cv=none; b=YruAY7S0As1jw0lUaEXlhkYtfeSnkkBFtNki/RtdCr4c0Ul8DbMh79VCaLyUKY+QDPFcxGMpjX2nyoz5HIePjerp/yJ7E94YLB5xQwHs0Toud44512IDd8sFMCGAjScfFTubd8mpf3+umZtbTZNEqSa9vWfr5tYWeHTqvyS2j4k=
+	t=1784040691; cv=none; b=NSiYpJnVMUca7KO8Ysfsv3ee4APx9tIR2JDUW9COriuXRkbxCgD6CZh0nI/WjyT+VLQ6crb4sKekgXyulaMHypCImdcC3gtjVEgI8I0NqTlGS1wY4yuGRU1lJECMocNA2/rEFrfkH5M1QMg1dyNsB2Scm8E8uwh+vKeeNvJuA7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784040684; c=relaxed/simple;
-	bh=+SFrMKALQPZEHkBwyAq01zmIQNMzL/oQW4L3a4/Za0s=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=SNshg+evWdJfzeWyt4fYeeBbibxSyDo/E8YYVAv77+8M4UWMLN5aUpcTH8mnLCEskDjPCf5RS9qeRFuV8RQuQTnvhBdH6bJb5RmncGKzdjk+CLJGKf1fwg4EyPgOtXK4D4A7Sqf3b5LCjdsbGKZ9SVI9fyRObwj+LfnEGOe9GrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FerxFu/I; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46B9F1F00A3A;
-	Tue, 14 Jul 2026 14:51:20 +0000 (UTC)
+	s=arc-20240116; t=1784040691; c=relaxed/simple;
+	bh=yNuW/XLgJjMQ/gunTyiSTZ5O5ZaGQRIaWdbVQ7HUJnc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=uG+JeQhTcvSvtER54HPL8sSHEvvyHDL5nRhV2y5GvByw3mv4YGdY+6NKuKfE5Fe96rSw16zO0asPem7K+vxJx1YliLcIgNNW3aR2JNYCZOYvcU6u4NAOdKLegCDsccY1H1hFQsHez9QUq3upLF1t8uJD6cqrazM+OpvQhIW+olo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bHBO1T81; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 721C21F00A3D;
+	Tue, 14 Jul 2026 14:51:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1784040680;
-	bh=DVMenPwjSb8cSZrgZfSjptrr8gXfriPIsCoB07XRSsI=;
+	s=korg; t=1784040684;
+	bh=F0IjIED4VmRZ1SIexChS9TsXYY/U67hI2vc6MwF5WD0=;
 	h=Subject:To:Cc:From:Date;
-	b=FerxFu/IioHbdP6znOejHlnHH7vb4bdr45xRqlSqIeeV+DUiMswhgOMS2uGi9aOEz
-	 eTKVySL1v0x8y/Be/6+HH11zJKj/DOdXBXAx+1N88pqe/1P63zgK8mTPoMF8z6kUT9
-	 LExjA6j0p3YysKjGQArBkY+yoMjafvEgV5CRaHlE=
-Subject: FAILED: patch "[PATCH] proc: protect ptrace_may_access() with exec_update_lock (part" failed to apply to 5.10-stable tree
-To: jannh@google.com,brauner@kernel.org
+	b=bHBO1T81VzHCUbDlL47roDrKTDgOs8PE9htIW07tI3I8+lBPwuLbBOHYtAjlFesCZ
+	 gQrxN47q3ylNWejmTRq9wjP4nyqyaDicHRozmQ8xCP2D4iSxBbu2WIjQFS0B3X5PFx
+	 rlS2jQ2yekBL6jzObGMAfAYMpDmdcrEKIOVbWbhk=
+Subject: FAILED: patch "[PATCH] s390: Revert support for DCACHE_WORD_ACCESS" failed to apply to 6.12-stable tree
+To: hca@linux.ibm.com,agordeev@linux.ibm.com,borntraeger@linux.ibm.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 14 Jul 2026 16:50:46 +0200
-Message-ID: <2026071446-splatter-overlay-9239@gregkh>
+Date: Tue, 14 Jul 2026 16:51:18 +0200
+Message-ID: <2026071418-catsup-creasing-f440@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,18 +62,18 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-274329-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-274332-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:hca@linux.ibm.com,m:agordeev@linux.ibm.com,m:borntraeger@linux.ibm.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:jannh@google.com,m:brauner@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
@@ -83,30 +83,30 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
+	RCPT_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:mid,vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:from_mime,linuxfoundation.org:dkim]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:mid,vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:from_mime,linuxfoundation.org:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C32C475627E
+X-Rspamd-Queue-Id: E88E575621D
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 6650527444dadc63d84aa939d14ecba4fadb2f69
+git cherry-pick -x 37540b8c287fc817bdbd0c62bb75ad6eab0e5d03
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026071446-splatter-overlay-9239@gregkh' --subject-prefix 'PATCH 5.10.y' 'HEAD^..'
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026071418-catsup-creasing-f440@gregkh' --subject-prefix 'PATCH 6.12.y' 'HEAD^..'
 
 Possible dependencies:
 
@@ -118,207 +118,143 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 6650527444dadc63d84aa939d14ecba4fadb2f69 Mon Sep 17 00:00:00 2001
-From: Jann Horn <jannh@google.com>
-Date: Mon, 18 May 2026 18:35:15 +0200
-Subject: [PATCH] proc: protect ptrace_may_access() with exec_update_lock (part
- 1)
+From 37540b8c287fc817bdbd0c62bb75ad6eab0e5d03 Mon Sep 17 00:00:00 2001
+From: Heiko Carstens <hca@linux.ibm.com>
+Date: Thu, 11 Jun 2026 17:37:46 +0200
+Subject: [PATCH] s390: Revert support for DCACHE_WORD_ACCESS
 
-Fix the easy cases where procfs currently calls ptrace_may_access() without
-exec_update_lock protection, where the fix is to simply add the extra lock
-or use mm_access():
+load_unaligned_zeropad() reads eight bytes from unaligned addresses and may
+cross page boundaries. It handles exceptions which may happen if reading
+from the second page results in an exception.
 
- - do_task_stat(): grab exec_update_lock
- - proc_pid_wchan(): grab exec_update_lock
- - proc_map_files_lookup(): use mm_access() instead of get_task_mm()
- - proc_map_files_readdir(): use mm_access() instead of get_task_mm()
- - proc_ns_get_link(): grab exec_update_lock
- - proc_ns_readlink(): grab exec_update_lock
+For pages which are donated to the Ultravisor for secure execution purposes
+the do_secure_storage_access() exception handler however does not handle
+such exceptions correctly. Such an exception may result in an endless
+exception loop which will never be resolved.
 
-Fixes: f83ce3e6b02d ("proc: avoid information leaks to non-privileged processes")
+An attempt to fix this [1] turned out to be not sufficient. For now revert
+load_unaligned_zeropad() until this problem has been resolved in a proper
+way.
+
+Note that the implementation of load_unaligned_zeropad() itself is
+correct. The revert is just a temporary workaround until there is complete
+fix for secure storage access exceptions.
+
+[1] commit b00be77302d7 ("s390/mm: Add missing secure storage access fixups for donated memory")
+
+Fixes: 802ba53eefc5 ("s390: add support for DCACHE_WORD_ACCESS")
 Cc: stable@vger.kernel.org
-Signed-off-by: Jann Horn <jannh@google.com>
-Link: https://patch.msgid.link/20260518-procfs-lockfix-part1-v1-1-5c3d20e0ac33@google.com
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+Acked-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 
-diff --git a/fs/proc/array.c b/fs/proc/array.c
-index 90fb0c6b5f99..479ea8cb4ef4 100644
---- a/fs/proc/array.c
-+++ b/fs/proc/array.c
-@@ -482,6 +482,11 @@ static int do_task_stat(struct seq_file *m, struct pid_namespace *ns,
- 	unsigned long flags;
- 	int exit_code = task->exit_code;
- 	struct signal_struct *sig = task->signal;
-+	int ret;
-+
-+	ret = down_read_killable(&task->signal->exec_update_lock);
-+	if (ret)
-+		return ret;
+diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
+index fe5eebaecb7c..33988cc96af1 100644
+--- a/arch/s390/Kconfig
++++ b/arch/s390/Kconfig
+@@ -166,7 +166,6 @@ config S390
+ 	select ARCH_WANTS_THP_SWAP
+ 	select BUILDTIME_TABLE_SORT
+ 	select CLONE_BACKWARDS2
+-	select DCACHE_WORD_ACCESS if !KMSAN
+ 	select DYNAMIC_FTRACE if FUNCTION_TRACER
+ 	select FUNCTION_ALIGNMENT_8B if CC_IS_GCC
+ 	select FUNCTION_ALIGNMENT_16B if !CC_IS_GCC
+diff --git a/arch/s390/include/asm/asm-extable.h b/arch/s390/include/asm/asm-extable.h
+index d23ea0c94e4e..99748c20e767 100644
+--- a/arch/s390/include/asm/asm-extable.h
++++ b/arch/s390/include/asm/asm-extable.h
+@@ -12,7 +12,6 @@
+ #define EX_TYPE_UA_FAULT	3
+ #define EX_TYPE_UA_LOAD_REG	5
+ #define EX_TYPE_UA_LOAD_REGPAIR	6
+-#define EX_TYPE_ZEROPAD		7
+ #define EX_TYPE_FPC		8
+ #define EX_TYPE_UA_MVCOS_TO	9
+ #define EX_TYPE_UA_MVCOS_FROM	10
+@@ -80,9 +79,6 @@
+ #define EX_TABLE_UA_LOAD_REGPAIR(_fault, _target, _regerr, _regzero)	\
+ 	__EX_TABLE(__ex_table, _fault, _target, EX_TYPE_UA_LOAD_REGPAIR, _regerr, _regzero, 0)
  
- 	state = *get_task_state(task);
- 	vsize = eip = esp = 0;
-@@ -657,6 +662,7 @@ static int do_task_stat(struct seq_file *m, struct pid_namespace *ns,
- 		seq_puts(m, " 0");
+-#define EX_TABLE_ZEROPAD(_fault, _target, _regdata, _regaddr)		\
+-	__EX_TABLE(__ex_table, _fault, _target, EX_TYPE_ZEROPAD, _regdata, _regaddr, 0)
+-
+ #define EX_TABLE_FPC(_fault, _target)					\
+ 	__EX_TABLE(__ex_table, _fault, _target, EX_TYPE_FPC, __stringify(%%r0), __stringify(%%r0), 0)
  
- 	seq_putc(m, '\n');
-+	up_read(&task->signal->exec_update_lock);
- 	if (mm)
- 		mmput(mm);
- 	return 0;
-diff --git a/fs/proc/base.c b/fs/proc/base.c
-index d9acfa89c894..cc99d953a0a3 100644
---- a/fs/proc/base.c
-+++ b/fs/proc/base.c
-@@ -423,18 +423,24 @@ static int proc_pid_wchan(struct seq_file *m, struct pid_namespace *ns,
+diff --git a/arch/s390/include/asm/word-at-a-time.h b/arch/s390/include/asm/word-at-a-time.h
+index eaa19dee7699..e9287036392d 100644
+--- a/arch/s390/include/asm/word-at-a-time.h
++++ b/arch/s390/include/asm/word-at-a-time.h
+@@ -4,7 +4,6 @@
+ 
+ #include <linux/bitops.h>
+ #include <linux/wordpart.h>
+-#include <asm/asm-extable.h>
+ #include <asm/bitsperlong.h>
+ 
+ struct word_at_a_time {
+@@ -41,25 +40,4 @@ static inline unsigned long zero_bytemask(unsigned long data)
+ 	return ~1UL << data;
+ }
+ 
+-/*
+- * Load an unaligned word from kernel space.
+- *
+- * In the (very unlikely) case of the word being a page-crosser
+- * and the next page not being mapped, take the exception and
+- * return zeroes in the non-existing part.
+- */
+-static inline unsigned long load_unaligned_zeropad(const void *addr)
+-{
+-	unsigned long data;
+-
+-	asm_inline volatile(
+-		"0:	lg	%[data],0(%[addr])\n"
+-		"1:	nopr	%%r7\n"
+-		EX_TABLE_ZEROPAD(0b, 1b, %[data], %[addr])
+-		EX_TABLE_ZEROPAD(1b, 1b, %[data], %[addr])
+-		: [data] "=d" (data)
+-		: [addr] "a" (addr), "m" (*(unsigned long *)addr));
+-	return data;
+-}
+-
+ #endif /* _ASM_WORD_AT_A_TIME_H */
+diff --git a/arch/s390/mm/extable.c b/arch/s390/mm/extable.c
+index 7498e858c401..063b4346742d 100644
+--- a/arch/s390/mm/extable.c
++++ b/arch/s390/mm/extable.c
+@@ -50,22 +50,6 @@ static bool ex_handler_ua_load_reg(const struct exception_table_entry *ex,
+ 	return true;
+ }
+ 
+-static bool ex_handler_zeropad(const struct exception_table_entry *ex, struct pt_regs *regs)
+-{
+-	unsigned int reg_addr = FIELD_GET(EX_DATA_REG_ADDR, ex->data);
+-	unsigned int reg_data = FIELD_GET(EX_DATA_REG_ERR, ex->data);
+-	unsigned long data, addr, offset;
+-
+-	addr = regs->gprs[reg_addr];
+-	offset = addr & (sizeof(unsigned long) - 1);
+-	addr &= ~(sizeof(unsigned long) - 1);
+-	data = *(unsigned long *)addr;
+-	data <<= BITS_PER_BYTE * offset;
+-	regs->gprs[reg_data] = data;
+-	regs->psw.addr = extable_fixup(ex);
+-	return true;
+-}
+-
+ static bool ex_handler_fpc(const struct exception_table_entry *ex, struct pt_regs *regs)
  {
- 	unsigned long wchan;
- 	char symname[KSYM_NAME_LEN];
-+	int err;
- 
-+	err = down_read_killable(&task->signal->exec_update_lock);
-+	if (err)
-+		return err;
- 	if (!ptrace_may_access(task, PTRACE_MODE_READ_FSCREDS))
- 		goto print0;
- 
- 	wchan = get_wchan(task);
- 	if (wchan && !lookup_symbol_name(wchan, symname)) {
- 		seq_puts(m, symname);
-+		up_read(&task->signal->exec_update_lock);
- 		return 0;
- 	}
- 
- print0:
- 	seq_putc(m, '0');
-+	up_read(&task->signal->exec_update_lock);
- 	return 0;
- }
- #endif /* CONFIG_KALLSYMS */
-@@ -2360,17 +2366,15 @@ static struct dentry *proc_map_files_lookup(struct inode *dir,
- 	if (!task)
- 		goto out;
- 
--	result = ERR_PTR(-EACCES);
--	if (!ptrace_may_access(task, PTRACE_MODE_READ_FSCREDS))
--		goto out_put_task;
--
- 	result = ERR_PTR(-ENOENT);
- 	if (dname_to_vma_addr(dentry, &vm_start, &vm_end))
- 		goto out_put_task;
- 
--	mm = get_task_mm(task);
--	if (!mm)
-+	mm = mm_access(task, PTRACE_MODE_READ_FSCREDS);
-+	if (IS_ERR(mm)) {
-+		result = ERR_CAST(mm);
- 		goto out_put_task;
-+	}
- 
- 	result = ERR_PTR(-EINTR);
- 	if (mmap_read_lock_killable(mm))
-@@ -2420,24 +2424,23 @@ proc_map_files_readdir(struct file *file, struct dir_context *ctx)
- 	if (!task)
- 		goto out;
- 
--	ret = -EACCES;
--	if (!ptrace_may_access(task, PTRACE_MODE_READ_FSCREDS))
--		goto out_put_task;
--
- 	ret = 0;
- 	if (!dir_emit_dots(file, ctx))
- 		goto out_put_task;
- 
--	mm = get_task_mm(task);
--	if (!mm)
--		goto out_put_task;
--
--	ret = mmap_read_lock_killable(mm);
--	if (ret) {
--		mmput(mm);
-+	mm = mm_access(task, PTRACE_MODE_READ_FSCREDS);
-+	if (IS_ERR(mm)) {
-+		ret = PTR_ERR(mm);
-+		/* if the task has no mm, the directory should just be empty */
-+		if (ret == -ESRCH)
-+			ret = 0;
- 		goto out_put_task;
- 	}
- 
-+	ret = mmap_read_lock_killable(mm);
-+	if (ret)
-+		goto out_put_mm;
-+
- 	nr_files = 0;
- 
- 	/*
-@@ -2462,8 +2465,7 @@ proc_map_files_readdir(struct file *file, struct dir_context *ctx)
- 		if (!p) {
- 			ret = -ENOMEM;
- 			mmap_read_unlock(mm);
--			mmput(mm);
--			goto out_put_task;
-+			goto out_put_mm;
- 		}
- 
- 		p->start = vma->vm_start;
-@@ -2471,7 +2473,6 @@ proc_map_files_readdir(struct file *file, struct dir_context *ctx)
- 		p->mode = vma->vm_file->f_mode;
- 	}
- 	mmap_read_unlock(mm);
--	mmput(mm);
- 
- 	for (i = 0; i < nr_files; i++) {
- 		char buf[4 * sizeof(long) + 2];	/* max: %lx-%lx\0 */
-@@ -2488,6 +2489,8 @@ proc_map_files_readdir(struct file *file, struct dir_context *ctx)
- 		ctx->pos++;
- 	}
- 
-+out_put_mm:
-+	mmput(mm);
- out_put_task:
- 	put_task_struct(task);
- out:
-diff --git a/fs/proc/namespaces.c b/fs/proc/namespaces.c
-index 39f4169f669f..2f46f1396744 100644
---- a/fs/proc/namespaces.c
-+++ b/fs/proc/namespaces.c
-@@ -55,6 +55,10 @@ static const char *proc_ns_get_link(struct dentry *dentry,
- 	if (!task)
- 		return ERR_PTR(-EACCES);
- 
-+	error = down_read_killable(&task->signal->exec_update_lock);
-+	if (error)
-+		goto out_put_task;
-+
- 	if (!ptrace_may_access(task, PTRACE_MODE_READ_FSCREDS))
- 		goto out;
- 
-@@ -64,6 +68,8 @@ static const char *proc_ns_get_link(struct dentry *dentry,
- 
- 	error = nd_jump_link(&ns_path);
- out:
-+	up_read(&task->signal->exec_update_lock);
-+out_put_task:
- 	put_task_struct(task);
- 	return ERR_PTR(error);
- }
-@@ -80,11 +86,17 @@ static int proc_ns_readlink(struct dentry *dentry, char __user *buffer, int bufl
- 	if (!task)
- 		return res;
- 
-+	res = down_read_killable(&task->signal->exec_update_lock);
-+	if (res)
-+		goto out_put_task;
-+
- 	if (ptrace_may_access(task, PTRACE_MODE_READ_FSCREDS)) {
- 		res = ns_get_name(name, sizeof(name), task, ns_ops);
- 		if (res >= 0)
- 			res = readlink_copy(buffer, buflen, name, strlen(name));
- 	}
-+	up_read(&task->signal->exec_update_lock);
-+out_put_task:
- 	put_task_struct(task);
- 	return res;
- }
+ 	fpu_sfpc(0);
+@@ -134,8 +118,6 @@ bool fixup_exception(struct pt_regs *regs)
+ 		return ex_handler_ua_load_reg(ex, false, regs);
+ 	case EX_TYPE_UA_LOAD_REGPAIR:
+ 		return ex_handler_ua_load_reg(ex, true, regs);
+-	case EX_TYPE_ZEROPAD:
+-		return ex_handler_zeropad(ex, regs);
+ 	case EX_TYPE_FPC:
+ 		return ex_handler_fpc(ex, regs);
+ 	case EX_TYPE_UA_MVCOS_TO:
 
 
