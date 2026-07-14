@@ -1,63 +1,64 @@
-Return-Path: <stable+bounces-274056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274059-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id SLvGBfGNVWoRqAAAu9opvQ
-	(envelope-from <stable+bounces-274056-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 03:16:33 +0200
+	id 3TkpFfaNVWoTqAAAu9opvQ
+	(envelope-from <stable+bounces-274059-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 03:16:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1F01750089
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 03:16:32 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0165A750091
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 03:16:38 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O1HzCior;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274056-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274056-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lE9RutwE;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274059-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274059-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0AB713023DFD
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 01:16:28 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 52C9A300B1CA
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 01:16:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3AE72EA498;
-	Tue, 14 Jul 2026 01:16:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 675EE304972;
+	Tue, 14 Jul 2026 01:16:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83A2020DD51
-	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 01:16:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA5B935AC1B
+	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 01:16:32 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783991787; cv=none; b=rz2xWtOxoF2or15CMsVgbTjL9AK6HHrDkQBY5ZZjMZHE+yNpjV9gbtzgt7czXtOw2t/WkJeGO/VY6bnISI9F0RPjE80UKPlEGnUM1dtqNeEDN/ljCEzUsUNskFkHOCcLmjLYsF4k/0NftdAQn83fTJKFko69AiEvHRKChMTOOA0=
+	t=1783991794; cv=none; b=pFKQP/xN6/Fg169pXqVxNGDCyvq1D55WQVKyUpeR44dp0D4CLgQx2g+77Fv1gjoFNV3paJjPtCAEWqsXPHsH/kSVecLQVahaRdUBX1oZR2ic1y3UXv43cCkiaazUHi4snkr1oeBAjSgCPRalqpZv6RryiHURq9Yv1p2y2zRvECo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783991787; c=relaxed/simple;
-	bh=+X98hHr+ePy36u8YPVWGjxIqXs5o2lsr3BNSTTcrLWw=;
+	s=arc-20240116; t=1783991794; c=relaxed/simple;
+	bh=l6ui081ykJh5sGMcyOGDRGYP6+MlCg7p75QgsO6uXME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kcXchlTJIxncMczSjv7B8zVipxP6k+jiysT4vl1JVFVFUdkl/9+7G17TVby4PHvjrpf2LoTX/MWAVWlbA6LkpgLRjGeWjHsMjHHoZ8wpf9Wt1p3739nA7LtEj9hajaAfghx9PGzAkmFjcjIn6LRE+bEka4aDJisgcAMKJCQhSvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O1HzCior; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B1BD1F00A3A;
-	Tue, 14 Jul 2026 01:16:25 +0000 (UTC)
+	 MIME-Version; b=Poul4HvH2QDX2d073+tfPJVI8vo2WFke4o5lmLFzuJiodDA4iJGa10rJFEc7UrxK8WF+MgRF6LWAcJf2dVYiXTJ660GOzPG/VUCKLzT1xlLHptLXnvIgUNdNsuZJ68QbzhVtZb3RqetHN6o348eWU/WvtCIM8BSTjMdgC12cHyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lE9RutwE; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 178BE1F000E9;
+	Tue, 14 Jul 2026 01:16:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783991786;
-	bh=+HkUyZoxk6mcjJ0amj2XUWbAw6H2yFMAxG8O6KGxbrY=;
+	s=k20260515; t=1783991792;
+	bh=qx9i4WVxea4mMvfxX+3ZxBfNrHzU4BFFWh2SJdOXasg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=O1HzCiorxEr+aihVFVULi1Ll253NADP2AbB/g1jPC2xYb4wL/1FwkOdIYpt1bDQM5
-	 Bfn3E95DA2WVyzvh8JEjKbNxicjfQ+A6HvdtKk39cuBF24tNAVTpjcQ/BgcA/HAoH8
-	 AMlcGp//URVFfAMOo31SfJUqcrAdJbuDdJCQTDGCegdd60GA4IifRSk1zF5iJASFzy
-	 d3WOLoaiZZQYlYO8c7e2Ll1N6g3CmRZv0QmEudP73dAzA1trpgTPJKhWwzi2JRHeY2
-	 g46MYhh4I2R7KCFg+MJoL5cKXJ4hvELmRvy+HtO2OA3TsV/2HlKJ5MbpJfy2/4dP1m
-	 9gI1pbIraZ51Q==
+	b=lE9RutwEY0XIUV3BLqKDJg2BOs3aVxsEleS3dX4j+MKBaBr42+pXd+MItbiW0T0I8
+	 /ULPsIxAoeYrlbAdxkbgjjD/cwDYhCs15H97JnZPfOnFboBmqWTiZ25j/Tt3mCAZiV
+	 aLWEWuxSvm2NHARfNcyY8GSD3C7c8Elzb7MZ7GUDKKRrZod9cO4ZyxRm3xW6aTjdlg
+	 Rkz0BvfRAIItscN/G9EXZ6IEXFW3aT4NZ3s5SHqlMb8k1/rmWf0eLQv16zgw4cLX28
+	 7du4FZ6/cw/LIQ2XiCWfWSACsHkQiiylQxk/je6ExW97LLk/sp6z/8mYHkueUsLoX8
+	 j0+0da1XUZ3cQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: "Geoffrey D. Bennett" <g@b4.vu>,
-	Takashi Iwai <tiwai@suse.de>,
+Cc: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.1.y 2/2] ALSA: scarlett2: Update offsets for 2i2 Gen 4 firmware 2417
+Subject: [PATCH 5.15.y 4/8] iio: imu: inv_mpu6050: use the common inv_sensors timestamp module
 Date: Mon, 13 Jul 2026 21:16:23 -0400
-Message-ID: <20260714011623.2188610-2-sashal@kernel.org>
+Message-ID: <20260714011627.2188779-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260714011623.2188610-1-sashal@kernel.org>
-References: <2026071349-volatile-trustable-cfdf@gregkh>
- <20260714011623.2188610-1-sashal@kernel.org>
+In-Reply-To: <20260714011627.2188779-1-sashal@kernel.org>
+References: <2026071317-refill-huntress-d0e2@gregkh>
+ <20260714011627.2188779-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,138 +67,352 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:g@b4.vu,m:tiwai@suse.de,m:sashal@kernel.org,s:lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-274056-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-274059-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:jean-baptiste.maneyrol@tdk.com,m:andy.shevchenko@gmail.com,m:Jonathan.Cameron@huawei.com,m:sashal@kernel.org,m:andyshevchenko@gmail.com,s:lists@lfdr.de];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FREEMAIL_CC(0.00)[tdk.com,gmail.com,huawei.com,kernel.org];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,b4.vu:email,suse.de:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tdk.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp,huawei.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A1F01750089
+X-Rspamd-Queue-Id: 0165A750091
 
-From: "Geoffrey D. Bennett" <g@b4.vu>
+From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
 
-[ Upstream commit 3ca15754b561483aa7a1bce51677d6389f8ff5bb ]
+[ Upstream commit 111e1abd00455971f6a568900f033cbddec9d4e5 ]
 
-Firmware 2417 for the Scarlett 4th Gen 2i2 moved the direct monitor gain
-parameters, so add a second config_set with the shifted offset and
-select it for firmware versions >= 2417.
+Replace timestamping by the new common inv_sensors timestamp
+module. The principle behind is the same but the implementation in
+the new module is far better providing less jitter and a better
+estimation.
 
-Fixes: 4e809a299677 ("ALSA: scarlett2: Add support for Solo, 2i2, and 4i4 Gen 4")
-Cc: stable@vger.kernel.org # ALSA: scarlett2: Allow selecting config_set by firmware version
-Cc: stable@vger.kernel.org # ALSA: scarlett2: Fold min_firmware_version into config_sets
-Cc: stable@vger.kernel.org
-Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/ad0fc5a131e76eb656a24e0e198382f7134068fe.1777151532.git.g@b4.vu
+Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Link: https://lore.kernel.org/r/20230606162147.79667-5-inv.git-commit@tdk.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Stable-dep-of: affe3f077d7a ("iio: imu: inv_icm42600: fix timestamping by limiting FIFO reading")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_scarlett2.c | 58 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 58 insertions(+)
+ drivers/iio/imu/inv_mpu6050/Kconfig           |  1 +
+ drivers/iio/imu/inv_mpu6050/inv_mpu_core.c    | 30 +++++--
+ drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h     | 18 ++--
+ drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c    | 83 ++-----------------
+ drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c |  6 +-
+ 5 files changed, 45 insertions(+), 93 deletions(-)
 
-diff --git a/sound/usb/mixer_scarlett2.c b/sound/usb/mixer_scarlett2.c
-index 4be667ed0c5b09..d7b8c204110c33 100644
---- a/sound/usb/mixer_scarlett2.c
-+++ b/sound/usb/mixer_scarlett2.c
-@@ -937,6 +937,63 @@ static const struct scarlett2_config_set scarlett2_config_set_gen4_2i2 = {
- 	}
- };
+diff --git a/drivers/iio/imu/inv_mpu6050/Kconfig b/drivers/iio/imu/inv_mpu6050/Kconfig
+index 9c625517173a92..486ab1124ae3db 100644
+--- a/drivers/iio/imu/inv_mpu6050/Kconfig
++++ b/drivers/iio/imu/inv_mpu6050/Kconfig
+@@ -7,6 +7,7 @@ config INV_MPU6050_IIO
+ 	tristate
+ 	select IIO_BUFFER
+ 	select IIO_TRIGGERED_BUFFER
++	select IIO_INV_SENSORS_TIMESTAMP
  
-+/* 2i2 Gen 4, firmware version 2417 and above
-+ *
-+ * Firmware 2417 shifted DIRECT_MONITOR_GAIN by 4 bytes; all other
-+ * offsets are unchanged from scarlett2_config_set_gen4_2i2.
-+ */
-+static const struct scarlett2_config_set scarlett2_config_set_gen4_2i2_2417 = {
-+	.notifications = scarlett4_2i2_notifications,
-+	.param_buf_addr = 0xfc,
-+	.input_gain_tlv = db_scale_gen4_gain,
-+	.autogain_status_texts = scarlett2_autogain_status_gen4,
-+	.items = {
-+		[SCARLETT2_CONFIG_MSD_SWITCH] = {
-+			.offset = 0x49, .size = 8, .activate = 4 },
+ config INV_MPU6050_I2C
+ 	tristate "Invensense MPU6050 devices (I2C)"
+diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+index caeef03b8c6228..b79304e16af5d4 100644
+--- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+@@ -12,12 +12,15 @@
+ #include <linux/jiffies.h>
+ #include <linux/irq.h>
+ #include <linux/interrupt.h>
+-#include <linux/iio/iio.h>
+ #include <linux/acpi.h>
+ #include <linux/platform_device.h>
+ #include <linux/regulator/consumer.h>
+ #include <linux/pm.h>
+ #include <linux/pm_runtime.h>
 +
-+		[SCARLETT2_CONFIG_DIRECT_MONITOR] = {
-+			.offset = 0x14a, .size = 8, .activate = 16, .pbuf = 1 },
++#include <linux/iio/common/inv_sensors_timestamp.h>
++#include <linux/iio/iio.h>
 +
-+		[SCARLETT2_CONFIG_AUTOGAIN_SWITCH] = {
-+			.offset = 0x135, .size = 8, .activate = 10, .pbuf = 1 },
+ #include "inv_mpu_iio.h"
+ #include "inv_mpu_magn.h"
+ 
+@@ -503,6 +506,7 @@ static int inv_mpu6050_init_config(struct iio_dev *indio_dev)
+ 	int result;
+ 	u8 d;
+ 	struct inv_mpu6050_state *st = iio_priv(indio_dev);
++	struct inv_sensors_timestamp_chip timestamp;
+ 
+ 	result = inv_mpu6050_set_gyro_fsr(st, st->chip_config.fsr);
+ 	if (result)
+@@ -526,12 +530,12 @@ static int inv_mpu6050_init_config(struct iio_dev *indio_dev)
+ 	if (result)
+ 		return result;
+ 
+-	/*
+-	 * Internal chip period is 1ms (1kHz).
+-	 * Let's use at the beginning the theorical value before measuring
+-	 * with interrupt timestamps.
+-	 */
+-	st->chip_period = NSEC_PER_MSEC;
++	/* clock jitter is +/- 2% */
++	timestamp.clock_period = NSEC_PER_SEC / INV_MPU6050_INTERNAL_FREQ_HZ;
++	timestamp.jitter = 20;
++	timestamp.init_period =
++			NSEC_PER_SEC / INV_MPU6050_DIVIDER_TO_FIFO_RATE(st->chip_config.divider);
++	inv_sensors_timestamp_init(&st->timestamp, &timestamp);
+ 
+ 	/* magn chip init, noop if not present in the chip */
+ 	result = inv_mpu_magn_probe(st);
+@@ -918,6 +922,8 @@ inv_mpu6050_fifo_rate_store(struct device *dev, struct device_attribute *attr,
+ 			    const char *buf, size_t count)
+ {
+ 	int fifo_rate;
++	u32 fifo_period;
++	bool fifo_on;
+ 	u8 d;
+ 	int result;
+ 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+@@ -934,12 +940,21 @@ inv_mpu6050_fifo_rate_store(struct device *dev, struct device_attribute *attr,
+ 	d = INV_MPU6050_FIFO_RATE_TO_DIVIDER(fifo_rate);
+ 	/* compute back the fifo rate to handle truncation cases */
+ 	fifo_rate = INV_MPU6050_DIVIDER_TO_FIFO_RATE(d);
++	fifo_period = NSEC_PER_SEC / fifo_rate;
+ 
+ 	mutex_lock(&st->lock);
+ 	if (d == st->chip_config.divider) {
+ 		result = 0;
+ 		goto fifo_rate_fail_unlock;
+ 	}
 +
-+		[SCARLETT2_CONFIG_AUTOGAIN_STATUS] = {
-+			.offset = 0x137, .size = 8 },
++	fifo_on = st->chip_config.accl_fifo_enable ||
++		  st->chip_config.gyro_fifo_enable ||
++		  st->chip_config.magn_fifo_enable;
++	result = inv_sensors_timestamp_update_odr(&st->timestamp, fifo_period, fifo_on);
++	if (result)
++		goto fifo_rate_fail_unlock;
 +
-+		[SCARLETT2_CONFIG_AG_MEAN_TARGET] = {
-+			.offset = 0x131, .size = 8, .activate = 29, .pbuf = 1 },
+ 	result = pm_runtime_resume_and_get(pdev);
+ 	if (result)
+ 		goto fifo_rate_fail_unlock;
+@@ -1767,3 +1782,4 @@ EXPORT_SYMBOL_GPL(inv_mpu_pmops);
+ MODULE_AUTHOR("Invensense Corporation");
+ MODULE_DESCRIPTION("Invensense device MPU6050 driver");
+ MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS(IIO_INV_SENSORS_TIMESTAMP);
+diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
+index c6aa36ee966a43..36b91991c0f289 100644
+--- a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
+@@ -9,15 +9,17 @@
+ #include <linux/i2c.h>
+ #include <linux/i2c-mux.h>
+ #include <linux/mutex.h>
+-#include <linux/iio/iio.h>
+-#include <linux/iio/buffer.h>
++#include <linux/platform_data/invensense_mpu6050.h>
+ #include <linux/regmap.h>
+-#include <linux/iio/sysfs.h>
 +
-+		[SCARLETT2_CONFIG_AG_PEAK_TARGET] = {
-+			.offset = 0x132, .size = 8, .activate = 30, .pbuf = 1 },
++#include <linux/iio/buffer.h>
++#include <linux/iio/common/inv_sensors_timestamp.h>
++#include <linux/iio/iio.h>
+ #include <linux/iio/kfifo_buf.h>
+ #include <linux/iio/trigger.h>
+ #include <linux/iio/triggered_buffer.h>
+ #include <linux/iio/trigger_consumer.h>
+-#include <linux/platform_data/invensense_mpu6050.h>
++#include <linux/iio/sysfs.h>
+ 
+ /**
+  *  struct inv_mpu6050_reg_map - Notable registers.
+@@ -168,9 +170,7 @@ struct inv_mpu6050_hw {
+  *  @map		regmap pointer.
+  *  @irq		interrupt number.
+  *  @irq_mask		the int_pin_cfg mask to configure interrupt type.
+- *  @chip_period:	chip internal period estimation (~1kHz).
+- *  @it_timestamp:	timestamp from previous interrupt.
+- *  @data_timestamp:	timestamp for next data sample.
++ *  @timestamp:		timestamping module
+  *  @vdd_supply:	VDD voltage regulator for the chip.
+  *  @vddio_supply	I/O voltage regulator for the chip.
+  *  @magn_disabled:     magnetometer disabled for backward compatibility reason.
+@@ -194,9 +194,7 @@ struct inv_mpu6050_state {
+ 	int irq;
+ 	u8 irq_mask;
+ 	unsigned skip_samples;
+-	s64 chip_period;
+-	s64 it_timestamp;
+-	s64 data_timestamp;
++	struct inv_sensors_timestamp timestamp;
+ 	struct regulator *vdd_supply;
+ 	struct regulator *vddio_supply;
+ 	bool magn_disabled;
+diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
+index 45c37525c2f165..d83f61a9950494 100644
+--- a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
+@@ -13,81 +13,10 @@
+ #include <linux/interrupt.h>
+ #include <linux/poll.h>
+ #include <linux/math64.h>
+-#include "inv_mpu_iio.h"
+-
+-/**
+- *  inv_mpu6050_update_period() - Update chip internal period estimation
+- *
+- *  @st:		driver state
+- *  @timestamp:		the interrupt timestamp
+- *  @nb:		number of data set in the fifo
+- *
+- *  This function uses interrupt timestamps to estimate the chip period and
+- *  to choose the data timestamp to come.
+- */
+-static void inv_mpu6050_update_period(struct inv_mpu6050_state *st,
+-				      s64 timestamp, size_t nb)
+-{
+-	/* Period boundaries for accepting timestamp */
+-	const s64 period_min =
+-		(NSEC_PER_MSEC * (100 - INV_MPU6050_TS_PERIOD_JITTER)) / 100;
+-	const s64 period_max =
+-		(NSEC_PER_MSEC * (100 + INV_MPU6050_TS_PERIOD_JITTER)) / 100;
+-	const s32 divider = INV_MPU6050_FREQ_DIVIDER(st);
+-	s64 delta, interval;
+-	bool use_it_timestamp = false;
+-
+-	if (st->it_timestamp == 0) {
+-		/* not initialized, forced to use it_timestamp */
+-		use_it_timestamp = true;
+-	} else if (nb == 1) {
+-		/*
+-		 * Validate the use of it timestamp by checking if interrupt
+-		 * has been delayed.
+-		 * nb > 1 means interrupt was delayed for more than 1 sample,
+-		 * so it's obviously not good.
+-		 * Compute the chip period between 2 interrupts for validating.
+-		 */
+-		delta = div_s64(timestamp - st->it_timestamp, divider);
+-		if (delta > period_min && delta < period_max) {
+-			/* update chip period and use it timestamp */
+-			st->chip_period = (st->chip_period + delta) / 2;
+-			use_it_timestamp = true;
+-		}
+-	}
+ 
+-	if (use_it_timestamp) {
+-		/*
+-		 * Manage case of multiple samples in the fifo (nb > 1):
+-		 * compute timestamp corresponding to the first sample using
+-		 * estimated chip period.
+-		 */
+-		interval = (nb - 1) * st->chip_period * divider;
+-		st->data_timestamp = timestamp - interval;
+-	}
++#include <linux/iio/common/inv_sensors_timestamp.h>
+ 
+-	/* save it timestamp */
+-	st->it_timestamp = timestamp;
+-}
+-
+-/**
+- *  inv_mpu6050_get_timestamp() - Return the current data timestamp
+- *
+- *  @st:		driver state
+- *  @return:		current data timestamp
+- *
+- *  This function returns the current data timestamp and prepares for next one.
+- */
+-static s64 inv_mpu6050_get_timestamp(struct inv_mpu6050_state *st)
+-{
+-	s64 ts;
+-
+-	/* return current data timestamp and increment */
+-	ts = st->data_timestamp;
+-	st->data_timestamp += st->chip_period * INV_MPU6050_FREQ_DIVIDER(st);
+-
+-	return ts;
+-}
++#include "inv_mpu_iio.h"
+ 
+ static int inv_reset_fifo(struct iio_dev *indio_dev)
+ {
+@@ -121,6 +50,7 @@ irqreturn_t inv_mpu6050_read_fifo(int irq, void *p)
+ 	size_t bytes_per_datum;
+ 	int result;
+ 	u16 fifo_count;
++	u32 fifo_period;
+ 	s64 timestamp;
+ 	int int_status;
+ 	size_t i, nb;
+@@ -177,7 +107,10 @@ irqreturn_t inv_mpu6050_read_fifo(int irq, void *p)
+ 
+ 	/* compute and process all complete datum */
+ 	nb = fifo_count / bytes_per_datum;
+-	inv_mpu6050_update_period(st, pf->timestamp, nb);
++	/* Each FIFO data contains all sensors, so same number for FIFO and sensor data */
++	fifo_period = NSEC_PER_SEC / INV_MPU6050_DIVIDER_TO_FIFO_RATE(st->chip_config.divider);
++	inv_sensors_timestamp_interrupt(&st->timestamp, fifo_period, nb, nb, pf->timestamp);
++	inv_sensors_timestamp_apply_odr(&st->timestamp, fifo_period, nb, 0);
+ 	for (i = 0; i < nb; ++i) {
+ 		result = regmap_noinc_read(st->map, st->reg->fifo_r_w,
+ 					   st->data, bytes_per_datum);
+@@ -188,7 +121,7 @@ irqreturn_t inv_mpu6050_read_fifo(int irq, void *p)
+ 			st->skip_samples--;
+ 			continue;
+ 		}
+-		timestamp = inv_mpu6050_get_timestamp(st);
++		timestamp = inv_sensors_timestamp_pop(&st->timestamp);
+ 		iio_push_to_buffers_with_timestamp(indio_dev, st->data, timestamp);
+ 	}
+ 
+diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
+index 882546897255cd..676704f9151fcb 100644
+--- a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
+@@ -4,6 +4,9 @@
+ */
+ 
+ #include <linux/pm_runtime.h>
 +
-+		[SCARLETT2_CONFIG_PHANTOM_SWITCH] = {
-+			.offset = 0x48, .size = 8, .activate = 11, .pbuf = 1,
-+			.mute = 1 },
++#include <linux/iio/common/inv_sensors_timestamp.h>
 +
-+		[SCARLETT2_CONFIG_INPUT_GAIN] = {
-+			.offset = 0x4b, .size = 8, .activate = 12, .pbuf = 1 },
-+
-+		[SCARLETT2_CONFIG_LEVEL_SWITCH] = {
-+			.offset = 0x3c, .size = 8, .activate = 13, .pbuf = 1,
-+			.mute = 1 },
-+
-+		[SCARLETT2_CONFIG_SAFE_SWITCH] = {
-+			.offset = 0x147, .size = 8, .activate = 14, .pbuf = 1 },
-+
-+		[SCARLETT2_CONFIG_AIR_SWITCH] = {
-+			.offset = 0x3e, .size = 8, .activate = 15, .pbuf = 1 },
-+
-+		[SCARLETT2_CONFIG_INPUT_SELECT_SWITCH] = {
-+			.offset = 0x14b, .size = 8, .activate = 17, .pbuf = 1 },
-+
-+		[SCARLETT2_CONFIG_INPUT_LINK_SWITCH] = {
-+			.offset = 0x14e, .size = 8, .activate = 18, .pbuf = 1 },
-+
-+		[SCARLETT2_CONFIG_DIRECT_MONITOR_GAIN] = {
-+			.offset = 0x2a4, .size = 16, .activate = 36 }
-+	}
-+};
-+
- /* 4i4 Gen 4 */
- static const struct scarlett2_config_set scarlett2_config_set_gen4_4i4 = {
- 	.notifications = scarlett4_4i4_notifications,
-@@ -1999,6 +2056,7 @@ static const struct scarlett2_device_info solo_gen4_info = {
- static const struct scarlett2_device_info s2i2_gen4_info = {
- 	.config_sets = (const struct scarlett2_config_set_entry[]) {
- 		{ 2115, &scarlett2_config_set_gen4_2i2 },
-+		{ 2417, &scarlett2_config_set_gen4_2i2_2417 },
- 		{ }
- 	},
- 	.min_firmware_version = 2115,
+ #include "inv_mpu_iio.h"
+ 
+ static unsigned int inv_scan_query_mpu6050(struct iio_dev *indio_dev)
+@@ -106,7 +109,8 @@ int inv_mpu6050_prepare_fifo(struct inv_mpu6050_state *st, bool enable)
+ 	int ret;
+ 
+ 	if (enable) {
+-		st->it_timestamp = 0;
++		/* reset timestamping */
++		inv_sensors_timestamp_reset(&st->timestamp);
+ 		/* reset FIFO */
+ 		d = st->chip_config.user_ctrl | INV_MPU6050_BIT_FIFO_RST;
+ 		ret = regmap_write(st->map, st->reg->user_ctrl, d);
 -- 
 2.53.0
 
