@@ -1,76 +1,62 @@
-Return-Path: <stable+bounces-274119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274120-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id EVx4L0C3VWqurwAAu9opvQ
-	(envelope-from <stable+bounces-274119-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 06:12:48 +0200
+	id NiHNHQu8VWqzsAAAu9opvQ
+	(envelope-from <stable+bounces-274120-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 06:33:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3167D750C39
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 06:12:48 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C25CA750E1F
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 06:33:14 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=intel.com header.s=Intel header.b=TU7N12Ls;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274119-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274119-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=intel.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E0pEpwer;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274120-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-274120-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3F82130309E8
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 04:12:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 44EEC3052CF4
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 04:30:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AE7C33260D;
-	Tue, 14 Jul 2026 04:12:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6468A1C6FF5;
+	Tue, 14 Jul 2026 04:30:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C70AC340A6F
-	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 04:12:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7EC51C861D
+	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 04:30:08 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784002364; cv=none; b=d70CZfKn/hM+wgRowumnPvukQR4CKjGfH550pPCEIBndzpEUQqX3waTPRAtl//P4JiZZbIDa1gqNi52LPTEebSEkZNvag7O9+zVAFjFWSRIdh/Zs036CgOVaWyeQvirUWqL0v8if6zh7PhtZFN0OQuVK+SJ5FS81LudDrG3poM4=
+	t=1784003410; cv=none; b=IIfBTN81u9MNiCiiMucAyuM38XLM3xbJd4CIIdyistYBsGfaa5Cs6hokbpIHX273NHiu0KzkyPVycl4jqebeVFLFAa6B8BgB2dUm6KoM1ypKT7fOUSnz0BX9NIH0TKkSaJtWsQORxS0jOeehkHPxtIMz8TVZm/vubENfCqdxM/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784002364; c=relaxed/simple;
-	bh=+Zr4xbuXSFX4XsVn/8zfZDd6tYlXCpzNvMQwTgg8JP0=;
+	s=arc-20240116; t=1784003410; c=relaxed/simple;
+	bh=D1F8BS5Gm4yez8XborKQAIv3+GKQxynFgEE98rHc8fY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d6cwNNaJoQLluolBmadfgHhwJd+I+7tn1jCPCLHqHm3e/+7LLr4vv2AezpRuiQ9jSSk3UC0DfF7Ohs/EJHMywGiieaRCSQS4ghQofTtKi8GEmwGkdZd0ykWKivFwmviuqSxdk3Z+YrDbGoJOBJMwIEh9xur7/QKENlEwpy9YQkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TU7N12Ls; arc=none smtp.client-ip=198.175.65.18
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784002363; x=1815538363;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=+Zr4xbuXSFX4XsVn/8zfZDd6tYlXCpzNvMQwTgg8JP0=;
-  b=TU7N12LsZD2aAHeHzvd7s6iFO4wTmBTq418Y6HK909NzuKp1d4oMrO+h
-   bXQjEJw+QK/ac7XCZdFYWj6qnc7TikcOI7av5S9X6waYmhzYbjaJnI3X4
-   TicDDV97NGUMe+snD13lpTk6vnuaKkEwECrIjHqoaimBrAr+FQcguroW7
-   oDrX/nnKekba9g06VoIIgT9SxRtaPnwTLSwJG7DIM56saYrDM9IKP59W7
-   gVet4HkbWR/FvWrCIQEPzetSsUyBs70C8YrGATVXr/kQXuhWPddUYwWmT
-   B220hCr52gGTm2vrF4PX+p+W0XvICbfaGy8iOtRnWDaslx4FrAAeVTLKb
-   Q==;
-X-CSE-ConnectionGUID: SUW1XF0uQp61dsIDggkaEw==
-X-CSE-MsgGUID: WFMgbp52Qravt4lKOWActQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="84711812"
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
-   d="scan'208";a="84711812"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jul 2026 21:12:43 -0700
-X-CSE-ConnectionGUID: D/oWd+imQtO4A3A+XrBY1g==
-X-CSE-MsgGUID: Gel3NXgtTK6TZn7cqnx5KQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
-   d="scan'208";a="280157222"
-Received: from rchatre-desk1.jf.intel.com ([10.165.154.99])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jul 2026 21:12:42 -0700
-From: Reinette Chatre <reinette.chatre@intel.com>
+	 MIME-Version; b=izUs8Zq7fPNG9o9sQuPf36ezDJwtpkc8jowjwaGe8qhp3EH5BPb/EXkKyI19toEXp7Srgdd+eowTY9i5qXtpFEoNp47vOsgHy20s7+IIts+W5HEJwVcXDdBW0WkO9c3LC+jB0invvU0Nq1ymXr/fBFk1kYhsYc7VuRVGHzXlPsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E0pEpwer; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCC131F000E9;
+	Tue, 14 Jul 2026 04:30:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784003408;
+	bh=mICutwBK0EOWPaJt4dE51Zi2P/cBrQAMNeIDmrK7FQw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=E0pEpwerZ5on1SZjEJueqR+tDisH+rxCo7p0Qm6oHWrPgUwUU3XP/nWrugGaN5EC6
+	 zlMkcPhEWousOPzNLjodpXrvbdJVTUZGdmUn92RHdi8ep3+pZkiO5gPo8jrkX/KePJ
+	 tSOo0BPQVLz2CZSDscTbrcb5h8VL/ivI2BvGaKw9sWSbw9mjhzZfnErSVFitdy7ker
+	 89YKeBPmL/ZOXqwRecAg8x0WUPQAdUhL+J8RC2eAwz75CjDI1KB+ta1w7lCchOvIcn
+	 6GuAybIEZr661VHrQeKeYMNc+hXUC0k37FQpYblJm+PhzYKA2E6pnk/vz9iKQFnT0Z
+	 q+rcLNdFlWlBg==
+From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: bp@alien8.de,
-	sashiko-bot@kernel.org,
+Cc: Reinette Chatre <reinette.chatre@intel.com>,
+	Sashiko <sashiko-bot@kernel.org>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
 	stable@kernel.org,
-	reinette.chatre@intel.com
+	Sasha Levin <sashal@kernel.org>
 Subject: [PATCH 6.12.y] x86,fs/resctrl: Prevent out-of-bounds access while offlining CPU when SNC enabled
-Date: Mon, 13 Jul 2026 21:12:36 -0700
-Message-ID: <60fe69c02f681cf98f9279b53b4ad71589377aa1.1784002085.git.reinette.chatre@intel.com>
-X-Mailer: git-send-email 2.54.0
+Date: Tue, 14 Jul 2026 00:30:04 -0400
+Message-ID: <20260714043004.2500830-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
 In-Reply-To: <2026071357-shifter-degree-6c12@gregkh>
 References: <2026071357-shifter-degree-6c12@gregkh>
 Precedence: bulk
@@ -82,41 +68,44 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-3.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:bp@alien8.de,m:sashiko-bot@kernel.org,m:stable@kernel.org,m:reinette.chatre@intel.com,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-274119-lists,stable=lfdr.de];
-	FORGED_SENDER(0.00)[reinette.chatre@intel.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[intel.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TAGGED_FROM(0.00)[bounces-274120-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:reinette.chatre@intel.com,m:sashiko-bot@kernel.org,m:bp@alien8.de,m:stable@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[reinette.chatre@intel.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
-	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:from_mime,intel.com:mid,intel.com:email,intel.com:dkim]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sashiko.dev:url,vger.kernel.org:from_smtp,intel.com:email,alien8.de:email,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3167D750C39
+X-Rspamd-Queue-Id: C25CA750E1F
 
-commit fc16126cc11d9f507130bf84ab137ee0938c900e upstream.
+From: Reinette Chatre <reinette.chatre@intel.com>
+
+[ Upstream commit fc16126cc11d9f507130bf84ab137ee0938c900e ]
 
 The architecture updates the cpu_mask in a domain's header to track which
 online CPUs are associated with the domain. When this mask becomes empty
@@ -148,12 +137,13 @@ Signed-off-by: Reinette Chatre <reinette.chatre@intel.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 Cc: <stable@kernel.org>
 Link: https://patch.msgid.link/16137433df42f85013b2f7a53626795cbd6637b9.1781029125.git.reinette.chatre@intel.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
  arch/x86/kernel/cpu/resctrl/monitor.c | 47 +++++++++++++++++----------
  1 file changed, 29 insertions(+), 18 deletions(-)
 
 diff --git a/arch/x86/kernel/cpu/resctrl/monitor.c b/arch/x86/kernel/cpu/resctrl/monitor.c
-index c117fba4f8da..b4dcfe6d0831 100644
+index c117fba4f8da92..b4dcfe6d0831ac 100644
 --- a/arch/x86/kernel/cpu/resctrl/monitor.c
 +++ b/arch/x86/kernel/cpu/resctrl/monitor.c
 @@ -338,14 +338,20 @@ int resctrl_arch_rmid_read(struct rdt_resource *r, struct rdt_mon_domain *d,
@@ -234,6 +224,6 @@ index c117fba4f8da..b4dcfe6d0831 100644
  
  		if (force_free || !rmid_dirty) {
 -- 
-2.54.0
+2.53.0
 
 
