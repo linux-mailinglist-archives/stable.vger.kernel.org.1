@@ -1,251 +1,208 @@
-Return-Path: <stable+bounces-274165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274167-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 4/iIGRDdVWomugAAu9opvQ
-	(envelope-from <stable+bounces-274165-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 08:54:08 +0200
+	id Dh0pNJjjVWovuwAAu9opvQ
+	(envelope-from <stable+bounces-274167-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 09:22:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43B89751ACD
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 08:54:07 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38EB3751CBA
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 09:22:00 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=HIi5d5nD;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274165-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274165-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=GeDbW3bZ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274167-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-274167-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 353BE300E913
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 06:53:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 431553012339
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 07:21:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 309053DA5C8;
-	Tue, 14 Jul 2026 06:53:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAE7F3ECBC7;
+	Tue, 14 Jul 2026 07:21:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+Received: from mail-pj2-f1.google.com (mail-pj2-f1.google.com [74.125.227.129])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0E6F3DA5CC
-	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 06:53:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D81E3EC2F6
+	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 07:21:55 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784012032; cv=none; b=skJO9jqxvZbIYcsUBOl4+myX9jN8zOuQjplbxeJFoYAVQqsjFwiupZBARGmtAiOJA3aRshVrbAukk9kM8KCHDwWkVoM0/Z1DP/OOIB3q54nSJU3C77YxQTZ3WFZkS+tTFRSk7IkwxoBDLZmiEF5M7F06PVjN4cb2d5S2yNTHnjY=
+	t=1784013716; cv=none; b=BYdpYPXtZRshKIm7VzOyUnVQcN92WA8LIZc7cXDD7K4Bpb0z8ySzF/HGIf52+nWkcK95gU0baCw4DpmRjJsEKNmk7yQ4/n5SwYPUquSI4l8ZjQRD5Kxpoy993X/jNUFIHL4OGkECXGrGwYD5HbeCyWwmtxOfrMG6Se+nUaQK8SA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784012032; c=relaxed/simple;
-	bh=AO2GKLxoJTgpQfU1vWe3+H8/TP6Z5a4pNwhackVaAA4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=B51TP7vmwxTLnyFJ9P9D1XTXF6d7umELPi+6gZo00LEn1FjcXhu/Zt4NWvBXa72g6tE9lllrpxL6rJkXCULd5ZTlaSv+RB0kcYHWYE8tQcYarSo2gI6NB+lbTiyh397aHkaTY5cwgIrXESEdaw1sjE+e69G1hzuuuvadmYwvXCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HIi5d5nD; arc=none smtp.client-ip=209.85.216.53
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-38511175ad3so3171594a91.2
-        for <stable@vger.kernel.org>; Mon, 13 Jul 2026 23:53:50 -0700 (PDT)
+	s=arc-20240116; t=1784013716; c=relaxed/simple;
+	bh=VV6RH/yKbbXGqbCZVlFLWMvC2IkSZjVrbZxP+GH89A0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YlrnILbdO57pH5KPf2qwe8DDugfwu18Jqb6UEfOFPXTGmwC8qE7F2pVYPlw16uk1OivsxWdk6RCap95wRpuE0+DRQBrFLEgBx38kh84EHr9E6bDx9MlOtr78WCy2EIBo0QbPYcNiCHkEMlYywMGnIRs6asBcBZYgCyIvcGLWVBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GeDbW3bZ; arc=none smtp.client-ip=74.125.227.129
+Received: by mail-pj2-f1.google.com with SMTP id 98e67ed59e1d1-38109499830so2345215a91.1
+        for <stable@vger.kernel.org>; Tue, 14 Jul 2026 00:21:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784012030; x=1784616830; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=VBDDx+WXyO2HmFvYUM/Py6bFxHFJnp362DYMS0SOtOA=;
-        b=HIi5d5nDz+h9OTayqRDg7KZ7UFmnDftn3PChHwV/CmBqEjHif6EvJrzsrTIStHL1m9
-         UYO+4LJupU+qXAeAU3/eyltLxUBEbrs2NpCC3a84djXXtfIgZQYtW+a8yarQFY5dZ90B
-         5caNKyLOD+KoM7OFVunsOUQtO6pGGKiLWdc7vU6L54vXQY+OLQtSQLWv7TKNgkOydBY0
-         z3oRJwTxX5R0Q4HkVESCe5qlS/KibFrv3hOIW8ZqRkShm2CVJg2gYjn3CKKJzelktuTe
-         gUiu1bfkM3oM6SPN6NDwRTfDOaiyWoagkHqPS1RHOoE9/CDL9PGkzrKV8zVKlF1BO3fX
-         pbkQ==
+        d=gmail.com; s=20251104; t=1784013715; x=1784618515; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=UL4JsWWFy5+1VcD51BCzcQnL+AOhOLYxnY1WLoSce4c=;
+        b=GeDbW3bZK+jZaUhg8w1w6lia/JrRhBKRBaedZHrRA4y4oE3+GQmTDnvGnGyqI47Z/H
+         HGMtyIWPqJvjjCUpLSJ8yS2sq9JaoxiBVHyg8hhBY3HRabDaqNM3rNFwD/xGK+3rsNsg
+         nEKPB24o/qg8awGguUkDr0PyTOGUI2JdhOb+WMNQgu6lgF0s6mKFEWKF+UyqLk3e7fyM
+         AlggOa3P1phIsX/ey+yy7cHRzW9r2R31RlMl00SOlBdFCpakXtSkSretNk5Piif6CWHs
+         LtZUTMKCBooFhV8zDocNHYNLG3Um4lEJL+94zXurvQ9APigs2BQEQ0PKl+LvU8LWm3wr
+         qYtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784012030; x=1784616830;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1784013715; x=1784618515;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=VBDDx+WXyO2HmFvYUM/Py6bFxHFJnp362DYMS0SOtOA=;
-        b=QAqKRVo+Qv032urQCCNf4W7/sie5iN0xFjrLt/KFPJgl/8alXbcRFT/hNCKwc0m6fx
-         MVnk5pS74BAawy/IgU0Mg4PkhKzHBn44Cntl7E2vFyKqxCNg38upKzIj4nQT7dnKnpex
-         TMPe8IhMi6j439cXUGlZN+KGgdsVeForXYYxzVgaLygYmBcronGesMNWDcTBq55SjM0j
-         ql1/Mx2CHumPc1bS4X3i0fjQUNmmczoxfDuSDZC96DyTOmmTmW611VelKsXs50lgHRfX
-         bJoPev6qfjgH3j8xvawAUaXyuzYN1ffo8XgtdjyqNt5tG/uVEoOluIQfQ9gptCPS8afL
-         6Zvg==
-X-Forwarded-Encrypted: i=1; AHgh+Rr69PHAGO6YFfbjVmqhJ5tQ5cT98Tc3tUPiP7VeFR5xUvI86xoLFal3o6HVoKnKhRKxIF2DYFU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzNp4NmQnBNPTAa3tmTFxFT7etQJIGjZ+HTQuDb1L/pMREgsYaT
-	4DmrKASY1Tx3T1jHeOQ2649cYaQ5ygzDSpxEawvGmhmTYzKl4Dz8lFky
-X-Gm-Gg: AfdE7cnf5SpI30jKL0e8COuoyM6qtduF9WR3u/tJ2H6wtG3SZ3opwTRZzNpf6A2BtMd
-	mF+Yy+bOg44knSCv2bfU74es72bdWwgQLnbYjnX5Zf5LNCT6jJ2/N4wPhvoLoAQYM7udFjzJ1sS
-	KMtqeiiTkvT/JAkp/CIBCksGCokHz2JblUUwsMRWPSENK1xW/FcUYlpPvkT8CTEdbIKyguZJYy2
-	PR2N1RPgbgXSG0hdV1/mt+ZVnPXWbFH3BEbymwajNsXM3vwp0K4zlYFmqjd0FyGIgu6O7eG0fLz
-	3JBKXM2Fqi46jv5f10xvSRi68xWhnbtQkppoAJQ81H3cFazmhfh2BRID0kGjmaYzKcZUHcunndE
-	dN/hzTMo9NannNVhvyBeUm7XWuXT0jSdkA4APISre+NrFv+Fmli17+OP5kizcUmynIhOlGUO4fI
-	xTVgQf4NwelUc5tlXj+CTh81bBm3M9NeqT
-X-Received: by 2002:a17:90b:4a:b0:388:cf45:d72c with SMTP id 98e67ed59e1d1-38e1aedd604mr1302508a91.15.1784012030007;
-        Mon, 13 Jul 2026 23:53:50 -0700 (PDT)
-Received: from [100.125.248.95] ([124.70.231.46])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38d352b0f37sm2616758a91.1.2026.07.13.23.53.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 13 Jul 2026 23:53:49 -0700 (PDT)
-Message-ID: <7bb69013-c6f1-4dee-bb9c-c576c7b765d7@gmail.com>
-Date: Tue, 14 Jul 2026 14:53:41 +0800
+        bh=UL4JsWWFy5+1VcD51BCzcQnL+AOhOLYxnY1WLoSce4c=;
+        b=SueSoEJYjdaYVsw/JnFLP+f9j6qsslz6yfKMrGIrMJ4eJPub1w55YSCAi8+FsraFDJ
+         mF6lvVwaebbYjW35vJ9OtQY8AuoA9ur/r3oliKiZS2ocY0r9nxwIdzPfL6g624+somH3
+         yUimQ5Fd+OYDX6j+icjeG+y/01Yw3oWmzZydN7GSOqup50vXgilvmGL2uveJ3u6t8uzZ
+         /mArdna74qEbb9eIE3H5g2IWtw7ajTdQM/NedoCm+6fbOSgrnwjZM4Xo6+J2urmGh+PG
+         8vtGBcPMYkX9vNNf28rnk4LkO4U5Ub8nifkTShvEDeElg11SqDK95VDq0xP+BCI5cd5K
+         QXtQ==
+X-Gm-Message-State: AOJu0YymH6YQ7BDrKvuu0jsHdnF+zSp17VvM0Nb5JkAclFdeLyOMF4Sm
+	e0itg4ECh5XXxJ5+ha1KKIAt/4AssHFHf4b2n/UBzHze6rATCXGzPD4D
+X-Gm-Gg: AfdE7cno07ErIIMl1nkV4zd0mt6BN8H0CyzZyNmSQEGUJQ0TxGbeXm/qsL8xDaHSv+w
+	2KgJ0cibUXJ3ggZZLxawiw9c92wjn3G1Sp4WfGFBlhy2zs6Am9dKdGgsYl7qNe8WIBdpv1yMKgA
+	dF58F40+xmZFjG6iTTf7/RyU9CRcJjPAPGB5V5ZRiQQVVMXcMd/HKQl6zf6jAoKNlOISbWgrxP5
+	sbNnp5HWSQWD3BdHc7hEw7earrGetW5gpzlEMD9b3Cd510MQYVOAtk0/925eEVCW7ZVyS4kQpSK
+	f+gm/6dW80PPrpRuFiDXYdkJUfuTF1Syb3EGAELVerf6prLMZh+rK56bX9ekFdTBhOQIloIwBeO
+	sU4XVBlYAzyh+JgxREKdTwK2I1xhBMTbWhGzSsC3EGI0vOIxPhRmU2/tPng8j8VQxfQfdm8yWzD
+	++SQlMYfSTKMR9LPpND9mIBT9BvXpHoTFCoyfWG5/IWHoQ
+X-Received: by 2002:a05:6a21:9d48:b0:3c1:85d:fa2f with SMTP id adf61e73a8af0-3c1108c2d4fmr12576651637.36.1784013714528;
+        Tue, 14 Jul 2026 00:21:54 -0700 (PDT)
+Received: from J4f-Laptop.localdomain ([2409:8a55:94d0:4771:cc5f:41a5:d797:4728])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-ca5b31628c1sm9365742a12.19.2026.07.14.00.21.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Jul 2026 00:21:53 -0700 (PDT)
+From: Shihuang Liu <shlomojune6@gmail.com>
+To: shlomojune6@gmail.com
+Cc: stable@vger.kernel.org
+Subject: [PATCH] amt: fix use-after-free in AMT delayed works
+Date: Tue, 14 Jul 2026 15:21:42 +0800
+Message-ID: <20260714072142.128870-1-shlomojune6@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] jbd2: bound shrinker scans by examined checkpoint
- buffers
-To: Max Kellermann <max.kellermann@ionos.com>
-Cc: linux-ext4@vger.kernel.org, linux-kernel@vger.kernel.org, jack@suse.com,
- tytso@mit.edu, stable@vger.kernel.org
-References: <20260713102229.1598812-1-max.kellermann@ionos.com>
- <20260713102229.1598812-3-max.kellermann@ionos.com>
-Content-Language: en-US
-From: Zhang Yi <yizhang089@gmail.com>
-In-Reply-To: <20260713102229.1598812-3-max.kellermann@ionos.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-274167-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-274165-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:max.kellermann@ionos.com,m:linux-ext4@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:jack@suse.com,m:tytso@mit.edu,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FORGED_SENDER(0.00)[yizhang089@gmail.com,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:shlomojune6@gmail.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com];
 	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWO(0.00)[2];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[shlomojune6@gmail.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[yizhang089@gmail.com,stable@vger.kernel.org];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[shlomojune6@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,ionos.com:email]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 43B89751ACD
+X-Rspamd-Queue-Id: 38EB3751CBA
 
-On 7/13/2026 6:22 PM, Max Kellermann wrote:
-> The jbd2 shrinker currently accounts only checkpoint buffers that it
-> successfully releases against nr_to_scan.  Busy buffers therefore do not
-> consume the scan budget.
-> 
-> If a checkpoint transaction contains mostly busy buffers, the shrinker
-> can scan its entire checkpoint list while holding journal->j_list_lock.
-> Large checkpoint lists can result in excessive lock hold times and leave
-> other CPUs spinning on j_list_lock, causing soft lockups or RCU stalls.
-> 
-> Pass nr_to_scan into journal_shrink_one_cp_list() and decrement it for
-> every buffer examined, including busy buffers.  Pass NULL from checkpoint
-> cleanup paths so their existing full-list behavior is preserved.
-> 
-> This restores the scan-budget semantics that existed before
-> journal_shrink_one_cp_list() was changed to always scan a complete
-> checkpoint list.
-> 
-> Fixes: b98dba273a0e ("jbd2: remove journal_clean_one_cp_list()")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+When an AMT device is removed, pending delayed works can still access
+the freed amt_dev structure, which may result in kernel crashes or
+memory corruption.
 
-This makes the semantic of nr_to_scan more clear.
+amt_dev_stop() cancels req_wq and discovery_wq with
+cancel_delayed_work_sync(), but these works can be scheduled again
+from event_wq after the cancellation. This allows delayed works to
+access the freed amt_dev structure after the netdev has been released.
 
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+The following is a simple race scenario:
 
-> ---
->   fs/jbd2/checkpoint.c | 25 +++++++++++++------------
->   1 file changed, 13 insertions(+), 12 deletions(-)
-> 
-> diff --git a/fs/jbd2/checkpoint.c b/fs/jbd2/checkpoint.c
-> index 5266017565ac..513273712010 100644
-> --- a/fs/jbd2/checkpoint.c
-> +++ b/fs/jbd2/checkpoint.c
-> @@ -358,15 +358,16 @@ int jbd2_cleanup_journal_tail(journal_t *journal)
->   /*
->    * journal_shrink_one_cp_list
->    *
-> - * Find all the written-back checkpoint buffers in the given list
-> - * and try to release them. If the whole transaction is released, set
-> - * the 'released' parameter. Return the number of released checkpointed
-> - * buffers.
-> + * Find written-back checkpoint buffers in the given list and try to release
-> + * them. If 'nr_to_scan' is set, scan at most that many buffers. If the whole
-> + * transaction is released, set the 'released' parameter. Return the number of
-> + * released checkpointed buffers.
->    *
->    * Called with j_list_lock held.
->    */
->   static unsigned long journal_shrink_one_cp_list(struct journal_head *jh,
->   						enum jbd2_shrink_type type,
-> +						unsigned long *nr_to_scan,
->   						bool *released)
->   {
->   	struct journal_head *last_jh;
-> @@ -375,13 +376,15 @@ static unsigned long journal_shrink_one_cp_list(struct journal_head *jh,
->   	int ret;
->   
->   	*released = false;
-> -	if (!jh)
-> +	if (!jh || (nr_to_scan && !*nr_to_scan))
->   		return 0;
->   
->   	last_jh = jh->b_cpprev;
->   	do {
->   		jh = next_jh;
->   		next_jh = jh->b_cpnext;
-> +		if (nr_to_scan)
-> +			(*nr_to_scan)--;
->   
->   		if (type == JBD2_SHRINK_DESTROY) {
->   			ret = __jbd2_journal_remove_checkpoint(jh);
-> @@ -403,7 +406,7 @@ static unsigned long journal_shrink_one_cp_list(struct journal_head *jh,
->   next:
->   		if (need_resched())
->   			break;
-> -	} while (jh != last_jh);
-> +	} while (jh != last_jh && (!nr_to_scan || *nr_to_scan));
->   
->   	return nr_freed;
->   }
-> @@ -425,7 +428,6 @@ unsigned long jbd2_journal_shrink_checkpoint_list(journal_t *journal,
->   	tid_t first_tid = 0, last_tid = 0, next_tid = 0;
->   	tid_t tid = 0;
->   	unsigned long nr_freed = 0;
-> -	unsigned long freed;
->   	bool first_set = false;
->   
->   again:
-> @@ -458,10 +460,9 @@ unsigned long jbd2_journal_shrink_checkpoint_list(journal_t *journal,
->   		next_transaction = transaction->t_cpnext;
->   		tid = transaction->t_tid;
->   
-> -		freed = journal_shrink_one_cp_list(transaction->t_checkpoint_list,
-> -						   JBD2_SHRINK_BUSY_SKIP, &released);
-> -		nr_freed += freed;
-> -		(*nr_to_scan) -= min(*nr_to_scan, freed);
-> +		nr_freed += journal_shrink_one_cp_list(transaction->t_checkpoint_list,
-> +						       JBD2_SHRINK_BUSY_SKIP,
-> +						       nr_to_scan, &released);
->   		if (*nr_to_scan == 0)
->   			break;
->   		if (need_resched() || spin_needbreak(&journal->j_list_lock))
-> @@ -517,7 +518,7 @@ void __jbd2_journal_clean_checkpoint_list(journal_t *journal,
->   		transaction = next_transaction;
->   		next_transaction = transaction->t_cpnext;
->   		journal_shrink_one_cp_list(transaction->t_checkpoint_list,
-> -					   type, &released);
-> +					   type, NULL, &released);
->   		/*
->   		 * This function only frees up some memory if possible so we
->   		 * dont have an obligation to finish processing. Bail out if
+CPU0                         CPU1
+
+amt_dev_stop()
+cancel_delayed_work_sync()
+                             amt_event_work()
+                             mod_delayed_work(req_wq)
+free netdev
+                             req_wq accesses freed amt_dev
+
+Use disable_delayed_work_sync() in amt_dev_stop() to prevent req_wq and
+discovery_wq from being queued again and wait for running work items
+to complete.
+
+The delayed works are disabled after initialization in
+amt_newlink() and enabled only when the device is successfully opened.
+This keeps the delayed work lifecycle synchronized with the lifetime
+of the AMT device.
+
+Fixes: cbc21dc1cfe9 ("amt: add data plane of amt interface")
+Cc: stable@vger.kernel.org
+Signed-off-by: Shihuang Liu <shlomojune6@gmail.com>
+---
+ drivers/net/amt.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/amt.c b/drivers/net/amt.c
+index 951dd10e192b..7eb871b9b7e1 100644
+--- a/drivers/net/amt.c
++++ b/drivers/net/amt.c
+@@ -2995,9 +2995,15 @@ static int amt_dev_open(struct net_device *dev)
+ 	amt->event_idx = 0;
+ 	amt->nr_events = 0;
+ 
++	enable_delayed_work(&amt->discovery_wq);
++	enable_delayed_work(&amt->req_wq);
++
+ 	err = amt_socket_create(amt);
+-	if (err)
++	if (err) {
++		disable_delayed_work(&amt->req_wq);
++		disable_delayed_work(&amt->discovery_wq);
+ 		return err;
++	}
+ 
+ 	amt->req_cnt = 0;
+ 	amt->remote_ip = 0;
+@@ -3023,8 +3029,8 @@ static int amt_dev_stop(struct net_device *dev)
+ 	struct sock *sk;
+ 	int i;
+ 
+-	cancel_delayed_work_sync(&amt->req_wq);
+-	cancel_delayed_work_sync(&amt->discovery_wq);
++	disable_delayed_work_sync(&amt->req_wq);
++	disable_delayed_work_sync(&amt->discovery_wq);
+ 	cancel_delayed_work_sync(&amt->secret_wq);
+ 
+ 	/* shutdown */
+@@ -3278,6 +3284,8 @@ static int amt_newlink(struct net_device *dev,
+ 	INIT_DELAYED_WORK(&amt->req_wq, amt_req_work);
+ 	INIT_DELAYED_WORK(&amt->secret_wq, amt_secret_work);
+ 	INIT_WORK(&amt->event_wq, amt_event_work);
++	disable_delayed_work(&amt->req_wq);
++	disable_delayed_work(&amt->discovery_wq);
+ 	INIT_LIST_HEAD(&amt->tunnel_list);
+ 	return 0;
+ err:
+-- 
+2.43.0
 
 
