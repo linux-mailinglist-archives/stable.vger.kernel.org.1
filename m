@@ -1,208 +1,273 @@
-Return-Path: <stable+bounces-274167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274169-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Dh0pNJjjVWovuwAAu9opvQ
-	(envelope-from <stable+bounces-274167-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 09:22:00 +0200
+	id eWCAEYPmVWqzvAAAu9opvQ
+	(envelope-from <stable+bounces-274169-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 09:34:27 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38EB3751CBA
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 09:22:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A28FA751ED3
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 09:34:26 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=GeDbW3bZ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274167-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-274167-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=outlook.com header.s=selector1 header.b=aoCQ7Wcz;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274169-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-274169-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=outlook.com;
+	arc=reject ("cv is fail on i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 431553012339
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 07:21:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7EB823052B75
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 07:29:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAE7F3ECBC7;
-	Tue, 14 Jul 2026 07:21:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC20A3EDE63;
+	Tue, 14 Jul 2026 07:29:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj2-f1.google.com (mail-pj2-f1.google.com [74.125.227.129])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SY5PR01CU010.outbound.protection.outlook.com (mail-australiaeastazolkn19012008.outbound.protection.outlook.com [52.103.72.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D81E3EC2F6
-	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 07:21:55 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784013716; cv=none; b=BYdpYPXtZRshKIm7VzOyUnVQcN92WA8LIZc7cXDD7K4Bpb0z8ySzF/HGIf52+nWkcK95gU0baCw4DpmRjJsEKNmk7yQ4/n5SwYPUquSI4l8ZjQRD5Kxpoy993X/jNUFIHL4OGkECXGrGwYD5HbeCyWwmtxOfrMG6Se+nUaQK8SA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784013716; c=relaxed/simple;
-	bh=VV6RH/yKbbXGqbCZVlFLWMvC2IkSZjVrbZxP+GH89A0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YlrnILbdO57pH5KPf2qwe8DDugfwu18Jqb6UEfOFPXTGmwC8qE7F2pVYPlw16uk1OivsxWdk6RCap95wRpuE0+DRQBrFLEgBx38kh84EHr9E6bDx9MlOtr78WCy2EIBo0QbPYcNiCHkEMlYywMGnIRs6asBcBZYgCyIvcGLWVBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GeDbW3bZ; arc=none smtp.client-ip=74.125.227.129
-Received: by mail-pj2-f1.google.com with SMTP id 98e67ed59e1d1-38109499830so2345215a91.1
-        for <stable@vger.kernel.org>; Tue, 14 Jul 2026 00:21:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784013715; x=1784618515; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=UL4JsWWFy5+1VcD51BCzcQnL+AOhOLYxnY1WLoSce4c=;
-        b=GeDbW3bZK+jZaUhg8w1w6lia/JrRhBKRBaedZHrRA4y4oE3+GQmTDnvGnGyqI47Z/H
-         HGMtyIWPqJvjjCUpLSJ8yS2sq9JaoxiBVHyg8hhBY3HRabDaqNM3rNFwD/xGK+3rsNsg
-         nEKPB24o/qg8awGguUkDr0PyTOGUI2JdhOb+WMNQgu6lgF0s6mKFEWKF+UyqLk3e7fyM
-         AlggOa3P1phIsX/ey+yy7cHRzW9r2R31RlMl00SOlBdFCpakXtSkSretNk5Piif6CWHs
-         LtZUTMKCBooFhV8zDocNHYNLG3Um4lEJL+94zXurvQ9APigs2BQEQ0PKl+LvU8LWm3wr
-         qYtw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784013715; x=1784618515;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=UL4JsWWFy5+1VcD51BCzcQnL+AOhOLYxnY1WLoSce4c=;
-        b=SueSoEJYjdaYVsw/JnFLP+f9j6qsslz6yfKMrGIrMJ4eJPub1w55YSCAi8+FsraFDJ
-         mF6lvVwaebbYjW35vJ9OtQY8AuoA9ur/r3oliKiZS2ocY0r9nxwIdzPfL6g624+somH3
-         yUimQ5Fd+OYDX6j+icjeG+y/01Yw3oWmzZydN7GSOqup50vXgilvmGL2uveJ3u6t8uzZ
-         /mArdna74qEbb9eIE3H5g2IWtw7ajTdQM/NedoCm+6fbOSgrnwjZM4Xo6+J2urmGh+PG
-         8vtGBcPMYkX9vNNf28rnk4LkO4U5Ub8nifkTShvEDeElg11SqDK95VDq0xP+BCI5cd5K
-         QXtQ==
-X-Gm-Message-State: AOJu0YymH6YQ7BDrKvuu0jsHdnF+zSp17VvM0Nb5JkAclFdeLyOMF4Sm
-	e0itg4ECh5XXxJ5+ha1KKIAt/4AssHFHf4b2n/UBzHze6rATCXGzPD4D
-X-Gm-Gg: AfdE7cno07ErIIMl1nkV4zd0mt6BN8H0CyzZyNmSQEGUJQ0TxGbeXm/qsL8xDaHSv+w
-	2KgJ0cibUXJ3ggZZLxawiw9c92wjn3G1Sp4WfGFBlhy2zs6Am9dKdGgsYl7qNe8WIBdpv1yMKgA
-	dF58F40+xmZFjG6iTTf7/RyU9CRcJjPAPGB5V5ZRiQQVVMXcMd/HKQl6zf6jAoKNlOISbWgrxP5
-	sbNnp5HWSQWD3BdHc7hEw7earrGetW5gpzlEMD9b3Cd510MQYVOAtk0/925eEVCW7ZVyS4kQpSK
-	f+gm/6dW80PPrpRuFiDXYdkJUfuTF1Syb3EGAELVerf6prLMZh+rK56bX9ekFdTBhOQIloIwBeO
-	sU4XVBlYAzyh+JgxREKdTwK2I1xhBMTbWhGzSsC3EGI0vOIxPhRmU2/tPng8j8VQxfQfdm8yWzD
-	++SQlMYfSTKMR9LPpND9mIBT9BvXpHoTFCoyfWG5/IWHoQ
-X-Received: by 2002:a05:6a21:9d48:b0:3c1:85d:fa2f with SMTP id adf61e73a8af0-3c1108c2d4fmr12576651637.36.1784013714528;
-        Tue, 14 Jul 2026 00:21:54 -0700 (PDT)
-Received: from J4f-Laptop.localdomain ([2409:8a55:94d0:4771:cc5f:41a5:d797:4728])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-ca5b31628c1sm9365742a12.19.2026.07.14.00.21.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Jul 2026 00:21:53 -0700 (PDT)
-From: Shihuang Liu <shlomojune6@gmail.com>
-To: shlomojune6@gmail.com
-Cc: stable@vger.kernel.org
-Subject: [PATCH] amt: fix use-after-free in AMT delayed works
-Date: Tue, 14 Jul 2026 15:21:42 +0800
-Message-ID: <20260714072142.128870-1-shlomojune6@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F7793EDE40;
+	Tue, 14 Jul 2026 07:29:41 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784014182; cv=fail; b=eLyFn4H1owpprxRTg01dzmrrc4rXtTChq2QYgBj6ztDUZu18IQ1XbTabkhyoGYYWW4EIRY5MZQnAZ8Lv1CtR3LEXd/8M4/MlycSJ3JOVPHxghe1Mn1MHMYYPp5E2cueOBRJ5p2F6Mq4PdNCQj44/FVSAP5iZWYZvSgzjahcmQv8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784014182; c=relaxed/simple;
+	bh=cgTQTxHS7H2qOnAqj2jhrMoaU7wVsZWwZYmtH9R7aeE=;
+	h=From:Date:Subject:Content-Type:Message-ID:To:Cc:In-Reply-To:
+	 MIME-Version; b=fHnqTNNb4dv7BvJeZhKOSPgkshHaecRrv9tD8t0+KAbBUQP82qiQtFIyPJNETxOsgPqJ2ZBV9izm+NeEBLNdHPa2BwRS7KMFyXjhq1n8NIOEXiXsLQEdliFv8Ur/pZKayoFK1coWDA67xorBgl1clWPQTKflT/Vlt8aIdvLrQtg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=aoCQ7Wcz; arc=fail smtp.client-ip=52.103.72.8
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PfHcjl/RRF51hvhoHUV9nG3WQ3+sL/zdOrNQCV4D5G87xxVVzYaitbvpIz6jvI+QMDsaKcOZBjmTouKm0Pe1UKe0s5JpffqJuJxR+KF6ycTeTenwNIq8nBpugk97Srm7N64rY4y41ge13Lqb1Jcd5puli+OIzExF+FpIHe8ysQvjFO3rXJAS3UcOJH0CZgsPtF2/dSrUBErVq2v4ETHS9C893so7hilu7V5m4EDuGlwP0NcqGf6ZGo5MeNfs8VFEN+O0vumjq15hBt0qzlzTr5uRvBcAgFKWxS0HunJkmwVNeB7NSRGGHe6z8bSsbi7nZwowzZfV+4ox4Kby176OkQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=EQyLat03eNzE8DI/SZXmhAyLLc0YSEZx8NUWRZCFV70=;
+ b=BJd8M+kcOoPDAXD2Vy0khGjicSsXAh2mVtWTX9yvMd+ma6M2LgnmBKHn0fi+epXtSPcVQVgfQgXXYQkiSg6AFhYpiQFbR5sn1AvZDfV1xKh9DIfr+z0W36BmkEV+N/tUjVGApoy5ULxbjPbSyWJSHKQmDTDGHeqzFt46MCudXQJAy7spMsW8eEAISTZaqKAdaCYMhuizCu1d4fJE42SP4sTBMmQsaTIH4ZnHKUuDBoc3oftdHpGzJTRF+dT09pi1yxnbQu/L/kVvUNeLvT9OpbVKLvBcfruwNbdKKpJPJRJCpb0dZvUBoZFqpmhyshdpxZX0kprglYU1ET8ypXoETw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=EQyLat03eNzE8DI/SZXmhAyLLc0YSEZx8NUWRZCFV70=;
+ b=aoCQ7WczitKiFtIONBxyOhxAAxC6DJTwBZDMe/BLesTpM63hnRGBD31PZWYHBw4dnE4YnKxt7m+krDcQDLu1cpFwnD7QtmWNCqDMDqaz5CllhHlgUlgxY0eK3IW9AZgol9CztYLNAPD/oETocsSdCG/X3dD7YtId0GmPuH11yvnGhE7ox3JuWS19JbA11QL4duqGcZ5PZdd9fW8EujzwN8xfN3CsgaFvFOSoK2tX6NGLKEDSIRrsWsnqkwkSq2HXqpIg0UwYcfuh3nouTdbhS0ap4lpxu4TWpsX78OnlgI6irKk7ui2Y/jPdQfPCRhkZTJyAZCXH2H/6S4+orqwZlg==
+Received: from SYBPR01MB7881.ausprd01.prod.outlook.com (2603:10c6:10:1b0::5)
+ by SY0PR01MB9296.ausprd01.prod.outlook.com (2603:10c6:10:224::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.202.20; Tue, 14 Jul
+ 2026 07:29:31 +0000
+Received: from SYBPR01MB7881.ausprd01.prod.outlook.com
+ ([fe80::7cd2:d6e8:3fa0:5f0c]) by SYBPR01MB7881.ausprd01.prod.outlook.com
+ ([fe80::7cd2:d6e8:3fa0:5f0c%3]) with mapi id 15.21.0202.018; Tue, 14 Jul 2026
+ 07:29:31 +0000
+From: Junrui Luo <moonafterrain@outlook.com>
+Date: Tue, 14 Jul 2026 15:24:37 +0800
+Subject: [PATCH v2] media: vicodec: fix out-of-bounds write in FWHT encoder
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID:
+ <SYBPR01MB78815326E01E5C8E903A1822AFF92@SYBPR01MB7881.ausprd01.prod.outlook.com>
+X-B4-Tracking: v=1; b=H4sIADTkVWoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyjHQUlJIzE
+ vPSU3UzU4B8JSMDIzMDc0MT3bTMitRi3cREi+Q0M+OktBRLUyWg2oKiVLAEUGl0bG0tAIGtN4J
+ XAAAA
+X-Change-ID: 20260714-fixes-aa8cf63bfd95
+To: Hans Verkuil <hverkuil@kernel.org>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Dafna Hirschfeld <dafna3@gmail.com>
+Cc: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>, 
+ linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Yuhao Jiang <danisjiang@gmail.com>, stable@vger.kernel.org, 
+ Junrui Luo <moonafterrain@outlook.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2221;
+ i=moonafterrain@outlook.com; h=from:subject:message-id;
+ bh=cgTQTxHS7H2qOnAqj2jhrMoaU7wVsZWwZYmtH9R7aeE=;
+ b=owJ4nJvAy8zAJVb4wiKgu++DA+NptSSGrNAnJoJZNxu9Vt16xVSy7u++m48zjWVe5Cr4vv395
+ M8hEbPb4Ys6SlkYxLgYZMUUWY4XXPpm4btFd4vPlmSYOaxMIEMYuDgFYCIKLowM9/bPNZ+Tpidx
+ 7sClVoNan9xT1048Tg3aG1RXWiRe9eTYYYZ/1rOv6UaXiR5QzGC6xfDjCveCtvpQ49OqnGrVLPe
+ E1otwAQDx2EvI
+X-Developer-Key: i=moonafterrain@outlook.com; a=openpgp;
+ fpr=C770D2F6384DB42DB44CB46371E838508B8EF040
+In-Reply-To: <SYBPR01MB7881C44480F77338B6A93C61AF152@SYBPR01MB7881.ausprd01.prod.outlook.com>
+X-ClientProxiedBy: TYCP286CA0098.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:2b4::19) To SYBPR01MB7881.ausprd01.prod.outlook.com
+ (2603:10c6:10:1b0::5)
+X-Microsoft-Original-Message-ID:
+ <20260714-fixes-v2-1-c9c3307713de@outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SYBPR01MB7881:EE_|SY0PR01MB9296:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9f3e9b32-f9b9-4745-8698-08dee179a523
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|13031999006|22141099003|6090799003|39105399006|24021099003|19110799012|8060799015|22091999003|24121999003|23021999003|25010399006|4140399003|5072599009|15080799012|40105399003|26121999007|3412199025|440099028|1710799026;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?YnZ3Q25oT1VXNDVqMmpqTTcvMnJRRVI4c2JFL0Q2SG9ZUjB3cmY1cDNhdExl?=
+ =?utf-8?B?cE84UStKdlF6UStLUUdZWWVJWnJwOUFsSnR5U3pZamFOSGYvb3dTMzh1Nmkw?=
+ =?utf-8?B?M0xna1ZNMHFVazRLZWkxb2QwMldPc2hLOGxKYStuajdWZjlVNmVwajVBcVBQ?=
+ =?utf-8?B?ams4UjVncGd1djRIQTZtSGx4bkhGOEVRWnFsMDdXQXdvSmc3RVU0S2dXR2sw?=
+ =?utf-8?B?aVdPalh5TEI0SmFCTVhzM3ErTCtqMmJJRzVUWFJQdjZoZ2RpVnZML3UwcHBa?=
+ =?utf-8?B?WU9xYWQwQzd6cys3TFd2RE5PVXZKNFdML01HSTRTTnlDYkVkUnMwZFptOXA4?=
+ =?utf-8?B?dkFZbVRCa1huazFtL01BNVJzSEhVTm1PMEw2VUliWDFjc2lPSGdudjBDMkt2?=
+ =?utf-8?B?MEdzdHMxQ0RJNnZCUmhLbzJBaG12T0R3SFUvaUg4Yit2a0JCemlTU3RGWk5s?=
+ =?utf-8?B?alZqKzdFL3VrVGdJdEYxbHVKaHRQOThOV3ZEU2o4VTZYNWxRYUNwUzh2dXhQ?=
+ =?utf-8?B?aUluWHd0VUJyTG1meHM2Um91dVVhU3Q2T2g1RUZDUXVCbXlTdjZUcHhrT0N1?=
+ =?utf-8?B?QlN0ME55MnU1ei9FYUd4WWtySnpaY2xJQzRORjhXT0tUd1ZBZGFsaDJ3d0hB?=
+ =?utf-8?B?ckxjeEx1RXZJLzF1NVJ6SE0zL2dINDRJY0VXdlNyZjBpaVlNMjFkWGhtUVhw?=
+ =?utf-8?B?MWYwaWNTM0kzc1lud1kyTjFrcyt6eEd3cUJjN3lrTE8ycFE5dmdoM3FmcTdt?=
+ =?utf-8?B?andmNHE1MEdlNGtTVFJhempncjhwRStCNzk0SGY2SytwSVFRemNpRkFPeTBv?=
+ =?utf-8?B?MDhuU3gyRk91TUFRcUV3VEdVb3RGcjFmL1FaLzhQSUl5MUNkR3BrMC9Sa0dx?=
+ =?utf-8?B?Q29HaTkzc0lSdXNPZEtodlk5eXRybW0wZEdqUE1POVA4K0l2ZTB3OVFSaDgv?=
+ =?utf-8?B?bUJtbTdCak41QUNiV1hIbEY4VEtFNG40TExzeUFGTUJyNXhpckZHN0lWdW85?=
+ =?utf-8?B?a1RiOUxtQ3MrR29aaVBlUXowN3IyWVNXTFIrdFJiMnUzT2hndm1JR0NOK05E?=
+ =?utf-8?B?VzQ1TVd4RG14SW4zc1NZcnEvN3d3ZWtuNG1LZEQ4NG9pSy8xQXpHZFFSaW1w?=
+ =?utf-8?B?cldUNWlYNURubkZLbXY2SUltMGFqMFVaTFFkaXBNQnVCYUxCQkRMWjByRHpi?=
+ =?utf-8?B?UU84QTE4S1lTbk10WnBYVk42cjRWZGN1TEtTOWlEc1VoL09SVU1oVGFjU2VG?=
+ =?utf-8?B?NXkweUJRR2R0bGoyZTlUbFhZYnhoekh0akRzakNtVzRJL1d3aVhzR0JBbDg5?=
+ =?utf-8?B?YnNaelBHeVFrMXAwdEViV2prczZnRjJnVEphOTl3REZ0dmtrdG1QNTVibUJP?=
+ =?utf-8?B?dC9YclEvRUR2bzEzUTUvOHp1T3E1MDFUbEJvNlZnWVo5dTJ1SklUQXR0eGND?=
+ =?utf-8?B?SXl5ck0wMWdwOHhvVWoybVJXNnBqNHBDZFdkSVFXcGw2b3JzaEliNnpub2ta?=
+ =?utf-8?B?cTN2bVUwek1EM3p3MjBzVEl0ekc0TC9RN1BpUzQvS1VBaXBmUlhuUWVJWTh6?=
+ =?utf-8?B?Mi9UZz09?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?eWJta2lCd0NlTCt6NCtVYnBScmFnQVN5UFFTeEZkdHY0MXE5VisrOHo3NDUz?=
+ =?utf-8?B?RGJvN2ZjSTRWOGN1WHRJcWpjQ3duSEs0bk9JcGg1UTNnaHNraXI4K3BVK2sz?=
+ =?utf-8?B?OWVGNTFVMzYxbkN0VjFpaUFpUG9wZWJ2WVQ2S3ZtN01yd0JKU3lZeXdwK25x?=
+ =?utf-8?B?alhJNng2LzBzUGhWYkJHQ3I3Y1YwUlZ5OE5UQkVDSjhJZENPbis3QUhKRjM1?=
+ =?utf-8?B?aFFaSnFPc2pKdlJEd1lIZTREQ3JySGY3RHF3Q0FlVUc4UWZhczFRS0V5b3ZY?=
+ =?utf-8?B?Q2JpYTA5bXBqbGkyOERINk82TzdLRWQxNXU5Vm5UREZCck5DMFRsZ1BJMFNX?=
+ =?utf-8?B?emRDZjhQTVIxM1hWYlplOW9EbjBsdE5uY09leTdVNmM4ZUF1ZHIvTEZVMDBB?=
+ =?utf-8?B?MmlhVVFXZGVMTXNtNXFxc1lEN3ltcmhDZngvY20reHMzYmtzVzB5aU9YT3Nk?=
+ =?utf-8?B?QmVJd2lWR2I0STZJZElNVEUyTkRiWnZXY0w0a0hEYXNvMzJYSFJyVmpiUXFB?=
+ =?utf-8?B?SVRIRXpYazFuaUtmVXZ5N2tRWFRDUHd0dlFsRk0vUEFBUlpRTCtSM3BBb0dX?=
+ =?utf-8?B?NDIxM252YzNLR25MV2ltRzhDbE5GeHlScnprVjYzcmgxWEdKem9MTVRYdXl1?=
+ =?utf-8?B?NUdLZndGMGZmYWdSMG5Za082NTdmUlEvM29aMTloNk5pbTljN0lwcENBdHVK?=
+ =?utf-8?B?WCtCZEU0Ty9VeGg0dU9MSkZIVndyWUZwaldoSVRiVG5jNG1GajRWNlFldUNI?=
+ =?utf-8?B?cDZDQzY1eU1NZi9iTWUzNDJUWldtdlN5MXJOQkY2VkdTWHBwOElrZUVkV0Vv?=
+ =?utf-8?B?RHFodlBsdjdTOFdJZXAzbkt0ODYwb0VaMk5PQjZxQ2NUam4zVStldjY5Z09K?=
+ =?utf-8?B?a0VJbVVySm4xaGNsL1RTY1oxZTZRYnFCWFdtcXgrVGlvWUVoaStDNldIeHVP?=
+ =?utf-8?B?UFBaZUxMOFFjZi9wQ0lmWk5FL09nWlhxSFlUdEN3eXVGTDFZUHJFVGthV0tS?=
+ =?utf-8?B?WFVnWVZtVHltUHA0OHROTk1neVdSV0ZFb045MHUxbTBxQnJsS29pLy9NQTZv?=
+ =?utf-8?B?NHhOZlgwKzhxbzJXeU8wRURWUmxuZThhdkdrbGV1RVF0c1BOcDN2N1pabnhs?=
+ =?utf-8?B?S2liejJVVS9DVkZaOVRpb3lFYnNqbTNEUmhMQ3dBdzNGaG9wejN0TStNZWJD?=
+ =?utf-8?B?Z1ZxWUczNE9pbDdoa0t4K1czUThYZjRReURIWVExbjdMVEZXdWJtcHR4RnJ3?=
+ =?utf-8?B?R1V0bnpPVzh0S3poMTNzRXllR015UXk1ZHdoaEZJRTNOOHFSazV4WlRpeko0?=
+ =?utf-8?B?VmwvaDhlNTlBQUFMeG1ST1RKYzJqN0lBSFc5d2J4eHl2b0tQYk56VkQyaG95?=
+ =?utf-8?B?S3liMk1oaWYyUDdpL0xhekVLQnIwWWFQQnBydXk5SUN4d3FlZnpEQTJ0Rm1a?=
+ =?utf-8?B?U1FmaCtpYTcyRWVPZEJIVklEOURxVlRrQXg2Y0lTbERKdmFsSDl2MW5pTHZC?=
+ =?utf-8?B?eHlpSk1NOXpScEdxMmwzbVVoNW5tbkdCd0VjSFZpWWQwVGdmVWRCeXlLWC9D?=
+ =?utf-8?B?Rm1oekN2Y09MOGwrTWZIeHdNV2JMeHhha2U5bjJ3Y1VBVDU1Y1FYVWZtSjdE?=
+ =?utf-8?B?dnVQeUhYZGw5RGNaV1VrMGtPVXc5dHZpZ0xWM2VhUjNZeWQ0MFYzSk4xdHJG?=
+ =?utf-8?B?M3ZSMzBJeFpSS2ZIOHA3NkhKanJsWXpxNkFNaFB0OGJtdnZhOW5QdHorL1ZZ?=
+ =?utf-8?B?RFl4MVUzSU1adnF6N29zUlpIYWFTQ2VBaWI5aUZDQ1gyWGIrSUtQYWZnUXRx?=
+ =?utf-8?B?YVBDOSt0WjR3Z1duSUt6OVd5MXo4cnlac1A5MWJQaXZBUE5OVUIxUkIxa0lu?=
+ =?utf-8?B?ZlR3czd3UlJqWFk0ZUNqOGkxNFc4STlwZVVnRXIyZVBWSHc9PQ==?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9f3e9b32-f9b9-4745-8698-08dee179a523
+X-MS-Exchange-CrossTenant-AuthSource: SYBPR01MB7881.ausprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jul 2026 07:29:31.6441
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SY0PR01MB9296
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+X-Spamd-Result: default: False [1.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[outlook.com,none];
+	R_DKIM_ALLOW(-0.20)[outlook.com:s=selector1];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-274167-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-274169-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:shlomojune6@gmail.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWO(0.00)[2];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[shlomojune6@gmail.com,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[shlomojune6@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[kernel.org,gmail.com];
+	FORGED_SENDER(0.00)[moonafterrain@outlook.com,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:hverkuil@kernel.org,m:mchehab@kernel.org,m:dafna3@gmail.com,m:mchehab+samsung@kernel.org,m:linux-media@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:danisjiang@gmail.com,m:stable@vger.kernel.org,m:moonafterrain@outlook.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,gmail.com,outlook.com];
+	DKIM_TRACE(0.00)[outlook.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[moonafterrain@outlook.com,stable@vger.kernel.org];
+	FREEMAIL_FROM(0.00)[outlook.com];
 	ALIAS_RESOLVED(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	RCPT_COUNT_SEVEN(0.00)[9];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_RCPT(0.00)[stable,samsung];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:from_mime,outlook.com:email,outlook.com:dkim,vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 38EB3751CBA
+X-Rspamd-Queue-Id: A28FA751ED3
 
-When an AMT device is removed, pending delayed works can still access
-the freed amt_dev structure, which may result in kernel crashes or
-memory corruption.
+vidioc_s_fmt_vid_out() sizes the encoder CAPTURE buffer from the
+compressed descriptor pixfmt_fwht, whose sizeimage_mult is 3:
+coded_w * coded_h * 3 + sizeof(struct fwht_cframe_hdr). fwht_encode_frame()
+encodes one plane per component, and an incompressible plane takes the
+FWHT_FRAME_UNENCODED path in encode_plane(), copying the plane verbatim.
 
-amt_dev_stop() cancels req_wq and discovery_wq with
-cancel_delayed_work_sync(), but these works can be scheduled again
-from event_wq after the cancellation. This allows delayed works to
-access the freed amt_dev structure after the netdev has been released.
+For a 4-component pixel format all four planes are full resolution
+(width_div == height_div == 1), so a frame that forces every plane
+through the unencoded fallback writes
+sizeof(struct fwht_cframe_hdr) + 4 * coded_w * coded_h bytes, overrunning
+the plane by coded_w * coded_h, which can result in corruption
+of adjacent kernel heap memory.
 
-The following is a simple race scenario:
+Bump pixfmt_fwht.sizeimage_mult from 3 to 4, matching the largest
+components_num among the supported raw formats, so the capture buffer is
+always large enough for the unencoded fallback.
 
-CPU0                         CPU1
-
-amt_dev_stop()
-cancel_delayed_work_sync()
-                             amt_event_work()
-                             mod_delayed_work(req_wq)
-free netdev
-                             req_wq accesses freed amt_dev
-
-Use disable_delayed_work_sync() in amt_dev_stop() to prevent req_wq and
-discovery_wq from being queued again and wait for running work items
-to complete.
-
-The delayed works are disabled after initialization in
-amt_newlink() and enabled only when the device is successfully opened.
-This keeps the delayed work lifecycle synchronized with the lifetime
-of the AMT device.
-
-Fixes: cbc21dc1cfe9 ("amt: add data plane of amt interface")
+Fixes: 16ecf6dff97c ("media: vicodec: Add support for 4 planes formats")
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Shihuang Liu <shlomojune6@gmail.com>
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
 ---
- drivers/net/amt.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+Changes in v2:
+- Correct the Fixes tag.
+- Set pixfmt_stateless_fwht.sizeimage_mult to 4 as well.
+---
+ drivers/media/test-drivers/vicodec/vicodec-core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/amt.c b/drivers/net/amt.c
-index 951dd10e192b..7eb871b9b7e1 100644
---- a/drivers/net/amt.c
-+++ b/drivers/net/amt.c
-@@ -2995,9 +2995,15 @@ static int amt_dev_open(struct net_device *dev)
- 	amt->event_idx = 0;
- 	amt->nr_events = 0;
+diff --git a/drivers/media/test-drivers/vicodec/vicodec-core.c b/drivers/media/test-drivers/vicodec/vicodec-core.c
+index 318e8330f16a..ff9d50fb05fd 100644
+--- a/drivers/media/test-drivers/vicodec/vicodec-core.c
++++ b/drivers/media/test-drivers/vicodec/vicodec-core.c
+@@ -63,11 +63,11 @@ struct pixfmt_info {
+ };
  
-+	enable_delayed_work(&amt->discovery_wq);
-+	enable_delayed_work(&amt->req_wq);
-+
- 	err = amt_socket_create(amt);
--	if (err)
-+	if (err) {
-+		disable_delayed_work(&amt->req_wq);
-+		disable_delayed_work(&amt->discovery_wq);
- 		return err;
-+	}
+ static const struct v4l2_fwht_pixfmt_info pixfmt_fwht = {
+-	V4L2_PIX_FMT_FWHT, 0, 3, 1, 1, 1, 1, 1, 0, 1
++	V4L2_PIX_FMT_FWHT, 0, 4, 1, 1, 1, 1, 1, 0, 1
+ };
  
- 	amt->req_cnt = 0;
- 	amt->remote_ip = 0;
-@@ -3023,8 +3029,8 @@ static int amt_dev_stop(struct net_device *dev)
- 	struct sock *sk;
- 	int i;
+ static const struct v4l2_fwht_pixfmt_info pixfmt_stateless_fwht = {
+-	V4L2_PIX_FMT_FWHT_STATELESS, 0, 3, 1, 1, 1, 1, 1, 0, 1
++	V4L2_PIX_FMT_FWHT_STATELESS, 0, 4, 1, 1, 1, 1, 1, 0, 1
+ };
  
--	cancel_delayed_work_sync(&amt->req_wq);
--	cancel_delayed_work_sync(&amt->discovery_wq);
-+	disable_delayed_work_sync(&amt->req_wq);
-+	disable_delayed_work_sync(&amt->discovery_wq);
- 	cancel_delayed_work_sync(&amt->secret_wq);
- 
- 	/* shutdown */
-@@ -3278,6 +3284,8 @@ static int amt_newlink(struct net_device *dev,
- 	INIT_DELAYED_WORK(&amt->req_wq, amt_req_work);
- 	INIT_DELAYED_WORK(&amt->secret_wq, amt_secret_work);
- 	INIT_WORK(&amt->event_wq, amt_event_work);
-+	disable_delayed_work(&amt->req_wq);
-+	disable_delayed_work(&amt->discovery_wq);
- 	INIT_LIST_HEAD(&amt->tunnel_list);
- 	return 0;
- err:
+ static void vicodec_dev_release(struct device *dev)
+
+---
+base-commit: 9716c086c8e8b141d35aa61f2e96a2e83de212a7
+change-id: 20260714-fixes-aa8cf63bfd95
+
+Best regards,
 -- 
-2.43.0
+Junrui Luo <moonafterrain@outlook.com>
 
 
