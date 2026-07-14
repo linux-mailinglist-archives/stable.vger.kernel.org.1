@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-274601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274603-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id K+6mHnrHVmpzBAEAu9opvQ
-	(envelope-from <stable+bounces-274601-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 01:34:18 +0200
+	id TpebD3jHVmpyBAEAu9opvQ
+	(envelope-from <stable+bounces-274603-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 01:34:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76552759740
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 01:34:17 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2045759739
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 01:34:15 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fxL4a3Fy;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274601-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-274601-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gTTBQ1e4;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274603-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-274603-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7C0B4300F7BD
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 23:34:14 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1776D3029CF0
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 23:34:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18694379EEF;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B184C41D640;
 	Tue, 14 Jul 2026 23:34:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0AD4369D51
-	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 23:34:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BD2737DEAD
+	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 23:34:13 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784072053; cv=none; b=g215uhTQ2RbMByWjEpHCD2tv9L9O3Xqd9fz03/5DYnUbYREGd8ymohe1TGtcZKv9MBKHWfVbMtH3TAi7hr2rJHWIwncl8Cg8jBfMVsK0UoSaGpx1I6ABVHJbg0n50zn7XEt5O6xyYaJ1V2L9S+dBw8QbImjTv1SvzzvQSwSkmf8=
+	t=1784072054; cv=none; b=tIsO7ZYajCMt54O2PhYIGIr1SMZCpEPk0b7tftmPKgZQXnAP5peh305yRc57JukQqz2npqP6Qc9b9jsOmv2ZjFV7m4jQln6hzvr1ROUAKLHMqvlXP/kl4eORiiMvi1U00Z9GyDVsOoEw0JtNdGRck/L/lZ+oUCJmXzkUmRq1TQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784072053; c=relaxed/simple;
-	bh=AVQSsGTOVXYYBdP0NTTa7c1URicT5uyRhsaY0aYKy/Y=;
+	s=arc-20240116; t=1784072054; c=relaxed/simple;
+	bh=Ft/EE2noUwMqo41LHFZG8y2oNsWQ0DlDXomW0doFW90=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QqZtHHu3Wc+m91btTYuEPcF4RYstw6MBOkKMhPQ6SiLeGUVdVsIuTcFmrgr6IlDmnNPF0fekjuI+arPFok8lx00mF/QYRSpRKtURrNz0WNEobGQNCrwKIU6RBTPysk0SLioY77/D+cCN06g5K5ioVnnFokE0tV7Vxvo6cLjk3XE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fxL4a3Fy; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28E2A1F00A3A;
+	 MIME-Version; b=Hw7p97x55eaHdya4usvJfEzTLd6a7Zw67Yv1g5XdmYnOfhhsymQzpv68Uy3120q7e/Cud1K0v46sp1fVJVoba6ypvIrPx1+I93T98cJugLUlmIcgpxO2OAp+zJMbvbCFAj/VbjnXKAT8kgUhqR9mc7x+KHR2jf3osEVkeG/BEYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gTTBQ1e4; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D80B31F00A3F;
 	Tue, 14 Jul 2026 23:34:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784072052;
-	bh=7k6tBgG+hNYX3Z5EWQ8S9CWN7Pz3aCm+g9OfMhXpVcY=;
+	s=k20260515; t=1784072053;
+	bh=jHS0mA3TcaXaAi9qV0QBH0CvhDworYXHqOGXny3m8Vc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fxL4a3FyTxpV2v5BoRakCHjD0IEWjE/oNB9IVwquw4KyuVXGaGdc8vl43BFX2Oy+8
-	 a+lX74AUVbCaWB/IRJ30KKVpI0fpxeklm6vruyJqOBb+vLNTUlDGrs3ULYIyAX5pSK
-	 5EwkIvEYDXCs7ywfscPlRK8NNFlRjhEQ6k3JEOMra6OeTRqDdR+hMB80++zw/O04mt
-	 9E1roI4wVoDb52wgWHYKXxlRujxASkTzXoizsJJZVts/gi+aKGELae0ngTJcxfxByP
-	 /UtUIOU04p6Yv4+KYIY8N2hvWWwdyaivuA+m8ObwYtz4mOGLeMfSBxv2y23F6oKK7u
-	 Sr+sL0wPONZgA==
+	b=gTTBQ1e4ZHBtoF4L74P5Dp3wWhHrq9u2tyCg6Jbegyd92qq2clRhMHHkjfHtU8zgp
+	 WOlqS7A1LOR/hy8uXCbcpl50G3lgSvOfYXsN8ShFEPg+d1Ywh6mIvdHZWdEIk0BNW9
+	 ZwR6ilJFS0jQB1n8Px6DD9gbv6IkxQy0oGTt3DK6sswxkdNt/XNKqaMhGVo4a29tiQ
+	 MWth2in/DHvA8Ut6gSnGpJVFqe6kNM6gFVZs0dN4cqqbnXhC0lN39R/mK7qSfi018n
+	 UmBmfaN07Gkt/cy51rEXK89Wl6pvpbYplxg+nIknwjXh7fXEmNrTCvblNDvzuHu3ot
+	 TrtPTTniMSUXw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Fabio Aiuto <fabioaiuto83@gmail.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y 5/8] staging: rtl8723bs: remove 5Ghz code blocks
-Date: Tue, 14 Jul 2026 19:34:04 -0400
-Message-ID: <20260714233407.3591885-5-sashal@kernel.org>
+Subject: [PATCH 5.10.y 6/8] staging: rtl8723bs: remove commented out condition
+Date: Tue, 14 Jul 2026 19:34:05 -0400
+Message-ID: <20260714233407.3591885-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260714233407.3591885-1-sashal@kernel.org>
 References: <2026071352-wreckage-humorless-3481@gregkh>
@@ -72,13 +72,13 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-274601-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-274603-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:fabioaiuto83@gmail.com,m:gregkh@linuxfoundation.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -97,99 +97,40 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 76552759740
+X-Rspamd-Queue-Id: C2045759739
 
 From: Fabio Aiuto <fabioaiuto83@gmail.com>
 
-[ Upstream commit ddd7c8b0033ba01a0ee605697f12a33fd31e6fca ]
+[ Upstream commit 2a62ff13132a22a754d042b2230117bbea0af477 ]
 
-remove 5 Ghz code blocks, related to networks
-working over channel numbers above 14.
+remove commented out condition checking channel > 14.
 
 Signed-off-by: Fabio Aiuto <fabioaiuto83@gmail.com>
-Link: https://lore.kernel.org/r/c64443b92ce1a60f568db153842a62e3244a8c3a.1626874164.git.fabioaiuto83@gmail.com
+Link: https://lore.kernel.org/r/83762719c0c13ac8b78612a32db26e691eef17d1.1626874164.git.fabioaiuto83@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Stable-dep-of: a1fc19d61f66 ("staging: rtl8723bs: fix WEP length underflow and OOB read in OnAuth()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/rtl8723bs/core/rtw_mlme_ext.c |  7 ++-----
- .../staging/rtl8723bs/os_dep/ioctl_linux.c    | 20 +++----------------
- 2 files changed, 5 insertions(+), 22 deletions(-)
+ drivers/staging/rtl8723bs/os_dep/ioctl_linux.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c b/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
-index db5abaafa91a2f..2742c7da75a6cd 100644
---- a/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
-+++ b/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
-@@ -4116,7 +4116,7 @@ static void issue_action_BSSCoexistPacket(struct adapter *padapter)
- 			p = rtw_get_ie(pbss_network->IEs + _FIXED_IE_LENGTH_, _HT_CAPABILITY_IE_, &len, pbss_network->IELength - _FIXED_IE_LENGTH_);
- 			if ((p == NULL) || (len == 0)) {/* non-HT */
- 
--				if ((pbss_network->Configuration.DSConfig <= 0) || (pbss_network->Configuration.DSConfig > 14))
-+				if (pbss_network->Configuration.DSConfig <= 0)
- 					continue;
- 
- 				ICS[0][pbss_network->Configuration.DSConfig] = 1;
-@@ -6118,10 +6118,7 @@ u8 join_cmd_hdl(struct adapter *padapter, u8 *pbuf)
- 			{
- 				struct HT_info_element *pht_info = (struct HT_info_element *)(pIE->data);
- 
--				if (pnetwork->Configuration.DSConfig > 14) {
--					if ((pregpriv->bw_mode >> 4) > CHANNEL_WIDTH_20)
--						cbw40_enable = 1;
--				} else {
-+				if (pnetwork->Configuration.DSConfig <= 14) {
- 					if ((pregpriv->bw_mode & 0x0f) > CHANNEL_WIDTH_20)
- 						cbw40_enable = 1;
- 				}
 diff --git a/drivers/staging/rtl8723bs/os_dep/ioctl_linux.c b/drivers/staging/rtl8723bs/os_dep/ioctl_linux.c
-index fa167c68d9b5cc..e9d006cdcde7ed 100644
+index e9d006cdcde7ed..f7908b6ba16e18 100644
 --- a/drivers/staging/rtl8723bs/os_dep/ioctl_linux.c
 +++ b/drivers/staging/rtl8723bs/os_dep/ioctl_linux.c
-@@ -135,14 +135,7 @@ static char *translate_scan(struct adapter *padapter,
- 		else
- 			snprintf(iwe.u.name, IFNAMSIZ, "IEEE 802.11bg");
- 	} else {
--		if (pnetwork->network.Configuration.DSConfig > 14) {
--			if (vht_cap)
--				snprintf(iwe.u.name, IFNAMSIZ, "IEEE 802.11AC");
--			else if (ht_cap)
--				snprintf(iwe.u.name, IFNAMSIZ, "IEEE 802.11an");
--			else
--				snprintf(iwe.u.name, IFNAMSIZ, "IEEE 802.11a");
--		} else {
-+		if (pnetwork->network.Configuration.DSConfig <= 14) {
- 			if (ht_cap)
- 				snprintf(iwe.u.name, IFNAMSIZ, "IEEE 802.11gn");
- 			else
-@@ -762,7 +755,7 @@ static int rtw_wx_get_name(struct net_device *dev,
- 	struct adapter *padapter = (struct adapter *)rtw_netdev_priv(dev);
- 	u32 ht_ielen = 0;
- 	char *p;
--	u8 ht_cap = false, vht_cap = false;
-+	u8 ht_cap = false;
- 	struct	mlme_priv *pmlmepriv = &(padapter->mlmepriv);
- 	struct wlan_bssid_ex  *pcur_bss = &pmlmepriv->cur_network.network;
- 	NDIS_802_11_RATES_EX* prates = NULL;
-@@ -788,14 +781,7 @@ static int rtw_wx_get_name(struct net_device *dev,
- 			else
- 				snprintf(wrqu->name, IFNAMSIZ, "IEEE 802.11bg");
- 		} else {
--			if (pcur_bss->Configuration.DSConfig > 14) {
--				if (vht_cap)
--					snprintf(wrqu->name, IFNAMSIZ, "IEEE 802.11AC");
--				else if (ht_cap)
--					snprintf(wrqu->name, IFNAMSIZ, "IEEE 802.11an");
--				else
--					snprintf(wrqu->name, IFNAMSIZ, "IEEE 802.11a");
--			} else {
-+			if (pcur_bss->Configuration.DSConfig <= 14) {
- 				if (ht_cap)
- 					snprintf(wrqu->name, IFNAMSIZ, "IEEE 802.11gn");
- 				else
+@@ -165,7 +165,7 @@ static char *translate_scan(struct adapter *padapter,
+ 		start = iwe_stream_add_event(info, start, stop, &iwe, IW_EV_UINT_LEN);
+ 	}
+ 
+-	if (pnetwork->network.Configuration.DSConfig < 1 /*|| pnetwork->network.Configuration.DSConfig > 14*/)
++	if (pnetwork->network.Configuration.DSConfig < 1)
+ 		pnetwork->network.Configuration.DSConfig = 1;
+ 
+ 	 /* Add frequency/channel */
 -- 
 2.53.0
 
