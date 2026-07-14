@@ -1,150 +1,210 @@
-Return-Path: <stable+bounces-274563-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274203-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id W76iNUSpVmp0/wAAu9opvQ
-	(envelope-from <stable+bounces-274563-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 23:25:24 +0200
+	id 1sBqMC0gVmoMzgAAu9opvQ
+	(envelope-from <stable+bounces-274203-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 13:40:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47B74758F7D
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 23:25:24 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CE87753F89
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 13:40:29 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="e600/Odh";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274563-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-274563-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=invisiblethingslab.com header.s=fm2 header.b=DIdZ3qJD;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=Z1xmThv1;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274203-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-274203-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=invisiblethingslab.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D3B70307B5EF
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 21:24:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D5E543123137
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 11:37:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2391B429CD1;
-	Tue, 14 Jul 2026 21:24:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CCE3370AC8;
+	Tue, 14 Jul 2026 11:37:03 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from fout-b1-smtp.messagingengine.com (fout-b1-smtp.messagingengine.com [202.12.124.144])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF05A429CF1;
-	Tue, 14 Jul 2026 21:24:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C10B37A83B;
+	Tue, 14 Jul 2026 11:37:01 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784064262; cv=none; b=A39y507o5Xp2La5FeeRrtEaNuGVAgzCUeNEEb+f+b2BtoWayEHvV+3Ch8ZPaS8LU930KAYN0348vdQenF3axWAcjClOQt9LyxCGYWIag0vo2pL+FUjQSJXKeDLF2dSRimCNDcQB9R1ceVd/3z+fbneiLxzbWWbHo5z/FdDI+mFo=
+	t=1784029023; cv=none; b=SJYiQnXJIsFdHjJwWd5l6R9oMRNuPD7EiovdEs7xm/jGn2Tn6ePjC11yQ0Vou2VMhDoFA0B3Bd4v8HQsTzwtRWKTb1suwS7gMebBLx7320qUiifY9sVcymi8goBUilXjjTa3QIcBnM+UOeQ4zFGC+WuehEFCA1bw1IjBvZ8+dxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784064262; c=relaxed/simple;
-	bh=IRprx/zzLM/no5bP7A6ObVlOXgMiMLel+tX+I4fc2zQ=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=Nm7nRn/lOCwdP3PhQNDoojYTj5jOU/AeLLYGiOsxv5E9zqheVIEdgwn5JEJsT6LJ03eGIHTrgbNWvf+elJtIh+otfVBidb2Dm1CbY5vCLu+Ew/8//71ZYxepwUlGMh8uj5h6dzZkc1uTZpgrZEHRDrGvCMotK+YcyVJRBJVuUok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e600/Odh; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C14E01F000E9;
-	Tue, 14 Jul 2026 21:24:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784064261;
-	bh=Mdxkfcw31jNebgrllO6zd2ynWr48DmtMYl0qIDCd0Hk=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=e600/Odhq63GMHvFjmw0+5G4BhJlWd6PeGkcSEoRf9ArHi5HvBqZeizypQH2hHuIF
-	 NeaBsAaOjDageEnHfGnyy2/oeZaeYlzASZVir9tn4kbnXq3Z3unka0BwuyvUISFf+h
-	 86tioRwUYrmzo/EDWQLigdsT0CFwZXXCx0B4Yoe7I22p8LBLc+MDb/WHZKjyHfE/9v
-	 1vFXfwEUjs85y1qDiIpjwE/HNYqCCw+qF+yvzYl0FuJ9q932RhdjzX7GWAfEK0nC+a
-	 iB5yDP5JaYGFMwh57xEP+uHYQp9fcAqi5P0+PJU3mSa5byjoZ0G9BdzOMkdbzN/dzL
-	 nVW8uvAxrZaqA==
-From: Mark Brown <broonie@kernel.org>
-To: Jorijn van der Graaf <jorijnvdgraaf@catcrafts.net>
-Cc: Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, 
- Takashi Iwai <tiwai@suse.com>, Weidong Wang <wangweidong.a@awinic.com>, 
- Val Packett <val@packett.cool>, Luca Weiss <luca.weiss@fairphone.com>, 
- stable@vger.kernel.org, linux-sound@vger.kernel.org, 
- linux-kernel@vger.kernel.org
-In-Reply-To: <20260704192857.88366-1-jorijnvdgraaf@catcrafts.net>
-References: <20260704192857.88366-1-jorijnvdgraaf@catcrafts.net>
-Subject: Re: [PATCH] ASoC: codecs: aw88261: only check PLL and clock state
- at power-up
-Message-Id: <178402818271.7661.46768093185969066.b4-ty@b4>
-Date: Tue, 14 Jul 2026 12:23:02 +0100
+	s=arc-20240116; t=1784029023; c=relaxed/simple;
+	bh=Lax5sUFt9NAgHbmoQttxXe++JwXDaNdCauF7ZsFnOQg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KkHqOKXbVXRbSnWkVPQ5I7B/M7kgCxgJqoQYWXRxz6Jdd8+FER0poZpnXJvHrSpAsQ4QD1mcAe2KNwMlDQbwdmlds2PV52XGoTYX9uHinMmZjZe7z2P0Cdy6+K+S7SeovhvnT0dUtnAuva1/cm3O8WiHf3u05LxX55qfOVX1VBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=invisiblethingslab.com; spf=pass smtp.mailfrom=invisiblethingslab.com; dkim=pass (2048-bit key) header.d=invisiblethingslab.com header.i=@invisiblethingslab.com header.b=DIdZ3qJD; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Z1xmThv1; arc=none smtp.client-ip=202.12.124.144
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfout.stl.internal (Postfix) with ESMTP id 1D8331D00169;
+	Tue, 14 Jul 2026 07:37:00 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Tue, 14 Jul 2026 07:37:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	invisiblethingslab.com; h=cc:cc:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1784029019;
+	 x=1784115419; bh=7RbE0Nv3PqcWEvg1NZK6t1ZxnUn6Kyl+33LgQxDmYXI=; b=
+	DIdZ3qJDNjFfCq4vVsWQ87xJiw3qZ5c7YL3vGL4qywkWZjEIN7uYZaZPgR1g5kWK
+	zCwiJGs2kcDMs+kKUnEnt5+l4ZAYNe6+ixyMRLMvh/j35WEBZlh6nkyWov9CcQl9
+	iFO4asR5sMES6GvXJHll6mWHJLZEyXfus6rkbxbjm/Rq1ZFRX75Tzef5cZ3Ydlyz
+	CMjjUmWYkaX9K3qC6XknGqMr4hVpQEu6L8djFyjbR/Q9cX9Iau8UDzdFVBYEdSFC
+	MkomefYe7mDOxVsoHS9jwp37FYFsLvuPPrmx7TgHeX9lKGcB5KmSlJ2RA+pBdmTa
+	Yxk+oL0dQ/udPcMqbBWYhg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1784029019; x=1784115419; bh=7RbE0Nv3PqcWEvg1NZK6t1ZxnUn6Kyl+33L
+	gQxDmYXI=; b=Z1xmThv1CYV1tNrSnZEi0QiOlbH+i7cdpdojeV31lnk0o8tWWgw
+	VuCcKnbphyhooTP1ke5JtxtCykYynYAgZDt2v5Oc/fZsNT25N1pLzjkMY1ZyPA8Q
+	mOXHggO+0G8d3chlmhbJgfemnWyoUKTw9Jg9ZA/G1Ztmxj/iRDgGxwaBxSTLnAUT
+	UmYFpbQ+DyTebINyw60T56YoaByJwORTvC3ybWlGQkShD58rHzK7Bryu8r8wG4cd
+	KT9yICHSimzQ22YJ5mi3wuhccZ2n4nvoP5nBtEzgwSEu61B1oiGawwb9YAncUDUk
+	05iz8nn//Dw7ZjraRfvZ9d+7Echhjez4JzQ==
+X-ME-Sender: <xms:Wx9WauHLaHt_gupfLLE40lPICHUHoourcg8bHJ6R1w-k8ZB3RzE7fw>
+    <xme:Wx9WavC2sU3qmnjz5XAdxkTFVgvmMnj-Em4YnBO3nV-C8CO0HLooevmK0eEOUtI-V
+    PibthgL5grIeVdpTGDagMwFyWkNozDfvtahLCl1sf2ezE6r>
+X-ME-Received: <xmr:Wx9WajwKv-bobG9As7YjRNvisWNxEcTNwnVpKSlIXLNW6jQrCrpKxDO9gVtsMTzeHFtlhSaKWYGS7EY4FrIuf-h_mCsJAtPrZUE>
+X-ME-Proxy-Cause: dmFkZTEFCIzIQMCd2MkWM2GVRPXPZcLLdFwqIvCqn7GNb/FgdSTRcwIq2bs70YB4KkszA0
+    2Uu3wp1FwQ9/V4n2J5vOU4vaQRgdzlHw0yPwcCuCso7VIxmXCWYu8IUyjRtDnMApMYk63Q
+    8YAp2R6L/gdWyVzjJB87R229XAVEhDPaYGFpcWlQAY4dDV31/3M34n7UFcBai4hWiu/l76
+    kgXWXllMALS0ldoYIP/4pPVV6OAtxoGSSxcgVBT79/xhnOGimo4VmNFxG8cGmqmy6BJYYt
+    cpa0mAteMx2JSNzl8dQSJVHtsmy/mpEFdof5T3KEXOGFqfC6F1gRed+oxwEL3Ys64vPppm
+    IEgImoAdzdXUaJGEhUB8BBAixpojp7+95yQn1EnMWiQVVtkqNA+YQsajUpPkfAazrpFKUs
+    Ax38yXkVmSI/xr2lCJ4OQnKslwH0zeLS0wNN5UZxT1ExwypRmjKdf8Rz4FVvv/RVxoekI9
+    M8Y3Sdt1btLcUD3dmPWYSWxLvIpOe8hvsyPdBQLWEgUkhC5RYQ3/CbYW/allvTEPNUgywj
+    IEhCg+ViWQhF6EhvLi9xgc5hqyVQsCgoEmDao6ceqs3QfuiRdJHbI3vZPXP3LwFfisEczt
+    oMNSe68bgBKoH379/ecqFep3N7MwTcJu0IioGwoEwcB59EnXNjrYBSJANnKg
+X-ME-Proxy: <xmx:Wx9Waj6HJ1HZy5pwxQMmH2l_QJSPJlgFBfNW-CIsuFaA-ZuaGhyMlw>
+    <xmx:Wx9WakwcY3m5WIs76-FAIFGMVngiHN81kPKXOj8-RufKbZ5tvNLbVg>
+    <xmx:Wx9WandveogwV-gWTqPYujKe2VvHtfP3RdF1wvcvqBjOQ_ycW5lAKA>
+    <xmx:Wx9WapDKK83ncNPhj7-FAJLXBG9TPlkhPdMcFKoG_02C97GSFFWnXw>
+    <xmx:Wx9WarWWotNXlr6sYu6OniZPRL6HhYOWATfOo8neVOEkPT05SnvjLu8m>
+Feedback-ID: i1568416f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 14 Jul 2026 07:36:57 -0400 (EDT)
+Date: Tue, 14 Jul 2026 13:36:55 +0200
+From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
+To: Keith Busch <kbusch@kernel.org>
+Cc: Roger Pau Monne <roger.pau@citrix.com>, xen-devel@lists.xenproject.org,
+	Jens Axboe <axboe@kernel.dk>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	linux-nvme@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Christoph Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] nvme-pci: fix parameter order in nvme_free_sgls() call
+Message-ID: <alYfV2l-7p4Y3eX-@mail-itl>
+References: <20260127195907.34563-1-roger.pau@citrix.com>
+ <aXokOX20HMD0E_PM@kbusch-mbp>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1156; i=broonie@kernel.org;
- h=from:subject:message-id; bh=IRprx/zzLM/no5bP7A6ObVlOXgMiMLel+tX+I4fc2zQ=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqVqkCOsIOa5N8rD9k9NiVyBNvXbsYJRdRYJqzv
- z1SfSWy76mJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCalapAgAKCRAk1otyXVSH
- 0IH7B/96DvSreSns/50bFZovlLSJe0kBuQCnw+AJcP7sb2+CTY/HpB2fWSWhmNO0j9zQmdWunK7
- Cav+wGGxm4zpTrd9GJlJghRp+RBCD5HYsXqvdKhB5SbwEXvwwf6LYEmmVQk3bL9eUdiTOC+FUYl
- Rh5R7BCny2muiROJnr4aRYWLFBdJFotaALi3h/5WXjaF3NBdVyDVhOZWDv1ODX9/QNkjzqayeZ7
- WdkZnUlOSsMYsDZoN0Jof2D7KwVnrfEvThklagHDC7Y5hqWFA5dPf63Lre15K0kXYswDdvY62jS
- CrzP3br17VnMYzYeELSdAuIM7em9bXSfDlK2dV/F9MHUHJIB
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="G/yGk+MB9HjdayeF"
+Content-Disposition: inline
+In-Reply-To: <aXokOX20HMD0E_PM@kbusch-mbp>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-3.76 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[invisiblethingslab.com,none];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_DKIM_ALLOW(-0.20)[invisiblethingslab.com:s=fm2,messagingengine.com:s=fm2];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-274203-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-274563-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[broonie@kernel.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:jorijnvdgraaf@catcrafts.net,m:lgirdwood@gmail.com,m:perex@perex.cz,m:tiwai@suse.com,m:wangweidong.a@awinic.com,m:val@packett.cool,m:luca.weiss@fairphone.com,m:stable@vger.kernel.org,m:linux-sound@vger.kernel.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:kbusch@kernel.org,m:roger.pau@citrix.com,m:xen-devel@lists.xenproject.org,m:axboe@kernel.dk,m:martin.petersen@oracle.com,m:linux-nvme@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:hch@lst.de,m:sagi@grimberg.me,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[marmarek@invisiblethingslab.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	DKIM_TRACE(0.00)[invisiblethingslab.com:+,messagingengine.com:+];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,perex.cz,suse.com,awinic.com,packett.cool,fairphone.com,vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[marmarek@invisiblethingslab.com,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,messagingengine.com:dkim,mail-itl:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 47B74758F7D
+X-Rspamd-Queue-Id: 1CE87753F89
 
-On Sat, 04 Jul 2026 21:28:57 +0200, Jorijn van der Graaf wrote:
-> ASoC: codecs: aw88261: only check PLL and clock state at power-up
 
-Applied to
+--G/yGk+MB9HjdayeF
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 14 Jul 2026 13:36:55 +0200
+From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
+To: Keith Busch <kbusch@kernel.org>
+Cc: Roger Pau Monne <roger.pau@citrix.com>, xen-devel@lists.xenproject.org,
+	Jens Axboe <axboe@kernel.dk>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	linux-nvme@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Christoph Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] nvme-pci: fix parameter order in nvme_free_sgls() call
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-7.3
+On Wed, Jan 28, 2026 at 07:59:05AM -0700, Keith Busch wrote:
+> On Tue, Jan 27, 2026 at 08:59:06PM +0100, Roger Pau Monne wrote:
+> > The call to nvme_free_sgls() in nvme_unmap_data() has the sg_list and s=
+ge
+> > parameters swapped.  This wasn't noticed by the compiler because both s=
+hare
+> > the same type.  On a Xen PV hardware domain, and possibly any other
+> > architectures that takes that path, this leads to corruption of the NVMe
+> > contents.
 
-Thanks!
+On Wed, Jan 28, 2026 at 09:49:58AM +0100, Christoph Hellwig wrote:
+> Reviewed-by: Christoph Hellwig <hch@lst.de>
+>=20
+> but maybe we can reword the subject to sound less harmless, e.g.:
+>=20
+> nvme-pci: DMA unmap the correct regions in nvme_free_sgls
 
-[1/1] ASoC: codecs: aw88261: only check PLL and clock state at power-up
-      https://git.kernel.org/broonie/sound/c/06b6f1245567
+On Wed, Jan 28, 2026 at 07:59:05AM -0700, Keith Busch wrote:
+> Thanks, applied to nvme-6.19 with updated subject.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+Hi,
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+I think this wants to be included in v6.18 too, as it also has the
+faulty commit. And indeed, I do hit this issue when running 6.18.38.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+--=20
+Best Regards,
+Marek Marczykowski-G=C3=B3recki
+Invisible Things Lab
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+--G/yGk+MB9HjdayeF
+Content-Type: application/pgp-signature; name=signature.asc
 
-Thanks,
-Mark
+-----BEGIN PGP SIGNATURE-----
 
+iQEzBAEBCAAdFiEEhrpukzGPukRmQqkK24/THMrX1ywFAmpWH1cACgkQ24/THMrX
+1yyenAf9FWpkwva0hdfgfqEDIy6a/Hgllhx36/HeJWibLzeDbTJFYpwU8I+qDTRh
+fFCn1CT9lYNxu4O0IFtCTBiktCI/J7aFuZXIvFak2viOU9Jc06fYF5q+dEgwnZm2
+m/glL8tOsJDW9TCtxqzvn5Zvjb7eGZCqKZeQFQmlcDWgTsXLssyoTrYJBoK3EyKV
+XqJooQme6+zH6s6S0ACyaBWq/5W6MmWsa6awJ2RlhDFOX3LgKjXY6TMAIXkCVjj5
+VHOepitO3/fFqVu2QpICN89638kG9JCZsG53x/dUSVrtdpBVZhXVYkzMTT2ViDUu
+P7FaNiGtA2F7sbx1kImZcp8q0pSQrA==
+=7k8S
+-----END PGP SIGNATURE-----
+
+--G/yGk+MB9HjdayeF--
 
