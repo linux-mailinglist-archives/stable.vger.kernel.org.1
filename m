@@ -1,140 +1,205 @@
-Return-Path: <stable+bounces-274161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274166-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 6FgfHQvaVWppuQAAu9opvQ
-	(envelope-from <stable+bounces-274161-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 08:41:15 +0200
+	id AodbH+LeVWp4ugAAu9opvQ
+	(envelope-from <stable+bounces-274166-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 09:01:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B985C751947
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 08:41:14 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1548B751B6A
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 09:01:54 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=pd9eBGIO;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274161-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-274161-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=linux.dev;
+	dkim=pass header.d=dev.tdt.de header.s=z1-selector1 header.b=Jn0pA1Tj;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274166-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-274166-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=tdt.de;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7EBD7302351E
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 06:41:13 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 852E2301C2FF
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 07:01:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CEB63DB310;
-	Tue, 14 Jul 2026 06:41:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52B5A2D7DEA;
+	Tue, 14 Jul 2026 07:01:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
+Received: from mxout70.expurgate.net (mxout70.expurgate.net [194.37.255.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F299DF76
-	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 06:41:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76156188CC9
+	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 07:01:50 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784011272; cv=none; b=XWfRQw+iG4S0tzMGIiHWNnw42coij1SYXu8gjFCn97WRPN5Uiqabo6eGuJMqHtdfj+4lmUG9QnOvLEJPb4tWc678WchNR0zX3HfnQogv4eR8vTU9kQFcGxfqocjzFcemnPeL37vt52AofPL59xgM2gnCUq2FnMMj2fJe+IiFVwQ=
+	t=1784012512; cv=none; b=onLhA5QBV3u5gwCrsHS7Gi+kFTZ141wOqrbZc1NWWZBAcI+NJBngQhMiHl2YRKOOrY7E3Rmid6V7lTIdW3RVRF3iAf0/FlYQhhdVT+JBJa+qM3DFq06sVrCiEYFmxMD+xtuJT0gmFZZrwDXjtxRo4d8bKDjt4WLH8MTv7vzMXMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784011272; c=relaxed/simple;
-	bh=6lyQRXk18+WT1H4J1CXUAaPIS2gpTnwnEN3m9wrS7yA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gpFlLuQS+G3TTWQXIosiVQlLfjlUSNxJ7Kh62QjSCS1mjFZIhv9d7OVSDeMw015bJ9Rj7/m5z/Dj7liKorFadSkI7tbrL1C3x5cAEhp709eLNRwZQqzyAVWTM9kQP+OkJhgWNS36D7aVwkXCd+X1Uio2crQC7zsRGXbibYlhnC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=pd9eBGIO; arc=none smtp.client-ip=91.218.175.171
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784011269;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=9x4DvNuH+C01RfbWzeGiOhrWxg912eJrBFFwtdhEQP8=;
-	b=pd9eBGIOrIfwNQ6qzTN6LRyVyiIqOBiW8O3vTY2F64eYmxRBU7Ayr/UIFH11UL2NzRrPVc
-	KdX49WQjcJHPPKxSlraoRAqBegvJ/+cXgZNWDQf9bfVBYAaMLEuRUiJOs4RDyGIZVlQ79J
-	aZQQH+6f+AoBUq50qOcJS+e1taCGKIw=
-From: xuanqiang.luo@linux.dev
-To: intel-wired-lan@lists.osuosl.org
-Cc: anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	andrew+netdev@lunn.ch,
-	sridhar.samudrala@intel.com,
-	wojciech.drewek@intel.com,
-	piotr.raczynski@intel.com,
-	michal.swiatkowski@linux.intel.com,
-	jacob.e.keller@intel.com,
-	netdev@vger.kernel.org,
-	Xuanqiang Luo <luoxuanqiang@kylinos.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH iwl-net v1] ice: fix use-after-free in dynamic port cleanup
-Date: Tue, 14 Jul 2026 14:39:37 +0800
-Message-ID: <20260714063937.26325-1-xuanqiang.luo@linux.dev>
+	s=arc-20240116; t=1784012512; c=relaxed/simple;
+	bh=zVnAuZM1PRfdy0pGXtTvFM4MDopGC1hC9yIlERUSSng=;
+	h=MIME-Version:Content-Type:Date:From:To:Cc:Subject:In-Reply-To:
+	 References:Message-ID; b=pPL3RXN0EfcNJ5+cBWoNcgJmCrI30wQ0mb25jl9iNgKCjX9iNTmUuaoTE9iIryrNKt+jFRLJ+j56eD5BWJAzWpiQKZD6KhF1J6CCBDCgcpA1x6NUvhT0YHxQdB2cgYz+UlOx1Iu5D0R7kYeXjRIhgz+yKCRe1jn8gEb3XzdXOYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dev.tdt.de; spf=pass smtp.mailfrom=dev.tdt.de; dkim=temperror (0-bit key) header.d=dev.tdt.de header.i=@dev.tdt.de header.b=Jn0pA1Tj; arc=none smtp.client-ip=194.37.255.70
+Received: from [194.37.255.9] (helo=mxout.expurgate.net)
+	by relay.expurgate.net with smtp (Exim 4.92)
+	(envelope-from <prvs=066936b52f=ms@dev.tdt.de>)
+	id 1wjWqT-004xfD-1f
+	for stable@vger.kernel.org; Tue, 14 Jul 2026 08:42:21 +0200
+Received: from [195.243.126.94] (helo=securemail.tdt.de)
+	by relay.expurgate.net with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ms@dev.tdt.de>)
+	id 1wjWqS-00Ck1o-Jn
+	for stable@vger.kernel.org; Tue, 14 Jul 2026 08:42:20 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dev.tdt.de;
+	s=z1-selector1; t=1784011340;
+	bh=Xhw+E4apzU4E80VvO8VsFNLqRNDi7Wh1FuGkAZEljOU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Jn0pA1Tjq+zoMDUnnBwc42OXx+70oXQpL2IY5/60+3kl2l7ew1krJx30pwl0Vf7VH
+	 SJ+kjxN6yNj9G+r92BsnZFkmtaSEsqDzcMc8X5vWBo5X+pO0WXWSLb+n6me8aImDIq
+	 KbOgOgaEdCom8zPLIw96vAiXhnWHdgnFNQ/xf76Ihz5lsAULpl0423wCav03dkwemg
+	 yqaUg8bA68ZAz2pJh7allekSPQ41uC8YUidaSC0qkfef2sM7KRWPqFU0mj8gLhf7TR
+	 Z5EDLyOOE7nr9Z1FzAXhga2G0DqjE/4rUWlMXSGZSdkIdfDpuM4+JHUxrefIl4rCn/
+	 3M0HsRoMKrlvg==
+Received: from securemail.tdt.de (localhost [127.0.0.1])
+	by securemail.tdt.de (Postfix) with ESMTP id 3444E240041
+	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 08:42:20 +0200 (CEST)
+Received: from mail.dev.tdt.de (unknown [10.2.4.42])
+	by securemail.tdt.de (Postfix) with ESMTP id 22065240036;
+	Tue, 14 Jul 2026 08:42:20 +0200 (CEST)
+Received: from mail.dev.tdt.de (localhost [IPv6:::1])
+	by mail.dev.tdt.de (Postfix) with ESMTP id C06D026B94;
+	Tue, 14 Jul 2026 08:42:19 +0200 (CEST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date: Tue, 14 Jul 2026 08:42:19 +0200 (CEST)
+From: Martin Schiller <ms@dev.tdt.de>
+To: David Lee <david.lee@trailofbits.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+	Dominik 'Disconnect3d' Czarnota <dominik.czarnota@trailofbits.com>,
+	linux-x25@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net] net/x25: fix use-after-free in x25_kill_by_neigh()
+Organization: TDT AG
+In-Reply-To: <20260713104752.241175-1-david.lee@trailofbits.com>
+References: <20260713104752.241175-1-david.lee@trailofbits.com>
+Message-ID: <aa5405c3a539422e79ae24bc2e41e6f1@dev.tdt.de>
+X-Sender: ms@dev.tdt.de
+User-Agent: Roundcube Webmail/1.3.17
+X-purgate-ID: 151534::1784011341-F3F57A6E-F624AD0C/0/0
+X-purgate-type: clean
+X-purgate: clean
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[tdt.de,none];
+	R_DKIM_ALLOW(-0.20)[dev.tdt.de:s=z1-selector1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_FROM(0.00)[bounces-274161-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-274166-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:david.lee@trailofbits.com,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:dominik.czarnota@trailofbits.com,m:linux-x25@vger.kernel.org,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,trailofbits.com:email,dev.tdt.de:from_mime,dev.tdt.de:dkim,dev.tdt.de:mid,tdt.de:email];
+	HAS_ORG_HEADER(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER(0.00)[ms@dev.tdt.de,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:intel-wired-lan@lists.osuosl.org,m:anthony.l.nguyen@intel.com,m:przemyslaw.kitszel@intel.com,m:andrew+netdev@lunn.ch,m:sridhar.samudrala@intel.com,m:wojciech.drewek@intel.com,m:piotr.raczynski@intel.com,m:michal.swiatkowski@linux.intel.com,m:jacob.e.keller@intel.com,m:netdev@vger.kernel.org,m:luoxuanqiang@kylinos.cn,m:stable@vger.kernel.org,m:andrew@lunn.ch,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[xuanqiang.luo@linux.dev,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[xuanqiang.luo@linux.dev,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linux.dev:+];
+	DKIM_TRACE(0.00)[dev.tdt.de:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	MISSING_XM_UA(0.00)[];
-	FROM_NO_DN(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:from_mime,linux.dev:dkim,linux.dev:mid,kylinos.cn:email]
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ms@dev.tdt.de,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_SEVEN(0.00)[8]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B985C751947
+X-Rspamd-Queue-Id: 1548B751B6A
 
-From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+On 2026-07-13 12:47, David Lee wrote:
+> x25_kill_by_neigh() walks the global X.25 socket list looking for 
+> sockets
+> attached to a terminating neighbour. x25_list_lock protects list 
+> membership
+> while the lookup is in progress, but it does not pin a socket's 
+> lifetime
+> after the lock is dropped.
+> 
+> The function currently drops x25_list_lock before calling lock_sock(s). 
+> A
+> concurrent close can run x25_release(), remove the same socket from
+> x25_list, and drop the last socket reference in that window. The 
+> neighbour
+> teardown path can then lock or inspect a freed struct sock/struct 
+> x25_sock.
+> 
+> Take sock_hold(s) while x25_list_lock still proves that the list entry 
+> is
+> live, then drop the temporary reference after the socket has been 
+> locked,
+> rechecked, and released. Recheck x25_sk(s)->neighbour after 
+> lock_sock(),
+> because another path may have disconnected the socket before this path
+> acquired the socket lock. Restart the list walk after each disconnect
+> because the list lock was dropped and the previous iterator state may 
+> no
+> longer be valid.
+> 
+> A QEMU/KASAN run against origin/master reproduced a slab-use-after-free 
+> in
+> x25_kill_by_neigh().
+> 
+> Fixes: 7781607938c8 ("net/x25: Fix null-ptr-deref caused by 
+> x25_disconnect")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: David Lee <david.lee@trailofbits.com>
+> Assisted-by: Codex:gpt-5.5
+> ---
+> Trail of Bits has a reproducer that triggers kernel panic
+> demonstrating the bug, and can share it if needed.
+> 
+> net/x25/af_x25.c |    8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+> 
+> diff --git a/net/x25/af_x25.c b/net/x25/af_x25.c
+> index c31d2af5dd22..8aae9273b7c1 100644
+> --- a/net/x25/af_x25.c
+> +++ b/net/x25/af_x25.c
+> @@ -1768,15 +1768,19 @@ void x25_kill_by_neigh(struct x25_neigh *nb)
+>  {
+>  	struct sock *s;
+> 
+> +again:
+>  	write_lock_bh(&x25_list_lock);
+> 
+>  	sk_for_each(s, &x25_list) {
+>  		if (x25_sk(s)->neighbour == nb) {
+> +			sock_hold(s);
+>  			write_unlock_bh(&x25_list_lock);
+>  			lock_sock(s);
+> -			x25_disconnect(s, ENETUNREACH, 0, 0);
+> +			if (x25_sk(s)->neighbour == nb)
+> +				x25_disconnect(s, ENETUNREACH, 0, 0);
+>  			release_sock(s);
+> -			write_lock_bh(&x25_list_lock);
+> +			sock_put(s);
+> +			goto again;
+>  		}
+>  	}
+>  	write_unlock_bh(&x25_list_lock);
 
-ice_dealloc_dynamic_port() uses dyn_port->vsi->idx to erase the dynamic
-port from pf->dyn_ports. However, it frees the VSI before reading the
-index for the erase, resulting in a use-after-free.
+LGTM, Thanks.
 
-Follow the reverse of the allocation order in ice_alloc_dynamic_port()
-by erasing the xarray entry before freeing the VSI.
-
-Fixes: eda69d654c7e ("ice: add basic devlink subfunctions support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
----
- drivers/net/ethernet/intel/ice/devlink/port.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/intel/ice/devlink/port.c b/drivers/net/ethernet/intel/ice/devlink/port.c
-index 2a2e56777f9f7..3ede246490027 100644
---- a/drivers/net/ethernet/intel/ice/devlink/port.c
-+++ b/drivers/net/ethernet/intel/ice/devlink/port.c
-@@ -590,8 +590,8 @@ static void ice_dealloc_dynamic_port(struct ice_dynamic_port *dyn_port)
- 
- 	xa_erase(&pf->sf_nums, devlink_port->attrs.pci_sf.sf);
- 	ice_eswitch_detach_sf(pf, dyn_port);
--	ice_vsi_free(dyn_port->vsi);
- 	xa_erase(&pf->dyn_ports, dyn_port->vsi->idx);
-+	ice_vsi_free(dyn_port->vsi);
- 	kfree(dyn_port);
- }
- 
--- 
-2.43.0
-
+Acked-by: Martin Schiller <ms@dev.tdt.de>
 
