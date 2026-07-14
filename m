@@ -1,62 +1,64 @@
-Return-Path: <stable+bounces-274055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274062-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id K83LMO2NVWoQqAAAu9opvQ
-	(envelope-from <stable+bounces-274055-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 03:16:29 +0200
+	id H6ofL/eNVWoVqAAAu9opvQ
+	(envelope-from <stable+bounces-274062-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 03:16:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E744750084
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 03:16:29 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 947C1750099
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 03:16:39 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KpbfIjyg;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274055-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274055-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jhv9Ftz3;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274062-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274062-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CCAE9301E6F2
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 01:16:27 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D6EB2300C00E
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 01:16:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 520F726E165;
-	Tue, 14 Jul 2026 01:16:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E22CE2DFF3F;
+	Tue, 14 Jul 2026 01:16:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2D4B207DF7
-	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 01:16:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A4B6207DF7
+	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 01:16:31 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783991787; cv=none; b=AVtH1uc7/kKIgVTffPWplb2q0y4mzkqwAUxBN0N2OZ390PYtyL0Yad5hkbJqRlqOCN1kp5fBjM4mO3LX4ov9SuXUsxw6yV3Uzk/WgYztH9oQXHan7hMOzId82r2SjYHs/KlBsh83H/5r3Pw9gOpT7Yutt+WZmzNuPNru+j1/+p0=
+	t=1783991795; cv=none; b=K+3SIo5s5rhF7Vj3TNeX1qz0uFb/HRWVv7d8K4AyWXMBrCKZPAdXNs3pqUfmrKocZkiEVF+d10k92cCWgCxJLnAhGmx2iXja7tCNHJgmeCmBKN5vP31n0p2lfzlAKinOouhsp3zRgc72KTCvAGPhfKhmqvIYMudzK3Wcqantu5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783991787; c=relaxed/simple;
-	bh=kYJdSpDVluuSiI1kY6fBE6HqfZ9QWMg3/ca0fpzwthM=;
+	s=arc-20240116; t=1783991795; c=relaxed/simple;
+	bh=hC/ZcAYjOglIP8LWdPLsaGFxAecDQiyBbPgdDWRLmnM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SmZq/l0YPVhlVPc+tYyBq183WB5+bkPShsobcqC69bgYQCPLL/Lp+6yq11UVUqM0qbyIuefz/LoVwtzcp/vmqqbMEAkY2IglsSNqsjysTufGYNFou5lgnKlsreGKGRNt4c5hoebCoGgNxLXTd5hsMB/K+kEFJCOoMcba7dciauc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KpbfIjyg; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D39AE1F000E9;
-	Tue, 14 Jul 2026 01:16:24 +0000 (UTC)
+	 MIME-Version; b=ZBkTMOxuLHxu6yq/TiAtoPOxlSvl0zZs9tLc0jxAJ6XgdA1IbqpjZtKVXTcq2jrxHRjBFLAzKPaDYslrUsaVAu4HEQ9Po/mK7hSa2GlZx+ZUtFtYrtv4Iuud+/v6nTKYWRPuPbfeiluRm+9xWD7xWzN7X86zfkj8U0gXP3Lvi8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jhv9Ftz3; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 400591F00A3E;
+	Tue, 14 Jul 2026 01:16:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783991785;
-	bh=FG2wKt01GlopsdMo6f9puMQ2WJyQNxrv5n2E+auFfJg=;
+	s=k20260515; t=1783991791;
+	bh=dt3N96Eh46UHxaznyB9bfIFXwLUwv9bJry94wic35R4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KpbfIjygjKR7fYClb771Hegm78yyNnU7WsNWc6Hc4d8ukwXOLnmI6zkuwDle/6EdZ
-	 /tio6syH90UV5dNV7JDWQ5RNVOjy3lgDVW9OfGhOnfi7S3P3IUHgqITJan4fl+zTaw
-	 vr8h/4HkokbrFHj0iFAc09sBGC36jTqTFf6d54QWP1HVyfqu85fih0TG8nceZiJ4gR
-	 1cPB1WMmo/zDmLjiAmisFHCP6kUD5lt/Ajv6g0wkbTyvwPa4WI4Y8bUk5YGytu6fGT
-	 PyUJNrPyW69PzYOYCby0oh2lYAp5uDKMiGgtoZRSlf5DBg947SOj6K54xqbELPR5wG
-	 pFwi8wSS1I0pQ==
+	b=jhv9Ftz3R8Mx0QBJ7PlUPb3awaVRKundUVXp52gaNjF7TlEu/RbUETH3mL1qirswt
+	 2paPMOBF3Qzb9OLgziwkaP2u2zdxte+g+KfeTYzPeYvqYbiuyI1EYrsk20v0aJRTHn
+	 MhM4amWK1w2et7n/jeB2dIkaqeZZGRL9VrUzgqCpnDbzwpmuT4CMAhPsA7biJv/sBg
+	 eC5glwQ+yYmjLsh7dXGiHWw65oafUsvPPxZOSOMSfi6EUGpXthoe+EN/f3qCUcte6h
+	 kMrm1s/sroI2Ax5KFVkJOlfYrPww3ZZ2dX1WAzfIguDn0/x8qAYG9fPdhEfd4WTqdR
+	 sT2NEM4OjcVGw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: "Geoffrey D. Bennett" <g@b4.vu>,
-	Takashi Iwai <tiwai@suse.de>,
+Cc: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.1.y 1/2] ALSA: scarlett2: Allow selecting config_set by firmware version
+Subject: [PATCH 5.15.y 3/8] iio: make invensense timestamp module generic
 Date: Mon, 13 Jul 2026 21:16:22 -0400
-Message-ID: <20260714011623.2188610-1-sashal@kernel.org>
+Message-ID: <20260714011627.2188779-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026071349-volatile-trustable-cfdf@gregkh>
-References: <2026071349-volatile-trustable-cfdf@gregkh>
+In-Reply-To: <20260714011627.2188779-1-sashal@kernel.org>
+References: <2026071317-refill-huntress-d0e2@gregkh>
+ <20260714011627.2188779-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,375 +67,798 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-274055-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-274062-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:g@b4.vu,m:tiwai@suse.de,m:sashal@kernel.org,s:lists@lfdr.de];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:jean-baptiste.maneyrol@tdk.com,m:andy.shevchenko@gmail.com,m:Jonathan.Cameron@huawei.com,m:sashal@kernel.org,m:andyshevchenko@gmail.com,s:lists@lfdr.de];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FREEMAIL_CC(0.00)[tdk.com,gmail.com,huawei.com,kernel.org];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,suse.de:email,b4.vu:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tdk.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp,huawei.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1E744750084
+X-Rspamd-Queue-Id: 947C1750099
 
-From: "Geoffrey D. Bennett" <g@b4.vu>
+From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
 
-[ Upstream commit 732a6397a526c025cd29c3c9309b0db6a2c08837 ]
+[ Upstream commit 0ecc363ccea71eda6a2cceade120489259bcdb33 ]
 
-The Scarlett 2i2 Gen 4 firmware 2417 moved the direct monitor gain
-parameters, so we now need to allow each device to list multiple
-scarlett2_config_set entries, one per applicable firmware version
-range, and pick the matching one at probe time.
+Rename common module to inv_sensors_timestamp, add configuration
+at init (chip internal clock, acceptable jitter, ...) and update
+inv_icm42600 driver integration.
 
-No functional change yet: each device gets a single config_sets
-entry whose from_firmware_version matches the existing
-min_firmware_version (0 where none was set). This both prepares for
-selection and lets a follow-up commit remove the now-redundant
-min_firmware_version field.
-
-scarlett2_count_io() depends on the resolved config_set so it moves
-out of scarlett2_init_private() into snd_scarlett2_controls_create()
-after the firmware version has been read.
-
-Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/ae1695b4c4825f365b4c86b22174035f742807e3.1777151532.git.g@b4.vu
-Stable-dep-of: 3ca15754b561 ("ALSA: scarlett2: Update offsets for 2i2 Gen 4 firmware 2417")
+Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Link: https://lore.kernel.org/r/20230606162147.79667-4-inv.git-commit@tdk.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Stable-dep-of: affe3f077d7a ("iio: imu: inv_icm42600: fix timestamping by limiting FIFO reading")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_scarlett2.c | 143 ++++++++++++++++++++++++++++++------
- 1 file changed, 121 insertions(+), 22 deletions(-)
+ drivers/iio/common/inv_sensors/Makefile       |  2 +-
+ ...00_timestamp.c => inv_sensors_timestamp.c} | 83 ++++++++--------
+ .../iio/imu/inv_icm42600/inv_icm42600_accel.c | 32 ++++---
+ .../imu/inv_icm42600/inv_icm42600_buffer.c    | 34 +++----
+ .../iio/imu/inv_icm42600/inv_icm42600_core.c  | 10 +-
+ .../iio/imu/inv_icm42600/inv_icm42600_gyro.c  | 32 ++++---
+ .../linux/iio/common/inv_icm42600_timestamp.h | 79 ---------------
+ .../linux/iio/common/inv_sensors_timestamp.h  | 95 +++++++++++++++++++
+ 8 files changed, 199 insertions(+), 168 deletions(-)
+ rename drivers/iio/common/inv_sensors/{inv_icm42600_timestamp.c => inv_sensors_timestamp.c} (61%)
+ delete mode 100644 include/linux/iio/common/inv_icm42600_timestamp.h
+ create mode 100644 include/linux/iio/common/inv_sensors_timestamp.h
 
-diff --git a/sound/usb/mixer_scarlett2.c b/sound/usb/mixer_scarlett2.c
-index a4fac465220139..4be667ed0c5b09 100644
---- a/sound/usb/mixer_scarlett2.c
-+++ b/sound/usb/mixer_scarlett2.c
-@@ -612,6 +612,20 @@ struct scarlett2_config_set {
- 	const struct scarlett2_config items[SCARLETT2_CONFIG_COUNT];
- };
+diff --git a/drivers/iio/common/inv_sensors/Makefile b/drivers/iio/common/inv_sensors/Makefile
+index 93bddb9356b833..dcf39f249112c4 100644
+--- a/drivers/iio/common/inv_sensors/Makefile
++++ b/drivers/iio/common/inv_sensors/Makefile
+@@ -3,4 +3,4 @@
+ # Makefile for TDK-InvenSense sensors module.
+ #
  
-+/* Map firmware versions to config sets per-device.
-+ *
-+ * Each device lists one or more entries, sorted in ascending order of
-+ * from_firmware_version. At probe time the running firmware version
-+ * is looked up against this list and the last entry whose
-+ * from_firmware_version is <= the running version is selected.
-+ *
-+ * The list is terminated by a sentinel entry with config_set == NULL.
+-obj-$(CONFIG_IIO_INV_SENSORS_TIMESTAMP) += inv_icm42600_timestamp.o
++obj-$(CONFIG_IIO_INV_SENSORS_TIMESTAMP) += inv_sensors_timestamp.o
+diff --git a/drivers/iio/common/inv_sensors/inv_icm42600_timestamp.c b/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
+similarity index 61%
+rename from drivers/iio/common/inv_sensors/inv_icm42600_timestamp.c
+rename to drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
+index f1a144fbd9b096..033d3788dcf73b 100644
+--- a/drivers/iio/common/inv_sensors/inv_icm42600_timestamp.c
++++ b/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
+@@ -8,20 +8,18 @@
+ #include <linux/math64.h>
+ #include <linux/module.h>
+ 
+-#include <linux/iio/common/inv_icm42600_timestamp.h>
+-
+-/* internal chip period is 32kHz, 31250ns */
+-#define INV_ICM42600_TIMESTAMP_PERIOD		31250
+-/* allow a jitter of +/- 2% */
+-#define INV_ICM42600_TIMESTAMP_JITTER		2
+-/* compute min and max periods accepted */
+-#define INV_ICM42600_TIMESTAMP_MIN_PERIOD(_p)		\
+-	(((_p) * (100 - INV_ICM42600_TIMESTAMP_JITTER)) / 100)
+-#define INV_ICM42600_TIMESTAMP_MAX_PERIOD(_p)		\
+-	(((_p) * (100 + INV_ICM42600_TIMESTAMP_JITTER)) / 100)
++#include <linux/iio/common/inv_sensors_timestamp.h>
++
++/* compute jitter, min and max following jitter in per mille */
++#define INV_SENSORS_TIMESTAMP_JITTER(_val, _jitter)		\
++	(div_s64((_val) * (_jitter), 1000))
++#define INV_SENSORS_TIMESTAMP_MIN(_val, _jitter)		\
++	(((_val) * (1000 - (_jitter))) / 1000)
++#define INV_SENSORS_TIMESTAMP_MAX(_val, _jitter)		\
++	(((_val) * (1000 + (_jitter))) / 1000)
+ 
+ /* Add a new value inside an accumulator and update the estimate value */
+-static void inv_update_acc(struct inv_icm42600_timestamp_acc *acc, uint32_t val)
++static void inv_update_acc(struct inv_sensors_timestamp_acc *acc, uint32_t val)
+ {
+ 	uint64_t sum = 0;
+ 	size_t i;
+@@ -40,56 +38,57 @@ static void inv_update_acc(struct inv_icm42600_timestamp_acc *acc, uint32_t val)
+ 	acc->val = div_u64(sum, i);
+ }
+ 
+-void inv_icm42600_timestamp_init(struct inv_icm42600_timestamp *ts,
+-				 uint32_t period)
++void inv_sensors_timestamp_init(struct inv_sensors_timestamp *ts,
++				const struct inv_sensors_timestamp_chip *chip)
+ {
+-	/* initial odr for sensor after reset is 1kHz */
+-	const uint32_t default_period = 1000000;
++	memset(ts, 0, sizeof(*ts));
++
++	/* save chip parameters and compute min and max clock period */
++	ts->chip = *chip;
++	ts->min_period = INV_SENSORS_TIMESTAMP_MIN(chip->clock_period, chip->jitter);
++	ts->max_period = INV_SENSORS_TIMESTAMP_MAX(chip->clock_period, chip->jitter);
+ 
+ 	/* current multiplier and period values after reset */
+-	ts->mult = default_period / INV_ICM42600_TIMESTAMP_PERIOD;
+-	ts->period = default_period;
+-	/* new set multiplier is the one from chip initialization */
+-	ts->new_mult = period / INV_ICM42600_TIMESTAMP_PERIOD;
++	ts->mult = chip->init_period / chip->clock_period;
++	ts->period = chip->init_period;
+ 
+ 	/* use theoretical value for chip period */
+-	inv_update_acc(&ts->chip_period, INV_ICM42600_TIMESTAMP_PERIOD);
++	inv_update_acc(&ts->chip_period, chip->clock_period);
+ }
+-EXPORT_SYMBOL_NS_GPL(inv_icm42600_timestamp_init, IIO_INV_SENSORS_TIMESTAMP);
++EXPORT_SYMBOL_NS_GPL(inv_sensors_timestamp_init, IIO_INV_SENSORS_TIMESTAMP);
+ 
+-int inv_icm42600_timestamp_update_odr(struct inv_icm42600_timestamp *ts,
+-				      uint32_t period, bool fifo)
++int inv_sensors_timestamp_update_odr(struct inv_sensors_timestamp *ts,
++				     uint32_t period, bool fifo)
+ {
+ 	/* when FIFO is on, prevent odr change if one is already pending */
+ 	if (fifo && ts->new_mult != 0)
+ 		return -EAGAIN;
+ 
+-	ts->new_mult = period / INV_ICM42600_TIMESTAMP_PERIOD;
++	ts->new_mult = period / ts->chip.clock_period;
+ 
+ 	return 0;
+ }
+-EXPORT_SYMBOL_NS_GPL(inv_icm42600_timestamp_update_odr, IIO_INV_SENSORS_TIMESTAMP);
++EXPORT_SYMBOL_NS_GPL(inv_sensors_timestamp_update_odr, IIO_INV_SENSORS_TIMESTAMP);
+ 
+-static bool inv_validate_period(uint32_t period, uint32_t mult)
++static bool inv_validate_period(struct inv_sensors_timestamp *ts, uint32_t period, uint32_t mult)
+ {
+-	const uint32_t chip_period = INV_ICM42600_TIMESTAMP_PERIOD;
+ 	uint32_t period_min, period_max;
+ 
+ 	/* check that period is acceptable */
+-	period_min = INV_ICM42600_TIMESTAMP_MIN_PERIOD(chip_period) * mult;
+-	period_max = INV_ICM42600_TIMESTAMP_MAX_PERIOD(chip_period) * mult;
++	period_min = ts->min_period * mult;
++	period_max = ts->max_period * mult;
+ 	if (period > period_min && period < period_max)
+ 		return true;
+ 	else
+ 		return false;
+ }
+ 
+-static bool inv_compute_chip_period(struct inv_icm42600_timestamp *ts,
++static bool inv_compute_chip_period(struct inv_sensors_timestamp *ts,
+ 				    uint32_t mult, uint32_t period)
+ {
+ 	uint32_t new_chip_period;
+ 
+-	if (!inv_validate_period(period, mult))
++	if (!inv_validate_period(ts, period, mult))
+ 		return false;
+ 
+ 	/* update chip internal period estimation */
+@@ -99,13 +98,13 @@ static bool inv_compute_chip_period(struct inv_icm42600_timestamp *ts,
+ 	return true;
+ }
+ 
+-void inv_icm42600_timestamp_interrupt(struct inv_icm42600_timestamp *ts,
++void inv_sensors_timestamp_interrupt(struct inv_sensors_timestamp *ts,
+ 				      uint32_t fifo_period, size_t fifo_nb,
+ 				      size_t sensor_nb, int64_t timestamp)
+ {
+-	struct inv_icm42600_timestamp_interval *it;
++	struct inv_sensors_timestamp_interval *it;
+ 	int64_t delta, interval;
+-	const uint32_t fifo_mult = fifo_period / INV_ICM42600_TIMESTAMP_PERIOD;
++	const uint32_t fifo_mult = fifo_period / ts->chip.clock_period;
+ 	uint32_t period = ts->period;
+ 	int32_t m;
+ 	bool valid = false;
+@@ -145,7 +144,7 @@ void inv_icm42600_timestamp_interrupt(struct inv_icm42600_timestamp *ts,
+ 		while (delta >= (fifo_period * 3 / 2))
+ 			delta -= fifo_period;
+ 		/* compute maximal adjustment value */
+-		m = INV_ICM42600_TIMESTAMP_MAX_PERIOD(ts->period) - ts->period;
++		m = INV_SENSORS_TIMESTAMP_JITTER((int64_t)ts->period, ts->chip.jitter);
+ 		if (delta > m)
+ 			delta = m;
+ 		else if (delta < -m)
+@@ -153,11 +152,11 @@ void inv_icm42600_timestamp_interrupt(struct inv_icm42600_timestamp *ts,
+ 		ts->timestamp += delta;
+ 	}
+ }
+-EXPORT_SYMBOL_NS_GPL(inv_icm42600_timestamp_interrupt, IIO_INV_SENSORS_TIMESTAMP);
++EXPORT_SYMBOL_NS_GPL(inv_sensors_timestamp_interrupt, IIO_INV_SENSORS_TIMESTAMP);
+ 
+-void inv_icm42600_timestamp_apply_odr(struct inv_icm42600_timestamp *ts,
+-				      uint32_t fifo_period, size_t fifo_nb,
+-				      unsigned int fifo_no)
++void inv_sensors_timestamp_apply_odr(struct inv_sensors_timestamp *ts,
++				     uint32_t fifo_period, size_t fifo_nb,
++				     unsigned int fifo_no)
+ {
+ 	int64_t interval;
+ 	uint32_t fifo_mult;
+@@ -178,14 +177,14 @@ void inv_icm42600_timestamp_apply_odr(struct inv_icm42600_timestamp *ts,
+ 	 */
+ 	if (ts->timestamp != 0) {
+ 		/* compute measured fifo period */
+-		fifo_mult = fifo_period / INV_ICM42600_TIMESTAMP_PERIOD;
++		fifo_mult = fifo_period / ts->chip.clock_period;
+ 		fifo_period = fifo_mult * ts->chip_period.val;
+ 		/* computes time interval between interrupt and this sample */
+ 		interval = (int64_t)(fifo_nb - fifo_no) * (int64_t)fifo_period;
+ 		ts->timestamp = ts->it.up - interval;
+ 	}
+ }
+-EXPORT_SYMBOL_NS_GPL(inv_icm42600_timestamp_apply_odr, IIO_INV_SENSORS_TIMESTAMP);
++EXPORT_SYMBOL_NS_GPL(inv_sensors_timestamp_apply_odr, IIO_INV_SENSORS_TIMESTAMP);
+ 
+ MODULE_AUTHOR("InvenSense, Inc.");
+ MODULE_DESCRIPTION("InvenSense sensors timestamp module");
+diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
+index d0f078635c6f66..29417e0289690c 100644
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
+@@ -12,7 +12,7 @@
+ #include <linux/math64.h>
+ 
+ #include <linux/iio/buffer.h>
+-#include <linux/iio/common/inv_icm42600_timestamp.h>
++#include <linux/iio/common/inv_sensors_timestamp.h>
+ #include <linux/iio/iio.h>
+ #include <linux/iio/kfifo_buf.h>
+ 
+@@ -99,7 +99,7 @@ static int inv_icm42600_accel_update_scan_mode(struct iio_dev *indio_dev,
+ 					       const unsigned long *scan_mask)
+ {
+ 	struct inv_icm42600_state *st = iio_device_get_drvdata(indio_dev);
+-	struct inv_icm42600_timestamp *ts = iio_priv(indio_dev);
++	struct inv_sensors_timestamp *ts = iio_priv(indio_dev);
+ 	struct inv_icm42600_sensor_conf conf = INV_ICM42600_SENSOR_CONF_INIT;
+ 	unsigned int fifo_en = 0;
+ 	unsigned int sleep_temp = 0;
+@@ -127,7 +127,7 @@ static int inv_icm42600_accel_update_scan_mode(struct iio_dev *indio_dev,
+ 	}
+ 
+ 	/* update data FIFO write */
+-	inv_icm42600_timestamp_apply_odr(ts, 0, 0, 0);
++	inv_sensors_timestamp_apply_odr(ts, 0, 0, 0);
+ 	ret = inv_icm42600_buffer_set_fifo_en(st, fifo_en | st->fifo.en);
+ 
+ out_unlock:
+@@ -308,7 +308,7 @@ static int inv_icm42600_accel_write_odr(struct iio_dev *indio_dev,
+ 					int val, int val2)
+ {
+ 	struct inv_icm42600_state *st = iio_device_get_drvdata(indio_dev);
+-	struct inv_icm42600_timestamp *ts = iio_priv(indio_dev);
++	struct inv_sensors_timestamp *ts = iio_priv(indio_dev);
+ 	struct device *dev = regmap_get_device(st->map);
+ 	unsigned int idx;
+ 	struct inv_icm42600_sensor_conf conf = INV_ICM42600_SENSOR_CONF_INIT;
+@@ -329,8 +329,8 @@ static int inv_icm42600_accel_write_odr(struct iio_dev *indio_dev,
+ 	pm_runtime_get_sync(dev);
+ 	mutex_lock(&st->lock);
+ 
+-	ret = inv_icm42600_timestamp_update_odr(ts, inv_icm42600_odr_to_period(conf.odr),
+-						iio_buffer_enabled(indio_dev));
++	ret = inv_sensors_timestamp_update_odr(ts, inv_icm42600_odr_to_period(conf.odr),
++					       iio_buffer_enabled(indio_dev));
+ 	if (ret)
+ 		goto out_unlock;
+ 
+@@ -706,7 +706,8 @@ struct iio_dev *inv_icm42600_accel_init(struct inv_icm42600_state *st)
+ {
+ 	struct device *dev = regmap_get_device(st->map);
+ 	const char *name;
+-	struct inv_icm42600_timestamp *ts;
++	struct inv_sensors_timestamp_chip ts_chip;
++	struct inv_sensors_timestamp *ts;
+ 	struct iio_dev *indio_dev;
+ 	int ret;
+ 
+@@ -718,8 +719,15 @@ struct iio_dev *inv_icm42600_accel_init(struct inv_icm42600_state *st)
+ 	if (!indio_dev)
+ 		return ERR_PTR(-ENOMEM);
+ 
++	/*
++	 * clock period is 32kHz (31250ns)
++	 * jitter is +/- 2% (20 per mille)
++	 */
++	ts_chip.clock_period = 31250;
++	ts_chip.jitter = 20;
++	ts_chip.init_period = inv_icm42600_odr_to_period(st->conf.accel.odr);
+ 	ts = iio_priv(indio_dev);
+-	inv_icm42600_timestamp_init(ts, inv_icm42600_odr_to_period(st->conf.accel.odr));
++	inv_sensors_timestamp_init(ts, &ts_chip);
+ 
+ 	iio_device_set_drvdata(indio_dev, st);
+ 	indio_dev->name = name;
+@@ -745,7 +753,7 @@ struct iio_dev *inv_icm42600_accel_init(struct inv_icm42600_state *st)
+ int inv_icm42600_accel_parse_fifo(struct iio_dev *indio_dev)
+ {
+ 	struct inv_icm42600_state *st = iio_device_get_drvdata(indio_dev);
+-	struct inv_icm42600_timestamp *ts = iio_priv(indio_dev);
++	struct inv_sensors_timestamp *ts = iio_priv(indio_dev);
+ 	ssize_t i, size;
+ 	unsigned int no;
+ 	const void *accel, *gyro, *timestamp;
+@@ -769,13 +777,13 @@ int inv_icm42600_accel_parse_fifo(struct iio_dev *indio_dev)
+ 
+ 		/* update odr */
+ 		if (odr & INV_ICM42600_SENSOR_ACCEL)
+-			inv_icm42600_timestamp_apply_odr(ts, st->fifo.period,
+-							 st->fifo.nb.total, no);
++			inv_sensors_timestamp_apply_odr(ts, st->fifo.period,
++							st->fifo.nb.total, no);
+ 
+ 		memcpy(&buffer.accel, accel, sizeof(buffer.accel));
+ 		/* convert 8 bits FIFO temperature in high resolution format */
+ 		buffer.temp = temp ? (*temp * 64) : 0;
+-		ts_val = inv_icm42600_timestamp_pop(ts);
++		ts_val = inv_sensors_timestamp_pop(ts);
+ 		iio_push_to_buffers_with_timestamp(indio_dev, &buffer, ts_val);
+ 	}
+ 
+diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
+index afaaa45477a967..24b43dc75f72a2 100644
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
+@@ -11,7 +11,7 @@
+ #include <linux/delay.h>
+ 
+ #include <linux/iio/buffer.h>
+-#include <linux/iio/common/inv_icm42600_timestamp.h>
++#include <linux/iio/common/inv_sensors_timestamp.h>
+ #include <linux/iio/iio.h>
+ 
+ #include "inv_icm42600.h"
+@@ -276,12 +276,12 @@ static int inv_icm42600_buffer_preenable(struct iio_dev *indio_dev)
+ {
+ 	struct inv_icm42600_state *st = iio_device_get_drvdata(indio_dev);
+ 	struct device *dev = regmap_get_device(st->map);
+-	struct inv_icm42600_timestamp *ts = iio_priv(indio_dev);
++	struct inv_sensors_timestamp *ts = iio_priv(indio_dev);
+ 
+ 	pm_runtime_get_sync(dev);
+ 
+ 	mutex_lock(&st->lock);
+-	inv_icm42600_timestamp_reset(ts);
++	inv_sensors_timestamp_reset(ts);
+ 	mutex_unlock(&st->lock);
+ 
+ 	return 0;
+@@ -378,7 +378,7 @@ static int inv_icm42600_buffer_predisable(struct iio_dev *indio_dev)
+ static int inv_icm42600_buffer_postdisable(struct iio_dev *indio_dev)
+ {
+ 	struct inv_icm42600_state *st = iio_device_get_drvdata(indio_dev);
+-	struct inv_icm42600_timestamp *ts = iio_priv(indio_dev);
++	struct inv_sensors_timestamp *ts = iio_priv(indio_dev);
+ 	struct device *dev = regmap_get_device(st->map);
+ 	unsigned int sensor;
+ 	unsigned int *watermark;
+@@ -400,7 +400,7 @@ static int inv_icm42600_buffer_postdisable(struct iio_dev *indio_dev)
+ 
+ 	mutex_lock(&st->lock);
+ 
+-	inv_icm42600_timestamp_apply_odr(ts, 0, 0, 0);
++	inv_sensors_timestamp_apply_odr(ts, 0, 0, 0);
+ 
+ 	ret = inv_icm42600_buffer_set_fifo_en(st, st->fifo.en & ~sensor);
+ 	if (ret)
+@@ -508,7 +508,7 @@ int inv_icm42600_buffer_fifo_read(struct inv_icm42600_state *st,
+ 
+ int inv_icm42600_buffer_fifo_parse(struct inv_icm42600_state *st)
+ {
+-	struct inv_icm42600_timestamp *ts;
++	struct inv_sensors_timestamp *ts;
+ 	int ret;
+ 
+ 	if (st->fifo.nb.total == 0)
+@@ -516,8 +516,8 @@ int inv_icm42600_buffer_fifo_parse(struct inv_icm42600_state *st)
+ 
+ 	/* handle gyroscope timestamp and FIFO data parsing */
+ 	ts = iio_priv(st->indio_gyro);
+-	inv_icm42600_timestamp_interrupt(ts, st->fifo.period, st->fifo.nb.total,
+-					 st->fifo.nb.gyro, st->timestamp.gyro);
++	inv_sensors_timestamp_interrupt(ts, st->fifo.period, st->fifo.nb.total,
++					st->fifo.nb.gyro, st->timestamp.gyro);
+ 	if (st->fifo.nb.gyro > 0) {
+ 		ret = inv_icm42600_gyro_parse_fifo(st->indio_gyro);
+ 		if (ret)
+@@ -526,8 +526,8 @@ int inv_icm42600_buffer_fifo_parse(struct inv_icm42600_state *st)
+ 
+ 	/* handle accelerometer timestamp and FIFO data parsing */
+ 	ts = iio_priv(st->indio_accel);
+-	inv_icm42600_timestamp_interrupt(ts, st->fifo.period, st->fifo.nb.total,
+-					 st->fifo.nb.accel, st->timestamp.accel);
++	inv_sensors_timestamp_interrupt(ts, st->fifo.period, st->fifo.nb.total,
++					st->fifo.nb.accel, st->timestamp.accel);
+ 	if (st->fifo.nb.accel > 0) {
+ 		ret = inv_icm42600_accel_parse_fifo(st->indio_accel);
+ 		if (ret)
+@@ -540,7 +540,7 @@ int inv_icm42600_buffer_fifo_parse(struct inv_icm42600_state *st)
+ int inv_icm42600_buffer_hwfifo_flush(struct inv_icm42600_state *st,
+ 				     unsigned int count)
+ {
+-	struct inv_icm42600_timestamp *ts;
++	struct inv_sensors_timestamp *ts;
+ 	int64_t gyro_ts, accel_ts;
+ 	int ret;
+ 
+@@ -556,9 +556,9 @@ int inv_icm42600_buffer_hwfifo_flush(struct inv_icm42600_state *st,
+ 
+ 	if (st->fifo.nb.gyro > 0) {
+ 		ts = iio_priv(st->indio_gyro);
+-		inv_icm42600_timestamp_interrupt(ts, st->fifo.period,
+-						 st->fifo.nb.total, st->fifo.nb.gyro,
+-						 gyro_ts);
++		inv_sensors_timestamp_interrupt(ts, st->fifo.period,
++						st->fifo.nb.total, st->fifo.nb.gyro,
++						gyro_ts);
+ 		ret = inv_icm42600_gyro_parse_fifo(st->indio_gyro);
+ 		if (ret)
+ 			return ret;
+@@ -566,9 +566,9 @@ int inv_icm42600_buffer_hwfifo_flush(struct inv_icm42600_state *st,
+ 
+ 	if (st->fifo.nb.accel > 0) {
+ 		ts = iio_priv(st->indio_accel);
+-		inv_icm42600_timestamp_interrupt(ts, st->fifo.period,
+-						 st->fifo.nb.total, st->fifo.nb.accel,
+-						 accel_ts);
++		inv_sensors_timestamp_interrupt(ts, st->fifo.period,
++						st->fifo.nb.total, st->fifo.nb.accel,
++						accel_ts);
+ 		ret = inv_icm42600_accel_parse_fifo(st->indio_accel);
+ 		if (ret)
+ 			return ret;
+diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
+index f8ec87f4a3461f..3fa5c0ae785440 100644
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
+@@ -16,7 +16,7 @@
+ #include <linux/property.h>
+ #include <linux/regmap.h>
+ 
+-#include <linux/iio/common/inv_icm42600_timestamp.h>
++#include <linux/iio/common/inv_sensors_timestamp.h>
+ #include <linux/iio/iio.h>
+ 
+ #include "inv_icm42600.h"
+@@ -720,8 +720,8 @@ static int __maybe_unused inv_icm42600_suspend(struct device *dev)
+ static int __maybe_unused inv_icm42600_resume(struct device *dev)
+ {
+ 	struct inv_icm42600_state *st = dev_get_drvdata(dev);
+-	struct inv_icm42600_timestamp *gyro_ts = iio_priv(st->indio_gyro);
+-	struct inv_icm42600_timestamp *accel_ts = iio_priv(st->indio_accel);
++	struct inv_sensors_timestamp *gyro_ts = iio_priv(st->indio_gyro);
++	struct inv_sensors_timestamp *accel_ts = iio_priv(st->indio_accel);
+ 	int ret = 0;
+ 
+ 	mutex_lock(&st->lock);
+@@ -742,8 +742,8 @@ static int __maybe_unused inv_icm42600_resume(struct device *dev)
+ 
+ 	/* restore FIFO data streaming */
+ 	if (st->fifo.on) {
+-		inv_icm42600_timestamp_reset(gyro_ts);
+-		inv_icm42600_timestamp_reset(accel_ts);
++		inv_sensors_timestamp_reset(gyro_ts);
++		inv_sensors_timestamp_reset(accel_ts);
+ 		ret = regmap_write(st->map, INV_ICM42600_REG_FIFO_CONFIG,
+ 				   INV_ICM42600_FIFO_CONFIG_STREAM);
+ 	}
+diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
+index 744b1ef35ba28c..3049d5790c1b32 100644
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
+@@ -12,7 +12,7 @@
+ #include <linux/math64.h>
+ 
+ #include <linux/iio/buffer.h>
+-#include <linux/iio/common/inv_icm42600_timestamp.h>
++#include <linux/iio/common/inv_sensors_timestamp.h>
+ #include <linux/iio/iio.h>
+ #include <linux/iio/kfifo_buf.h>
+ 
+@@ -99,7 +99,7 @@ static int inv_icm42600_gyro_update_scan_mode(struct iio_dev *indio_dev,
+ 					      const unsigned long *scan_mask)
+ {
+ 	struct inv_icm42600_state *st = iio_device_get_drvdata(indio_dev);
+-	struct inv_icm42600_timestamp *ts = iio_priv(indio_dev);
++	struct inv_sensors_timestamp *ts = iio_priv(indio_dev);
+ 	struct inv_icm42600_sensor_conf conf = INV_ICM42600_SENSOR_CONF_INIT;
+ 	unsigned int fifo_en = 0;
+ 	unsigned int sleep_gyro = 0;
+@@ -127,7 +127,7 @@ static int inv_icm42600_gyro_update_scan_mode(struct iio_dev *indio_dev,
+ 	}
+ 
+ 	/* update data FIFO write */
+-	inv_icm42600_timestamp_apply_odr(ts, 0, 0, 0);
++	inv_sensors_timestamp_apply_odr(ts, 0, 0, 0);
+ 	ret = inv_icm42600_buffer_set_fifo_en(st, fifo_en | st->fifo.en);
+ 
+ out_unlock:
+@@ -320,7 +320,7 @@ static int inv_icm42600_gyro_write_odr(struct iio_dev *indio_dev,
+ 				       int val, int val2)
+ {
+ 	struct inv_icm42600_state *st = iio_device_get_drvdata(indio_dev);
+-	struct inv_icm42600_timestamp *ts = iio_priv(indio_dev);
++	struct inv_sensors_timestamp *ts = iio_priv(indio_dev);
+ 	struct device *dev = regmap_get_device(st->map);
+ 	unsigned int idx;
+ 	struct inv_icm42600_sensor_conf conf = INV_ICM42600_SENSOR_CONF_INIT;
+@@ -341,8 +341,8 @@ static int inv_icm42600_gyro_write_odr(struct iio_dev *indio_dev,
+ 	pm_runtime_get_sync(dev);
+ 	mutex_lock(&st->lock);
+ 
+-	ret = inv_icm42600_timestamp_update_odr(ts, inv_icm42600_odr_to_period(conf.odr),
+-						iio_buffer_enabled(indio_dev));
++	ret = inv_sensors_timestamp_update_odr(ts, inv_icm42600_odr_to_period(conf.odr),
++					       iio_buffer_enabled(indio_dev));
+ 	if (ret)
+ 		goto out_unlock;
+ 
+@@ -717,7 +717,8 @@ struct iio_dev *inv_icm42600_gyro_init(struct inv_icm42600_state *st)
+ {
+ 	struct device *dev = regmap_get_device(st->map);
+ 	const char *name;
+-	struct inv_icm42600_timestamp *ts;
++	struct inv_sensors_timestamp_chip ts_chip;
++	struct inv_sensors_timestamp *ts;
+ 	struct iio_dev *indio_dev;
+ 	int ret;
+ 
+@@ -729,8 +730,15 @@ struct iio_dev *inv_icm42600_gyro_init(struct inv_icm42600_state *st)
+ 	if (!indio_dev)
+ 		return ERR_PTR(-ENOMEM);
+ 
++	/*
++	 * clock period is 32kHz (31250ns)
++	 * jitter is +/- 2% (20 per mille)
++	 */
++	ts_chip.clock_period = 31250;
++	ts_chip.jitter = 20;
++	ts_chip.init_period = inv_icm42600_odr_to_period(st->conf.accel.odr);
+ 	ts = iio_priv(indio_dev);
+-	inv_icm42600_timestamp_init(ts, inv_icm42600_odr_to_period(st->conf.gyro.odr));
++	inv_sensors_timestamp_init(ts, &ts_chip);
+ 
+ 	iio_device_set_drvdata(indio_dev, st);
+ 	indio_dev->name = name;
+@@ -757,7 +765,7 @@ struct iio_dev *inv_icm42600_gyro_init(struct inv_icm42600_state *st)
+ int inv_icm42600_gyro_parse_fifo(struct iio_dev *indio_dev)
+ {
+ 	struct inv_icm42600_state *st = iio_device_get_drvdata(indio_dev);
+-	struct inv_icm42600_timestamp *ts = iio_priv(indio_dev);
++	struct inv_sensors_timestamp *ts = iio_priv(indio_dev);
+ 	ssize_t i, size;
+ 	unsigned int no;
+ 	const void *accel, *gyro, *timestamp;
+@@ -781,13 +789,13 @@ int inv_icm42600_gyro_parse_fifo(struct iio_dev *indio_dev)
+ 
+ 		/* update odr */
+ 		if (odr & INV_ICM42600_SENSOR_GYRO)
+-			inv_icm42600_timestamp_apply_odr(ts, st->fifo.period,
+-							 st->fifo.nb.total, no);
++			inv_sensors_timestamp_apply_odr(ts, st->fifo.period,
++							st->fifo.nb.total, no);
+ 
+ 		memcpy(&buffer.gyro, gyro, sizeof(buffer.gyro));
+ 		/* convert 8 bits FIFO temperature in high resolution format */
+ 		buffer.temp = temp ? (*temp * 64) : 0;
+-		ts_val = inv_icm42600_timestamp_pop(ts);
++		ts_val = inv_sensors_timestamp_pop(ts);
+ 		iio_push_to_buffers_with_timestamp(indio_dev, &buffer, ts_val);
+ 	}
+ 
+diff --git a/include/linux/iio/common/inv_icm42600_timestamp.h b/include/linux/iio/common/inv_icm42600_timestamp.h
+deleted file mode 100644
+index b808a6da15e585..00000000000000
+--- a/include/linux/iio/common/inv_icm42600_timestamp.h
++++ /dev/null
+@@ -1,79 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0-or-later */
+-/*
+- * Copyright (C) 2020 Invensense, Inc.
+- */
+-
+-#ifndef INV_ICM42600_TIMESTAMP_H_
+-#define INV_ICM42600_TIMESTAMP_H_
+-
+-/**
+- * struct inv_icm42600_timestamp_interval - timestamps interval
+- * @lo:	interval lower bound
+- * @up:	interval upper bound
+- */
+-struct inv_icm42600_timestamp_interval {
+-	int64_t lo;
+-	int64_t up;
+-};
+-
+-/**
+- * struct inv_icm42600_timestamp_acc - accumulator for computing an estimation
+- * @val:	current estimation of the value, the mean of all values
+- * @idx:	current index of the next free place in values table
+- * @values:	table of all measured values, use for computing the mean
+- */
+-struct inv_icm42600_timestamp_acc {
+-	uint32_t val;
+-	size_t idx;
+-	uint32_t values[32];
+-};
+-
+-/**
+- * struct inv_icm42600_timestamp - timestamp management states
+- * @it:			interrupts interval timestamps
+- * @timestamp:		store last timestamp for computing next data timestamp
+- * @mult:		current internal period multiplier
+- * @new_mult:		new set internal period multiplier (not yet effective)
+- * @period:		measured current period of the sensor
+- * @chip_period:	accumulator for computing internal chip period
+- */
+-struct inv_icm42600_timestamp {
+-	struct inv_icm42600_timestamp_interval it;
+-	int64_t timestamp;
+-	uint32_t mult;
+-	uint32_t new_mult;
+-	uint32_t period;
+-	struct inv_icm42600_timestamp_acc chip_period;
+-};
+-
+-void inv_icm42600_timestamp_init(struct inv_icm42600_timestamp *ts,
+-				 uint32_t period);
+-
+-int inv_icm42600_timestamp_update_odr(struct inv_icm42600_timestamp *ts,
+-				      uint32_t period, bool fifo);
+-
+-void inv_icm42600_timestamp_interrupt(struct inv_icm42600_timestamp *ts,
+-				      uint32_t fifo_period, size_t fifo_nb,
+-				      size_t sensor_nb, int64_t timestamp);
+-
+-static inline int64_t
+-inv_icm42600_timestamp_pop(struct inv_icm42600_timestamp *ts)
+-{
+-	ts->timestamp += ts->period;
+-	return ts->timestamp;
+-}
+-
+-void inv_icm42600_timestamp_apply_odr(struct inv_icm42600_timestamp *ts,
+-				      uint32_t fifo_period, size_t fifo_nb,
+-				      unsigned int fifo_no);
+-
+-static inline void
+-inv_icm42600_timestamp_reset(struct inv_icm42600_timestamp *ts)
+-{
+-	const struct inv_icm42600_timestamp_interval interval_init = {0LL, 0LL};
+-
+-	ts->it = interval_init;
+-	ts->timestamp = 0;
+-}
+-
+-#endif
+diff --git a/include/linux/iio/common/inv_sensors_timestamp.h b/include/linux/iio/common/inv_sensors_timestamp.h
+new file mode 100644
+index 00000000000000..a47d304d1ba7c4
+--- /dev/null
++++ b/include/linux/iio/common/inv_sensors_timestamp.h
+@@ -0,0 +1,95 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/*
++ * Copyright (C) 2020 Invensense, Inc.
 + */
-+struct scarlett2_config_set_entry {
-+	u16 from_firmware_version;
-+	const struct scarlett2_config_set *config_set;
++
++#ifndef INV_SENSORS_TIMESTAMP_H_
++#define INV_SENSORS_TIMESTAMP_H_
++
++/**
++ * struct inv_sensors_timestamp_chip - chip internal properties
++ * @clock_period:	internal clock period in ns
++ * @jitter:		acceptable jitter in per-mille
++ * @init_period:	chip initial period at reset in ns
++ */
++struct inv_sensors_timestamp_chip {
++	uint32_t clock_period;
++	uint32_t jitter;
++	uint32_t init_period;
 +};
 +
- /* Input gain TLV dB ranges */
- 
- static const DECLARE_TLV_DB_MINMAX(
-@@ -1100,8 +1114,8 @@ struct scarlett2_meter_entry {
- };
- 
- struct scarlett2_device_info {
--	/* which set of configuration parameters the device uses */
--	const struct scarlett2_config_set *config_set;
-+	/* which sets of configuration parameters the device uses */
-+	const struct scarlett2_config_set_entry *config_sets;
- 
- 	/* minimum firmware version required */
- 	u16 min_firmware_version;
-@@ -1343,7 +1357,10 @@ struct scarlett2_data {
- /*** Model-specific data ***/
- 
- static const struct scarlett2_device_info s6i6_gen2_info = {
--	.config_set = &scarlett2_config_set_gen2a,
-+	.config_sets = (const struct scarlett2_config_set_entry[]) {
-+		{ 0, &scarlett2_config_set_gen2a },
-+		{ }
-+	},
- 	.level_input_count = 2,
- 	.pad_input_count = 2,
- 
-@@ -1393,7 +1410,10 @@ static const struct scarlett2_device_info s6i6_gen2_info = {
- };
- 
- static const struct scarlett2_device_info s18i8_gen2_info = {
--	.config_set = &scarlett2_config_set_gen2a,
-+	.config_sets = (const struct scarlett2_config_set_entry[]) {
-+		{ 0, &scarlett2_config_set_gen2a },
-+		{ }
-+	},
- 	.level_input_count = 2,
- 	.pad_input_count = 4,
- 
-@@ -1446,7 +1466,10 @@ static const struct scarlett2_device_info s18i8_gen2_info = {
- };
- 
- static const struct scarlett2_device_info s18i20_gen2_info = {
--	.config_set = &scarlett2_config_set_gen2b,
-+	.config_sets = (const struct scarlett2_config_set_entry[]) {
-+		{ 0, &scarlett2_config_set_gen2b },
-+		{ }
-+	},
- 
- 	.line_out_descrs = {
- 		"Monitor L",
-@@ -1503,7 +1526,10 @@ static const struct scarlett2_device_info s18i20_gen2_info = {
- };
- 
- static const struct scarlett2_device_info solo_gen3_info = {
--	.config_set = &scarlett2_config_set_gen3a,
-+	.config_sets = (const struct scarlett2_config_set_entry[]) {
-+		{ 0, &scarlett2_config_set_gen3a },
-+		{ }
-+	},
- 	.level_input_count = 1,
- 	.level_input_first = 1,
- 	.air_input_count = 1,
-@@ -1513,7 +1539,10 @@ static const struct scarlett2_device_info solo_gen3_info = {
- };
- 
- static const struct scarlett2_device_info s2i2_gen3_info = {
--	.config_set = &scarlett2_config_set_gen3a,
-+	.config_sets = (const struct scarlett2_config_set_entry[]) {
-+		{ 0, &scarlett2_config_set_gen3a },
-+		{ }
-+	},
- 	.level_input_count = 2,
- 	.air_input_count = 2,
- 	.phantom_count = 1,
-@@ -1522,7 +1551,10 @@ static const struct scarlett2_device_info s2i2_gen3_info = {
- };
- 
- static const struct scarlett2_device_info s4i4_gen3_info = {
--	.config_set = &scarlett2_config_set_gen3b,
-+	.config_sets = (const struct scarlett2_config_set_entry[]) {
-+		{ 0, &scarlett2_config_set_gen3b },
-+		{ }
-+	},
- 	.level_input_count = 2,
- 	.pad_input_count = 2,
- 	.air_input_count = 2,
-@@ -1571,7 +1603,10 @@ static const struct scarlett2_device_info s4i4_gen3_info = {
- };
- 
- static const struct scarlett2_device_info s8i6_gen3_info = {
--	.config_set = &scarlett2_config_set_gen3b,
-+	.config_sets = (const struct scarlett2_config_set_entry[]) {
-+		{ 0, &scarlett2_config_set_gen3b },
-+		{ }
-+	},
- 	.level_input_count = 2,
- 	.pad_input_count = 2,
- 	.air_input_count = 2,
-@@ -1637,7 +1672,10 @@ static const char * const scarlett2_spdif_s18i8_gen3_texts[] = {
- };
- 
- static const struct scarlett2_device_info s18i8_gen3_info = {
--	.config_set = &scarlett2_config_set_gen3c,
-+	.config_sets = (const struct scarlett2_config_set_entry[]) {
-+		{ 0, &scarlett2_config_set_gen3c },
-+		{ }
-+	},
- 	.has_speaker_switching = 1,
- 	.level_input_count = 2,
- 	.pad_input_count = 4,
-@@ -1729,7 +1767,10 @@ static const char * const scarlett2_spdif_s18i20_gen3_texts[] = {
- };
- 
- static const struct scarlett2_device_info s18i20_gen3_info = {
--	.config_set = &scarlett2_config_set_gen3c,
-+	.config_sets = (const struct scarlett2_config_set_entry[]) {
-+		{ 0, &scarlett2_config_set_gen3c },
-+		{ }
-+	},
- 	.has_speaker_switching = 1,
- 	.has_talkback = 1,
- 	.level_input_count = 2,
-@@ -1803,7 +1844,10 @@ static const struct scarlett2_device_info s18i20_gen3_info = {
- };
- 
- static const struct scarlett2_device_info vocaster_one_info = {
--	.config_set = &scarlett2_config_set_vocaster,
-+	.config_sets = (const struct scarlett2_config_set_entry[]) {
-+		{ 1769, &scarlett2_config_set_vocaster },
-+		{ }
-+	},
- 	.min_firmware_version = 1769,
- 	.has_devmap = 1,
- 
-@@ -1847,7 +1891,10 @@ static const struct scarlett2_device_info vocaster_one_info = {
- };
- 
- static const struct scarlett2_device_info vocaster_two_info = {
--	.config_set = &scarlett2_config_set_vocaster,
-+	.config_sets = (const struct scarlett2_config_set_entry[]) {
-+		{ 1769, &scarlett2_config_set_vocaster },
-+		{ }
-+	},
- 	.min_firmware_version = 1769,
- 	.has_devmap = 1,
- 
-@@ -1892,7 +1939,10 @@ static const struct scarlett2_device_info vocaster_two_info = {
- };
- 
- static const struct scarlett2_device_info solo_gen4_info = {
--	.config_set = &scarlett2_config_set_gen4_solo,
-+	.config_sets = (const struct scarlett2_config_set_entry[]) {
-+		{ 2115, &scarlett2_config_set_gen4_solo },
-+		{ }
-+	},
- 	.min_firmware_version = 2115,
- 	.has_devmap = 1,
- 
-@@ -1947,7 +1997,10 @@ static const struct scarlett2_device_info solo_gen4_info = {
- };
- 
- static const struct scarlett2_device_info s2i2_gen4_info = {
--	.config_set = &scarlett2_config_set_gen4_2i2,
-+	.config_sets = (const struct scarlett2_config_set_entry[]) {
-+		{ 2115, &scarlett2_config_set_gen4_2i2 },
-+		{ }
-+	},
- 	.min_firmware_version = 2115,
- 	.has_devmap = 1,
- 
-@@ -2002,7 +2055,10 @@ static const struct scarlett2_device_info s2i2_gen4_info = {
- };
- 
- static const struct scarlett2_device_info s4i4_gen4_info = {
--	.config_set = &scarlett2_config_set_gen4_4i4,
-+	.config_sets = (const struct scarlett2_config_set_entry[]) {
-+		{ 2089, &scarlett2_config_set_gen4_4i4 },
-+		{ }
-+	},
- 	.min_firmware_version = 2089,
- 	.has_devmap = 1,
- 
-@@ -2051,7 +2107,10 @@ static const struct scarlett2_device_info s4i4_gen4_info = {
- };
- 
- static const struct scarlett2_device_info clarett_2pre_info = {
--	.config_set = &scarlett2_config_set_clarett,
-+	.config_sets = (const struct scarlett2_config_set_entry[]) {
-+		{ 0, &scarlett2_config_set_clarett },
-+		{ }
-+	},
- 	.level_input_count = 2,
- 	.air_input_count = 2,
- 
-@@ -2107,7 +2166,10 @@ static const char * const scarlett2_spdif_clarett_texts[] = {
- };
- 
- static const struct scarlett2_device_info clarett_4pre_info = {
--	.config_set = &scarlett2_config_set_clarett,
-+	.config_sets = (const struct scarlett2_config_set_entry[]) {
-+		{ 0, &scarlett2_config_set_clarett },
-+		{ }
-+	},
- 	.level_input_count = 2,
- 	.air_input_count = 4,
- 
-@@ -2163,7 +2225,10 @@ static const struct scarlett2_device_info clarett_4pre_info = {
- };
- 
- static const struct scarlett2_device_info clarett_8pre_info = {
--	.config_set = &scarlett2_config_set_clarett,
-+	.config_sets = (const struct scarlett2_config_set_entry[]) {
-+		{ 0, &scarlett2_config_set_clarett },
-+		{ }
-+	},
- 	.level_input_count = 2,
- 	.air_input_count = 8,
- 
-@@ -8211,10 +8276,32 @@ static void scarlett2_private_suspend(struct usb_mixer_interface *mixer)
- 
- /*** Initialisation ***/
- 
-+/* Select the config_set matching the running firmware version.
-+ *
-+ * The device info's config_sets array is ordered by ascending
-+ * from_firmware_version; pick the last entry whose version is <= the
-+ * running firmware version. If the running firmware is older than the
-+ * first entry's from_firmware_version (i.e. older than the driver's
-+ * minimum supported version for this device), the first entry's
-+ * config_set is selected anyway so firmware updates can still be done
-+ * (requires only the ACK handler), but the usual mixer controls
-+ * aren't created.
++/**
++ * struct inv_sensors_timestamp_interval - timestamps interval
++ * @lo:	interval lower bound
++ * @up:	interval upper bound
 + */
-+static void scarlett2_resolve_config_set(struct scarlett2_data *private)
-+{
-+	const struct scarlett2_config_set_entry *entry =
-+		private->info->config_sets;
++struct inv_sensors_timestamp_interval {
++	int64_t lo;
++	int64_t up;
++};
 +
-+	private->config_set = entry->config_set;
-+	for (entry++; entry->config_set; entry++)
-+		if (entry->from_firmware_version <= private->firmware_version)
-+			private->config_set = entry->config_set;
++/**
++ * struct inv_sensors_timestamp_acc - accumulator for computing an estimation
++ * @val:	current estimation of the value, the mean of all values
++ * @idx:	current index of the next free place in values table
++ * @values:	table of all measured values, use for computing the mean
++ */
++struct inv_sensors_timestamp_acc {
++	uint32_t val;
++	size_t idx;
++	uint32_t values[32];
++};
++
++/**
++ * struct inv_sensors_timestamp - timestamp management states
++ * @chip:		chip internal characteristics
++ * @min_period:		minimal acceptable clock period
++ * @max_period:		maximal acceptable clock period
++ * @it:			interrupts interval timestamps
++ * @timestamp:		store last timestamp for computing next data timestamp
++ * @mult:		current internal period multiplier
++ * @new_mult:		new set internal period multiplier (not yet effective)
++ * @period:		measured current period of the sensor
++ * @chip_period:	accumulator for computing internal chip period
++ */
++struct inv_sensors_timestamp {
++	struct inv_sensors_timestamp_chip chip;
++	uint32_t min_period;
++	uint32_t max_period;
++	struct inv_sensors_timestamp_interval it;
++	int64_t timestamp;
++	uint32_t mult;
++	uint32_t new_mult;
++	uint32_t period;
++	struct inv_sensors_timestamp_acc chip_period;
++};
++
++void inv_sensors_timestamp_init(struct inv_sensors_timestamp *ts,
++				const struct inv_sensors_timestamp_chip *chip);
++
++int inv_sensors_timestamp_update_odr(struct inv_sensors_timestamp *ts,
++				     uint32_t period, bool fifo);
++
++void inv_sensors_timestamp_interrupt(struct inv_sensors_timestamp *ts,
++				     uint32_t fifo_period, size_t fifo_nb,
++				     size_t sensor_nb, int64_t timestamp);
++
++static inline int64_t inv_sensors_timestamp_pop(struct inv_sensors_timestamp *ts)
++{
++	ts->timestamp += ts->period;
++	return ts->timestamp;
 +}
 +
- static void scarlett2_count_io(struct scarlett2_data *private)
- {
- 	const struct scarlett2_device_info *info = private->info;
--	const struct scarlett2_config_set *config_set = info->config_set;
-+	const struct scarlett2_config_set *config_set = private->config_set;
- 	const int (*port_count)[SCARLETT2_PORT_DIRNS] = info->port_count;
- 	int port_type, srcs = 0, dsts = 0, i;
- 
-@@ -8311,9 +8398,14 @@ static int scarlett2_init_private(struct usb_mixer_interface *mixer,
- 	mixer->private_suspend = scarlett2_private_suspend;
- 
- 	private->info = entry->info;
--	private->config_set = entry->info->config_set;
++void inv_sensors_timestamp_apply_odr(struct inv_sensors_timestamp *ts,
++				     uint32_t fifo_period, size_t fifo_nb,
++				     unsigned int fifo_no);
 +
-+	/* Set config_set to the first entry's config_set so the
-+	 * notify handler has a valid pointer while USB init runs; it
-+	 * is re-resolved once the firmware version has been read.
-+	 */
-+	private->config_set = entry->info->config_sets[0].config_set;
++static inline void inv_sensors_timestamp_reset(struct inv_sensors_timestamp *ts)
++{
++	const struct inv_sensors_timestamp_interval interval_init = {0LL, 0LL};
 +
- 	private->series_name = entry->series_name;
--	scarlett2_count_io(private);
- 	private->scarlett2_seq = 0;
- 	private->mixer = mixer;
- 
-@@ -8717,6 +8809,13 @@ static int snd_scarlett2_controls_create(
- 	if (err < 0)
- 		return err;
- 
-+	/* Now that the firmware version is known, pick the matching
-+	 * config_set
-+	 */
-+	scarlett2_resolve_config_set(private);
++	ts->it = interval_init;
++	ts->timestamp = 0;
++}
 +
-+	scarlett2_count_io(private);
-+
- 	/* Get the upgrade & settings flash segment numbers */
- 	err = scarlett2_get_flash_segment_nums(mixer);
- 	if (err < 0)
++#endif
 -- 
 2.53.0
 
