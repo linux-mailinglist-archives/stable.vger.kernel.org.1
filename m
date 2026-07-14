@@ -1,86 +1,86 @@
-Return-Path: <stable+bounces-274593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274591-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ea7VDsfEVmryAwEAu9opvQ
-	(envelope-from <stable+bounces-274593-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 01:22:47 +0200
+	id rQ0mKbHEVmrrAwEAu9opvQ
+	(envelope-from <stable+bounces-274591-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 01:22:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94D25759617
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 01:22:46 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 173A3759600
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 01:22:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=pSFYx1HA;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274593-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-274593-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=c3xqPRQH;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274591-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274591-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=ibm.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AD58D309431D
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 23:22:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id ED6F130360A9
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 23:22:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3689B433E89;
-	Tue, 14 Jul 2026 23:22:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E25B8432E7A;
+	Tue, 14 Jul 2026 23:22:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BB0242DA29;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DA1842BE95;
 	Tue, 14 Jul 2026 23:22:18 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784071339; cv=none; b=qmuigXfEInOIDOAz5rrl1vZVA6P52mwinKaJ4oxU+nkN9R+2/+nDyVui3WIsCKFkgal9mEEiJBnde5t30PnZynXJc30I85oRArvahn8I3K6Qd+F4kunNBL+pzy/5RrraACNx8edaX0nPEDuViIewkKx6mrGWi1NAR0i/lbnFeAI=
+	t=1784071339; cv=none; b=H3WiHr0IypJAWCxkllnFCreMDTptNp27EJZX6oKDFsPyXZAAFYq5gobMv1lTdxd/nLCL6uAYpjxkMiUAWSfRzaCRleuCTeSKsjxlkrDEQKEXPQexCWQHV1g/pdZ0LLf3Cr/zcgFCYhgQJ3Spp7Xq0/7QQLysDJk/AVWhKgKXgeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1784071339; c=relaxed/simple;
-	bh=n0LzOgDMKKopcnoAa2Witr0UJS29Rj+2RrqDEKY2eIM=;
+	bh=PVFcPV7a8IiGyZusUfGwMSC8/Qgs0elyNRsO6J94NS0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X4cbucXoIhaOr2v2VHVYldAl0cSoifhWU49hmcwkkgu+cD2YLFVDUe3d7e2/TVxlBSexUrPOncRoZ0z+8utJkFbAfvoXNA0kDh5+pcETISW/55651+0nIm/0tocPGgP3zPZE4WVjh+GOMSG3JTV8XgFfb2W2PTavct9PZ87XdlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=pSFYx1HA; arc=none smtp.client-ip=148.163.158.5
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66EJBmpx2116371;
+	 MIME-Version; b=t8lKavol8COV913wduVfNnqY+u0HWybv4ZZ7BexWuzNgndarCllQWDtSv21NZCnTPUT4Dt2ajXqc90TJmqestpjhjsYmUm4nJdKTWTjIhPWJlCAokapl2jIhubRgK1TOpBqPJ44IjZbE4u2DaUrQlXw0vkNKZ4DrG4lOihXG1GQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=c3xqPRQH; arc=none smtp.client-ip=148.163.156.1
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66EJBjW82198619;
 	Tue, 14 Jul 2026 23:22:17 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=xrfGuHNduIxh00NuU
-	+zcXAaLn9SOXoYXyRh+TxevBu0=; b=pSFYx1HAi7J6myw+pEPuEaPfmatfqPbJx
-	OaGVGOva1WQ7Ksj5nnBSrPmR+uPFp7bAt+YjrE8CSt/iV+ZChn/WwIqV/Nu2WyYA
-	00zRA5GFZyxJ9+qnjoTii4lDeFpU/A+cnhkwy2AQiD3zb/oExVXAy2ZJ43U14Qin
-	HNTCUiTVNRrx0dgLlSM4XeYRJGyMIyuSXLKVSQ8Ku4pCy8igIj1K16NNZU864duJ
-	86T8EhhlrGjoroEqlXi+NctBWN8O9JX9Je4/duKqJp0x7gQAre59Lj49l2OaQNhQ
-	XExjAHU8A1ydyU7YKJmH8DVauqnR0dLtqrNty//fl9KCGByQXQNkA==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fbf2a86dw-1
+	:mime-version:references:subject:to; s=pp1; bh=RvX3wjFVBiIFnX0eT
+	yYT1jCPxHd6yorYubpelkCZmQ0=; b=c3xqPRQHV0QYu3pBeQUky66nlea7aqKFq
+	vthgkXh6TcrAgp75HiQdbPZLgBYasLeDxDkpbOSkHJYS7ai+GO+E0pjZm2jIktW4
+	2dFHKExx5dIGVLmlecFEkcilic2soSmUCzLYqFFuYnx8JxiT3j2UunIKVwXhgRQc
+	MgT6fofb6JB4uYvnnVWhuu5/CkI2YfUcHPLR2K+mgISuTPMeZCLLt5AmRjeHwNYt
+	mm4Dq0FxY54oLznvweMujlYWgGqGhTcIwutiu81egNhz6SY0je8u0tba5EybFlHx
+	dqHPTWgdadcw6wxOglIlk4jsH6w18ExfmPGEEBZyQwW/qA/DTpM/Q==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fbepxgrq5-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Tue, 14 Jul 2026 23:22:17 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66ENJg5F000379;
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66ENJfYF012337;
 	Tue, 14 Jul 2026 23:22:16 GMT
 Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fc1nhd3nq-1
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fc2cgcyjr-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Tue, 14 Jul 2026 23:22:16 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66ENMCYG21889312
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66ENMCGq30998854
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
 	Tue, 14 Jul 2026 23:22:12 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5ED5120049;
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 64E5C2004B;
 	Tue, 14 Jul 2026 23:22:12 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3FE9420040;
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 44BF820040;
 	Tue, 14 Jul 2026 23:22:12 +0000 (GMT)
 Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with SMTP;
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with SMTP;
 	Tue, 14 Jul 2026 23:22:12 +0000 (GMT)
 Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 4958)
-	id 1E6BD16260D; Wed, 15 Jul 2026 01:22:12 +0200 (CEST)
+	id 25F2016267D; Wed, 15 Jul 2026 01:22:12 +0200 (CEST)
 From: Eric Farman <farman@linux.ibm.com>
 To: linux-s390@vger.kernel.org, kvm@vger.kernel.org,
         linux-kernel@vger.kernel.org
 Cc: Matthew Rosato <mjrosato@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>,
         Christian Borntraeger <borntraeger@linux.ibm.com>,
         Eric Farman <farman@linux.ibm.com>, stable@vger.kernel.org
-Subject: [PATCH v1 1/6] s390/vfio_ccw: fix out of bounds check on CCW array
-Date: Wed, 15 Jul 2026 01:22:03 +0200
-Message-ID: <20260714232208.1683788-2-farman@linux.ibm.com>
+Subject: [PATCH v1 2/6] s390/vfio_ccw: limit the number of channel program segments
+Date: Wed, 15 Jul 2026 01:22:04 +0200
+Message-ID: <20260714232208.1683788-3-farman@linux.ibm.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260714232208.1683788-1-farman@linux.ibm.com>
 References: <20260714232208.1683788-1-farman@linux.ibm.com>
@@ -92,30 +92,30 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE0MDI0MCBTYWx0ZWRfX9fR7JOnIjWFc
- 57O2WLU1tiLmG/PmmeKzf0csH8aKBQcG1cNL5vOZ4OrBP4pkGlSKB79BWgDRGZpdGtS7zKm2C8J
- ObGMw6dqbKPyv7Q9T+lFjXO7iu1pBW8=
-X-Proofpoint-GUID: gEChmZ9XFlrYps8-XIgC-kkpwze5kw5b
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE0MDI0MCBTYWx0ZWRfX5pVNQ202t3x8
- tFGz1ciPrDQ3a126yJeLVCgUHau6XAnoZRQ9naGKEqN+p9ufBu4Hr22Ph0EfJl5548c0zdiC86K
- pXFkezGBSJEhGqVIjVpMzs/xtI+S0b0vciUPyV+jYfzZxHBZzPFg1MoQQ8ISZRviTz8n7lBx+q1
- bK1lvdhZRFsQDHlFpbWYxyU6KcoqCqzV6vRMYv9FhYpwa/eFjg/My0eTGIV47JSh/Wn+aHeoy0O
- oLuq/WNZz7hPo5N3cifQOR1FXobkmPBQaSLv17gVdwUZnV6cR+HMnAmSQL3g/IgiMFpgqckaEdO
- h4/sKoayHbwLBoxJT/LI+vdCOD8LOsRGgiRw0xcGq3HdL6AMSJi4J6zWuC+tXNv786z0mJvUFTJ
- brQXH8TjLfwLsdZl5vMZ2X4Vq/41YNpDqfzdD29YaKaKWrfjQePFPrbeB8fsJVmDrvmwPojZwvo
- M4ZSxpb2sj+OtHe7Xsg==
-X-Proofpoint-ORIG-GUID: gEChmZ9XFlrYps8-XIgC-kkpwze5kw5b
-X-Authority-Analysis: v=2.4 cv=PvajqQM3 c=1 sm=1 tr=0 ts=6a56c4a9 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+X-Proofpoint-GUID: eHsTBQ8hmANsyNGgMB2SdWyhJnwqAZ_9
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE0MDI0MCBTYWx0ZWRfXw5cyF8xOiRS2
+ avp3X5RC2VfsbN4LgZueytcIXjhvUVHxkx2pbyAkWxFb6vo8Xt7lqhzrND4IW+UKB5BelMHbwVa
+ 8CmvchElmk0Qq/D+pBRHrcc7WmhIhkU=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE0MDI0MCBTYWx0ZWRfX4KvJinxMHbu7
+ P1dbyhQt/oGv7rUROwhI1u+8ItYbbd5OxLXqVwrGvqS0Qd360cFm/ViYYvBn70JJ1vnvlONQvBU
+ eMfgkJ2KUx+j8Q3wOje68oIW3sPRcf4OGL8b+5kR1m7ZkLQ4nJtfaQCetMhWi4K75LKO3Zg7Ngu
+ 2v8qSxoUBr15ayhE3uVgU1kHyfIFEvTZySWMXN9oGHklo7/KaFiucfVlZkdbrzaEkBkSyMaiYBl
+ DHO5vts4ryYVCm9EMdPrL5vv+5zRtzo6dF95viWzwFEkIY/4VJ5OhqrO9+gYeRcyYOY9WMoJSAW
+ F0cULeS8WG/Ax7J0hJc09PnvRi5gOzdbU/aoUIeWHDhdPQ4PphhhFPBDSavHUavCvGXRDNmY4Oi
+ PkBfnJJSCIRe5OrCkYNnbwwNmGu5/T/dYHf8rIyn5FWoiddepBaLsJSE9I44bZi+OShG3xaGOiG
+ 26XrVTZxCOP7eM8lQEA==
+X-Authority-Analysis: v=2.4 cv=XbS5Co55 c=1 sm=1 tr=0 ts=6a56c4a9 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
  a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=Ztfy0_AA8xUuwmIluScA:9
+ a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=OzPGupj-Brq4hERWPoIA:9
+X-Proofpoint-ORIG-GUID: eHsTBQ8hmANsyNGgMB2SdWyhJnwqAZ_9
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-07-14_05,2026-07-14_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 malwarescore=0 bulkscore=0 impostorscore=0 adultscore=0
- clxscore=1015 lowpriorityscore=0 spamscore=0 suspectscore=0 phishscore=0
+ clxscore=1011 suspectscore=0 spamscore=0 phishscore=0 lowpriorityscore=0
+ priorityscore=1501 adultscore=0 malwarescore=0 impostorscore=0 bulkscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607140240
 X-Rspamd-Action: no action
@@ -125,13 +125,13 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-274593-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-274591-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS(0.00)[m:linux-s390@vger.kernel.org,m:kvm@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:mjrosato@linux.ibm.com,m:pasic@linux.ibm.com,m:borntraeger@linux.ibm.com,m:farman@linux.ibm.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[farman@linux.ibm.com,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -148,49 +148,88 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 94D25759617
+X-Rspamd-Queue-Id: 173A3759600
 
-The routine ccwchain_calc_length() counts the number of channel
-command words (CCWs) that are chained together in a single channel
-program, and rejects anything larger than CCWCHAIN_LEN_MAX (256) CCWs.
+The processing of channel programs, and the CCWs within them, is done
+recursively. As such, there is an arbitrary (but not architectural)
+limit to the number of CCWs that can exist in a single channel program.
 
-The loop itself is "do..while (count < 257)", and while the logic in
-is_cpa_within_range() correctly adjusts between the 0-index array of
-CCWs and the count of CCWs starting at 1, this means it would look
-at a possible 257th CCW before ending the loop and (correctly)
-returning an error.
-
-Fix this by limiting the loop to 256 CCWs such that only indexes 0-255
-are examined.
+The vfio-ccw logic breaks these channel programs into segments whenever
+it encounters a Transfer-In-Channel (TIC) CCW, and the combined number
+of segments count towards the global limit. Impose an equivalent limit
+to the number of segments until such logic can be made non-recursive.
 
 Fixes: 0a19e61e6d4c ("vfio: ccw: introduce channel program interfaces")
 Cc: stable@vger.kernel.org
 Signed-off-by: Eric Farman <farman@linux.ibm.com>
 ---
- drivers/s390/cio/vfio_ccw_cp.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/s390/cio/vfio_ccw_cp.c | 5 +++++
+ drivers/s390/cio/vfio_ccw_cp.h | 6 ++++++
+ 2 files changed, 11 insertions(+)
 
 diff --git a/drivers/s390/cio/vfio_ccw_cp.c b/drivers/s390/cio/vfio_ccw_c=
 p.c
-index 7561aa7d3e01..80c3d87f5482 100644
+index 80c3d87f5482..76632b18fc37 100644
 --- a/drivers/s390/cio/vfio_ccw_cp.c
 +++ b/drivers/s390/cio/vfio_ccw_cp.c
-@@ -393,9 +393,9 @@ static int ccwchain_calc_length(u64 iova, struct chan=
-nel_program *cp)
- 			break;
+@@ -319,6 +319,9 @@ static struct ccwchain *ccwchain_alloc(struct channel=
+_program *cp, int len)
+ {
+ 	struct ccwchain *chain;
 =20
- 		ccw++;
--	} while (cnt < CCWCHAIN_LEN_MAX + 1);
-+	} while (cnt < CCWCHAIN_LEN_MAX);
++	if (cp->ccwchain_count >=3D CCWCHAIN_COUNT_MAX)
++		return NULL;
++
+ 	chain =3D kzalloc_obj(*chain);
+ 	if (!chain)
+ 		return NULL;
+@@ -332,6 +335,7 @@ static struct ccwchain *ccwchain_alloc(struct channel=
+_program *cp, int len)
+ 		goto out_err;
 =20
--	if (cnt =3D=3D CCWCHAIN_LEN_MAX + 1)
-+	if (cnt >=3D CCWCHAIN_LEN_MAX)
- 		cnt =3D -EINVAL;
+ 	list_add_tail(&chain->next, &cp->ccwchain_list);
++	cp->ccwchain_count++;
 =20
- 	return cnt;
+ 	return chain;
+=20
+@@ -731,6 +735,7 @@ int cp_init(struct channel_program *cp, union orb *or=
+b)
+ 			vdev->dev,
+ 			"Prefetching channel program even though prefetch not specified in OR=
+B");
+=20
++	cp->ccwchain_count =3D 0;
+ 	INIT_LIST_HEAD(&cp->ccwchain_list);
+ 	memcpy(&cp->orb, orb, sizeof(*orb));
+=20
+diff --git a/drivers/s390/cio/vfio_ccw_cp.h b/drivers/s390/cio/vfio_ccw_c=
+p.h
+index fc31eb699807..dc91a317ef19 100644
+--- a/drivers/s390/cio/vfio_ccw_cp.h
++++ b/drivers/s390/cio/vfio_ccw_cp.h
+@@ -23,6 +23,11 @@
+  */
+ #define CCWCHAIN_LEN_MAX	256
+=20
++/*
++ * Maximum number of chains
++ */
++#define CCWCHAIN_COUNT_MAX	16
++
+ /**
+  * struct channel_program - manage information for channel program
+  * @ccwchain_list: list head of ccwchains
+@@ -38,6 +43,7 @@ struct channel_program {
+ 	union orb orb;
+ 	bool initialized;
+ 	struct ccw1 *guest_cp;
++	int ccwchain_count;
+ };
+=20
+ int cp_init(struct channel_program *cp, union orb *orb);
 --=20
 2.53.0
 
