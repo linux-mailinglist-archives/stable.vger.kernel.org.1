@@ -1,199 +1,209 @@
-Return-Path: <stable+bounces-274097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274099-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 7GcyKcSnVWrFrQAAu9opvQ
-	(envelope-from <stable+bounces-274097-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 05:06:44 +0200
+	id 1Un1IGWnVWqyrQAAu9opvQ
+	(envelope-from <stable+bounces-274099-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 05:05:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 299127508FD
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 05:06:44 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 892C07508CB
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 05:05:08 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AsiZDiwl;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274097-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-274097-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A7DEoAvU;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274099-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-274099-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B26EC305D87C
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 03:04:54 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BE9813010DD9
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 03:04:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F17837EFFF;
-	Tue, 14 Jul 2026 03:04:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64B443655F0;
+	Tue, 14 Jul 2026 03:04:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2761238E5D7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0029636A033
 	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 03:04:53 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783998294; cv=none; b=P9hjELVrQDlfEVwOmdCgF+9X4pkMwwYEjg6gpq37T4BKS1lp9OrKtJokCHmOZWyWpSK65NM9+237pMzrzV7/bKn9JJVy7o3uxh2xLWTCnB3xg1p6DKtl306I0TLF4roK/gpmZSK8DSvM2ohn8nXYqMfadC0dQ3UswUqEaUkZoDg=
+	t=1783998295; cv=none; b=YyNu3VbZhbYud7tsLTdzHkkVPxv3QsW430I9DKMBAJM33A+Gsm8z7IR1oF56L2PtxZjFFsAET9e0FeedxOibzanaf65ZXpQxRBzgCLy8Ds537XLFZ8CEN2O87270fw2qx3zo2jAcCasn3B2y2KjuCvtqv3lKOyENPcEuKYt2WEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783998294; c=relaxed/simple;
-	bh=qH7AzihBoFOxViVe9V4fvifxGNQbrqsc41GBcv40VGo=;
+	s=arc-20240116; t=1783998295; c=relaxed/simple;
+	bh=McpXvcai9NqnIlbCdcS2tcT4oOl2PStAPGlLpo5I8Gk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Avyake3yBO2aV+bbRQGifwpK7/FLaGxvoJL3vNNhH8TmFLOQizfAHKw/sGLRtQRa3Qu/TfsExo+oovsT1sAowUQKWa+C+vXNV9yWBI8/us7xp7ZrnPLQBJTWcjo6Eh1e0Bxu0NR9b6QDm+Tj+NIQj1o+IPiTdF2RQYvmhj31SxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AsiZDiwl; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 516121F000E9;
-	Tue, 14 Jul 2026 03:04:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ilFhpqitF6BUeHPOAmQANEuJo2sgC8ZJnrSWACUV8KhsTPtIv4rn0WLoJKrzYGuhClnZ6Ot8xQx5PxNxvPYL21A8WL+j0/doZzGUcj+J7HlyhsNI1jp0SJ1vWsDnlQAVRGppc0B064iJxMXJ9VL9hAOi83oEMWhURllj9rAvu4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A7DEoAvU; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51C1B1F00A3A;
+	Tue, 14 Jul 2026 03:04:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1783998293;
-	bh=XPa19kAf2Mdxd9fM1mfykmkI6GCr/J34SLA7meouvK0=;
+	bh=Asg7tTw8pApVqhASqwkGKJ+rjs1X48MeDXdcvdC4QfA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=AsiZDiwl47OCtVdBiIrv4cAKLCAhA1uV3i3g/2ZHIxLql/iYyggAZnZwzMnBTTMy1
-	 UvtpgqpF4JJbNeDmw8/oLKK/txHpxfZ61BFgs8eypUpjRazrXXZNXIEXzP41/wUbVU
-	 /GWlHNqGk1w4UiRveueK3eic3YLDk+GgpKgTolocBnjL0AgJ1Q3r6B+D1NnX3Lfaqs
-	 7XKpGricR4hIhP2I+R5H5VGL0iXX9sxC0SXSKAy+djha7XkQ6Exa8rXqzAL+iB2Afb
-	 s/Se3x40QIlDyLTGL1bVmsSvA+hq6R3rQ26JXsYsq0dKiB2pHCpLVHriwJ/WCThGZy
-	 NR4nnTPUGz7/Q==
+	b=A7DEoAvUzX5pRBVNZEEs2jpCwvYN3vv7u82Gwp8oXroxoEiJm3pR+TuOA12kCoBRt
+	 ooLCWFJ0ptcPbvPsMGxGF5Z4dyEnGvmWP8sJczTpZOknEbkOym78p4yivzNJBzQb9z
+	 Af5fwB5Plefc20jsaOYdhqNiWfqKLKV5nvzJNiID1+WN2jmJRYKYOStCMGFSYBhTn1
+	 m7DQX0N+tQ4jof0j7YpNx+EynsgohFYGHVt2v6a4Y8Ykbtmi1oS2T6kvw1GlSS5iL8
+	 0q7f53TKjYbTRVaQY6t1EBdsCsAGQyVtNTgorGSsEiOEM9CUD1jJrS00uQ0o3sOhCj
+	 tWippeOgpegdg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Yury Norov <yury.norov@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
+Cc: Herman van Hazendonk <github.com@herrie.org>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Jonathan Cameron <jic23@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y 1/2] bitops: make BYTES_TO_BITS() treewide-available
-Date: Mon, 13 Jul 2026 23:04:47 -0400
-Message-ID: <20260714030448.2382602-1-sashal@kernel.org>
+Subject: [PATCH 5.10.y 2/2] iio: common: st_sensors: honour channel endianness in read_axis_data
+Date: Mon, 13 Jul 2026 23:04:48 -0400
+Message-ID: <20260714030448.2382602-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026071351-cheating-unrented-98cd@gregkh>
+In-Reply-To: <20260714030448.2382602-1-sashal@kernel.org>
 References: <2026071351-cheating-unrented-98cd@gregkh>
+ <20260714030448.2382602-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-4.16 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-274097-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-274099-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:aleksander.lobakin@intel.com,m:andriy.shevchenko@linux.intel.com,m:przemyslaw.kitszel@intel.com,m:yury.norov@gmail.com,m:davem@davemloft.net,m:sashal@kernel.org,m:yurynorov@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[intel.com,linux.intel.com,gmail.com,davemloft.net,kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:github.com@herrie.org,m:andriy.shevchenko@intel.com,m:jic23@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
+	RCPT_COUNT_FIVE(0.00)[5]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 299127508FD
+X-Rspamd-Queue-Id: 892C07508CB
 
-From: Alexander Lobakin <aleksander.lobakin@intel.com>
+From: Herman van Hazendonk <github.com@herrie.org>
 
-[ Upstream commit 7d8296b250f2eed73f1758607926d4d258dea5d4 ]
+[ Upstream commit 55052184ac9011db2ea983e54d6c21f0b1079a12 ]
 
-Avoid open-coding that simple expression each time by moving
-BYTES_TO_BITS() from the probes code to <linux/bitops.h> to export
-it to the rest of the kernel.
-Simplify the macro while at it. `BITS_PER_LONG / sizeof(long)` always
-equals to %BITS_PER_BYTE, regardless of the target architecture.
-Do the same for the tools ecosystem as well (incl. its version of
-bitops.h). The previous implementation had its implicit type of long,
-while the new one is int, so adjust the format literal accordingly in
-the perf code.
+st_sensors_read_axis_data() unconditionally decoded multi-byte
+results with get_unaligned_le16() / get_unaligned_le24() regardless
+of the channel's declared scan_type.endianness.
 
-Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Acked-by: Yury Norov <yury.norov@gmail.com>
-Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 55052184ac90 ("iio: common: st_sensors: honour channel endianness in read_axis_data")
+For every ST sensor that has used this helper since it was introduced
+this happened to be fine because the ST IMU/accel/gyro/pressure
+families publish their data registers as little-endian and the
+channel specs in those drivers declare IIO_LE accordingly.
+
+The LSM303DLH magnetometer however publishes its X/Y/Z output as a
+pair of big-endian bytes (the H register sits at the lower address,
+0x03/0x05/0x07, and the L register immediately after), and its
+channel specs in st_magn_core.c correctly declare IIO_BE -- but
+read_axis_data() ignored that and decoded as little-endian, swapping
+the high and low bytes of every magnetometer sample. The LSM303DLHC
+and LSM303DLM share the same st_magn_16bit_channels (IIO_BE) and
+were therefore byte-swapped by the same bug; users of those parts
+will see different in_magn_*_raw values after this fix lands.
+
+The bug is most visible on a stationary chip: in earth's field the
+true X reading is small and the high byte sits at 0x00, so swapping
+the bytes pins sysfs X at exactly the low byte's pattern (e.g. 0x00F0
+= 240). Y and Z still appear "to vary" because their magnitudes are
+larger and the noise in the low byte produces big swings in the
+swapped high byte:
+
+  before (LSM303DLH flat, sysfs in_magn_*_raw):
+      X=240 (stuck), Y= 12032..23296, Z=-16128..-9728
+
+  after (direct i2c-dev big-endian decode, same chip same orientation):
+      X≈-4096, Y≈210, Z≈80     (sensible values reflecting earth's
+                                ambient field at low gauss range)
+
+Fix read_axis_data() to dispatch on ch->scan_type.endianness and
+call get_unaligned_be16() / get_unaligned_be24() when the channel
+declares IIO_BE. Existing IIO_LE consumers (st_accel, st_gyro,
+st_pressure, st_lsm6dsx and others) are unaffected because their
+channel specs already declare IIO_LE and the LE path is unchanged.
+
+While restructuring the branches, replace the previously implicit
+silent-success-with-uninitialised-*data fall-through for
+byte_for_channel outside 1..3 with an explicit return -EINVAL. No
+in-tree ST sensor publishes such a channel, but the new behaviour
+is strictly safer than handing userspace garbage.
+
+Fixes: 23491b513bcd ("iio:common: Add STMicroelectronics common library")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-7 sparse smatch clang-analyzer coccinelle checkpatch
+Assisted-by: Sashiko:claude-opus-4-7
+Signed-off-by: Herman van Hazendonk <github.com@herrie.org>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Signed-off-by: Jonathan Cameron <jic23@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/bitops.h         | 2 ++
- kernel/trace/trace_probe.c     | 2 --
- tools/include/linux/bitops.h   | 2 ++
- tools/perf/util/probe-finder.c | 4 +---
- 4 files changed, 5 insertions(+), 5 deletions(-)
+ .../iio/common/st_sensors/st_sensors_core.c   | 23 ++++++++++++++-----
+ 1 file changed, 17 insertions(+), 6 deletions(-)
 
-diff --git a/include/linux/bitops.h b/include/linux/bitops.h
-index 5b74bdf159d6f2..e2930a990ea4aa 100644
---- a/include/linux/bitops.h
-+++ b/include/linux/bitops.h
-@@ -17,6 +17,8 @@
- #define BITS_TO_U32(nr)		DIV_ROUND_UP(nr, BITS_PER_TYPE(u32))
- #define BITS_TO_BYTES(nr)	DIV_ROUND_UP(nr, BITS_PER_TYPE(char))
+diff --git a/drivers/iio/common/st_sensors/st_sensors_core.c b/drivers/iio/common/st_sensors/st_sensors_core.c
+index 56206fdbceb9d0..c507854abe9497 100644
+--- a/drivers/iio/common/st_sensors/st_sensors_core.c
++++ b/drivers/iio/common/st_sensors/st_sensors_core.c
+@@ -527,6 +527,7 @@ static int st_sensors_read_axis_data(struct iio_dev *indio_dev,
+ 	u8 *outdata;
+ 	struct st_sensor_data *sdata = iio_priv(indio_dev);
+ 	unsigned int byte_for_channel;
++	u32 tmp;
  
-+#define BYTES_TO_BITS(nb)	((nb) * BITS_PER_BYTE)
-+
- extern unsigned int __sw_hweight8(unsigned int w);
- extern unsigned int __sw_hweight16(unsigned int w);
- extern unsigned int __sw_hweight32(unsigned int w);
-diff --git a/kernel/trace/trace_probe.c b/kernel/trace/trace_probe.c
-index 48f5ca60c68dd1..6a879f395084d8 100644
---- a/kernel/trace/trace_probe.c
-+++ b/kernel/trace/trace_probe.c
-@@ -502,8 +502,6 @@ parse_probe_arg(char *arg, const struct fetch_type *type,
- 	return ret;
- }
+ 	byte_for_channel = DIV_ROUND_UP(ch->scan_type.realbits +
+ 					ch->scan_type.shift, 8);
+@@ -539,12 +540,22 @@ static int st_sensors_read_axis_data(struct iio_dev *indio_dev,
+ 	if (err < 0)
+ 		goto st_sensors_free_memory;
  
--#define BYTES_TO_BITS(nb)	((BITS_PER_LONG * (nb)) / sizeof(long))
--
- /* Bitfield type needs to be parsed into a fetch function */
- static int __parse_bitfield_probe_arg(const char *bf,
- 				      const struct fetch_type *t,
-diff --git a/tools/include/linux/bitops.h b/tools/include/linux/bitops.h
-index 5fca38fe1ba839..a92e187bd77e33 100644
---- a/tools/include/linux/bitops.h
-+++ b/tools/include/linux/bitops.h
-@@ -20,6 +20,8 @@
- #define BITS_TO_U32(nr)		DIV_ROUND_UP(nr, BITS_PER_TYPE(u32))
- #define BITS_TO_BYTES(nr)	DIV_ROUND_UP(nr, BITS_PER_TYPE(char))
+-	if (byte_for_channel == 1)
+-		*data = (s8)*outdata;
+-	else if (byte_for_channel == 2)
+-		*data = (s16)get_unaligned_le16(outdata);
+-	else if (byte_for_channel == 3)
+-		*data = (s32)sign_extend32(get_unaligned_le24(outdata), 23);
++	if (byte_for_channel == 1) {
++		tmp = *outdata;
++	} else if (byte_for_channel == 2) {
++		if (ch->scan_type.endianness == IIO_BE)
++			tmp = get_unaligned_be16(outdata);
++		else
++			tmp = get_unaligned_le16(outdata);
++	} else if (byte_for_channel == 3) {
++		if (ch->scan_type.endianness == IIO_BE)
++			tmp = get_unaligned_be24(outdata);
++		else
++			tmp = get_unaligned_le24(outdata);
++	} else {
++		return -EINVAL;
++	}
++	*data = sign_extend32(tmp, BYTES_TO_BITS(byte_for_channel) - 1);
  
-+#define BYTES_TO_BITS(nb)	((nb) * BITS_PER_BYTE)
-+
- extern unsigned int __sw_hweight8(unsigned int w);
- extern unsigned int __sw_hweight16(unsigned int w);
- extern unsigned int __sw_hweight32(unsigned int w);
-diff --git a/tools/perf/util/probe-finder.c b/tools/perf/util/probe-finder.c
-index 8a98673fea380a..45c0c1d6b6aa65 100644
---- a/tools/perf/util/probe-finder.c
-+++ b/tools/perf/util/probe-finder.c
-@@ -299,8 +299,6 @@ static int convert_variable_location(Dwarf_Die *vr_die, Dwarf_Addr addr,
- 	return ret2;
- }
- 
--#define BYTES_TO_BITS(nb)	((nb) * BITS_PER_LONG / sizeof(long))
--
- static int convert_variable_type(Dwarf_Die *vr_die,
- 				 struct probe_trace_arg *tvar,
- 				 const char *cast, bool user_access)
-@@ -330,7 +328,7 @@ static int convert_variable_type(Dwarf_Die *vr_die,
- 		total = dwarf_bytesize(vr_die);
- 		if (boffs < 0 || total < 0)
- 			return -ENOENT;
--		ret = snprintf(buf, 16, "b%d@%d/%zd", bsize, boffs,
-+		ret = snprintf(buf, 16, "b%d@%d/%d", bsize, boffs,
- 				BYTES_TO_BITS(total));
- 		goto formatted;
- 	}
+ st_sensors_free_memory:
+ 	kfree(outdata);
 -- 
 2.53.0
 
