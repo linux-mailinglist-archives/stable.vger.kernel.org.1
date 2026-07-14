@@ -1,119 +1,80 @@
-Return-Path: <stable+bounces-274510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274511-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Gv5XFgaGVmqU8AAAu9opvQ
-	(envelope-from <stable+bounces-274510-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 20:55:02 +0200
+	id k523F+aGVmry8AAAu9opvQ
+	(envelope-from <stable+bounces-274511-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 20:58:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94DAB757F9F
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 20:55:01 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD2C6758006
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 20:58:45 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Jr8vmDj+;
-	dkim=pass header.d=redhat.com header.s=google header.b=dlOOdpNq;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274510-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274510-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=aTtq2MfB;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274511-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-274511-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=intel.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5C5CB30F0B9B
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 18:53:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 15EB9304C902
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 18:58:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B4052641EE;
-	Tue, 14 Jul 2026 18:53:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E02653C872A;
+	Tue, 14 Jul 2026 18:58:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95CE247DF80
-	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 18:52:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BD183346A8;
+	Tue, 14 Jul 2026 18:58:25 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784055180; cv=none; b=dg1dbAdM7SjB05Vi62Cn+23z7ffkBHNhaB7D26cYGUjcv6dR47pj26jrZ2ks5ufVGe8M2+8cL5FWgWjT3upsn/YRp/X2SAg0joKQUGqXHaQV7TnhN1pvikkmwsveLtgZTR+GZ7LMgiNQXNuy2v1IESRKpn99E14hgjdhomIYtuA=
+	t=1784055507; cv=none; b=pvf5TD23F/QEknWoNO4863NvmMh2muOb3gVkSC2I5GNE5zNy1tgA2DeL2pMupMAdKAKc5gnKcex169bse8LClk/1Xn2oF4G6k4odh60z0vEpFzsGA3APDotVKmd+gDqKD26rIh+HTcMsPFgP6q4juj5r9MmwC96n954hDXJo3EE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784055180; c=relaxed/simple;
-	bh=1xwTUh0XQqqeQexWpf4nYNoBpFIntTgU7ikkAM9WIvM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=g2Da8C8LmkzE3263dfFjUkGKVOmfDNgyXToiMeCvqHCtdFj5ELcP0vlO3MnjV28jomyteK/68R96QstZBdoTeAL4oXOxsBQplz5oD7MgyDf6HbicNYzWbRmyT0XH1dULyoc6esc66g+lfWVkyqI+U2wFIxIb96qmXCYhIOIzux4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Jr8vmDj+; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=dlOOdpNq; arc=none smtp.client-ip=170.10.129.124
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1784055164;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nIfwW/o8U7z/0oL+ZaQUBUaHVA8qfCLS7p9kgkBe1fQ=;
-	b=Jr8vmDj+shCe3i11Pbg0V9yvgDERCYb2gOmKHz0hHFjix4LG2SvbkuZr6QBjvVbU6mkCS4
-	EaZsG+AEmWsQAQjjAlUZx9radzDuDwfx0trPKpK3h9puycUiOoP9dEt8bNMXWPcyQLYTpo
-	kw/KsYuP6KLjF5BVf2foCuzGF7sc/Ks=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-227-N0Fhe8KZPJe_VhIW0S5TIw-1; Tue, 14 Jul 2026 14:52:43 -0400
-X-MC-Unique: N0Fhe8KZPJe_VhIW0S5TIw-1
-X-Mimecast-MFC-AGG-ID: N0Fhe8KZPJe_VhIW0S5TIw_1784055162
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-472bdd6f529so2826585f8f.1
-        for <stable@vger.kernel.org>; Tue, 14 Jul 2026 11:52:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1784055162; x=1784659962; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=nIfwW/o8U7z/0oL+ZaQUBUaHVA8qfCLS7p9kgkBe1fQ=;
-        b=dlOOdpNq4HKcX111TjfaRAlQv5lgzphm7aSghlnSZLOYTY3SB9kNvDWgyCpmn2//0+
-         64oCBpIttXIm/BjlH+3r3XNxQ2ivtqOeg0lA6yE1riX1tt+V5v7gNUydNNV1+vtkVyvG
-         FP2PFJ9lHGk62b71n90S0Xngqq6T1ATtmC/I9YfsdzAdel1CG5a6qHKNTXOHApUnebZb
-         eoVQs6m9o33WBbMR8Dh9pP3rF0p0s9skSXZjWzCWZzReckPGgfP0hyQrx93WBPbktYEx
-         +2eQJw/tkeqKrMLXUumguRape9p3jQ8M2May7UsTGG1uSpRhJwBpbtCW2B0s2c6K5vYL
-         9hhw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784055162; x=1784659962;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=nIfwW/o8U7z/0oL+ZaQUBUaHVA8qfCLS7p9kgkBe1fQ=;
-        b=I+ALB2Lv41qGH2xqNE+EOlCbyK3cjwr3d/yDaj4sNupDC92Sf2dsfxji8ZXHJZ608p
-         hiOUCUs9Ymf9QhMwib2hkFddEXyeFHKgS9hsk/NxV+NLQtHYMvY/AkvVE9RdRxpQLB94
-         ExJ/BTlJSwVhVdFzhJ6AKhRg6ytX7rzZyhtOjT6rR5XTAPwtvdZoGykInfiEAnk+p2OA
-         r+2Z4Bt7Wl5KRZjqVJ3kspjKbQqBwZAum+C3qzC8nVroYpQ4lyHLEr58eKPNJWbltP8o
-         by23JtQzFb0FTWZyqwNt0PjsdsgyziQ8WwKiQUNM8xImJcCgbgJlExbmTqm0q5fidTRZ
-         Pbkw==
-X-Forwarded-Encrypted: i=1; AHgh+Rodq81fw/28yA9XIi1tiDwg/+8S3gvBH3ttZdXO/P5nZqjnhOOWUhpx5mF08op4cZDMxD62GIY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx8NM4C6y2z0xKAidwOuqpInW4OtTWMKFiV2LZlK1ekzmdNwpM7
-	m1Dxt5ZvOHR6QazixLaQ1+yi+FsjB6khZLWXjN5J8GCoOpdStrz6gAtYVsNukSahcOG62GLra7z
-	89niyxqTiIrLWTD3+ckNccaIHv4CLuTnJm4S9wqAgR8spM2kyNRnoLKFp5A==
-X-Gm-Gg: AfdE7cn/LhJtN6GkDvvY9rNJV/R+gPGubN8LUkIE1VIE5tDrrmf7kDXb1+7QPlzXEEK
-	b+XgEo14KVdZwSqQgGMl9svrJTo0z3sa8w5RGp83j0djOOz95ouktyouj+aiKutulQEG0+oNVRR
-	lN/S3uwLO851Ze2eaGtOzEcnILb6f/dA77sB67dxBHG9e/YCMC/e47l2SQ89SKdh15sg3uyyoZQ
-	tgApOzPn5/NxAboh3drnwoMv1Om3JVsCM4+s6268zj/lRy4X7jR/xUZmIAOqVzHvtgWSJV8TlJq
-	JEVKfK7p4pcRp17tZEryb5J4TsmhIH8vg14GXinUYRbfgylJwhKXZrHzVR7J0BmrmWrAXoASQOl
-	SYF/09CxsNSTK+6GHFnDerAS0iq21WPWla8I=
-X-Received: by 2002:a5d:5f49:0:b0:462:6aa1:4393 with SMTP id ffacd0b85a97d-47f4886edc6mr4094729f8f.4.1784055161954;
-        Tue, 14 Jul 2026 11:52:41 -0700 (PDT)
-X-Received: by 2002:a5d:5f49:0:b0:462:6aa1:4393 with SMTP id ffacd0b85a97d-47f4886edc6mr4094699f8f.4.1784055161476;
-        Tue, 14 Jul 2026 11:52:41 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-24-117.inter.net.il. [80.230.24.117])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f464a9879sm11237677f8f.22.2026.07.14.11.52.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Jul 2026 11:52:40 -0700 (PDT)
-Date: Tue, 14 Jul 2026 14:52:37 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: David Rientjes <rientjes@google.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
-	Link Lin <linkl@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>, virtualization@lists.linux.dev,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, prasin@google.com,
-	duenwen@google.com, jasowang@redhat.com, xuanzhuo@linux.alibaba.com,
-	Ammar Faizi <ammarfaizi2@openresty.com>, jiaqiyan@google.com,
-	ahwilkins@google.com, Greg Thelen <gthelen@google.com>,
-	Alexander Duyck <alexander.duyck@gmail.com>, stable@vger.kernel.org
-Subject: Re: [RFC] virtio_balloon: fix Use-After-Free in page reporting
- during PM freeze
-Message-ID: <20260714145155-mutt-send-email-mst@kernel.org>
-References: <20260709224330.946683-1-linkl@google.com>
- <8d316b6c-41fb-4ae3-8923-3b649b92b33d@kernel.org>
- <20260714092146-mutt-send-email-mst@kernel.org>
- <5e18d7ec-a9d7-2cc3-7741-695ec3580ffa@google.com>
+	s=arc-20240116; t=1784055507; c=relaxed/simple;
+	bh=DzLA4w38CFwdzu/Uzj79RDIxzZT2AwfMc39nX/r/t9k=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=P2RzxZJd4CnzdZW+qmtdJ6u4zlIvPkvMzj4rg6AQELpWFQam/UGboYv63MKsOgLXBqy4HrUioGl8FQiCOWCoM214/IZUJDUoF3q6SvTv/b/JFYm3fIGlJzgVygQJ+D4WZtPL8TCdTSkCoSs/3qIds4xEkYeJBOcRWMco//va2V4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aTtq2MfB; arc=none smtp.client-ip=198.175.65.14
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784055506; x=1815591506;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=DzLA4w38CFwdzu/Uzj79RDIxzZT2AwfMc39nX/r/t9k=;
+  b=aTtq2MfBexiXXwNaPQE4ohjtNWTDrut4Sr9F4jTpzh3iKCyK3rpe7Cl5
+   eeHlNHiKV+qo0OR3/Wjsb6Lz01PJy0k2fTAgDjY2fd7GIdBaOqLP7rfaZ
+   HT/jXhHWK5+Y+/jw4yZgmlvwtrA6CZ+9sTEihtwTKV/f2bM31bwl6Po68
+   rxkbpr19l15IwP/KxsPkwg8CEHY3iEjwH5Q5wShVYrr9NIGOnuhQTvLxr
+   t2EWTFPqSzZ7bjCXZZzcvK7JlsVzaAVZ/tAFia2P1aqjPDKOD0EZmGS8O
+   h4AAQw2a+h7zgawEVDZBZ1tHkfgP82N88OtSQ3K4UYCelDiiphUGMeepR
+   A==;
+X-CSE-ConnectionGUID: xGBJg+B8QqyDCuMj3Gl5sw==
+X-CSE-MsgGUID: B5ESX4YpTRuhCZZWsxo14A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11847"; a="88586658"
+X-IronPort-AV: E=Sophos;i="6.25,164,1779174000"; 
+   d="scan'208";a="88586658"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2026 11:58:25 -0700
+X-CSE-ConnectionGUID: zJdJZMFdTvexCooRz9Lb5w==
+X-CSE-MsgGUID: eYih6CtRRc+2gVaty5xw2A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,164,1779174000"; 
+   d="scan'208";a="255442489"
+Received: from guptapa-desk.jf.intel.com (HELO desk) ([10.165.239.46])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2026 11:58:25 -0700
+Date: Tue, 14 Jul 2026 11:58:24 -0700
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+To: stable@vger.kernel.org, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>
+Cc: bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
+	x86@kernel.org, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Dave Hansen <dave.hansen@linux.intel.com>
+Subject: [PATCH 6.16.y 0/6] cBPF JIT spray hardening
+Message-ID: <20260714-cbpf-jit-spray-hardening-6-16-y-v1-0-2fc3e16263ac@linux.intel.com>
+X-B4-Tracking: v=1; b=H4sIAGOGVmoC/yWNvQ6CMBRGX4Xc2UvaBurPRlwcHdyMQykXuAy1a
+ dHYEN7douP58uWcBSIFpginYoFAb478dBnkrgA7GjcQcpcZlFBa7GWFtvU9Tjxj9MEkHE3oyLE
+ bUKPUmLC2taiqY39QwkK2+EA9f36FO1yb2/myrbqUukzw+B/iq53IzlsH1vULVVaQGZQAAAA=
+X-Change-ID: 20260714-cbpf-jit-spray-hardening-6-16-y-5c50449f820c
+X-Mailer: b4 0.16-dev
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -122,114 +83,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <5e18d7ec-a9d7-2cc3-7741-695ec3580ffa@google.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-5.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[18];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-274510-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:rientjes@google.com,m:david@kernel.org,m:linkl@google.com,m:akpm@linux-foundation.org,m:vbabka@kernel.org,m:virtualization@lists.linux.dev,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:prasin@google.com,m:duenwen@google.com,m:jasowang@redhat.com,m:xuanzhuo@linux.alibaba.com,m:ammarfaizi2@openresty.com,m:jiaqiyan@google.com,m:ahwilkins@google.com,m:gthelen@google.com,m:alexander.duyck@gmail.com,m:stable@vger.kernel.org,m:alexanderduyck@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[mst@redhat.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[kernel.org,google.com,linux-foundation.org,lists.linux.dev,kvack.org,vger.kernel.org,redhat.com,linux.alibaba.com,openresty.com,gmail.com];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:sashal@kernel.org,m:bpf@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:loongarch@lists.linux.dev,m:linuxppc-dev@lists.ozlabs.org,m:linux-riscv@lists.infradead.org,m:x86@kernel.org,m:ast@kernel.org,m:daniel@iogearbox.net,m:dave.hansen@linux.intel.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[pawan.kumar.gupta@linux.intel.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-274511-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mst@redhat.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[redhat.com:+];
+	FROM_NEQ_ENVFROM(0.00)[pawan.kumar.gupta@linux.intel.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[intel.com:+];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.intel.com:from_mime,linux.intel.com:mid,vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 94DAB757F9F
+X-Rspamd-Queue-Id: DD2C6758006
 
-On Tue, Jul 14, 2026 at 11:21:33AM -0700, David Rientjes wrote:
-> On Tue, 14 Jul 2026, Michael S. Tsirkin wrote:
-> 
-> > > > diff --git a/drivers/virtio/virtio_balloon.c b/drivers/virtio/virtio_balloon.c
-> > > > index a1b2c3d4e5f6..45a90fb3abf8 100640
-> > > > --- a/drivers/virtio/virtio_balloon.c
-> > > > +++ b/drivers/virtio/virtio_balloon.c
-> > > > @@ -1055,6 +1055,9 @@ static int virtballoon_freeze(struct virtio_device *vdev)
-> > > >  	 * The workqueue is already frozen by the PM core before this
-> > > >  	 * function is called.
-> > > >  	 */
-> > > > +	if (virtio_has_feature(vb->vdev, VIRTIO_BALLOON_F_REPORTING))
-> > > > +		page_reporting_unregister(&vb->pr_dev_info);
-> > > > +
-> > > >  	remove_common(vb);
-> > > >  	return 0;
-> > > >  }
-> > > >  
-> > > >  static int virtballoon_restore(struct virtio_device *vdev)
-> > > >  {
-> > > >  	struct virtio_balloon *vb = vdev->priv;
-> > > >  	int ret;
-> > > >  
-> > > >  	ret = init_vqs(vdev->priv);
-> > > >  	if (ret)
-> > > >  		return ret;
-> > > >  
-> > > >  	virtio_device_ready(vdev);
-> > > >  
-> > > > +	if (virtio_has_feature(vb->vdev, VIRTIO_BALLOON_F_REPORTING)) {
-> > > > +		ret = page_reporting_register(&vb->pr_dev_info);
-> > > > +		if (ret)
-> > > > +			goto out_remove_vqs;
-> > > > +	}
-> > > 
-> > > Hm, that failure handling is rather nasty.
-> > > 
-> > > 
-> > > In virtballoon_freeze() we document:
-> > > 
-> > > "The workqueue is already frozen by the PM core before this function is called"
-> > > 
-> > > Your report states:
-> > > 
-> > > "Workqueue: events page_reporting_process"
-> > > 
-> > > 
-> > > I assume that workqueue is not frozen yet because ... it's not freezable :)
-> > > 
-> > > So could we queue to system_freezable_wq instead, or define our own freezable
-> > > workqueue there? Then a driver doesn't have to worry about that.
-> > > 
-> > > -- 
-> > > Cheers,
-> > > 
-> > > David
-> > 
-> > +1.  Just system_freezable_wq will do the trick.
-> > 
-> 
-> This makes sense.
-> 
-> I'm curious why this bug hasn't popped up earlier, presumably any VM that 
-> has gone through suspend while reporting free pages through FPR is 
-> vulnerable to it and could have panicked as a result.  Which would suggest 
-> maybe >99% of FPR is done by guests that never suspend?
+Hi,
 
-Quite possible.
+These backports harden BPF JIT against spectre-v2 class of attacks. Without
+a predictor flush, execution of new BPF program may use stale prediction
+left behind by the freed one.
 
->  While under 
-> pressure this issue seems reproducible.
+To avoid this, issue an IBPB flush on all CPUs on JIT program allocation.
+The flush is conditional to spectre-v2 mitigation applied.
+
+Patch 1-2: Adds the predictor flush hook and enables it on x86 via IBPB.
+
+	  bpf: Support for hardening against JIT spraying
+	  x86/bugs: Enable IBPB flush on BPF JIT allocation
+
+Patch 3-6: Narrow the flush to only unprivileged JIT allocations
+	   to avoid redundant flushes. Also adds pack-selection changes
+	   that minimizes flushes.
+
+	  bpf: Restrict JIT predictor flush to cBPF
+	  bpf: Skip redundant IBPB in pack allocator
+	  bpf: Prefer packs that won't trigger an IBPB flush on allocation
+	  bpf: Prefer dirty packs for eBPF allocations
+
+This one is mostly similar to 6.18:
+
+  https://lore.kernel.org/all/20260713-cbpf-jit-spray-hardening-6-18-y-v1-0-755f60c55705@linux.intel.com/
+
+---
+Pawan Gupta (6):
+      bpf: Support for hardening against JIT spraying
+      x86/bugs: Enable IBPB flush on BPF JIT allocation
+      bpf: Restrict JIT predictor flush to cBPF
+      bpf: Skip redundant IBPB in pack allocator
+      bpf: Prefer packs that won't trigger an IBPB flush on allocation
+      bpf: Prefer dirty packs for eBPF allocations
+
+ arch/arm64/net/bpf_jit_comp.c        |  4 +--
+ arch/powerpc/net/bpf_jit_comp.c      |  4 +--
+ arch/riscv/net/bpf_jit_comp64.c      |  2 +-
+ arch/riscv/net/bpf_jit_core.c        |  3 +-
+ arch/x86/include/asm/nospec-branch.h |  4 +++
+ arch/x86/kernel/cpu/bugs.c           | 50 +++++++++++++++++++++++---
+ arch/x86/net/bpf_jit_comp.c          |  5 +--
+ include/linux/filter.h               | 15 ++++++--
+ kernel/bpf/core.c                    | 68 ++++++++++++++++++++++++++++++++----
+ kernel/bpf/dispatcher.c              |  2 +-
+ 10 files changed, 135 insertions(+), 22 deletions(-)
+---
+base-commit: d997d33eb340e2add100eac1222e107cc1396e76
+change-id: 20260714-cbpf-jit-spray-hardening-6-16-y-5c50449f820c
+
+Best regards,
+--  
+Pawan
+
 
 
