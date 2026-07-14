@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-274570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274573-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Mf9uD1+yVmosAQEAu9opvQ
-	(envelope-from <stable+bounces-274570-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 00:04:15 +0200
+	id 01n9A2myVmowAQEAu9opvQ
+	(envelope-from <stable+bounces-274573-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 00:04:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C58827591C5
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 00:04:14 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95CB17591D5
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 00:04:24 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ncScB82h;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274570-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-274570-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kPCW25UB;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274573-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-274573-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E333C300998E
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 22:04:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8814930419E3
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 22:04:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6EA03E171E;
-	Tue, 14 Jul 2026 22:04:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED7DE26D4DD;
+	Tue, 14 Jul 2026 22:04:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F27F42BC4F
-	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 22:04:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 656CF3DB641
+	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 22:04:11 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784066651; cv=none; b=r07KpE8C/sbrLVxPVpgBpUxRu/gQDzG7XjrR7MKC62xr/FPaNzXtJs93IfzS7MXkktMVxBPyqs+0RycTo2ZZ7uJ+ZQ7wFKndE6ZJXhOGDG9iSUdHReDe9/WL6plRDAkvgZV72zwkUulC2+ciw/MI4b/q65ekhHkXwC49SpHw6a8=
+	t=1784066652; cv=none; b=GGvXV3QhXny2x/cihX1G1j12kp5oVH3rShcBjEX+CxUMpEoMfRCHx1LWhwGBte1lsOTa6riAjei0R+caeC7xUJzSNYfOG2bCmzgDo+55Ce11jnYifXA0itnNWLEtorDbQJlT85A9x05C1SyLqItcRyIvAWLyLBbyU0FvQ71jctM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784066651; c=relaxed/simple;
-	bh=18UTJEvMJAX6Pvj4C86yHHH8AV7JgkihYTnq81EVZNg=;
+	s=arc-20240116; t=1784066652; c=relaxed/simple;
+	bh=+vFdnRcyX3W+Xcm9HvV3AoziE4h1+wjSKKooJKLv3yI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g9i7kVgGSwXF8DrrNzvC6mHVtag97kRxIt+XEmDI+mO/GBvyLx/v/tYZHbwcrCzpyTe0g3j4/pXxaE/ZmbSctmnplK/xtrfuVDoRgD8kApDhn+YnNUISBL/WuRzRPH5ApY+VF76ZrdMguSe3zpDRBPvrKqNk4lBK3IuXypOEySA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ncScB82h; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6E6F1F00A3D;
-	Tue, 14 Jul 2026 22:04:09 +0000 (UTC)
+	 MIME-Version; b=X4Xuc/W/xIlTqgk+l1Pcifx5dQ+phWa4K6BwigVAM370b5FNX8NOb2hKQNcUfXFupEvRavfGHDBOe3vepXApkX1t5NaiytFxk9M1puSqHlRBNqgZxOcM5b8mG+befYVbh/oHBN7P3H3l7j/YfhcYCYhgTf2B9leoHBQYqXkh67E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kPCW25UB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A1ED1F00AC4;
+	Tue, 14 Jul 2026 22:04:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784066650;
-	bh=2fV5qXBh9EoE9l4RedqdXRkb5J9mxULQVgefCcBdnww=;
+	s=k20260515; t=1784066651;
+	bh=R3kmNq1dAOIGoOt5O8dq0Y25x9iuDlYSCQ3Qbon2PhY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ncScB82hl+9Kk5qr+14NSoO24C41w2Ipt35E/8wxiAnZNbnBJDXWcJWoegC96J2+M
-	 svd0VkbF1o8REubftQG8VAZ1KEg5zutfJABD9ibSzB4NHU+mE0JEkig9QsWYJUGrJ/
-	 d+5ttIm1HMko/C8wSLtGNxC9PrFjXDKy3oaPkOAA2poGnrGH3+05uiBknwv9AbVzzJ
-	 wje6CgkycxnBbT1xh7DK1xDATFW45bvVKhMLQYgfGtUjeauzw4jvXfLY4kE6+IxHmb
-	 XQvr7iOK4vcFqefgqLSNGsdBBCQU3MUPoaXRm/XcqF9B0ZyqiuYBA5eIswakREE6mF
-	 CsQpCkxFD9tpQ==
+	b=kPCW25UBEci6SDuSpfg1JGnpEKnS03K2hbljj/mQxnNq+Ih+gp57PiHtnGKY92ims
+	 H/lkT0OX2nFgMHzn2a/xhymmV04CvRvUpfnS/j3mZhQhEnvubGvAOQz5Cg1XZZ+JgZ
+	 ACaJEFStPi+jyg56SAJ+4r4KtbvIERwzZP5pTnCPgeWbmcsq6xy5hndkgj9VqXl6ej
+	 pry6nq97VWyPE6XirK/gFXvrTuiVqGU0aH1wzoWYrwo+/0mEN0nb135GQ4u5CpsDiB
+	 UHkXmGKVUSH6ZcCFvjUCrMQTuf+KCnNr3KGVAFXPGcJZvQpryawuhQ0Ea6W1L5Q4On
+	 3R9zEJd8aR7lw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Enzo Matsumiya <ematsumiya@suse.de>,
-	"Paulo Alcantara (SUSE)" <pc@cjr.nz>,
+Cc: Shoichiro Miyamoto <shoichiro.miyamoto@gmail.com>,
 	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y 4/5] cifs: remove unused server parameter from calc_smb_size()
-Date: Tue, 14 Jul 2026 18:04:04 -0400
-Message-ID: <20260714220405.3333589-4-sashal@kernel.org>
+Subject: [PATCH 5.10.y 5/5] smb: client: restrict implied bcc[0] exemption to responses without data area
+Date: Tue, 14 Jul 2026 18:04:05 -0400
+Message-ID: <20260714220405.3333589-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260714220405.3333589-1-sashal@kernel.org>
 References: <2026071312-blank-founding-5203@gregkh>
@@ -67,202 +66,243 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-274570-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:ematsumiya@suse.de,m:pc@cjr.nz,m:stfrench@microsoft.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-274573-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:shoichiro.miyamoto@gmail.com,m:stfrench@microsoft.com,m:sashal@kernel.org,m:shoichiromiyamoto@gmail.com,s:lists@lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FREEMAIL_CC(0.00)[gmail.com,microsoft.com,kernel.org];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C58827591C5
+X-Rspamd-Queue-Id: 95CB17591D5
 
-From: Enzo Matsumiya <ematsumiya@suse.de>
+From: Shoichiro Miyamoto <shoichiro.miyamoto@gmail.com>
 
-[ Upstream commit 68ed14496b032b0c9ef21b38ee45c6c8f3a18ff1 ]
+[ Upstream commit 53b7c271f06be4dd5cfc8c6ef552a8355c891a7f ]
 
-This parameter is unused by the called function
+smb2_check_message() has a long-standing quirk that accepts a response
+whose calculated length is one byte larger than the bytes actually
+received ("server can return one byte more due to implied bcc[0]").
+This was introduced to accommodate servers that omit the trailing bcc[0]
+overlap byte when no data area is present.
 
-Reviewed-by: Paulo Alcantara (SUSE) <pc@cjr.nz>
-Signed-off-by: Enzo Matsumiya <ematsumiya@suse.de>
+However, the exemption is applied unconditionally, regardless of whether
+the command actually carries a data area (has_smb2_data_area[]).  When a
+response with a data area is subject to the +1 exemption, the reported
+data can extend one byte beyond the bytes actually received, yet
+smb2_check_message() still accepts it.  The subsequent decoder then reads
+past the end of the receive buffer.  This is reachable during NEGOTIATE
+and SESSION_SETUP, before the session is established.
+
+The resulting out-of-bounds reads are visible under KASAN when mounting
+against a non-conforming server; both the SPNEGO/negTokenInit and the
+NTLMSSP challenge decoders are affected:
+
+  BUG: KASAN: slab-out-of-bounds in asn1_ber_decoder+0x16a7/0x1b00
+  Read of size 1 at addr ffff8880084d67c0 by task mount.cifs/81
+  CPU: 1 UID: 0 PID: 81 Comm: mount.cifs Not tainted 7.1.0-rc6 #1
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x4e/0x70
+   print_report+0x157/0x4c9
+   kasan_report+0xce/0x100
+   asn1_ber_decoder+0x16a7/0x1b00
+   decode_negTokenInit+0x19/0x30
+   SMB2_negotiate+0x31d9/0x4c90
+   cifs_negotiate_protocol+0x1f2/0x3f0
+   cifs_get_smb_ses+0x93f/0x17e0
+   cifs_mount_get_session+0x7f/0x3a0
+   cifs_mount+0xb4/0xcf0
+   cifs_smb3_do_mount+0x23a/0x1500
+   smb3_get_tree+0x3b0/0x630
+   vfs_get_tree+0x82/0x2d0
+   fc_mount+0x10/0x1b0
+   path_mount+0x50d/0x1de0
+   __x64_sys_mount+0x20b/0x270
+   do_syscall_64+0xee/0x590
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+   </TASK>
+  Allocated by task 85:
+   kmem_cache_alloc_noprof+0x106/0x380
+   mempool_alloc_noprof+0x116/0x1e0
+   cifs_small_buf_get+0x31/0x80
+   allocate_buffers+0x10d/0x2b0
+   cifs_demultiplex_thread+0x1d5/0x1d50
+   kthread+0x2c6/0x390
+   ret_from_fork+0x36e/0x5a0
+   ret_from_fork_asm+0x1a/0x30
+  The buggy address is located 0 bytes to the right of
+   allocated 448-byte region [ffff8880084d6600, ffff8880084d67c0)
+   which belongs to the cache cifs_small_rq of size 448
+
+  BUG: KASAN: slab-out-of-bounds in kmemdup_noprof+0x36/0x50
+  Read of size 329 at addr ffff88800726c678 by task mount.cifs/89
+  CPU: 0 UID: 0 PID: 89 Comm: mount.cifs Tainted: G    B      7.1.0-rc6 #1
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x4e/0x70
+   print_report+0x157/0x4c9
+   kasan_report+0xce/0x100
+   kasan_check_range+0x10f/0x1e0
+   __asan_memcpy+0x23/0x60
+   kmemdup_noprof+0x36/0x50
+   decode_ntlmssp_challenge+0x457/0x680
+   SMB2_sess_auth_rawntlmssp_negotiate+0x6f0/0xcb0
+   SMB2_sess_setup+0x219/0x4f0
+   cifs_setup_session+0x248/0xaf0
+   cifs_get_smb_ses+0xf79/0x17e0
+   cifs_mount_get_session+0x7f/0x3a0
+   cifs_mount+0xb4/0xcf0
+   cifs_smb3_do_mount+0x23a/0x1500
+   smb3_get_tree+0x3b0/0x630
+   vfs_get_tree+0x82/0x2d0
+   fc_mount+0x10/0x1b0
+   path_mount+0x50d/0x1de0
+   __x64_sys_mount+0x20b/0x270
+   do_syscall_64+0xee/0x590
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+   </TASK>
+  Allocated by task 93:
+   kmem_cache_alloc_noprof+0x106/0x380
+   mempool_alloc_noprof+0x116/0x1e0
+   cifs_small_buf_get+0x31/0x80
+   allocate_buffers+0x10d/0x2b0
+   cifs_demultiplex_thread+0x1d5/0x1d50
+   kthread+0x2c6/0x390
+   ret_from_fork+0x36e/0x5a0
+   ret_from_fork_asm+0x1a/0x30
+  The buggy address is located 120 bytes inside of
+   allocated 448-byte region [ffff88800726c600, ffff88800726c7c0)
+   which belongs to the cache cifs_small_rq of size 448
+
+Restrict the +1 exemption to responses that have no data area, so that
+it still covers the bcc[0] omission it was meant for.  When a data area
+is present, the +1 discrepancy instead means the reported data length
+overruns the received buffer, so the response must be rejected.
+
+Fixes: 093b2bdad322 ("CIFS: Make demultiplex_thread work with SMB2 code")
+Cc: stable@vger.kernel.org
+Signed-off-by: Shoichiro Miyamoto <shoichiro.miyamoto@gmail.com>
 Signed-off-by: Steve French <stfrench@microsoft.com>
-Stable-dep-of: 53b7c271f06b ("smb: client: restrict implied bcc[0] exemption to responses without data area")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cifs/cifs_debug.c | 2 +-
- fs/cifs/cifsglob.h   | 2 +-
- fs/cifs/cifsproto.h  | 2 +-
- fs/cifs/misc.c       | 2 +-
- fs/cifs/netmisc.c    | 2 +-
- fs/cifs/readdir.c    | 6 ++----
- fs/cifs/smb2misc.c   | 4 ++--
- fs/cifs/smb2ops.c    | 2 +-
- fs/cifs/smb2proto.h  | 2 +-
- 9 files changed, 11 insertions(+), 13 deletions(-)
+ fs/cifs/smb2misc.c | 32 ++++++++++++++++++++++++++------
+ 1 file changed, 26 insertions(+), 6 deletions(-)
 
-diff --git a/fs/cifs/cifs_debug.c b/fs/cifs/cifs_debug.c
-index 11d0eaa603cade..024a358380c79c 100644
---- a/fs/cifs/cifs_debug.c
-+++ b/fs/cifs/cifs_debug.c
-@@ -41,7 +41,7 @@ void cifs_dump_detail(void *buf, struct TCP_Server_Info *server)
- 		 smb->Command, smb->Status.CifsError,
- 		 smb->Flags, smb->Flags2, smb->Mid, smb->Pid);
- 	cifs_dbg(VFS, "smb buf %p len %u\n", smb,
--		 server->ops->calc_smb_size(smb, server));
-+		 server->ops->calc_smb_size(smb));
- #endif /* CONFIG_CIFS_DEBUG2 */
- }
- 
-diff --git a/fs/cifs/cifsglob.h b/fs/cifs/cifsglob.h
-index af9e134174951f..d0905aa0b04cd0 100644
---- a/fs/cifs/cifsglob.h
-+++ b/fs/cifs/cifsglob.h
-@@ -397,7 +397,7 @@ struct smb_version_operations {
- 	int (*close_dir)(const unsigned int, struct cifs_tcon *,
- 			 struct cifs_fid *);
- 	/* calculate a size of SMB message */
--	unsigned int (*calc_smb_size)(void *buf, struct TCP_Server_Info *ptcpi);
-+	unsigned int (*calc_smb_size)(void *buf);
- 	/* check for STATUS_PENDING and process the response if yes */
- 	bool (*is_status_pending)(char *buf, struct TCP_Server_Info *server);
- 	/* check for STATUS_NETWORK_SESSION_EXPIRED */
-diff --git a/fs/cifs/cifsproto.h b/fs/cifs/cifsproto.h
-index 8c0ed2b602854f..d43e8c331df958 100644
---- a/fs/cifs/cifsproto.h
-+++ b/fs/cifs/cifsproto.h
-@@ -148,7 +148,7 @@ extern int cifs_get_writable_path(struct cifs_tcon *tcon, const char *name,
- extern struct cifsFileInfo *find_readable_file(struct cifsInodeInfo *, bool);
- extern int cifs_get_readable_path(struct cifs_tcon *tcon, const char *name,
- 				  struct cifsFileInfo **ret_file);
--extern unsigned int smbCalcSize(void *buf, struct TCP_Server_Info *server);
-+extern unsigned int smbCalcSize(void *buf);
- extern int decode_negTokenInit(unsigned char *security_blob, int length,
- 			struct TCP_Server_Info *server);
- extern int cifs_convert_address(struct sockaddr *dst, const char *src, int len);
-diff --git a/fs/cifs/misc.c b/fs/cifs/misc.c
-index b333ba3332298f..b4199b4085db39 100644
---- a/fs/cifs/misc.c
-+++ b/fs/cifs/misc.c
-@@ -370,7 +370,7 @@ checkSMB(char *buf, unsigned int total_read, struct TCP_Server_Info *server)
- 	/* otherwise, there is enough to get to the BCC */
- 	if (check_smb_hdr(smb))
- 		return -EIO;
--	clc_len = smbCalcSize(smb, server);
-+	clc_len = smbCalcSize(smb);
- 
- 	if (4 + rfclen != total_read) {
- 		cifs_dbg(VFS, "Length read does not match RFC1001 length %d\n",
-diff --git a/fs/cifs/netmisc.c b/fs/cifs/netmisc.c
-index 0e728aac67e9f2..dd2929150bf2ec 100644
---- a/fs/cifs/netmisc.c
-+++ b/fs/cifs/netmisc.c
-@@ -913,7 +913,7 @@ map_and_check_smb_error(struct mid_q_entry *mid, bool logErr)
-  * portion, the number of word parameters and the data portion of the message
-  */
- unsigned int
--smbCalcSize(void *buf, struct TCP_Server_Info *server)
-+smbCalcSize(void *buf)
- {
- 	struct smb_hdr *ptr = (struct smb_hdr *)buf;
- 	return (sizeof(struct smb_hdr) + (2 * ptr->WordCount) +
-diff --git a/fs/cifs/readdir.c b/fs/cifs/readdir.c
-index 9e62d75f24651e..9a7315aa24e0d6 100644
---- a/fs/cifs/readdir.c
-+++ b/fs/cifs/readdir.c
-@@ -801,8 +801,7 @@ find_cifs_entry(const unsigned int xid, struct cifs_tcon *tcon, loff_t pos,
- 
- 		end_of_smb = cfile->srch_inf.ntwrk_buf_start +
- 			server->ops->calc_smb_size(
--					cfile->srch_inf.ntwrk_buf_start,
--					server);
-+					cfile->srch_inf.ntwrk_buf_start);
- 
- 		cur_ent = cfile->srch_inf.srch_entries_start;
- 		first_entry_in_buffer = cfile->srch_inf.index_of_last_entry
-@@ -1000,8 +999,7 @@ int cifs_readdir(struct file *file, struct dir_context *ctx)
- 	cifs_dbg(FYI, "loop through %d times filling dir for net buf %p\n",
- 		 num_to_fill, cifsFile->srch_inf.ntwrk_buf_start);
- 	max_len = tcon->ses->server->ops->calc_smb_size(
--			cifsFile->srch_inf.ntwrk_buf_start,
--			tcon->ses->server);
-+			cifsFile->srch_inf.ntwrk_buf_start);
- 	end_of_smb = cifsFile->srch_inf.ntwrk_buf_start + max_len;
- 
- 	tmp_buf = kmalloc(UNICODE_NAME_MAX, GFP_KERNEL);
 diff --git a/fs/cifs/smb2misc.c b/fs/cifs/smb2misc.c
-index 71923cda9cc502..3adadeb9b837e6 100644
+index 3adadeb9b837e6..2013489431ac11 100644
 --- a/fs/cifs/smb2misc.c
 +++ b/fs/cifs/smb2misc.c
-@@ -225,7 +225,7 @@ smb2_check_message(char *buf, unsigned int len, struct TCP_Server_Info *server)
+@@ -30,6 +30,8 @@
+ #include "smb2glob.h"
+ #include "nterr.h"
+ 
++static unsigned int __smb2_calc_size(void *buf, bool *have_data);
++
+ static int
+ check_smb2_hdr(struct smb2_hdr *shdr, __u64 mid)
+ {
+@@ -145,6 +147,7 @@ smb2_check_message(char *buf, unsigned int len, struct TCP_Server_Info *server)
+ 	int command;
+ 	__u32 calc_len; /* calculated length */
+ 	__u64 mid;
++	bool have_data;
+ 
+ 	/*
+ 	 * Add function to do table lookup of StructureSize by command
+@@ -225,7 +228,8 @@ smb2_check_message(char *buf, unsigned int len, struct TCP_Server_Info *server)
  		}
  	}
  
--	calc_len = smb2_calc_size(buf, server);
-+	calc_len = smb2_calc_size(buf);
+-	calc_len = smb2_calc_size(buf);
++	have_data = false;
++	calc_len = __smb2_calc_size(buf, &have_data);
  
  	/* For SMB2_IOCTL, OutputOffset and OutputLength are optional, so might
  	 * be 0, and not a real miscalculation */
-@@ -407,7 +407,7 @@ smb2_get_data_area_len(int *off, int *len, struct smb2_hdr *shdr)
+@@ -243,8 +247,13 @@ smb2_check_message(char *buf, unsigned int len, struct TCP_Server_Info *server)
+ 		/* Windows 7 server returns 24 bytes more */
+ 		if (calc_len + 24 == len && command == SMB2_OPLOCK_BREAK_HE)
+ 			return 0;
+-		/* server can return one byte more due to implied bcc[0] */
+-		if (calc_len == len + 1)
++		/*
++		 * Server can return one byte more due to implied bcc[0].
++		 * Allow it only when there is no data area; if data_length > 0
++		 * the +1 gap indicates an overreported data length rather than
++		 * the bcc[0] omission.
++		 */
++		if (calc_len == len + 1 && !have_data)
+ 			return 0;
+ 
+ 		/*
+@@ -405,14 +414,17 @@ smb2_get_data_area_len(int *off, int *len, struct smb2_hdr *shdr)
+ /*
+  * Calculate the size of the SMB message based on the fixed header
   * portion, the number of word parameters and the data portion of the message.
++ * If have_data is non-NULL, it is set to true when a non-empty data area was
++ * found (data_length > 0), allowing callers to distinguish the implied bcc[0]
++ * case (no data area) from an overreported data length.
   */
- unsigned int
--smb2_calc_size(void *buf, struct TCP_Server_Info *srvr)
-+smb2_calc_size(void *buf)
+-unsigned int
+-smb2_calc_size(void *buf)
++static unsigned int
++__smb2_calc_size(void *buf, bool *have_data)
  {
  	struct smb2_pdu *pdu = (struct smb2_pdu *)buf;
  	struct smb2_hdr *shdr = &pdu->hdr;
-diff --git a/fs/cifs/smb2ops.c b/fs/cifs/smb2ops.c
-index e1bd7b070535a5..2230c09e105528 100644
---- a/fs/cifs/smb2ops.c
-+++ b/fs/cifs/smb2ops.c
-@@ -316,7 +316,7 @@ smb2_dump_detail(void *buf, struct TCP_Server_Info *server)
- 		 shdr->Command, shdr->Status, shdr->Flags, shdr->MessageId,
- 		 shdr->Id.SyncId.ProcessId);
- 	cifs_server_dbg(VFS, "smb buf %p len %u\n", buf,
--		 server->ops->calc_smb_size(buf, server));
-+		 server->ops->calc_smb_size(buf));
- #endif
+ 	int offset; /* the offset from the beginning of SMB to data area */
+-	int data_length; /* the length of the variable length data area */
++	int data_length = 0; /* the length of the variable length data area */
+ 	/* Structure Size has already been checked to make sure it is 64 */
+ 	int len = le16_to_cpu(shdr->StructureSize);
+ 
+@@ -445,9 +457,17 @@ smb2_calc_size(void *buf)
+ 	}
+ calc_size_exit:
+ 	cifs_dbg(FYI, "SMB2 len %d\n", len);
++	if (have_data)
++		*have_data = (data_length > 0);
+ 	return len;
  }
  
-diff --git a/fs/cifs/smb2proto.h b/fs/cifs/smb2proto.h
-index 5a15762ffbc835..049a1f3d61020b 100644
---- a/fs/cifs/smb2proto.h
-+++ b/fs/cifs/smb2proto.h
-@@ -36,7 +36,7 @@ struct smb_rqst;
- extern int map_smb2_to_linux_error(char *buf, bool log_err);
- extern int smb2_check_message(char *buf, unsigned int length,
- 			      struct TCP_Server_Info *server);
--extern unsigned int smb2_calc_size(void *buf, struct TCP_Server_Info *server);
-+extern unsigned int smb2_calc_size(void *buf);
- extern char *smb2_get_data_area_len(int *off, int *len,
- 				    struct smb2_hdr *shdr);
- extern __le16 *cifs_convert_path_to_utf16(const char *from,
++unsigned int
++smb2_calc_size(void *buf)
++{
++	return __smb2_calc_size(buf, NULL);
++}
++
+ /* Note: caller must free return buffer */
+ __le16 *
+ cifs_convert_path_to_utf16(const char *from, struct cifs_sb_info *cifs_sb)
 -- 
 2.53.0
 
