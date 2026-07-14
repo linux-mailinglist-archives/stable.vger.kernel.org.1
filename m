@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-274246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274247-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id +eVPK3A6VmpU1wAAu9opvQ
-	(envelope-from <stable+bounces-274246-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 15:32:32 +0200
+	id yYekNKQ8VmoN2AAAu9opvQ
+	(envelope-from <stable+bounces-274247-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 15:41:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DCC07552AD
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 15:32:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33C04755471
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 15:41:56 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mJRR4+HB;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274246-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-274246-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=P6G4iKmG;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274247-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-274247-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F341830A6247
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 13:27:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 290E331941A6
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 13:34:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C207433688A;
-	Tue, 14 Jul 2026 13:27:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D04346AEF1;
+	Tue, 14 Jul 2026 13:34:47 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55F9929D270
-	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 13:27:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 273DE46AF05
+	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 13:34:45 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784035632; cv=none; b=h3eQw3llIlK1j3UQ4FvaeS81GDEeHYRJQUJwvhB26Ydkir3YfP3yQlDHNcGy605M+GUdWWY1yMjG9yL9nnBUQ3qzhal+Kg60UKzH7TwNK2FuEzW6G2wfxNiVhEbJc3YYpIEp9UB3u6MIEIDOfsxYzM1ob1Jax1WS30/5efF490E=
+	t=1784036087; cv=none; b=r49EeLvEi2gJ/NzIyQJZ6oT5FEmbGFMRBi1bEx9a/Rw085lYdSo5sXyUb5DO5tW+SygzAotXpl45q5UoXif1fBs6PP43CnF5MQ1YQK7IofbqqbIAhFId28QEkafChu6/cSZqiNuacXOG85DaBNFpn7SWX5IeAlcYvHGBxjwDd+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784035632; c=relaxed/simple;
-	bh=4gtc1Atl/reaPLFpiFy49YLPGaA32T6kUO3QjS9u4M0=;
+	s=arc-20240116; t=1784036087; c=relaxed/simple;
+	bh=EO1x6uwgMkF/y58nUnKP7j7wgalyEVL+YGXIziHTKZk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sC9bO25gbM2kidafgdGsQQ5SLKXCqPulbFMhRLRpH5q6IpLL7cEOC4kHo0CBQUWR8aJd0HLcxSq8sAraUMOslEnHtgMsAtj6jALb9u7DaqkCnF8afmfn0bAOrhLU45fd1iUxMnV3pFWcEJunqmJO9Zp9fDXc1wCa72fryfo7www=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mJRR4+HB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93EFD1F000E9;
-	Tue, 14 Jul 2026 13:27:10 +0000 (UTC)
+	 MIME-Version; b=tumFcT0ziqyi+WLRNqbBoNjWqm7/yP4XdBv4ulDRckJJrjX2Vl4Mz12qZQuycGedrqaakTXaGjqhM3KBPAkLixliRI14DMHpebBL0MSCBkQEfWPPFSqWm+KDnw34g2WZbCExvNWMTsqi7C706v0Xqqmoi/esnfDsZEbNVyr3R0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P6G4iKmG; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FE751F000E9;
+	Tue, 14 Jul 2026 13:34:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784035631;
-	bh=36b99Og6kWEkF94Fv0JrkfA7SxMdJDW+WBhx1HNSiNQ=;
+	s=k20260515; t=1784036085;
+	bh=/M3ZErL57N8QoINDm8mapDvZ/LLUbS3LxC6MktlP/v8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mJRR4+HB/q1KCNYYx7nTggg7CWeiqcgVUG8u875DWzmPb1h8JoZUQ/ihJ3ssTG0LI
-	 S3YGQ/NjbsHgXpcyUV4t0sP5zKjq1T0n7g1ksM821vCKMqY5QmPUOgcQ9emYGPXQl0
-	 Y/dllq7graUi6zp4ICxnWJ5yyYGf81EOwafR4J52JXq5JSXxPnLkiPpC3SDjLhciaO
-	 dqD4FUN0wSHtxrsXoBH4NkddCFOdSmG/c45epHyb70rRCIRIdmU3tTYjouSIGTjQPA
-	 NMlBCDwBYIBLXs+KwmfwKC6+wXsaHAnzHwbOm/Npd6msN1N+yB8+CFzcEIML/sVZuh
-	 TWbkLBjZQgnvg==
+	b=P6G4iKmGTNb3e/63JPTeP9k/0E3bQhdJqRHqKAqoyQoWexhi/+uDk4oTv3r4u7RWL
+	 HUrUJF+2dYSUtSocYN7o/o6LUH0wqsyW2sE80FueufH+oqi5vJ8YGK3kicf/rGRycV
+	 X+o8O7elB9mE5+UNN0/cHq3Y8fG8OuICVpwuX3CN7hPnNGpXbgkm08oMxyoClgAv67
+	 Cmfw/dSNHag7B5JR9XHNu9UuIacchkZ5l7hHLC4tcPt7E7dXqnwpoYG3PxzmxyGmjo
+	 wvL2aBoVPDjNsMWkqdiVH4P6fuJt9CogZS33/dQT1MezFPTbmjdmMcAiZVKOFfNVIh
+	 nGC+S2g1hpfhw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Alex Williamson <alex.williamson@nvidia.com>,
@@ -53,12 +53,12 @@ Cc: Alex Williamson <alex.williamson@nvidia.com>,
 	Kevin Tian <kevin.tian@intel.com>,
 	Alex Williamson <alex@shazbot.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18.y] vfio/mlx5: Fix racy bitfields and tighten struct layout
-Date: Tue, 14 Jul 2026 09:27:08 -0400
-Message-ID: <20260714132708.2663976-1-sashal@kernel.org>
+Subject: [PATCH 6.12.y] vfio/mlx5: Fix racy bitfields and tighten struct layout
+Date: Tue, 14 Jul 2026 09:34:43 -0400
+Message-ID: <20260714133443.2672245-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026071330-plus-jackpot-fb60@gregkh>
-References: <2026071330-plus-jackpot-fb60@gregkh>
+In-Reply-To: <2026071342-scrooge-clay-0479@gregkh>
+References: <2026071342-scrooge-clay-0479@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -73,17 +73,17 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-274246-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-274247-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:alex.williamson@nvidia.com,m:yishaih@nvidia.com,m:kevin.tian@intel.com,m:alex@shazbot.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:alex.williamson@nvidia.com,m:yishaih@nvidia.com,m:kevin.tian@intel.com,m:alex@shazbot.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
@@ -97,11 +97,11 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nvidia.com:email,shazbot.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,vger.kernel.org:from_smtp,shazbot.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1DCC07552AD
+X-Rspamd-Queue-Id: 33C04755471
 
 From: Alex Williamson <alex.williamson@nvidia.com>
 
@@ -153,10 +153,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 9 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/vfio/pci/mlx5/cmd.h b/drivers/vfio/pci/mlx5/cmd.h
-index d7821b5ca77293..82831e0483c09d 100644
+index df421dc6de0485..5e8ebb6857687c 100644
 --- a/drivers/vfio/pci/mlx5/cmd.h
 +++ b/drivers/vfio/pci/mlx5/cmd.h
-@@ -155,25 +155,28 @@ struct mlx5_vhca_qp {
+@@ -157,25 +157,28 @@ struct mlx5_vhca_qp {
  struct mlx5_vhca_page_tracker {
  	u32 id;
  	u32 pdn;
