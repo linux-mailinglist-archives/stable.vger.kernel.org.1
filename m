@@ -1,63 +1,64 @@
-Return-Path: <stable+bounces-274106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274107-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id K8uzI+6tVWqUrgAAu9opvQ
-	(envelope-from <stable+bounces-274106-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 05:33:02 +0200
+	id fVy1HvGtVWqVrgAAu9opvQ
+	(envelope-from <stable+bounces-274107-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 05:33:05 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDD00750A7D
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 05:33:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11D0C750A80
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 05:33:05 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A8qROFM1;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274106-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274106-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ZISH/kdE";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274107-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274107-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 91A0F303641F
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 03:33:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 507AE3037F58
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 03:33:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BFC13446DE;
-	Tue, 14 Jul 2026 03:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DCE8358367;
+	Tue, 14 Jul 2026 03:33:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D339228469A
-	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 03:32:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C75752C21D9
+	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 03:32:59 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783999980; cv=none; b=nPWdWkITMPB5Vq30GubzLn8lotVLbzHoIPHCgjHzmE/vWnAG/gYwwo7IUEubhNBIy3tudvOU28KdrgYQ9LXhIMUFDdk/Kdo2AdHkwx/Ouk7OMWy/LoxJnJICScga4GPPE6IzwX9NVMrDQGObmPg1yeAhgve1540xHuIt9cMpHZA=
+	t=1783999980; cv=none; b=Sn5+B/S9X1Pt/vnzQBRg9yZIlUMz85f3RRMhOx/5/Fk80LscLlO0M0jeOmgzWtzQ0Q1nBKAzePIcqMgvccPcYjy9lcvHdp6gkmjUUCUpxaGLy1SG6sJkKMITalgdJyz80cLLXwoEmxvF2hrBkCo07vYfXBQCzFCIFZaeZqLEH5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1783999980; c=relaxed/simple;
-	bh=aCvxA+n0GdZpiaaP9v6dNnq8/dzGweZgs2er/VZwDr8=;
+	bh=XaBZ0Uxy0N/ztScRmHxN01k9h2JU+z+4CnZSXRdRcLg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kxhJdGWB1qqBdMxv8z34rNEG116NO31PJNz/d+tDXvJtKTd3dwC3p2Ql0/SGQ1nGk80sASFCUWnu+dx+vajFF/Hax9C0Ty4bhuzXiqWBx/EotVenR0N5VQ7ADuuciowGVpDXvnjWmV2Sz8fgOjOzARcl5JdWraZy+n6CWaBg9do=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A8qROFM1; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10E8C1F000E9;
-	Tue, 14 Jul 2026 03:32:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=f9+LOm65eOZwN0VYgZguvtYlgGGYnNAAw2vztzGCWVBZ4VDdb03Y+P161WRzGDPPlhwJR/PqjTVuq5+xUI+RjYr7laSLm/JdEWHyeJfLkYZ6257kFyKh86Zjlxs0/+QS7Ei1/B4mk0nCX/kWDDkqdn3AKdFjF6IkYkEvoNGkDYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZISH/kdE; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6B221F00A3D;
+	Tue, 14 Jul 2026 03:32:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783999978;
-	bh=zwLe3qhaWQM7uKnjzOL8a8hdB4kZ986vnSvIap7r8iI=;
+	s=k20260515; t=1783999979;
+	bh=3JLF8CLFHTOvxETxUClAq2SQYVxkEUpx2ElS2Ixu9hA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=A8qROFM1E52Big60BJ+XwcE9vInvaaRQzWYR6d3aYnH/pKH8UEL1s5D8hNlyoalVc
-	 5ulEHSP7ua53rvutR9k7Chdf2PLbzDL+fMPnYvllG7QpMldGjjKUwgrZMdUgH0wrUM
-	 ecVb5imJ/IeipXYKXjYmPOyLAh9k+IlR3uIpMAH2QjAHsX/8NaAcgTReewWdqUiAv2
-	 vzxVxtk2T8TA/8Y68VtK4ssEUUrZkKaXJ00NnR+f71a9zKLBdffxYfttxwgfeSJxtp
-	 ZI1ialwN6wqemy9LCuZFx6p3gC69XJGCDv/YpvEI1dLeX4UMQp/WpFCZD4S0V0g+TG
-	 NFgupka1mTHUA==
+	b=ZISH/kdE2qYikkz61lOCjuySv/elKwOT8EjzRxQn367jDYzGGYHCqy6DFgKjJvpzh
+	 A275n+GrmTpP6Iq2kjY+nWY6zLkwJipWUhdsuNjRxlIiPjLZ9FBUZlCE9zIq4rkMdB
+	 St3TqtUp4Pf5c9aT2gtiPbCutyyMQ4C1g6CnIVy+N4uziSEpVjY6GUQT9GawvNtSIb
+	 2reQiFATS4hB5mXFb63dxj9K+3ZdQjjVJ5GLBRz9myNnMyDaPt74zQBbEoLUn7hrZQ
+	 kN0o0jQWzTYwyo3fpA/3qNtW8n3/RDIvy0T7gemPNwnBiFRHAswxo6HCeL8udeDGxW
+	 gZitvS3NPLjCA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: =?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
 	Takashi Iwai <tiwai@suse.de>,
 	Danilo Krummrich <dakr@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.1.y 1/2] firmware_loader: Add cancel helper for async requests
-Date: Mon, 13 Jul 2026 23:32:55 -0400
-Message-ID: <20260714033256.2396704-1-sashal@kernel.org>
+Subject: [PATCH 7.1.y 2/2] ALSA: hda/tas2781: Cancel async firmware request at unbind
+Date: Mon, 13 Jul 2026 23:32:56 -0400
+Message-ID: <20260714033256.2396704-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026071331-subarctic-arrival-f0d8@gregkh>
+In-Reply-To: <20260714033256.2396704-1-sashal@kernel.org>
 References: <2026071331-subarctic-arrival-f0d8@gregkh>
+ <20260714033256.2396704-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -86,7 +87,7 @@ X-Spamd-Result: default: False [-4.16 / 15.00];
 	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-274106-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-274107-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	RCPT_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -101,183 +102,68 @@ X-Spamd-Result: default: False [-4.16 / 15.00];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BDD00750A7D
+X-Rspamd-Queue-Id: 11D0C750A80
 
 From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
-[ Upstream commit b9bdd68b8b979c7e9de58b2e7d21e1d7d932c755 ]
+[ Upstream commit 5367e2ad14f0ae9350a7aaf2e77c87de39a43ae9 ]
 
-request_firmware_nowait() keeps the callback module pinned and holds
-a device reference until the firmware work completes.
+TAS2781 HDA I2C and SPI queue RCA firmware loading from component
+bind with request_firmware_nowait(). The firmware loader keeps the
+callback module pinned and holds a device reference, but the callback
+still uses driver-private HDA state.
 
-Callers still have no way to cancel or synchronize the queued callback
-before tearing down their driver-private state.
+Component unbind removes controls and DSP state immediately. Later
+device removal tears down the TAS2781 private data, including
+codec_lock. If the async firmware callback runs after unbind has
+started, it can operate on state that is being torn down.
 
-Track scheduled async firmware work in an internal list and add
-request_firmware_nowait_cancel(). The helper cancels work matching the
-device, callback context and callback function. It cancels work that has
-not started yet and waits for an already-running callback to return. If
-the request has already completed, it is a no-op.
+Cancel or synchronize the async firmware request before removing
+controls and DSP state. A queued callback is cancelled, and an
+already-running callback is allowed to finish before unbind continues.
 
-Keep the existing request_firmware_nowait() lifetime model manual. A
-devres-managed variant can be layered on top separately if needed.
-
+Fixes: 5be27f1e3ec9 ("ALSA: hda/tas2781: Add tas2781 HDA driver")
+Fixes: bb5f86ea50ff ("ALSA: hda/tas2781: Add tas2781 hda SPI driver")
+Cc: stable@vger.kernel.org
 Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 Reviewed-by: Takashi Iwai <tiwai@suse.de>
 Acked-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20260505-alsa-hda-tas2781-fw-callback-teardown-v4-1-e7c4bf930dc8@gmail.com
-Stable-dep-of: 5367e2ad14f0 ("ALSA: hda/tas2781: Cancel async firmware request at unbind")
+Link: https://patch.msgid.link/20260505-alsa-hda-tas2781-fw-callback-teardown-v4-2-e7c4bf930dc8@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/firmware_loader/main.c | 68 +++++++++++++++++++++++++++--
- include/linux/firmware.h            | 10 +++++
- 2 files changed, 74 insertions(+), 4 deletions(-)
+ sound/hda/codecs/side-codecs/tas2781_hda_i2c.c | 3 +++
+ sound/hda/codecs/side-codecs/tas2781_hda_spi.c | 3 +++
+ 2 files changed, 6 insertions(+)
 
-diff --git a/drivers/base/firmware_loader/main.c b/drivers/base/firmware_loader/main.c
-index a11b30dda23be5..78c5f05a2ec101 100644
---- a/drivers/base/firmware_loader/main.c
-+++ b/drivers/base/firmware_loader/main.c
-@@ -1132,6 +1132,7 @@ EXPORT_SYMBOL(release_firmware);
- /* Async support */
- struct firmware_work {
- 	struct work_struct work;
-+	struct list_head list;
- 	struct module *module;
- 	const char *name;
- 	struct device *device;
-@@ -1140,6 +1141,17 @@ struct firmware_work {
- 	u32 opt_flags;
- };
+diff --git a/sound/hda/codecs/side-codecs/tas2781_hda_i2c.c b/sound/hda/codecs/side-codecs/tas2781_hda_i2c.c
+index 67240ce184e1a7..dd1b0cc63ad6cd 100644
+--- a/sound/hda/codecs/side-codecs/tas2781_hda_i2c.c
++++ b/sound/hda/codecs/side-codecs/tas2781_hda_i2c.c
+@@ -588,6 +588,9 @@ static void tas2781_hda_unbind(struct device *dev,
+ 		comp->playback_hook = NULL;
+ 	}
  
-+static LIST_HEAD(firmware_work_list);
-+static DEFINE_SPINLOCK(firmware_work_lock);
++	request_firmware_nowait_cancel(tas_hda->priv->dev, tas_hda->priv,
++				       tasdev_fw_ready);
 +
-+static void firmware_work_free(struct firmware_work *fw_work)
-+{
-+	put_device(fw_work->device); /* taken in request_firmware_nowait() */
-+	module_put(fw_work->module);
-+	kfree_const(fw_work->name);
-+	kfree(fw_work);
-+}
+ 	tas2781_hda_remove_controls(tas_hda);
+ 
+ 	tasdevice_config_info_remove(tas_hda->priv);
+diff --git a/sound/hda/codecs/side-codecs/tas2781_hda_spi.c b/sound/hda/codecs/side-codecs/tas2781_hda_spi.c
+index 0e4f3553f27381..d243baff95a727 100644
+--- a/sound/hda/codecs/side-codecs/tas2781_hda_spi.c
++++ b/sound/hda/codecs/side-codecs/tas2781_hda_spi.c
+@@ -750,6 +750,9 @@ static void tas2781_hda_unbind(struct device *dev, struct device *master,
+ 		comp->playback_hook = NULL;
+ 	}
+ 
++	request_firmware_nowait_cancel(tas_priv->dev, tas_priv,
++				       tasdev_fw_ready);
 +
- static void request_firmware_work_func(struct work_struct *work)
- {
- 	struct firmware_work *fw_work;
-@@ -1150,11 +1162,15 @@ static void request_firmware_work_func(struct work_struct *work)
- 	_request_firmware(&fw, fw_work->name, fw_work->device, NULL, 0, 0,
- 			  fw_work->opt_flags);
- 	fw_work->cont(fw, fw_work->context);
--	put_device(fw_work->device); /* taken in request_firmware_nowait() */
+ 	tas2781_hda_remove_controls(tas_hda);
  
--	module_put(fw_work->module);
--	kfree_const(fw_work->name);
--	kfree(fw_work);
-+	spin_lock_irq(&firmware_work_lock);
-+	if (!list_empty(&fw_work->list)) {
-+		list_del_init(&fw_work->list);
-+		spin_unlock_irq(&firmware_work_lock);
-+		firmware_work_free(fw_work);
-+		return;
-+	}
-+	spin_unlock_irq(&firmware_work_lock);
- }
- 
- 
-@@ -1164,6 +1180,7 @@ static int _request_firmware_nowait(
- 	void (*cont)(const struct firmware *fw, void *context), bool nowarn)
- {
- 	struct firmware_work *fw_work;
-+	unsigned long flags;
- 
- 	fw_work = kzalloc_obj(struct firmware_work, gfp);
- 	if (!fw_work)
-@@ -1196,7 +1213,12 @@ static int _request_firmware_nowait(
- 
- 	get_device(fw_work->device);
- 	INIT_WORK(&fw_work->work, request_firmware_work_func);
-+
-+	spin_lock_irqsave(&firmware_work_lock, flags);
-+	list_add_tail(&fw_work->list, &firmware_work_list);
- 	schedule_work(&fw_work->work);
-+	spin_unlock_irqrestore(&firmware_work_lock, flags);
-+
- 	return 0;
- }
- 
-@@ -1259,6 +1281,44 @@ int firmware_request_nowait_nowarn(
- }
- EXPORT_SYMBOL_GPL(firmware_request_nowait_nowarn);
- 
-+/**
-+ * request_firmware_nowait_cancel() - cancel an async firmware request
-+ * @device: device for which the firmware is being loaded
-+ * @context: context passed to request_firmware_nowait()
-+ * @cont: callback passed to request_firmware_nowait()
-+ *
-+ * Cancel a pending request_firmware_nowait() request for @device, @context
-+ * and @cont. If the associated work has already started, this function waits
-+ * until the callback has returned. If the callback has already completed, this
-+ * function does nothing.
-+ *
-+ * This function may sleep.
-+ */
-+void request_firmware_nowait_cancel(struct device *device, void *context,
-+				    void (*cont)(const struct firmware *fw,
-+						 void *context))
-+{
-+	struct firmware_work *fw_work = NULL;
-+	struct firmware_work *tmp;
-+
-+	spin_lock_irq(&firmware_work_lock);
-+	list_for_each_entry_reverse(tmp, &firmware_work_list, list) {
-+		if (tmp->device == device && tmp->context == context &&
-+		    tmp->cont == cont) {
-+			fw_work = tmp;
-+			list_del_init(&fw_work->list);
-+			break;
-+		}
-+	}
-+	spin_unlock_irq(&firmware_work_lock);
-+
-+	if (!fw_work)
-+		return;
-+	cancel_work_sync(&fw_work->work);
-+	firmware_work_free(fw_work);
-+}
-+EXPORT_SYMBOL_GPL(request_firmware_nowait_cancel);
-+
- #ifdef CONFIG_FW_CACHE
- static ASYNC_DOMAIN_EXCLUSIVE(fw_cache_domain);
- 
-diff --git a/include/linux/firmware.h b/include/linux/firmware.h
-index aae1b85ffc10e2..0fa3b027f02f16 100644
---- a/include/linux/firmware.h
-+++ b/include/linux/firmware.h
-@@ -110,6 +110,9 @@ int request_firmware_nowait(
- 	struct module *module, bool uevent,
- 	const char *name, struct device *device, gfp_t gfp, void *context,
- 	void (*cont)(const struct firmware *fw, void *context));
-+void request_firmware_nowait_cancel(struct device *device, void *context,
-+				    void (*cont)(const struct firmware *fw,
-+						 void *context));
- int request_firmware_direct(const struct firmware **fw, const char *name,
- 			    struct device *device);
- int request_firmware_into_buf(const struct firmware **firmware_p,
-@@ -157,6 +160,13 @@ static inline int request_firmware_nowait(
- 	return -EINVAL;
- }
- 
-+static inline void request_firmware_nowait_cancel(struct device *device,
-+						  void *context,
-+						  void (*cont)(const struct firmware *fw,
-+							       void *context))
-+{
-+}
-+
- static inline void release_firmware(const struct firmware *fw)
- {
- }
+ 	tasdevice_config_info_remove(tas_priv);
 -- 
 2.53.0
 
