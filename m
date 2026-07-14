@@ -1,166 +1,163 @@
-Return-Path: <stable+bounces-274175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274176-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id IBTxDWrqVWoivwAAu9opvQ
-	(envelope-from <stable+bounces-274175-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 09:51:06 +0200
+	id p9bLIxruVWr9wAAAu9opvQ
+	(envelope-from <stable+bounces-274176-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 10:06:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A0DB752135
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 09:51:05 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 407BA7522CA
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 10:06:45 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274175-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-274175-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=none;
+	dkim=pass header.d=bootlin.com header.s=dkim header.b=UUhvAR3D;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274176-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-274176-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=bootlin.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7DDDD303748C
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 07:50:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 65E423047F04
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 08:06:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED3E93EB0ED;
-	Tue, 14 Jul 2026 07:50:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 450B13F4854;
+	Tue, 14 Jul 2026 08:06:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f173.google.com (mail-vk1-f173.google.com [209.85.221.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FA483EC2F8
-	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 07:50:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13BED3F39EA
+	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 08:06:04 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784015453; cv=none; b=Xvamt02oVTqpFCdDpRA3y/0bS0cAwr+/goYY174r+uVnVjFvjvp62SajQYBywJT+1KVcJYZYDRqEfxJpcbOCX5Sa6tTr8PXLtp4ekxHDjeyj7Kq2NrLY6e5nIk5Fq8acjPI5SKewSGKNojrfJ4+yYFTkS6Gk1gScj84eZcnoT00=
+	t=1784016369; cv=none; b=FMDxLD+BaaNR/8IPTKtFH2uq4TKp7GRkBBiGmYYk2a8aECtm4iKlXoSpfazVKN+M9wEMaQ7OQKayw1r4VrQkkEZFprIhGyZjbJ8sqQg82879Q5ghLguCTeNw4al/jxXTgR+lydSBCZ2rCK7AUrdTBH9TH7n/Onuscov+98dMKVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784015453; c=relaxed/simple;
-	bh=iq8Kc5+SBapLqwF6ORCrQ5sCq4FaCemr05ZMk3EEWBE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=azckhstba8qx3yvUCagSsWDCtQS+Cnm1XnJZ9QSUTB/rzabM8ZZEmbFVm3xxvwhJDrGMx/URyjk5+KtFZjGwkVgz3Lfu8yKc2mCuCzjyQPXZMFj6KwV5xiEOO1SPV4KQscB+71h1C+geWuErPevlNUfo0YXnBOXGeqntjHho2yw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.173
-Received: by mail-vk1-f173.google.com with SMTP id 71dfb90a1353d-5bf959b820cso373705e0c.3
-        for <stable@vger.kernel.org>; Tue, 14 Jul 2026 00:50:51 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784015451; x=1784620251;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=yavgJsn42/mg7FbRzuzYhczZGQV3Jism9aLSRgEzMNU=;
-        b=OGmAqBDDAmGe/wyUIKlxqc/1ZXjZNpOF0z25dRzeSsO7RIyCnR1G9ih4KaipIDFoEN
-         MpkHfjzpALQpZ270NDX9ITNG4/M570kXdWiczZwYKdLnboMEGObKJKL5O0rJlaslnoQr
-         3dsPWWulMbiiQbE/yJpQux+HTlsxIzOC2RdYz6yBgg7k0ZwqCLckVQUlgzZEn+u1LoWB
-         z+3muaiedHaA5xkscxQdYvvx5lgODfJIdzthuYk4pgcdsMLixAHV/K6vq6/IR76LLknO
-         cF3U2kzauCHALRf9jzQ6iXh8w7cm+rqXPJgU0qLgeAq1paFp18EtKyWpLOrbLPH1hc9+
-         je7A==
-X-Forwarded-Encrypted: i=1; AHgh+RoD8LQ22X80pYOOPDL5x6jQsQALsAfEaj4auv4zx7uJB/EW4O/D0wi9CGJ+T7B5wvhLU/6xp64=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzMyQTVKzjK8TAA1ACA4X6sawABzo3bhsXpZr5gDh/ajsI1Myf4
-	8oPZJKLeW1u92BkHBn1A37eU9+03awnk5a2DLhM0XFMIbLVgESw6WwwMrX9WWt2rekw=
-X-Gm-Gg: AfdE7ckNGxX6f9hziG0i7jWfdeJbY07fqxbcP/mJu9GzrB7XLRDgXw5aSdUaIvcNvk+
-	dCOU3ZFW+O0qfsYtOT7uZb5zvm4sKxBzcQgxpaQgJVp9D0mwYzCMuWdLZ3Bb6MM9CduvDQK0Guo
-	RkVpIeKJgDbHF72Jbck8jLqku8guGpzJAXYcVoFywbfqNkZn1ZKzC9X0uAr5IPQrzTOsLHlNJ/s
-	ZSbzGDJIiFS3ov+6wE5NO2/XOn6mU0jjcGzqa0mWRQQ/7gKTtt2S6pcoV31FQ7xwUfD/Ngrsutv
-	bGL3b6A415QVEaZYnnNojXZNCev+xCe/SUu7gqH4c6cGicNfg6qN04YCMKkH0R1CHkGZ7mbw7Ai
-	HTTyXJJcLmWQs8CFSqH5oa2CWjokzDLomqKQZKZurUO28QuP1AdeARXKNE6IWmMHVb5zkirKN2M
-	4xTUmHBlIQ4Rik/TkiIU/28izkKorYrD5RHdmIcaBK6XlzPBX99w==
-X-Received: by 2002:a05:6122:6e13:b0:5bf:8c77:e89a with SMTP id 71dfb90a1353d-5bfbf0a9d24mr7009359e0c.2.1784015450947;
-        Tue, 14 Jul 2026 00:50:50 -0700 (PDT)
-Received: from mail-ua1-f54.google.com (mail-ua1-f54.google.com. [209.85.222.54])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5c110f6e64dsm991645e0c.17.2026.07.14.00.50.50
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 14 Jul 2026 00:50:50 -0700 (PDT)
-Received: by mail-ua1-f54.google.com with SMTP id a1e0cc1a2514c-969524c1a63so428831241.0
-        for <stable@vger.kernel.org>; Tue, 14 Jul 2026 00:50:50 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RoabM7DXNciVjzNjzV7zEeCjcU+LOF2wwMF0AQT73Oi1e9DMpO1mJ1v2YJXMn4qZVKjbhc81i0=@vger.kernel.org
-X-Received: by 2002:a05:6102:1608:b0:739:15ef:cdfb with SMTP id
- ada2fe7eead31-74533b84395mr8279731137.5.1784015450565; Tue, 14 Jul 2026
- 00:50:50 -0700 (PDT)
+	s=arc-20240116; t=1784016369; c=relaxed/simple;
+	bh=iEdFzK7xpXCvHtMu35ZXOvPgRl4ORJgloYuTHHBTGNY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PSylVkxZeklcTyA0kPhu7P7d4NXPIqghfwY31Fzmi2jtyF1z86GlgBHUClYky0UFwtvVv0Hb9pvu4xTUND12p7XX3Yr48DxBvOzOQsBmLVIRLadhz35GfgfC2tIwlwYLdHuzJXj3ZjVDJ5yO0n0FSkLcamtZmH4BUxpm14wWEVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=UUhvAR3D; arc=none smtp.client-ip=185.171.202.116
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 64F78C2BB23;
+	Tue, 14 Jul 2026 08:06:19 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id E510B60346;
+	Tue, 14 Jul 2026 08:06:02 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B570111BD3B23;
+	Tue, 14 Jul 2026 10:05:53 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1784016361; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=0Tr5FyN1yFpthV3VK225kkpXsZ1+Q0ewXRFUsrX48A0=;
+	b=UUhvAR3DyUsKeZ48khLzz/RdRv84xOY22/Qhm3XoX9CbNw1gs0svpqNBm/qEokdnu5EIv6
+	v2O/ILj+ugqfNoSd/d+H1e62p6axvHGjlaSXuvAcTKF4VTXhJzWNhGSnE/SVr6yPSn+k0r
+	ZPD5zjXlnrjRtF45RE5zTLOb7ltACN5ehJNzBp5GKmphkdqLx9VWvnWm9gmaIAI3Dgvox4
+	D50HMojooGQIcwQyNqnlsi3y9KknvFb5Np3S4K71bQH0De5Hva7q0n9O8bT7W7gE16xm5E
+	49uaXhN7Pj7/ukVgFASP2sPi635Tf+Cv0ce3x0zd9vLu2iscHZYFFubD1syBGw==
+Message-ID: <edc373ca-fef8-46e4-8b4f-8afc257c2349@bootlin.com>
+Date: Tue, 14 Jul 2026 10:05:51 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260710160450.64967-1-marek.vasut+renesas@mailbox.org>
- <CAMuHMdUQJ8mzUi0birB5f1KnCMX_QufHTgYB7AW=d3ZoFer+Yg@mail.gmail.com> <1d0d4074-90ca-4b33-9bd3-ff27aa0fd4d4@mailbox.org>
-In-Reply-To: <1d0d4074-90ca-4b33-9bd3-ff27aa0fd4d4@mailbox.org>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Tue, 14 Jul 2026 09:50:39 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdWNcbMxONo=PaHqJnD1EErc8AzYLf0MceD+vt9UhmsVfQ@mail.gmail.com>
-X-Gm-Features: AUfX_mxwFeauCKqv0YVOv7ObJuQMatx6kqMpuGapev3XA_vc1zBsK6ZaiEApGuY
-Message-ID: <CAMuHMdWNcbMxONo=PaHqJnD1EErc8AzYLf0MceD+vt9UhmsVfQ@mail.gmail.com>
-Subject: Re: [PATCH v2] arm64: dts: renesas: ironhide: Describe inline ECC carveouts
-To: Marek Vasut <marek.vasut@mailbox.org>
-Cc: linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org, 
-	Conor Dooley <conor+dt@kernel.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Magnus Damm <magnus.damm@gmail.com>, 
-	Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v3] net: stmmac: intel: skip SerDes reconfig when rate
+ is unchanged
+To: Markus Breitenberger <bre@breiti.cc>, netdev@vger.kernel.org
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, mcoquelin.stm32@gmail.com,
+ alexandre.torgue@foss.st.com, rmk+kernel@armlinux.org.uk,
+ yong.liang.choong@linux.intel.com, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org,
+ Markus Breitenberger <bre@keba.com>
+References: <20260713171619.192452-1-bre@breiti.cc>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <20260713171619.192452-1-bre@breiti.cc>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.04 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-274175-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[lists.infradead.org,vger.kernel.org,kernel.org,glider.be,gmail.com];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[linux-m68k.org];
-	FORGED_RECIPIENTS(0.00)[m:marek.vasut@mailbox.org,m:linux-arm-kernel@lists.infradead.org,m:stable@vger.kernel.org,m:conor+dt@kernel.org,m:geert+renesas@glider.be,m:krzk+dt@kernel.org,m:magnus.damm@gmail.com,m:robh@kernel.org,m:devicetree@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-renesas-soc@vger.kernel.org,m:conor@kernel.org,m:geert@glider.be,m:krzk@kernel.org,m:magnusdamm@gmail.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-274176-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[geert@linux-m68k.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	FORGED_SENDER(0.00)[maxime.chevallier@bootlin.com,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:bre@breiti.cc,m:netdev@vger.kernel.org,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:mcoquelin.stm32@gmail.com,m:alexandre.torgue@foss.st.com,m:rmk+kernel@armlinux.org.uk,m:yong.liang.choong@linux.intel.com,m:linux-stm32@st-md-mailman.stormreply.com,m:linux-arm-kernel@lists.infradead.org,m:stable@vger.kernel.org,m:bre@keba.com,m:andrew@lunn.ch,m:mcoquelinstm32@gmail.com,m:rmk@armlinux.org.uk,s:lists@lfdr.de];
+	FREEMAIL_CC(0.00)[lunn.ch,davemloft.net,google.com,kernel.org,redhat.com,gmail.com,foss.st.com,armlinux.org.uk,linux.intel.com,st-md-mailman.stormreply.com,lists.infradead.org,vger.kernel.org,keba.com];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[6];
+	SEM_URIBL_FRESH15_UNKNOWN_FAIL(0.00)[keba.com:query timed out,bootlin.com:query timed out,vger.kernel.org:query timed out];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[maxime.chevallier@bootlin.com,stable@vger.kernel.org];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[geert@linux-m68k.org,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
+	DKIM_TRACE(0.00)[bootlin.com:+];
 	ALIAS_RESOLVED(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	R_DKIM_NA(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,dt,renesas];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,mail.gmail.com:mid,glider.be:email,linux-m68k.org:email,linux-m68k.org:from_mime]
+	TAGGED_RCPT(0.00)[stable,netdev,kernel];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[keba.com:email,vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,bootlin.com:from_mime,bootlin.com:mid,bootlin.com:email,bootlin.com:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3A0DB752135
+X-Rspamd-Queue-Id: 407BA7522CA
 
-Hi Marek,
+Hi Markus,
 
-On Tue, 14 Jul 2026 at 01:27, Marek Vasut <marek.vasut@mailbox.org> wrote:
-> On 7/13/26 11:11 AM, Geert Uytterhoeven wrote:
-> >> +               ecc@1e66660000 {
-> >> +                       reg = <0x1e 0x66660000 0x0 0x999a0000>;
-> >> +                       no-map;
-> >> +               };
-> >
-> > Given all DB[0-7]FSDRAMECCAREA00 registers on Ironhide contain
-> > 0x0000cccc (md.l e98[0-3][7f]450 1), I think the last 3 regions should
-> > start at offset 0xcccc0000 instead of 0x66660000, too.
-> > As a bonus, we get 4.8 GiB back ;-)
-> I asked about that part internally already, and yes, it does take away a
-> lot of DRAM. I think it is safer to reserve more DRAM and have a stable
-> system than reserve less DRAM and deal with potential stability issues.
-> I also think we can always update the reserved memory nodes in the
-> future and shrink them to make more DRAM available, once we know that it
-> is safe to do so.
+On 7/13/26 19:16, Markus Breitenberger wrote:
+> From: Markus Breitenberger <bre@keba.com>
+> 
+> intel_mac_finish() is registered as the phylink mac_finish()
+> callback for the Elkhart Lake SGMII ports. phylink calls it at
+> the end of every major link reconfiguration, including the
+> initial one during probe.
+> 
+> The callback selects the PMC ModPHY LCPLL programming for the
+> requested MAC-side interface and then power-cycles the SerDes.
+> On Elkhart Lake that ModPHY is also used by the on-die AHCI
+> SATA PHY. Reapplying the programming during the initial
+> boot-time link-up disturbs the shared analog block while it is
+> still driving SATA, so the SATA link fails to train:
+> 
+>   ata1: SATA link down (SStatus 1 SControl 300)
+> 
+> The disk carrying the root filesystem is never detected and the
+> system hangs at rootwait. Ethernet itself comes up normally,
+> which makes the failure look unrelated to the network driver.
+> 
+> Before mac_finish() runs, the legacy SerDes power-up path has
+> already programmed SERDES_GCR0 for the current interface. The
+> 1G and 2.5G ModPHY tables selected by mac_finish() correspond
+> to the SerDes lane rate, so read that rate back from SERDES_GCR0
+> and skip the PMC reprogramming and SerDes power-cycle when it
+> already matches the selected interface.
+> 
+> This keeps the disruptive reprogramming out of the boot path
+> when the SerDes is configured correctly, while preserving the
+> previous behavior when a real SGMII/1000BASE-X to 2500BASE-X
+> rate change is needed. If the register read fails, reconfigure
+> as before.
+> 
+> Fixes: a42f6b3f1cc1 ("net: stmmac: configure SerDes according to the interface mode")
+> Cc: stable@vger.kernel.org
+> Assisted-by: GitHub-Copilot:claude-opus-4.8
+> Signed-off-by: Markus Breitenberger <bre@keba.com>
 
-Agreed
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-i.e. will queue in renesas-fixes for v7.2.
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 
-Gr{oetje,eeting}s,
+Maxime
 
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
 
