@@ -1,56 +1,94 @@
-Return-Path: <stable+bounces-274170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274168-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id XhxyEarnVWprvQAAu9opvQ
-	(envelope-from <stable+bounces-274170-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 09:39:22 +0200
+	id Y+bxDhHlVWrGuwAAu9opvQ
+	(envelope-from <stable+bounces-274168-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 09:28:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C353D751FCA
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 09:39:21 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3F5A751D87
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 09:28:16 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274170-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-274170-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=none;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=MrQKtzVE;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274168-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-274168-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 490DF30D39D7
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 07:33:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 258CC302B754
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 07:28:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4987C3F410E;
-	Tue, 14 Jul 2026 07:32:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 621033EDE5F;
+	Tue, 14 Jul 2026 07:28:08 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA04F3F4100;
-	Tue, 14 Jul 2026 07:32:43 +0000 (UTC)
+Received: from mail-pz2-f1.google.com (mail-pz2-f1.google.com [74.125.228.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E74C370AE5
+	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 07:28:06 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784014366; cv=none; b=sdm37E4hR0s/SMY1r5w0BIM31wvH3vZ1z7mcBiy0rl/W4kxqDblqr7Ykgg84VRX+X+UdKqMHPmbolEr0GmuTo0KJ6Y2Fn3+FEvPOuatYh9mXo4CcjpZDeAwfi/nViUdZ9t+v0yXCwMxctaiMPabl6gGZeJnydaKF5DxKjiGczDo=
+	t=1784014088; cv=none; b=neS63+V2n/EL4YqQoGZ2rnrApTxHwc0/99Uk+HTMiwQaY8RGHndJ0e03PDH6aAjQ87DBi8cPKAxdoBgoojRXeg4S/3NSK7gNtZO+THm1qvTttlz4ygEz9Ra2I1yebzMFif9b7yVhVV89dzK+TMwSkleRTfp+ULO1nHk+dkkUjlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784014366; c=relaxed/simple;
-	bh=5QuXQTRY9zoxb7Rfm/SQ7/4XLEGBNHIPI5V1y8znjfs=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=rAXqoX913DUvzGRwXwMelyajsSl9/jlJqtz+t8XvCifEAkJZvUjDIzTf3pMfiXytC+QsqvO1VFgeDRTj62L9GDHvPd+VG3qqxuAC1b6uwJ1oyVeObZCHnxnUnw/YoJBXHq4XmgRm3dzH1TEJMG8gSsMhMyXFb/fvmLvxPO2luWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Received: from loongson.cn (unknown [10.2.5.213])
-	by gateway (Coremail) with SMTP id _____8DxOOsa5lVqqVMDAA--.13445S3;
-	Tue, 14 Jul 2026 15:32:42 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.213])
-	by front1 (Coremail) with SMTP id qMiowJCxIuQT5lVqzZEMAA--.38917S3;
-	Tue, 14 Jul 2026 15:32:42 +0800 (CST)
-From: Bibo Mao <maobibo@loongson.cn>
-To: Huacai Chen <chenhuacai@kernel.org>
-Cc: Song Gao <gaosong@loongson.cn>,
-	kvm@vger.kernel.org,
-	loongarch@lists.linux.dev,
+	s=arc-20240116; t=1784014088; c=relaxed/simple;
+	bh=VV6RH/yKbbXGqbCZVlFLWMvC2IkSZjVrbZxP+GH89A0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=B5zBfRkY49T2ut2gIpSQmu3Y3wgvvmUMyXfojVnH3Ks0nT8J5FfVlstBGdoWiM7LpGzThoNQXUMi8Pv8mtZqoJaQEiPwephojU+4zO315hyBUm7UNALz7xhzoEg4ggVo1HfjCwQrdywPdbWcRscV6g17PW3cybm7u7kSl1U2bss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MrQKtzVE; arc=none smtp.client-ip=74.125.228.1
+Received: by mail-pz2-f1.google.com with SMTP id 41be03b00d2f7-c9486571b64so2287964a12.0
+        for <stable@vger.kernel.org>; Tue, 14 Jul 2026 00:28:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784014086; x=1784618886; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=UL4JsWWFy5+1VcD51BCzcQnL+AOhOLYxnY1WLoSce4c=;
+        b=MrQKtzVEK6cC864IUWe3vPOz+tNabRozEn2LOjqLNDT7Mv/1qS6ZzvJN0jatk/6BYD
+         0aXrWJV2LEUGzI9NhlgvcOd5p4zhDf4cgjbeeI0FWswQnA2/2zKSrCCtP9b3ndmXNqM3
+         t4WIyKTou7pBYd+W3WEh+5r9L/B5SwdaHZSODinrUXFSe30b5p5D+nuNkCpZ8YtFaK7K
+         yu0y6V3EjupH6oWVGXEOHWbW65pOw8C2Qcne+Vt1YF05S/glcnzK1dXXqVUKI92LL772
+         UHPwNy5lO92nmraNgsz7wgHEZjCpICyJmlCJcmsCgLSrcm3gW5rphIFAySpSY1cFQ2BO
+         BLqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784014086; x=1784618886;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=UL4JsWWFy5+1VcD51BCzcQnL+AOhOLYxnY1WLoSce4c=;
+        b=RGjSVIOs+aV88HPKTtNLCIsv2ZfgVb5c3nIhmUJYlQK4kykC+AeIBO+KrSMOsQd7+D
+         0k8XbY9mhCsLwOixF3AS0nsFjjQJR8WtOzU7a+mcZtPSlrK4/PYFZhwAthL8AZ4StXnc
+         F5uz9cOCZR+8nZbD3KcSlYiRvALOxCwM4Py0Qy/kx3Ul+cAJ9/yBKGLk6h7oT1KdUGvi
+         NzrazD4LaCE6IZb7dUFwJ8b13uQ/D+i8m381ZBuIOjjqQQRDGXyWfcg6dm3Qv4OQGMZG
+         0uidarfE3rx1rmAr38w4Dx1a4mAXQFqLmoQXAn5cTHexUhFBnjP6oPx7wdwbKLlGXTgp
+         pm2Q==
+X-Forwarded-Encrypted: i=1; AHgh+RrgFDIXw5S1pm9iMU2yLkMDZ+bgS1/UI1XwfCAY5DFCWZrs8wbnZHjGlMQqeHchNcdxCkvsr6s=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy4VQSgRhYEsVnbLUm+y732QEPj9mPLs33L4TFKm3F9xC96dkF/
+	NIZZTAbNlOfYwncsGFEDTNsU0dz8YjfMuWn00eTMnWUqARtOxOkN7cwwWn7B4We0WSIHXzMt
+X-Gm-Gg: AfdE7ckirV2o62PUvP9TqiRqcRFB7jIDsRBwAAV9Up8K08erIJxTC9yHjN6kJZw+Th8
+	3Ih7cgsVWMiCJjPl7ucG69w+Glf74//Ix02OsX5i7LbeopTmlqVlFN4Jl8CdCxcgLUn+fldvnfi
+	NHtgQVFEEzPxL76qArRWp5FX/xyqpV0cjkKjNIUIcSRvgeUU83A2EP8CUZ6WNlybxaQi9DoOksL
+	rxEBX8A4EjfoRnsOD7Hc8Etj8ORDzv2i1EdzXikbZrlopHUL5pcSUvs9d+89Va+rAfnaBiM7c1u
+	xMbmV6IzbA2jATRQRbuUV5fRDM+gXis+p81wXBd5b6cJlrWf9agFtsqisp7zf0JIarqQeXntBuk
+	N96K2VuDDuzjYdWGr03hF7PeAZ1mjd1E6VpK9jVnqFV8+A+aMQYQ4pW/FN1GikAaqDNGBlaV+Dq
+	DVHRQf6hhggMgLeUoJTj7YnM4gpRElTX3uCA==
+X-Received: by 2002:a05:6a00:1943:b0:841:58b0:82bb with SMTP id d2e1a72fcca58-84a5576ce8cmr1383065b3a.9.1784014086315;
+        Tue, 14 Jul 2026 00:28:06 -0700 (PDT)
+Received: from J4f-Laptop.localdomain ([2409:8a55:94d0:4771:cc5f:41a5:d797:4728])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84a4f80de8esm975471b3a.56.2026.07.14.00.28.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Jul 2026 00:28:05 -0700 (PDT)
+From: Shihuang Liu <shlomojune6@gmail.com>
+To: netdev@vger.kernel.org
+Cc: ap420073@gmail.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
 	linux-kernel@vger.kernel.org,
+	Shihuang Liu <shlomojune6@gmail.com>,
 	stable@vger.kernel.org
-Subject: [PATCH v5 1/5] LoongArch: KVM: Fix uninitialized stack variable issue with dmsintc
-Date: Tue, 14 Jul 2026 15:25:16 +0800
-Message-Id: <20260714072520.2745942-2-maobibo@loongson.cn>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20260714072520.2745942-1-maobibo@loongson.cn>
-References: <20260714072520.2745942-1-maobibo@loongson.cn>
+Subject: [PATCH] amt: fix use-after-free in AMT delayed works
+Date: Tue, 14 Jul 2026 15:27:05 +0800
+Message-ID: <20260714072705.129262-1-shlomojune6@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,69 +96,123 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJCxIuQT5lVqzZEMAA--.38917S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
-	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
-	nUUI43ZEXa7xR_UUUUUUUUU==
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.04 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-274170-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[loongson.cn];
-	FORGED_RECIPIENTS(0.00)[m:chenhuacai@kernel.org,m:gaosong@loongson.cn,m:kvm@vger.kernel.org,m:loongarch@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER(0.00)[maobibo@loongson.cn,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,lunn.ch,davemloft.net,google.com,kernel.org,redhat.com,vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-274168-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:netdev@vger.kernel.org,m:ap420073@gmail.com,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:linux-kernel@vger.kernel.org,m:shlomojune6@gmail.com,m:stable@vger.kernel.org,m:andrew@lunn.ch,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[shlomojune6@gmail.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[maobibo@loongson.cn,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
-	R_DKIM_NA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[loongson.cn:from_mime,loongson.cn:email,loongson.cn:mid,vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[shlomojune6@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C353D751FCA
+X-Rspamd-Queue-Id: C3F5A751D87
 
-Variable vector[] is declared on stack in function dmsintc_inject_irq()
-and sometimes it is used without initialized. Here fix this issue.
+When an AMT device is removed, pending delayed works can still access
+the freed amt_dev structure, which may result in kernel crashes or
+memory corruption.
 
-Fixes: 03de5eecb0f0 ("LoongArch: KVM: Add DMSINTC inject msi to vCPU")
+amt_dev_stop() cancels req_wq and discovery_wq with
+cancel_delayed_work_sync(), but these works can be scheduled again
+from event_wq after the cancellation. This allows delayed works to
+access the freed amt_dev structure after the netdev has been released.
+
+The following is a simple race scenario:
+
+CPU0                         CPU1
+
+amt_dev_stop()
+cancel_delayed_work_sync()
+                             amt_event_work()
+                             mod_delayed_work(req_wq)
+free netdev
+                             req_wq accesses freed amt_dev
+
+Use disable_delayed_work_sync() in amt_dev_stop() to prevent req_wq and
+discovery_wq from being queued again and wait for running work items
+to complete.
+
+The delayed works are disabled after initialization in
+amt_newlink() and enabled only when the device is successfully opened.
+This keeps the delayed work lifecycle synchronized with the lifetime
+of the AMT device.
+
+Fixes: cbc21dc1cfe9 ("amt: add data plane of amt interface")
 Cc: stable@vger.kernel.org
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Signed-off-by: Shihuang Liu <shlomojune6@gmail.com>
 ---
- arch/loongarch/kvm/intc/dmsintc.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/amt.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/arch/loongarch/kvm/intc/dmsintc.c b/arch/loongarch/kvm/intc/dmsintc.c
-index de25735ce039..0a8492c4394c 100644
---- a/arch/loongarch/kvm/intc/dmsintc.c
-+++ b/arch/loongarch/kvm/intc/dmsintc.c
-@@ -21,6 +21,8 @@ void dmsintc_inject_irq(struct kvm_vcpu *vcpu)
- 		old = atomic64_read(&(ds->vector_map[i]));
- 		if (old)
- 			vector[i] = atomic64_xchg(&(ds->vector_map[i]), 0);
-+		else
-+			vector[i] = 0;
- 	}
+diff --git a/drivers/net/amt.c b/drivers/net/amt.c
+index 951dd10e192b..7eb871b9b7e1 100644
+--- a/drivers/net/amt.c
++++ b/drivers/net/amt.c
+@@ -2995,9 +2995,15 @@ static int amt_dev_open(struct net_device *dev)
+ 	amt->event_idx = 0;
+ 	amt->nr_events = 0;
  
- 	if (vector[0]) {
++	enable_delayed_work(&amt->discovery_wq);
++	enable_delayed_work(&amt->req_wq);
++
+ 	err = amt_socket_create(amt);
+-	if (err)
++	if (err) {
++		disable_delayed_work(&amt->req_wq);
++		disable_delayed_work(&amt->discovery_wq);
+ 		return err;
++	}
+ 
+ 	amt->req_cnt = 0;
+ 	amt->remote_ip = 0;
+@@ -3023,8 +3029,8 @@ static int amt_dev_stop(struct net_device *dev)
+ 	struct sock *sk;
+ 	int i;
+ 
+-	cancel_delayed_work_sync(&amt->req_wq);
+-	cancel_delayed_work_sync(&amt->discovery_wq);
++	disable_delayed_work_sync(&amt->req_wq);
++	disable_delayed_work_sync(&amt->discovery_wq);
+ 	cancel_delayed_work_sync(&amt->secret_wq);
+ 
+ 	/* shutdown */
+@@ -3278,6 +3284,8 @@ static int amt_newlink(struct net_device *dev,
+ 	INIT_DELAYED_WORK(&amt->req_wq, amt_req_work);
+ 	INIT_DELAYED_WORK(&amt->secret_wq, amt_secret_work);
+ 	INIT_WORK(&amt->event_wq, amt_event_work);
++	disable_delayed_work(&amt->req_wq);
++	disable_delayed_work(&amt->discovery_wq);
+ 	INIT_LIST_HEAD(&amt->tunnel_list);
+ 	return 0;
+ err:
 -- 
-2.39.3
+2.43.0
 
 
