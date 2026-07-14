@@ -1,96 +1,89 @@
-Return-Path: <stable+bounces-274507-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274508-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 25RiJ16DVmp17wAAu9opvQ
-	(envelope-from <stable+bounces-274507-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 20:43:42 +0200
+	id Mkd0L0+DVmpr7wAAu9opvQ
+	(envelope-from <stable+bounces-274508-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 20:43:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB596757EA3
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 20:43:41 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D524757E93
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 20:43:27 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=google.com header.s=20251104 header.b=rNCK1ue6;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274507-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274507-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=google.com header.s=20251104 header.b=vS3PrwL9;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274508-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-274508-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=reject) header.from=google.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C84E6310580C
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 18:42:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 29FFC3006B1F
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 18:43:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDEF941A93C;
-	Tue, 14 Jul 2026 18:42:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D09B41A907;
+	Tue, 14 Jul 2026 18:43:24 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 503DF41A927
-	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 18:41:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27720377A80
+	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 18:43:07 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784054521; cv=none; b=ploBP5/TelkCyRPZ4lJwYJOklINBf7DwNHG4zpLj178zhw/2t9pa1n/yqifWbX52STmS1qJtdocdBPoLQMCEnd7EYGkXVY/eEtYdvQfZLIBP1pt8Xu30QtKoyLtUAVhRCvEvb10gKJF4wE+8Q0Ocwn1VSB7R/7visvohm3m/jos=
+	t=1784054596; cv=none; b=j+VUajPQPA9f86T6mOVUDP4bkipJ321OTmPgGG1s1ruW2+Kzjk4jkFRIqlRapQtbvKdQ3TyLx46dvAWj/HVo8pAl16shhvHAYcypTPI12bFavg2kKwOjW2VI39xSz5boOR+ba89dwfmzFU8WgzfaCFucJxpetjQ887YpeAjgHcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784054521; c=relaxed/simple;
-	bh=PaQBkS90a4rPCv/dq+YRWwLuz5fATYts+TOoZzoPZj4=;
+	s=arc-20240116; t=1784054596; c=relaxed/simple;
+	bh=QMtboOij6SiylMyty5zxOifbocl7KL0C8wQdf1+7zio=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=dp2o7FXtyNrG+Iif8kPIC5Ngt+qhIsdLxqezFYr5hQe27dpIfGDExNSiRxXcdHIcLROLEoWSXQBFoplpHBmwWt8eIsPTdCpPUWLGDKjwHGAuP7dLF81uUjfJVN3bzDV3bj4ZHw3Q90Z0GtEZvdYwSbHX5KK3XxhsTohse7+Vkog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rNCK1ue6; arc=none smtp.client-ip=209.85.210.201
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-84870e7f498so5426558b3a.3
-        for <stable@vger.kernel.org>; Tue, 14 Jul 2026 11:41:57 -0700 (PDT)
+	 To:Cc:Content-Type; b=tT65jNCuUyKBtCZd3xHWdmQLEAngux++2ItXK00Xm2zWkT1UciZRoqVkX7wQL/ggjR+JBoUcjd2L+fuMu/hrEPwudlm9iFEwRl9ryWp3x1GllnqV5kO0d/0jzQ58lysgvYbBmznvsmLEM+RF+f44jzy5gzBeXwBCEQDCJb9cz84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vS3PrwL9; arc=none smtp.client-ip=209.85.215.202
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c88ab059052so1468487a12.1
+        for <stable@vger.kernel.org>; Tue, 14 Jul 2026 11:43:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784054517; x=1784659317; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1784054582; x=1784659382; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=4QSNMOG9WUYsnTrdiXuaPBwAZEBhxka1gM9x6zaBmSM=;
-        b=rNCK1ue6708Vv/JHVtlGRjDGmBg7q7721OgtbVuL7BIIm4HkNGVJG1vYzTGM9MDe5z
-         1OUpxXC0cOGbLG+Jzn1WMctTPA+1IfA1i77sPtNKFgOEjmuSt06dIks3incEeubf428m
-         zSITgaZnP86MMavZ181GykbtaURT2oBdYUpnDPxXERg/EWu+mul+RMoxZll7Pjf9AEfo
-         Vm/SyCa5dOmFVfkZOWFptvYLO38cjr/ZZBMFQdzRv6KzEGbecMfb8ryqEBDI8RTMYfZS
-         mZjgu9H3fKEOon8Rr9RbYgQaJAGn8urwRUCOqbTNxWJAs0meHhowCK3PmlfZYDb8nqci
-         pYWA==
+        bh=8a7Ma3SWbuWG4d5N6WsHS2bhQ3Z4xI82D2YlDjqK2yg=;
+        b=vS3PrwL9O93UhSRKW2/+GkIkRt0rFPZ24ewFqjz2pNmhT/sTheqMuuc75myRi5uzVB
+         hE+S5JgSFSo57HjO39305WTO1TyJ7sV+TvKKgtI4k+HbNti9lf9sIwN8wXyCCxzHO7tp
+         qxgkYXA4GS3qpLglFUut4sEyTEqySylE5hroAHmcaaT7S2fG6nTzMx7+vLXvXOZQ2VlG
+         V/JDl+N3fa/Rvqrvcg8DuFlDfuseGnPzHgp8XpJp0bufvNMFKvqZGjFieEV/YYZcOq7y
+         l3vMxtN8N6q6EEa+bUb1qeOYf/CQXq5pytkfKLU0Dt3wbdfcMKL94YSYkrScwRbgRTrz
+         pVBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784054517; x=1784659317;
+        d=1e100.net; s=20251104; t=1784054582; x=1784659382;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=4QSNMOG9WUYsnTrdiXuaPBwAZEBhxka1gM9x6zaBmSM=;
-        b=VUarIg3xYlcceNKK2p7fW1audxd0e3ludoBoPG23ey7Jf85FH1ySWVrzfs0OZS+pNx
-         i7Jlx+dEdMlEk/hOdldw7cTpCuKXsNrTshaiANeaG3Z2z6EpNIOWlaZ4aZqzDLZltj8f
-         XYKfMIaBbJZzzrYEAyghh0o2wzN5805usDCj8pRi1GsemBrTEpiTEq0yYD+9IaIRMUCK
-         sbFVRDW2gXJZed+4WX8o8HCl1CL5Kz7MG7DcHw8K4km4Y+Dz3kevWfdsvwXtKQcEDixH
-         PJxAmLx/sS5qmiwuiM2zAZIGuh3S3UWpQuciOxDXYL9qPfqE9+QwoBqJVXf809gp6Rnz
-         qpGA==
-X-Forwarded-Encrypted: i=1; AHgh+RraLn/uoC9b4KcJtJQlxy3gYfNtqVMI3eRvIqMVvRP0limC99ZpAd0WGcY5RKVYHEUg67bzuzQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YymNMNBNZAcnJr3e8FF7yHSqFsdrSJig4FtNCy9r9F1A+hqXKqo
-	LpTqMOCWiyVkzEP5jXlu0GUdV/tOkwb6IVD3/5YTiCzssYCDy9URQjrFMAVefKciEoY0u02U1kR
-	0M46fjg==
-X-Received: from pfmy4.prod.google.com ([2002:aa7:8044:0:b0:848:56a2:f6a9])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:9289:b0:848:2ae4:d2ba
- with SMTP id d2e1a72fcca58-84889687b36mr12770821b3a.28.1784054516663; Tue, 14
- Jul 2026 11:41:56 -0700 (PDT)
-Date: Tue, 14 Jul 2026 11:41:01 -0700
-In-Reply-To: <20260602-sev_snp_fixes-v3-0-24bfd3ae047c@meta.com>
+        bh=8a7Ma3SWbuWG4d5N6WsHS2bhQ3Z4xI82D2YlDjqK2yg=;
+        b=BGHhpn5leUVGPFtjBUoF5K3oBt7aBZ541g1G/AeRugaOCXBrJXaB0l3heqozCmhsre
+         qwG0sQ0WtBmzRdL7mc/gCjf+ZpfK1lQYeCkDC1y7sqIJXNB36m0ISlGc300xsUzzUEb0
+         fdN2UMPIYGAsQo7jcHPvd3mpaye9gjjNdUHiEa1iwuqgf0ugclnve+6ZX/B8AKJdxGiX
+         oAB77kxWYyfUbXmnDsNfGbBxEa0bEMyA33VWGQWYHfEFVhqK8sDbyuB7Un4aYreT5q+0
+         OMYLjZTOCze7h+LO9izMpTAM106LuzokVjank8Np9ijcOTTQkBC5q24GjwZRbOKIVP5U
+         8nSA==
+X-Gm-Message-State: AOJu0YxukTrWWSV2XWGP55biHb8NmpIcTpPpxzG0vvFzk4mgz/jVRtSB
+	6t5LM4RXjwZr+RLF2Csi4awUzu89M4DC1zR61gjgsQcY9KZM37iKR4N/cPbMFFK0GFmc8EGyG09
+	Mk5sSPQ==
+X-Received: from pjbqe4.prod.google.com ([2002:a17:90b:4f84:b0:38d:c157:c023])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3901:b0:37f:d265:18d2
+ with SMTP id 98e67ed59e1d1-38dc81b0ec8mr11584484a91.7.1784054582147; Tue, 14
+ Jul 2026 11:43:02 -0700 (PDT)
+Date: Tue, 14 Jul 2026 11:41:05 -0700
+In-Reply-To: <20260710035324.3170534-1-binbin.wu@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260602-sev_snp_fixes-v3-0-24bfd3ae047c@meta.com>
+References: <20260710035324.3170534-1-binbin.wu@linux.intel.com>
 X-Mailer: git-send-email 2.55.0.141.g00534a21ce-goog
-Message-ID: <178405419095.3137257.15966365152304045590.b4-ty@google.com>
-Subject: Re: [PATCH v3 0/4] KVM: Miscellaneous SEV/SNP related fixes
+Message-ID: <178405257201.3111763.16358668642306263283.b4-ty@google.com>
+Subject: Re: [PATCH v2] KVM: TDX: Reject concurrent change to CPUID entry count
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Tom Lendacky <thomas.lendacky@amd.com>, Peter Gonda <pgonda@google.com>, 
-	Brijesh Singh <brijesh.singh@amd.com>, Youngjae Lee <youngjaelee@meta.com>, 
-	Ashish Kalra <ashish.kalra@amd.com>, Michael Roth <michael.roth@amd.com>, 
-	John Allen <john.allen@amd.com>, Herbert Xu <herbert@gondor.apana.org.au>, 
-	Atish Patra <atish.patra@linux.dev>
-Cc: clm@meta.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-crypto@vger.kernel.org, stable@vger.kernel.org, 
-	Atish Patra <atishp@meta.com>, Sashiko <sashiko-bot@kernel.org>
+To: Sean Christopherson <seanjc@google.com>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	Binbin Wu <binbin.wu@linux.intel.com>
+Cc: stable@vger.kernel.org, pbonzini@redhat.com, kas@kernel.org, 
+	rick.p.edgecombe@intel.com, thorsten.blum@linux.dev
 Content-Type: text/plain; charset="utf-8"
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
@@ -98,68 +91,52 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
 	MV_CASE(0.50)[];
 	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[22];
 	RCVD_TLS_LAST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:seanjc@google.com,m:pbonzini@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:x86@kernel.org,m:hpa@zytor.com,m:thomas.lendacky@amd.com,m:pgonda@google.com,m:brijesh.singh@amd.com,m:youngjaelee@meta.com,m:ashish.kalra@amd.com,m:michael.roth@amd.com,m:john.allen@amd.com,m:herbert@gondor.apana.org.au,m:atish.patra@linux.dev,m:clm@meta.com,m:kvm@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-crypto@vger.kernel.org,m:stable@vger.kernel.org,m:atishp@meta.com,m:sashiko-bot@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[seanjc@google.com,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-274507-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-274508-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:seanjc@google.com,m:linux-kernel@vger.kernel.org,m:kvm@vger.kernel.org,m:binbin.wu@linux.intel.com,m:stable@vger.kernel.org,m:pbonzini@redhat.com,m:kas@kernel.org,m:rick.p.edgecombe@intel.com,m:thorsten.blum@linux.dev,s:lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[seanjc@google.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[google.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[seanjc@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: EB596757EA3
+X-Rspamd-Queue-Id: 2D524757E93
 
-On Tue, 02 Jun 2026 15:36:31 -0700, Atish Patra wrote:
-> This series addresses a few issues found during code audit of the
-> KVM SEV/SNP and CCP driver code. The fixes include a incorrect lock state
-> and incomplete state handling during intra-host migration for SNP VMs.
+On Fri, 10 Jul 2026 11:53:23 +0800, Binbin Wu wrote:
+> Reject KVM_TDX_INIT_VM if userspace changes cpuid.nent between the
+> initial read and the subsequent copy of the initialization data.
 > 
-> To: Sean Christopherson <seanjc@google.com>
-> To: Paolo Bonzini <pbonzini@redhat.com>
-> To: Borislav Petkov <bp@alien8.de>
-> To: Dave Hansen <dave.hansen@linux.intel.com>
-> To: x86@kernel.org
-> To: H. Peter Anvin <hpa@zytor.com>
-> To: Tom Lendacky <thomas.lendacky@amd.com>
-> To: Peter Gonda <pgonda@google.com>
-> To: Brijesh Singh <brijesh.singh@amd.com>
-> To: Youngjae Lee <youngjaelee@meta.com>
-> To: Ashish Kalra <ashish.kalra@amd.com>
-> To: Michael Roth <michael.roth@amd.com>
-> To: John Allen <john.allen@amd.com>
-> To: Herbert Xu <herbert@gondor.apana.org.au>
-> Cc: clm@meta.com
-> Cc: kvm@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: linux-crypto@vger.kernel.org
-> Cc: stable@vger.kernel.org
+> tdx_td_init() first reads user_data->cpuid.nent to size the flexible
+> kvm_tdx_init_vm copy.  The copied structure also contains cpuid.nent,
+> and that field can differ from the value used to size the allocation if
+> userspace modifies the input concurrently.  setup_tdparams_cpuids() later
+> passes init_vm->cpuid.nent to kvm_find_cpuid_entry2(), which uses it as
+> the array bound for the copied entries.
 > 
 > [...]
 
-Applied patches 1 and 2 to kvm-x86 fixes, thanks!
+Applied to kvm-x86 fixes, thanks!
 
-[1/4] KVM: SEV: Do not allow intra-host migration/mirroring of SNP VMs
-      https://github.com/kvm-x86/linux/commit/6ee414078823
-[2/4] KVM: selftests: Verify SNP VMs are rejected from migration and mirroring
-      https://github.com/kvm-x86/linux/commit/df371f2c6244
+[1/1] KVM: TDX: Reject concurrent change to CPUID entry count
+      https://github.com/kvm-x86/linux/commit/cfbebb55e512
 
 --
 https://github.com/kvm-x86/linux/tree/next
