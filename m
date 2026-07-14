@@ -1,63 +1,64 @@
-Return-Path: <stable+bounces-274436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274437-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id vBxIGvxlVmo34wAAu9opvQ
-	(envelope-from <stable+bounces-274436-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 18:38:20 +0200
+	id VpuwAC1mVmpF4wAAu9opvQ
+	(envelope-from <stable+bounces-274437-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 18:39:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3778756FE2
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 18:38:19 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54CB6756FF8
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 18:39:08 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Pb3epnRK;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274436-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-274436-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Swyl6FPN;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274437-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274437-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 70CF23031A96
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 16:38:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E1CAB30F3595
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 16:38:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 403D9480961;
-	Tue, 14 Jul 2026 16:38:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E07C480961;
+	Tue, 14 Jul 2026 16:38:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 015D326FA5A
-	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 16:38:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 560B226FA5A
+	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 16:38:19 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784047098; cv=none; b=PVGeapgZK3bVXI7Ien3wp2E+brmF5AVGNFE6bW6ixGfST+LbpTDXJbyDGyGllyL+0Q76nYn7h5XOnh9KNBpEqvl/ZKHUDzUVTCrvJgPwKRynf043c/hDeWVi6YXT+SSX/VAStjYnI3/CGklAlSP1V1oxhYzMrtbMFS/QJe8DaK4=
+	t=1784047100; cv=none; b=qtBJKq5LXRxcDpd9IxKKDaI9TVf9i0RFw4GxLIhxPNLk210T9YoVgWpSDG4WVFE6QkEKFnVYQ5V0BcideCwa+OjwCQQsyiY5fFSSPTGNwNwy4dbIXRgSlDfN94mngLa3duqR3Xf1mj71tBU8YT+UoRq7zqqP+ZR72WqdrC1vP+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784047098; c=relaxed/simple;
-	bh=0J+Hni2tnFx8Uiz+6B0jG1KYsO9HnuSebc+8817gDt4=;
+	s=arc-20240116; t=1784047100; c=relaxed/simple;
+	bh=/ttAlaUearU8Aom2c668kQqVcyp9O9qo5x2crFlqFm4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J/6+rUn9q/I6ur0ZF4WOjpHWFPnNco/eMqj23J+l3fkilNPRzpNfxAfplQrme+KkMQFMY6fcloCcE38//eexoa5u013n92RDceesqNwqd+MI2hAulKKwIPsGTQgLCag8pD1Erbtvr2FzyITchpaSsatcYijKhPGsh7Ti5MsBMx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pb3epnRK; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA4441F000E9;
-	Tue, 14 Jul 2026 16:38:15 +0000 (UTC)
+	 MIME-Version; b=iP1H9aLkaav7gJ3fkM4XLhwy/QUXBhAi4LNDbn2lfEFtdc3BfZha6zmIqMnpqP1Qt4aXBe6e8dKsvA05z9AKUCNGl3HcAnuut1oexzqKqggk4zN6OWSZAxzCC3Q1wLPnOqIthWIZKr4lqKdhJH9jXz49hmKoJmsFchp9+2hWNzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Swyl6FPN; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 602601F000E9;
+	Tue, 14 Jul 2026 16:38:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784047096;
-	bh=bmasTIzlQEMHOrExchjuwERq6wIspvGmCyEAfBKcdZg=;
+	s=k20260515; t=1784047099;
+	bh=pQXyVPQ2MfDGk1Hk0+KBPD6wModGtRhX3PFDqWY55TU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Pb3epnRKFQFM+te5IvJwvd1NLrvnb3UeIPmtPCtMZq/rUR7FHBp7HgVOnPYp4E1sr
-	 eiFyDbb6LhOIcL/67HDvtronMoCKP3eM3BUupUn/xUYUcmOqUwJzuxhH+yWuyg7ICi
-	 T2sk499537uSjESMwzo8vPgJypC5Tz0oeIuqBT5I9j0vQamI9uC++iZxV2mc52Ttyv
-	 +mqOG5B9NmALUIo8gEZzBNhhNn276GZkUIri0ejLzYicICdIZpf+XSlegEqdyZLkL4
-	 U5q70riaj/sFtL3oBkqMTJqp6NF568YpJgmCHqZQp4d51xlRIEfddujFbO5kV5vjqh
-	 bvSE4EQOa6mJA==
+	b=Swyl6FPNw7fCzCiWoZgi05+iyReozCRNbFPHItPrchwsdMngIOnBLU4m6S9+v5aVb
+	 o+anO65EmRA6nIUNeVMdXiygsG3whtJn3Zgw18J2Zgmk6DaqP3r4n3AEcA5pSncCGD
+	 /4AGKkXxlISVvN1YOEt7/j6TGiaTNyGtkAGss6F+XcyO42+6frb74VlTudUsXUaAa4
+	 wAQWPvgrRnrxercisk8/9YPZlIYl1G5CaUWdtjtbX4wfZSmnskYOR3PMnJVeGsB4I7
+	 ybNSOdjOCZStFd4rrAOKHNgbq7YDRQ7K2iJtYnwj6s3y32+T2rhGLkKFDcRyqPSfsA
+	 fAXEK8LcJw2NQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Mahesh Vaidya <mahesh.vaidya@altera.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	"Subhransu S. Prusty" <subhransu.sekhar.prusty@altera.com>,
+Cc: Alex Williamson <alex.williamson@nvidia.com>,
+	Yishai Hadas <yishaih@nvidia.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Alex Williamson <alex@shazbot.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] PCI: altera: Fix resource leaks on probe failure
-Date: Tue, 14 Jul 2026 12:38:13 -0400
-Message-ID: <20260714163813.2850299-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y] vfio/mlx5: Fix racy bitfields and tighten struct layout
+Date: Tue, 14 Jul 2026 12:38:16 -0400
+Message-ID: <20260714163816.2850342-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026071314-saddling-showpiece-bf06@gregkh>
-References: <2026071314-saddling-showpiece-bf06@gregkh>
+In-Reply-To: <2026071303-justly-shown-9b1c@gregkh>
+References: <2026071303-justly-shown-9b1c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -72,22 +73,22 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-274436-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-274437-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:alex.williamson@nvidia.com,m:yishaih@nvidia.com,m:kevin.tian@intel.com,m:alex@shazbot.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:mahesh.vaidya@altera.com,m:mani@kernel.org,m:subhransu.sekhar.prusty@altera.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -96,104 +97,97 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,altera.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,nvidia.com:email,vger.kernel.org:from_smtp,shazbot.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: F3778756FE2
+X-Rspamd-Queue-Id: 54CB6756FF8
 
-From: Mahesh Vaidya <mahesh.vaidya@altera.com>
+From: Alex Williamson <alex.williamson@nvidia.com>
 
-[ Upstream commit 7a94138caeb27f3c49c1dbd93bf422098925bb28 ]
+[ Upstream commit f2365a63b02ddea32e7db78b742c2503ec7b81f1 ]
 
-The chained IRQ handler is set during probe, but is only removed during the
-driver remove(). If pci_host_probe() fails, the handler and INTx IRQ
-domain remain set even though the devm-managed host bridge storage
-containing struct altera_pcie will be released, leaving the handler with
-a stale data pointer.
+Bitfield operations are not atomic, they use a read-modify-write
+pattern, therefore we should be careful not to pack bitfields that
+can be concurrently updated into the same storage unit.
 
-Interrupts are also enabled before pci_host_probe() is called. If probe
-fails after that point, the controller interrupt source should be disabled
-before the chained handler and INTx domain are removed.
+This split takes a binary approach: flags that are only modified
+pre/post open/close remain bitfields, flags modified from user
+action, including actions that reach across to another device (ex.
+reset) use dedicated storage units.
 
-So set the chained handler only after the INTx domain has been created.
-Disable controller interrupts during IRQ teardown, and tear the IRQ setup
-down if pci_host_probe() fails.
+Note mlx5_vhca_page_tracker.status is relocated to fill the alignment
+hole this split exposes.
 
-Fixes: c63aed7334c2 ("PCI: altera: Use pci_host_probe() to register host")
-Signed-off-by: Mahesh Vaidya <mahesh.vaidya@altera.com>
-[mani: commit log]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Subhransu S. Prusty <subhransu.sekhar.prusty@altera.com>
+Bitfield justifications:
+
+  migrate_cap: written only in mlx5vf_cmd_set_migratable() at probe
+  chunk_mode: written only in mlx5vf_cmd_set_migratable() at probe
+  mig_state_cap: written only in mlx5vf_cmd_set_migratable() at probe
+
+Dedicated storage units:
+
+  mdev_detach: written in the VF attach/detach event notifier
+               mlx5fv_vf_event() at runtime
+  log_active: written in mlx5vf_start_page_tracker()/
+              mlx5vf_stop_page_tracker() during runtime dirty tracking
+  deferred_reset: written in mlx5vf_state_mutex_unlock()/
+                  mlx5vf_pci_aer_reset_done() during runtime reset handling
+  is_err: set by tracker error handling and dirty-log polling at runtime
+  object_changed: set by tracker event handling and cleared by dirty-log
+                  polling at runtime
+
+Fixes: 61a2f1460fd0 ("vfio/mlx5: Manage the VF attach/detach callback from the PF")
+Fixes: 79c3cf279926 ("vfio/mlx5: Init QP based resources for dirty tracking")
+Fixes: f886473071d6 ("vfio/mlx5: Add support for tracker object change event")
+Cc: Yishai Hadas <yishaih@nvidia.com>
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260430204330.3121003-3-mahesh.vaidya@altera.com
+Assisted-by: Claude:claude-opus-4-8
+Signed-off-by: Alex Williamson <alex.williamson@nvidia.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Link: https://lore.kernel.org/r/20260615191241.688297-5-alex.williamson@nvidia.com
+Signed-off-by: Alex Williamson <alex@shazbot.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/pcie-altera.c | 28 ++++++++++++++++++++++++++--
- 1 file changed, 26 insertions(+), 2 deletions(-)
+ drivers/vfio/pci/mlx5/cmd.h | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/pci/controller/pcie-altera.c b/drivers/pci/controller/pcie-altera.c
-index 18b2361d6462d5..8038a39034d43f 100644
---- a/drivers/pci/controller/pcie-altera.c
-+++ b/drivers/pci/controller/pcie-altera.c
-@@ -681,8 +681,18 @@ static int altera_pcie_init_irq_domain(struct altera_pcie *pcie)
- 	return 0;
- }
+diff --git a/drivers/vfio/pci/mlx5/cmd.h b/drivers/vfio/pci/mlx5/cmd.h
+index 921d5720a1e57b..40f23c33680058 100644
+--- a/drivers/vfio/pci/mlx5/cmd.h
++++ b/drivers/vfio/pci/mlx5/cmd.h
+@@ -82,23 +82,26 @@ struct mlx5_vhca_qp {
+ struct mlx5_vhca_page_tracker {
+ 	u32 id;
+ 	u32 pdn;
+-	u8 is_err:1;
++	/* Flags modified at runtime - dedicated storage unit */
++	u8 is_err;
++	int status;
+ 	struct mlx5_uars_page *uar;
+ 	struct mlx5_vhca_cq cq;
+ 	struct mlx5_vhca_qp *host_qp;
+ 	struct mlx5_vhca_qp *fw_qp;
+ 	struct mlx5_nb nb;
+-	int status;
+ };
  
-+static void altera_pcie_disable_irq(struct altera_pcie *pcie)
-+{
-+	if (pcie->pcie_data->version == ALTERA_PCIE_V1 ||
-+	    pcie->pcie_data->version == ALTERA_PCIE_V2) {
-+		/* Disable all P2A interrupts */
-+		cra_writel(pcie, 0, P2A_INT_ENABLE);
-+	}
-+}
-+
- static void altera_pcie_irq_teardown(struct altera_pcie *pcie)
- {
-+	altera_pcie_disable_irq(pcie);
- 	irq_set_chained_handler_and_data(pcie->irq, NULL, NULL);
- 	irq_domain_remove(pcie->irq_domain);
- 	irq_dispose_mapping(pcie->irq);
-@@ -708,7 +718,6 @@ static int altera_pcie_parse_dt(struct altera_pcie *pcie)
- 	if (pcie->irq < 0)
- 		return pcie->irq;
- 
--	irq_set_chained_handler_and_data(pcie->irq, altera_pcie_isr, pcie);
- 	return 0;
- }
- 
-@@ -793,6 +802,12 @@ static int altera_pcie_probe(struct platform_device *pdev)
- 		return ret;
- 	}
- 
-+	/*
-+	 * The chained handler uses pcie->irq_domain, so set it only after the
-+	 * INTx domain has been created.
-+	 */
-+	irq_set_chained_handler_and_data(pcie->irq, altera_pcie_isr, pcie);
-+
- 	/* clear all interrupts */
- 	cra_writel(pcie, P2A_INT_STS_ALL, P2A_INT_STATUS);
- 	/* enable all interrupts */
-@@ -803,7 +818,16 @@ static int altera_pcie_probe(struct platform_device *pdev)
- 	bridge->busnr = pcie->root_bus_nr;
- 	bridge->ops = &altera_pcie_ops;
- 
--	return pci_host_probe(bridge);
-+	ret = pci_host_probe(bridge);
-+	if (ret)
-+		goto err_teardown_irq;
-+
-+	return 0;
-+
-+err_teardown_irq:
-+	altera_pcie_irq_teardown(pcie);
-+
-+	return ret;
- }
- 
- static int altera_pcie_remove(struct platform_device *pdev)
+ struct mlx5vf_pci_core_device {
+ 	struct vfio_pci_core_device core_device;
+ 	int vf_id;
+ 	u16 vhca_id;
++	/* Flags only modified on setup/release - bitfield ok */
+ 	u8 migrate_cap:1;
+-	u8 deferred_reset:1;
+-	u8 mdev_detach:1;
+-	u8 log_active:1;
++	/* Flags modified at runtime - dedicated storage unit */
++	u8 mdev_detach;
++	u8 log_active;
++	u8 deferred_reset;
+ 	struct completion tracker_comp;
+ 	/* protect migration state */
+ 	struct mutex state_mutex;
 -- 
 2.53.0
 
