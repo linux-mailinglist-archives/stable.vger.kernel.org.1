@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-274143-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274144-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id JL6MGPrRVWrztwAAu9opvQ
-	(envelope-from <stable+bounces-274143-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 08:06:50 +0200
+	id oJwRCiXSVWr6twAAu9opvQ
+	(envelope-from <stable+bounces-274144-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 08:07:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E992E75156A
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 08:06:49 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B19575158C
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 08:07:32 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N+eR6uAl;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274143-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274143-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XIl9oRw7;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274144-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-274144-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 65B4C30099BD
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 06:06:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0D16C3029A52
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 06:07:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D99A3D6493;
-	Tue, 14 Jul 2026 06:06:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 772873D6CA6;
+	Tue, 14 Jul 2026 06:07:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 653AB281525;
-	Tue, 14 Jul 2026 06:06:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37881372696;
+	Tue, 14 Jul 2026 06:06:59 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784009205; cv=none; b=a9OEevlc03S52AovFPiYnJFDwSWUeY0dq6dmgidE/uKvAXPb+5EivMc72SECdcxIg+xm7AVA5q/DF4a/nDns8X7XRGLUNS71FdcqZf3MWzjSWpO3wvQ2dWIjS1MwW2ThOY+E7WJBf4GBh+/74d7vRAU125yUcgauPQ+k0VEnT/w=
+	t=1784009221; cv=none; b=gCHjb9xDOrP4DnVkCNd0FxHgnaHWbW8hT0zhBZzrbIVgj3snInnmuF9MPYcAfu7LpXbygy3RgIextD75XxdVaICs1r4LTjnfpi4fDyjcmeIbnl0tqHAWmIXJnUt0HY78YPwF4HQZwyMVJ33ewLxMnoe7albW6LRBH4SkipbHWzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784009205; c=relaxed/simple;
-	bh=mMSizUDdDh49qgN19O4lGnxQDs+Svxlnjs/J+E+D8yo=;
+	s=arc-20240116; t=1784009221; c=relaxed/simple;
+	bh=MNJEK6iAMKhjjLLz9IjsdEsRkaCmVYzN6i81t0mMUPM=;
 	h=Date:Subject:From:To:Cc:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YAAjIaMB8VSryVDh/lUdiP4wpSgOcc5iIaekgDXr83coKdmhIKSBAk1GxMbPGtmJf/AkMiLFAxSzks/nJq+P/n55OKTk0HhKu9I5SHjmkkLYrjm5qpqSjdMGJ3bpp0OOmLoLCIppHGiEgC1VJGzlMaOpQQ1hm2MYfK9sgrN5AH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N+eR6uAl; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 3A9F01F00A3A;
-	Tue, 14 Jul 2026 06:06:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=neP1Jx15dvCP5Fc7S5Eu6PtGIA2b3sbcoHTV6OoK4VU+6U6w+1/z3MHHA2BzeG6K9yHPAEUuNYJekZKLI6uZABqH1TJR0IX3ettonAyxFl5CyvXqLbLEuzoHgkc0g2o1Ct3C/VdunhuYijurNPxG6Ly7zJthDB1f3XEa5QB8IlI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XIl9oRw7; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id C76AC1F000E9;
+	Tue, 14 Jul 2026 06:06:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784009204;
-	bh=Xj+m5BMXjgPbuT93x0vCBh/G/2emdAhqdtWkqjNTtBA=;
+	s=k20260515; t=1784009219;
+	bh=aDP/FCrHwZZb4b3kM2TGu/nXPwWx6EwS7LkKkIOJqmo=;
 	h=Date:Subject:From:To:Cc:In-Reply-To:References;
-	b=N+eR6uAl8rTMNUZ786Uo58raJC7yusOWHCXEV33bVBXDPg3NIOAKJFLlfOeYak3vl
-	 zwCE+gJytauTIMnt7oevyGb7zK+veFvlZcRK9DfG6rMyCYXm9q9fizWaLBp41JTGUL
-	 8Wq67gq9NXhkHlBrKDyDqVqP9pL5jkYPgdX9n1x9MoMs8v4YDMOzSsXE4jxwtULBhR
-	 Yi0L3iDIeIhd4nPo9dMXgrEnakGDElVErwIPhHg5CruQNq18qYxLZDcU5AF+RHGd/D
-	 lQJ7ZK0Sg01DfGTuOCDl3TxEZ6BPadMvWaUqlSsS84rR5GC0c4B/YR4SM3KN6Si2wx
-	 f/ycfvLM+ngZQ==
-Date: Mon, 13 Jul 2026 23:06:43 -0700
-Subject: [PATCH 3/6] xfs: handle non-inode owners for rtrmap record checking
+	b=XIl9oRw7CCZBQrH0bJ3ukTaUO8FWyzPNR2AfMw/0vMXkDxKUkBVVdxcwlL83XkNvY
+	 bIAWWQ1i0rotysArq5r2bx0PgU671J9wc1MhSGASJWcq9cM3cbc71QD1zEGe05JP/x
+	 7yAV1+fkpe4NmPL9lOo/RLs4UJ+kB61ud2Z3hGvX975V3myW6LHUQ5c1uFGr1ODrDN
+	 qoplv9Fm1QohbILLqjSXlELRsRRu1Yfl1YSV720IpBkAfalq4upLDH6u9rdgAW2//J
+	 sh0gWCBdpdvyZvJKTRRLjuCXv6EF+QHJ4uEaOblyGBXovXe0jzU+SBGAs/WiqGIQ+v
+	 Itrt5tr0DSfhQ==
+Date: Mon, 13 Jul 2026 23:06:59 -0700
+Subject: [PATCH 4/6] xfs: fully check the parent handle when it points to the
+ rootdir
 From: "Darrick J. Wong" <djwong@kernel.org>
 To: djwong@kernel.org, cem@kernel.org, hch@lst.de
 Cc: stable@vger.kernel.org, linux-xfs@vger.kernel.org
-Message-ID: <178400716881.268162.6869252550857617012.stgit@frogsfrogsfrogs>
+Message-ID: <178400716902.268162.497307588168425150.stgit@frogsfrogsfrogs>
 In-Reply-To: <178400716782.268162.4846177784022689546.stgit@frogsfrogsfrogs>
 References: <178400716782.268162.4846177784022689546.stgit@frogsfrogsfrogs>
 Precedence: bulk
@@ -68,7 +69,7 @@ X-Spamd-Result: default: False [-4.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +80,7 @@ X-Spamd-Result: default: False [-4.66 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[djwong@kernel.org,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-274143-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-274144-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS(0.00)[m:djwong@kernel.org,m:cem@kernel.org,m:hch@lst.de,m:stable@vger.kernel.org,m:linux-xfs@vger.kernel.org,s:lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -93,50 +94,60 @@ X-Spamd-Result: default: False [-4.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,frogsfrogsfrogs:mid]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,frogsfrogsfrogs:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E992E75156A
+X-Rspamd-Queue-Id: 8B19575158C
 
 From: Darrick J. Wong <djwong@kernel.org>
 
-LOLLM noticed that two helper functions in the rtrmapbt scrub code don't
-actually handle non-inode owners correctly -- CoW staging extents and
-rgsuperblock extents are not shareable, but they are mergeable.  Fix
-these two helpers.
+LOLLM noticed that the directory tree path checking declares the path to
+be ok if the inumber in the parent pointer reaches the root directory.
+Unfortunately, it neglects to check that the generation is correct.  Fix
+that by moving the generation check up.
 
-Cc: <stable@vger.kernel.org> # v6.14
-Fixes: 2d9a3e98053e8c ("xfs: allow overlapping rtrmapbt records for shared data extents")
+Cc: <stable@vger.kernel.org> # v6.10
+Fixes: 928b721a11789a ("xfs: teach online scrub to find directory tree structure problems")
 Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
 Assisted-by: LOLLM # finding obvious bugs
 ---
- fs/xfs/scrub/rtrmap.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/xfs/scrub/dirtree.c |   16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
 
-diff --git a/fs/xfs/scrub/rtrmap.c b/fs/xfs/scrub/rtrmap.c
-index b3b2cf17ba2c08..564d19a97a2f8f 100644
---- a/fs/xfs/scrub/rtrmap.c
-+++ b/fs/xfs/scrub/rtrmap.c
-@@ -87,6 +87,9 @@ xchk_rtrmapbt_is_shareable(
- 		return false;
- 	if (irec->rm_flags & XFS_RMAP_UNWRITTEN)
- 		return false;
-+	if (irec->rm_owner == XFS_RMAP_OWN_COW ||
-+	    irec->rm_owner == XFS_RMAP_OWN_FS)
-+		return false;
- 	return true;
- }
+diff --git a/fs/xfs/scrub/dirtree.c b/fs/xfs/scrub/dirtree.c
+index c6a210f7508fc2..b2cf6e5439d915 100644
+--- a/fs/xfs/scrub/dirtree.c
++++ b/fs/xfs/scrub/dirtree.c
+@@ -383,6 +383,14 @@ xchk_dirpath_step_up(
+ 		goto out_scanlock;
+ 	}
  
-@@ -146,6 +149,9 @@ xchk_rtrmap_mergeable(
- 		return false;
- 	if (r1->rm_flags != r2->rm_flags)
- 		return false;
-+	if (r1->rm_owner == XFS_RMAP_OWN_COW ||
-+	    r1->rm_owner == XFS_RMAP_OWN_FS)
-+		return true;
- 	return r1->rm_offset + r1->rm_blockcount == r2->rm_offset;
- }
++	/* The handle encoded in the parent pointer must match. */
++	if (VFS_I(dp)->i_generation != be32_to_cpu(dl->pptr_rec.p_gen)) {
++		trace_xchk_dirpath_badgen(dl->sc, dp, path->path_nr,
++				path->nr_steps, &dl->xname, &dl->pptr_rec);
++		error = -EFSCORRUPTED;
++		goto out_scanlock;
++	}
++
+ 	/* We've reached the root directory; the path is ok. */
+ 	if (parent_ino == dl->root_ino) {
+ 		xchk_dirpath_set_outcome(dl, path, XCHK_DIRPATH_OK);
+@@ -411,14 +419,6 @@ xchk_dirpath_step_up(
+ 		goto out_scanlock;
+ 	}
  
+-	/* The handle encoded in the parent pointer must match. */
+-	if (VFS_I(dp)->i_generation != be32_to_cpu(dl->pptr_rec.p_gen)) {
+-		trace_xchk_dirpath_badgen(dl->sc, dp, path->path_nr,
+-				path->nr_steps, &dl->xname, &dl->pptr_rec);
+-		error = -EFSCORRUPTED;
+-		goto out_scanlock;
+-	}
+-
+ 	/* Parent pointer must point up to a directory. */
+ 	if (!S_ISDIR(VFS_I(dp)->i_mode)) {
+ 		trace_xchk_dirpath_nondir_parent(dl->sc, dp, path->path_nr,
 
 
