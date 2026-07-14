@@ -1,173 +1,249 @@
-Return-Path: <stable+bounces-274273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274275-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ZMOLNJRKVmrG2wAAu9opvQ
-	(envelope-from <stable+bounces-274273-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 16:41:24 +0200
+	id HfkUEM5LVmoD3AAAu9opvQ
+	(envelope-from <stable+bounces-274275-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 16:46:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79BC2755F89
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 16:41:24 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89900756051
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 16:46:37 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dtG9ZaLD;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274273-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-274273-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=VCjdh10F;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274275-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-274275-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B08493085815
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 14:37:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 640D430CBB1E
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 14:39:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D125480338;
-	Tue, 14 Jul 2026 14:37:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA7BF47DD73;
+	Tue, 14 Jul 2026 14:39:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8827D47F2F6;
-	Tue, 14 Jul 2026 14:37:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F87E3D9DD7
+	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 14:39:04 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784039838; cv=none; b=Hxhg/VG5StMeRPGf3glVx4uoAqoHjrFLY6Be/z/mf2MPgsTby1aKkMCzZ8gmj4C3L5ug95FIF+Z0TKwxzitA+jvMYxZhsVw5YyCuFMa0FWYNhAiqjJ1H+CtJnzFt1CRzwg+k+52Q351mcV+yGl4YWhsGDiYrxVht3w20kYgNzL0=
+	t=1784039946; cv=none; b=M84FkY11eqtVD7D2a2rlLMF3rAo2HzT8eA+E168XsB9dL0x2JxeTjEgKdCoAt6dLVGcl1WWNcfD/laliI3gdjQRTnhkzmf+f3ACV89xrUFGg1LF/jrLTjKExj8rxI3c7R+VJcB5pl7Hu8B5FWoGy7958R/J5HcrJG9G2sa69ln0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784039838; c=relaxed/simple;
-	bh=PdVB8NgStSUmCyhI+hVIdN1jQb/NJGvzW2PY8KcsZW0=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=uffvQpCUvasMNqgAmauFyip0aAdmHzlm9h73qb8B6o9hLFrlwKspGDi6O+RMFePW0qxauvZkZ4z450a49KNXZ2VcLFWrFysiFoyWDJ+4JsUCMHCz6OC80Apllr55+GHj8xsdQ+nTI6xLOmiz7L2FtkbY1cJ4ZVYUYK+V+t3ECjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dtG9ZaLD; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BD781F000E9;
-	Tue, 14 Jul 2026 14:37:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784039829;
-	bh=LQZIyv0ZtAKxxL/9+Fp0LyJNcqg5cviSmk1e6E/ATPc=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=dtG9ZaLDqslGV3c+pK8dSYZh2iBxeQdKyPXVNIbG/IE5Q5igzMGzkOk7RK7lPDe8w
-	 fL5pSsNxroGyzTNfE6OSdKoKi8auRk9l7XX8Fdt/mb823bb3yAjgNHnYV9EW3ZCDL4
-	 NSGTBzmQH3TRAA7TCvhdv5ytnVom9y+hdHrvMnJKPx/G1kTyFmD1B28lpU1Dcb6Wum
-	 XS9L7rtgOL9JjiXVw3Aovn6J5/2IhePElH7TI5OT414i1ai5Cngllba1pBoESJYt51
-	 rsH5lQsuc14dOP/V2OqcLhQSoDM1QV6yqrSMji9zf6BhKCYJgCcQlNv4UpDNRWVyHj
-	 aqlG6v8/tUDDw==
-Message-ID: <f5705b41fd63260c5b84343531f139fa72dfa57c.camel@kernel.org>
-Subject: Re: [PATCH] pnfs/blocklayout: reject zero chunk_size and
- volumes_count in GETDEVICEINFO
-From: Trond Myklebust <trondmy@kernel.org>
-To: Michael Bommarito <michael.bommarito@gmail.com>, Anna Schumaker
-	 <anna@kernel.org>
-Cc: linux-nfs@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Date: Tue, 14 Jul 2026 10:37:07 -0400
-In-Reply-To: <20260711150547.2912006-1-michael.bommarito@gmail.com>
-References: <20260711150547.2912006-1-michael.bommarito@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
+	s=arc-20240116; t=1784039946; c=relaxed/simple;
+	bh=5o7n6TV5fMAiDOdlMEVHGqE5cUehiOKq9gBViVQChZ8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=GSE0f+Xhw6hiNZ7i5pxHMAHQpcnhOfPcdjfiIo8kLv0wewN76JRVvyAGdwdJdGMsdMQ8LwD7rqaWHTnDjpZSgrSQ+fbBlJe7KNWYDjAqOFaf8xoaQ/G+fU81EdIyUU6CWm2pj0utZn5dvSiSI5MWIUR2GXd4cXldnUAtgqgEddE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VCjdh10F; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BD8C1F000E9;
+	Tue, 14 Jul 2026 14:39:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1784039944;
+	bh=zFOqtCb8xzsrJyxx1uwLJZP/fT8u+SWWsr7Vfd1wlgk=;
+	h=Subject:To:Cc:From:Date;
+	b=VCjdh10F3DAt+XWMfuOzXMJTt76F/TQaN8RPQD5W+VTIU+Whw+CMlOppIM03gLwM3
+	 IGDyj9SiTxG3e1XAt7NcthRj3Nvt0deWAHX363hdDlpwnJ6Us6KlIlcIZgz8biq/IS
+	 HWLMYcz49lZvFsg6z5Sq42hgKShdmTxYKDeAbXjo=
+Subject: FAILED: patch "[PATCH] ksmbd: fix path resolution in ksmbd_vfs_kern_path_create" failed to apply to 6.6-stable tree
+To: d.ornaghi97@gmail.com,linkinjeon@kernel.org,stfrench@microsoft.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Tue, 14 Jul 2026 16:38:50 +0200
+Message-ID: <2026071450-item-popcorn-af43@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-5.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [3.84 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-274275-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:michael.bommarito@gmail.com,m:anna@kernel.org,m:linux-nfs@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[trondmy@kernel.org,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-274273-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:d.ornaghi97@gmail.com,m:linkinjeon@kernel.org,m:stfrench@microsoft.com,m:stable@vger.kernel.org,m:dornaghi97@gmail.com,s:lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_FORWARDING(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,kernel.org,microsoft.com];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	TO_DN_NONE(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[trondmy@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_RCPT(0.00)[stable];
+	FROM_NO_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,gregkh:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 79BC2755F89
+X-Rspamd-Queue-Id: 89900756051
 
-On Sat, 2026-07-11 at 11:05 -0400, Michael Bommarito wrote:
-> nfs4_block_decode_volume() in fs/nfs/blocklayout/dev.c decodes stripe
-> parameters from GETDEVICEINFO XDR without checking for zero values.
-> A malicious pNFS server returning chunk_size=3D0 causes a division-by-
-> zero panic in bl_map_stripe() via div_u64(offset, dev->chunk_size).
-> Separately, volumes_count=3D0 passes the existing upper-bound check
-> and causes a second division-by-zero via div_u64_rem(chunk,
-> dev->nr_children=3D0).
->=20
-> Impact: a malicious or compromised pNFS blocklayout server can panic
-> an
-> affected Linux NFS client after the client mounts/uses the server and
-> maps
-> I/O through the poisoned blocklayout. An in-kernel parser/mapper
-> KUnit
-> reproducer is available privately.
->=20
-> Reject both zero values at decode time with -EIO.
->=20
-> Fixes: 5c83746a0cf2 ("pnfs/blocklayout: in-kernel GETDEVICEINFO XDR
-> parsing")
-> Cc: stable@vger.kernel.org
-> Assisted-by: Claude:claude-opus-4-7
-> Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-> ---
-> =C2=A0fs/nfs/blocklayout/dev.c | 5 ++++-
-> =C2=A01 file changed, 4 insertions(+), 1 deletion(-)
->=20
-> diff --git a/fs/nfs/blocklayout/dev.c b/fs/nfs/blocklayout/dev.c
-> index cc6327d97a91a..fc60669db3ec4 100644
-> --- a/fs/nfs/blocklayout/dev.c
-> +++ b/fs/nfs/blocklayout/dev.c
-> @@ -183,8 +183,11 @@ nfs4_block_decode_volume(struct xdr_stream *xdr,
-> struct pnfs_block_volume *b)
-> =C2=A0			return -EIO;
-> =C2=A0
-> =C2=A0		p =3D xdr_decode_hyper(p, &b->stripe.chunk_size);
-> +		if (!b->stripe.chunk_size)
-> +			return -EIO;
-> =C2=A0		b->stripe.volumes_count =3D be32_to_cpup(p++);
-> -		if (b->stripe.volumes_count >
-> PNFS_BLOCK_MAX_DEVICES) {
-> +		if (!b->stripe.volumes_count ||
-> +		=C2=A0=C2=A0=C2=A0 b->stripe.volumes_count >
-> PNFS_BLOCK_MAX_DEVICES) {
-> =C2=A0			dprintk("Too many volumes: %d\n", b-
-> >stripe.volumes_count);
-> =C2=A0			return -EIO;
-> =C2=A0		}
 
-NACK to this, and all further patches with the words "malicious server"
-as their justification. It's time to stop this incessant flood of
-worthless AI slop...
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-This is storage, not grandma's email server. If you have a "malicious
-server" then it's game over. Your attempts to detect 0 length fields is
-going to be pointless security theatre because a real malicious actor
-will just corrupt the data.
-If a server is sending this kind of thing due to a bug, then you
-shouldn't trust it with your data. Just find a server that follows the
-spec.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-So no, we're not going to waste more time on this kind of junk
---=20
-Trond Myklebust
-Linux NFS client maintainer, Hammerspace
-trondmy@kernel.org, trond.myklebust@hammerspace.com
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x 1c8951963d8ed357f70f59e0ad4ddce2199d2016
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026071450-item-popcorn-af43@gregkh' --subject-prefix 'PATCH 6.6.y' 'HEAD^..'
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 1c8951963d8ed357f70f59e0ad4ddce2199d2016 Mon Sep 17 00:00:00 2001
+From: Davide Ornaghi <d.ornaghi97@gmail.com>
+Date: Mon, 15 Jun 2026 20:35:01 +0900
+Subject: [PATCH] ksmbd: fix path resolution in ksmbd_vfs_kern_path_create
+
+The SMB2 open lookup is rooted at the share with LOOKUP_BENEATH, but the
+create/mkdir/hardlink sink is not: ksmbd_vfs_kern_path_create() builds an
+absolute path with convert_to_unix_name() and resolves it from AT_FDCWD
+via start_creating_path(), so a ".." component is walked from the real
+filesystem root and escapes the export.
+
+An authenticated client races a missing path component so the rooted open
+lookup returns -ENOENT (taking the create branch) while the same component
+is present (a directory) when the create walk runs; the create then
+resolves ".." out of the share.
+
+Root the create walk at the share like the lookup and rename paths already
+are: resolve the parent with vfs_path_parent_lookup(..., LOOKUP_BENEATH,
+&share_conf->vfs_path) and create the final component with
+start_creating_noperm(). convert_to_unix_name() then has no callers and is
+removed.
+
+Fixes: 265fd1991c1d ("ksmbd: use LOOKUP_BENEATH to prevent the out of share access")
+Cc: stable@vger.kernel.org
+Signed-off-by: Davide Ornaghi <d.ornaghi97@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+
+diff --git a/fs/smb/server/misc.c b/fs/smb/server/misc.c
+index a543ec9d3581..966004c414a8 100644
+--- a/fs/smb/server/misc.c
++++ b/fs/smb/server/misc.c
+@@ -283,39 +283,6 @@ char *ksmbd_extract_sharename(struct unicode_map *um, const char *treename)
+ 	return ksmbd_casefold_sharename(um, name);
+ }
+ 
+-/**
+- * convert_to_unix_name() - convert windows name to unix format
+- * @share:	ksmbd_share_config pointer
+- * @name:	file name that is relative to share
+- *
+- * Return:	converted name on success, otherwise NULL
+- */
+-char *convert_to_unix_name(struct ksmbd_share_config *share, const char *name)
+-{
+-	int no_slash = 0, name_len, path_len;
+-	char *new_name;
+-
+-	if (name[0] == '/')
+-		name++;
+-
+-	path_len = share->path_sz;
+-	name_len = strlen(name);
+-	new_name = kmalloc(path_len + name_len + 2, KSMBD_DEFAULT_GFP);
+-	if (!new_name)
+-		return new_name;
+-
+-	memcpy(new_name, share->path, path_len);
+-	if (new_name[path_len - 1] != '/') {
+-		new_name[path_len] = '/';
+-		no_slash = 1;
+-	}
+-
+-	memcpy(new_name + path_len + no_slash, name, name_len);
+-	path_len += name_len + no_slash;
+-	new_name[path_len] = 0x00;
+-	return new_name;
+-}
+-
+ char *ksmbd_convert_dir_info_name(struct ksmbd_dir_info *d_info,
+ 				  const struct nls_table *local_nls,
+ 				  int *conv_len)
+diff --git a/fs/smb/server/misc.h b/fs/smb/server/misc.h
+index 13423696ae8c..3909104e18ad 100644
+--- a/fs/smb/server/misc.h
++++ b/fs/smb/server/misc.h
+@@ -25,7 +25,6 @@ void ksmbd_strip_last_slash(char *path);
+ void ksmbd_conv_path_to_windows(char *path);
+ char *ksmbd_casefold_sharename(struct unicode_map *um, const char *name);
+ char *ksmbd_extract_sharename(struct unicode_map *um, const char *treename);
+-char *convert_to_unix_name(struct ksmbd_share_config *share, const char *name);
+ 
+ #define KSMBD_DIR_INFO_ALIGNMENT	8
+ struct ksmbd_dir_info;
+diff --git a/fs/smb/server/vfs.c b/fs/smb/server/vfs.c
+index fe376453a519..74b0307cb100 100644
+--- a/fs/smb/server/vfs.c
++++ b/fs/smb/server/vfs.c
+@@ -1259,15 +1259,30 @@ struct dentry *ksmbd_vfs_kern_path_create(struct ksmbd_work *work,
+ 					  unsigned int flags,
+ 					  struct path *path)
+ {
+-	char *abs_name;
++	struct ksmbd_share_config *share_conf = work->tcon->share_conf;
++	struct qstr last;
+ 	struct dentry *dent;
++	int err;
+ 
+-	abs_name = convert_to_unix_name(work->tcon->share_conf, name);
+-	if (!abs_name)
+-		return ERR_PTR(-ENOMEM);
++	/* resolve the name beneath the share root so ".." cannot escape */
++	CLASS(filename_kernel, filename)(name);
+ 
+-	dent = start_creating_path(AT_FDCWD, abs_name, path, flags);
+-	kfree(abs_name);
++	err = vfs_path_parent_lookup(filename, flags | LOOKUP_BENEATH,
++				     path, &last, &share_conf->vfs_path);
++	if (err)
++		return ERR_PTR(err);
++
++	err = mnt_want_write(path->mnt);
++	if (err) {
++		path_put(path);
++		return ERR_PTR(err);
++	}
++
++	dent = start_creating_noperm(path->dentry, &last);
++	if (IS_ERR(dent)) {
++		mnt_drop_write(path->mnt);
++		path_put(path);
++	}
+ 	return dent;
+ }
+ 
+
 
