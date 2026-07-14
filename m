@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-274302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274305-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id o2y3HE5LVmry2wAAu9opvQ
-	(envelope-from <stable+bounces-274302-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 16:44:30 +0200
+	id NvVhG7ZMVmo53AAAu9opvQ
+	(envelope-from <stable+bounces-274305-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 16:50:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0000375601A
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 16:44:29 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D47DB756114
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 16:50:29 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=CIH5EDZR;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274302-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274302-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="tdeQYC7/";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274305-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274305-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E155730430EC
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 14:42:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BE17130C6A15
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 14:47:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D2BE481FB1;
-	Tue, 14 Jul 2026 14:42:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1EE7481AB7;
+	Tue, 14 Jul 2026 14:47:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5604D481647
-	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 14:42:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC95947F2DF
+	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 14:47:50 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784040144; cv=none; b=HEo179fuUvu3ouBNwLIq4eICR/lVBv4sQI4L4kld7g/qtRhZMVQJSld2jxqTxhBK0DNYK8l9GOjySwffEeHFnGyahR/p1J5ciTcqRD6Vo8wNEnNNk5yFpEIJC/6TSjKlUgtBlMroxt0NvXO21BF0UDj8qDDFyXfzqAYE5KxUMKM=
+	t=1784040474; cv=none; b=tafKchUe5BIxM4RYnavIlpQgaoEB2Fm2z0DWJe2njCT/1an0ufda03SBoJQbGRyXIMTGLmae2SA5NP1tAp7W12Zt0w8TMN6p7QXeZ7Btstc8W9Ii6aFqYf3ed9bunnxwmUT1CxGXDet3SfuTjYh6gISK6ira2wCLA2JbyYIOGQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784040144; c=relaxed/simple;
-	bh=1Eg0Pb12lyB7IZSHTtHRoBt8Iv/f3lDNLg/OZu7xfi8=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=dfs9Oe0la5oEx6+Wcm+eKPNHI6Z0tOqDUlgiKgzWzBstBtledqRQjhYE/IswbBVD36Ke+oKShM02A62tNHFN5rg3EtY8Y5KzYqQMMvGcDN17VijHy7NnoeprmbKLn7GSUSLHJvphaBYxptN/9OUkXiyC0BDvqcZXjGOliU0GqGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CIH5EDZR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F06111F00A3D;
-	Tue, 14 Jul 2026 14:42:07 +0000 (UTC)
+	s=arc-20240116; t=1784040474; c=relaxed/simple;
+	bh=BLccggdmWrh0k9GsJ2pJT6978J+akuDpCC14Bz8kR18=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=MC/TVf8WKpBGo680JRGxiwBx92EFe2BWYvS5YDXYTeLb43wmu5vqXSoEJqo/C2ar4lFAb+eexB+/GCdnxYgjcBzOFvd7Btd54f2sGL8w7u7usGQE0Ett6xBqEguAibd3C5lLtZmCvmK3hk4wAHUHOYQEbqab3r/RLxXPumve4oc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tdeQYC7/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B63751F00A3E;
+	Tue, 14 Jul 2026 14:47:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1784040128;
-	bh=svqe6bWe7ho3FfkyVxO66ti0QpHyqbg1LPY8WePKL7U=;
+	s=korg; t=1784040470;
+	bh=DIOkVH4pIkrgr539uEkr8BefrBg5UiqyQPGKdUbw45I=;
 	h=Subject:To:Cc:From:Date;
-	b=CIH5EDZRH0gi3ezwb5Yg+EzAFBsH/Cfa4zN9OO72WaBYfyIH/xBq4QuJo+iVNeYHt
-	 Qu7bAvrMccBmkyPHeu3WniQEC92tQfqjR5D9uPmKFb9v5E/vzWpBt6l2RxgycJpAUY
-	 yfpqyjNB+aK8JB5fMfz3mildw75GTLSDbOfIeu8g=
-Subject: FAILED: patch "[PATCH] smb: client: mask server-provided mode to 07777 in" failed to apply to 5.10-stable tree
-To: nmanthey@amazon.de,stfrench@microsoft.com
+	b=tdeQYC7/jhvX+aVTiUG51vX/WVIX0U5Mr1XoYPmJGQ8Ne2JrxRaPaZAo+mtOrtAM5
+	 ESsemEDGyHZAFuQlrtl8p+uXh8SBtM6BmIrc9A9phZ1nHGvVsjaTTxJRRAFhephgW0
+	 MU4EZLZ16iECkIWDJsyU3hK9ToZczEZ4NAIADaxc=
+Subject: FAILED: patch "[PATCH] ksmbd: fix path resolution in ksmbd_vfs_kern_path_create" failed to apply to 7.1-stable tree
+To: d.ornaghi97@gmail.com,linkinjeon@kernel.org,stfrench@microsoft.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 14 Jul 2026 16:41:54 +0200
-Message-ID: <2026071454-prowler-bucktooth-a71f@gregkh>
+Date: Tue, 14 Jul 2026 16:45:57 +0200
+Message-ID: <2026071457-shrank-luster-94bc@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,56 +57,58 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [2.34 / 15.00];
+X-Spamd-Result: default: False [3.84 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-274305-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:d.ornaghi97@gmail.com,m:linkinjeon@kernel.org,m:stfrench@microsoft.com,m:stable@vger.kernel.org,m:dornaghi97@gmail.com,s:lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-274302-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:nmanthey@amazon.de,m:stfrench@microsoft.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,kernel.org,microsoft.com];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	TO_DN_NONE(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:mid,vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,amazon.de:email]
+	TAGGED_RCPT(0.00)[stable];
+	FROM_NO_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:from_mime,linuxfoundation.org:dkim,gregkh:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0000375601A
+X-Rspamd-Queue-Id: D47DB756114
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 7.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-7.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x e3d9c7160d483fc8f9e225aafad8ecbbc43f3151
+git cherry-pick -x 1c8951963d8ed357f70f59e0ad4ddce2199d2016
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026071454-prowler-bucktooth-a71f@gregkh' --subject-prefix 'PATCH 5.10.y' 'HEAD^..'
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026071457-shrank-luster-94bc@gregkh' --subject-prefix 'PATCH 7.1.y' 'HEAD^..'
 
 Possible dependencies:
 
@@ -118,34 +120,130 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From e3d9c7160d483fc8f9e225aafad8ecbbc43f3151 Mon Sep 17 00:00:00 2001
-From: Norbert Manthey <nmanthey@amazon.de>
-Date: Thu, 9 Jul 2026 15:54:39 +0000
-Subject: [PATCH] smb: client: mask server-provided mode to 07777 in
- modefromsid
+From 1c8951963d8ed357f70f59e0ad4ddce2199d2016 Mon Sep 17 00:00:00 2001
+From: Davide Ornaghi <d.ornaghi97@gmail.com>
+Date: Mon, 15 Jun 2026 20:35:01 +0900
+Subject: [PATCH] ksmbd: fix path resolution in ksmbd_vfs_kern_path_create
 
-When modefromsid is active, parse_dacl() applies the server-provided
-sub_auth[2] value from the NFS mode SID to cf_mode without masking to
-07777. Apply the correct masking, same as in the read path.
+The SMB2 open lookup is rooted at the share with LOOKUP_BENEATH, but the
+create/mkdir/hardlink sink is not: ksmbd_vfs_kern_path_create() builds an
+absolute path with convert_to_unix_name() and resolves it from AT_FDCWD
+via start_creating_path(), so a ".." component is walked from the real
+filesystem root and escapes the export.
 
-Fixes: e2f8fbfb8d09c ("cifs: get mode bits from special sid on stat")
-Signed-off-by: Norbert Manthey <nmanthey@amazon.de>
-Assisted-by: Kiro:claude-opus-4.6
+An authenticated client races a missing path component so the rooted open
+lookup returns -ENOENT (taking the create branch) while the same component
+is present (a directory) when the create walk runs; the create then
+resolves ".." out of the share.
+
+Root the create walk at the share like the lookup and rename paths already
+are: resolve the parent with vfs_path_parent_lookup(..., LOOKUP_BENEATH,
+&share_conf->vfs_path) and create the final component with
+start_creating_noperm(). convert_to_unix_name() then has no callers and is
+removed.
+
+Fixes: 265fd1991c1d ("ksmbd: use LOOKUP_BENEATH to prevent the out of share access")
 Cc: stable@vger.kernel.org
+Signed-off-by: Davide Ornaghi <d.ornaghi97@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 
-diff --git a/fs/smb/client/cifsacl.c b/fs/smb/client/cifsacl.c
-index 07cf0e578233..9424281a7674 100644
---- a/fs/smb/client/cifsacl.c
-+++ b/fs/smb/client/cifsacl.c
-@@ -962,7 +962,7 @@ static void parse_dacl(struct smb_acl *pdacl, char *end_of_acl,
- 				 */
- 				fattr->cf_mode &= ~07777;
- 				fattr->cf_mode |=
--					le32_to_cpu(ppace[i]->sid.sub_auth[2]);
-+					le32_to_cpu(ppace[i]->sid.sub_auth[2]) & 07777;
- 				break;
- 			} else {
- 				if (compare_sids(&(ppace[i]->sid), pownersid) == 0) {
+diff --git a/fs/smb/server/misc.c b/fs/smb/server/misc.c
+index a543ec9d3581..966004c414a8 100644
+--- a/fs/smb/server/misc.c
++++ b/fs/smb/server/misc.c
+@@ -283,39 +283,6 @@ char *ksmbd_extract_sharename(struct unicode_map *um, const char *treename)
+ 	return ksmbd_casefold_sharename(um, name);
+ }
+ 
+-/**
+- * convert_to_unix_name() - convert windows name to unix format
+- * @share:	ksmbd_share_config pointer
+- * @name:	file name that is relative to share
+- *
+- * Return:	converted name on success, otherwise NULL
+- */
+-char *convert_to_unix_name(struct ksmbd_share_config *share, const char *name)
+-{
+-	int no_slash = 0, name_len, path_len;
+-	char *new_name;
+-
+-	if (name[0] == '/')
+-		name++;
+-
+-	path_len = share->path_sz;
+-	name_len = strlen(name);
+-	new_name = kmalloc(path_len + name_len + 2, KSMBD_DEFAULT_GFP);
+-	if (!new_name)
+-		return new_name;
+-
+-	memcpy(new_name, share->path, path_len);
+-	if (new_name[path_len - 1] != '/') {
+-		new_name[path_len] = '/';
+-		no_slash = 1;
+-	}
+-
+-	memcpy(new_name + path_len + no_slash, name, name_len);
+-	path_len += name_len + no_slash;
+-	new_name[path_len] = 0x00;
+-	return new_name;
+-}
+-
+ char *ksmbd_convert_dir_info_name(struct ksmbd_dir_info *d_info,
+ 				  const struct nls_table *local_nls,
+ 				  int *conv_len)
+diff --git a/fs/smb/server/misc.h b/fs/smb/server/misc.h
+index 13423696ae8c..3909104e18ad 100644
+--- a/fs/smb/server/misc.h
++++ b/fs/smb/server/misc.h
+@@ -25,7 +25,6 @@ void ksmbd_strip_last_slash(char *path);
+ void ksmbd_conv_path_to_windows(char *path);
+ char *ksmbd_casefold_sharename(struct unicode_map *um, const char *name);
+ char *ksmbd_extract_sharename(struct unicode_map *um, const char *treename);
+-char *convert_to_unix_name(struct ksmbd_share_config *share, const char *name);
+ 
+ #define KSMBD_DIR_INFO_ALIGNMENT	8
+ struct ksmbd_dir_info;
+diff --git a/fs/smb/server/vfs.c b/fs/smb/server/vfs.c
+index fe376453a519..74b0307cb100 100644
+--- a/fs/smb/server/vfs.c
++++ b/fs/smb/server/vfs.c
+@@ -1259,15 +1259,30 @@ struct dentry *ksmbd_vfs_kern_path_create(struct ksmbd_work *work,
+ 					  unsigned int flags,
+ 					  struct path *path)
+ {
+-	char *abs_name;
++	struct ksmbd_share_config *share_conf = work->tcon->share_conf;
++	struct qstr last;
+ 	struct dentry *dent;
++	int err;
+ 
+-	abs_name = convert_to_unix_name(work->tcon->share_conf, name);
+-	if (!abs_name)
+-		return ERR_PTR(-ENOMEM);
++	/* resolve the name beneath the share root so ".." cannot escape */
++	CLASS(filename_kernel, filename)(name);
+ 
+-	dent = start_creating_path(AT_FDCWD, abs_name, path, flags);
+-	kfree(abs_name);
++	err = vfs_path_parent_lookup(filename, flags | LOOKUP_BENEATH,
++				     path, &last, &share_conf->vfs_path);
++	if (err)
++		return ERR_PTR(err);
++
++	err = mnt_want_write(path->mnt);
++	if (err) {
++		path_put(path);
++		return ERR_PTR(err);
++	}
++
++	dent = start_creating_noperm(path->dentry, &last);
++	if (IS_ERR(dent)) {
++		mnt_drop_write(path->mnt);
++		path_put(path);
++	}
+ 	return dent;
+ }
+ 
 
 
