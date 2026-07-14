@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-274239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274240-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id VghkJiE5Vmrj1gAAu9opvQ
-	(envelope-from <stable+bounces-274239-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 15:26:57 +0200
+	id WbdoHFA6VmpM1wAAu9opvQ
+	(envelope-from <stable+bounces-274240-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 15:32:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 205B1755146
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 15:26:57 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2C28755290
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 15:31:59 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hyF0GQXp;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274239-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274239-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=P4jWxZUK;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274240-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-274240-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 893D4300AC93
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 13:26:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3E362308EA73
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 13:26:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB55329D270;
-	Tue, 14 Jul 2026 13:26:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD9FC3191CE;
+	Tue, 14 Jul 2026 13:26:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80DBF2BEC23
-	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 13:26:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2AC530DEDC
+	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 13:26:55 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784035615; cv=none; b=IyG34kaW0WE9VX3ZFpLP0+0hvt+VZs4jLXzjSinNl5INFR13ZCEXQdkMaeXDtwYa3VXzuHCtEMUrt28Uzi5wsYtIgn1yHZhTlXC+hNf8Ppc+W+D6L9xLwQ6tI3ynvM3QMjfFuSXih72wwFOhQa3QuDpt5X4092+sqRN6xWU0AYY=
+	t=1784035616; cv=none; b=jcxfESZ1rwCHPevywYHTzVRUIoBVrGCF3/SR0KsOhrRsaGBuly9IrGCsxX6XhMGBpUrjsoBCz4r5PFKrmnzRUcebe/fxrS/sKUea4S2ZC8V/LjwnemlmSDAIgr1+Ezbukr/qZqA7Z3YgKf/yVlwLIJJmrAA6+Xq7UttNCUy616k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784035615; c=relaxed/simple;
-	bh=PdiQavlmqwGUfra83cfuOhDVTyEkJYfELEI8fmdafTs=;
+	s=arc-20240116; t=1784035616; c=relaxed/simple;
+	bh=yPycsxrUsJpt3cifcLDogQufHZuMkAvU13dO9046lvk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r8dj1+salZuz3jIbTYDGHsXgDV1ej4HXbwKM/69Hm1g1YlHpK3qJJ1H36Wr10FpQ7zewPU1kX3L0GX7E+HL8lum5zB5T1w6cTJPR4hNYdfv9D/KU2IFV1tBaWB3WGQb6RFEUghV41KXCvhIl0GcIxdjQXIJhD6Nud4ZSa1wgTGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hyF0GQXp; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE7E51F00A3F;
-	Tue, 14 Jul 2026 13:26:53 +0000 (UTC)
+	 MIME-Version; b=B2U23/JVVclJskp+2SNmF66eckU1OWmfZ9sd97xFZTz3rm9z21sc/cT34qp8y9kGn7C05YX4Xe/aGMvXqwGnt//P8Gej3Nm+eg0Mf0k2Dqv+xsF2DordpWXteeOFA1S2BqGCLKe+5yJdRYUe6zhnlWVkxH5ylK6s4YMJEdViyqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P4jWxZUK; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A63B31F000E9;
+	Tue, 14 Jul 2026 13:26:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784035614;
-	bh=NcWl39nyMnYwGn5Bb5yiWqMKcPHuLw/Wn51vhwyaB4k=;
+	s=k20260515; t=1784035615;
+	bh=9AeC2l9rdi22wfrqdqIr4SRij2ysDEINrED4PD8fwUA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hyF0GQXpsYHozgUxfHCqCt8K6nWybFsbF1BdqoXaoHkogiMN123GMfZv1cK30uSVQ
-	 RIOghIF+ynTAuSNPsvrARSfVHJpE2ewfUIeroJTqBhpkSbzRcIValZmguYuAaWhOqB
-	 noxasgAObmWy+k77n7i9qwvs+TeqYS7cNp6ZkedSPQcAIcU3mOenLVlaAO/3QOrScx
-	 x9Jdd0RL5mjdyQQRczmb4oK4WeSWOZVOqy/54d8nht/cNbARtxn1BL80fFBgkuFkZj
-	 yX7dOTRLYZdmhw0fOVNz17RJFupEO0xLQ9Tw+R9YehCvcR+Y86oOwNzCjPOzVAPdkV
-	 kcYWpj59JJbDA==
+	b=P4jWxZUKgMBxMHc3/R/lW9i6jOdT8Am230aBI/sH5Yu+FP4jF0YfChgw6k6SLGSr8
+	 AxfsEy0bDUH9W1EpLkOpCgmKmZfw8i8/IOVypwNYZNPm1uGmDahXAbw45C/s+4p40q
+	 T9j2fvoIkCT8dIFxpyOiG2HxjeUGsR0DGC4LBOfp7MD3tIFmMMOLdpW7472R1YzVyM
+	 dkrHdl7ps5Gh6D55jt5iZFn4buESUmVVdbi8zo58CucNMg6d+UBtF4b4hdcT8sBR2O
+	 5R6tVGkrsOdfgziP+gT1nJXMQQtxKbIqqA2ru/BHDidDuJJQf8sFtevMY8FIH8UvLh
+	 am9dwKl3ie0lw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Johan Hovold <johan@kernel.org>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Rajat Jain <rajatja@google.com>,
 	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y 3/4] Bluetooth: btusb: fix use-after-free on registration failure
-Date: Tue, 14 Jul 2026 09:26:49 -0400
-Message-ID: <20260714132650.2663656-3-sashal@kernel.org>
+Subject: [PATCH 5.10.y 4/4] Bluetooth: btusb: fix use-after-free on marvell probe failure
+Date: Tue, 14 Jul 2026 09:26:50 -0400
+Message-ID: <20260714132650.2663656-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260714132650.2663656-1-sashal@kernel.org>
 References: <2026071309-contempt-purposely-3c5c@gregkh>
@@ -73,17 +73,17 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-274239-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-274240-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:johan@kernel.org,m:pmenzel@molgen.mpg.de,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:johan@kernel.org,m:rajatja@google.com,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
@@ -97,60 +97,62 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,vger.kernel.org:from_smtp,mpg.de:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,sashiko.dev:url,intel.com:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 205B1755146
+X-Rspamd-Queue-Id: F2C28755290
 
 From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit eedc6867ebad73edbfaf9a0a65fbef7115cc4753 ]
+[ Upstream commit c5b600a3c05b1a7a110d558df935a8fc8a471c79 ]
 
-Make sure to release the sibling interfaces in case controller
-registration fails to avoid use-after-free and double-free when they are
-eventually disconnected.
+Make sure to stop any TX URBs submitted during Marvell OOB wakeup
+configuration on later probe failures to avoid use-after-free in the
+completion callback.
 
 This issue was reported by Sashiko while reviewing a fix for a wakeup
 source leak in the btusb probe errors paths.
 
 Link: https://sashiko.dev/#/patchset/20260402092704.2346710-1-johan%40kernel.org
-Fixes: 9bfa35fe422c ("[Bluetooth] Add SCO support to btusb driver")
-Fixes: 9d08f50401ac ("Bluetooth: btusb: Add support for Broadcom LM_DIAG interface")
-Cc: stable@vger.kernel.org	# 2.6.27
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Fixes: a4ccc9e33d2f ("Bluetooth: btusb: Configure Marvell to use one of the pins for oob wakeup")
+Cc: stable@vger.kernel.org	# 4.11
+Cc: Rajat Jain <rajatja@google.com>
 Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Stable-dep-of: c5b600a3c05b ("Bluetooth: btusb: fix use-after-free on marvell probe failure")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/bluetooth/btusb.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index 5b5ede26acea83..620dc80992b727 100644
+index 620dc80992b727..6d32e48418da78 100644
 --- a/drivers/bluetooth/btusb.c
 +++ b/drivers/bluetooth/btusb.c
-@@ -4376,12 +4376,21 @@ static int btusb_probe(struct usb_interface *intf,
+@@ -4352,7 +4352,7 @@ static int btusb_probe(struct usb_interface *intf,
+ 		err = usb_set_interface(data->udev, 0, 0);
+ 		if (err < 0) {
+ 			BT_ERR("failed to set interface 0, alt 0 %d", err);
+-			goto out_free_dev;
++			goto err_kill_tx_urbs;
+ 		}
+ 	}
  
- 	err = hci_register_dev(hdev);
- 	if (err < 0)
--		goto out_free_dev;
-+		goto err_release_siblings;
+@@ -4360,7 +4360,7 @@ static int btusb_probe(struct usb_interface *intf,
+ 		err = usb_driver_claim_interface(&btusb_driver,
+ 						 data->isoc, data);
+ 		if (err < 0)
+-			goto out_free_dev;
++			goto err_kill_tx_urbs;
+ 	}
  
- 	usb_set_intfdata(intf, data);
- 
- 	return 0;
- 
-+err_release_siblings:
-+	if (data->diag) {
-+		usb_set_intfdata(data->diag, NULL);
-+		usb_driver_release_interface(&btusb_driver, data->diag);
-+	}
-+	if (data->isoc) {
-+		usb_set_intfdata(data->isoc, NULL);
-+		usb_driver_release_interface(&btusb_driver, data->isoc);
-+	}
+ 	if (IS_ENABLED(CONFIG_BT_HCIBTUSB_BCM) && data->diag) {
+@@ -4391,6 +4391,8 @@ static int btusb_probe(struct usb_interface *intf,
+ 		usb_set_intfdata(data->isoc, NULL);
+ 		usb_driver_release_interface(&btusb_driver, data->isoc);
+ 	}
++err_kill_tx_urbs:
++	usb_kill_anchored_urbs(&data->tx_anchor);
  out_free_dev:
  	if (data->reset_gpio)
  		gpiod_put(data->reset_gpio);
