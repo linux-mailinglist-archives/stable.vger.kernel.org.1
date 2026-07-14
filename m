@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-274415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274417-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id NgvUCpJdVmqD4AAAu9opvQ
-	(envelope-from <stable+bounces-274415-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 18:02:26 +0200
+	id i0vKLExeVmq64AAAu9opvQ
+	(envelope-from <stable+bounces-274417-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 18:05:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94C6A756C37
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 18:02:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FA88756C81
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 18:05:32 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=gzch6B8N;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274415-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-274415-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=MROQCDfO;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274417-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274417-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7A40D306B7CE
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 16:01:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 61842312C9BE
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 16:02:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26DEC4A340F;
-	Tue, 14 Jul 2026 16:01:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD3864A33FD;
+	Tue, 14 Jul 2026 16:02:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93FF14A3407
-	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 16:01:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 819D348BD4A
+	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 16:02:17 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784044910; cv=none; b=SG29gPEqdZHICE9uLLOGfwAd7OnH1DKT8ItCRncGt0NfewEron6lT7ma8W/oxI6khXf+FHgqeDFBy1AMFQhZXfE+UVbVmkeHeXQTVcGcR6K8FpEULGwf4pBfkYwAutJ7FEbEpBVVWSPWKuknmi2xoiQGLL1/26tht6wZs0jXchQ=
+	t=1784044938; cv=none; b=nP/BLEDMqyYvBrDGHM8i65FCvfxVtcLHl7+MLPbW9+LOZm5vMhwyYK0T534sH3wTk8AUuK5cIepNjrR7d2nGpdvhOVNMreUwXF2XH+vrM+BP+trQ9CH8P0QD9XygWFOX0HDC9XrDd6/bOCm8Xa25+vSwZR7i/MbMxy7aOhLreCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784044910; c=relaxed/simple;
-	bh=MaR0qS7bXCGLYtRPdgbJ6xdJCTXLpO0CQrbqdYX5GmE=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=i1klM8S5kO4nE3d68JUVVqAGedB39Ce3TKOOWdudLd0obbTlER1g0mfkieeopfXxWgXLI8CdWPEqixTuQq00HGe9Wc3XOWQSouXvYsuTQbI2o4v8CuAiW7T17F5QoewaDvoXEgwvdXzPZ2Ne0vVibTGd27xfGIT6CfM9y9ZWO7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gzch6B8N; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0097F1F000E9;
-	Tue, 14 Jul 2026 16:01:48 +0000 (UTC)
+	s=arc-20240116; t=1784044938; c=relaxed/simple;
+	bh=qzaZOmD9nw34VDtQ+m1Y+uXGscrkzAN1P93jV8Ih/WE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=uINzvLA1resypAHIxKPx5gsLlRRqfAa9Acu4j2+8I6bsCWnxSPswJNwKYKwZdre2+EuKBIbXYpLVJoUcUuIO4RacxBSvJzdKITI31ZIAjA6sKxydsus6LpjZKanMlAMHolrQqqXQVxFwyq0pAvLYsVSI2okHNtObNYm5JMvH/DQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MROQCDfO; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B70791F000E9;
+	Tue, 14 Jul 2026 16:02:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1784044909;
-	bh=EW0U89+f2X90WFI36ieRecA44cFiHx+X8FwzLqIwREE=;
+	s=korg; t=1784044937;
+	bh=JGPRLHzI1Z2hSQ5m84hxEnYH4d1UdzdA/5Sd6fy/1d0=;
 	h=Subject:To:Cc:From:Date;
-	b=gzch6B8NkeVQ582J97uPqcN5vzYGL5jmShb64jcsYdkuS5gIOG2RPCfUpd57Kat8m
-	 b0IAuD11DKmBgO7xGGiPcNFotjsMmq5gmMHZVfqY/7DBSkkthw6dYkGo3nlozY3XDz
-	 5Vq7P0TeVQbT+VnSv9UaUgodgpPZxFe83y8txOuA=
-Subject: FAILED: patch "[PATCH] usb: atm: ueagle-atm: wait for pre-firmware load in" failed to apply to 5.10-stable tree
-To: mfo@igalia.com,aitsygunka@yandex.ru,gregkh@linuxfoundation.org,stable@kernel.org,stf_xl@wp.pl
+	b=MROQCDfO+RDPQoePQwgc5hqVoigaCS9+r+fhUWMHaVqVKNNFT2aDE3BP1z0Xxi6zJ
+	 rA/xlXzvwXUGCUD52AffPw1aMZ5dA+r7nsDWgT5NLA8YM29JZjdZI3E+Q0LMQGCV/c
+	 0dHcsob966xhkem698VY7b9flcInB/BO0Tc5jVsI=
+Subject: FAILED: patch "[PATCH] usb: dwc3: fix dwc3_readl() and dwc3_writel() calls in" failed to apply to 6.18-stable tree
+To: ben.dooks@codethink.co.uk,Thinh.Nguyen@synopsys.com,gregkh@linuxfoundation.org,stable@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 14 Jul 2026 18:01:30 +0200
-Message-ID: <2026071430-dismount-immerse-95aa@gregkh>
+Date: Tue, 14 Jul 2026 18:02:11 +0200
+Message-ID: <2026071411-expose-starless-4335@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,52 +62,51 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-274417-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:mfo@igalia.com,m:aitsygunka@yandex.ru,m:gregkh@linuxfoundation.org,m:stable@kernel.org,m:stf_xl@wp.pl,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[igalia.com,yandex.ru,linuxfoundation.org,kernel.org,wp.pl];
-	TAGGED_FROM(0.00)[bounces-274415-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:ben.dooks@codethink.co.uk,m:Thinh.Nguyen@synopsys.com,m:gregkh@linuxfoundation.org,m:stable@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_NONE(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	TAGGED_RCPT(0.00)[stable];
-	FROM_NO_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:mid,vger.kernel.org:from_smtp,linuxfoundation.org:from_mime,linuxfoundation.org:email,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,synopsys.com:email,codethink.co.uk:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 94C6A756C37
+X-Rspamd-Queue-Id: 0FA88756C81
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.18-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
 git checkout FETCH_HEAD
-git cherry-pick -x e2674dfbed8a30d57e2bc872c4bfa6c3eec918bf
+git cherry-pick -x e0f844d9d74200d311c6438a0f04270834ba5365
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026071430-dismount-immerse-95aa@gregkh' --subject-prefix 'PATCH 5.10.y' 'HEAD^..'
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026071411-expose-starless-4335@gregkh' --subject-prefix 'PATCH 6.18.y' 'HEAD^..'
 
 Possible dependencies:
 
@@ -119,171 +118,47 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From e2674dfbed8a30d57e2bc872c4bfa6c3eec918bf Mon Sep 17 00:00:00 2001
-From: Mauricio Faria de Oliveira <mfo@igalia.com>
-Date: Tue, 26 May 2026 14:09:44 -0300
-Subject: [PATCH] usb: atm: ueagle-atm: wait for pre-firmware load in
- .disconnect()
+From e0f844d9d74200d311c6438a0f04270834ba5365 Mon Sep 17 00:00:00 2001
+From: Ben Dooks <ben.dooks@codethink.co.uk>
+Date: Fri, 3 Jul 2026 17:20:33 +0100
+Subject: [PATCH] usb: dwc3: fix dwc3_readl() and dwc3_writel() calls in
+ dwc3_ulpi_setup()
 
-ueagle-atm uses the asynchronous request_firmware_nowait() in .probe(),
-but does not wait for its completion, not even in .disconnect(); so, if the
-device is unplugged meanwhile, its teardown runs concurrently with that.
+The dwc3_ulpi_setup() calls the register read and write calls with
+dwc3->regs when both these calls take the dwc3 structure directly.
 
-Even though this inconsistency is worth addressing on its own, it has also
-triggered several bug reports in syzbot over the years (some auto-closed)
-where the firmware sysfs fallback mechanism (CONFIG_FW_LOADER_USER_HELPER)
-creates a firmware subdirectory in the device directory during its removal,
-which might hit unexpected conditions in kernfs, apparently, depending at
-which point the add and remove operations raced. (See links.)
+Chnage these two calls to fix the following sparse warning, and
+possibly a nasty bug in the dwc3_ulpi_setup() code:
 
-The pattern is:
-
-usb ?-?: Direct firmware load for ueagle-atm/eagle?.fw failed with error -2
-usb ?-?: Falling back to sysfs fallback for: ueagle-atm/eagle?.fw
-<ERROR>
-Call trace:
- ...
- kernfs_create_dir_ns
- sysfs_create_dir_ns
- create_dir
- kobject_add_internal
- kobject_add_varg
- kobject_add
- class_dir_create_and_add
- get_device_parent
- device_add
- fw_load_sysfs_fallback
- fw_load_from_user_helper
- firmware_fallback_sysfs
- _request_firmware
- request_firmware_work_func
- ...
-
-(Some variations are observed, after fw_load_sysfs_fallback(), e.g., [1].)
-
-While the kernfs side is being looked at, the ueagle-atm side can be fixed
-by waiting for the pre-firmware load in the .disconnect() handler.
-
-This change has a similar approach to previous work by Andrey Tsygunka [2]
-(wait_for_completion() in .disconnect()), but it is relatively different in
-design/implementation; using the Originally-by tag for credit assignment.
-
-This has been tested with:
-- synthetic reproducer to check the error path;
-- USB gadget (virtual device) to check the firmware upload path;
-- QEMU device emulator to check the device ID re-enumeration path;
-(The latter two were written by Claude; no other code/text in this commit.)
-
-Links (year first reported):
- 2025 https://syzbot.org/bug?extid=ce1e5a1b4e086b43e56d
- 2025 https://syzbot.org/bug?extid=9af8471255ac36e34fd4
- 2024 https://syzbot.org/bug?extid=306212936b13e520679d
- 2023 https://syzkaller.appspot.com/bug?extid=457452d30bcdda75ead2
- 2022 https://syzbot.org/bug?extid=782984d6f1701b526edb
- 2021 https://syzbot.org/bug?id=f3f221579f4ef7e9691281f3c6f56c05f83e8490
- 2021 https://syzbot.org/bug?id=84d86f0d71394829df6fc53daf6642c045983881
- 2021 https://syzbot.org/bug?id=3302dc1c0e2b9c94f2e8edb404eabc9267bc6f90
-
-[1] https://syzkaller.appspot.com/bug?extid=457452d30bcdda75ead2
-[2] https://lore.kernel.org/lkml/20250410093146.3776801-2-aitsygunka@yandex.ru/
+drivers/usb/dwc3/core.c:796:45: warning: incorrect type in argument 1 (different address spaces)
+drivers/usb/dwc3/core.c:796:45:    expected struct dwc3 *dwc
+drivers/usb/dwc3/core.c:796:45:    got void [noderef] __iomem *regs
+drivers/usb/dwc3/core.c:798:40: warning: incorrect type in argument 1 (different address spaces)
+drivers/usb/dwc3/core.c:798:40:    expected struct dwc3 *dwc
+drivers/usb/dwc3/core.c:798:40:    got void [noderef] __iomem *regs
 
 Cc: stable <stable@kernel.org>
-Reported-by: syzbot+ce1e5a1b4e086b43e56d@syzkaller.appspotmail.com
-Closes: https://syzbot.org/bug?extid=ce1e5a1b4e086b43e56d
-Reported-by: syzbot+306212936b13e520679d@syzkaller.appspotmail.com
-Closes: https://syzbot.org/bug?extid=306212936b13e520679d
-Reported-by: syzbot+457452d30bcdda75ead2@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=457452d30bcdda75ead2
-Originally-by: Andrey Tsygunka <aitsygunka@yandex.ru>
-Fixes: b72458a80c75 ("[PATCH] USB: Eagle and ADI 930 usb adsl modem driver")
-Assisted-by: Claude:claude-opus-4.7 # usb gadget & qemu device for testing
-Signed-off-by: Mauricio Faria de Oliveira <mfo@igalia.com>
-Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
-Link: https://patch.msgid.link/20260526-ueagle-atm_req-fw-sync-v3-1-93c01961daaf@igalia.com
+Fixes: 9accc68b1cf0 ("usb: dwc3: Add dwc pointer to dwc3_readl/writel")
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
+Link: https://patch.msgid.link/20260703162033.2847599-1-ben.dooks@codethink.co.uk
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-diff --git a/drivers/usb/atm/ueagle-atm.c b/drivers/usb/atm/ueagle-atm.c
-index d610cdcef7d0..4e71ed679a76 100644
---- a/drivers/usb/atm/ueagle-atm.c
-+++ b/drivers/usb/atm/ueagle-atm.c
-@@ -594,7 +594,9 @@ static int uea_send_modem_cmd(struct usb_device *usb,
- static void uea_upload_pre_firmware(const struct firmware *fw_entry,
- 								void *context)
- {
--	struct usb_device *usb = context;
-+	struct usb_interface *intf = context;
-+	struct usb_device *usb = interface_to_usbdev(intf);
-+	struct completion *fw_done = usb_get_intfdata(intf);
- 	const u8 *pfw;
- 	u8 value;
- 	u32 crc = 0;
-@@ -663,15 +665,17 @@ static void uea_upload_pre_firmware(const struct firmware *fw_entry,
- 	uea_err(usb, "firmware is corrupted\n");
- err:
- 	release_firmware(fw_entry);
-+	complete(fw_done);
- }
+diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
+index 517aa7f1486d..ceb49f2f8004 100644
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -789,9 +789,9 @@ static void dwc3_ulpi_setup(struct dwc3 *dwc)
  
- /*
-  * uea_load_firmware - Load usb firmware for pre-firmware devices.
-  */
--static int uea_load_firmware(struct usb_device *usb, unsigned int ver)
-+static int uea_load_firmware(struct usb_interface *intf, unsigned int ver)
- {
- 	int ret;
- 	char *fw_name = EAGLE_FIRMWARE;
-+	struct usb_device *usb = interface_to_usbdev(intf);
- 
- 	uea_info(usb, "pre-firmware device, uploading firmware\n");
- 
-@@ -694,7 +698,7 @@ static int uea_load_firmware(struct usb_device *usb, unsigned int ver)
- 	}
- 
- 	ret = request_firmware_nowait(THIS_MODULE, 1, fw_name, &usb->dev,
--					GFP_KERNEL, usb,
-+					GFP_KERNEL, intf,
- 					uea_upload_pre_firmware);
- 	if (ret)
- 		uea_err(usb, "firmware %s is not available\n", fw_name);
-@@ -2555,8 +2559,23 @@ static int uea_probe(struct usb_interface *intf, const struct usb_device_id *id)
- 
- 	usb_reset_device(usb);
- 
--	if (UEA_IS_PREFIRM(id))
--		return uea_load_firmware(usb, UEA_CHIP_VERSION(id));
-+	if (UEA_IS_PREFIRM(id)) {
-+		struct completion *fw_done;
-+
-+		/* Wait for the firmware load to be done, in .disconnect() */
-+		fw_done = kzalloc_obj(*fw_done);
-+		if (!fw_done)
-+			return -ENOMEM;
-+
-+		init_completion(fw_done);
-+		usb_set_intfdata(intf, fw_done);
-+
-+		ret = uea_load_firmware(intf, UEA_CHIP_VERSION(id));
-+		if (ret)
-+			kfree(fw_done);
-+
-+		return ret;
-+	}
- 
- 	ret = usbatm_usb_probe(intf, id, &uea_usbatm_driver);
- 	if (ret == 0) {
-@@ -2586,6 +2605,13 @@ static void uea_disconnect(struct usb_interface *intf)
- 		usbatm_usb_disconnect(intf);
- 		mutex_unlock(&uea_mutex);
- 		uea_info(usb, "ADSL device removed\n");
-+	} else if (usb->config->desc.bNumInterfaces == 1) {
-+		struct completion *fw_done = usb_get_intfdata(intf);
-+
-+		uea_dbg(usb, "pre-firmware device, waiting firmware upload\n");
-+		wait_for_completion(fw_done);
-+		uea_dbg(usb, "pre-firmware device, finished waiting\n");
-+		kfree(fw_done);
+ 	if (dwc->enable_usb2_transceiver_delay) {
+ 		for (index = 0; index < dwc->num_usb2_ports; index++) {
+-			reg = dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(index));
++			reg = dwc3_readl(dwc, DWC3_GUSB2PHYCFG(index));
+ 			reg |= DWC3_GUSB2PHYCFG_XCVRDLY;
+-			dwc3_writel(dwc->regs, DWC3_GUSB2PHYCFG(index), reg);
++			dwc3_writel(dwc, DWC3_GUSB2PHYCFG(index), reg);
+ 		}
  	}
  }
- 
 
 
