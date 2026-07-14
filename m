@@ -1,90 +1,72 @@
-Return-Path: <stable+bounces-274270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274271-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ArrjHkRIVmon2wAAu9opvQ
-	(envelope-from <stable+bounces-274270-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 16:31:32 +0200
+	id M7nhFRpKVmqq2wAAu9opvQ
+	(envelope-from <stable+bounces-274271-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 16:39:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4419755D8C
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 16:31:31 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95E87755F3D
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 16:39:21 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=fail ("headers rsa verify failed") header.d=0sec.ai header.s=google header.b=TZIvveBF;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274270-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274270-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=none;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ZZ4dqq/N";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274271-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-274271-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3BB343064831
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 14:25:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8216730E9411
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 14:32:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9935B47D929;
-	Tue, 14 Jul 2026 14:25:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C609A37DAB3;
+	Tue, 14 Jul 2026 14:32:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE18947B432
-	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 14:25:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF4F5363087;
+	Tue, 14 Jul 2026 14:32:45 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784039111; cv=none; b=adP1/5tVOfRkvkkTt08D7NzMPPkOSrN5SJ8B3ALBpdGLrCm4KgcgGGXfB/KZ0J87ZmiSVgsM0qnDqJdYbZhgZI2oc5tN8yRmzLZMzZEn14XtQsEcCZunHr0J132DEcv2qoh2JFomU2x25IPn7AWqrcNwlfJCB3lBDCW9S1lPz18=
+	t=1784039568; cv=none; b=Xz9uaoybDYEDv9thYjati/ds/e9unl50N56Rw/1xgzcXyIaZ4o19IBUZJlFdAh7YFaUSzVmQSHCz6oi7buedBevFS5GHmOwonZTGfkcrQTXdbVfxDbZZrBU76hu1619AIbnji37kuUcuya7FPrDY5oDh/HpWVAXjD56IMqv7/xc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784039111; c=relaxed/simple;
-	bh=IK3LCy68nNia2gEMkKnq6We11pVBGa+uglDzb2BQn0A=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TGzFaJzzk5gpIFePD8p20O9e6t5o9E5gJfNPwKZVZsXfNRknu29isjMIrTTyYgoEo37LnPYH29J8X1XdbT1eg9qFVYryVZ0csduVllyuKlYlSKl8EcfrlBVW0oIlESiHXbUvyQ8y3VLu1PVrWzQ6rPM4+Moi7JoAGBBi6SxWkkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai; spf=pass smtp.mailfrom=0sec.ai; dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b=TZIvveBF; arc=none smtp.client-ip=209.85.128.44
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-493e8d4f4dcso33952175e9.0
-        for <stable@vger.kernel.org>; Tue, 14 Jul 2026 07:25:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=0sec.ai; s=google; t=1784039108; x=1784643908; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=jcfrg6EgnjJunuXszKnS5dRMOUov45ln2QkWfO7ihtI=;
-        b=TZIvveBFvGvE8FBiW5rVXisexkGUyXphLa1Wmmw1YpygomAI61AYJA0mrDvbOij1Vh
-         sVp+iyJdxLyxXQvvRXrqCMLTeofV79eGv0wUuiBpGMVvWIzsWOVor9+i5P7DzbRHYw4v
-         87PUatCIn1vGZhDKG/gPJ6ZCNb7n+rO8ugRjoGKhJe24SgoR4xrPBnXbPPQcjtLGiKYp
-         UrfPP/vOIj/H8jpF8O+hS6+HFCl4rBOAMLZZoMWaKGG9NGcqewhBVQu1cqPhifyehLvk
-         8RztKZ1kQC4oAjlmtmdbsiW3xjvVY+fGl89ft3RlDKdgj+B3bAgVYkA9cTdcqGoIiNdj
-         kJNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784039108; x=1784643908;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=jcfrg6EgnjJunuXszKnS5dRMOUov45ln2QkWfO7ihtI=;
-        b=CSj7ipyk3s9HeZbOLS/onXd6RMN0/g67nmZQAuFJFZCUS8sMjTu+hq9I2Ev66AQNl/
-         cI+ZrgnM58j86zaRcCF0xMJNH4NdQjaChx4EkhO9JxtZkttHlGiCaVgTKq377l9bq6d0
-         SqRHsQOXB292zocjKaodBBl5XeFL41V3NRYSfyODBo9vuGHhuqsYFY7jXBNkEJi1DoqV
-         XOkOqAwk62d0YRYI9BVSfg15wch/f8e/0usnmmprPlZ2iIqnRSBUxjIIxPYqUcso63Nc
-         OcdIUIs9y3MGCANNFttASBN0nh2g7UpYKj0gFlnaP+idqYO9jpka2DKt3GDcrbxZMgR2
-         Dpdw==
-X-Forwarded-Encrypted: i=1; AHgh+Rpvcxk1PylBnphughYmc5qV2k8IEMYI0gCYSNL5m5Bq1BHYrL6ogtALb60Ju0Pkz76h41hpqf8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzhqOEB0LQ+9UM8i2HQX7nwQ4HdRLwyf+/Jp+IpLw0L3wZ7arGS
-	qDC7jL714saT7fkvT37H2n8bD8AU5s4TseALh0wc4GnIbwDdbGZ8DAr2t9Bym+zWTP0H
-X-Gm-Gg: AfdE7clvzW5CGeb8R5xudMM2RnqwCzRqkkZWLOz81cThYBKsKO7i+rQbaGAfNRUokKM
-	X0KFuXRKA8HEPJkankK+vZbL3bMlhgWBHXEE7GyDRoIv7JagD6TUqJIgXBFzB2IZpnebCNpvxym
-	kHPopAn8HKJizgIPW4kE/dCOh//FrZ1MFTHNX11HnllB4O3h1GFb8bOuqDXtwkaUVQ8giYsBVPP
-	YyfKQUcq5dNyjkzBEdLZCU5aEdHuENqaFToiG6ng+NbJbl/85UwGbftqIH2gw0F4FSHPc5xH40k
-	CONRReqjW+ciUEnJNxyTnL1FXmb+ERxqaH+aGJmHQYIRMxBn33LYtY2VFSakqwOBH+17uE96eIx
-	S0cHpkIbo9ct1f0HDYQ4Etsrwz7dTcl1e8WOOQ/4BdwW2PTuJUjlH0MREzVl7dy35Z7CiHTJlMB
-	/W8Cq6H+kNKOAbp5bBP6hjPgqA5DqW6VYLNn1RUl3SX6dlEIAIUCQYz/G/dQutJvksidbsLP0Th
-	L1kNQMvVwmEiRXNugvRoAvkrFpwA5hu04n5wN1wjw2jbg==
-X-Received: by 2002:a05:600c:4fc6:b0:493:e52f:6ee1 with SMTP id 5b1f17b1804b1-493f8784bb5mr151350735e9.0.1784039107888;
-        Tue, 14 Jul 2026 07:25:07 -0700 (PDT)
-Received: from PeakBook-Mini.tail8e484.ts.net ([178.197.218.188])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4950a2ed840sm74518925e9.10.2026.07.14.07.25.06
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 14 Jul 2026 07:25:07 -0700 (PDT)
-From: Doruk Tan Ozturk <doruk@0sec.ai>
-To: Jiri Kosina <jikos@kernel.org>,
-	Benjamin Tissoires <bentiss@kernel.org>
-Cc: linux-input@vger.kernel.org,
+	s=arc-20240116; t=1784039568; c=relaxed/simple;
+	bh=cnThNbpOT7mEOezExLgH4EzRvvlsWUdaGxDU1BdYgMI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=XKDLlMrmxfoTzAsdaF6Tt7+2yLBxINtzq/C/7hJgUEE8MU8HufwAA+ZCP+dZeCErDKPKIXLmeYvj2N7/+iWNQyFvzSCyJRlmOFNtwHTr9m0StOkToRbiIa43GeLhTqsIQoWGa+46JgMswUL9/q4BZ9Xe99cJIaAwU3E2SyhnRic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZZ4dqq/N; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 689B91F000E9;
+	Tue, 14 Jul 2026 14:32:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784039562;
+	bh=5/zj5P3kBIK7G1tNe4Uj26Vul5lA6c8YvgqeoVqk8Lk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=ZZ4dqq/NLYqzSBAfNqEuQPntKdDEgDfavpxCNEIReUT2xcPV9tGz8TIGmXkdJmtmm
+	 nyaIZjSVagD1HUrgFxm/UBjbTlNEYIgP3rIl7n0meCQ2szIcUNjZ05f8aKXcZ86S0D
+	 7ag9fFiulW78YngOCtCIvNf7WTvqyLFRunseiNJS4CYzTKUeigxoHPJAVrZOVK1Bhy
+	 fSu+hxitS/iMtDtvBRaZTd8QJs+aKxwSODjhTa7lxZPi3Z6CdeZoT5d0BH7jEywOa0
+	 +Cs5jPEytY5O5UGJ7R28senYzRux/PPPxGzWAJ8i/mDGmX5hcgK4/im3g5oGEeqdAF
+	 66QJGXNFmnKxA==
+From: SJ Park <sj@kernel.org>
+To: SJ Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	stable@vger.kernel.org,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@davidgow.net>,
+	Fernand Sieber <sieberf@amazon.com>,
+	Leonard Foerster <foersleo@amazon.de>,
+	SeongJae Park <sjpark@amazon.de>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	damon@lists.linux.dev,
+	kunit-dev@googlegroups.com,
 	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] HID: uclogic: Clear stale pen_input pointer on partial input registration
-Date: Tue, 14 Jul 2026 16:25:05 +0200
-Message-ID: <20260714142505.95630-1-doruk@0sec.ai>
-X-Mailer: git-send-email 2.53.0
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH 0/5] mm/damon: unurgent fixes for infinite loop, NULL de-ref and races
+Date: Tue, 14 Jul 2026 07:32:34 -0700
+Message-ID: <20260714143235.100843-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260714135236.92699-1-sj@kernel.org>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -93,99 +75,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [1.04 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	R_DKIM_REJECT(1.00)[0sec.ai:s=google];
+X-Spamd-Result: default: False [-3.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-274270-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[0sec.ai];
-	FORGED_RECIPIENTS(0.00)[m:jikos@kernel.org,m:bentiss@kernel.org,m:linux-input@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER(0.00)[doruk@0sec.ai,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-274271-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:sj@kernel.org,m:akpm@linux-foundation.org,m:stable@vger.kernel.org,m:brendan.higgins@linux.dev,m:davidgow@davidgow.net,m:sieberf@amazon.com,m:foersleo@amazon.de,m:sjpark@amazon.de,m:shakeel.butt@linux.dev,m:damon@lists.linux.dev,m:kunit-dev@googlegroups.com,m:linux-kernel@vger.kernel.org,m:linux-kselftest@vger.kernel.org,m:linux-mm@kvack.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[sj@kernel.org,stable@vger.kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[0sec.ai:-];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[doruk@0sec.ai,stable@vger.kernel.org];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[0sec.ai:from_mime,0sec.ai:url,0sec.ai:email,0sec.ai:mid,vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D4419755D8C
+X-Rspamd-Queue-Id: 95E87755F3D
 
-uclogic_input_configured() caches the pen input_dev in
-drvdata->pen_input before input_register_device() is called for it.
-The in-range timeout handler uclogic_inrange_timeout() later
-dereferences this pointer, guarded only by a NULL check.
+On Tue, 14 Jul 2026 06:52:28 -0700 SJ Park <sj@kernel.org> wrote:
 
-If hidinput_connect() fails while bringing up the HID inputs (e.g. an
-input_register_device() failure, or an input left unpopulated), it
-unwinds via hidinput_disconnect() and frees the input_dev, but the
-driver's cached drvdata->pen_input is not cleared and is left dangling.
+> Sashiko found a few issues in DAMON that could cause infinite loop, NULL
+> dereference and monitoring results degradation.  The first two sounds
+> scary but the infinite loop happens only under unreasonable user setup.
+> The NULL dereference is only in a unit test.  Monitoring results
+> degradation is trivial since it is only best-effort, and those happens
+> from only unlikely races.  Still those are bugs that better to fix if
+> possible. Fix those.
 
-Because this driver installs a ->raw_event callback and the hidraw
-interface is claimed, hid_connect() still returns success even though
-HID input was not claimed, so hid_hw_start() and probe() succeed. The
-device stays live, and a subsequent in-range pen report re-arms
-inrange_timer via uclogic_raw_event_pen(). When the timer fires,
-uclogic_inrange_timeout() dereferences the freed input_dev: the NULL
-check does not help because the pointer is dangling, not NULL. This is
-a use-after-free distinct from the timer-teardown case.
+Sashiko found one more bug that may better to be fixed together with this
+series.  Also patch 5 mistakenly lacks its Fixes: tag.  I will post a new
+version of this series with the fixes.  Please don't pick this series into
+mm-new for now.
 
-Clear drvdata->pen_input after hid_hw_start() when HID input was not
-claimed, so the cached pointer never outlives the input_dev and the
-existing NULL check in the timeout handler becomes effective.
 
-Found by 0sec (https://0sec.ai).
+Thanks,
+SJ
 
-Fixes: 01309e29eb95 ("HID: uclogic: Support in-range reporting emulation")
-Cc: stable@vger.kernel.org
-Assisted-by: 0sec
-Signed-off-by: Doruk Tan Ozturk <doruk@0sec.ai>
----
- drivers/hid/hid-uclogic-core.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
-
-diff --git a/drivers/hid/hid-uclogic-core.c b/drivers/hid/hid-uclogic-core.c
-index b73f09d26688..396d46b0b88e 100644
---- a/drivers/hid/hid-uclogic-core.c
-+++ b/drivers/hid/hid-uclogic-core.c
-@@ -262,6 +262,19 @@ static int uclogic_probe(struct hid_device *hdev,
- 		goto failure;
- 	}
- 
-+	/*
-+	 * hid_hw_start() -> hid_connect() returns success even when
-+	 * hidinput_connect() failed, because this driver provides a
-+	 * ->raw_event callback and the hidraw interface was claimed.  In that
-+	 * case the input_dev that ->input_configured() cached in
-+	 * drvdata->pen_input has already been freed by hidinput_connect()'s
-+	 * error unwinding, leaving a dangling pointer that the in-range timer
-+	 * would dereference.  Drop it so uclogic_inrange_timeout()'s NULL
-+	 * check takes effect.
-+	 */
-+	if (!(hdev->claimed & HID_CLAIMED_INPUT))
-+		drvdata->pen_input = NULL;
-+
- 	return 0;
- failure:
- 	/* Assume "remove" might not be called if "probe" failed */
--- 
-2.43.0
-
+[...]
 
