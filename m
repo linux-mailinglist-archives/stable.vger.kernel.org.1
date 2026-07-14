@@ -1,212 +1,164 @@
-Return-Path: <stable+bounces-274131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274129-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id H2RSJcHMVWqOtgAAu9opvQ
-	(envelope-from <stable+bounces-274131-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 07:44:33 +0200
+	id EGV8Al3LVWrTtQAAu9opvQ
+	(envelope-from <stable+bounces-274129-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 07:38:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1F8B7513E5
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 07:44:32 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFE3275135B
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 07:38:35 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=altera.com header.s=selector2 header.b=nrYCDyZk;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274131-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274131-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=altera.com;
-	arc=reject ("cv is fail on i=2")
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=dBZA3v7+;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274129-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274129-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5D8E430A1CAA
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 05:43:51 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B6DAD300601D
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 05:38:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A5F6362133;
-	Tue, 14 Jul 2026 05:43:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E70E63403F9;
+	Tue, 14 Jul 2026 05:38:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011012.outbound.protection.outlook.com [52.101.62.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from va-1-114.ptr.blmpb.com (va-1-114.ptr.blmpb.com [209.127.230.114])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70472353A79;
-	Tue, 14 Jul 2026 05:43:49 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784007830; cv=fail; b=MhmbEOfmBCR771GYOXuJ9joCx+AkxT0/zRveGxuTSFLnQJlwpuX0hrFaPIe5DnVv9eJe+9o+5Q1DB5DeydkRl4VbLlccFyc8IjVI8u357OC3Qm2QbcTXvWjfYAQupUUPOoJaQ1Vw9BJ4F41+CIOU8ZO2j7vmeOoFa6HSSM63Zl4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784007830; c=relaxed/simple;
-	bh=gYiDoG9O7gwq5bqL4xPE9rlYfB8oip/EsokFyVw3atk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=krzS7SLzmS01KS1M3kq43+g9/7ODqRaRu0Bkn3bhSMJONmPtGG6b489xmUB7zIgvYbwDp61xTrhVNvIXkGBPPCNdKCyenkdaloA2auRRuchrbHid6pDtcdN7IsRN1WNbG566D7ZBOD2edlhl6t0o5xyKK5Aa84MRJ3cvE36amvU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=altera.com; spf=pass smtp.mailfrom=altera.com; dkim=pass (2048-bit key) header.d=altera.com header.i=@altera.com header.b=nrYCDyZk; arc=fail smtp.client-ip=52.101.62.12
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Ze4bpKK4rZWwmTJV8wz+xQaC0BRMku6ZbPt17V9dLhS+5KiMic7ouI5nEqb9NuNIO/vJHwJsdcmdeW3Uca78+pikFMNr32+WCdxbe/FIBYhMEE4SUEk+4STurwMWIHXbjhItywjccWfrFbyl7XWekILOTfkiSonWT3gVje4VYn65N/OHCwLxq8WlutG6hoZyS3ipUUc9Ck0nTgxZO0mvFfQAfACMPquCkisM2/OxbMWwvoPmUPxzaHNGX2BsOj2ucQGlgxU0FeNXqQj0iFqcZ0aARgqmJr2iulQ5JB9Dt07VYm6Ol3YAOKifNhJzwJynF2t/1yAZyONeVy6iyxmMKQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5Wu40TA90aZ8dzL0eXsy3VtQ/41ewzzQ7rUtXw3XrLI=;
- b=M57HDCmp+Jm+VKBr0KgvIkoLgEUMQBZx+pvas+1tsVm0pBqSw6nbO4cyH27fnQ8D4D2xdYjRsfgPgC41wzhrUWXwqK44sGmqw7qZ6stvi0GNN7LxPUk+Xjhp1p8TzctRJ1PUY0TpmbBD8f8wZF2ihlCJMA4igNu7DSf/gqYAH7Vu9/P+RfJJG9l9yDzeREsalwdsv63o45ERfAjLMmzE2/oCPvJn2VWsHcEytHo4kA6Fqj/S7LAwkMF1SvZZdyHqN9/Qy0sryjg0c2wbNpION1WAkLtDP5aoQG/7qY8pS0scSzEKCA6URH03sMk1ld3kAx2YDxq2khTDW497J7x6kw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=altera.com; dmarc=pass action=none header.from=altera.com;
- dkim=pass header.d=altera.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=altera.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5Wu40TA90aZ8dzL0eXsy3VtQ/41ewzzQ7rUtXw3XrLI=;
- b=nrYCDyZkIJU7L9UGAdI7zcG8YijoirfhXW9k0h6lpHM6qJpfmSdtFXzGqFuj8BhAGK9fZdQ0O9laN9lmYwndZzAgpAkg4e4L/pH9Dszh7WcWmHa+EwTm8pInO2iE4OXSSFHVdu2PGLYvptmDjD/YHbzX3bcgHk/VuDmZglxx56Y8nUtgSdy99JwC7fFWinnJXLzVe3/eXeGstr+Bvv9xkOmE1RSdzLdaONhDf5nnrN9IMuu2soCCw6OnzIL5o5tO16m5K5SutX4v6010LLUIGX8ytgsltAXLWYz2PXL/j3rjdWN4MI6yXI9E3I1y7uAf5zN08AUwj/LIMzdR8f1doQ==
-Received: from DM8PR03MB6230.namprd03.prod.outlook.com (2603:10b6:8:3c::13) by
- LV4PR03MB8234.namprd03.prod.outlook.com (2603:10b6:408:2e3::8) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.181.19; Tue, 14 Jul 2026 05:43:48 +0000
-Received: from DM8PR03MB6230.namprd03.prod.outlook.com
- ([fe80::abad:9d80:7a13:9542]) by DM8PR03MB6230.namprd03.prod.outlook.com
- ([fe80::abad:9d80:7a13:9542%3]) with mapi id 15.21.0202.014; Tue, 14 Jul 2026
- 05:43:48 +0000
-From: Adrian Ng Ho Yin <adrian.ho.yin.ng@altera.com>
-To: Dinh Nguyen <dinguyen@kernel.org>,
-	linux-kernel@vger.kernel.org
-Cc: tze.yee.ng@altera.com,
-	Adrian Ng Ho Yin <adrian.ho.yin.ng@altera.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2 2/2] firmware: stratix10-svc: fix teardown order in remove to prevent race
-Date: Tue, 14 Jul 2026 13:37:47 +0800
-Message-ID: <6630a1568f162d9455e0580f7ccadc262db4718e.1784007275.git.adrian.ho.yin.ng@altera.com>
-X-Mailer: git-send-email 2.49.GIT
-In-Reply-To: <cover.1784007275.git.adrian.ho.yin.ng@altera.com>
-References: <cover.1784007275.git.adrian.ho.yin.ng@altera.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI1PR02CA0024.apcprd02.prod.outlook.com
- (2603:1096:4:1f4::12) To DM8PR03MB6230.namprd03.prod.outlook.com
- (2603:10b6:8:3c::13)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A75C33F38B
+	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 05:38:24 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784007507; cv=none; b=E2ikJ5pYRaH7mCpWcmV7SFX7Y1vhZvvMsH7QhupZGHAXgk0p4504qu0lYOXiVKQeGf8oztYCVmfIIASL41U2kxsPX0EWW0lvfesstO3VW22Gzq4jPQOyZ/tbmnmUOHisaPRUv9X/L0ckmdcaOK6iAtjbOR5EeMTu1Z+NmdD8mys=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784007507; c=relaxed/simple;
+	bh=wsgxB8d0Z97OA5/TGi1FFx1r8lmXJ//VHZT91Rx6Ync=;
+	h=References:In-Reply-To:Content-Type:To:Cc:Subject:From:
+	 Mime-Version:Date:Message-Id; b=dPm7Jz3H3ezwOAU14n7aC2MFZy0Oqvcv2TE363s/VlmYyzaLanWyhgchHGlfsvmY/JgRZ7Mc+Cq1tJ5w4r15fnLyVCZiQXmocgrqRN566FklyyTaq+ybZa9tTowe+ZG+WWzTGd9IFGzhpJP4MLSrOyzj+KAJkVRfZ2MRwpNuXhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=dBZA3v7+; arc=none smtp.client-ip=209.127.230.114
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1784007495; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=wsgxB8d0Z97OA5/TGi1FFx1r8lmXJ//VHZT91Rx6Ync=;
+ b=dBZA3v7+aGsuoB3duAzisIi3dANAf7WGtd2Z/pLrvkz6tcEVgpLZWpVCPxpx/bBFdOTw0X
+ ZaAfV/65CZRIIbRfSgndbycKbL5nGEfIKIa91/ucBFhDXkHco/fCWBf6ZUao2Hrm0Cus3r
+ a1O0u4aB0ZFhvaZ3qZhdIHLxcvXtQEvDXLc+FKaVANg3JIBEGq+zfCP7ZYRkD18TksX06/
+ re3cvehicW9LOuDmawyor2pWUFAK6aW5HvC6x6nRphrWgEz09K12U//e2qmdAsra3eahXR
+ c7wa5sEyOXSLTSbgrALT2d1KXF/6Fg8ox7xXioqxFFeUEHSwANPBMCdj4idAbw==
+X-Lms-Return-Path: <lba+16a55cb45+335d26+vger.kernel.org+caixiangfeng@bytedance.com>
+References: <20260713171456.300518-1-caixiangfeng@bytedance.com> <20260713171456.300518-3-caixiangfeng@bytedance.com>
+	<1C8560A1-1F70-488E-BB62-2407B115F7B5@linux.dev>
+In-Reply-To: <1C8560A1-1F70-488E-BB62-2407B115F7B5@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+To: "Muchun Song" <muchun.song@linux.dev>
+Cc: <akpm@linux-foundation.org>, <osalvador@suse.de>, <david@kernel.org>, 
+	<richard.weiyang@linux.alibaba.com>, <baoquan.he@linux.dev>, 
+	<shuah@kernel.org>, <linux-mm@kvack.org>, 
+	<linux-kselftest@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
+	<stable@vger.kernel.org>
+Subject: Re: [PATCH 2/2] selftests/mm: add hugetlb_region_cache_race regression test
+From: =?utf-8?q?=E8=94=A1=E7=BF=94=E5=B3=B0?= <caixiangfeng@bytedance.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM8PR03MB6230:EE_|LV4PR03MB8234:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6f30f924-7cb2-475b-6118-08dee16ae01a
-X-MS-Exchange-AtpMessageProperties: SA
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|1800799024|376014|366016|56012099006|11063799006|18002099003|22082099003|55112099003;
-X-Microsoft-Antispam-Message-Info:
-	shmVjS0RTZogO6jV8A1JB4tQOgaIuxzk7Z8VrBmfQ3qgTwzYVoIB2TKDWJKmGVwyaWHRZxBuUWRwg+W597gcR9hI+uvDEwl9DeeEybyTOelZIEfboISWHMuQGQT3UHN7rPwSC5Blte06SOmZaYLKFmlTrylRqe/3btOUXkrfbtmQu04nmqDL1HVyXzBrVO9Ppepjv1SojxFBNKIT4TMH+nRShwzTq6+OPL6WUOWxinXlTql1lGp9jM5SOIl7IEhdGPhRcwGpqvMPVqDSvy4yh8lzc0uUorpsNu0ZreGnjOVBFCq/yi69X7rK7vZ/wVgjH/eqpcLjziZ0TPzvIMEoowyexQaq1sOeOpmvF5l2hb7eib8Kr//wVOTkohNWgastB/RF+k4ljss3gsCNx3exDzMsj22PGxq7OlHyE8KXoiqJ0Xge3MNxL6NoTcR+cOyzW3vQgKRYB1EA3xNxgCCYq6jC6nREyg+SE4BOFwlepl3p93NQYHW0aU/CfQyvbAi2/lWSvaSUDvU8RgKXfyzaOfSsqmLMXxh95N8UVqniB0L2gmrQe2GcpaXx0LqX+MkL1BbVivgxR3JXzcxK4TQLc0Q3PXpX0vTqQaiOuxwluPfo1DIxR/ALHRrtbuJPwQ/AxtlLxjCrXJ0TZVQhujS72LRL+1Vvf9GWXrcSJXjpPwg=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM8PR03MB6230.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(376014)(366016)(56012099006)(11063799006)(18002099003)(22082099003)(55112099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?K8tgBSMcLjvq0fsF+dbSPixCz9c16s2ESQUfZDZfggZR8+5wvHlwlotGHT99?=
- =?us-ascii?Q?y3VH3PMJnvvsKMuEZ/M3EzVtINwhgmnt3pa6Mz6Kil2rJbXMqlOd/H08M9iY?=
- =?us-ascii?Q?sNtt7Xahu2bfxhevIESXqIwBSKh7jdrE76s0xdvIlBRaN0BlurbD/VtWHQoL?=
- =?us-ascii?Q?nsfmAM8oMQTNpLckY1jLBhwXU4KDsJM1CLSd2Qav9mugmSOgworX+oUllzhX?=
- =?us-ascii?Q?L4q6r8VK4UOUca5TpaOcu2N0dKLxyelumQHFZEqGBX9rS1RzQjUdbz/2OsOX?=
- =?us-ascii?Q?vRTK4bh6I0OxNKgC22zGJGbIWRsvs8wrmPDyVdxaltCEXFcMvKPjtdIAhX91?=
- =?us-ascii?Q?cP9Zt55V5xlzbi0cgFEte+GiMWLYZJn8zMsnUM+dZEC0UQDs/XOOOfAgYFkm?=
- =?us-ascii?Q?cS40t5V6nOjWfMXXq1l32U0LMggeYYrTHurZmS1iumBQY8DLwCt0KgGIL9f2?=
- =?us-ascii?Q?ReMvoXt4sSEJkDuMEqGiZtUkFbjELrBdoflLQBfMHNJbzzdwy9FEH3PEZZEc?=
- =?us-ascii?Q?THN/z32IqCSJJgEQjj61jzuGpqekSMehGfuip8t2Vcg+JazwOdVSCZgYWB7Q?=
- =?us-ascii?Q?bGm++0V50V4IIJ3QaBTBlwoiCQHVCwZ7VzmxFbKuu0nWSjsYKSbgneMFukWw?=
- =?us-ascii?Q?5+wmbjHUDIW6Heyrdai5uQ/5tvegSXghjmDMJjLpU87J+iDY2uTmd/5ZIYxf?=
- =?us-ascii?Q?t6M+HLW7IB+yx9RQRK5Tq9yFtIUzfzmpjuQpv8r5Em2VgdxhD3TVxgSKlbhg?=
- =?us-ascii?Q?QdB2+oC3hOhGXa1DxRj2AvN0GE3RLdkee0dLZgZQwsNfWqrC51bHXPScp/w2?=
- =?us-ascii?Q?2oapZh7Y5chm13WuOuouPtX24ZavtXnypO/fYk6sFPHFasfR5qwQ6JtGz24B?=
- =?us-ascii?Q?6gKj31+A1924N0w+3bThwQDAUYCiaLDI4hzYg4+lmS7qiLFOcZlTvIQSttFe?=
- =?us-ascii?Q?4E2YRv+MOCz2wsiuTymh3NdF4qDjUmYv4/mCEUaCBYWDmTUjmikCWeq/8PdT?=
- =?us-ascii?Q?zUT5Kg1sNTQDh6hLbVYhKHmW8kzX3c6enFIcLUJacE1dk7YB5U1/2zk/KXBP?=
- =?us-ascii?Q?z7fTelUMZ0Iy9mpilnTEeWXgQdgQyARTbOM2nAuRaJl5HGFXgA7RHWvGW75R?=
- =?us-ascii?Q?1Dq3dMbbBwMKGSkjBPd2qp5V4xLsUBCmflINDfy5XdT3t++led7PfoFVJHe2?=
- =?us-ascii?Q?RLctR1QL7xk91VBCx03djYL/bJRl4E20W/fxbxwlrAxqFghae66DMpLnPAtA?=
- =?us-ascii?Q?cm4KqDze3X+nItYpXFM6mfYQRXRVfkOqcQJwdZEbNKgx1n0hy91YKLioqbZW?=
- =?us-ascii?Q?j0CBIHB26d+3x1gDnSvilky/pJbwLK5NoJtk8tlZ+XhoQ3gBZJJPQ7pquYLH?=
- =?us-ascii?Q?y09yJn0CeKytcyw/3kiWHTHFPAowJEQeTEQdEslaigClxg8jp/fcCBb9GEFJ?=
- =?us-ascii?Q?wK6iP76l3frg7atuN7ZnjWJRinqd2gIDgbFZlZvDO5bVm8+Zh34ngcesiiKd?=
- =?us-ascii?Q?wcPCZjYxy2Qr6I6lr8aM58YmYpM/pOQRiVT3SVHC2U8rLYRicHqFrmyynYju?=
- =?us-ascii?Q?abGbjuMHEGNxGPBstcEjSKIiLRSjp0TwkD5ezjJYdQu4xKGQ5iRP68C/FvZX?=
- =?us-ascii?Q?cC7fHEUCaccBqNYLO3n9pPL2OFk3h7TS2h2rotUizQpRz9ZFlx3sdSuDde37?=
- =?us-ascii?Q?SBlAZOsUgEbZfw8b9OQYlkjpDh/bKXACqdEl6SKZBj8C1JGwUvYZ9SlwJnDP?=
- =?us-ascii?Q?ysxjxaPzahuhw8HNRajFcKc/DzJWaoQ=3D?=
-X-OriginatorOrg: altera.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6f30f924-7cb2-475b-6118-08dee16ae01a
-X-MS-Exchange-CrossTenant-AuthSource: DM8PR03MB6230.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jul 2026 05:43:48.0161
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: fbd72e03-d4a5-4110-adce-614d51f2077a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +hPS5fCSwYHtIclhOc7zMpMkLBypuV545uxsEkVfp7mMQzbjM7aZX842+wKL+bOghp7QxJCu+6c+UMv3CHjnt2Iq5KLlDvk/Uk/71qBiBVE=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV4PR03MB8234
+Mime-Version: 1.0
+Date: Tue, 14 Jul 2026 13:38:12 +0800
+Message-Id: <bedeaa5bba0bd040e3b7612739f2bb2229e881de.c970df5e.7173.4d68.84c0.4372a6c03178@bytedance.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [1.34 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[altera.com,reject];
-	R_DKIM_ALLOW(-0.20)[altera.com:s=selector2];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[bytedance.com,quarantine];
+	MV_CASE(0.50)[];
+	R_DKIM_ALLOW(-0.20)[bytedance.com:s=2212171451];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-274131-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[adrian.ho.yin.ng@altera.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:dinguyen@kernel.org,m:linux-kernel@vger.kernel.org,m:tze.yee.ng@altera.com,m:adrian.ho.yin.ng@altera.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[adrian.ho.yin.ng@altera.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-274129-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:muchun.song@linux.dev,m:akpm@linux-foundation.org,m:osalvador@suse.de,m:david@kernel.org,m:richard.weiyang@linux.alibaba.com,m:baoquan.he@linux.dev,m:shuah@kernel.org,m:linux-mm@kvack.org,m:linux-kselftest@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[altera.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER(0.00)[caixiangfeng@bytedance.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[3];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[bytedance.com:+];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[caixiangfeng@bytedance.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,altera.com:from_mime,altera.com:mid,altera.com:email,altera.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: F1F8B7513E5
+X-Rspamd-Queue-Id: EFE3275135B
 
-In stratix10_svc_drv_remove(), stratix10_svc_async_exit() was called
-before client devices were unregistered. This created a race window
-where child devices could still be issuing service requests through
-the async channels after the async infrastructure had already been
-torn down.
+> > On Jul 14, 2026, at 01:14, Xiangfeng Cai <caixiangfeng@bytedance.com> w=
+rote:
+> >=C2=A0
+> > Add a regression test for the list corruption in
+> > allocate_file_region_entries() fixed by the previous patch
+> > ("mm/hugetlb: fix list corruption in allocate_file_region_entries()").
+> >=C2=A0
+> > Triggering the bug requires a concurrent reservation operation to drain
+> > resv->region_cache while allocate_file_region_entries() has dropped
+> > resv->lock for its GFP_KERNEL allocation, forcing its retry loop to run
+> > again. =C2=A0As the mmap() and fallocate(PUNCH_HOLE) paths serialise on
+> > inode_lock, the cache has to be drained by faults from a separate addre=
+ss
+> > space. =C2=A0The test forks several processes sharing one hugetlb inode=
+ via
+> > memfd_create(MFD_HUGETLB); each mmap()s and faults ranges and punches h=
+oles
+> > to keep the shared resv_map fragmented.
+> >=C2=A0
+> > Two modes are provided:
+> >=C2=A0
+> > - default: a safe single-process functional check that exercises the bu=
+ggy
+> > =C2=A0 line without forcing a second loop iteration; safe on any kernel=
+.
+> >=C2=A0
+> > - --trigger: the concurrent reproducer, which panics a vulnerable
+> > =C2=A0 CONFIG_DEBUG_LIST=3Dy kernel and is therefore opt-in. =C2=A0It f=
+aults pages in,
+> > =C2=A0 so it needs as many free huge pages as the file is large.
+> >=C2=A0
+> > Assisted-by: Claude:claude-opus-4-8
+> > Signed-off-by: Xiangfeng Cai <caixiangfeng@bytedance.com>
+>=C2=A0
+> It looks like this is a regression test case for a very specific instance=
+ of
+> list corruption.
+>=C2=A0
+> In my opinion, selftests should focus more on functional testing with cle=
+ar
+> expected behaviors and results to users. I don't think it's worth maintai=
+ning
+> a test case for a minor issue like this, especially since code changes ha=
+ppen
+> so quickly. Once the code evolves, this specific list corruption might ne=
+ver
+> occur again, and the function itself could even be deleted during a refac=
+tor.
+>=C2=A0
+> Therefore, I wouldn't recommend adding this as a selftest.
 
-Unregister client devices before tearing down the async threads and
-channels to ensure all in-flight service calls drain before the
-underlying infrastructure is destroyed.
+That makes sense to me.=C2=A0 This test is quite specific to the previous i=
+nternal
+list corruption, so I agree it is probably not a good fit for selftests.
+I'll drop it.
 
-Fixes: bcb9f4f07061 ("firmware: stratix10-svc: Add support for async communication")
-Cc: stable@vger.kernel.org
-Signed-off-by: Adrian Ng Ho Yin <adrian.ho.yin.ng@altera.com>
----
- drivers/firmware/stratix10-svc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Thanks for the review.
 
-diff --git a/drivers/firmware/stratix10-svc.c b/drivers/firmware/stratix10-svc.c
-index e89fa198688f..bfc9aceb681b 100644
---- a/drivers/firmware/stratix10-svc.c
-+++ b/drivers/firmware/stratix10-svc.c
-@@ -2204,12 +2204,12 @@ static void stratix10_svc_drv_remove(struct platform_device *pdev)
- 	struct stratix10_svc_controller *ctrl = platform_get_drvdata(pdev);
- 	struct stratix10_svc *svc = ctrl->svc;
- 
-+	platform_device_unregister(svc->stratix10_svc_rsu);
-+
- 	stratix10_svc_async_exit(ctrl);
- 
- 	of_platform_depopulate(ctrl->dev);
- 
--	platform_device_unregister(svc->stratix10_svc_rsu);
--
- 	for (i = 0; i < SVC_NUM_CHANNEL; i++) {
- 		if (ctrl->chans[i].task) {
- 			kthread_stop(ctrl->chans[i].task);
--- 
-2.49.GIT
-
+Xiangfeng
 
