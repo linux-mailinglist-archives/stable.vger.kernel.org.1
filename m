@@ -1,166 +1,207 @@
-Return-Path: <stable+bounces-274196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274197-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id zRbsCr0GVmrRyAAAu9opvQ
-	(envelope-from <stable+bounces-274196-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 11:51:57 +0200
+	id wCpzEk4HVmrlyAAAu9opvQ
+	(envelope-from <stable+bounces-274197-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 11:54:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6708C753127
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 11:51:56 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8504F75316D
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 11:54:21 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZVZmAc6Q;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274196-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-274196-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="QC/nN3ic";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274197-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274197-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linux.dev;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AE97830D0379
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 09:50:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 201A2304A9FD
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 09:52:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1412D44162D;
-	Tue, 14 Jul 2026 09:50:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCE6644163D;
+	Tue, 14 Jul 2026 09:52:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EC7443D4F7;
-	Tue, 14 Jul 2026 09:49:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 005D0430785
+	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 09:52:32 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784022599; cv=none; b=XMvFbRTHOpnv7tBU4DM832LpAE9q7sTM5KN11fYCLcDpqjnzqwU/QZKT8NbDIFeLyR6xzXPvHunS3pmJrgkL/4F9kITwYV0IPzO3GMLwexsrAdlxWQTyqcjFPic/HVafBilh9MKkkYLRaBpumRe0HPduLSIJxtrEAzGRgzB6ZLo=
+	t=1784022764; cv=none; b=Wt1Y1Ahgk57oLQKsihbPrxg8JdVvwl0lHgELg1P9aYk47MAOLDL2SI24L6nn3WSg5SUmHYGcxd3xrtEzvo4dBP/FgGLaUOikLqIG5OBkgQC17FWIyFF8Id4Iqed6QCcVPR5vq1HHtH0+sTa5GvxMnAft9ON36Q+f2xO6lLyRtX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784022599; c=relaxed/simple;
-	bh=ZepVuhzW21/hUCaWiKuOK4e1luh7TWvi44wNV50RL3I=;
-	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
-	 References:Date:Message-Id; b=uMAM7T6ybiFW+3kLpZyjG2/OnxF50eX12IqZwajLkoOgxCXAbUe4UXDZQ1Zx92fVlBpW974xnqbC3+t0/KtI4iC1Uehw2HrOzYwx4xkWcHCTFgOrtCcj5vM24V8lGRNd2K+IjifxRuF/ZumJzfTTjpxNHfbreYpvdXrRJvhU5YQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZVZmAc6Q; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F87B1F000E9;
-	Tue, 14 Jul 2026 09:49:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784022595;
-	bh=HctaYC25xmi723t9mpPbmCLQP3IBod29aBYdTrLa6xA=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=ZVZmAc6QGPyLQjp4Kd7I0ZXRjuVkK/fsGkjzg7Dr9mX68oMKo9p3bz+tPlc9xds1y
-	 UL5BGrb2JOckIQ3juGIhe7VJK+QkjeM6nnsuJYMzZXYtJXKNQ99wMk/eiz7pupxkAQ
-	 jIWNA6wpCcUeZdhpNzb3kZeMeNa6FQp7AsWpRzMLvYH+0NX5EVmxxAD3VIaqycp5n/
-	 fR8iCRtltXt5S3iLSXOf/lOTBdD8B0DVWq/fclNd47VRzfLxNulbsMTZnWwsk9qtQI
-	 MksoMVOSqDFAVPPTUlB7Tza6Oua913SFqFJWY+RR5/0oikgUyWkmQy2X++jb9LUBXd
-	 pI9mgDHReg4Zw==
+	s=arc-20240116; t=1784022764; c=relaxed/simple;
+	bh=MzO2Rxdvl9SZanpazWTuXe0NLgSvD3nHYaHTHxt9JfU=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=W7mwxYaLoEsOYSAXo/W31WM7dQKz76pPALwuBY+D6aVIK1X4Km12S/3MCvbmoG6upotKox8fyIHqbZCLHIwf4aolDzrF3J9+voPjx1VbDyBgl8mjNm76KtV1C33r2nwnWWvijtdzPaEMWz/+otlKjXKPLRbWuXd6d9llLpHKmTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=QC/nN3ic; arc=none smtp.client-ip=95.215.58.170
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH mm-hotfixes v2 3/4] mm/ptdump: always stabilise against
- page table freeing using init_mm
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- Suren Baghdasaryan <surenb@google.com>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Shakeel Butt <shakeel.butt@linux.dev>, David Hildenbrand <david@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
- Uladzislau Rezki <urezki@gmail.com>, Toshi Kani <toshi.kani@hpe.com>, 
- Dave Hansen <dave.hansen@linux.intel.com>, 
- Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
- Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
- "H. Peter Anvin" <hpa@zytor.com>, Catalin Marinas <catalin.marinas@arm.com>, 
- Will Deacon <will@kernel.org>, Dev Jain <dev.jain@arm.com>, 
- Ryan Roberts <ryan.roberts@arm.com>, David Carlier <devnexen@gmail.com>, 
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
-In-Reply-To: <alUdUKk0zGmskSib@thinkstation>
-References: <20260712-series-vmap-race-fix-v2-0-ad134cc3a12a@kernel.org>
- <20260712-series-vmap-race-fix-v2-3-ad134cc3a12a@kernel.org>
- <alUdUKk0zGmskSib@thinkstation>
-Date: Tue, 14 Jul 2026 10:49:39 +0100
-Message-Id: <178402257936.69739.4642059153515341814.b4-reply@b4>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1203; i=ljs@kernel.org;
- h=from:subject:message-id; bh=ZepVuhzW21/hUCaWiKuOK4e1luh7TWvi44wNV50RL3I=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLLC2Exfud25crSsetf8mCsrnNnW9nV/7tLPT5/09cimd
- V/3ln6W6ChlYRDjYpAVU2R5/kV8f5BI2LzOC/5uMHNYmUCGMHBxCsBEfG8w/Heo1PuZ62TUtlIh
- 9PHGKMH9iscZlofvkWJ9l3JPsbM15D4jw7rfdXP/RV1/G7ynQ8DgSIePeCH/0w8C349m1Jy4KKe
- pxQsA
-X-Developer-Key: i=ljs@kernel.org; a=openpgp;
- fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
+Mime-Version: 1.0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784022749;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=l3zdQsCZaeg9r4pCa6BdAIjCC8ytsze0HKxR9F1SBpI=;
+	b=QC/nN3icWHmag6UJtqg2N4KQzscCFcQB7nlwAt+o5I5fXa2cZ5qZoeDepf/8E+iOG91z7y
+	bMSoa929x18iPeIt3YIWNGzy55z1kb8yd//PZAPapzJoedeJ+/mLkVCzRmoTakv71qiQ4G
+	kcZ5BMeEHTubiMsxntmNtQQiAVyNav0=
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 14 Jul 2026 09:52:12 +0000
+Message-Id: <DJY7A190TSH2.B1XHHIACRSYW@linux.dev>
+Cc: "Vlastimil Babka" <vbabka@kernel.org>, "Suren Baghdasaryan"
+ <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>, "Johannes Weiner"
+ <hannes@cmpxchg.org>, "Zi Yan" <ziy@nvidia.com>, "Sebastian Andrzej
+ Siewior" <bigeasy@linutronix.de>, "Clark Williams" <clrkwllms@kernel.org>,
+ "Steven Rostedt" <rostedt@goodmis.org>, "Shakeel Butt"
+ <shakeel.butt@linux.dev>, "Alexei Starovoitov" <ast@kernel.org>,
+ <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+ <linux-rt-devel@lists.linux.dev>, <sashiko-bot@kernel.org>,
+ <stable@vger.kernel.org>
+Subject: Re: [PATCH 1/2] mm/page_alloc: don't spin_trylock() in NMI on UP
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Brendan Jackman" <brendan.jackman@linux.dev>
+To: "Harry Yoo" <harry@kernel.org>, "Brendan Jackman"
+ <brendan.jackman@linux.dev>, "Andrew Morton" <akpm@linux-foundation.org>,
+ "Brendan Jackman" <jackmanb@google.com>
+References: <20260710-spin-trylock-followup-v1-0-affb5fe5ed00@google.com>
+ <20260710-spin-trylock-followup-v1-1-affb5fe5ed00@google.com>
+ <20260710170311.e22bfd21c658e8357ceddeec@linux-foundation.org>
+ <DJXILB94G82L.37YBL62YO9XBK@linux.dev>
+ <4c969202-a8ed-41a8-9e9a-281a12f6dde3@kernel.org>
+In-Reply-To: <4c969202-a8ed-41a8-9e9a-281a12f6dde3@kernel.org>
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	MV_CASE(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:kas@kernel.org,m:ljs@kernel.org,m:akpm@linux-foundation.org,m:surenb@google.com,m:liam@infradead.org,m:vbabka@kernel.org,m:shakeel.butt@linux.dev,m:david@kernel.org,m:rppt@kernel.org,m:mhocko@suse.com,m:urezki@gmail.com,m:toshi.kani@hpe.com,m:dave.hansen@linux.intel.com,m:luto@kernel.org,m:peterz@infradead.org,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:x86@kernel.org,m:hpa@zytor.com,m:catalin.marinas@arm.com,m:will@kernel.org,m:dev.jain@arm.com,m:ryan.roberts@arm.com,m:devnexen@gmail.com,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:bpf@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[ljs@kernel.org,stable@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[30];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-274197-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:vbabka@kernel.org,m:surenb@google.com,m:mhocko@suse.com,m:hannes@cmpxchg.org,m:ziy@nvidia.com,m:bigeasy@linutronix.de,m:clrkwllms@kernel.org,m:rostedt@goodmis.org,m:shakeel.butt@linux.dev,m:ast@kernel.org,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:linux-rt-devel@lists.linux.dev,m:sashiko-bot@kernel.org,m:stable@vger.kernel.org,m:harry@kernel.org,m:brendan.jackman@linux.dev,m:akpm@linux-foundation.org,m:jackmanb@google.com,s:lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER(0.00)[brendan.jackman@linux.dev,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
 	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-274196-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linux.dev:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ljs@kernel.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[kernel.org,linux-foundation.org,google.com,infradead.org,linux.dev,suse.com,gmail.com,hpe.com,linux.intel.com,redhat.com,alien8.de,zytor.com,arm.com,kvack.org,vger.kernel.org,lists.infradead.org];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[brendan.jackman@linux.dev,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6708C753127
+X-Rspamd-Queue-Id: 8504F75316D
 
-On 2026-07-13 18:19 +0100, Kiryl Shutsemau wrote:
-> On Sun, Jul 12, 2026 at 11:42:26AM +0100, Lorenzo Stoakes wrote:
-> > x86 and arm64 invoke ptdump_walk_pgd() with non-init_mm mm whilst still
-> > walking kernel page table ranges.
+On Mon Jul 13, 2026 at 4:15 PM UTC, Harry Yoo wrote:
 >
-> The code looks good to me.
-
-Thanks!
-
 >
-> Same comment as on patch 1 about the commit message structure, only
-> more so: the race itself is never actually stated -- that these walks
-> hold only the walked mm's lock, while the freeing exclusion built by
-> patches 1 and 2 hangs off the init_mm lock. The fact that makes it
-> possible (x86 shares kernel pgd entries with every mm) is hidden in a
-> parenthesis. And the last three paragraphs read like v2 changelog
-> rather than commit message material.
-
-OK, will reword.
-
+> On 7/13/26 11:31 PM, Brendan Jackman wrote:
+>> On Sat Jul 11, 2026 at 12:03 AM UTC, Andrew Morton wrote:
+>>> On Fri, 10 Jul 2026 10:42:20 +0000 Brendan Jackman <jackmanb@google.com=
+> wrote:
+>>>
+>>>> As noted in can_spin_trylock(), using this is unsafe in this context.
+>>>> commit 620b46ed6ae17 ("mm/page_alloc: return NULL early from
+>>>> alloc_frozen_pages_nolock() in NMI on UP") fixed this on the alloc sid=
+e
+>>>> but missed the free side.
 >
-> > We take this after mmap write locking the non-init_mm mm. Nothing acquires
-> > the init_mm lock first before locking an arbitrary mm, so no deadlock is
-> > possible.
+> Ouch, do we allow alloc_pages() -> free_pages_nolock()?
+> Didn't notice.
+
+We don't explicitly disallow that but I'd say it's "forbidden by
+default"...
+
+But I think that's unrelated? It doesn't mean you can't use
+free_pages_nolock() from NMI, right? (Would be weird to alloc from
+another context and then free in NMI, but I don't think it's "forbidden
+by default" in the way that using unmatched APIs is).
+
+>>>> Reported-by: sashiko-bot@kernel.org
+>>>> Link: https://sashiko.dev/#/patchset/20260703-alloc-trylock-v5-0-c87b7=
+14e19d3@google.com
+>>>> Cc: stable@vger.kernel.org
+>>>> Fixes: d7242af86434 ("mm: Introduce alloc_frozen_pages_nolock()")
+>>>
+>>> Is this correct?  I'm not seeing anything in that commit which could
+>>> have caused this?
+>>=20
+>> Oh yeah I guess it should be:
+>>=20
+>> Fixes: 8c57b687e8331 ("mm, bpf: Introduce free_pages_nolock()")
+>>=20
+>> This is confusing coz we have:
+>>=20
+>> A: commit d7242af86434 ("mm: Introduce alloc_frozen_pages_nolock()")
+>> B: commit 8c57b687e8331 ("mm, bpf: Introduce free_pages_nolock()")
+>> ...
+>> X: commit 620b46ed6ae17 ("mm/page_alloc: return NULL early from alloc_fr=
+ozen_pages_nolock() in NMI on UP")=20
+>>=20
+>> X is marked as Fixing A, but it was an incomplete fix. I just copy
+>> pasted the Fixes tag. But actually I'm now changing the free path that
+>> was only introduced in B.=20
+>>=20
+>>>> --- a/mm/page_alloc.c
+>>>> +++ b/mm/page_alloc.c
+>>>> @@ -2979,8 +2979,7 @@ static void __free_frozen_pages(struct page *pag=
+e, unsigned int order,
+>>>>  		migratetype =3D MIGRATE_MOVABLE;
+>>>>  	}
+>>>> =20
+>>>> -	if (unlikely((fpi_flags & FPI_TRYLOCK) && IS_ENABLED(CONFIG_PREEMPT_=
+RT)
+>>>> -		     && (in_nmi() || in_hardirq()))) {
+>>>> +	if (unlikely((fpi_flags & FPI_TRYLOCK) && !can_spin_trylock())) {
+>>>>  		add_page_to_zone_llist(zone, page, order);
+>>>>  		return;
+>>>>  	}
+>>>
+>>> It would be nice to include a description of the userspace impact.  I'm
+>>> suspecting that's "none known", but some speculation on what might
+>>> happen to someone is appropriate.
+>>=20
+>> Ack. I think if you trigger this bug by accident it will probably crash
+>> your machine in extremely confusing ways. If you can trigger it
+>> deliberately from unpriv (depends on the rest of the host setup, e.g.
+>> what tracing is being used) you can probably use it to get root/ring0.
+>> Can mention this in the commit message.
 >
-> Do we want to document this locking order somewhere?
-
-I guess Documentation/mm/process_addrs.rst is the best place, I'll send that as
-a follow-up separately. todo++; :)
-
+> Just noting, it is quite niche because it requires UP, and tracing
+> something that can be called in NMI on UP is even nicher.
 >
-> --
->   Kiryl Shutsemau / Kirill A. Shutemov
+>>> Also, Sashiko might have found yet more pre-existing issues:
+>>> 	https://sashiko.dev/#/patchset/20260710-spin-trylock-followup-v1-0-aff=
+b5fe5ed00@google.com
+>>=20
+>> There are 2 cases here:
+>>=20
+>> 1: !pcp_allowed_order() -> This is forbidden by alloc_order_allowed(),
+>>    quite a bad miss from Sashiko IMO.
 >
+> Hmm but alloc_order_allowed() would return true for !pcp_allowed_order()
+> when spinning is allowed, then pages can be freed via
+> free_pages_nolock()?
 
-Thanks, Lorenzo
-
+As noted above I think that's forbidden. Now I think about it, I'll
+include a patch to document this.
 
