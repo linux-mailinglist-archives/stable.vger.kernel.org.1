@@ -1,66 +1,67 @@
-Return-Path: <stable+bounces-274147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274151-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 3fmzKQzTVWoVuAAAu9opvQ
-	(envelope-from <stable+bounces-274147-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 08:11:24 +0200
+	id EICTIlDTVWoquAAAu9opvQ
+	(envelope-from <stable+bounces-274151-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 08:12:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD5347515E0
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 08:11:23 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F203751613
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 08:12:32 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=qq.com header.s=s201512 header.b=VGri0MBE;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274147-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274147-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=qq.com header.s=s201512 header.b=AU5gPXs4;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274151-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274151-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=qq.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id CB684300C7E4
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 06:11:20 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9C44D3014A52
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 06:12:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FEB737AA95;
-	Tue, 14 Jul 2026 06:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D52438BF6A;
+	Tue, 14 Jul 2026 06:12:30 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out203-205-221-245.mail.qq.com (out203-205-221-245.mail.qq.com [203.205.221.245])
+Received: from out203-205-221-236.mail.qq.com (out203-205-221-236.mail.qq.com [203.205.221.236])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86A55381B16;
-	Tue, 14 Jul 2026 06:11:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9886387566;
+	Tue, 14 Jul 2026 06:12:27 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784009477; cv=none; b=Ko1wEJeWkr0NTyIs4BqseObPtSz+VPr05V4rHlCO5BIz7GamOe6TR3HhM3/3ihxt58isJLYK1+XNjVrQVyRy3kOdQ7r27yN3fg6l2kraDim01DShPTYSvhvHA7aQUiyKWd2ScReB10dAzMuOxZhKKO/Y7PLtIpb+K9nE8LJHZJY=
+	t=1784009550; cv=none; b=O4LQKcF24ck7RN3ZDajUuhCL/QCllOTfJAw1rDJTZp4IxnPSgflL7QEcga4tO1hAN1VRemoM6w7Wr8mjGfPeSAOqYpcS+FEkwgs2w0A5ZnWdaYU9Moz2/q866JzYBUZKTFZhAbC32jQ8U0VQTCPXvVsdkrsBmCWIzCUdZq12ikI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784009477; c=relaxed/simple;
-	bh=mVRFRY1ZOL05gzsc9tM6KQPKomFyphRVBVTLooxnfKg=;
+	s=arc-20240116; t=1784009550; c=relaxed/simple;
+	bh=71i53mglirWXf8SKGByf16iO+4mVhi3KV46Zp4Qv/g0=;
 	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
-	 MIME-Version; b=kiUzNoiwqRkBsUPLBsY8Z4ZAUbY+eTYiwMv/pemfXeuRYxLV3QbJWckqb/IYbD2iVQE8BR14T9VJW2RT+w2JHeXEuO5oKmsWFtZEke41RQ86qyADGF6wdb+W7sGbUN+E0bQ1qZ7tQFwUWCxZOwHn+fM6MvCR7D9O+9QeogaqWc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=VGri0MBE; arc=none smtp.client-ip=203.205.221.245
+	 MIME-Version; b=jUzIwU8ezUOfhfJJ3ZuO/KwGIgFVs7QApnNixa2IWLQA3PmI3qPCz8mFPxL8g35GkI8IGmUjp10HlDR5HaQOjmQ7xKo48BRBnZxbxgL8jz7v4e4gzR/XrgI+zna9/uBcRT2iC4AU+aw+INxWM19cr+gQK0auXjIlmTqvYEr4XVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=AU5gPXs4; arc=none smtp.client-ip=203.205.221.236
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1784009470; bh=C9yAQzDVpBq9fDc6pqK6Iog2dyP2iu0tMpj0kEPnMIk=;
+	t=1784009540; bh=K1PgLaqu6CXttFoJjAD+NSe2Z5VznvhaJvYwC7X85mc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VGri0MBEvR+RHyQ+8S2IMTDpja9934Q4ipjU/pgY5fLwKCWpgdimamZmvAnMJ4Ugm
-	 Hwc1ygKJByGHLubG2gD8lZNT1drS0YmCRrDYcbnN+/ibPo+5iKrqG/wSTL9pWsyGUQ
-	 rPrIaQXR9T9RirpbvuUdJcq2Cujz4oyE4yCpA0NQ=
+	b=AU5gPXs4ZPf6yFQCf2bMeAcWEyjHlQoBpt6BgDPkbb0Ziy1/nfYsv4GLkXQ39AR2n
+	 yhsuShV471eMgwyG6B+fv72DWLSGgKz76nBHcO06/jcDyTkUgJGjH9V8HP7EnrtRIf
+	 fkqhMX5NGXySnwkS0JJS2NOdfQijwaz1r0NVMqAk=
 Received: from ikun ([221.176.157.250])
 	by newxmesmtplogicsvrsza53-0.qq.com (NewEsmtp) with SMTP
 	id 2C6982AA; Tue, 14 Jul 2026 14:11:06 +0800
-X-QQ-mid: xmsmtpt1784009469t66m6fm5q
-Message-ID: <tencent_AA3028EA782A8414BAC141E8C40C52FDF30A@qq.com>
-X-QQ-XMAILINFO: MRBm8gEMwvbCDj2F471CsLgWio762pOp4IdBc+oJ0kbkTab9q90CAjycatMKMi
-	 4njCHDhIkpbJZfXI7Gelwyyh+AmVHQlPcfgYOBUJqwYGqaJjHXzx342bxspRUNK3eeoQnnERiWLQ
-	 XoGFQyCfATmMR342adY4YNwKDdpy/FJ2Yh+RhQVQ1BaDuiSPsqe+Z9o8BMM7TYe2hzg4l68cdW3P
-	 ouacGjuLSwh7rGn2WV5Y9u18G/WuiLFp5umLZik4tZtiHlahM+MfolmELYZ0rYYedTeyqBzaDtRt
-	 tkXp9x+AvOpr0njAwOa1Jk/tes6IDFnhwCrBGWvDHeWNrAT3yTwodV2s59FrAVxo1lZQTH6clrhI
-	 XhEYYBYH068wCT41/yGENvgb4kzLIleIh8sbOjdHxcESjZ2CJEio5oqgxdxVkPKexqDk7X3FmM+v
-	 g46ZuqA+J762JkrWEMf/nfra+8BfGHVhWGzzB4i35FgyoBYRVR85KS2HRfTdf16wLD+mBXD/5quJ
-	 FJDc7Q52uuvZfSnistytl0bvrW8+gPIUA13aHcFlHQEnDkaDjCilTuCawvmBEq4ffPZwxCeKHien
-	 8ASxu0hi9aLlezbjtKtnlgWnjZ+ydiaXczUjgHDkhFI3hXnVyNcU1Y11b9i8cDcH7zIr3RPRCL7x
-	 1pY6nYJR22pHrVyvffP2j13PDS8L5uV49HgVc0GESMdT5jnoVVF17LoFWtbeJ8gHFHTkIANoQ4kz
-	 mGK2ypE3Nqfre7atdJrqW3IWFKlRuktZ1/S/jlFwQN0IZOeX6pJUwmIevK147qfYhzHGYlxZ2dSX
-	 fiSR9mMCVJFRTbey7iHNMxPv9DdJy4+CGMt+hR5+XYY2+ON2GPZED9ne42myZOBcA4jGKNBS4DqK
-	 74bBKcxgp3W22El4oYsVeMtTPCjhA7RZn44jMXLfm5Dgh2Quq1sU8kf4HFBoQbhQZl8opm+ZWc3e
-	 9/ha5BMA7yu7RNYd1V9bpLuBWtaKM+n0Qfbt19JaCbQuBJXf+qS51tqxS9cXt4Ozblyz2dD8gasZ
-	 z4BJnpcv7iRAhmryCBtlTr2g+biqgvdcr9RC0TvrjUHjoZjIIY
-X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
+X-QQ-mid: xmsmtpt1784009469td62nzvjc
+Message-ID: <tencent_4668A8BA7892157D3C6D4228DC5E217E6209@qq.com>
+X-QQ-XMAILINFO: Nj+lDvaLCxoM+HOJomgQM9c/DPmZ5vrQGMJydUTp+MlseXMgRZndED0UW+itdU
+	 anhm5wjX6rNse6rZX3NN/H+XVbsYRcWNxgaKr/oP+i3l7NC78Jg0Lr9Bir6jw4TxeBxnRlHw26sw
+	 TG4QPw1RQeaWyQe4vCB55LSDjdbET2CVnNsveAC/fWEamPKg3Fw0a0QWsj4ni52N0pc4uhtw3oVt
+	 ttNAPkDVQrdYlZKOgTAlBgz61JZFhKHpWMevgfD+5ZbqSPmj8fCjM2rb6wZU/sTRjovy90D2pS7t
+	 QeLJ31eyFPoYdY6a+vp5j2OVwe2HhI21fcBoj4RiItTPzv1tmm0zXSLX1YoCG2mGLqOp9XXqspgL
+	 kU7tAOC+2QETN2rpzgkM5hiD2RJK9fc4d0cZQYstsmtlCS/G0efEORlaPiD+MIjU3u5wQapKp6Ab
+	 20GSyRBGs8ykbA3xpg7X2IzpzAQl+jNfl9vHGmIbk59HLs+iSlOB/sBy4N+Js82qAYPDrFaj1Uu5
+	 wGV5T4Cj6Lm6uA/Hqiiad87v0Vol2hNsJyXNN+GuXshVajo96tv/jRr/7pD1myb8Uuu+ZMtdQRDi
+	 sZV3RB2t6U6m/wgRGoF3ePxqtppiskRgG71BATJFR5MJsrR1+Vq5r2x4JmHl1EqD+mN/fQ2NO52W
+	 z4rWimoJ/q/bF6SnP4CP4bsBJSIxoOAa0Yy0iT0ibfXC7wPui+kQLgE7Rk7u332wri+qNdIhBwGV
+	 Kn5KywQywSZikJEe7BZBt+mRAsYmMrzw7fDa9rSWEnjWTlHWwjT4u56PTmuesYJqYdOTHaC3qoHj
+	 vGcS7KrnSoBKMuSCYhSOM0Eg+Unnip7dUNCuBpO7/an1KR5IrV1+XRAlVZc2dreLgL9JyXMTgGyt
+	 TnXuFe2kQoLNWrjcSJ/tnKu8cyMoJqtbXMgRB1KNnXe3ugnomoWPACs4psNFVKy1hIRykFAPVGuO
+	 l7hNKqwDKwVuZE0LcO5c2tt/HFGH1gO648KZFwlY+wrQPOZYpaGCsT+gien2hNn4QZHpwWIDfUXe
+	 lq4CgdkHFmeNULfqGPkqQzjl/unTYPPuuuEnIywjQ3FyWKIaJ6TZf91EE+geCwUsvuy+UwEa8APe
+	 bMqBNpnDgeuPTguSo=
+X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
 From: Guanghui Yang <3497809730@qq.com>
 To: linux-btrfs@vger.kernel.org
 Cc: clm@fb.com,
@@ -68,9 +69,9 @@ Cc: clm@fb.com,
 	linux-kernel@vger.kernel.org,
 	Guanghui Yang <3497809730@qq.com>,
 	stable@vger.kernel.org
-Subject: [PATCH 1/3] btrfs: detach failed sprout device from transaction update list
-Date: Tue, 14 Jul 2026 14:10:35 +0800
-X-OQ-MSGID: <20260714061037.1014-2-3497809730@qq.com>
+Subject: [PATCH 2/3] btrfs: restore active device pointers after failed sprout
+Date: Tue, 14 Jul 2026 14:10:36 +0800
+X-OQ-MSGID: <20260714061037.1014-3-3497809730@qq.com>
 X-Mailer: git-send-email 2.52.0.windows.1
 In-Reply-To: <20260714061037.1014-1-3497809730@qq.com>
 References: <20260714061037.1014-1-3497809730@qq.com>
@@ -87,11 +88,11 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[qq.com,quarantine];
 	R_DKIM_ALLOW(-0.20)[qq.com:s=s201512];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-274147-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-274151-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:linux-btrfs@vger.kernel.org,m:clm@fb.com,m:dsterba@suse.com,m:linux-kernel@vger.kernel.org,m:3497809730@qq.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[3497809730@qq.com,stable@vger.kernel.org];
@@ -112,43 +113,44 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,qq.com:from_mime,qq.com:mid,qq.com:email,qq.com:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: AD5347515E0
+X-Rspamd-Queue-Id: 2F203751613
 
-When creating the first metadata chunk for a sprout filesystem,
-create_chunk() adds the new device to the transaction's dev_update_list
-through device->post_commit_list.
+btrfs_init_new_device() switches latest_dev and possibly s_bdev from the
+seed device to the new sprout device before creating the first writable
+chunks.
 
-If the subsequent system chunk creation fails, btrfs_init_new_device()
-aborts the transaction and releases the device while post_commit_list is
-still linked. This triggers a warning in btrfs_free_device() and leaves
-the transaction list referencing freed memory.
+If chunk creation or the subsequent sprout setup fails, the error path
+releases the new device without switching those pointers back.
+btrfs_show_devname() can then dereference the freed latest_dev and crash.
 
-Detach the device while holding chunk_mutex before releasing it.
+Restore the active device pointers to the latest seed device before
+removing and releasing the failed sprout device.
 
-Fixes: bbbf7243d62d ("btrfs: combine device update operations during transaction commit")
+Fixes: b7cb29e666fe ("btrfs: update latest_dev when we create a sprout device")
 Cc: stable@vger.kernel.org
 Signed-off-by: Guanghui Yang <3497809730@qq.com>
 ---
- fs/btrfs/volumes.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/btrfs/volumes.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
-index 6eab4cc73ce4..556d8a60a5ec 100644
+index 556d8a60a5ec..a14f186f5b07 100644
 --- a/fs/btrfs/volumes.c
 +++ b/fs/btrfs/volumes.c
-@@ -3071,6 +3071,8 @@ int btrfs_init_new_device(struct btrfs_fs_info *fs_info, const char *device_path
+@@ -3070,6 +3070,9 @@ int btrfs_init_new_device(struct btrfs_fs_info *fs_info, const char *device_path
+ error_sysfs:
  	btrfs_sysfs_remove_device(device);
  	mutex_lock(&fs_info->fs_devices->device_list_mutex);
++	if (seeding_dev)
++		btrfs_assign_next_active_device(device,
++						seed_devices->latest_dev);
  	mutex_lock(&fs_info->chunk_mutex);
-+	if (!list_empty(&device->post_commit_list))
-+		list_del_init(&device->post_commit_list);
- 	list_del_rcu(&device->dev_list);
- 	list_del(&device->dev_alloc_list);
- 	fs_info->fs_devices->num_devices--;
+ 	if (!list_empty(&device->post_commit_list))
+ 		list_del_init(&device->post_commit_list);
 -- 
 2.52.0.windows.1
 
