@@ -1,128 +1,197 @@
-Return-Path: <stable+bounces-274590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274593-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 67vIF4K4Vmo6AgEAu9opvQ
-	(envelope-from <stable+bounces-274590-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 00:30:26 +0200
+	id ea7VDsfEVmryAwEAu9opvQ
+	(envelope-from <stable+bounces-274593-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 01:22:47 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A23527593CF
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 00:30:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94D25759617
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 01:22:46 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N98NbSqp;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274590-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-274590-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=pSFYx1HA;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274593-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-274593-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=ibm.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2D30C30247D2
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 22:26:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AD58D309431D
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 23:22:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35CF2418A47;
-	Tue, 14 Jul 2026 22:25:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3689B433E89;
+	Tue, 14 Jul 2026 23:22:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2A7B377AB4;
-	Tue, 14 Jul 2026 22:25:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BB0242DA29;
+	Tue, 14 Jul 2026 23:22:18 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784067957; cv=none; b=MI1KQ4TIEqdY+f3CjN+dt7hBuekf1iWRrfVrDRPbiXN5ScATo898+pOjNPRVJJuu6H2XbTGVjOWhtcmvJn7qIdhQH03nbgL01bjnV64fTIO2NYhOpoNXXEfngk19p9xfgX008S9w1tA7G0kryKxLO2artoeSM3wPJ55692CNy+4=
+	t=1784071339; cv=none; b=qmuigXfEInOIDOAz5rrl1vZVA6P52mwinKaJ4oxU+nkN9R+2/+nDyVui3WIsCKFkgal9mEEiJBnde5t30PnZynXJc30I85oRArvahn8I3K6Qd+F4kunNBL+pzy/5RrraACNx8edaX0nPEDuViIewkKx6mrGWi1NAR0i/lbnFeAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784067957; c=relaxed/simple;
-	bh=S7eAX6LeH8Zsdt9Sg2EvYAKXA2oU0yPKhN5cDf7rbYs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qWneHqnxZ+pRnkosMdshUlR6HNJNNT21Cn4H2Vk+vD36c2PxDN8NpWT018UlZn7S35N55L58S75Q6JFMcfjcrBP1K+Kjs98fRoZfNonoRkhRFydglzdTUQ4mQMik7bP4fHSTkJOnhmYkCm0nqzE3KNppmuUTug/h1I0imXpUZmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N98NbSqp; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4F831F000E9;
-	Tue, 14 Jul 2026 22:25:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784067955;
-	bh=FnY3zyFinC3+lm72vnzw/gDx1kFOPSh6nzQxKUrgSKM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=N98NbSqpiwClF1AgURNZpLcV2roeim3qj6ofCisOzrlaFw2JSk5FNtXl6hVOyIrpk
-	 uN5nJInB316XY56tbnTv0qZIdDtETMWtXsxiDrGANR3eETeX5R/R666jWhgkf+XJa8
-	 pkQ+JS1G7lcRGalcFWyN3OJ3Xs1xcgf0tCzTcFO332gW65eSVlptxeSmo8wME+curv
-	 A1JJZuDNOVVkUBZTUVDKkKa620F4Mya3ECF7JSiyM8AhOGRx8EsJMLPHr131yrqG/h
-	 67+L/NdfLDGvUvoDJUXg5+H1k6LilDwJTMK3V+EMOZ/GxiKrlXKBd942W+EtvH2nmK
-	 k4IoUrixnUi3Q==
-Date: Wed, 15 Jul 2026 00:25:52 +0200
-From: Andi Shyti <andi.shyti@kernel.org>
-To: rva333@protonmail.com
-Cc: Qii Wang <qii.wang@mediatek.com>, 
-	Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] i2c: mediatek: fix WRRD for SoCs without auto_restart
- option
-Message-ID: <ala3XZ1Jw_M8sZlt@zenone.zhora.eu>
-References: <20260709-6572-6595-i2c-v2-1-b2fb8510d1d3@protonmail.com>
+	s=arc-20240116; t=1784071339; c=relaxed/simple;
+	bh=n0LzOgDMKKopcnoAa2Witr0UJS29Rj+2RrqDEKY2eIM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=X4cbucXoIhaOr2v2VHVYldAl0cSoifhWU49hmcwkkgu+cD2YLFVDUe3d7e2/TVxlBSexUrPOncRoZ0z+8utJkFbAfvoXNA0kDh5+pcETISW/55651+0nIm/0tocPGgP3zPZE4WVjh+GOMSG3JTV8XgFfb2W2PTavct9PZ87XdlY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=pSFYx1HA; arc=none smtp.client-ip=148.163.158.5
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66EJBmpx2116371;
+	Tue, 14 Jul 2026 23:22:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=xrfGuHNduIxh00NuU
+	+zcXAaLn9SOXoYXyRh+TxevBu0=; b=pSFYx1HAi7J6myw+pEPuEaPfmatfqPbJx
+	OaGVGOva1WQ7Ksj5nnBSrPmR+uPFp7bAt+YjrE8CSt/iV+ZChn/WwIqV/Nu2WyYA
+	00zRA5GFZyxJ9+qnjoTii4lDeFpU/A+cnhkwy2AQiD3zb/oExVXAy2ZJ43U14Qin
+	HNTCUiTVNRrx0dgLlSM4XeYRJGyMIyuSXLKVSQ8Ku4pCy8igIj1K16NNZU864duJ
+	86T8EhhlrGjoroEqlXi+NctBWN8O9JX9Je4/duKqJp0x7gQAre59Lj49l2OaQNhQ
+	XExjAHU8A1ydyU7YKJmH8DVauqnR0dLtqrNty//fl9KCGByQXQNkA==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fbf2a86dw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 14 Jul 2026 23:22:17 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66ENJg5F000379;
+	Tue, 14 Jul 2026 23:22:16 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fc1nhd3nq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 14 Jul 2026 23:22:16 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66ENMCYG21889312
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 14 Jul 2026 23:22:12 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5ED5120049;
+	Tue, 14 Jul 2026 23:22:12 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3FE9420040;
+	Tue, 14 Jul 2026 23:22:12 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Tue, 14 Jul 2026 23:22:12 +0000 (GMT)
+Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 4958)
+	id 1E6BD16260D; Wed, 15 Jul 2026 01:22:12 +0200 (CEST)
+From: Eric Farman <farman@linux.ibm.com>
+To: linux-s390@vger.kernel.org, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc: Matthew Rosato <mjrosato@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Eric Farman <farman@linux.ibm.com>, stable@vger.kernel.org
+Subject: [PATCH v1 1/6] s390/vfio_ccw: fix out of bounds check on CCW array
+Date: Wed, 15 Jul 2026 01:22:03 +0200
+Message-ID: <20260714232208.1683788-2-farman@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260714232208.1683788-1-farman@linux.ibm.com>
+References: <20260714232208.1683788-1-farman@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260709-6572-6595-i2c-v2-1-b2fb8510d1d3@protonmail.com>
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE0MDI0MCBTYWx0ZWRfX9fR7JOnIjWFc
+ 57O2WLU1tiLmG/PmmeKzf0csH8aKBQcG1cNL5vOZ4OrBP4pkGlSKB79BWgDRGZpdGtS7zKm2C8J
+ ObGMw6dqbKPyv7Q9T+lFjXO7iu1pBW8=
+X-Proofpoint-GUID: gEChmZ9XFlrYps8-XIgC-kkpwze5kw5b
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE0MDI0MCBTYWx0ZWRfX5pVNQ202t3x8
+ tFGz1ciPrDQ3a126yJeLVCgUHau6XAnoZRQ9naGKEqN+p9ufBu4Hr22Ph0EfJl5548c0zdiC86K
+ pXFkezGBSJEhGqVIjVpMzs/xtI+S0b0vciUPyV+jYfzZxHBZzPFg1MoQQ8ISZRviTz8n7lBx+q1
+ bK1lvdhZRFsQDHlFpbWYxyU6KcoqCqzV6vRMYv9FhYpwa/eFjg/My0eTGIV47JSh/Wn+aHeoy0O
+ oLuq/WNZz7hPo5N3cifQOR1FXobkmPBQaSLv17gVdwUZnV6cR+HMnAmSQL3g/IgiMFpgqckaEdO
+ h4/sKoayHbwLBoxJT/LI+vdCOD8LOsRGgiRw0xcGq3HdL6AMSJi4J6zWuC+tXNv786z0mJvUFTJ
+ brQXH8TjLfwLsdZl5vMZ2X4Vq/41YNpDqfzdD29YaKaKWrfjQePFPrbeB8fsJVmDrvmwPojZwvo
+ M4ZSxpb2sj+OtHe7Xsg==
+X-Proofpoint-ORIG-GUID: gEChmZ9XFlrYps8-XIgC-kkpwze5kw5b
+X-Authority-Analysis: v=2.4 cv=PvajqQM3 c=1 sm=1 tr=0 ts=6a56c4a9 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=Ztfy0_AA8xUuwmIluScA:9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-14_05,2026-07-14_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 malwarescore=0 bulkscore=0 impostorscore=0 adultscore=0
+ clxscore=1015 lowpriorityscore=0 spamscore=0 suspectscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607140240
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-274590-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:rva333@protonmail.com,m:qii.wang@mediatek.com,m:matthias.bgg@gmail.com,m:angelogioacchino.delregno@collabora.com,m:linux-i2c@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-mediatek@lists.infradead.org,m:stable@vger.kernel.org,m:matthiasbgg@gmail.com,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[protonmail.com];
-	FORGED_SENDER(0.00)[andi.shyti@kernel.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[mediatek.com,gmail.com,collabora.com,vger.kernel.org,lists.infradead.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-274593-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:linux-s390@vger.kernel.org,m:kvm@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:mjrosato@linux.ibm.com,m:pasic@linux.ibm.com,m:borntraeger@linux.ibm.com,m:farman@linux.ibm.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[farman@linux.ibm.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[farman@linux.ibm.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andi.shyti@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	ALIAS_RESOLVED(0.00)[];
+	RCVD_COUNT_TWELVE(0.00)[12];
+	DKIM_TRACE(0.00)[ibm.com:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,collabora.com:email,zenone.zhora.eu:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A23527593CF
+X-Rspamd-Queue-Id: 94D25759617
 
-Hi Roman,
+The routine ccwchain_calc_length() counts the number of channel
+command words (CCWs) that are chained together in a single channel
+program, and rejects anything larger than CCWCHAIN_LEN_MAX (256) CCWs.
 
-On Thu, Jul 09, 2026 at 04:31:29PM +0300, Roman Vivchar via B4 Relay wrote:
-> From: Roman Vivchar <rva333@protonmail.com>
-> 
-> MediaTek mt65xx family SoCs have no auto restart, however, they still
-> support the WRRD mode in the hardware. Because auto_restart is set to 0,
-> the WRRD mode will be never enabled, leading to read errors.
-> 
-> Fix this by removing auto_restart check from the WRRD enable path.
-> 
-> Fixes: b49218365280 ("i2c: mediatek: fix potential incorrect use of I2C_MASTER_WRRD")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-> Signed-off-by: Roman Vivchar <rva333@protonmail.com>
+The loop itself is "do..while (count < 257)", and while the logic in
+is_cpa_within_range() correctly adjusts between the 0-index array of
+CCWs and the count of CCWs starting at 1, this means it would look
+at a possible 257th CCW before ending the loop and (correctly)
+returning an error.
 
-merged to i2c/i2c-fixes.
+Fix this by limiting the loop to 256 CCWs such that only indexes 0-255
+are examined.
 
-Thanks,
-Andi
+Fixes: 0a19e61e6d4c ("vfio: ccw: introduce channel program interfaces")
+Cc: stable@vger.kernel.org
+Signed-off-by: Eric Farman <farman@linux.ibm.com>
+---
+ drivers/s390/cio/vfio_ccw_cp.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/s390/cio/vfio_ccw_cp.c b/drivers/s390/cio/vfio_ccw_c=
+p.c
+index 7561aa7d3e01..80c3d87f5482 100644
+--- a/drivers/s390/cio/vfio_ccw_cp.c
++++ b/drivers/s390/cio/vfio_ccw_cp.c
+@@ -393,9 +393,9 @@ static int ccwchain_calc_length(u64 iova, struct chan=
+nel_program *cp)
+ 			break;
+=20
+ 		ccw++;
+-	} while (cnt < CCWCHAIN_LEN_MAX + 1);
++	} while (cnt < CCWCHAIN_LEN_MAX);
+=20
+-	if (cnt =3D=3D CCWCHAIN_LEN_MAX + 1)
++	if (cnt >=3D CCWCHAIN_LEN_MAX)
+ 		cnt =3D -EINVAL;
+=20
+ 	return cnt;
+--=20
+2.53.0
+
 
