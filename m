@@ -1,184 +1,272 @@
-Return-Path: <stable+bounces-274335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274337-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id pHDXGZFOVmqv3AAAu9opvQ
-	(envelope-from <stable+bounces-274335-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 16:58:25 +0200
+	id ic7ZIMBNVmqE3AAAu9opvQ
+	(envelope-from <stable+bounces-274337-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 16:54:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 646DA756296
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 16:58:24 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AFF6756206
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 16:54:55 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=JvaJ6Sx7;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274335-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-274335-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=nozominetworks.com header.s=selector2 header.b=ON6sAfjW;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274337-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274337-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=nozominetworks.com;
+	arc=reject ("cv is fail on i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id CE79B302559A
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 14:52:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C079D30FC90A
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 14:52:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC9A048C8B9;
-	Tue, 14 Jul 2026 14:52:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADB3048122F;
+	Tue, 14 Jul 2026 14:52:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-00756801.pphosted.com (mx0b-00756801.pphosted.com [205.220.182.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5740748C8C7
-	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 14:52:09 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784040730; cv=none; b=H4uMiWjsCug9V/L/Z0glReKI6Ql3f4LTtj/BSLoyZ2PnuyH3oZoLcwyTml4siRUmGxhTbPtDin/nv+Y1SNj/cDqOLK7H/vYuHYTLsCxS9HFtQPgSnd9fWsxmiu7YC81au09R4pgW2hNdpNdHwZ5KXMqIwpalZpum7y7bwWJWKVA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784040730; c=relaxed/simple;
-	bh=ovSXpTa1Oye6zbR175Q8rIEwQfkQFDUxmgweZlRZv8o=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=C3fUFe5M0/0lChnhwaaBDjc3aNGUOaDeDQ9AqGx2T31k/Dcin+SzIK9nGXTUXrt0eDAF+DQEIhjgAhAmUu9yt7hyNughfOpy7vewtV5oq6XcRHlIMEz3bkxpVG19wS5qXzHqFzJqeMduQXyFk4nRm4kOxl0wc5fnWwWRggHifmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JvaJ6Sx7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCB041F000E9;
-	Tue, 14 Jul 2026 14:52:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1784040729;
-	bh=S4dmAiRiOl8FI1XqXNwyaSc4nXeQpuYkPqWh2AERuDY=;
-	h=Subject:To:Cc:From:Date;
-	b=JvaJ6Sx7HgpjpVAamWQuLwtcB/YWbPxyenO31fegI8lg/iiQZYQUS4Rna8QMMR5D7
-	 QT+mJDXTII4MKvhvZxYBITPq62kvguzLlN/uy9j/XFJWoRGVr6duKES0xsFUOxgBYz
-	 /yP1iI8DRWuSnSCCDiyheWBljsHnJCkqdAfjNuss=
-Subject: FAILED: patch "[PATCH] mm/slab: do not limit zeroing to orig_size when only red" failed to apply to 6.6-stable tree
-To: vbabka@kernel.org,hao.li@linux.dev,harry@kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 14 Jul 2026 16:52:03 +0200
-Message-ID: <2026071403-afar-policy-60a2@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D621A23507B;
+	Tue, 14 Jul 2026 14:52:23 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784040745; cv=fail; b=qip/Jh4+ofRy7NLJk8R4uhna+e+alQ8oNqBJFxqwnj6yO3gL45ZVsZz64Mz8m0D9XNNpO6Vp9pIdVpA0CyupqEBudGF/RhS5eFf2dFDhMPXfYhgm2SsPR63umZuac7QJDMLVyNK85h1fjvOGzVrNWjcRPVetVbdha2k0dqXF0Ws=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784040745; c=relaxed/simple;
+	bh=DE9xz3XsgT5cKi8MvbdwjNxq1ON7LO1NIetfO9hrYdA=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=FBo/i4LvjKZ4NnOt4xAqOeUDnViJUBsnVTuPexAnJAIgrn9z1Y16uNESk8wUluXanO5wWTQlferU0u5OY5lxYmM7f9t1jAiyMUFYQKduhaL3chSd9SSPI8geMhl/8vdnt2K6L8cF/sah0FhzgDrdkueTSkdxPxyzdYEITCSbt9s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nozominetworks.com; spf=pass smtp.mailfrom=nozominetworks.com; dkim=pass (1024-bit key) header.d=nozominetworks.com header.i=@nozominetworks.com header.b=ON6sAfjW; arc=fail smtp.client-ip=205.220.182.195
+Received: from pps.filterd (m0297687.ppops.net [127.0.0.1])
+	by mx0a-00756801.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66EEgUMd1026752;
+	Tue, 14 Jul 2026 07:52:09 -0700
+Received: from db3pr0202cu003.outbound.protection.outlook.com (mail-northeuropeazon11020114.outbound.protection.outlook.com [52.101.84.114])
+	by mx0a-00756801.pphosted.com (PPS) with ESMTPS id 4fbjsvadha-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Tue, 14 Jul 2026 07:52:09 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=DXLoQ1+a8c557W2/aTfH5kj5nlr1ukPN/7E+rOmf7/x578vijoyQfcTZSPwd/Ek0VZiG531cGyAqUkHrFpRj3/El3XS9IuQO3hv1UdfPbWwCuinl9QaysJjMr4LpI7hAL8KXLdEvvqknOEgT1FYMAxzJKxLWhaxIEgiTq8OKwpQIL4sKQSSSGZLDOc78BXOCwrAUQk3u0aAraPbuzCVJuXnGU/1odwITwxfbqMQkyQuLcTwMmB7hsmyvjoIbocp03htKbscUsLmNLClGTu9SRd+Yutlz9raKqvAnXQ1jWw3bjzHdCrEaBOedf3K+RBJNYwRRuH7n/wYN3Bz4tz2z2Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=QUCGq/D2pPoWKLx2qOvTFI6qLWiGzzZV712ypXLaC0I=;
+ b=L2tb+LJ+Kyj8YqLbMlm9A9jjwEYdPpv8nOhhBm8SeP1TlDmNp0nZ+903eiayhF68q6OpPUdLmIQaynzAI0D6mdcS6jSdPtmYcA9WnTip1+FuQ+FhYLOjjTSvLNRSotwb72Hh9CNShs2w0q0qkeZmWnkJ1WlwmbpXWWhodASjD7a0zqvii+iYrj/QjhnfR3+SdQrWs0+hbjH1oizttXMXisyJTPzRfvgeTaEoUxaEaMy7m0rXGUaMNNgFsCP013aRZfUaH+yQ3SCVRoVMuDkLxD2DbGa39btBlAiZnStY1vBDBR29btsyMt5CifWRBVlWP29MLYtKIidXzOwAoDkrCw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nozominetworks.com; dmarc=pass action=none
+ header.from=nozominetworks.com; dkim=pass header.d=nozominetworks.com;
+ arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nozominetworks.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QUCGq/D2pPoWKLx2qOvTFI6qLWiGzzZV712ypXLaC0I=;
+ b=ON6sAfjWPJc6YK8e1khMnxf63vG84VlYFwTdddLeogNdC2BnVMDd8JUIJVspGt4GX4fO4l6As/CDr5DzcaTjJPzT3BNaxuZnZYPLC3WqlqrV0W71YQZznPiGqdXy3E8LM+FWHnphmpvOC4oOUWM0QBnmZNUliVu/C9SgZ7iFFDw=
+Received: from VI0PR03MB11174.eurprd03.prod.outlook.com
+ (2603:10a6:800:2f8::12) by VI2PR03MB10692.eurprd03.prod.outlook.com
+ (2603:10a6:800:272::8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.202.19; Tue, 14 Jul
+ 2026 14:52:05 +0000
+Received: from VI0PR03MB11174.eurprd03.prod.outlook.com
+ ([fe80::478a:c992:bbc3:ca3f]) by VI0PR03MB11174.eurprd03.prod.outlook.com
+ ([fe80::478a:c992:bbc3:ca3f%6]) with mapi id 15.21.0202.018; Tue, 14 Jul 2026
+ 14:52:05 +0000
+From: =?iso-8859-1?Q?Alexandro_Cal=F2?= <alexandro.calo@nozominetworks.com>
+To: "linkinjeon@kernel.org" <linkinjeon@kernel.org>,
+        "hyc.lee@gmail.com"
+	<hyc.lee@gmail.com>
+CC: "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: [PATCH] fs/ntfs: Fix min_len for compressed/sparse attributes in
+ ntfs_non_resident_attr_value_is_valid()
+Thread-Topic: [PATCH] fs/ntfs: Fix min_len for compressed/sparse attributes in
+ ntfs_non_resident_attr_value_is_valid()
+Thread-Index: AQHdE6BWNXcQ0RKAOEWMF7uI0LIExw==
+Date: Tue, 14 Jul 2026 14:52:05 +0000
+Message-ID: <C449CC7B-A988-4DDC-B3C4-281794E6A410@nozominetworks.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: VI0PR03MB11174:EE_|VI2PR03MB10692:EE_
+x-ms-office365-filtering-correlation-id: 2859f364-2a52-44b8-4666-08dee1b778e7
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|23010399003|376014|1800799024|38070700021|11063799006|56012099006|6133799003|18002099003;
+x-microsoft-antispam-message-info:
+ 2XQmTto3o6WTqGYrLUNxxLMmr+gnHZXIndz0Zv0hPo6mbHSCWgTHLVbJj8eK8fI/cicIaqaoThtI5JD6Hlwi8iw1dOSmSuJLmu2s5yKGwpL7BtuuqgBl3I4cjQinRaAzl2MMbp5yirUeQMOh0nadH3yInqh0a7cQz+uxdvMf9/RfrpxwruV86PLw3ALWC8GdpsR7kRH/zM29ZVRhiAoT6z79wkcT6cbvziM8I5af47YrOVfDItzWu9rgeq2UywXisB87xpmXRVHA7zx/K4/mocNVNk77tXmQxz0sdihDkRTy3IUxpuCHoHfJEiXJ0FSrpxgBlmnusyXbj05O/GMBq1JEz4h/vWtSspTsE4dQgghqAOsrAmsZVcNylIwYp7v12XfMhm7La0X+aPYYsE+psPjfo+5YqWl7jnp2LiG09ZzDjHqm5JwAohMNuWYZRS1uuQ5G7FFLhxwI0/VPLnVDZzJzf6UUC8uWiwZj0DRc9LNtTXw5YPeczsIclWX0QL/Rcuazn1fB2qcW6uoY5KbjFE/GSP1Dwk7jICm4QLw85U13X8QZ3QGXN84xGhJb0DVdKvzMgdVUcv62tTFsK8Ih6SH0wCDK9+CMSZ3Cw+fcpt0zcnrLwh3lgx5lI9st0eYH4L9NxGtRGoqXH0X8Q5SCs0SlrDGJjZPvs1SIrB8RYuPiiuZNreJyeiMJIxGXsopA1c7kd7h2etcI0CAn6aBXux0UAIgIPHgWAigRaEG5m+Q=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI0PR03MB11174.eurprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(376014)(1800799024)(38070700021)(11063799006)(56012099006)(6133799003)(18002099003);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?YLu70slnmDaME7qZIXOehjF2TA+xGRqtdc6aGh/A2NW9qKBlvYsuUo+5im?=
+ =?iso-8859-1?Q?gZ1rHDzgVVia22ML8nc0Z8OFJsM8zDU/CiceAy7c/vz9w1j8ZlnbPRrsf1?=
+ =?iso-8859-1?Q?dQnBQHvlSv3Q/O5pwidaQc7onYcuprtzxoU25G76emz7dXAL3LLnqkvrIF?=
+ =?iso-8859-1?Q?+u9CdoI5gGFed08q4U1fP7yTSoTLCPQeBdUVo6XDoz93pnJGM1btlc8R7A?=
+ =?iso-8859-1?Q?MSPxy31K5rizI8sXcdp4EKQbdlC7GcDY1T5X+/jZ6b2qhMiiBjIaEExbyp?=
+ =?iso-8859-1?Q?LQuaNaVeDGvNISgNB5XrZ6t1Knm+7p5Dr9PWlXtCHvETPsTIsAPJm4LBsE?=
+ =?iso-8859-1?Q?EVuhuc424Puyr0JI9H2+RXUYcd4AsuZ+SzERs+MPAu18K5ugE638v0lUNh?=
+ =?iso-8859-1?Q?i0NkIUHUHx3u/dvnHQ0OVuUvnWlAx0/8eyLXohYqkT0qvfk4tt7DgiGjNo?=
+ =?iso-8859-1?Q?z6H7xUVMoKpC51osfhRWDd7v+5fv6/IQxh272LBx3V38i7nSYQxvDFhN8w?=
+ =?iso-8859-1?Q?tXjssc11bM2DWlmiL4R6U6uTLEsqtObV7N7RAFbN0KW+i1H7U14joBs3YL?=
+ =?iso-8859-1?Q?mCbMKAZiU7BKDcP38uUx1BNV6mez74jO7fEUcybbmNeXY/oxABhEkQnAW5?=
+ =?iso-8859-1?Q?HeXlVAUPrXatyH8527+z4uMCNGTMVyW3npGOsXhrwy2i80QiW6hrJ7L4z/?=
+ =?iso-8859-1?Q?uwMWqnmHxgFmyMBy4OCvXII1bElXBg2FBXX3WdCdg9lPOa/ss+A+KE6gBd?=
+ =?iso-8859-1?Q?X9e1hGfWy2PN+zhYdh5Qi+CmGJKzN6+pFL35WBj8EVt7VMGREQKhqjix+2?=
+ =?iso-8859-1?Q?owcFqwXmJlraeunKxtt5QzdKCpqhabSrI0eB9lAUgQhQj4abKSDmlSiYcc?=
+ =?iso-8859-1?Q?GsqbSZlB2TOr2q7yLPBzLBA7m6VfYh6Un6A9VsD7yoxBTZRpbrg+r/azni?=
+ =?iso-8859-1?Q?m6H15gy4tfsoxR9MiMrWwuIYAPPDmTOUYGyRTste21ENl1hXUZE+svCCUD?=
+ =?iso-8859-1?Q?rTHoSEXQfr88ktUuaILtICZrVSxPxI0YCfWR5vGFETUAVVmGF0pBpxDWdp?=
+ =?iso-8859-1?Q?9jR+2GB7bdaHpRDR2o0BzNFpINvF59Q8MxfsdmN/HRJIbF7CeQg4/5d7f6?=
+ =?iso-8859-1?Q?xby2c1NviAQpBxMhtyKGDNcC2BjRiUmTUPG5O/zYf8z5Gaj4KtE9Vi9ThL?=
+ =?iso-8859-1?Q?phQZdP53DVtQVm0fXWkBjckRIa3C7Ks/Qoh9hGqvbUM7XtDPlUcGbL8Gjd?=
+ =?iso-8859-1?Q?mvekTh49QAid+M5nAkyZSS7yOKXg+S2xMv45npUEeW/Sxsk9VerBB4Y24c?=
+ =?iso-8859-1?Q?L9zrT4Xogm0/Hh/8el8DxBKzl31d4WAAchWu/9y/VWrIQOrlysRer1rxUf?=
+ =?iso-8859-1?Q?W2bbmrPj4MuBa4gmYfPLo8HUt34ez7urGAJOhXw2sO4+6zunJNnz2kdtBY?=
+ =?iso-8859-1?Q?uifRdHZViLY3Yw26i7MReCUnK6paxTfCdi1YWcNR0zm15ec0D6RfNRPy1n?=
+ =?iso-8859-1?Q?6cyKsuVovTkNS9Oofe9KIhYaW3UTTEuWXpcuof+hhpet81mLXBj7/HpCKI?=
+ =?iso-8859-1?Q?UfzTSozaB9ypEhvCSLVykWbNOVG6W65DSUbmICP7TcF4Eby8W+tHMXPYgU?=
+ =?iso-8859-1?Q?UwvOTVOB7On80OLWs/tA5SoW09JRvb4u3GdMdSBJ8ArCzXg/sOjT0/k/2x?=
+ =?iso-8859-1?Q?BswRDIrNng1jSh7RGco5ZqwVny16K3F+4gh2czBKKvNyU+US/QZSnPgB91?=
+ =?iso-8859-1?Q?AnBpXdPvfUJe5DruciPeUttLQEvjwEv5ptHJCdJAJfBLlyA5sQKEzBSknz?=
+ =?iso-8859-1?Q?uoc+XeMDPGWh+4lSKx9wiYdpylmktlhoszWm8Q+KthU0Yri0o5zL?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-ID: <D214846FD8DD214DA9CB82E4E61A4CD7@eurprd03.prod.outlook.com>
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+X-Exchange-RoutingPolicyChecked:
+	LA7VBUXYzNW8bB7VnBklcZpwb7AwT7mKoBA5vB+JL5kYZi5tX5JnEOOaNVDq0vM8b7BEauWGNkMDTv2rpLseqq+PVPqyk6Cl6RLfiREYKCNIj9PFI0l9kYBRKEG0xgtLkCyGlrCbGfkMAEDw8C0vlS2jpI2Q0k9VlOi2JSI6cR3X2QVxBKpcsLieSeHHeWyk3lc+pFq1st12LeTlIdMttClJR0brVHBLSqvWN9DnJNib2rQJpwHdsTSlDOLjYn/t5nngeclH3BVO7P+d7oUb7V1jm5UyOzomeEaSDKgAfoO0ywB+uUMDsqGEK/zQr+DPUjJPEMfm95gD8k1C76iRkQ==
+X-OriginatorOrg: nozominetworks.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: VI0PR03MB11174.eurprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2859f364-2a52-44b8-4666-08dee1b778e7
+X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Jul 2026 14:52:05.6800
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 6f04d14b-0796-4b81-b7fd-779778e05341
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 8++E8F3poZdkGDPNDEw/EBvQzjmPDJWT2X6E0GGwGNKffUd/qKJGlef0F35kAs7s6FmWNWN+7MH0pzYLtGv2R5cpGYVWla+g2P33FunD0CSyjca77101QftHA5N5IYDg
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR03MB10692
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE0MDE1NCBTYWx0ZWRfXwwnJUheCdsvE
+ /oHSkfn5UrIJHmea4fyn4sknOqpITXjjpHUcKqcbwaw69hrGOh5rHMLscezPhMMJ3huWrEik0ho
+ 1qbXVEWPu8qAz7tZS42FQTzdCc1F6Jkrlj5wnn28D3JQ+hToAwEZ
+X-Authority-Analysis: v=2.4 cv=NdHWEWD4 c=1 sm=1 tr=0 ts=6a564d19 cx=c_pps
+ a=fQ5iMA6Ggk6c3vVxUsQcvQ==:117 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=8nJEP1OIZ-IA:10
+ a=RAioF0-LDSMA:10 a=LLPZWm0_0O8A:10 a=nBHfkqHukZMA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=7VS2YgxpqphC4cixgVMD:22 a=sCtaNhFbwZJXAHy4C4eS:22
+ a=GqK9ZfNKAAAA:8 a=C3ptz2KJ4X610lhNjkYA:9 a=wPNLvfGTeEIA:10
+ a=BFatPaWxP-aY11LYkd1a:22
+X-Proofpoint-ORIG-GUID: aaoawszS5YMYDogyUmdpN-KSeMSrHNcK
+X-Proofpoint-GUID: aaoawszS5YMYDogyUmdpN-KSeMSrHNcK
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE0MDE1NCBTYWx0ZWRfXx8cVgbvszAeF
+ 8mKWjbijeZL6KYy2sf93OUgcFX+YOyM6O+cqO/RUqolgIrS9xdc6tMZb50jotbB5EzRfSTk8029
+ IFqbK/mQ0W00kTYTnsI9bETYVk7/JQxVdox1UvFzJjLbWo9XYyfILiBJPW1NZBw7d2zA7Pw+e43
+ GIoM6/OesEFJevpy+Szc5jO2CM5zni+S53DFwg0hybxW/oC9ilNzemImRatdAszs4QCnN72tSnw
+ aaPZDMr8RKjrTpm9hzDzlG1Pj4Log6JdZO8tPUVNpoQ4qFGmOsm8SGiGs2Lh0C0vuaVgywQPle3
+ 2D5/PXoc9zHANYP4EPAAVknetXHthcWnAJfB2EuGNOY88+CEF1SGXCN8H4nqn4CtYqVaegKVf2I
+ n2wUIZD1ulz9eSAuWxq7Rw4ssS+3mh2G8casbNksZiCTB3G3Ea8SgdC1a843OoRBJbvUYBqYhW3
+ NeV2dxaO5YhN0tkDZJw==
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[nozominetworks.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[nozominetworks.com:s=selector2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-274335-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:vbabka@kernel.org,m:hao.li@linux.dev,m:harry@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_NONE(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-274337-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:linkinjeon@kernel.org,m:hyc.lee@gmail.com,m:linux-fsdevel@vger.kernel.org,m:stable@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:hyclee@gmail.com,s:lists@lfdr.de];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FREEMAIL_TO(0.00)[kernel.org,gmail.com];
+	FORGED_SENDER(0.00)[alexandro.calo@nozominetworks.com,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:mid,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,linux.dev:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[alexandro.calo@nozominetworks.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[nozominetworks.com:+];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 646DA756296
+X-Rspamd-Queue-Id: 9AFF6756206
 
+From: Alexandro Calo <alexandro.calo@nozominetworks.com>
+Date: Tue, 14 Jul 2026 16:13:51 +0200
+Subject: [PATCH] fs/ntfs: Fix min_len for compressed/sparse attributes in n=
+tfs_non_resident_attr_value_is_valid()
 
-The patch below does not apply to the 6.6-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Here the attribute validator computes a single min_len =3D 64 (as the end o=
+f
+initialized_size) for all non-resident attributes regardless of the flags=20
+field. This is correct for regular non-resident attributes but for sparse=20
+or compressed non-resident attributes the fixed header is 8 bytes longer,
+it includes a compressed_size field at bytes 64-71, min_len should be 72.=20
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Since the validator lets a sparse/compressed attr_record be less than the=20
+correct lenght, caller's accesses to compressed_size
+(e.g., ntfs_read_locked_inode() or ntfs_attr_update_mapping_pairs()) can
+extend past the attribute declared boundary.
+This can cause OOB reads or OOB writes past the MFT record buffer if the
+attribute is positioned near the end of the MFT record.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
-git checkout FETCH_HEAD
-git cherry-pick -x 648927ceb84021a25a0fbd5673740956f318d534
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026071403-afar-policy-60a2@gregkh' --subject-prefix 'PATCH 6.6.y' 'HEAD^..'
+The compressed_size field is accessed from:
+- ntfs_read_locked_inode()
+- ntfs_read_locked_attr_inode()
+- ntfs_attr_open()
+- ntfs_attr_update_mapping_pairs()
 
-Possible dependencies:
+ntfs_attr_make_non_resident() seems to be safe.
 
+Fixing this by raising min_len for sparse/compressed attributes in the
+validator.
 
+The OOB reads and the OOB writes require a crafted filesystem image, which
+is not in the kernel threat model, anyway, fixing memory errors would be
+nice to keep things secure.
 
-thanks,
+Signed-off-by: Alexandro Calo <alexandro.calo@nozominetworks.com>
+---
+ fs/ntfs/attrib.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-greg k-h
+diff --git a/fs/ntfs/attrib.c b/fs/ntfs/attrib.c
+index 239b7bcbaedf..3e21640a6534 100644
+--- a/fs/ntfs/attrib.c
++++ b/fs/ntfs/attrib.c
+@@ -697,6 +697,11 @@ static bool ntfs_non_resident_attr_value_is_valid(cons=
+t struct attr_record *a)
+ 	attr_len =3D le32_to_cpu(a->length);
+ 	min_len =3D offsetof(struct attr_record, data.non_resident.initialized_si=
+ze) +
+ 		  sizeof(a->data.non_resident.initialized_size);
++
++	/* Sparse and compressed attributes have the extra compressed_size field =
+*/
++	if (a->flags & (ATTR_IS_SPARSE | ATTR_COMPRESSION_MASK))
++		min_len +=3D sizeof(a->data.non_resident.compressed_size);
++
+ 	if (attr_len < min_len)
+ 		return false;
+=20
 
------------------- original commit in Linus's tree ------------------
-
-From 648927ceb84021a25a0fbd5673740956f318d534 Mon Sep 17 00:00:00 2001
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Date: Wed, 10 Jun 2026 17:40:03 +0200
-Subject: [PATCH] mm/slab: do not limit zeroing to orig_size when only red
- zoning is enabled
-
-When init (zeroing) on allocation is requested, for kmalloc() we
-generally have to zero the full object size even if a smaller size is
-requested, in order to provide krealloc()'s __GFP_ZERO guarantees.
-
-But if we track the requested size, krealloc() uses that information to
-do the right thing, so we can zero only the requested size. With red
-zoning also enabled, any extra size became part of the red zone, so it
-must not be zeroed and thus we must zero only the requested size.
-
-However the current check is imprecise, and will trigger also when only
-SLAB_RED_ZONE is enabled without SLAB_STORE_USER (which enables tracking
-the requested size). This means enabling red zoning alone can compromise
-krealloc()'s __GFP_ZERO contract.
-
-Fix this by using slub_debug_orig_size() instead, which is the exact
-check for whether the requested size is tracked. We don't need to care
-if red zoning is also enabled or not. Also update and expand the
-comment accordingly.
-
-Fixes: 9ce67395f5a0 ("mm/slub: only zero requested size of buffer for kzalloc when debug enabled")
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260610-slab_alloc_flags-v2-1-7190909db118@kernel.org
-Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
-Reviewed-by: Hao Li <hao.li@linux.dev>
-Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-
-diff --git a/mm/slub.c b/mm/slub.c
-index ff83345d7f95..e9f827a24a1e 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -4574,15 +4574,17 @@ bool slab_post_alloc_hook(struct kmem_cache *s, struct list_lru *lru,
- 	gfp_t init_flags = flags & gfp_allowed_mask;
- 
- 	/*
--	 * For kmalloc object, the allocated memory size(object_size) is likely
--	 * larger than the requested size(orig_size). If redzone check is
--	 * enabled for the extra space, don't zero it, as it will be redzoned
--	 * soon. The redzone operation for this extra space could be seen as a
--	 * replacement of current poisoning under certain debug option, and
--	 * won't break other sanity checks.
-+	 * For kmalloc object, the allocated size (object_size) can be larger
-+	 * than the requested size (orig_size). We however need to zero the
-+	 * whole object_size to handle possible later krealloc() with
-+	 *__GFP_ZERO properly.
-+	 *
-+	 * But if we keep track of the requested size, krealloc() uses that
-+	 * information. Additionally if red zoning is enabled, the extra space
-+	 * is also red zone, so we should not overwrite it. So limit zeroing to
-+	 * orig_size if we track it.
- 	 */
--	if (kmem_cache_debug_flags(s, SLAB_STORE_USER | SLAB_RED_ZONE) &&
--	    (s->flags & SLAB_KMALLOC))
-+	if (slub_debug_orig_size(s))
- 		zero_size = orig_size;
- 
- 	/*
+base-commit: 3b029c035b34bbc693405ddf759f0e9b920c27f1
+--=20
+2.47.3
 
 
