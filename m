@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-274281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274284-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id MXXrHelLVmoN3AAAu9opvQ
-	(envelope-from <stable+bounces-274281-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 16:47:05 +0200
+	id 7oLtJORKVmrd2wAAu9opvQ
+	(envelope-from <stable+bounces-274284-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 16:42:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E140475606D
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 16:47:04 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32F3F755FD1
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 16:42:44 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Ca6LbAWL;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274281-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274281-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="z/ypfz6R";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274284-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-274284-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 862CE308475D
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 14:39:25 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 814FF304E16A
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 14:39:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE27A3D9DD7;
-	Tue, 14 Jul 2026 14:39:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F33CC2F8EA6;
+	Tue, 14 Jul 2026 14:39:30 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A51E2F8EA6
-	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 14:39:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 874B42D3727
+	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 14:39:29 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784039962; cv=none; b=h0ZZlSznaXpEMx3iQCsECxZCiBDrM1QZ13gkY492zrFRh6Q6grhx/tlgEUQi7Uv1IrlTa1rxUekKgQFwMkbUYPO1CLlmYlp0DsvKM4vT019QMvIhJyKN+0YGj3i9MnXvyiFlzb+ADUJ0W2ERcqwZxjHL1XjWrk9OkeiJXZmnmbA=
+	t=1784039970; cv=none; b=bhc2YmmMOXpF8I58hISck6Y2eAafEX2HSkrqNRSiWZRECyfrDIicIui9ebEevmaM9JLLP287tXK5/pYUFvCdy8EE714cnhGTcCcEQGaOZBG7kAA82RWLogd5tBnpcEvSED+gUQAJ0d7K7Jw34flNA8hOtqTlO0ceUguAf5r6My8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784039962; c=relaxed/simple;
-	bh=eObLc9E458BxyT/rB2KVM9o+EWZ6s++1kvbcMwbSU/k=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=b5DqTYsiri4H5mwRGyRCYCRhMH+3FiVaURRDSu81zqoptThs7VmtVFwR0+cgNqkxfnH1VRn6cks5M3kc/NLxzFS987S5Su32Tu605N+ufoKxBklyKgeuqIS3VbWIV380lOvtCAoRA9w2l/SxO2JyyH78QFX4AOIFU3jsvqlEid0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ca6LbAWL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA2F31F000E9;
-	Tue, 14 Jul 2026 14:39:20 +0000 (UTC)
+	s=arc-20240116; t=1784039970; c=relaxed/simple;
+	bh=yW4updG06StXFeYMpHJE7WdiM5CxPgBeG4cysA7TZiI=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=kx89EAxJ9UBLDGvrC6RvcJ1JbutuFefAumFQpOY3Eu1QIBT9o1efqFEIWF0fiXYRJlKLzDbzb68VriQJ7IfXTueEha/Y8VVATgbL1gAk4QELnItUZSV34yt6HzfqwTMF6SgMeAststbtpq8+xaqNOAcnGQ2w00kdxaSfrwH2SMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z/ypfz6R; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6B3F1F000E9;
+	Tue, 14 Jul 2026 14:39:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1784039961;
-	bh=hPNM+B90T6cnGykpIYJQFWQnhYA/XPKiPdPFFc5wp40=;
+	s=korg; t=1784039969;
+	bh=l1OhxQfFhjY2L2W03tnlVJDQRCJHP9iew80X/REE990=;
 	h=Subject:To:Cc:From:Date;
-	b=Ca6LbAWLThOwqgdnWnm0Qzopb6FybXGhI3IA1mAdRcdullDeuigsR+w6VGEM61gGK
-	 GCFdHfYbGKIY7ZIM+ZM3FwUMUQ9EMS/IfExbIIExG1tzEEzlWF+uzmAehlwFTVlUbu
-	 /L/r65iGj4S5aAYHn8OMtmRljfFdchIPZ5bV7fBg=
-Subject: FAILED: patch "[PATCH] ksmbd: use opener credentials for FSCTL mutations" failed to apply to 6.1-stable tree
+	b=z/ypfz6RYBegzRygxlEPFXx5367pHw7uYMjEe1+zj/3kNVK1lW0RkFYvpE9dZzIm1
+	 iaNrOIAlvi/Fyxmr0XKW0K0Ouw5zIbQ3JcJWR/HGUNeZJ4I2RXHF3ebwO/houjIIfx
+	 6Ter3yCA5nUNtnJmSg842npBuA75BDMd6KRMvA4U=
+Subject: FAILED: patch "[PATCH] ksmbd: track the connection owning a byte-range lock" failed to apply to 6.18-stable tree
 To: linkinjeon@kernel.org,musaab.khan@protonmail.com,stfrench@microsoft.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 14 Jul 2026 16:39:04 +0200
-Message-ID: <2026071404-shirt-hesitant-d526@gregkh>
+Date: Tue, 14 Jul 2026 16:39:13 +0200
+Message-ID: <2026071413-afford-upstairs-ee1c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,16 +63,16 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-274281-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-274284-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:linkinjeon@kernel.org,m:musaab.khan@protonmail.com,m:stfrench@microsoft.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:linkinjeon@kernel.org,m:musaab.khan@protonmail.com,m:stfrench@microsoft.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FREEMAIL_TO(0.00)[kernel.org,protonmail.com,microsoft.com];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -89,25 +89,25 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	TAGGED_RCPT(0.00)[stable];
 	FROM_NO_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:from_mime,linuxfoundation.org:dkim,gregkh:mid,vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,gregkh:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E140475606D
+X-Rspamd-Queue-Id: 32F3F755FD1
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.18-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
 git checkout FETCH_HEAD
-git cherry-pick -x c6394bcaf254c5baf9aff43376020be5db6d3316
+git cherry-pick -x c1016dd1d8b2bcd1158bbaabe94a31bb7e7431fb
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026071404-shirt-hesitant-d526@gregkh' --subject-prefix 'PATCH 6.1.y' 'HEAD^..'
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026071413-afford-upstairs-ee1c@gregkh' --subject-prefix 'PATCH 6.18.y' 'HEAD^..'
 
 Possible dependencies:
 
@@ -119,107 +119,135 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From c6394bcaf254c5baf9aff43376020be5db6d3316 Mon Sep 17 00:00:00 2001
+From c1016dd1d8b2bcd1158bbaabe94a31bb7e7431fb Mon Sep 17 00:00:00 2001
 From: Namjae Jeon <linkinjeon@kernel.org>
-Date: Sat, 13 Jun 2026 22:00:04 +0900
-Subject: [PATCH] ksmbd: use opener credentials for FSCTL mutations
+Date: Mon, 15 Jun 2026 10:00:00 +0900
+Subject: [PATCH] ksmbd: track the connection owning a byte-range lock
 
-SET_SPARSE, SET_ZERO_DATA and SET_COMPRESSION operate on an open SMB
-handle but call VFS xattr, fallocate or fileattr helpers with the current
-ksmbd worker credentials. Those helpers can revalidate inode permissions,
-ownership and LSM policy independently of the SMB handle access mask.
+SMB2_LOCK adds each granted byte-range lock to both the file lock list
+and the lock list of the connection which handled the request.  The
+final close and durable handle paths, however, remove the connection
+list entry while holding fp->conn->llist_lock.
 
-Run each operation with the credentials captured in the target file when
-the handle was opened. Keep credential handling local to these single-file
-FSCTLs rather than applying session credentials to the complete IOCTL
-handler, which also contains handle-less and multi-handle operations.
+With SMB3 multichannel, the connection handling the LOCK request can be
+different from the connection which opened the file.  The entry can
+therefore be removed under a different spinlock from the one protecting
+the list it belongs to.  A concurrent traversal can then access freed
+struct ksmbd_lock and struct file_lock objects.
 
+Record the connection owning each lock's clist entry and hold a
+reference to it while the entry is linked.  Use that connection and its
+llist_lock for unlock, rollback, close, and durable preserve.  Durable
+reconnect assigns the new connection as the owner when publishing the
+locks again.
+
+Fixes: f5a544e3bab7 ("ksmbd: add support for SMB3 multichannel")
 Cc: stable@vger.kernel.org
 Reported-by: Musaab Khan <musaab.khan@protonmail.com>
 Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 
 diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index fcb1bcd5de95..c1c6c1a64f60 100644
+index c1c6c1a64f60..ba24040d05eb 100644
 --- a/fs/smb/server/smb2pdu.c
 +++ b/fs/smb/server/smb2pdu.c
-@@ -8387,6 +8387,7 @@ static inline int fsctl_set_sparse(struct ksmbd_work *work, u64 id,
- 	if (fp->f_ci->m_fattr != old_fattr &&
- 	    test_share_config_flag(work->tcon->share_conf,
- 				   KSMBD_SHARE_FLAG_STORE_DOS_ATTRS)) {
-+		const struct cred *saved_cred;
- 		struct xattr_dos_attrib da;
+@@ -7774,9 +7774,11 @@ int smb2_lock(struct ksmbd_work *work)
+ 						nolock = 0;
+ 						list_del(&cmp_lock->flist);
+ 						list_del(&cmp_lock->clist);
++						cmp_lock->conn = NULL;
+ 						spin_unlock(&conn->llist_lock);
+ 						up_read(&conn_list_lock);
  
- 		ret = ksmbd_vfs_get_dos_attrib_xattr(idmap,
-@@ -8395,9 +8396,11 @@ static inline int fsctl_set_sparse(struct ksmbd_work *work, u64 id,
- 			goto out;
++						ksmbd_conn_put(conn);
+ 						locks_free_lock(cmp_lock->fl);
+ 						kfree(cmp_lock);
+ 						goto out_check_cl;
+@@ -7911,6 +7913,7 @@ int smb2_lock(struct ksmbd_work *work)
+ 				goto out2;
+ 			} else if (!rc) {
+ 				list_add(&smb_lock->llist, &rollback_list);
++				smb_lock->conn = ksmbd_conn_get(work->conn);
+ 				spin_lock(&work->conn->llist_lock);
+ 				list_add_tail(&smb_lock->clist,
+ 					      &work->conn->lock_list);
+@@ -7965,11 +7968,14 @@ int smb2_lock(struct ksmbd_work *work)
+ 		}
  
- 		da.attr = le32_to_cpu(fp->f_ci->m_fattr);
-+		saved_cred = override_creds(fp->filp->f_cred);
- 		ret = ksmbd_vfs_set_dos_attrib_xattr(idmap,
- 						     &fp->filp->f_path,
- 						     &da, true);
-+		revert_creds(saved_cred);
- 		if (ret)
- 			fp->f_ci->m_fattr = old_fattr;
+ 		list_del(&smb_lock->llist);
+-		spin_lock(&work->conn->llist_lock);
++		conn = smb_lock->conn;
++		spin_lock(&conn->llist_lock);
+ 		if (!list_empty(&smb_lock->flist))
+ 			list_del(&smb_lock->flist);
+ 		list_del(&smb_lock->clist);
+-		spin_unlock(&work->conn->llist_lock);
++		smb_lock->conn = NULL;
++		spin_unlock(&conn->llist_lock);
++		ksmbd_conn_put(conn);
+ 
+ 		locks_free_lock(smb_lock->fl);
+ 		if (rlock)
+diff --git a/fs/smb/server/vfs_cache.c b/fs/smb/server/vfs_cache.c
+index 8c556e46cc10..39c56942ae44 100644
+--- a/fs/smb/server/vfs_cache.c
++++ b/fs/smb/server/vfs_cache.c
+@@ -484,10 +484,14 @@ static void __ksmbd_close_fd(struct ksmbd_file_table *ft, struct ksmbd_file *fp)
+ 	 * there are not accesses to fp->lock_list.
+ 	 */
+ 	list_for_each_entry_safe(smb_lock, tmp_lock, &fp->lock_list, flist) {
+-		if (!list_empty(&smb_lock->clist) && fp->conn) {
+-			spin_lock(&fp->conn->llist_lock);
+-			list_del(&smb_lock->clist);
+-			spin_unlock(&fp->conn->llist_lock);
++		struct ksmbd_conn *conn = smb_lock->conn;
++
++		if (conn) {
++			spin_lock(&conn->llist_lock);
++			list_del_init(&smb_lock->clist);
++			smb_lock->conn = NULL;
++			spin_unlock(&conn->llist_lock);
++			ksmbd_conn_put(conn);
+ 		}
+ 
+ 		list_del(&smb_lock->flist);
+@@ -1303,9 +1307,15 @@ static bool session_fd_check(struct ksmbd_tree_connect *tcon,
+ 	up_write(&ci->m_lock);
+ 
+ 	list_for_each_entry_safe(smb_lock, tmp_lock, &fp->lock_list, flist) {
+-		spin_lock(&conn->llist_lock);
++		struct ksmbd_conn *lock_conn = smb_lock->conn;
++
++		if (!lock_conn)
++			continue;
++		spin_lock(&lock_conn->llist_lock);
+ 		list_del_init(&smb_lock->clist);
+-		spin_unlock(&conn->llist_lock);
++		smb_lock->conn = NULL;
++		spin_unlock(&lock_conn->llist_lock);
++		ksmbd_conn_put(lock_conn);
  	}
-diff --git a/fs/smb/server/vfs.c b/fs/smb/server/vfs.c
-index 04a4bd0f492b..fe376453a519 100644
---- a/fs/smb/server/vfs.c
-+++ b/fs/smb/server/vfs.c
-@@ -918,15 +918,21 @@ void ksmbd_vfs_set_fadvise(struct file *filp, __le32 option)
- int ksmbd_vfs_zero_data(struct ksmbd_work *work, struct ksmbd_file *fp,
- 			loff_t off, loff_t len)
- {
--	smb_break_all_levII_oplock(work, fp, 1);
--	if (fp->f_ci->m_fattr & FILE_ATTRIBUTE_SPARSE_FILE_LE)
--		return vfs_fallocate(fp->filp,
--				     FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE,
--				     off, len);
-+	const struct cred *saved_cred;
-+	int err;
  
--	return vfs_fallocate(fp->filp,
--			     FALLOC_FL_ZERO_RANGE | FALLOC_FL_KEEP_SIZE,
--			     off, len);
-+	smb_break_all_levII_oplock(work, fp, 1);
-+	saved_cred = override_creds(fp->filp->f_cred);
-+	if (fp->f_ci->m_fattr & FILE_ATTRIBUTE_SPARSE_FILE_LE)
-+		err = vfs_fallocate(fp->filp,
-+				    FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE,
-+				    off, len);
-+	else
-+		err = vfs_fallocate(fp->filp,
-+				    FALLOC_FL_ZERO_RANGE | FALLOC_FL_KEEP_SIZE,
-+				    off, len);
-+	revert_creds(saved_cred);
-+	return err;
- }
- 
- int ksmbd_vfs_fqar_lseek(struct ksmbd_file *fp, loff_t start, loff_t length,
-@@ -1935,6 +1941,7 @@ int ksmbd_vfs_get_compression(struct ksmbd_file *fp, u16 *fmt)
- 
- int ksmbd_vfs_set_compression(struct ksmbd_work *work, struct ksmbd_file *fp, u16 fmt)
- {
-+	const struct cred *saved_cred = NULL;
- 	struct file_kattr fa;
- 	struct dentry *dentry = fp->filp->f_path.dentry;
- 	struct mnt_idmap *idmap = file_mnt_idmap(fp->filp);
-@@ -1947,6 +1954,7 @@ int ksmbd_vfs_set_compression(struct ksmbd_work *work, struct ksmbd_file *fp, u1
- 		goto out;
+ 	fp->conn = NULL;
+@@ -1435,6 +1445,7 @@ int ksmbd_reopen_durable_fd(struct ksmbd_work *work, struct ksmbd_file *fp)
  	}
  
-+	saved_cred = override_creds(fp->filp->f_cred);
- 	rc = vfs_fileattr_get(dentry, &fa);
- 	if (rc)
- 		goto out;
-@@ -2000,5 +2008,7 @@ int ksmbd_vfs_set_compression(struct ksmbd_work *work, struct ksmbd_file *fp, u1
- 	}
+ 	list_for_each_entry(smb_lock, &fp->lock_list, flist) {
++		smb_lock->conn = ksmbd_conn_get(conn);
+ 		spin_lock(&conn->llist_lock);
+ 		list_add_tail(&smb_lock->clist, &conn->lock_list);
+ 		spin_unlock(&conn->llist_lock);
+diff --git a/fs/smb/server/vfs_cache.h b/fs/smb/server/vfs_cache.h
+index 7d547e1a74f7..a3a9fda6de91 100644
+--- a/fs/smb/server/vfs_cache.h
++++ b/fs/smb/server/vfs_cache.h
+@@ -32,6 +32,7 @@ struct ksmbd_session;
  
- out:
-+	if (saved_cred)
-+		revert_creds(saved_cred);
- 	return rc;
- }
+ struct ksmbd_lock {
+ 	struct file_lock *fl;
++	struct ksmbd_conn *conn;
+ 	struct list_head clist;
+ 	struct list_head flist;
+ 	struct list_head llist;
 
 
