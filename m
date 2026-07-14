@@ -1,140 +1,321 @@
-Return-Path: <stable+bounces-274368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274370-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 5p6NJRxYVmrf3gAAu9opvQ
-	(envelope-from <stable+bounces-274368-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 17:39:08 +0200
+	id Jj2IB1NYVmrv3gAAu9opvQ
+	(envelope-from <stable+bounces-274370-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 17:40:03 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D549975682F
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 17:39:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61D0E756857
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 17:40:02 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jEdaQUai;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274368-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274368-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=GcCVT0kz;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274370-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274370-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 396BF304C13E
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 15:39:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 88DE230DF00D
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 15:39:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DD03444716;
-	Tue, 14 Jul 2026 15:39:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40EDF35E1AC;
+	Tue, 14 Jul 2026 15:39:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1497E2E88A4;
-	Tue, 14 Jul 2026 15:39:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81D88448381
+	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 15:39:10 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784043542; cv=none; b=Ovxew8S2tvCh553/RJs0RsNzSIgvmYAFKo2S5ywLdun0vY9BouTafY+2GkLDROi2EVr+LpeiYfLBzQRlCrmd08VSR9P8J4reo3JLIrGfCrSzc0FlheHK461xVsmNAoChD4hx5cDorYblwiY/x7fyIhnZacogEGLjY9R+yc/c4Po=
+	t=1784043552; cv=none; b=ZpgnA9E7SZbRETQbceCVwxU33rym6LJeJ/nenOZ6L1GRL+8GZq7ZJLXpayz5JpGIWJJhApOFMcjl6QlC9CqQrG96GYlzXz6C9TX4SAP1C6iPmGsmlNi0iNRGHRPXVvn07lnejzZH217v4qqhswrDSw06diBeGhLAzlmCHd9bM4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784043542; c=relaxed/simple;
-	bh=QY6hsy/SsrM9r56OC5o+WO2wnq7DShSL8oUJlC+2Bo4=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=OdUX+Qr4esUdOEhDYvcJIsY8A4ra0YpZz9XformyX7/1BfLQXlzGEQgYEnMdJ6hf9NouLaQuYlT8NyrC7kGoikPc/QckQw4kndNSgKzRrKSpVccTHkbR9OJcIcIJVYsMygDIYOdt+mSkPT/OLNW2oYkY/CxIQpWaqmDh70boCNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jEdaQUai; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A8B11F000E9;
-	Tue, 14 Jul 2026 15:39:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784043541;
-	bh=QY6hsy/SsrM9r56OC5o+WO2wnq7DShSL8oUJlC+2Bo4=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=jEdaQUai5QSrcObq3VaAGv/Imc1PPz26Bta9L4xIqRW3BvltJP9pUDvFRrkY7ynqo
-	 GHg81WGKvMPoYfIfWLXHPFNfzX5zj5ZAELjf0tUgjvpMOgAlAymNlf0DsNIdqBdpBO
-	 BIhuA8cLr9mKZLxqzI+xF1hhaJc3wW+I7B/RV3tnNhrN2POsDV16gZ/BL1Mr9c+rJU
-	 Sltz+GiwSvPxMI/Kqp+ZxyDk2yDbIcPA+I6cTJ8ar0Q2LI4HjVuI/A+wKy3g0CYJnC
-	 bO4zvRAWrsw21+5sxxUqo5OOCaBnk+CkJNOYK7zy5RbRjLRKNhSKpDg+dUFbXLTSHB
-	 eoJyIWG4haIkA==
-Message-ID: <15b4d5a56e560d8b209f5ba7baa85473081e0743.camel@kernel.org>
-Subject: Re: [PATCH] pnfs/blocklayout: reject zero chunk_size and
- volumes_count in GETDEVICEINFO
-From: Trond Myklebust <trondmy@kernel.org>
-To: Michael Bommarito <michael.bommarito@gmail.com>
-Cc: Anna Schumaker <anna@kernel.org>, linux-nfs@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Date: Tue, 14 Jul 2026 11:38:59 -0400
-In-Reply-To: <CAJJ9bXx0HXLRZoDRBhMytZmifwG+V9fi3LL9Sj49DYoeh7-Ajw@mail.gmail.com>
-References: <20260711150547.2912006-1-michael.bommarito@gmail.com>
-	 <f5705b41fd63260c5b84343531f139fa72dfa57c.camel@kernel.org>
-	 <CAJJ9bXx0HXLRZoDRBhMytZmifwG+V9fi3LL9Sj49DYoeh7-Ajw@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
+	s=arc-20240116; t=1784043552; c=relaxed/simple;
+	bh=2p32/JOiOUGkzMruOJtrpMcYlWH5TB77HdwhMlQYP5g=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=C21I22Ay3PTE6AnJtm0rrUlrKptrrNpAuW+vbKF2vw2aLdRzvRlrSUiIRpP1zHStOTxbQ9Tvy9yDOvCAbD5vIs9OVB88yXFj6lFL5QzJUOc++GPKq/59TZKn8Ooa4XAVfXCNZI70ZxcieiBdGFLkDk7Vs5qiDKte0nFKfhJ0zRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GcCVT0kz; arc=none smtp.client-ip=209.85.210.41
+Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-7eb61bbeb25so638069a34.1
+        for <stable@vger.kernel.org>; Tue, 14 Jul 2026 08:39:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784043549; x=1784648349; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=h2jZPg8BmRJ0mbFQa7ElFHkaNBrmZCQEMsa0xC0hHN8=;
+        b=GcCVT0kzYiQOrqrtVMyNzTe9FRn8eXNMmPigxErccptVbBohoP8WZt01cd+GmEbGfR
+         nN2RvqBjYhkRRnN9tf/mY7dGgh6l4GwGiQc5d4l32id3DgdJKPc9h9YZQLGajjGrK4GT
+         ONZTRGpUPU63ow4/VmXijus1pXAZYjNQF67s1QllfPfzIH+XGf/Oir5OCuHvBxFLSYE8
+         eIaDggUt6bz0Ujt4XDi+AdOT+koNePhMaMnNGUuLwWol41LltE1haqQx2OJaPeOaqjCf
+         g6hrgZNo7rSta4LpL0ePACQnQA4lJFD80DA5WJkxWkeEitcJHXOHRH6rVMZwpK2tiGlD
+         9+9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784043549; x=1784648349;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=h2jZPg8BmRJ0mbFQa7ElFHkaNBrmZCQEMsa0xC0hHN8=;
+        b=H/8hpkL125m7ESNU7gxYFWmKu7ayIf96xZmhyqBY3nRRdVO2aqAWZvEzqQNMY5oYvG
+         OP3ZBMFGq7Ba6OtP7xbn7bV8pvu98TabVJlkQX/t2r/FHKN6dwRyJSw2Pkknf8LuEHoJ
+         5nRhWiyKnvXipYMYXRhTPVZcfeiFurIralbJEhhOaWtqA99zR6BPOIQaYTEsJ9/3KEj5
+         unPOLdVCc6JVCpFfevFNZ0giOTq/ooOeuA7Mw4Vxt8uLbfQ2zey4o/n3KKASDBhgaZmv
+         2jcGnqUNSYRhZjT2gumJvZDsUJ6O7sBzQuWqroJI1o9c02+EpiOJtMLAMqbJdUExcVmL
+         UqTg==
+X-Forwarded-Encrypted: i=1; AFNElJ+1DKjnheQ3Ms4fFdXRTJmU0tjztZ2otAsFBCBo7L9UC2+Q5GU5Xb/wU03DGenomb89jmco/A0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxLGwunGtY+cb1F2xZXcoUY0FJm7ycMjVdwAaElnNBMNJfcWF68
+	MEBOsiO/B4MAoXaCfNvMrczCyGw9RmitkMHr7UobOVL89X9jb9mpa9/v
+X-Gm-Gg: AfdE7cnDvLZg8zOx0yyv2yjRbFhp1Oo8NuFFDu2WOqO35XLY+z+c9ytxW7tWRLk4PNq
+	NVOJNwhOcWB78CNO4MXvBupi8I1ObpW9OgXx9OAc5kWzI1pbC1AlRRL0Qp2SwixiRoKEm3lb0Jw
+	Ie9YqmGo6VHb1xFUV9HXY4eURd9Ek6a7ELaz6RNq7Fz/Bytshf+kzZVaIxnHib6u/pIWnTWPbl6
+	Vb8YPeqBS2enHbnvIa6an7pOlLs5eP+46Qy6gKOHfzfJm8b5n2XoJ4qWf2zw9TOfHz1ufg0TZgX
+	OTyB5gE51PONw9HG63EfmbLzPCGDlmf3k+fByWtYsOBCciKVR6GXJCY6ZrkQaiGTrIQWUBTQA8j
+	ehGguV+7uf3dViASWWE1ItXmp5orogLfeN3Y2mD8EnjbBCtEfk7qxjt6qQmpJ2VcKfDGPEBTKwL
+	N83ION3ywxtXxFg47sVIEpI4rp/qODbnzwaLlCEzHdZBg=
+X-Received: by 2002:a05:6830:6ae6:b0:7e6:e385:4c1e with SMTP id 46e09a7af769-7ec096027c1mr8121305a34.4.1784043549120;
+        Tue, 14 Jul 2026 08:39:09 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:5f::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7ebcb3f2b86sm15347657a34.26.2026.07.14.08.39.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Jul 2026 08:39:08 -0700 (PDT)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Peter Xu <peterx@redhat.com>,
+	Wupeng Ma <mawupeng1@huawei.com>,
+	fvdl@google.com,
+	rientjes@google.com,
+	jthoughton@google.com,
+	vannapurve@google.com,
+	erdemaktas@google.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	David Carlier <devnexen@gmail.com>,
+	Zhao Li <enderaoelyther@gmail.com>,
+	lance.yang@linux.dev
+Subject: Re: [PATCH v2 2/5] mm: hugetlb: Fix subpool usage leak on allocation failure
+Date: Tue, 14 Jul 2026 08:39:06 -0700
+Message-ID: <20260714153906.772019-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <CAEvNRgGN0HSJ2iLSDD2haSKOxifa-uhkO9Hwossh0+Q_d9fzOw@mail.gmail.com>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-5.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:michael.bommarito@gmail.com,m:anna@kernel.org,m:linux-nfs@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[trondmy@kernel.org,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-274370-lists,stable=lfdr.de];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:ackerleytng@google.com,m:devnull+ackerleytng.google.com@kernel.org,m:muchun.song@linux.dev,m:osalvador@suse.de,m:david@kernel.org,m:shakeel.butt@linux.dev,m:nphamcs@gmail.com,m:akpm@linux-foundation.org,m:peterx@redhat.com,m:mawupeng1@huawei.com,m:fvdl@google.com,m:rientjes@google.com,m:jthoughton@google.com,m:vannapurve@google.com,m:erdemaktas@google.com,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:devnexen@gmail.com,m:enderaoelyther@gmail.com,m:lance.yang@linux.dev,m:devnull@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[joshuahahnjy@gmail.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[kernel.org,linux.dev,suse.de,gmail.com,linux-foundation.org,redhat.com,huawei.com,google.com,kvack.org,vger.kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-274368-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[trondmy@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[joshuahahnjy@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,hammerspace.com:email]
+	TAGGED_RCPT(0.00)[stable,ackerleytng.google.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sashiko.dev:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D549975682F
+X-Rspamd-Queue-Id: 61D0E756857
 
-On Tue, 2026-07-14 at 10:41 -0400, Michael Bommarito wrote:
-> On Tue, Jul 14, 2026 at 10:37=E2=80=AFAM Trond Myklebust <trondmy@kernel.=
-org>
-> wrote:
-> > NACK to this, and all further patches with the words "malicious
-> > server"
-> > as their justification. It's time to stop this incessant flood of
-> > worthless AI slop...
->=20
-> Sure, I hear you.=C2=A0 I'll make a note to skip your subsystem going
-> forward.
->=20
-> FWIW though, these are often exacty the networks where ARP spoofing
-> still works and malicious server can be read to mean "anyone who can
-> pretend to be a server/peer" for the relevant packet/session.
->=20
-> Thanks,
-> Mike
+On Thu, 9 Jul 2026 15:15:50 -0700 Ackerley Tng <ackerleytng@google.com> wrote:
 
-Then seeing this is a great opportunity to discover that you have an
-insecure network, and that you should have been using either krb5i,
-krb5p, TLS or secure VLAN technology to protect your on-the-wire
-message protocols against precisely this kind of man-in-the-middle
-attack.
+> Ackerley Tng <ackerleytng@google.com> writes:
+> 
+> > Joshua Hahn <joshua.hahnjy@gmail.com> writes:
+> >
+> >> Hi Ackerley,
+> >>
+> >> Thank you for this series. I really wanted to work on hugeTLB accounting
+> >> fixes but never got the time to get to it. I'm very grateful that you
+> >> are taking a look!!
+> >>
+> >>> From: Ackerley Tng <ackerleytng@google.com>
+> >>>
+> >>> When alloc_hugetlb_folio() fails early (e.g. buddy allocation failure or
+> >>> hugetlb cgroup charging failure) and gbl_chg == 1 (meaning a reservation
+> >>> was not used, but a global page was allocated instead), the subpool page
+> >>> acquired via hugepage_subpool_get_pages() must still be returned.
+> >>>
+> >>> Currently, the error path out_subpool_put: only calls
+> >>> hugepage_subpool_put_pages() if !gbl_chg is true. If gbl_chg is 1, it
+> >>> skips it, permanently leaking the subpool's used_hpages counter.
+> >>>
+> >>> With the earlier patch to always track used_hpages in the subpool, always
+> >>> call hugepage_subpool_put_pages() if map_chg is true to consistently
+> >>> restore the page to the subpool. Only call hugetlb_acct_memory() to adjust
+> >>> global reservations if gbl_chg == 0 since gbl_chg == 0 indicates a
+> >>> subpool (and global) reservation was used.
+> >>
+> >> So I think that I've seen that this part of the accounting specifically
+> >> is a bit suspicious. There have been two attempts in the past to fix
+> >> this area [1] [2]. I think functionally they are quite similar to this
+> >> fix, they just open-code the contents of the put_pages function inside
+> >> the condition. I've Cc-ed the authors of those two patches in case
+> >> they wanted to chime in.
+> >>
+> >
+> > Thanks for connecting us! I didn't realize this was already being worked
+> > on. Also adding Lance, who commented at [3].
+> >
+> >> I reference these fixes because I think they handle the minimum
+> >> subpage case a bit differently. To be honest, I recall reading those
+> >> fixes a while back and getting a bit confused on what exactly happens
+> >> when the page is absorbed to fulfill the minimum size...
+> >>
+> >> It does seem like Sashiko also notes this as a possible concern.
+> >> WDYT? Does your reproducer for this issue also work when a minimum
+> >> size is set (let's say, to 1?)
+> >>
+> >
+> > Let me look into this more!
+> >
 
-Again, though, a savvy man-in-the-middle won't be trying to cause
-clients to crash when they have a golden opportunity to manipulate the
-stored data instead.
+Hi Ackerley, sorry that the reply took a while : -(
 
---=20
-Trond Myklebust
-Linux NFS client maintainer, Hammerspace
-trondmy@kernel.org, trond.myklebust@hammerspace.com
+> I was looking at Sashiko's comment [4] and Sashiko is right that there
+> could be a race. Specifically, at the time of
+> hugepage_subpool_get_page(), I might be using a reservation, hence
+> returning 1 (thread A), but at the time of hugepage_subpool_put_page(),
+> some other thread (B) might already have restored a reservation to the
+> subpool.
+> 
+> With used_hpages tracking within the subpool, we can rely on the return value of
+> hugepage_subpool_put_page():
+> 
+> + Return 1: Reservation should be returned elsewhere (pool has enough pages to
+>   satisfy minimum, or doesn't track minimums)
+> + Return 0: Reservation does not need to be returned elsewhere
+> 
+> But calling hugepage_subpool_put_pages(1) doesn't say anything about whether the
+> 1 (in this case, 1 doesn't always represent a page, since specifically on the
+> error cases, the page wasn't allocated) consumed a reservation or not.
+> 
+> + gbl_chg == 0 means a reservation was used, and
+> + gbl_chg == 1 means a reservation *should be used*, but
+> + gbl_chg == 1 does not necessarily mean a reservation should be used, since
+>   h->resv_huge_pages may not have been decremented yet. (See goto
+>   out_subpool_put and goto out_uncharge_cgroup_reservation in
+>   alloc_hugetlb_folio())
+
+Yeah... this kind of tripped me up.
+
+> So, we need to track if h->resv_huge_pages-- happened (with some local variable
+> like reservation_consumed)
+> 
+> | reservation_consumed | hugepage_subpool_put_pages() return value |
+> h->resv_huge_pages++ |
+> |----------------------|-------------------------------------------|----------------------|
+> | 1                    | 1                                         |
+> Yes                  |
+> | 1                    | 0                                         |
+> No                   |
+> | 0                    | 1                                         |
+> No                   |
+> | 0                    | 0                                         |
+> No                   |
+> 
+> TLDR: replace !gbl_chg with reservation_consumed?
+
+This seems like quite a reasonable approach. It's new information that
+we can't derive from the existing flags we have.
+
+>     <<== reservation_consumed = true
+> 
+> 	if (!gbl_chg) {
+> 		folio_set_hugetlb_restore_reserve(folio);
+> 		h->resv_huge_pages--;
+>         <<== reservation_consumed = true
+> 	}
+> 
+> 	if (map_chg) {
+> 		long gbl_reserve = hugepage_subpool_put_pages(spool, 1);
+> 
+> 		if (!gbl_chg)  <<== this should be reservation_consumed
+> 			hugetlb_acct_memory(h, -gbl_reserve);
+> 	}
+> 
+> I believe this depends on always tracking used_hpages in subpools, in order to
+> know for sure, just based on a number (with no page information), if the page is
+> supposed to use a reservation.
+> 
+> 
+> Perhaps related: does it make sense to flipping the reservation tracking
+> to instead track an "available" page count? This is basically the
+> mathematical opposite of rsvd_huge_pages, as in,
+> 
+>   available_pages = free_huge_pages - resv_huge_pages
+> 
+> This way, there's no need to synchronize the number of reserved pages in
+> both the subpool and global hstate.
+> 
+> It's quite confusing now, that reserved_pages-- can be either "used a
+> reservation" or "unreserve". If we track the opposite, available_pages--
+> will definitely mean the page's availability is removed from the global
+> hstate and transferred to the subpool, and allocating page doesn't
+> involve updating both the subpool and hstate.
+
+I think I like the semantic change, since it does make the code a lot
+more obvious on why and where we are making the accounting changes.
+One fear that I have is that this churn could introduce some new
+subtle accounting errors, since we have been fixing this area for
+quite some time now. Let's audit very carefully to make sure that
+there are no new accounting errors that will be introduced : -)
+
+> One downside I can think of is that creating hugepages (surplus, or
+> promote/demote, or hotplug, or runtime echo 1 > nr_hugepages) would need
+> to update the global hstate's available_pages count, but I imagine that
+> would be less frequent than allocating huge pages?
+
+Yup I think so. You might be more familiar with the new usecase you
+are adding as part of the guest_memfd, but I have not really seen a
+usecase for hugeTLB that would require userspace to do many hugeTLB
+allocations (that THP wouldn't be able to serve). Having this accuracy
+seems to be much more important than the rare contention we will see.
+
+Thanks again for the fixes and ideas Ackerley! Looking forward to your
+new approach : -)
+Joshua
+
+> >>
+> >> [...snip...]
+> >>
+> >>
+> >> [1] https://lore.kernel.org/linux-mm/20260428113037.88766-2-enderaoelyther@gmail.com/
+> >> [2] https://lore.kernel.org/linux-mm/20260515202902.461539-1-devnexen@gmail.com/
+> > [3] https://lore.kernel.org/linux-mm/20260428113059.79001-1-lance.yang@linux.dev/
+> [4] https://sashiko.dev/#/patchset/20260708-hugetlb-alloc-failure-fixes-v2-0-c7f27cbb462b%40google.com?part=2,
 
