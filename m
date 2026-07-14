@@ -1,186 +1,207 @@
-Return-Path: <stable+bounces-274503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274504-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Hw4vGCJ+Vmpt7QAAu9opvQ
-	(envelope-from <stable+bounces-274503-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 20:21:22 +0200
+	id P9VbBl5+VmqI7QAAu9opvQ
+	(envelope-from <stable+bounces-274504-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 20:22:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 087D0757CC8
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 20:21:22 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69F52757CE8
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 20:22:21 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nuvWZf5N;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274503-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-274503-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=google.com header.s=20251104 header.b=o0Y9bBjA;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274504-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-274504-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=google.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 78CE73033824
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 18:21:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5D7BD30D0BB9
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 18:21:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87733331ECD;
-	Tue, 14 Jul 2026 18:21:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D67EA412C02;
+	Tue, 14 Jul 2026 18:21:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CFA1328B7F
-	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 18:21:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C911F30B50A
+	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 18:21:35 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784053280; cv=none; b=jS5Z5zpUDEUmZWSSg8nWVtCYiKZmjhafemweBbMJFQvFQdOlAPST1XTwQ7w0veWC0b6t+1yhzMZ9Qwk42Fm3Fr3NKrnElyONGPNI9ZhlwtLyb0FjnW7Bju2KVo+tc2mAXjIVICmHaIlaBgowPooTE47pFZrLS0zi5wU7nPCItYk=
+	t=1784053297; cv=none; b=OBOo7raqkKgOezseb2suW5DUc4FXSy52mIl79ASxBND/jlHQa/NjeoA9fHLxwWqUtXas21aSoaFcnn6d6vJHWvqOGNcQMK2Yy/QFpp/vkBq2cOIRFxQPlJDo1Raz+f2Q/NNQcAWr2aaFrVQXRTkexVuPii9zlj4aRjVsoROwGxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784053280; c=relaxed/simple;
-	bh=EcZh9Z+DucgKzjTYOvfzU8c5Nr0B3IKythY/Zb35TxA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sxvoa9YJU8CkJtSWy5pTlXnPC3dnvP+fVjdTjDMMWRaMxKqJxaMVLzxQw8NkAhRMtBtvMiYgczD3oJl07HJmqQqVZaAqq0IUEdBvxhwNVVfjx/7mbjWG2/XCkmYyJkGyvVWpZBcMKHiFVymxEOOQV3YG10575zXb22cM/o4chAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nuvWZf5N; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89F3B1F000E9;
-	Tue, 14 Jul 2026 18:21:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784053279;
-	bh=1CeFDlk7QuWs24khlghhoWuTIT9zhp1YrTuKGrVnD28=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=nuvWZf5NTK4z00BhzFccz/WtqAxuxYTbnw+2zxSH2M92uDyYvJDCU/Yw/U/UtnTgk
-	 TV7h/WA6UyuoszL0UZJWrltt95GHVgSEFsK1KKAqmKEaCOF2IUcp48FiqaMGuzkMcB
-	 OgKxj+9JlI/+RnkM3B6hEHpNqOv+7DMKIDRH/v7oHvd5QnJmPset2R9Q/W4c1RLBgq
-	 PTkmt5Er6EpIwSnIZE3gb525yqsbU7TWxHsxdZwiOFsR6/TTJwLecz5YiyipGk9fSu
-	 sl8ShnZj2YTnCYfuvD9aFqXf7oAYDfCkL33EaIO8144syIBBcFAOuPOkMCQhqrSc7Y
-	 ZsC2hNJF71I/g==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Myeonghun Pak <mhun512@gmail.com>,
-	stable <stable@kernel.org>,
-	Ijae Kim <ae878000@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] usb: typec: tcpci_rt1711h: unregister TCPCI port with devres
-Date: Tue, 14 Jul 2026 14:21:16 -0400
-Message-ID: <20260714182116.3081947-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026071347-polyester-drool-f66a@gregkh>
-References: <2026071347-polyester-drool-f66a@gregkh>
+	s=arc-20240116; t=1784053297; c=relaxed/simple;
+	bh=A38XAf/qyrY/pxvb8R0wLZ2ECalCATFuHuqBr7PPTyE=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=mKZlqsz2ou6ACddoEPoTmmyVSIL6VKxAnGoWFD5iWvJzc/BsTp76mYUo45Uynx1KMLXFCYYKEYTm38u1rdnZeC50ajd4fpPG3Z+7Iv07Zih+iXHbSUZ/4HReVdUj1ZTGIfkDlK2DswHmoO56gIKRoA9mTQi/MbrZ/PFmJno2O5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=o0Y9bBjA; arc=none smtp.client-ip=209.85.214.179
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2cede6375caso171125ad.0
+        for <stable@vger.kernel.org>; Tue, 14 Jul 2026 11:21:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784053295; x=1784658095; darn=vger.kernel.org;
+        h=content-type:mime-version:references:message-id:in-reply-to:subject
+         :cc:to:from:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=8gQRzGlj1G5cVe9CASOoXX9GLstMyJGv9XUVp1m4BJc=;
+        b=o0Y9bBjA1irEA1R+qCmHg6L6NkE+kAzrZa6mpuZr22P2QQmSgpLEvx7urMD9HrogTf
+         kRclH7khQYfIwbSzN03RNzN7mCVsZLs6XO692BxzMMTFFJMn93WC7CHCMJUXC6vNE1bG
+         H5TkhZwpugYDGrCXZjjv+mMQvDJ5ZP5IGFAF0xb+g8EoPfNZ0wwV0FHl8mDa+MKkOIIC
+         C9Qd3LSGKVlL+REX5ObtMYHs5FZgWYzQclvpA+8KusFHlVfSSIbE2WDiYDwYigKTNnwX
+         o5LTqAsXPm88Tv16XPjdC3vrfWRxXTtMe2iPrD/fo2Z3WcDMoqbSBxUxQHRaZTRveh0+
+         FRmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784053295; x=1784658095;
+        h=content-type:mime-version:references:message-id:in-reply-to:subject
+         :cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=8gQRzGlj1G5cVe9CASOoXX9GLstMyJGv9XUVp1m4BJc=;
+        b=ahTeazhJzaniIzs73bB5NT7PAwUSE4PKiEnIPfcnHvyvBE4GkMD3veY6tJr+/4Md3v
+         cDw5EEh7hhdzj7o5TADIJaMDUjUO7Az2pURW11EMaRBsu00JlaqS3QI2TeWubWHghlRa
+         iotydhgGMLKsW5KH1cKfu+y1Be0aPfxJivZC/2nYQj3KhuraAVB70vy3BVdSVikyufom
+         ev5znf5Zqdgb/VxxnDgz2nW7lGihHLxI8JhzJ8RdoD/04V2/ncLQ8AJOcc/y82By35aF
+         hiJDHeSqfJb3X6NsDqSpfBMSB0zVIFEqPMcxZsmu83QwSNA5g2UZVtbNbhD46r6TQ5aD
+         hZIQ==
+X-Forwarded-Encrypted: i=1; AHgh+RogBUfAyQRWVZkl+mA8TLWDJQ0cfOF2tDe6dOP5w0HWNYlkxN5ES7XRNgN4ly/dv/FitxLmVBo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxeOE06Ad8cImf0MgZ7MVGIKBZ0u4mGCdd/BbuvZRo17CaU8tCc
+	J1Ej3SCLCkLl1lixVvu8+9ULOk4mj0lx07cUK6UFR/uvnJuotKxAr6kadejRAzQQ4w==
+X-Gm-Gg: AfdE7cl5mra/9RUZo04OdiBH7fSIku1SSfNOw1rULIU9vsyTwEklZs8/722FMyD58l1
+	9EJ1ZaZpdFKvcU8N1Ag0ZG0nakd6hY2to2n99FTb1XqpNrKOzmXs9bSZ8qHRd+ulqv9DNc0jlqs
+	wQ4lXoUw3tcq6zPAfXdiXw/k7d2G6CPlDO83Lh6TDNLg4t9JGx3xsDhY74r+HJuYVzPa4kUjv8t
+	NlVIy2po525e4K8AOdDm03w2gX3v8uAk6hzPzL6nZIcFUgbRD1rzK7LitME4ROoEDgowRiSn60N
+	vObq35vPaUq5Hysb2blxsWQg/VT5bRatjs1JNbilVfZip8+fawWBdto9+ATgEfFKZvkj9gRtay9
+	+7D6p1OmtDnS0B6qP42N9BRI8ygZqgnXvdpxe4D/rL1KCIJms2c3w8+1yfWsppsYe8x0R+v8+v1
+	gUXx4lGTsdKCdn+/wdrBIl+vKcWH7zKWBJEDHAKUFUs8DikdyBtxdFIo+zQfIZoAElF7Ovz2qQp
+	sGvWvq9Nbgp3p9Tnm9mQ9E7rOB2UIMs+HYO+5U6ikI=
+X-Received: by 2002:a17:902:f70b:b0:2cc:6df5:62a1 with SMTP id d9443c01a7336-2cee1ca3115mr7223455ad.20.1784053294748;
+        Tue, 14 Jul 2026 11:21:34 -0700 (PDT)
+Received: from [2a00:79e0:2eb4:9:c2bd:d216:2ddc:2568] ([2a00:79e0:2eb4:9:c2bd:d216:2ddc:2568])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38e172cc7f1sm1933730a91.5.2026.07.14.11.21.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Jul 2026 11:21:33 -0700 (PDT)
+Date: Tue, 14 Jul 2026 11:21:33 -0700 (PDT)
+From: David Rientjes <rientjes@google.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+cc: "David Hildenbrand (Arm)" <david@kernel.org>, Link Lin <linkl@google.com>, 
+    Andrew Morton <akpm@linux-foundation.org>, 
+    Vlastimil Babka <vbabka@kernel.org>, virtualization@lists.linux.dev, 
+    linux-mm@kvack.org, linux-kernel@vger.kernel.org, prasin@google.com, 
+    duenwen@google.com, jasowang@redhat.com, xuanzhuo@linux.alibaba.com, 
+    Ammar Faizi <ammarfaizi2@openresty.com>, jiaqiyan@google.com, 
+    ahwilkins@google.com, Greg Thelen <gthelen@google.com>, 
+    Alexander Duyck <alexander.duyck@gmail.com>, stable@vger.kernel.org
+Subject: Re: [RFC] virtio_balloon: fix Use-After-Free in page reporting during
+ PM freeze
+In-Reply-To: <20260714092146-mutt-send-email-mst@kernel.org>
+Message-ID: <5e18d7ec-a9d7-2cc3-7741-695ec3580ffa@google.com>
+References: <20260709224330.946683-1-linkl@google.com> <8d316b6c-41fb-4ae3-8923-3b649b92b33d@kernel.org> <20260714092146-mutt-send-email-mst@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-274503-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:mhun512@gmail.com,m:stable@kernel.org,m:ae878000@gmail.com,m:gregkh@linuxfoundation.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,linuxfoundation.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FREEMAIL_CC(0.00)[kernel.org,google.com,linux-foundation.org,lists.linux.dev,kvack.org,vger.kernel.org,redhat.com,linux.alibaba.com,openresty.com,gmail.com];
+	TAGGED_FROM(0.00)[bounces-274504-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:mst@redhat.com,m:david@kernel.org,m:linkl@google.com,m:akpm@linux-foundation.org,m:vbabka@kernel.org,m:virtualization@lists.linux.dev,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:prasin@google.com,m:duenwen@google.com,m:jasowang@redhat.com,m:xuanzhuo@linux.alibaba.com,m:ammarfaizi2@openresty.com,m:jiaqiyan@google.com,m:ahwilkins@google.com,m:gthelen@google.com,m:alexander.duyck@gmail.com,m:stable@vger.kernel.org,m:alexanderduyck@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	FORGED_SENDER(0.00)[rientjes@google.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	DKIM_TRACE(0.00)[google.com:+];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rientjes@google.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 087D0757CC8
+X-Rspamd-Queue-Id: 69F52757CE8
 
-From: Myeonghun Pak <mhun512@gmail.com>
+On Tue, 14 Jul 2026, Michael S. Tsirkin wrote:
 
-[ Upstream commit e8da46d99d3710106e7c44db14566bf9b57386b5 ]
+> > > diff --git a/drivers/virtio/virtio_balloon.c b/drivers/virtio/virtio_balloon.c
+> > > index a1b2c3d4e5f6..45a90fb3abf8 100640
+> > > --- a/drivers/virtio/virtio_balloon.c
+> > > +++ b/drivers/virtio/virtio_balloon.c
+> > > @@ -1055,6 +1055,9 @@ static int virtballoon_freeze(struct virtio_device *vdev)
+> > >  	 * The workqueue is already frozen by the PM core before this
+> > >  	 * function is called.
+> > >  	 */
+> > > +	if (virtio_has_feature(vb->vdev, VIRTIO_BALLOON_F_REPORTING))
+> > > +		page_reporting_unregister(&vb->pr_dev_info);
+> > > +
+> > >  	remove_common(vb);
+> > >  	return 0;
+> > >  }
+> > >  
+> > >  static int virtballoon_restore(struct virtio_device *vdev)
+> > >  {
+> > >  	struct virtio_balloon *vb = vdev->priv;
+> > >  	int ret;
+> > >  
+> > >  	ret = init_vqs(vdev->priv);
+> > >  	if (ret)
+> > >  		return ret;
+> > >  
+> > >  	virtio_device_ready(vdev);
+> > >  
+> > > +	if (virtio_has_feature(vb->vdev, VIRTIO_BALLOON_F_REPORTING)) {
+> > > +		ret = page_reporting_register(&vb->pr_dev_info);
+> > > +		if (ret)
+> > > +			goto out_remove_vqs;
+> > > +	}
+> > 
+> > Hm, that failure handling is rather nasty.
+> > 
+> > 
+> > In virtballoon_freeze() we document:
+> > 
+> > "The workqueue is already frozen by the PM core before this function is called"
+> > 
+> > Your report states:
+> > 
+> > "Workqueue: events page_reporting_process"
+> > 
+> > 
+> > I assume that workqueue is not frozen yet because ... it's not freezable :)
+> > 
+> > So could we queue to system_freezable_wq instead, or define our own freezable
+> > workqueue there? Then a driver doesn't have to worry about that.
+> > 
+> > -- 
+> > Cheers,
+> > 
+> > David
+> 
+> +1.  Just system_freezable_wq will do the trick.
+> 
 
-rt1711h_probe() registers the TCPCI port before requesting the interrupt
-and enabling alert interrupts. If either of those later steps fails, the
-probe function returns without unregistering the TCPCI port. The explicit
-unregister currently only happens from the remove callback.
+This makes sense.
 
-Register a devres action immediately after tcpci_register_port() succeeds,
-so tcpci_unregister_port() runs on later probe failures and on driver
-detach. Drop the remove callback to avoid unregistering the same port
-twice.
-
-This issue was identified during our ongoing static-analysis research while
-reviewing kernel code.
-
-Fixes: 302c570bf36e ("usb: typec: tcpci_rt1711h: avoid screaming irq causing boot hangs")
-Cc: stable <stable@kernel.org>
-Co-developed-by: Ijae Kim <ae878000@gmail.com>
-Signed-off-by: Ijae Kim <ae878000@gmail.com>
-Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
-Link: https://patch.msgid.link/20260706145312.37260-1-mhun512@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/usb/typec/tcpm/tcpci_rt1711h.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/usb/typec/tcpm/tcpci_rt1711h.c b/drivers/usb/typec/tcpm/tcpci_rt1711h.c
-index 76ab5eb6d7f2bc..455f1e712024a9 100644
---- a/drivers/usb/typec/tcpm/tcpci_rt1711h.c
-+++ b/drivers/usb/typec/tcpm/tcpci_rt1711h.c
-@@ -212,6 +212,8 @@ static int rt1711h_check_revision(struct i2c_client *i2c)
- 	return 0;
- }
- 
-+static void rt1711h_unregister_tcpci_port(void *tcpci);
-+
- static int rt1711h_probe(struct i2c_client *client,
- 			 const struct i2c_device_id *i2c_id)
- {
-@@ -257,6 +259,10 @@ static int rt1711h_probe(struct i2c_client *client,
- 	if (IS_ERR_OR_NULL(chip->tcpci))
- 		return PTR_ERR(chip->tcpci);
- 
-+	ret = devm_add_action_or_reset(chip->dev, rt1711h_unregister_tcpci_port, chip->tcpci);
-+	if (ret)
-+		return ret;
-+
- 	ret = devm_request_threaded_irq(chip->dev, client->irq, NULL,
- 					rt1711h_irq,
- 					IRQF_ONESHOT | IRQF_TRIGGER_LOW,
-@@ -274,12 +280,9 @@ static int rt1711h_probe(struct i2c_client *client,
- 	return 0;
- }
- 
--static int rt1711h_remove(struct i2c_client *client)
-+static void rt1711h_unregister_tcpci_port(void *tcpci)
- {
--	struct rt1711h_chip *chip = i2c_get_clientdata(client);
--
--	tcpci_unregister_port(chip->tcpci);
--	return 0;
-+	tcpci_unregister_port(tcpci);
- }
- 
- static const struct i2c_device_id rt1711h_id[] = {
-@@ -302,7 +305,6 @@ static struct i2c_driver rt1711h_i2c_driver = {
- 		.of_match_table = of_match_ptr(rt1711h_of_match),
- 	},
- 	.probe = rt1711h_probe,
--	.remove = rt1711h_remove,
- 	.id_table = rt1711h_id,
- };
- module_i2c_driver(rt1711h_i2c_driver);
--- 
-2.53.0
-
+I'm curious why this bug hasn't popped up earlier, presumably any VM that 
+has gone through suspend while reporting free pages through FPR is 
+vulnerable to it and could have panicked as a result.  Which would suggest 
+maybe >99% of FPR is done by guests that never suspend?  While under 
+pressure this issue seems reproducible.
 
