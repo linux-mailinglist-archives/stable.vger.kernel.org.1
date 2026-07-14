@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-274073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274074-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id UkUDL9OVVWrlqQAAu9opvQ
-	(envelope-from <stable+bounces-274073-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 03:50:11 +0200
+	id YDA5EOmYVWqSqgAAu9opvQ
+	(envelope-from <stable+bounces-274074-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 04:03:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1529F7502CF
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 03:50:11 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88BCD7503FB
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 04:03:20 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=pSQSF1Mf;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274073-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274073-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=lxoMrlH6;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274074-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-274074-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=none;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B5C34302977D
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 01:50:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8AA1F306444C
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 01:58:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D78B36F8E9;
-	Tue, 14 Jul 2026 01:50:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CDEA372058;
+	Tue, 14 Jul 2026 01:58:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 413A32FC876;
-	Tue, 14 Jul 2026 01:50:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF6332868B5;
+	Tue, 14 Jul 2026 01:58:15 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783993808; cv=none; b=Cb6w5EHTGwuV3XA8MlWWeIbRAO5KP9QZelYrhfqKvv/wN1Uek/wt0jS9FMKuXm00EYeukKSZ4viXSJFQ4pfsn6JO5knZdb/NQfdwjJR+PzW+GP7u0QYqIgpT5WlFIaVqiuI+kOEudFN1ae2KWLi1aITH9mILmpMNzvsb4l4b4W8=
+	t=1783994298; cv=none; b=lg+wB82Z1vfFwFgIccm3yPh5az3y2AIX2Qe0kNUi6GeJecqxzZ5svy1ACguwGOEc/uYtbdRhkxkK3ScfAKRk9sCLvxtzZn59xwZdaTV/Mqjc3jEI85ccZXXNG9j2hslCa3I+4DelcyHHBnCKfFCSo2OA9UcGMf5WXl0QVh/gtqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783993808; c=relaxed/simple;
-	bh=qXftgFtvsM+btKD4LZo6ImVyqucUFkwVhRRNHh59qxo=;
-	h=Date:To:From:Subject:Message-Id; b=S+K6jB1uV1U1qvv3mgvkhlhFV3W8zBFzOpfPBTKZ8BmlOvPkSpdixIGd1Ro75mmRo8iEvvPVGr3iJKP+76b+9bOrsdFauttTnihfRhXqjXGqQY9q0oZ2Y7H2iCWu1ceQiSwSNQIvFUN6VweUt6MRCq/v53KYaHFy8I3ZKq0Rwhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=pSQSF1Mf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA9E71F000E9;
-	Tue, 14 Jul 2026 01:50:05 +0000 (UTC)
+	s=arc-20240116; t=1783994298; c=relaxed/simple;
+	bh=xxQOZ0npMdjrcslN3+7glizwMZ9EL3+EnKo5+NetzZo=;
+	h=Date:To:From:Subject:Message-Id; b=DdSATxIXt2JWgfe0dlyca60ap/KAhYfeX2J/yccv+Cqdag3kHjzQzic3torQeQJdAOL00vQbW4+wF0PrDkDT3z+CXcq7FePYlKUKlfqmyBSvyh3obAMvVDxKb+Q15srw3yPT92yXgRfn968xw0ehWRLa0nsQ3cUcxoEc1mzVA4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=lxoMrlH6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49F371F000E9;
+	Tue, 14 Jul 2026 01:58:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1783993805;
-	bh=CMMuu3nBZGxb0fPqaPFbKVB19JkvhK2rU6ExHTbSuiw=;
+	d=linux-foundation.org; s=korg; t=1783994295;
+	bh=d2RntQmV53TRgn0vYje0sptb/yzzeR4dudsb7j/fV84=;
 	h=Date:To:From:Subject;
-	b=pSQSF1MfKVPSvpXdmIJT/qYQIY2lmK8vqgQQ1RJzxRrJ4c3VHnN2ed0rrJSe4GE+g
-	 YOungcs5LRSIGyMhZFeP5g99rP/vlxw894h4ZGiZkEZLAbzkqB5ndurql53xxSv4YZ
-	 Nee/QzqN13U4mTl1gC17rUgWhDszckFNmlKhPkMY=
-Date: Mon, 13 Jul 2026 18:50:05 -0700
-To: mm-commits@vger.kernel.org,will@kernel.org,vbabka@kernel.org,urezki@gmail.com,toshi.kani@hpe.com,surenb@google.com,stable@vger.kernel.org,shakeel.butt@linux.dev,ryan.roberts@arm.com,rppt@kernel.org,mhocko@suse.com,liam@infradead.org,devnexen@gmail.com,dev.jain@arm.com,david@kernel.org,catalin.marinas@arm.com,ljs@kernel.org,akpm@linux-foundation.org
+	b=lxoMrlH67BIEIdbcyg7nsqRLJW73PQfA+9ndmq29BNogapyfQkJR5bbFlOrkesvfk
+	 RrRqfQLLaF4GwMgEL6g4d7VgJOYegrzmVRXsXBe+gVZHoCcv3BiANr3e+F6DQWI/sp
+	 9ExOsZBgkMOVy4jMSUvWlo4nU+lJPPSMB0KTxrws=
+Date: Mon, 13 Jul 2026 18:58:14 -0700
+To: mm-commits@vger.kernel.org,will@kernel.org,vbabka@kernel.org,urezki@gmail.com,toshi.kani@hpe.com,surenb@google.com,stable@vger.kernel.org,shakeel.butt@linux.dev,ryan.roberts@arm.com,rppt@kernel.org,peterz@infradead.org,mingo@redhat.com,mhocko@suse.com,luto@kernel.org,liam@infradead.org,kas@kernel.org,hpa@zytor.com,dev.jain@arm.com,david@kernel.org,catalin.marinas@arm.com,bp@alien8.de,ljs@kernel.org,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [to-be-updated] mm-vmalloc-acquire-init_mm-read-lock-on-huge-vmap-promotion.patch removed from -mm tree
-Message-Id: <20260714015005.CA9E71F000E9@smtp.kernel.org>
+Subject: + mm-vmalloc-acquire-init_mm-lock-on-huge-vmap-to-avoid-ptdump-uaf.patch added to mm-hotfixes-unstable branch
+Message-Id: <20260714015815.49F371F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,22 +57,22 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:mm-commits@vger.kernel.org,m:will@kernel.org,m:vbabka@kernel.org,m:urezki@gmail.com,m:toshi.kani@hpe.com,m:surenb@google.com,m:stable@vger.kernel.org,m:shakeel.butt@linux.dev,m:ryan.roberts@arm.com,m:rppt@kernel.org,m:peterz@infradead.org,m:mingo@redhat.com,m:mhocko@suse.com,m:luto@kernel.org,m:liam@infradead.org,m:kas@kernel.org,m:hpa@zytor.com,m:dev.jain@arm.com,m:david@kernel.org,m:catalin.marinas@arm.com,m:bp@alien8.de,m:ljs@kernel.org,m:akpm@linux-foundation.org,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:mm-commits@vger.kernel.org,m:will@kernel.org,m:vbabka@kernel.org,m:urezki@gmail.com,m:toshi.kani@hpe.com,m:surenb@google.com,m:stable@vger.kernel.org,m:shakeel.butt@linux.dev,m:ryan.roberts@arm.com,m:rppt@kernel.org,m:mhocko@suse.com,m:liam@infradead.org,m:devnexen@gmail.com,m:dev.jain@arm.com,m:david@kernel.org,m:catalin.marinas@arm.com,m:ljs@kernel.org,m:akpm@linux-foundation.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	DMARC_NA(0.00)[linux-foundation.org];
-	FREEMAIL_TO(0.00)[vger.kernel.org,kernel.org,gmail.com,hpe.com,google.com,linux.dev,arm.com,suse.com,infradead.org,linux-foundation.org];
+	FREEMAIL_TO(0.00)[vger.kernel.org,kernel.org,gmail.com,hpe.com,google.com,linux.dev,arm.com,infradead.org,redhat.com,suse.com,zytor.com,alien8.de,linux-foundation.org];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-274073-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-274074-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MISSING_XM_UA(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -81,28 +81,45 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_NONE(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[18];
+	RCPT_COUNT_TWELVE(0.00)[23];
 	ALIAS_RESOLVED(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1529F7502CF
+X-Rspamd-Queue-Id: 88BCD7503FB
 
 
-The quilt patch titled
-     Subject: mm/vmalloc: acquire init_mm read lock on huge vmap promotion
-has been removed from the -mm tree.  Its filename was
-     mm-vmalloc-acquire-init_mm-read-lock-on-huge-vmap-promotion.patch
+The patch titled
+     Subject: mm/vmalloc: acquire init_mm lock on huge vmap to avoid ptdump UAF
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-vmalloc-acquire-init_mm-lock-on-huge-vmap-to-avoid-ptdump-uaf.patch
 
-This patch was dropped because an updated version will be issued
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-vmalloc-acquire-init_mm-lock-on-huge-vmap-to-avoid-ptdump-uaf.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
 
 ------------------------------------------------------
 From: Lorenzo Stoakes <ljs@kernel.org>
-Subject: mm/vmalloc: acquire init_mm read lock on huge vmap promotion
-Date: Fri, 10 Jul 2026 11:49:18 +0100
+Subject: mm/vmalloc: acquire init_mm lock on huge vmap to avoid ptdump UAF
+Date: Sun, 12 Jul 2026 11:42:24 +0100
 
-Patch series "mm: fix UAF caused by race between ptdump and vmap".
+Patch series "mm: fix UAF caused by race between ptdump and vmap pgtable
+freeing", v2.
 
 Kernel page table walkers fall into two broad categories - those ranges
 where no exclusion is required via walk_kernel_page_table_range_lockless()
@@ -128,8 +145,8 @@ indeed there is a use-after-free bug in the kernel as a result, which this
 series addresses.
 
 vmap promotes page tables to huge leaf entries where possible, freeing the
-lower leaf page table when it does.  It does this with no meaningful locks
-held against concurrent ptdump walks.
+lower page table when it does.  It does this with no meaningful locks held
+against concurrent ptdump walks.
 
 As a result, use-after-free can currently occur.  This series addresses
 the issue by having the vmap huge promotion logic acquire the mmap read
@@ -158,12 +175,28 @@ would also block, meaning the original read lock is never released and
 thus deadlock.
 
 This series works around this by #ifndef CONFIG_ARM64'ing the mmap read
-lock in vmap logic, then partially reverting commit a93b45fd397 ("arm64:
+lock in vmap logic, then partially reverting commit fa93b45fd397 ("arm64:
 Enable vmalloc-huge with ptdump"), keeping the enablement of huge vmap
 support, and removing the ifdeffery with the partial revert patch.
 
+There are two related issues that we also address in this series:
 
-This patch (of 2):
+* x86 page attribute logic, specifically Change Page Attributes (CPA),
+  implements a feature whereby huge ranges can be collapsed into huge leaf
+  entries. This can similarly cause a UAF when done in parallel with a
+  ptdump walk, so similarly acquire the init_mm mmap lock to avoid this.
+
+* x86 and arm64 permit walks of non-kernel mm's (both allowing efi mm
+  walks, and in intel's case arbitrary mm's), so we ensure kernel mappings
+  remain stable by locking the init_mm as well as the mm being walked.
+
+The ordering of patches is established for both strict dependencies (the
+arm64 partial revert in particular has to be done after the vmap changes)
+and logical ones (the non-kernel mm fix only makes sense once the vmap/CPA
+fixes are in place).
+
+
+This patch (of 4):
 
 Currently there is a nasty race between ptdump and vmap when attempting to
 map a huge P4D, PMD or PUD entry.
@@ -264,19 +297,26 @@ tag.
 
 This patch is based on work by David Carlier (linked), with gratitude!
 
-Link: https://lore.kernel.org/20260710-series-vmap-race-fix-v1-0-5b3794c113fe@kernel.org
-Link: https://lore.kernel.org/20260710-series-vmap-race-fix-v1-1-5b3794c113fe@kernel.org
+Link: https://lore.kernel.org/20260712-series-vmap-race-fix-v2-0-ad134cc3a12a@kernel.org
+Link: https://lore.kernel.org/20260712-series-vmap-race-fix-v2-1-ad134cc3a12a@kernel.org
 Fixes: b6bdb7517c3d ("mm/vmalloc: add interfaces to free unmapped page table")
 Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
 Reported-by: syzbot+fd95a72470f5a44e464c@syzkaller.appspotmail.com
 Closes: https://lore.kernel.org/all/6a287988.39669fcc.33b062.00a0.GAE@google.com/T/
 Link: https://lore.kernel.org/linux-mm/20260706203128.162335-1-devnexen@gmail.com/
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: "Borislav Petkov (AMD)" <bp@alien8.de>
 Cc: Catalin Marinas <catalin.marinas@arm.com>
 Cc: David Hildenbrand <david@kernel.org>
-Cc: Dev Jain <dev.jain@arm.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Kiryl Shutsemau <kas@kernel.org>
 Cc: Liam R. Howlett <liam@infradead.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>
 Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Ryan Roberts <ryan.roberts@arm.com>
 Cc: Shakeel Butt <shakeel.butt@linux.dev>
 Cc: Suren Baghdasaryan <surenb@google.com>
@@ -284,7 +324,6 @@ Cc: Toshi Kani <toshi.kani@hpe.com>
 Cc: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
 Cc: Vlastimil Babka <vbabka@kernel.org>
 Cc: Will Deacon <will@kernel.org>
-Cc: David CARLIER <devnexen@gmail.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
@@ -294,7 +333,7 @@ Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
  mm/vmalloc.c              |   50 +++++++++++++++++++++++++++++-------
  3 files changed, 54 insertions(+), 19 deletions(-)
 
---- a/include/linux/mmap_lock.h~mm-vmalloc-acquire-init_mm-read-lock-on-huge-vmap-promotion
+--- a/include/linux/mmap_lock.h~mm-vmalloc-acquire-init_mm-lock-on-huge-vmap-to-avoid-ptdump-uaf
 +++ a/include/linux/mmap_lock.h
 @@ -621,6 +621,7 @@ static inline void mmap_read_unlock(stru
  
@@ -304,7 +343,7 @@ Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
  
  static inline void mmap_read_unlock_non_owner(struct mm_struct *mm)
  {
---- a/mm/pagewalk.c~mm-vmalloc-acquire-init_mm-read-lock-on-huge-vmap-promotion
+--- a/mm/pagewalk.c~mm-vmalloc-acquire-init_mm-lock-on-huge-vmap-to-avoid-ptdump-uaf
 +++ a/mm/pagewalk.c
 @@ -678,6 +678,8 @@ int walk_kernel_page_table_range_lockles
   * will also not lock the PTEs for the pte_entry() callback.
@@ -349,7 +388,7 @@ Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
  	return walk_pgd_range(start, end, &walk);
  }
  
---- a/mm/vmalloc.c~mm-vmalloc-acquire-init_mm-read-lock-on-huge-vmap-promotion
+--- a/mm/vmalloc.c~mm-vmalloc-acquire-init_mm-lock-on-huge-vmap-to-avoid-ptdump-uaf
 +++ a/mm/vmalloc.c
 @@ -43,6 +43,7 @@
  #include <asm/tlbflush.h>
@@ -359,7 +398,7 @@ Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
  
  #define CREATE_TRACE_POINTS
  #include <trace/events/vmalloc.h>
-@@ -176,10 +177,25 @@ static int vmap_try_huge_pmd(pmd_t *pmd,
+@@ -158,10 +159,25 @@ static int vmap_try_huge_pmd(pmd_t *pmd,
  	if (!IS_ALIGNED(phys_addr, PMD_SIZE))
  		return 0;
  
@@ -370,9 +409,9 @@ Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
  
 -	return pmd_set_huge(pmd, phys_addr, prot);
 +	/*
-+	 * Kernel page table walkers either walk ranges they own exclusively
-+	 * using the mmap lock for mutual exclusion, or hold the mmap write lock
-+	 * on init_mm (ptdump being the motivating case).
++	 * Kernel page table walkers either walk ranges they own exclusively or
++	 * hold the mmap write lock on init_mm (ptdump being the motivating
++	 * case).
 +	 *
 +	 * Therefore, acquire the mmap read lock to prevent use-after-free when
 +	 * freeing page tables.
@@ -388,7 +427,7 @@ Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
  }
  
  static int vmap_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
-@@ -228,10 +244,18 @@ static int vmap_try_huge_pud(pud_t *pud,
+@@ -210,10 +226,18 @@ static int vmap_try_huge_pud(pud_t *pud,
  	if (!IS_ALIGNED(phys_addr, PUD_SIZE))
  		return 0;
  
@@ -410,7 +449,7 @@ Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
  }
  
  static int vmap_pud_range(p4d_t *p4d, unsigned long addr, unsigned long end,
-@@ -280,10 +304,18 @@ static int vmap_try_huge_p4d(p4d_t *p4d,
+@@ -262,10 +286,18 @@ static int vmap_try_huge_p4d(p4d_t *p4d,
  	if (!IS_ALIGNED(phys_addr, P4D_SIZE))
  		return 0;
  
@@ -436,8 +475,11 @@ _
 
 Patches currently in -mm which might be from ljs@kernel.org are
 
+mm-vmalloc-acquire-init_mm-lock-on-huge-vmap-to-avoid-ptdump-uaf.patch
+x86-mm-pat-acquire-mmap-lock-on-page-table-free-to-avoid-ptdump-uaf.patch
+mm-ptdump-always-stabilise-against-page-table-freeing-using-init_mm.patch
+arm64-remove-redundant-concurrent-ptdump-uaf-mitigation.patch
 mm-move-alloc-tag-to-mm.patch
-revert-arm64-enable-vmalloc-huge-with-ptdump.patch
 mm-move-vma_start_pgoff-into-mmh-and-clean-up.patch
 mm-add-kdoc-comments-for-vma_start-last_pgoff.patch
 tools-testing-vma-use-vma_start_pgoff-in-merge-tests.patch
@@ -471,9 +513,5 @@ mm-vma-correct-incorrect-vmah-inclusion.patch
 mm-vma-use-guard-clauses-in-can_vma_merge_.patch
 tools-testing-vma-default-vma-mm-flag-bits-to-64-bit.patch
 tools-testing-vma-output-compared-expression-on-assert_.patch
-mm-vmalloc-acquire-init_mm-lock-on-huge-vmap-to-avoid-ptdump-uaf.patch
-x86-mm-pat-acquire-mmap-lock-on-page-table-free-to-avoid-ptdump-uaf.patch
-mm-ptdump-always-stabilise-against-page-table-freeing-using-init_mm.patch
-arm64-remove-redundant-concurrent-ptdump-uaf-mitigation.patch
 
 
