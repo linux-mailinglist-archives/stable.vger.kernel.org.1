@@ -1,63 +1,65 @@
-Return-Path: <stable+bounces-274066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274061-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id l/ygHQSOVWodqAAAu9opvQ
-	(envelope-from <stable+bounces-274066-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 03:16:52 +0200
+	id i9+UOfuNVWoYqAAAu9opvQ
+	(envelope-from <stable+bounces-274061-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 03:16:43 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0B057500B1
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 03:16:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CE677500A4
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 03:16:43 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bVJzjJzB;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274066-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-274066-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HnFJqAjg;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274061-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-274061-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 04091300BD60
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 01:16:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5E21C300C3A4
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 01:16:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31BE13559C9;
-	Tue, 14 Jul 2026 01:16:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A996D35E1BD;
+	Tue, 14 Jul 2026 01:16:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E273735E943
-	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 01:16:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5734A2DFF3F
+	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 01:16:34 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783991797; cv=none; b=Jh1r4aX9jOtq79eooltlTMh8nH9GGnS2AhkU2cV0Tnkn+wPmv8d4qMsOw5J+epbadwxoVI7yaLQUkEe0iGR1GD8yiMe3OGIRjzNc4G+/mTCQvoh6KR53bQiBW/q3bCgB5cQcfX8YZM8128ov6+QdsPnBZt7EomF60wloMNg24Bw=
+	t=1783991795; cv=none; b=QtbhKhQeJBPcZjsgn3FCJP5LUVFpLTFlMG/3K8geQ6EeRiJyFwOAFtiGtQr3hRV7RZfLW+7aqyp+7af0dVq/HqTGpr4tG7SBqYvAqxk+ci9X3GZV0+dh0USp5aWJQpwr27zbih412uYD7ORaYZYvkg0DX7jDaGbJIPGgWMZZe18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783991797; c=relaxed/simple;
-	bh=9RbLRQMZql5Lt7z1oh2E2OHkRciPuAclCTf2LORCa54=;
+	s=arc-20240116; t=1783991795; c=relaxed/simple;
+	bh=5JaK1plpC9siDLY4lGLmnQsYdx6ZiuNZ+yWRzZmmtRk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jb1+6AslCB6zL3IQyLG6VENYQMJm0gjDG7qdZH9Yd2Ap1bqZwp9PMDr5MkZH254RgGtdRMy+tX8IX3ZvPLAv4pLeZpDT1SGk4ez3qH0x8KS2H/FyWSxJYbRQQzuSIaa1vybpc2X+c8Wz0bEvlId1ORxv04b3QQKe9jROSJ4wGVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bVJzjJzB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5703C1F00A3D;
-	Tue, 14 Jul 2026 01:16:35 +0000 (UTC)
+	 MIME-Version; b=urnSm5RUKAyziXRZV6DUybPpW0yWo+/Q9TaC5wwlOgcnodlBSBVDQIZP5uD0/KAvWZ7VnIII8sVzwkg38yGfygSChDLzFP40RAcx/HGxQALmLqkrDOsEXWCPXGGmbtxMPGpOKJZUZGnolFCkc0B5EjMRevPkYnbN9INJqPtSbec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HnFJqAjg; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 123C61F00A3F;
+	Tue, 14 Jul 2026 01:16:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783991795;
-	bh=LMQs3cc1unC7Dwc7Hww/S3+KHB/9X74jNTlJq0GU+Hw=;
+	s=k20260515; t=1783991793;
+	bh=dHg9O/Ue4RAV92TH6sFgbjrwAqfXYfNm+P14DU6a0p0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bVJzjJzBDe0+2KX/eQpW0KExM1t2bEhjreSfzEMWhpPhXwVgX0DN4/EAwmF+oXufG
-	 Rx1wM8KHWQFWiN4d4j2x+9Y+cOFlx8i5bYcy6WD27hV1udMmQLU37g5y67oTjogium
-	 idjNyjNwqHIwKcZ9zWBADNunodf9fYI3z/RoXSDHRClmqTd8qUt1QGVSTtShEUwaz5
-	 taQU08VNOrbzhagUrliIQJBIrSzCQBkgPF2oDdXu1NtuVL82VPb8F5GsjubqWiinuX
-	 8UiFTJUiJvXBVyuFFeohZpWuhvzYPAxx3FjpLRkEZGwOGeTbhKDgRQKMwWb8ZIyhei
-	 Sy0EzbQFf20EA==
+	b=HnFJqAjg0yfo57ZNjpGd+QRsOZOqt7wu84jLQF1im0aHUBHYXcwe/VEBGzDHwhhyW
+	 bWrEGS6W+w8TQwiL1jsHsgMPLOo4WWunE6pYEksAryIA5NAmYCgTJaV8t752e9oPRF
+	 WX2qIk+AmMNkMVVgu82pK7Pu6a8nlHruj6HdWrVC+H7roCOvydgbgH7ur6WMNzg/00
+	 jnXR0O/ydaHBozi2/W+jthdrz2UgugN/3vL9atArJBpMbQLZd1GH/b20xwsFFpZJHp
+	 TeuaV/2hxhN+tKc8/EqKKxvhQa1wPMp8mJrsUusfXWfHdZPkPmpxAL8JMrKJAePFB6
+	 SwQcbrX4P3cDw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
-	Jonathan Cameron <jic23@kernel.org>,
+Cc: Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Yury Norov <yury.norov@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y 8/8] iio: imu: inv_icm42600: fix timestamping by limiting FIFO reading
-Date: Mon, 13 Jul 2026 21:16:27 -0400
-Message-ID: <20260714011627.2188779-8-sashal@kernel.org>
+Subject: [PATCH 6.1.y 1/2] bitops: make BYTES_TO_BITS() treewide-available
+Date: Mon, 13 Jul 2026 21:16:30 -0400
+Message-ID: <20260714011631.2188967-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260714011627.2188779-1-sashal@kernel.org>
-References: <2026071317-refill-huntress-d0e2@gregkh>
- <20260714011627.2188779-1-sashal@kernel.org>
+In-Reply-To: <2026071349-oppose-radiantly-81a4@gregkh>
+References: <2026071349-oppose-radiantly-81a4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,8 +68,9 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
@@ -77,16 +80,16 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:jean-baptiste.maneyrol@tdk.com,m:jic23@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-274066-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[intel.com,linux.intel.com,gmail.com,davemloft.net,kernel.org];
+	TAGGED_FROM(0.00)[bounces-274061-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:aleksander.lobakin@intel.com,m:andriy.shevchenko@linux.intel.com,m:przemyslaw.kitszel@intel.com,m:yury.norov@gmail.com,m:davem@davemloft.net,m:sashal@kernel.org,m:yurynorov@gmail.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -94,81 +97,104 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,tdk.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B0B057500B1
+X-Rspamd-Queue-Id: 1CE677500A4
 
-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+From: Alexander Lobakin <aleksander.lobakin@intel.com>
 
-[ Upstream commit affe3f077d7a4eeb25937f5323ff059a54b4712c ]
+[ Upstream commit 7d8296b250f2eed73f1758607926d4d258dea5d4 ]
 
-Timestamps are made by measuring the chip clock using the watermark
-interrupts. If we read more than watermark samples as done today, we
-are reducing the period between interrupts and distort the time
-measurement. Fix that by reading only watermark samples in the
-interrupt case.
+Avoid open-coding that simple expression each time by moving
+BYTES_TO_BITS() from the probes code to <linux/bitops.h> to export
+it to the rest of the kernel.
+Simplify the macro while at it. `BITS_PER_LONG / sizeof(long)` always
+equals to %BITS_PER_BYTE, regardless of the target architecture.
+Do the same for the tools ecosystem as well (incl. its version of
+bitops.h). The previous implementation had its implicit type of long,
+while the new one is int, so adjust the format literal accordingly in
+the perf code.
 
-Fixes: 7f85e42a6c54 ("iio: imu: inv_icm42600: add buffer support in iio devices")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Signed-off-by: Jonathan Cameron <jic23@kernel.org>
+Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Acked-by: Yury Norov <yury.norov@gmail.com>
+Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 55052184ac90 ("iio: common: st_sensors: honour channel endianness in read_axis_data")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c | 9 +++++----
- drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.h | 1 +
- 2 files changed, 6 insertions(+), 4 deletions(-)
+ include/linux/bitops.h         | 2 ++
+ kernel/trace/trace_probe.c     | 2 --
+ tools/include/linux/bitops.h   | 2 ++
+ tools/perf/util/probe-finder.c | 4 +---
+ 4 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
-index f05b4d840c5b5c..cb4520b184b01b 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
-@@ -257,6 +257,7 @@ int inv_icm42600_buffer_update_watermark(struct inv_icm42600_state *st)
+diff --git a/include/linux/bitops.h b/include/linux/bitops.h
+index f7f5a783da2aa8..e0cd09eb91cdca 100644
+--- a/include/linux/bitops.h
++++ b/include/linux/bitops.h
+@@ -21,6 +21,8 @@
+ #define BITS_TO_U32(nr)		__KERNEL_DIV_ROUND_UP(nr, BITS_PER_TYPE(u32))
+ #define BITS_TO_BYTES(nr)	__KERNEL_DIV_ROUND_UP(nr, BITS_PER_TYPE(char))
  
- 	/* compute watermark value in bytes */
- 	wm_size = watermark * packet_size;
-+	st->fifo.watermark.value = watermark;
++#define BYTES_TO_BITS(nb)	((nb) * BITS_PER_BYTE)
++
+ extern unsigned int __sw_hweight8(unsigned int w);
+ extern unsigned int __sw_hweight16(unsigned int w);
+ extern unsigned int __sw_hweight32(unsigned int w);
+diff --git a/kernel/trace/trace_probe.c b/kernel/trace/trace_probe.c
+index 4491f11183c6ec..185eeeec204c9f 100644
+--- a/kernel/trace/trace_probe.c
++++ b/kernel/trace/trace_probe.c
+@@ -534,8 +534,6 @@ parse_probe_arg(char *arg, const struct fetch_type *type,
+ 	return ret;
+ }
  
- 	/* changing FIFO watermark requires to turn off watermark interrupt */
- 	ret = regmap_update_bits_check(st->map, INV_ICM42600_REG_INT_SOURCE0,
-@@ -476,11 +477,10 @@ int inv_icm42600_buffer_fifo_read(struct inv_icm42600_state *st,
- 	st->fifo.nb.accel = 0;
- 	st->fifo.nb.total = 0;
+-#define BYTES_TO_BITS(nb)	((BITS_PER_LONG * (nb)) / sizeof(long))
+-
+ /* Bitfield type needs to be parsed into a fetch function */
+ static int __parse_bitfield_probe_arg(const char *bf,
+ 				      const struct fetch_type *t,
+diff --git a/tools/include/linux/bitops.h b/tools/include/linux/bitops.h
+index f18683b95ea673..bc6600466e7b26 100644
+--- a/tools/include/linux/bitops.h
++++ b/tools/include/linux/bitops.h
+@@ -20,6 +20,8 @@
+ #define BITS_TO_U32(nr)		DIV_ROUND_UP(nr, BITS_PER_TYPE(u32))
+ #define BITS_TO_BYTES(nr)	DIV_ROUND_UP(nr, BITS_PER_TYPE(char))
  
--	/* compute maximum FIFO read size */
-+	/* compute maximum FIFO read size (watermark for max = 0 interrupt case) */
- 	if (max == 0)
--		max_count = sizeof(st->fifo.data);
--	else
--		max_count = max * inv_icm42600_get_packet_size(st->fifo.en);
-+		max = st->fifo.watermark.value;
-+	max_count = max * inv_icm42600_get_packet_size(st->fifo.en);
++#define BYTES_TO_BITS(nb)	((nb) * BITS_PER_BYTE)
++
+ extern unsigned int __sw_hweight8(unsigned int w);
+ extern unsigned int __sw_hweight16(unsigned int w);
+ extern unsigned int __sw_hweight32(unsigned int w);
+diff --git a/tools/perf/util/probe-finder.c b/tools/perf/util/probe-finder.c
+index 3c13597d0a0db7..dcd64d71e08105 100644
+--- a/tools/perf/util/probe-finder.c
++++ b/tools/perf/util/probe-finder.c
+@@ -304,8 +304,6 @@ static int convert_variable_location(Dwarf_Die *vr_die, Dwarf_Addr addr,
+ 	return ret2;
+ }
  
- 	/* read FIFO count value */
- 	raw_fifo_count = (__be16 *)st->buffer;
-@@ -592,6 +592,7 @@ int inv_icm42600_buffer_init(struct inv_icm42600_state *st)
- 
- 	st->fifo.watermark.eff_gyro = 1;
- 	st->fifo.watermark.eff_accel = 1;
-+	st->fifo.watermark.value = 1;
- 
- 	/*
- 	 * Default FIFO configuration (bits 7 to 5)
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.h b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.h
-index 567b0d49baae45..9e77952019e7c3 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.h
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.h
-@@ -34,6 +34,7 @@ struct inv_icm42600_fifo {
- 		unsigned int accel;
- 		unsigned int eff_gyro;
- 		unsigned int eff_accel;
-+		unsigned int value;
- 	} watermark;
- 	size_t count;
- 	struct {
+-#define BYTES_TO_BITS(nb)	((nb) * BITS_PER_LONG / sizeof(long))
+-
+ static int convert_variable_type(Dwarf_Die *vr_die,
+ 				 struct probe_trace_arg *tvar,
+ 				 const char *cast, bool user_access)
+@@ -335,7 +333,7 @@ static int convert_variable_type(Dwarf_Die *vr_die,
+ 		total = dwarf_bytesize(vr_die);
+ 		if (boffs < 0 || total < 0)
+ 			return -ENOENT;
+-		ret = snprintf(buf, 16, "b%d@%d/%zd", bsize, boffs,
++		ret = snprintf(buf, 16, "b%d@%d/%d", bsize, boffs,
+ 				BYTES_TO_BITS(total));
+ 		goto formatted;
+ 	}
 -- 
 2.53.0
 
