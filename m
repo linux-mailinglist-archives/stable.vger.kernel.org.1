@@ -1,158 +1,201 @@
-Return-Path: <stable+bounces-274177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274178-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id xOoON73vVWqewQAAu9opvQ
-	(envelope-from <stable+bounces-274177-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 10:13:49 +0200
+	id 3UbxJZzwVWrvwQAAu9opvQ
+	(envelope-from <stable+bounces-274178-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 10:17:32 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D335C7523FC
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 10:13:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C21E975247F
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 10:17:31 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=ispras.ru header.s=default header.b=U4lfxtlv;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274177-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274177-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=ispras.ru;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=aYcg1Nli;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274178-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274178-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3EF9730237EC
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 08:12:15 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 08C4B3022EBE
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 08:15:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 694173F871C;
-	Tue, 14 Jul 2026 08:11:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 459583F164C;
+	Tue, 14 Jul 2026 08:15:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59F4C3F99E5;
-	Tue, 14 Jul 2026 08:11:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58F983F9F4C
+	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 08:15:46 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784016709; cv=none; b=KlhAkVCVcz9njbb48ggSYxUEbKpdyesBTmPjLvkJwi7duGMJo+7/1P46F35jZ+9v5eMGLov17ch1aM0iohdCSC5xRd3kltdku/X+5F3SDQGawJEG3jLA0lIPhtNdX584JscoPg2RIzaRvmKNotyJ1+s8NBMKmQWRI8NWGI+ZfjE=
+	t=1784016949; cv=none; b=UPBQtfnuKKWIRFSReA7OFNTSWjfDCnovQMEDEWjPMyuEqk/fx0Od3ErHQhHOmBzM7G16J46LBVQUFaOKWzblOYB0hNn+YgXP+r0RjLe94B15pd6sYLahqYfYJ57r6VUR27yegwpdUXdmXa0WiC29hxi+PfAMl7xQW5tpkrytqVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784016709; c=relaxed/simple;
-	bh=dCLX2OZmnQHZfHD9kLc9OyNRWWK37l6DX3lTNoMemdI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JsPAel+vPbLLTDscVWXJegPG0+Ne9ZH267WImcLQXmB3U6dZSXe1ijCetlQRjUuj3F8u6HR3C3+O3y7LLBKQczURIC8AN+vo8CrNIorPrf1PP2Lhkbnq1kotd7I6S+6vwEgMIcVUO9BBHNCfnlXwz4hKqHkJ2ij0yaxiLuaAXCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=U4lfxtlv; arc=none smtp.client-ip=83.149.199.84
-Received: from localhost (unknown [95.24.34.24])
-	by mail.ispras.ru (Postfix) with ESMTPSA id 5A8654077925;
-	Tue, 14 Jul 2026 08:11:36 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 5A8654077925
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1784016696;
-	bh=VgVmW8xYosn9eiQExAeU/NJmJ4m2IB5bEc9w8himm7s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=U4lfxtlvxBqvv4zXOJvCCqXRoI/MEwpNB1CjNePGU3E67/CoorkTnoxv1/H745dau
-	 tC9O8dXloA/RvxHG+EZn8G8B26BNtcjdsrq/abqTTv3i1b6YAq3QAcW/tKUpGMGzJo
-	 AkJi/MBCKrccOfzCB5pXZy8N0lIX2lC7Q0PCfqkQ=
-Date: Tue, 14 Jul 2026 11:11:36 +0300
-From: Fedor Pchelkin <pchelkin@ispras.ru>
-To: Elizaveta Tereshkina <etereshkina@astralinux.ru>
-Cc: stable@vger.kernel.org, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Simona Vetter <simona@ffwll.ch>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, lvc-project@linuxtesting.org, 
-	Samuel Holland <samuel@sholland.org>, dri-devel@lists.freedesktop.org, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, linux-kernel@vger.kernel.org, Maxime Ripard <mripard@kernel.org>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	Ethan Tidmore <ethantidmore06@gmail.com>, Chen-Yu Tsai <wens@kernel.org>, David Airlie <airlied@gmail.com>, 
-	linux-sunxi@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [lvc-project] [PATCH 5.10/5.15] drm/sun4i: backend: fix error
- pointer dereference
-Message-ID: <20260714110040-3d9d1292810372916773a64a-pchelkin@ispras>
-References: <20260713175238.715526-1-etereshkina@astralinux.ru>
+	s=arc-20240116; t=1784016949; c=relaxed/simple;
+	bh=RmrTguKVjxq+QIse/ROJuq25wzI7h7cDgXR48/b+tIg=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=JBaHxGVrmDy13GSmH3BTI2Xc6EalN6cuIpDU3G6AIppfhnzBjzkOO2oZDdGEMC8pcAnBasurOeqFZJS5QqZe+ifhXOv6YhrRvjPrfbM7XTgAQSyucQEANhU96r2S51cpmWcvaKR7auVTygKNKZtaStt1k6e9sVU/jDy/0NKW+yQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aYcg1Nli; arc=none smtp.client-ip=209.85.216.49
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-3811f512167so4732064a91.3
+        for <stable@vger.kernel.org>; Tue, 14 Jul 2026 01:15:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784016945; x=1784621745; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=5f2zwwfkcjVdLU+tnkGLj6NeYVD1qAWbI5zgmwCL7z4=;
+        b=aYcg1NlidWx54BwKndl7c8L4xz4iLrhwunPLNe3R9TeGkbqXGXEavAtd7JnBfl9Dgy
+         vw4aR6g2vk++G2E7mlI4oSnXNUFD4Eh1d+36aTH7zG7E7aI2+fRuGxb9eftQRZhfPyXc
+         uyP6SIvPONuQ+6TWAb/4JD3AINyyh0Re9t5EdGBq5SUZQoE/QeW38PkhrDCeE8ENGolY
+         zHFVz9dXWgVfOcBTrbTEIdu0CYWXkKEqGuwmOEbAwZCjm/mmsBNztRwYMma32kj0IV8T
+         PHNQFpig2soLJ4T0UHQkwyuv+gvDGmQ2iCPxaMpMwweMWSArbtoFzZZ9v8EUn0mDqeP0
+         bKKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784016945; x=1784621745;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=5f2zwwfkcjVdLU+tnkGLj6NeYVD1qAWbI5zgmwCL7z4=;
+        b=cjRUm6/ZFkaYMdLUbvZJQDQYzpnTIZczsgt7UroROoH4KRXrmljtUePUhvaGJ8zRQW
+         gydzbugEAR6TkHiyXG1HkTUofu/Nz4rWJpJyzKbeId4TCNFcAJt0R34nCJfiLRVdU1Xe
+         34Ra2oPGvhj9wz7glftqFitAxmHegAWSSxkKDHjDFnnttgWOqieuH66TpcOVzkaY6gBn
+         itlF4vMwlV+MJNC0yRciCx1xp9Bv7vf124R3pY0oHh68SDKnTpretxpIIo5QCXbZQzMS
+         BG1euXfdYxUbqX4p6QkpKpU9aQ4INSCk5m66h8WjSQAXF1MmaEVJwFBKkOaCUd6rJ2jw
+         Upfg==
+X-Forwarded-Encrypted: i=1; AHgh+RoZSWCUPTYBNUTERgMTI2tXCrhNte7873div+PTJp5NQe3j5idAhXyw1081IdwHHXu+mI2x2bA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy8kz+TqezJKVHtQM1YfNDr7KHSEWUfGyffIMp7rM+/VYAdR/2m
+	By3IyRt3MSr+lWeiDLnrEF18V9k5MEoh+YkDZKhnIHSuG+LiZrM2BaaN
+X-Gm-Gg: AfdE7cn8jEfybKdrAB91B3lAKoVdWi7VwpIQ21SMgjSqvz+fGONdvJ/7Ae1uzn0VzS3
+	VjKyPFukKrXjZSOk/69Vk9DNVme4Mxly2bFlRmlasmElk8AS/G4haQI3OJoE5FIsSGd68M/H/pA
+	g2MFv4GLXIcVQ0MvbizoqANLxkTXkKk169VkFy/DCWW1p7volAWlhktesB5aQrZxMk6qw2SzjTf
+	1W1fExdjUW1G+c8rH+A/ToGLUqYe2L6IKEm3J1P38dWfo3Jn34moeV3kYl/n8xQgzCpdNXQfq5F
+	W3pB6jpL19TuTzkjgCwtwZnGKANok6QP8W3n2ofVHmGVJGg9qhkC22RnyvYTkI+swblv3syL1um
+	ebmg+Df2x7zjwYPlfrYNAGbgGycq4oEQK/kQ8tL0oJMAOyMOth81G2VPwNqAX7/liKN2DWC+lVB
+	D/ZwnFnpwhlD2VpWob5LtSnariN9+9YpI5brptnW7a9OF0AR2sU0I=
+X-Received: by 2002:a17:90b:4a90:b0:37f:d262:1e0a with SMTP id 98e67ed59e1d1-38e1ae9fc51mr1541369a91.12.1784016944718;
+        Tue, 14 Jul 2026 01:15:44 -0700 (PDT)
+Received: from localhost.localdomain ([210.184.73.204])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38e17443f4fsm1091008a91.11.2026.07.14.01.15.36
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 14 Jul 2026 01:15:44 -0700 (PDT)
+From: Hao Jia <jiahao.kernel@gmail.com>
+To: akpm@linux-foundation.org,
+	tj@kernel.org,
+	hannes@cmpxchg.org,
+	shakeel.butt@linux.dev,
+	mhocko@kernel.org,
+	yosry@kernel.org,
+	mkoutny@suse.com,
+	nphamcs@gmail.com,
+	chengming.zhou@linux.dev,
+	muchun.song@linux.dev,
+	roman.gushchin@linux.dev
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	Hao Jia <jiahao1@lixiang.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] mm/zswap: Fix global shrinker when memory cgroup is disabled
+Date: Tue, 14 Jul 2026 16:15:09 +0800
+Message-Id: <20260714081510.16895-2-jiahao.kernel@gmail.com>
+X-Mailer: git-send-email 2.39.2 (Apple Git-143)
+In-Reply-To: <20260714081510.16895-1-jiahao.kernel@gmail.com>
+References: <20260714081510.16895-1-jiahao.kernel@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260713175238.715526-1-etereshkina@astralinux.ru>
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[ispras.ru,none];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[ispras.ru:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:etereshkina@astralinux.ru,m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:simona@ffwll.ch,m:neil.armstrong@linaro.org,m:lvc-project@linuxtesting.org,m:samuel@sholland.org,m:dri-devel@lists.freedesktop.org,m:maarten.lankhorst@linux.intel.com,m:linux-kernel@vger.kernel.org,m:mripard@kernel.org,m:jernej.skrabec@gmail.com,m:tzimmermann@suse.de,m:ethantidmore06@gmail.com,m:wens@kernel.org,m:airlied@gmail.com,m:linux-sunxi@lists.linux.dev,m:linux-arm-kernel@lists.infradead.org,m:jernejskrabec@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[pchelkin@ispras.ru,stable@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	TAGGED_FROM(0.00)[bounces-274177-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-274178-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[linux-foundation.org,kernel.org,cmpxchg.org,linux.dev,suse.com,gmail.com];
+	FORGED_RECIPIENTS(0.00)[m:akpm@linux-foundation.org,m:tj@kernel.org,m:hannes@cmpxchg.org,m:shakeel.butt@linux.dev,m:mhocko@kernel.org,m:yosry@kernel.org,m:mkoutny@suse.com,m:nphamcs@gmail.com,m:chengming.zhou@linux.dev,m:muchun.song@linux.dev,m:roman.gushchin@linux.dev,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:linux-doc@vger.kernel.org,m:jiahao1@lixiang.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[jiahaokernel@gmail.com,stable@vger.kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[ispras.ru:+];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pchelkin@ispras.ru,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,linuxfoundation.org,ffwll.ch,linaro.org,linuxtesting.org,sholland.org,lists.freedesktop.org,linux.intel.com,kernel.org,gmail.com,suse.de,lists.linux.dev,lists.infradead.org];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp,astralinux.ru:email,ispras:mid,msgid.link:url]
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jiahaokernel@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,lixiang.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D335C7523FC
+X-Rspamd-Queue-Id: C21E975247F
 
-On Mon, 13. Jul 20:52, Elizaveta Tereshkina wrote:
-> From: Ethan Tidmore <ethantidmore06@gmail.com>
-> 
-> commit 06277983eca4a31d3c2114fa33d99a6e82484b11 upstream.
-> 
-> The function drm_atomic_get_plane_state() can return an error pointer
-> and is not checked for it. Add error pointer check.
-> 
-> Detected by Smatch:
-> drivers/gpu/drm/sun4i/sun4i_backend.c:496 sun4i_backend_atomic_check() error:
-> 'plane_state' dereferencing possible ERR_PTR()
-> 
-> Fixes: 96180dde23b79 ("drm/sun4i: backend: Add a custom atomic_check for the frontend")
-> Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
-> Reviewed-by: Chen-Yu Tsai <wens@kernel.org>
-> Link: https://patch.msgid.link/20260217014801.60760-1-ethantidmore06@gmail.com
-> Signed-off-by: Chen-Yu Tsai <wens@kernel.org>
-> Signed-off-by: Elizaveta Tereshkina <etereshkina@astralinux.ru>
-> ---
-> Backport fix for CVE-2026-53066
->  drivers/gpu/drm/sun4i/sun4i_backend.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/drivers/gpu/drm/sun4i/sun4i_backend.c b/drivers/gpu/drm/sun4i/sun4i_backend.c
-> index d935f36a24dd..b3741827c6c3 100644
-> --- a/drivers/gpu/drm/sun4i/sun4i_backend.c
-> +++ b/drivers/gpu/drm/sun4i/sun4i_backend.c
-> @@ -507,6 +507,9 @@ static int sun4i_backend_atomic_check(struct sunxi_engine *engine,
->  	drm_for_each_plane_mask(plane, drm, crtc_state->plane_mask) {
->  		struct drm_plane_state *plane_state =
->  			drm_atomic_get_plane_state(state, plane);
-> +		if (IS_ERR(plane_state))
-> +			return PTR_ERR(plane_state);
-> +
->  		struct sun4i_layer_state *layer_state =
->  			state_to_sun4i_layer_state(plane_state);
->  		struct drm_framebuffer *fb = plane_state->fb;
+From: Hao Jia <jiahao1@lixiang.com>
 
-This would trigger a really unnecessary build warning due to lack of
-commit b5ec6fd286df ("kbuild: Drop -Wdeclaration-after-statement") in
-5.10/5.15 kernels.
+When memory cgroup is disabled, mem_cgroup_iter() always returns NULL.
+Therefore, the global shrinker shrink_worker() always takes the !memcg
+branch. After MAX_RECLAIM_RETRIES empty walks, the worker simply gives up,
+so it fails to write back anything.
 
-I wonder if that commit can just be ported to 5.10/5.15.  You may consider
-it.
+Therefore, when memory cgroup is disabled, fall through with the !memcg
+branch and shrink the root memcg directly.
 
-Otherwise the current backport should be adapted to avoid declarations
-after statements.
+With memcg disabled, shrink_memcg() only returns -ENOENT when the root
+LRU is empty, which means the total pages are already below thr. The
+loop then safely bails out via the zswap_total_pages() <= thr check.
+For any other return value from shrink_memcg(), the loop is guaranteed
+to terminate, either after MAX_RECLAIM_RETRIES failures or once the
+threshold is met.
+
+Fixes: a65b0e7607cc ("zswap: make shrinking memcg-aware")
+Cc: stable@vger.kernel.org
+Suggested-by: Nhat Pham <nphamcs@gmail.com>
+Acked-by: Nhat Pham <nphamcs@gmail.com>
+Acked-by: Yosry Ahmed <yosry@kernel.org>
+Reported-by: Yosry Ahmed <yosry@kernel.org>
+Closes: https://lore.kernel.org/all/CAO9r8zPVzMKFbCixxD-qgtRrkFxWVrHiZZeLc=eyTPKPVQgX4g@mail.gmail.com
+Signed-off-by: Hao Jia <jiahao1@lixiang.com>
+---
+ mm/zswap.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
+
+diff --git a/mm/zswap.c b/mm/zswap.c
+index b5a17ea20237..3d697a1a5365 100644
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -1356,11 +1356,12 @@ static void shrink_worker(struct work_struct *w)
+ 		} while (memcg && !mem_cgroup_tryget_online(memcg));
+ 		spin_unlock(&zswap_shrink_lock);
+ 
+-		if (!memcg) {
+-			/*
+-			 * Continue shrinking without incrementing failures if
+-			 * we found candidate memcgs in the last tree walk.
+-			 */
++		/*
++		 * A NULL memcg ends a full hierarchy pass (except when memcg is
++		 * disabled, where it is always NULL: fall through to the root LRU).
++		 * Count a failure only if the last pass found no candidates.
++		 */
++		if (!memcg && !mem_cgroup_disabled()) {
+ 			if (!attempts && ++failures == MAX_RECLAIM_RETRIES)
+ 				break;
+ 
+-- 
+2.34.1
+
 
