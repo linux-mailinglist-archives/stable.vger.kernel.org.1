@@ -1,64 +1,62 @@
-Return-Path: <stable+bounces-274058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274055-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id pSgBJfiNVWoWqAAAu9opvQ
-	(envelope-from <stable+bounces-274058-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 03:16:40 +0200
+	id K83LMO2NVWoQqAAAu9opvQ
+	(envelope-from <stable+bounces-274055-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 03:16:29 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03B9A75009C
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 03:16:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E744750084
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 03:16:29 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TRaKoRef;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274058-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274058-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KpbfIjyg;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274055-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274055-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CA21F30277CD
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 01:16:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CCAE9301E6F2
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 01:16:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CCA93559C9;
-	Tue, 14 Jul 2026 01:16:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 520F726E165;
+	Tue, 14 Jul 2026 01:16:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 173711EEA31
-	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 01:16:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2D4B207DF7
+	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 01:16:25 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783991792; cv=none; b=c/KtB2D2/j5d/QKUroBV1f9KAhWABfaKU5OiUz8CkHY3/eygEXMZNI6Wj+8OzvcLH/mgHLVn+JNpx7QYUnPIBBsU1mqW/LIPTRNiHSugIBGA/LoQNt0a4i/eWPXe/5unL+yPCm6404+pA5eE3dDTa4d0copTutrcHMXqtrpU5l4=
+	t=1783991787; cv=none; b=AVtH1uc7/kKIgVTffPWplb2q0y4mzkqwAUxBN0N2OZ390PYtyL0Yad5hkbJqRlqOCN1kp5fBjM4mO3LX4ov9SuXUsxw6yV3Uzk/WgYztH9oQXHan7hMOzId82r2SjYHs/KlBsh83H/5r3Pw9gOpT7Yutt+WZmzNuPNru+j1/+p0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783991792; c=relaxed/simple;
-	bh=eFXiDhCeQcq5+1a2q79TVvkQH/EG396rZQYD4fXoxi4=;
+	s=arc-20240116; t=1783991787; c=relaxed/simple;
+	bh=kYJdSpDVluuSiI1kY6fBE6HqfZ9QWMg3/ca0fpzwthM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hGw+24CTCIyfNbXpevaC4Uk7yZ+D3qNNhLdD4dRiSzCeGUPQYS5/3PpeX5vBaZuOApMeMGJpuIVLfAowUls6yA6EXO8CqsgjXqSqUO/7Dm+4ZKmxa7BmVjBherjpTicCGJLEOJZKCMj8cawlDiXjp4b3zIQpW/k1lwEo9iBxaUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TRaKoRef; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 663AD1F00A3A;
-	Tue, 14 Jul 2026 01:16:30 +0000 (UTC)
+	 MIME-Version; b=SmZq/l0YPVhlVPc+tYyBq183WB5+bkPShsobcqC69bgYQCPLL/Lp+6yq11UVUqM0qbyIuefz/LoVwtzcp/vmqqbMEAkY2IglsSNqsjysTufGYNFou5lgnKlsreGKGRNt4c5hoebCoGgNxLXTd5hsMB/K+kEFJCOoMcba7dciauc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KpbfIjyg; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D39AE1F000E9;
+	Tue, 14 Jul 2026 01:16:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783991791;
-	bh=ziE+Xo+lMlLKvDFS0ETyZydHDEZC9J2aVkxrt5Noox4=;
+	s=k20260515; t=1783991785;
+	bh=FG2wKt01GlopsdMo6f9puMQ2WJyQNxrv5n2E+auFfJg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TRaKoRefK09yYFbM0B6lGRiRyyt1UWvPPuvNOm6XDy0Ih1xyEC+06sdzTxipquuvJ
-	 N4OdqtArqSopR+sMnPcFmsnmM/gId/Yh0gO7yyzP2du1Lv5ajTyp4Rknj5TEy0gncJ
-	 8IhmqovxeXNTXTKBIaLPyusWF/fvCxzHiua5eJm4YhBCui9ru8hTjxlUkBwrQ8WyXu
-	 G6HimtMHs888zgEmetgBJCfMObnT1OGVQE0rKU+if4uLpVIB22yyrihSs3KGjaipK3
-	 2haBNtGZjms05LWGkTAj77f12ctPLVwG0iPU9RwbMU/kE7b+05v8TSnk+EAmIpHnoX
-	 wK/NB8QtbHNQA==
+	b=KpbfIjygjKR7fYClb771Hegm78yyNnU7WsNWc6Hc4d8ukwXOLnmI6zkuwDle/6EdZ
+	 /tio6syH90UV5dNV7JDWQ5RNVOjy3lgDVW9OfGhOnfi7S3P3IUHgqITJan4fl+zTaw
+	 vr8h/4HkokbrFHj0iFAc09sBGC36jTqTFf6d54QWP1HVyfqu85fih0TG8nceZiJ4gR
+	 1cPB1WMmo/zDmLjiAmisFHCP6kUD5lt/Ajv6g0wkbTyvwPa4WI4Y8bUk5YGytu6fGT
+	 PyUJNrPyW69PzYOYCby0oh2lYAp5uDKMiGgtoZRSlf5DBg947SOj6K54xqbELPR5wG
+	 pFwi8wSS1I0pQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+Cc: "Geoffrey D. Bennett" <g@b4.vu>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y 2/8] iio: move inv_icm42600 timestamp module in common
-Date: Mon, 13 Jul 2026 21:16:21 -0400
-Message-ID: <20260714011627.2188779-2-sashal@kernel.org>
+Subject: [PATCH 7.1.y 1/2] ALSA: scarlett2: Allow selecting config_set by firmware version
+Date: Mon, 13 Jul 2026 21:16:22 -0400
+Message-ID: <20260714011623.2188610-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260714011627.2188779-1-sashal@kernel.org>
-References: <2026071317-refill-huntress-d0e2@gregkh>
- <20260714011627.2188779-1-sashal@kernel.org>
+In-Reply-To: <2026071349-volatile-trustable-cfdf@gregkh>
+References: <2026071349-volatile-trustable-cfdf@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,294 +65,375 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-3.66 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-274058-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:jean-baptiste.maneyrol@tdk.com,m:andy.shevchenko@gmail.com,m:Jonathan.Cameron@huawei.com,m:sashal@kernel.org,m:andyshevchenko@gmail.com,s:lists@lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-274055-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:g@b4.vu,m:tiwai@suse.de,m:sashal@kernel.org,s:lists@lfdr.de];
+	RCPT_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[tdk.com,gmail.com,huawei.com,kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tdk.com:email,vger.kernel.org:from_smtp,huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,suse.de:email,b4.vu:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 03B9A75009C
+X-Rspamd-Queue-Id: 1E744750084
 
-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+From: "Geoffrey D. Bennett" <g@b4.vu>
 
-[ Upstream commit d99ff463ecf651437e9e4abe68f331dfb6b5bd9d ]
+[ Upstream commit 732a6397a526c025cd29c3c9309b0db6a2c08837 ]
 
-Create new inv_sensors common modules and move inv_icm42600
-timestamp module inside. This module will be used by IMUs and
-also in the future by other chips.
+The Scarlett 2i2 Gen 4 firmware 2417 moved the direct monitor gain
+parameters, so we now need to allow each device to list multiple
+scarlett2_config_set entries, one per applicable firmware version
+range, and pick the matching one at probe time.
 
-Modify inv_icm42600 driver to use timestamp module and do some
-headers cleanup.
+No functional change yet: each device gets a single config_sets
+entry whose from_firmware_version matches the existing
+min_firmware_version (0 where none was set). This both prepares for
+selection and lets a follow-up commit remove the now-redundant
+min_firmware_version field.
 
-Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Link: https://lore.kernel.org/r/20230606162147.79667-3-inv.git-commit@tdk.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Stable-dep-of: affe3f077d7a ("iio: imu: inv_icm42600: fix timestamping by limiting FIFO reading")
+scarlett2_count_io() depends on the resolved config_set so it moves
+out of scarlett2_init_private() into snd_scarlett2_controls_create()
+after the firmware version has been read.
+
+Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/ae1695b4c4825f365b4c86b22174035f742807e3.1777151532.git.g@b4.vu
+Stable-dep-of: 3ca15754b561 ("ALSA: scarlett2: Update offsets for 2i2 Gen 4 firmware 2417")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/common/Kconfig                            |  1 +
- drivers/iio/common/Makefile                           |  1 +
- drivers/iio/common/inv_sensors/Kconfig                |  7 +++++++
- drivers/iio/common/inv_sensors/Makefile               |  6 ++++++
- .../inv_sensors}/inv_icm42600_timestamp.c             | 11 ++++++++++-
- drivers/iio/imu/inv_icm42600/Kconfig                  |  1 +
- drivers/iio/imu/inv_icm42600/Makefile                 |  1 -
- drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c     |  5 +++--
- drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c    |  5 +++--
- drivers/iio/imu/inv_icm42600/inv_icm42600_core.c      |  4 +++-
- drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c      |  5 +++--
- .../linux/iio/common}/inv_icm42600_timestamp.h        |  0
- 12 files changed, 38 insertions(+), 9 deletions(-)
- create mode 100644 drivers/iio/common/inv_sensors/Kconfig
- create mode 100644 drivers/iio/common/inv_sensors/Makefile
- rename drivers/iio/{imu/inv_icm42600 => common/inv_sensors}/inv_icm42600_timestamp.c (91%)
- rename {drivers/iio/imu/inv_icm42600 => include/linux/iio/common}/inv_icm42600_timestamp.h (100%)
+ sound/usb/mixer_scarlett2.c | 143 ++++++++++++++++++++++++++++++------
+ 1 file changed, 121 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/iio/common/Kconfig b/drivers/iio/common/Kconfig
-index 0334b495477338..1ccb5ccf370660 100644
---- a/drivers/iio/common/Kconfig
-+++ b/drivers/iio/common/Kconfig
-@@ -5,6 +5,7 @@
+diff --git a/sound/usb/mixer_scarlett2.c b/sound/usb/mixer_scarlett2.c
+index a4fac465220139..4be667ed0c5b09 100644
+--- a/sound/usb/mixer_scarlett2.c
++++ b/sound/usb/mixer_scarlett2.c
+@@ -612,6 +612,20 @@ struct scarlett2_config_set {
+ 	const struct scarlett2_config items[SCARLETT2_CONFIG_COUNT];
+ };
  
- source "drivers/iio/common/cros_ec_sensors/Kconfig"
- source "drivers/iio/common/hid-sensors/Kconfig"
-+source "drivers/iio/common/inv_sensors/Kconfig"
- source "drivers/iio/common/ms_sensors/Kconfig"
- source "drivers/iio/common/scmi_sensors/Kconfig"
- source "drivers/iio/common/ssp_sensors/Kconfig"
-diff --git a/drivers/iio/common/Makefile b/drivers/iio/common/Makefile
-index fad40e1e171819..d3e952239a6219 100644
---- a/drivers/iio/common/Makefile
-+++ b/drivers/iio/common/Makefile
-@@ -10,6 +10,7 @@
- # When adding new entries keep the list in alphabetical order
- obj-y += cros_ec_sensors/
- obj-y += hid-sensors/
-+obj-y += inv_sensors/
- obj-y += ms_sensors/
- obj-y += scmi_sensors/
- obj-y += ssp_sensors/
-diff --git a/drivers/iio/common/inv_sensors/Kconfig b/drivers/iio/common/inv_sensors/Kconfig
-new file mode 100644
-index 00000000000000..28815fb431573d
---- /dev/null
-+++ b/drivers/iio/common/inv_sensors/Kconfig
-@@ -0,0 +1,7 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+#
-+# TDK-InvenSense sensors common library
-+#
++/* Map firmware versions to config sets per-device.
++ *
++ * Each device lists one or more entries, sorted in ascending order of
++ * from_firmware_version. At probe time the running firmware version
++ * is looked up against this list and the last entry whose
++ * from_firmware_version is <= the running version is selected.
++ *
++ * The list is terminated by a sentinel entry with config_set == NULL.
++ */
++struct scarlett2_config_set_entry {
++	u16 from_firmware_version;
++	const struct scarlett2_config_set *config_set;
++};
 +
-+config IIO_INV_SENSORS_TIMESTAMP
-+	tristate
-diff --git a/drivers/iio/common/inv_sensors/Makefile b/drivers/iio/common/inv_sensors/Makefile
-new file mode 100644
-index 00000000000000..93bddb9356b833
---- /dev/null
-+++ b/drivers/iio/common/inv_sensors/Makefile
-@@ -0,0 +1,6 @@
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# Makefile for TDK-InvenSense sensors module.
-+#
+ /* Input gain TLV dB ranges */
+ 
+ static const DECLARE_TLV_DB_MINMAX(
+@@ -1100,8 +1114,8 @@ struct scarlett2_meter_entry {
+ };
+ 
+ struct scarlett2_device_info {
+-	/* which set of configuration parameters the device uses */
+-	const struct scarlett2_config_set *config_set;
++	/* which sets of configuration parameters the device uses */
++	const struct scarlett2_config_set_entry *config_sets;
+ 
+ 	/* minimum firmware version required */
+ 	u16 min_firmware_version;
+@@ -1343,7 +1357,10 @@ struct scarlett2_data {
+ /*** Model-specific data ***/
+ 
+ static const struct scarlett2_device_info s6i6_gen2_info = {
+-	.config_set = &scarlett2_config_set_gen2a,
++	.config_sets = (const struct scarlett2_config_set_entry[]) {
++		{ 0, &scarlett2_config_set_gen2a },
++		{ }
++	},
+ 	.level_input_count = 2,
+ 	.pad_input_count = 2,
+ 
+@@ -1393,7 +1410,10 @@ static const struct scarlett2_device_info s6i6_gen2_info = {
+ };
+ 
+ static const struct scarlett2_device_info s18i8_gen2_info = {
+-	.config_set = &scarlett2_config_set_gen2a,
++	.config_sets = (const struct scarlett2_config_set_entry[]) {
++		{ 0, &scarlett2_config_set_gen2a },
++		{ }
++	},
+ 	.level_input_count = 2,
+ 	.pad_input_count = 4,
+ 
+@@ -1446,7 +1466,10 @@ static const struct scarlett2_device_info s18i8_gen2_info = {
+ };
+ 
+ static const struct scarlett2_device_info s18i20_gen2_info = {
+-	.config_set = &scarlett2_config_set_gen2b,
++	.config_sets = (const struct scarlett2_config_set_entry[]) {
++		{ 0, &scarlett2_config_set_gen2b },
++		{ }
++	},
+ 
+ 	.line_out_descrs = {
+ 		"Monitor L",
+@@ -1503,7 +1526,10 @@ static const struct scarlett2_device_info s18i20_gen2_info = {
+ };
+ 
+ static const struct scarlett2_device_info solo_gen3_info = {
+-	.config_set = &scarlett2_config_set_gen3a,
++	.config_sets = (const struct scarlett2_config_set_entry[]) {
++		{ 0, &scarlett2_config_set_gen3a },
++		{ }
++	},
+ 	.level_input_count = 1,
+ 	.level_input_first = 1,
+ 	.air_input_count = 1,
+@@ -1513,7 +1539,10 @@ static const struct scarlett2_device_info solo_gen3_info = {
+ };
+ 
+ static const struct scarlett2_device_info s2i2_gen3_info = {
+-	.config_set = &scarlett2_config_set_gen3a,
++	.config_sets = (const struct scarlett2_config_set_entry[]) {
++		{ 0, &scarlett2_config_set_gen3a },
++		{ }
++	},
+ 	.level_input_count = 2,
+ 	.air_input_count = 2,
+ 	.phantom_count = 1,
+@@ -1522,7 +1551,10 @@ static const struct scarlett2_device_info s2i2_gen3_info = {
+ };
+ 
+ static const struct scarlett2_device_info s4i4_gen3_info = {
+-	.config_set = &scarlett2_config_set_gen3b,
++	.config_sets = (const struct scarlett2_config_set_entry[]) {
++		{ 0, &scarlett2_config_set_gen3b },
++		{ }
++	},
+ 	.level_input_count = 2,
+ 	.pad_input_count = 2,
+ 	.air_input_count = 2,
+@@ -1571,7 +1603,10 @@ static const struct scarlett2_device_info s4i4_gen3_info = {
+ };
+ 
+ static const struct scarlett2_device_info s8i6_gen3_info = {
+-	.config_set = &scarlett2_config_set_gen3b,
++	.config_sets = (const struct scarlett2_config_set_entry[]) {
++		{ 0, &scarlett2_config_set_gen3b },
++		{ }
++	},
+ 	.level_input_count = 2,
+ 	.pad_input_count = 2,
+ 	.air_input_count = 2,
+@@ -1637,7 +1672,10 @@ static const char * const scarlett2_spdif_s18i8_gen3_texts[] = {
+ };
+ 
+ static const struct scarlett2_device_info s18i8_gen3_info = {
+-	.config_set = &scarlett2_config_set_gen3c,
++	.config_sets = (const struct scarlett2_config_set_entry[]) {
++		{ 0, &scarlett2_config_set_gen3c },
++		{ }
++	},
+ 	.has_speaker_switching = 1,
+ 	.level_input_count = 2,
+ 	.pad_input_count = 4,
+@@ -1729,7 +1767,10 @@ static const char * const scarlett2_spdif_s18i20_gen3_texts[] = {
+ };
+ 
+ static const struct scarlett2_device_info s18i20_gen3_info = {
+-	.config_set = &scarlett2_config_set_gen3c,
++	.config_sets = (const struct scarlett2_config_set_entry[]) {
++		{ 0, &scarlett2_config_set_gen3c },
++		{ }
++	},
+ 	.has_speaker_switching = 1,
+ 	.has_talkback = 1,
+ 	.level_input_count = 2,
+@@ -1803,7 +1844,10 @@ static const struct scarlett2_device_info s18i20_gen3_info = {
+ };
+ 
+ static const struct scarlett2_device_info vocaster_one_info = {
+-	.config_set = &scarlett2_config_set_vocaster,
++	.config_sets = (const struct scarlett2_config_set_entry[]) {
++		{ 1769, &scarlett2_config_set_vocaster },
++		{ }
++	},
+ 	.min_firmware_version = 1769,
+ 	.has_devmap = 1,
+ 
+@@ -1847,7 +1891,10 @@ static const struct scarlett2_device_info vocaster_one_info = {
+ };
+ 
+ static const struct scarlett2_device_info vocaster_two_info = {
+-	.config_set = &scarlett2_config_set_vocaster,
++	.config_sets = (const struct scarlett2_config_set_entry[]) {
++		{ 1769, &scarlett2_config_set_vocaster },
++		{ }
++	},
+ 	.min_firmware_version = 1769,
+ 	.has_devmap = 1,
+ 
+@@ -1892,7 +1939,10 @@ static const struct scarlett2_device_info vocaster_two_info = {
+ };
+ 
+ static const struct scarlett2_device_info solo_gen4_info = {
+-	.config_set = &scarlett2_config_set_gen4_solo,
++	.config_sets = (const struct scarlett2_config_set_entry[]) {
++		{ 2115, &scarlett2_config_set_gen4_solo },
++		{ }
++	},
+ 	.min_firmware_version = 2115,
+ 	.has_devmap = 1,
+ 
+@@ -1947,7 +1997,10 @@ static const struct scarlett2_device_info solo_gen4_info = {
+ };
+ 
+ static const struct scarlett2_device_info s2i2_gen4_info = {
+-	.config_set = &scarlett2_config_set_gen4_2i2,
++	.config_sets = (const struct scarlett2_config_set_entry[]) {
++		{ 2115, &scarlett2_config_set_gen4_2i2 },
++		{ }
++	},
+ 	.min_firmware_version = 2115,
+ 	.has_devmap = 1,
+ 
+@@ -2002,7 +2055,10 @@ static const struct scarlett2_device_info s2i2_gen4_info = {
+ };
+ 
+ static const struct scarlett2_device_info s4i4_gen4_info = {
+-	.config_set = &scarlett2_config_set_gen4_4i4,
++	.config_sets = (const struct scarlett2_config_set_entry[]) {
++		{ 2089, &scarlett2_config_set_gen4_4i4 },
++		{ }
++	},
+ 	.min_firmware_version = 2089,
+ 	.has_devmap = 1,
+ 
+@@ -2051,7 +2107,10 @@ static const struct scarlett2_device_info s4i4_gen4_info = {
+ };
+ 
+ static const struct scarlett2_device_info clarett_2pre_info = {
+-	.config_set = &scarlett2_config_set_clarett,
++	.config_sets = (const struct scarlett2_config_set_entry[]) {
++		{ 0, &scarlett2_config_set_clarett },
++		{ }
++	},
+ 	.level_input_count = 2,
+ 	.air_input_count = 2,
+ 
+@@ -2107,7 +2166,10 @@ static const char * const scarlett2_spdif_clarett_texts[] = {
+ };
+ 
+ static const struct scarlett2_device_info clarett_4pre_info = {
+-	.config_set = &scarlett2_config_set_clarett,
++	.config_sets = (const struct scarlett2_config_set_entry[]) {
++		{ 0, &scarlett2_config_set_clarett },
++		{ }
++	},
+ 	.level_input_count = 2,
+ 	.air_input_count = 4,
+ 
+@@ -2163,7 +2225,10 @@ static const struct scarlett2_device_info clarett_4pre_info = {
+ };
+ 
+ static const struct scarlett2_device_info clarett_8pre_info = {
+-	.config_set = &scarlett2_config_set_clarett,
++	.config_sets = (const struct scarlett2_config_set_entry[]) {
++		{ 0, &scarlett2_config_set_clarett },
++		{ }
++	},
+ 	.level_input_count = 2,
+ 	.air_input_count = 8,
+ 
+@@ -8211,10 +8276,32 @@ static void scarlett2_private_suspend(struct usb_mixer_interface *mixer)
+ 
+ /*** Initialisation ***/
+ 
++/* Select the config_set matching the running firmware version.
++ *
++ * The device info's config_sets array is ordered by ascending
++ * from_firmware_version; pick the last entry whose version is <= the
++ * running firmware version. If the running firmware is older than the
++ * first entry's from_firmware_version (i.e. older than the driver's
++ * minimum supported version for this device), the first entry's
++ * config_set is selected anyway so firmware updates can still be done
++ * (requires only the ACK handler), but the usual mixer controls
++ * aren't created.
++ */
++static void scarlett2_resolve_config_set(struct scarlett2_data *private)
++{
++	const struct scarlett2_config_set_entry *entry =
++		private->info->config_sets;
 +
-+obj-$(CONFIG_IIO_INV_SENSORS_TIMESTAMP) += inv_icm42600_timestamp.o
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_timestamp.c b/drivers/iio/common/inv_sensors/inv_icm42600_timestamp.c
-similarity index 91%
-rename from drivers/iio/imu/inv_icm42600/inv_icm42600_timestamp.c
-rename to drivers/iio/common/inv_sensors/inv_icm42600_timestamp.c
-index d3d560eaa7d8ed..f1a144fbd9b096 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_timestamp.c
-+++ b/drivers/iio/common/inv_sensors/inv_icm42600_timestamp.c
-@@ -6,8 +6,9 @@
- #include <linux/errno.h>
- #include <linux/kernel.h>
- #include <linux/math64.h>
-+#include <linux/module.h>
- 
--#include "inv_icm42600_timestamp.h"
-+#include <linux/iio/common/inv_icm42600_timestamp.h>
- 
- /* internal chip period is 32kHz, 31250ns */
- #define INV_ICM42600_TIMESTAMP_PERIOD		31250
-@@ -54,6 +55,7 @@ void inv_icm42600_timestamp_init(struct inv_icm42600_timestamp *ts,
- 	/* use theoretical value for chip period */
- 	inv_update_acc(&ts->chip_period, INV_ICM42600_TIMESTAMP_PERIOD);
- }
-+EXPORT_SYMBOL_NS_GPL(inv_icm42600_timestamp_init, IIO_INV_SENSORS_TIMESTAMP);
- 
- int inv_icm42600_timestamp_update_odr(struct inv_icm42600_timestamp *ts,
- 				      uint32_t period, bool fifo)
-@@ -66,6 +68,7 @@ int inv_icm42600_timestamp_update_odr(struct inv_icm42600_timestamp *ts,
- 
- 	return 0;
- }
-+EXPORT_SYMBOL_NS_GPL(inv_icm42600_timestamp_update_odr, IIO_INV_SENSORS_TIMESTAMP);
- 
- static bool inv_validate_period(uint32_t period, uint32_t mult)
++	private->config_set = entry->config_set;
++	for (entry++; entry->config_set; entry++)
++		if (entry->from_firmware_version <= private->firmware_version)
++			private->config_set = entry->config_set;
++}
++
+ static void scarlett2_count_io(struct scarlett2_data *private)
  {
-@@ -150,6 +153,7 @@ void inv_icm42600_timestamp_interrupt(struct inv_icm42600_timestamp *ts,
- 		ts->timestamp += delta;
- 	}
- }
-+EXPORT_SYMBOL_NS_GPL(inv_icm42600_timestamp_interrupt, IIO_INV_SENSORS_TIMESTAMP);
+ 	const struct scarlett2_device_info *info = private->info;
+-	const struct scarlett2_config_set *config_set = info->config_set;
++	const struct scarlett2_config_set *config_set = private->config_set;
+ 	const int (*port_count)[SCARLETT2_PORT_DIRNS] = info->port_count;
+ 	int port_type, srcs = 0, dsts = 0, i;
  
- void inv_icm42600_timestamp_apply_odr(struct inv_icm42600_timestamp *ts,
- 				      uint32_t fifo_period, size_t fifo_nb,
-@@ -181,3 +185,8 @@ void inv_icm42600_timestamp_apply_odr(struct inv_icm42600_timestamp *ts,
- 		ts->timestamp = ts->it.up - interval;
- 	}
- }
-+EXPORT_SYMBOL_NS_GPL(inv_icm42600_timestamp_apply_odr, IIO_INV_SENSORS_TIMESTAMP);
+@@ -8311,9 +8398,14 @@ static int scarlett2_init_private(struct usb_mixer_interface *mixer,
+ 	mixer->private_suspend = scarlett2_private_suspend;
+ 
+ 	private->info = entry->info;
+-	private->config_set = entry->info->config_set;
 +
-+MODULE_AUTHOR("InvenSense, Inc.");
-+MODULE_DESCRIPTION("InvenSense sensors timestamp module");
-+MODULE_LICENSE("GPL");
-diff --git a/drivers/iio/imu/inv_icm42600/Kconfig b/drivers/iio/imu/inv_icm42600/Kconfig
-index 50cbcfcb6cf18c..f56b0816cc4db2 100644
---- a/drivers/iio/imu/inv_icm42600/Kconfig
-+++ b/drivers/iio/imu/inv_icm42600/Kconfig
-@@ -3,6 +3,7 @@
- config INV_ICM42600
- 	tristate
- 	select IIO_BUFFER
-+	select IIO_INV_SENSORS_TIMESTAMP
- 
- config INV_ICM42600_I2C
- 	tristate "InvenSense ICM-426xx I2C driver"
-diff --git a/drivers/iio/imu/inv_icm42600/Makefile b/drivers/iio/imu/inv_icm42600/Makefile
-index 291714d9aa54f2..0f49f6df3647bb 100644
---- a/drivers/iio/imu/inv_icm42600/Makefile
-+++ b/drivers/iio/imu/inv_icm42600/Makefile
-@@ -6,7 +6,6 @@ inv-icm42600-y += inv_icm42600_gyro.o
- inv-icm42600-y += inv_icm42600_accel.o
- inv-icm42600-y += inv_icm42600_temp.o
- inv-icm42600-y += inv_icm42600_buffer.o
--inv-icm42600-y += inv_icm42600_timestamp.o
- 
- obj-$(CONFIG_INV_ICM42600_I2C) += inv-icm42600-i2c.o
- inv-icm42600-i2c-y += inv_icm42600_i2c.o
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-index 926a2cba9070ae..d0f078635c6f66 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-@@ -10,14 +10,15 @@
- #include <linux/regmap.h>
- #include <linux/delay.h>
- #include <linux/math64.h>
--#include <linux/iio/iio.h>
++	/* Set config_set to the first entry's config_set so the
++	 * notify handler has a valid pointer while USB init runs; it
++	 * is re-resolved once the firmware version has been read.
++	 */
++	private->config_set = entry->info->config_sets[0].config_set;
 +
- #include <linux/iio/buffer.h>
-+#include <linux/iio/common/inv_icm42600_timestamp.h>
-+#include <linux/iio/iio.h>
- #include <linux/iio/kfifo_buf.h>
+ 	private->series_name = entry->series_name;
+-	scarlett2_count_io(private);
+ 	private->scarlett2_seq = 0;
+ 	private->mixer = mixer;
  
- #include "inv_icm42600.h"
- #include "inv_icm42600_temp.h"
- #include "inv_icm42600_buffer.h"
--#include "inv_icm42600_timestamp.h"
+@@ -8717,6 +8809,13 @@ static int snd_scarlett2_controls_create(
+ 	if (err < 0)
+ 		return err;
  
- #define INV_ICM42600_ACCEL_CHAN(_modifier, _index, _ext_info)		\
- 	{								\
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
-index f29c3e8531e6fb..afaaa45477a967 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
-@@ -9,11 +9,12 @@
- #include <linux/pm_runtime.h>
- #include <linux/regmap.h>
- #include <linux/delay.h>
--#include <linux/iio/iio.h>
++	/* Now that the firmware version is known, pick the matching
++	 * config_set
++	 */
++	scarlett2_resolve_config_set(private);
 +
- #include <linux/iio/buffer.h>
-+#include <linux/iio/common/inv_icm42600_timestamp.h>
-+#include <linux/iio/iio.h>
- 
- #include "inv_icm42600.h"
--#include "inv_icm42600_timestamp.h"
- #include "inv_icm42600_buffer.h"
- 
- /* FIFO header: 1 byte */
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-index 0369cfd990ca01..f8ec87f4a3461f 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-@@ -15,11 +15,12 @@
- #include <linux/pm_runtime.h>
- #include <linux/property.h>
- #include <linux/regmap.h>
++	scarlett2_count_io(private);
 +
-+#include <linux/iio/common/inv_icm42600_timestamp.h>
- #include <linux/iio/iio.h>
- 
- #include "inv_icm42600.h"
- #include "inv_icm42600_buffer.h"
--#include "inv_icm42600_timestamp.h"
- 
- static const struct regmap_range_cfg inv_icm42600_regmap_ranges[] = {
- 	{
-@@ -798,3 +799,4 @@ EXPORT_SYMBOL_GPL(inv_icm42600_pm_ops);
- MODULE_AUTHOR("InvenSense, Inc.");
- MODULE_DESCRIPTION("InvenSense ICM-426xx device driver");
- MODULE_LICENSE("GPL");
-+MODULE_IMPORT_NS(IIO_INV_SENSORS_TIMESTAMP);
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
-index 53132846d18bdd..744b1ef35ba28c 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
-@@ -10,14 +10,15 @@
- #include <linux/regmap.h>
- #include <linux/delay.h>
- #include <linux/math64.h>
--#include <linux/iio/iio.h>
-+
- #include <linux/iio/buffer.h>
-+#include <linux/iio/common/inv_icm42600_timestamp.h>
-+#include <linux/iio/iio.h>
- #include <linux/iio/kfifo_buf.h>
- 
- #include "inv_icm42600.h"
- #include "inv_icm42600_temp.h"
- #include "inv_icm42600_buffer.h"
--#include "inv_icm42600_timestamp.h"
- 
- #define INV_ICM42600_GYRO_CHAN(_modifier, _index, _ext_info)		\
- 	{								\
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_timestamp.h b/include/linux/iio/common/inv_icm42600_timestamp.h
-similarity index 100%
-rename from drivers/iio/imu/inv_icm42600/inv_icm42600_timestamp.h
-rename to include/linux/iio/common/inv_icm42600_timestamp.h
+ 	/* Get the upgrade & settings flash segment numbers */
+ 	err = scarlett2_get_flash_segment_nums(mixer);
+ 	if (err < 0)
 -- 
 2.53.0
 
