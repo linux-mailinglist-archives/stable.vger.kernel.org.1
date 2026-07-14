@@ -1,305 +1,247 @@
-Return-Path: <stable+bounces-274541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274545-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id NUIpMBqWVmpp+QAAu9opvQ
-	(envelope-from <stable+bounces-274541-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 22:03:38 +0200
+	id azhwHDGWVmp9+QAAu9opvQ
+	(envelope-from <stable+bounces-274545-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 22:04:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B528C75895A
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 22:03:37 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC88975896B
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 22:04:00 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XyBfFRz3;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274541-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274541-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nYFO3uXm;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274545-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274545-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 94F98301AB5F
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 20:02:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 97BE830730E6
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 20:02:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A29E41D635;
-	Tue, 14 Jul 2026 20:02:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C7CA41D648;
+	Tue, 14 Jul 2026 20:02:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F115C41F341
-	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 20:02:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7018373C0E
+	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 20:02:41 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784059359; cv=none; b=VcRWOvxfu/imOSsL8u8dPzjddOrn3pmnb1e4UAOxHL2sm9kLlYajhMT6iEpzaN+/WCxLLs+HZNBUDuIh6Ge6PLI+G6yhuSvtPRe3NHpiR9yb7vpJZPL+s/JfKbdZVxyek/Aw/2tpFZDTcZR4dP4EdI9WqU825bzlRBDur7UZX48=
+	t=1784059366; cv=none; b=Lnfa3M0WxEkuNm4FXVh7HyHNd2o5OVeCEGOA0slDvJh0gtygFDjeS0RXQFMfsp29aKRiix0FUINes80xo80Qrb0ucG1uyUKJSe58kt0xBE9ypBxw105iVrGlcsKmPro4orZzGxgpJAQ+RxYmeHTB4tLz152/KJIOIG+NEB5eEeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784059359; c=relaxed/simple;
-	bh=KZyYLoNh0d9jK9knLuz8aSmqilF3RGk4SASIlOd+x4s=;
+	s=arc-20240116; t=1784059366; c=relaxed/simple;
+	bh=cLRFnHj0shNT8ATnrymX3Xf/MPm95Tn7CeR9jMBZZ24=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h2i5793d2oxkiVVc5H+c79a5N8+ETlvvbUUfnqkfwwjygHXljWpCuPlM2IeYgIPLSgdpLqlZYme4fN2M0xHqpo2QdAHz8Q05WghIBfHkQCMorfG2Q34QHR3D/mOFS+xp0T1Emt7Qgg62xtt1STaoYun1O4tcR5qIMLHagjVaOWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XyBfFRz3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFA4B1F00ADE;
-	Tue, 14 Jul 2026 20:02:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JBxlY6aHXra/YYOg5CgXpSUGRt01Pkn4SsB+jsSv755DoR5O4wOJeB2j/pcbtx3/M+N39QGz/x5aWj7h63/LS86nvkecbvKJBWwdmryCr8Z03pOzomykB0LpDsjWii8Vhxt4iFt+pCvuiPQn6h2cLyMhZp4iZYmLXrDtbZK2s8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nYFO3uXm; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A30C1F00A3A;
+	Tue, 14 Jul 2026 20:02:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784059351;
-	bh=nlbBFbaCAF+Fg+PmanXnSWc9fx0JATp2ua6E3pmh35A=;
+	s=k20260515; t=1784059358;
+	bh=67gMxIIeeQeYtO9upPVokfGrGv9RiT4S2BWlyVEADQc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XyBfFRz3pUQ3MiI+AfnrG7BmvM76tGH8Yia4BdLesKfGjnQoay3oEOKQ6cy49wMBJ
-	 pBzP7J/AYr7fGFhuKGjziNlmMSsLcd6j8wfPpS6IF0eY2HpA182Cc13Hu3Y4cZZuP0
-	 6ws9uArNUnru9tLgPUJjgZgRigvbKnaEiKCC2GzmEXG3b411rurYv/WnmlPI6P4v87
-	 /87dHcjpDCPC/YySCJHneQMjZb/G+UdcTn8OwK4WfvGKJLJjJWtHeG+yQB7pbbbeds
-	 NsRNbtLBcn44JUC+bKCC20JbBkYVys0G7h4XHoMKn1gNLwTFasE3CbpOoSfdAs8IGc
-	 KJUKL+5bgZTWw==
+	b=nYFO3uXmRTfR8YXSa8aUOjwDV+7YIuQEJ5PGBp3AaBUpIXveLY+hbWRJzhPv9q7qA
+	 MG5ze6xuA3COSkqRhcXjgZRqbwmMxavqJ18ALQaOwbsN1/MBigQNQDj3+MabCl4jZh
+	 ju1SKp5C+LzkrUwDJ2EUfXYLThmgr8TpWsRS/TXX7i8wcOlQsqLr25ONOf1KlVehnE
+	 l4CFH3fPFv/47JatBcP7tnmSFkwHFm5pm1qjQ8AiRl1wzi7MUs4LfyI6VIfxJQDGHY
+	 j3Bnu3USNTCkalHJlxPSTVISQGHxo2LtfTKWXyVtPOBoEsUe06wTwH3xYvKvMkCtWe
+	 MLPY5nInxsucg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Caleb James DeLisle <cjd@cjdns.fr>,
+Cc: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 5/5] PCI: mediatek: Fix IRQ domain leak when port fails to enable
-Date: Tue, 14 Jul 2026 16:02:26 -0400
-Message-ID: <20260714200226.3152882-5-sashal@kernel.org>
+Subject: [PATCH 6.18.y 1/8] PCI/IOV: Adjust ->barsz[] when changing BAR size
+Date: Tue, 14 Jul 2026 16:02:29 -0400
+Message-ID: <20260714200236.3153778-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260714200226.3152882-1-sashal@kernel.org>
-References: <2026071353-appointee-tactful-9ca3@gregkh>
- <20260714200226.3152882-1-sashal@kernel.org>
+In-Reply-To: <2026071350-unfold-lather-d66a@gregkh>
+References: <2026071350-unfold-lather-d66a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
+X-Spamd-Result: default: False [-4.16 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:ilpo.jarvinen@linux.intel.com,m:bhelgaas@google.com,m:alex.bennee@linaro.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-274541-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:manivannan.sadhasivam@oss.qualcomm.com,m:mani@kernel.org,m:cjd@cjdns.fr,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-274545-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	RCPT_COUNT_FIVE(0.00)[5];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linaro.org:email,msgid.link:url,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B528C75895A
+X-Rspamd-Queue-Id: DC88975896B
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit f865a57896bd92d7662eb2818d8f48872e2cbbc7 ]
+[ Upstream commit 4687b3315a3f76647746f5b7f92684cf1045b085 ]
 
-When mtk_pcie_enable_port() fails, mtk_pcie_port_free() removes the port
-from pcie->ports and frees the port structure. However, the IRQ domains set
-up earlier by mtk_pcie_init_irq_domain() are never freed.
+pci_rebar_set_size() adjusts BAR size for both normal and IOV BARs. The
+struct pci_sriov keeps a cached copy of BAR size in ->barsz[] which is not
+adjusted by pci_rebar_set_size() but by pci_iov_resource_set_size().
+pci_iov_resource_set_size() is called also from
+pci_resize_resource_set_size().
 
-Fix this by refactoring mtk_pcie_irq_teardown() into a per-port helper,
-mtk_pcie_irq_teardown_port(), and calling it from mtk_pcie_setup() when
-mtk_pcie_enable_port() fails. Since the IRQ teardown must only happen in
-the probe error path (during resume, child devices may have active MSI
-mappings and the NOIRQ context prohibits sleeping locks),
-mtk_pcie_enable_port() is changed to return an error code so callers can
-distinguish the two paths and act accordingly.
+The current arrangement is problematic once BAR resize algorithm starts to
+roll back changes properly in case of a failure. The normal resource
+fitting algorithm rolls back resource size using the struct
+pci_dev_resource easily but also calling pci_resize_resource_set_size() or
+pci_iov_resource_set_size() to roll back BAR size would be an extra burden,
+whereas combining ->barsz[] update with pci_rebar_set_size() naturally
+rolls back it when restoring the old BAR size on a different layer of the
+BAR resize operation.
 
-This issue was reported by Sashiko while reviewing the EcoNet EN7528 SoC
-support series.
+Thus, rework pci_rebar_set_size() to also update ->barsz[].
 
-Fixes: b099631df160 ("PCI: mediatek: Add controller support for MT2712 and MT7622")
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Cc: stable@vger.kernel.org # 5.10
-Cc: Caleb James DeLisle <cjd@cjdns.fr>
-Link: https://patch.msgid.link/20260521174617.17692-1-mani@kernel.org
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Alex Bennée <alex.bennee@linaro.org> # AVA, AMD GPU
+Link: https://patch.msgid.link/20251113162628.5946-3-ilpo.jarvinen@linux.intel.com
+Stable-dep-of: ee7471fe968d ("PCI: Skip Resizable BAR restore on read error")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/pcie-mediatek.c | 75 ++++++++++++++++----------
- 1 file changed, 48 insertions(+), 27 deletions(-)
+ drivers/pci/iov.c       | 15 ++++-----------
+ drivers/pci/pci.c       |  4 ++++
+ drivers/pci/pci.h       |  5 ++---
+ drivers/pci/setup-res.c | 10 ++++------
+ 4 files changed, 14 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/pci/controller/pcie-mediatek.c b/drivers/pci/controller/pcie-mediatek.c
-index c6fa43fb094175..5f97a8e25a9762 100644
---- a/drivers/pci/controller/pcie-mediatek.c
-+++ b/drivers/pci/controller/pcie-mediatek.c
-@@ -12,7 +12,7 @@
- #include <linux/iopoll.h>
- #include <linux/irq.h>
- #include <linux/irqchip/chained_irq.h>
--#include <linux/irqchip/irq-msi-lib.h>
-+#include "../../irqchip/irq-msi-lib.h"
- #include <linux/irqdomain.h>
- #include <linux/kernel.h>
- #include <linux/mfd/syscon.h>
-@@ -488,7 +488,6 @@ static const struct msi_parent_ops mtk_msi_parent_ops = {
- 	.required_flags		= MTK_MSI_FLAGS_REQUIRED,
- 	.supported_flags	= MTK_MSI_FLAGS_SUPPORTED,
- 	.bus_select_token	= DOMAIN_BUS_PCI_MSI,
--	.chip_flags		= MSI_CHIP_FLAG_SET_ACK,
- 	.prefix			= "MTK-",
- 	.init_dev_msi_info	= msi_lib_init_dev_msi_info,
- };
-@@ -502,13 +501,18 @@ static int mtk_pcie_allocate_msi_domains(struct mtk_pcie_port *port)
- 		.ops		= &msi_domain_ops,
- 		.host_data	= port,
- 		.size		= MTK_MSI_IRQS_NUM,
-+		.hwirq_max	= MTK_MSI_IRQS_NUM,
-+		.bus_token	= DOMAIN_BUS_PCI_MSI,
-+		.domain_flags	= IRQ_DOMAIN_FLAG_MSI_PARENT,
- 	};
+diff --git a/drivers/pci/iov.c b/drivers/pci/iov.c
+index c6dc1b44bf602a..1092a31bc39a22 100644
+--- a/drivers/pci/iov.c
++++ b/drivers/pci/iov.c
+@@ -158,8 +158,7 @@ resource_size_t pci_iov_resource_size(struct pci_dev *dev, int resno)
+ 	return dev->sriov->barsz[pci_resource_num_to_vf_bar(resno)];
+ }
  
--	port->inner_domain = msi_create_parent_irq_domain(&info, &mtk_msi_parent_ops);
--	if (!port->inner_domain) {
-+	port->inner_domain = irq_domain_instantiate(&info);
-+	if (IS_ERR(port->inner_domain)) {
- 		dev_err(port->pcie->dev, "failed to create IRQ domain\n");
-+		port->inner_domain = NULL;
- 		return -ENOMEM;
+-void pci_iov_resource_set_size(struct pci_dev *dev, int resno,
+-			       resource_size_t size)
++void pci_iov_resource_set_size(struct pci_dev *dev, int resno, int size)
+ {
+ 	if (!pci_resource_is_iov(resno)) {
+ 		pci_warn(dev, "%s is not an IOV resource\n",
+@@ -167,7 +166,8 @@ void pci_iov_resource_set_size(struct pci_dev *dev, int resno,
+ 		return;
  	}
-+	port->inner_domain->msi_parent_ops = &mtk_msi_parent_ops;
  
+-	dev->sriov->barsz[pci_resource_num_to_vf_bar(resno)] = size;
++	resno = pci_resource_num_to_vf_bar(resno);
++	dev->sriov->barsz[resno] = pci_rebar_size_to_bytes(size);
+ }
+ 
+ bool pci_iov_is_memory_decoding_enabled(struct pci_dev *dev)
+@@ -1339,7 +1339,6 @@ EXPORT_SYMBOL_GPL(pci_sriov_configure_simple);
+ int pci_iov_vf_bar_set_size(struct pci_dev *dev, int resno, int size)
+ {
+ 	u32 sizes;
+-	int ret;
+ 
+ 	if (!pci_resource_is_iov(resno))
+ 		return -EINVAL;
+@@ -1354,13 +1353,7 @@ int pci_iov_vf_bar_set_size(struct pci_dev *dev, int resno, int size)
+ 	if (!(sizes & BIT(size)))
+ 		return -EINVAL;
+ 
+-	ret = pci_rebar_set_size(dev, resno, size);
+-	if (ret)
+-		return ret;
+-
+-	pci_iov_resource_set_size(dev, resno, pci_rebar_size_to_bytes(size));
+-
+-	return 0;
++	return pci_rebar_set_size(dev, resno, size);
+ }
+ EXPORT_SYMBOL_GPL(pci_iov_vf_bar_set_size);
+ 
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index 0b6a23405f167a..b161d0560bad1f 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -3800,6 +3800,10 @@ int pci_rebar_set_size(struct pci_dev *pdev, int bar, int size)
+ 	ctrl &= ~PCI_REBAR_CTRL_BAR_SIZE;
+ 	ctrl |= FIELD_PREP(PCI_REBAR_CTRL_BAR_SIZE, size);
+ 	pci_write_config_dword(pdev, pos + PCI_REBAR_CTRL, ctrl);
++
++	if (pci_resource_is_iov(bar))
++		pci_iov_resource_set_size(pdev, bar, size);
++
  	return 0;
  }
-@@ -527,23 +531,27 @@ static void mtk_pcie_enable_msi(struct mtk_pcie_port *port)
- 	writel(val, port->base + PCIE_INT_MASK);
- }
  
--static void mtk_pcie_irq_teardown(struct mtk_pcie *pcie)
-+static void mtk_pcie_irq_teardown_port(struct mtk_pcie_port *port)
+diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
+index 5510c103be2d39..549f60d2198648 100644
+--- a/drivers/pci/pci.h
++++ b/drivers/pci/pci.h
+@@ -826,8 +826,7 @@ void pci_iov_update_resource(struct pci_dev *dev, int resno);
+ resource_size_t pci_sriov_resource_alignment(struct pci_dev *dev, int resno);
+ void pci_restore_iov_state(struct pci_dev *dev);
+ int pci_iov_bus_range(struct pci_bus *bus);
+-void pci_iov_resource_set_size(struct pci_dev *dev, int resno,
+-			       resource_size_t size);
++void pci_iov_resource_set_size(struct pci_dev *dev, int resno, int size);
+ bool pci_iov_is_memory_decoding_enabled(struct pci_dev *dev);
+ static inline u16 pci_iov_vf_rebar_cap(struct pci_dev *dev)
  {
--	struct mtk_pcie_port *port, *tmp;
-+	irq_set_chained_handler_and_data(port->irq, NULL, NULL);
+@@ -869,7 +868,7 @@ static inline int pci_iov_bus_range(struct pci_bus *bus)
+ 	return 0;
+ }
+ static inline void pci_iov_resource_set_size(struct pci_dev *dev, int resno,
+-					     resource_size_t size) { }
++					     int size) { }
+ static inline bool pci_iov_is_memory_decoding_enabled(struct pci_dev *dev)
+ {
+ 	return false;
+diff --git a/drivers/pci/setup-res.c b/drivers/pci/setup-res.c
+index 60da129d714f94..53338eb45f038f 100644
+--- a/drivers/pci/setup-res.c
++++ b/drivers/pci/setup-res.c
+@@ -452,12 +452,10 @@ static void pci_resize_resource_set_size(struct pci_dev *dev, int resno,
+ 	resource_size_t res_size = pci_rebar_size_to_bytes(size);
+ 	struct resource *res = pci_resource_n(dev, resno);
  
--	list_for_each_entry_safe(port, tmp, &pcie->ports, list) {
--		irq_set_chained_handler_and_data(port->irq, NULL, NULL);
-+	if (port->irq_domain)
-+		irq_domain_remove(port->irq_domain);
- 
--		if (port->irq_domain)
--			irq_domain_remove(port->irq_domain);
-+	if (IS_ENABLED(CONFIG_PCI_MSI)) {
-+		if (port->inner_domain)
-+			irq_domain_remove(port->inner_domain);
-+	}
- 
--		if (IS_ENABLED(CONFIG_PCI_MSI)) {
--			if (port->inner_domain)
--				irq_domain_remove(port->inner_domain);
--		}
-+	irq_dispose_mapping(port->irq);
-+}
- 
--		irq_dispose_mapping(port->irq);
+-	if (!pci_resource_is_iov(resno)) {
+-		resource_set_size(res, res_size);
+-	} else {
+-		resource_set_size(res, res_size * pci_sriov_get_totalvfs(dev));
+-		pci_iov_resource_set_size(dev, resno, res_size);
 -	}
-+static void mtk_pcie_irq_teardown(struct mtk_pcie *pcie)
-+{
-+	struct mtk_pcie_port *port, *tmp;
++	if (pci_resource_is_iov(resno))
++		res_size *= pci_sriov_get_totalvfs(dev);
 +
-+	list_for_each_entry_safe(port, tmp, &pcie->ports, list)
-+		mtk_pcie_irq_teardown_port(port);
++	resource_set_size(res, res_size);
  }
  
- static int mtk_pcie_intx_map(struct irq_domain *domain, unsigned int irq,
-@@ -826,7 +834,7 @@ static int mtk_pcie_startup_port(struct mtk_pcie_port *port)
- 	return 0;
- }
- 
--static void mtk_pcie_enable_port(struct mtk_pcie_port *port)
-+static int mtk_pcie_enable_port(struct mtk_pcie_port *port)
- {
- 	struct mtk_pcie *pcie = port->pcie;
- 	struct device *dev = pcie->dev;
-@@ -835,7 +843,7 @@ static void mtk_pcie_enable_port(struct mtk_pcie_port *port)
- 	err = clk_prepare_enable(port->sys_ck);
- 	if (err) {
- 		dev_err(dev, "failed to enable sys_ck%d clock\n", port->slot);
--		goto err_sys_clk;
-+		return err;
- 	}
- 
- 	err = clk_prepare_enable(port->ahb_ck);
-@@ -883,11 +891,15 @@ static void mtk_pcie_enable_port(struct mtk_pcie_port *port)
- 		goto err_phy_on;
- 	}
- 
--	if (!pcie->soc->startup(port))
--		return;
-+	err = pcie->soc->startup(port);
-+	if (err) {
-+		dev_info(dev, "Port%d link down\n", port->slot);
-+		goto err_soc_startup;
-+	}
- 
--	dev_info(dev, "Port%d link down\n", port->slot);
-+	return 0;
- 
-+err_soc_startup:
- 	phy_power_off(port->phy);
- err_phy_on:
- 	phy_exit(port->phy);
-@@ -903,8 +915,8 @@ static void mtk_pcie_enable_port(struct mtk_pcie_port *port)
- 	clk_disable_unprepare(port->ahb_ck);
- err_ahb_clk:
- 	clk_disable_unprepare(port->sys_ck);
--err_sys_clk:
--	mtk_pcie_port_free(port);
-+
-+	return err;
- }
- 
- static int mtk_pcie_parse_port(struct mtk_pcie *pcie,
-@@ -1072,8 +1084,13 @@ static int mtk_pcie_setup(struct mtk_pcie *pcie)
- 		return err;
- 
- 	/* enable each port, and then check link status */
--	list_for_each_entry_safe(port, tmp, &pcie->ports, list)
--		mtk_pcie_enable_port(port);
-+	list_for_each_entry_safe(port, tmp, &pcie->ports, list) {
-+		err = mtk_pcie_enable_port(port);
-+		if (err) {
-+			mtk_pcie_irq_teardown_port(port);
-+			mtk_pcie_port_free(port);
-+		}
-+	}
- 
- 	/* power down PCIe subsys if slots are all empty (link down) */
- 	if (list_empty(&pcie->ports))
-@@ -1175,14 +1192,18 @@ static int mtk_pcie_resume_noirq(struct device *dev)
- {
- 	struct mtk_pcie *pcie = dev_get_drvdata(dev);
- 	struct mtk_pcie_port *port, *tmp;
-+	int err;
- 
- 	if (list_empty(&pcie->ports))
- 		return 0;
- 
- 	clk_prepare_enable(pcie->free_ck);
- 
--	list_for_each_entry_safe(port, tmp, &pcie->ports, list)
--		mtk_pcie_enable_port(port);
-+	list_for_each_entry_safe(port, tmp, &pcie->ports, list) {
-+		err = mtk_pcie_enable_port(port);
-+		if (err)
-+			mtk_pcie_port_free(port);
-+	}
- 
- 	/* In case of EP was removed while system suspend. */
- 	if (list_empty(&pcie->ports))
+ int pci_resize_resource(struct pci_dev *dev, int resno, int size)
 -- 
 2.53.0
 
