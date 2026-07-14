@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-274547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274552-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id K2NiBEGWVmqI+QAAu9opvQ
-	(envelope-from <stable+bounces-274547-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 22:04:17 +0200
+	id akt9B1aWVmqW+QAAu9opvQ
+	(envelope-from <stable+bounces-274552-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 22:04:38 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B274075897E
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 22:04:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98656758991
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 22:04:37 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kEJjhdZh;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274547-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274547-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LXBRcqHF;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274552-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274552-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 10E3230753FA
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 20:03:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F2F9C30777BD
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 20:03:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 364A04BCADD;
-	Tue, 14 Jul 2026 20:02:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96EC241D649;
+	Tue, 14 Jul 2026 20:03:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D558648B39E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB7F441D65B
 	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 20:02:46 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784059370; cv=none; b=GmtZsTYggD0vTFbL/ilI/xcd6MFK7Xyu/wichznNoZuw1Yf4VhADLjG6F5Jf1t5oGxSBIRoA4LXZFZ2b4FELJRAgAnqfMz7qf8ZLtZWNOzjQEzAhNZiOpdvdyFuVgbwgKIpodtsxFGmH3RN4XqgUqqWJv2iEAGcU27ArXKUCPs4=
+	t=1784059376; cv=none; b=jQnTjfzguLADYq9Ovwqp6fzO5XV8h7eIofeEkHRFyamEa+rkFxMXDRtp2/48lCQj+390XxALb6wm0YaRbxdYwl9r7be5G8lwb9x8LEeyeHLJwuJx3mKhXxj0xzhdQ9ggMZZ9pOzQGXWt93zrVnvJZ/4xOi9Fhw/F/5TlO3uZkxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784059370; c=relaxed/simple;
-	bh=q0KKgdkJSW00aObGvbkyXc7XUjiixEKZxti/qwRfBDk=;
+	s=arc-20240116; t=1784059376; c=relaxed/simple;
+	bh=HTXPe6lewbMpP4x2Nk12Te7o/kOuFCTYHN3WcYNab48=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RHNocnwQkTU/thqzezbQHDRZApOBqKn/UclPb+Az9vQf1Th49++gxjaQSYhL7Z1o7grSorH5nREBSEGMzSpp/xKBaYJhYO1UPFZ7yTG7UCSEurbNqv0itiB8B0OnkeN6AaRzo2zYgcOtcSUEnvgr0fxQUFmN1PG7TzhsUl255U4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kEJjhdZh; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F27391F00ACA;
-	Tue, 14 Jul 2026 20:02:42 +0000 (UTC)
+	 MIME-Version; b=EkyYBgbINvePqXF+UrI0tb7mh2xoJb61nXnRA252lLUMbkDFajMK5R9WuwUXH1oMul0AMD33bYkA7TT2/Bw3TqPix1iAcA3oYftstTla7g1v7koOeKLCBY6Z6uj4+pMJzGRM1GE/CfB8tpWzmJGvgBGfKrFCr3k8rk/qleGpC4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LXBRcqHF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4B0C1F00ACF;
+	Tue, 14 Jul 2026 20:02:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784059363;
-	bh=l0CWaKmBDtqOuXRcrEmcTqtZfuGnsGmFSzy30FWBrNw=;
+	s=k20260515; t=1784059364;
+	bh=r5Osa4PnVV8av07qwTenvzT+YFpEFRjQkEmU2Aski3s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kEJjhdZh+FjW9jGMMLzxwot0NJ+srabZBcV0Xsq29WxQC8QFD0Ovguk4+N2TGHChU
-	 1LrMp0W8u5UDMfym4D6Q8KXbOpQjCuSWq69KjDS5qB9seude+e6iyUVsFrbyVwTixS
-	 gMXk4/5Dw0tl5oe6GfVK10mgMF4Z9g4/Q5MyC4QuZOrpaa8WTQ5PZtJ+pelCqlTRR+
-	 41nM4RKfywKO8Tikmj8k4/TDGkU1gtYDBtch2tV6Xkiw4lhbLNnv9wuVPIskB66ndZ
-	 D7tmIAFCIaz/irSS+bMiPPtr+ANGb8u0AvRUF5NjVO+4ZBemHYWQ6wajWhUZv4/ibZ
-	 8ryW7xEtfd+mQ==
+	b=LXBRcqHFVVgb8pqPAs4thbda3pF/v7SVjK4GnsgE9wkvXNoFdazprj0VvicQD//xB
+	 PlUrbLW1NzBA5olP+m/6i3giKfYFZHMVIJP1YWq5iH1G27FozChkXLUFBNJhxfbFsr
+	 sbL0hAngBisdxw5j8Fy43xTokkL/vHAK0boptS7mJEPeue1UmdenOvfA0kJd0XYUwR
+	 hgoNUpYqFGewdXrZu0ox98+aBcqYy0oyJ3CayQUNpmnLacM5+BZ6gWOi+7rrrwsfe0
+	 jv0jQC9lpa1S+uZ8Ob8T1X1gd6JBt35FHtNHZwcEo1sIK3wZM/4LRwFHzwBS+8MWY1
+	 tDmk+GbbZjIBw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Franziska Naepelt <franziska.naepelt@googlemail.com>,
-	Franziska Naepelt <franziska.naepelt@gmail.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 1/3] staging: rtl8723bs: Fix indentation issues
-Date: Tue, 14 Jul 2026 16:02:39 -0400
-Message-ID: <20260714200241.3154071-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y 2/3] staging: rtl8723bs: Fix space issues
+Date: Tue, 14 Jul 2026 16:02:40 -0400
+Message-ID: <20260714200241.3154071-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026071335-fool-faction-0f5b@gregkh>
+In-Reply-To: <20260714200241.3154071-1-sashal@kernel.org>
 References: <2026071335-fool-faction-0f5b@gregkh>
+ <20260714200241.3154071-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,90 +69,289 @@ X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-274547-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:franziska.naepelt@googlemail.com,m:franziska.naepelt@gmail.com,m:gregkh@linuxfoundation.org,m:sashal@kernel.org,m:franziskanaepelt@gmail.com,s:lists@lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-274552-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:franziska.naepelt@googlemail.com,m:gregkh@linuxfoundation.org,m:sashal@kernel.org,m:franziskanaepelt@gmail.com,s:lists@lfdr.de];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[googlemail.com,gmail.com,linuxfoundation.org,kernel.org];
+	FREEMAIL_CC(0.00)[googlemail.com,linuxfoundation.org,kernel.org];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B274075897E
+X-Rspamd-Queue-Id: 98656758991
 
 From: Franziska Naepelt <franziska.naepelt@googlemail.com>
 
-[ Upstream commit b59cba2309b16fa364df03e3693b8d45c3fadbd6 ]
+[ Upstream commit c4b811b9361b0d7ea167a79587f5ec0a13fd8863 ]
 
-Fix the following checkpatch indentation issues:
-- WARNING: suspect code indent for conditional statements (32, 48)
-- WARNING: suspect code indent for conditional statements (24, 24)
-- ERROR: code indent should use tabs where possible
+Fix the following checkpatch space issues:
+- CHECK: spaces preferred around that '*' (ctx:VxV)
+- CHECK: spaces preferred around that '+' (ctx:VxV)
+- CHECK: spaces preferred around that '-' (ctx:VxV)
+- CHECK: spaces preferred around that '|' (ctx:VxV)
+- CHECK: No space is necessary after a cast
+- WARNING: please, no spaces at the start of a line
 
-Signed-off-by: Franziska Naepelt <franziska.naepelt@gmail.com>
-Link: https://lore.kernel.org/r/20230619180351.18925-1-franziska.naepelt@gmail.com
+Signed-off-by: Franziska Naepelt <franziska.naepelt@googlemail.com>
+Link: https://lore.kernel.org/r/20230701102538.5359-1-franziska.naepelt@googlemail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Stable-dep-of: 5a752a616e75 ("staging: rtl8723bs: fix heap buffer overflow in rtw_cfg80211_set_wpa_ie()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ .../staging/rtl8723bs/os_dep/ioctl_cfg80211.c | 76 +++++++++----------
+ 1 file changed, 38 insertions(+), 38 deletions(-)
 
 diff --git a/drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c b/drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c
-index 08b8307b96d9e5..5bef829780c1b1 100644
+index 5bef829780c1b1..faceb6e592f030 100644
 --- a/drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c
 +++ b/drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c
-@@ -582,7 +582,7 @@ static int rtw_cfg80211_ap_set_encryption(struct net_device *dev, struct ieee_pa
+@@ -95,14 +95,14 @@ static struct ieee80211_channel rtw_2ghz_channels[] = {
+ static void rtw_2g_channels_init(struct ieee80211_channel *channels)
+ {
+ 	memcpy((void *)channels, (void *)rtw_2ghz_channels,
+-		sizeof(struct ieee80211_channel)*RTW_2G_CHANNELS_NUM
++		sizeof(struct ieee80211_channel) * RTW_2G_CHANNELS_NUM
+ 	);
+ }
  
- 				psecuritypriv->dot118021XGrpPrivacy = _WEP40_;
- 				if (param->u.crypt.key_len == 13)
--						psecuritypriv->dot118021XGrpPrivacy = _WEP104_;
-+					psecuritypriv->dot118021XGrpPrivacy = _WEP104_;
+ static void rtw_2g_rates_init(struct ieee80211_rate *rates)
+ {
+ 	memcpy(rates, rtw_g_rates,
+-		sizeof(struct ieee80211_rate)*RTW_G_RATES_NUM
++		sizeof(struct ieee80211_rate) * RTW_G_RATES_NUM
+ 	);
+ }
  
- 			} else if (strcmp(param->u.crypt.alg, "TKIP") == 0) {
- 				psecuritypriv->dot118021XGrpPrivacy = _TKIP_;
+@@ -126,8 +126,8 @@ static struct ieee80211_supported_band *rtw_spt_band_alloc(
+ 	if (!spt_band)
+ 		goto exit;
+ 
+-	spt_band->channels = (struct ieee80211_channel *)(((u8 *)spt_band)+sizeof(struct ieee80211_supported_band));
+-	spt_band->bitrates = (struct ieee80211_rate *)(((u8 *)spt_band->channels)+sizeof(struct ieee80211_channel)*n_channels);
++	spt_band->channels = (struct ieee80211_channel *)(((u8 *)spt_band) + sizeof(struct ieee80211_supported_band));
++	spt_band->bitrates = (struct ieee80211_rate *)(((u8 *)spt_band->channels) + sizeof(struct ieee80211_channel) * n_channels);
+ 	spt_band->band = band;
+ 	spt_band->n_channels = n_channels;
+ 	spt_band->n_bitrates = n_bitrates;
+@@ -247,10 +247,10 @@ struct cfg80211_bss *rtw_cfg80211_inform_bss(struct adapter *padapter, struct wl
+ 		u32 wpsielen = 0;
+ 		u8 *wpsie = NULL;
+ 
+-		wpsie = rtw_get_wps_ie(pnetwork->network.ies+_FIXED_IE_LENGTH_, pnetwork->network.ie_length-_FIXED_IE_LENGTH_, NULL, &wpsielen);
++		wpsie = rtw_get_wps_ie(pnetwork->network.ies + _FIXED_IE_LENGTH_, pnetwork->network.ie_length - _FIXED_IE_LENGTH_, NULL, &wpsielen);
+ 
+ 		if (wpsie && wpsielen > 0)
+-			psr = rtw_get_wps_attr_content(wpsie,  wpsielen, WPS_ATTR_SELECTED_REGISTRAR, (u8 *)(&sr), NULL);
++			psr = rtw_get_wps_attr_content(wpsie, wpsielen, WPS_ATTR_SELECTED_REGISTRAR, (u8 *)(&sr), NULL);
+ 
+ 		if (sr != 0) {
+ 			/* it means under processing WPS */
+@@ -277,9 +277,9 @@ struct cfg80211_bss *rtw_cfg80211_inform_bss(struct adapter *padapter, struct wl
+ 	/* We've set wiphy's signal_type as CFG80211_SIGNAL_TYPE_MBM: signal strength in mBm (100*dBm) */
+ 	if (check_fwstate(pmlmepriv, _FW_LINKED) == true &&
+ 		is_same_network(&pmlmepriv->cur_network.network, &pnetwork->network, 0)) {
+-		notify_signal = 100*translate_percentage_to_dbm(padapter->recvpriv.signal_strength);/* dbm */
++		notify_signal = 100 * translate_percentage_to_dbm(padapter->recvpriv.signal_strength);/* dbm */
+ 	} else {
+-		notify_signal = 100*translate_percentage_to_dbm(pnetwork->network.phy_info.signal_strength);/* dbm */
++		notify_signal = 100 * translate_percentage_to_dbm(pnetwork->network.phy_info.signal_strength);/* dbm */
+ 	}
+ 
+ 	buf = kzalloc(MAX_BSSINFO_LEN, GFP_ATOMIC);
+@@ -453,20 +453,20 @@ void rtw_cfg80211_indicate_connect(struct adapter *padapter)
+ 		roam_info.links[0].channel = notify_channel;
+ 		roam_info.links[0].bssid = cur_network->network.mac_address;
+ 		roam_info.req_ie =
+-			pmlmepriv->assoc_req+sizeof(struct ieee80211_hdr_3addr)+2;
++			pmlmepriv->assoc_req + sizeof(struct ieee80211_hdr_3addr) + 2;
+ 		roam_info.req_ie_len =
+-			pmlmepriv->assoc_req_len-sizeof(struct ieee80211_hdr_3addr)-2;
++			pmlmepriv->assoc_req_len - sizeof(struct ieee80211_hdr_3addr) - 2;
+ 		roam_info.resp_ie =
+-			pmlmepriv->assoc_rsp+sizeof(struct ieee80211_hdr_3addr)+6;
++			pmlmepriv->assoc_rsp + sizeof(struct ieee80211_hdr_3addr) + 6;
+ 		roam_info.resp_ie_len =
+-			pmlmepriv->assoc_rsp_len-sizeof(struct ieee80211_hdr_3addr)-6;
++			pmlmepriv->assoc_rsp_len - sizeof(struct ieee80211_hdr_3addr) - 6;
+ 		cfg80211_roamed(padapter->pnetdev, &roam_info, GFP_ATOMIC);
+ 	} else {
+ 		cfg80211_connect_result(padapter->pnetdev, cur_network->network.mac_address
+-			, pmlmepriv->assoc_req+sizeof(struct ieee80211_hdr_3addr)+2
+-			, pmlmepriv->assoc_req_len-sizeof(struct ieee80211_hdr_3addr)-2
+-			, pmlmepriv->assoc_rsp+sizeof(struct ieee80211_hdr_3addr)+6
+-			, pmlmepriv->assoc_rsp_len-sizeof(struct ieee80211_hdr_3addr)-6
++			, pmlmepriv->assoc_req + sizeof(struct ieee80211_hdr_3addr) + 2
++			, pmlmepriv->assoc_req_len - sizeof(struct ieee80211_hdr_3addr) - 2
++			, pmlmepriv->assoc_rsp + sizeof(struct ieee80211_hdr_3addr) + 6
++			, pmlmepriv->assoc_rsp_len - sizeof(struct ieee80211_hdr_3addr) - 6
+ 			, WLAN_STATUS_SUCCESS, GFP_ATOMIC);
+ 	}
+ }
+@@ -721,7 +721,7 @@ static int rtw_cfg80211_set_encryption(struct net_device *dev, struct ieee_param
+ 	param->u.crypt.err = 0;
+ 	param->u.crypt.alg[IEEE_CRYPT_ALG_NAME_LEN - 1] = '\0';
+ 
+-	if (param_len < (u32) ((u8 *) param->u.crypt.key - (u8 *) param) + param->u.crypt.key_len) {
++	if (param_len < (u32)((u8 *)param->u.crypt.key - (u8 *)param) + param->u.crypt.key_len) {
+ 		ret =  -EINVAL;
+ 		goto exit;
+ 	}
+@@ -1036,10 +1036,10 @@ static int cfg80211_rtw_get_station(struct wiphy *wiphy,
+ 	}
+ 
+ 	/* for Ad-Hoc/AP mode */
+-	if ((check_fwstate(pmlmepriv, WIFI_ADHOC_STATE)
+- || check_fwstate(pmlmepriv, WIFI_ADHOC_MASTER_STATE)
+- || check_fwstate(pmlmepriv, WIFI_AP_STATE))
+-		&& check_fwstate(pmlmepriv, _FW_LINKED)) {
++	if ((check_fwstate(pmlmepriv, WIFI_ADHOC_STATE) ||
++	     check_fwstate(pmlmepriv, WIFI_ADHOC_MASTER_STATE) ||
++	     check_fwstate(pmlmepriv, WIFI_AP_STATE)) &&
++	    check_fwstate(pmlmepriv, _FW_LINKED)) {
+ 		/* TODO: should acquire station info... */
+ 	}
+ 
+@@ -1238,7 +1238,7 @@ static int cfg80211_rtw_scan(struct wiphy *wiphy
+ 	spin_unlock_bh(&pwdev_priv->scan_req_lock);
+ 
+ 	if (check_fwstate(pmlmepriv, WIFI_AP_STATE) == true) {
+-		if (check_fwstate(pmlmepriv, WIFI_UNDER_WPS|_FW_UNDER_SURVEY|_FW_UNDER_LINKING) == true) {
++		if (check_fwstate(pmlmepriv, WIFI_UNDER_WPS | _FW_UNDER_SURVEY | _FW_UNDER_LINKING) == true) {
+ 			need_indicate_scan_done = true;
+ 			goto check_need_indicate_scan_done;
+ 		}
+@@ -1292,7 +1292,7 @@ static int cfg80211_rtw_scan(struct wiphy *wiphy
+ 	}
+ 
+ 	/* parsing channels, n_channels */
+-	memset(ch, 0, sizeof(struct rtw_ieee80211_channel)*RTW_CHANNEL_SCAN_AMOUNT);
++	memset(ch, 0, sizeof(struct rtw_ieee80211_channel) * RTW_CHANNEL_SCAN_AMOUNT);
+ 	for (i = 0; i < request->n_channels && i < RTW_CHANNEL_SCAN_AMOUNT; i++) {
+ 		ch[i].hw_value = request->channels[i]->hw_value;
+ 		ch[i].flags = request->channels[i]->flags;
 @@ -1306,7 +1306,7 @@ static int cfg80211_rtw_scan(struct wiphy *wiphy
  	} else if (request->n_channels <= 4) {
  		for (j = request->n_channels - 1; j >= 0; j--)
  			for (i = 0; i < survey_times; i++)
--			memcpy(&ch[j*survey_times+i], &ch[j], sizeof(struct rtw_ieee80211_channel));
-+				memcpy(&ch[j*survey_times+i], &ch[j], sizeof(struct rtw_ieee80211_channel));
+-				memcpy(&ch[j*survey_times+i], &ch[j], sizeof(struct rtw_ieee80211_channel));
++				memcpy(&ch[j * survey_times + i], &ch[j], sizeof(struct rtw_ieee80211_channel));
  		_status = rtw_sitesurvey_cmd(padapter, ssid, RTW_SSID_SCAN_AMOUNT, ch, survey_times * request->n_channels);
  	} else {
  		_status = rtw_sitesurvey_cmd(padapter, ssid, RTW_SSID_SCAN_AMOUNT, NULL, 0);
-@@ -2811,7 +2811,7 @@ int rtw_wdev_alloc(struct adapter *padapter, struct device *dev)
- 	wdev->netdev = pnetdev;
+@@ -1462,7 +1462,7 @@ static int rtw_cfg80211_set_wpa_ie(struct adapter *padapter, u8 *pie, size_t iel
+ 		goto exit;
+ 	}
  
- 	wdev->iftype = NL80211_IFTYPE_STATION; /*  will be init in rtw_hal_init() */
--	                                       /*  Must sync with _rtw_init_mlme_priv() */
-+					   /*  Must sync with _rtw_init_mlme_priv() */
- 					   /*  pmlmepriv->fw_state = WIFI_STATION_STATE */
- 	padapter->rtw_wdev = wdev;
- 	pnetdev->ieee80211_ptr = wdev;
+-	if (ielen > MAX_WPA_IE_LEN+MAX_WPS_IE_LEN+MAX_P2P_IE_LEN) {
++	if (ielen > MAX_WPA_IE_LEN + MAX_WPS_IE_LEN + MAX_P2P_IE_LEN) {
+ 		ret = -EINVAL;
+ 		goto exit;
+ 	}
+@@ -1482,19 +1482,19 @@ static int rtw_cfg80211_set_wpa_ie(struct adapter *padapter, u8 *pie, size_t iel
+ 
+ 	pwpa = rtw_get_wpa_ie(buf, &wpa_ielen, ielen);
+ 	if (pwpa && wpa_ielen > 0) {
+-		if (rtw_parse_wpa_ie(pwpa, wpa_ielen+2, &group_cipher, &pairwise_cipher, NULL) == _SUCCESS) {
++		if (rtw_parse_wpa_ie(pwpa, wpa_ielen + 2, &group_cipher, &pairwise_cipher, NULL) == _SUCCESS) {
+ 			padapter->securitypriv.dot11AuthAlgrthm = dot11AuthAlgrthm_8021X;
+ 			padapter->securitypriv.ndisauthtype = Ndis802_11AuthModeWPAPSK;
+-			memcpy(padapter->securitypriv.supplicant_ie, &pwpa[0], wpa_ielen+2);
++			memcpy(padapter->securitypriv.supplicant_ie, &pwpa[0], wpa_ielen + 2);
+ 		}
+ 	}
+ 
+ 	pwpa2 = rtw_get_wpa2_ie(buf, &wpa2_ielen, ielen);
+ 	if (pwpa2 && wpa2_ielen > 0) {
+-		if (rtw_parse_wpa2_ie(pwpa2, wpa2_ielen+2, &group_cipher, &pairwise_cipher, NULL) == _SUCCESS) {
++		if (rtw_parse_wpa2_ie(pwpa2, wpa2_ielen + 2, &group_cipher, &pairwise_cipher, NULL) == _SUCCESS) {
+ 			padapter->securitypriv.dot11AuthAlgrthm = dot11AuthAlgrthm_8021X;
+ 			padapter->securitypriv.ndisauthtype = Ndis802_11AuthModeWPA2PSK;
+-			memcpy(padapter->securitypriv.supplicant_ie, &pwpa2[0], wpa2_ielen+2);
++			memcpy(padapter->securitypriv.supplicant_ie, &pwpa2[0], wpa2_ielen + 2);
+ 		}
+ 	}
+ 
+@@ -1893,7 +1893,7 @@ static int cfg80211_rtw_set_pmksa(struct wiphy *wiphy,
+ 
+ 			memcpy(psecuritypriv->PMKIDList[index].PMKID, (u8 *)pmksa->pmkid, WLAN_PMKID_LEN);
+ 			psecuritypriv->PMKIDList[index].bUsed = true;
+-			psecuritypriv->PMKIDIndex = index+1;
++			psecuritypriv->PMKIDIndex = index + 1;
+ 			blInserted = true;
+ 			break;
+ 		}
+@@ -2095,8 +2095,8 @@ static netdev_tx_t rtw_cfg80211_monitor_if_xmit_entry(struct sk_buff *skb, struc
+ 		_rtw_xmit_entry(skb, padapter->pnetdev);
+ 		return NETDEV_TX_OK;
+ 
+-	} else if ((frame_control & (IEEE80211_FCTL_FTYPE|IEEE80211_FCTL_STYPE)) ==
+-		   (IEEE80211_FTYPE_MGMT|IEEE80211_STYPE_ACTION)) {
++	} else if ((frame_control & (IEEE80211_FCTL_FTYPE | IEEE80211_FCTL_STYPE)) ==
++		   (IEEE80211_FTYPE_MGMT | IEEE80211_STYPE_ACTION)) {
+ 		/* only for action frames */
+ 		struct xmit_frame		*pmgntframe;
+ 		struct pkt_attrib	*pattrib;
+@@ -2210,7 +2210,7 @@ static int rtw_cfg80211_add_monitor_if(struct adapter *padapter, char *name, str
+ 		goto out;
+ 
+ 	*ndev = pwdev_priv->pmon_ndev = mon_ndev;
+-	memcpy(pwdev_priv->ifname_mon, name, IFNAMSIZ+1);
++	memcpy(pwdev_priv->ifname_mon, name, IFNAMSIZ + 1);
+ 
+ out:
+ 	if (ret && mon_wdev) {
+@@ -2304,14 +2304,14 @@ static int rtw_add_beacon(struct adapter *adapter, const u8 *head, size_t head_l
+ 	if (head_len < 24)
+ 		return -EINVAL;
+ 
+-	pbuf = rtw_zmalloc(head_len+tail_len);
++	pbuf = rtw_zmalloc(head_len + tail_len);
+ 	if (!pbuf)
+ 		return -ENOMEM;
+ 
+-	memcpy(pbuf, (void *)head+24, head_len-24);/*  24 =beacon header len. */
+-	memcpy(pbuf+head_len-24, (void *)tail, tail_len);
++	memcpy(pbuf, (void *)head + 24, head_len - 24);/*  24 =beacon header len. */
++	memcpy(pbuf + head_len - 24, (void *)tail, tail_len);
+ 
+-	len = head_len+tail_len-24;
++	len = head_len + tail_len - 24;
+ 
+ 	/* check wps ie if inclued */
+ 	rtw_get_wps_ie(pbuf + _FIXED_IE_LENGTH_, len - _FIXED_IE_LENGTH_, NULL, &wps_ielen);
+@@ -2601,7 +2601,7 @@ static int cfg80211_rtw_mgmt_tx(struct wiphy *wiphy,
+ 	pwdev_priv = adapter_wdev_data(padapter);
+ 
+ 	/* cookie generation */
+-	*cookie = (unsigned long) buf;
++	*cookie = (unsigned long)buf;
+ 
+ 	/* indicate ack before issue frame to avoid racing with rsp frame */
+ 	rtw_cfg80211_mgmt_tx_status(padapter, *cookie, buf, len, ack, GFP_KERNEL);
 -- 
 2.53.0
 
