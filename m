@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-274060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274065-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id BCTKLfaNVWoUqAAAu9opvQ
-	(envelope-from <stable+bounces-274060-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 03:16:38 +0200
+	id F8nZMAKOVWocqAAAu9opvQ
+	(envelope-from <stable+bounces-274065-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 03:16:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51AB0750092
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 03:16:38 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEE257500A9
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 03:16:49 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TqsgD0cc;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274060-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-274060-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L9aGc9g0;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274065-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274065-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BA2BD300ACAB
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 01:16:37 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 787D3300F277
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 01:16:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA13935CB6F;
-	Tue, 14 Jul 2026 01:16:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E316A1EEA31;
+	Tue, 14 Jul 2026 01:16:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 959201EEA31
-	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 01:16:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A0023559C9
+	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 01:16:34 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783991794; cv=none; b=iSzQMlMy8+3XkF1QvJ99yBPWeUDv56MLbmQ7/MMX80I9KF2DZsEI677yQ6+v6W/ShYgpLLbYlK/nhIK12sLHg5xwGsyIbSsQlzswfsjN/KJiOxI6uodvtuXf08sU5GyOyogKmKiwZV071CKeq8Q5EklA5c9+Eq3QNiVBiJu05/Q=
+	t=1783991796; cv=none; b=M6KtZdOncH6pplX/bg3eo/c1o3hfTCMEaTFtMUJ0LrhmGg9RusCMzMRq3pZpFZ6yBxxefHtAsIVQATSmaZQ+hiT+uQNLwVz97u6iyM7+WEX9AGNyzJxr6D7D44QOweKG8XLgY5oYf3502RNTl1fjaO9a9pOKvsQjZzd+K00GdwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783991794; c=relaxed/simple;
-	bh=y9Tx4O4Kh7/Qy6StTSTQcuqiwyc11VYYBjAz6Es0UOw=;
+	s=arc-20240116; t=1783991796; c=relaxed/simple;
+	bh=kUI91N9gZuZolNPckWq1vC52ozfd3rjDGKITszkNZgA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qAzA8ZChRSLMiliVg2aRFmB+CJMiujOdlZ65wzpUWsacrwKJ86VsE50nENcjo+s9f3f+T/Z3anoGd9Yu7Sx0AUhE66oFbJhUMeR0DIkYy5QZswuOYJH7b3CYYGNOjj4y7XwuE3dDf9LrA1YgvAwnGFgYtGDLi8UtjeGoKa87q+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TqsgD0cc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E14061F00A3D;
-	Tue, 14 Jul 2026 01:16:32 +0000 (UTC)
+	 MIME-Version; b=ctOkvnQA+4y+gyZGhinQ1U8imHOq/V97ew7U+ziubP4ox7goMVZXPHhGHTAGgTKLRtuBj75nCx/OlF05S7dSpbXJUZJcTcU+1iBeceGpEke5RusQa3bZb7pZRx/DAezRow5TTdOSdh8JJi9FDU2rmVXfsvZwUCOs7LLTMjU+5cU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L9aGc9g0; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE59A1F00AC4;
+	Tue, 14 Jul 2026 01:16:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783991793;
-	bh=SbryL8lRD5vxlaZlIgmZu6POLaVLtYTK41V1nV9Zq3k=;
+	s=k20260515; t=1783991794;
+	bh=1wRQ4CeMwPep9uoUigCebihX0N5fify4HwTYUXrLNiw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TqsgD0ccbhCTzCYeyZ5GwlBkHoOQy4TTLVAZconK542Wh02GpXfD3z2HQC/nqgOfz
-	 A2ZY/Aj5ykdQ49aBnMN6SZwVGuLeFpC+n5rYMoz/QCCiIvZ4mOHJBBVvoWiInYweeM
-	 npFOGR5Ny6R5n1nije8FbvvxVGgDT4Me+tia/BgDfOPze9DDagWfrKHadWLTkKITcH
-	 KKM8n1OvocDcU+74Rt7GlXCI+laIT0ocqYGQp1RsD0rH9MybIEVocl1uKtW4Z7K8L2
-	 fVFFh7N6ueFMlyQgroXOSiowZk/n6ibOsp72dMCaWecnRDfGZhKz0ABvu1oTXFBqfw
-	 Of/xST8ZFDVTg==
+	b=L9aGc9g0WtlA487MlP97v5gMltew9Xz4gd2sogOWN31dHlsulMw/cAVBeiWPWHLpl
+	 LuJ97LWhTGdr+KFpL4iLw0pNZHs6anGFv+1UUMYWZm17TawEN+pvQqwGeUpcTWdFcx
+	 WsAqkEkDtvZZ+iHNT/QV09Perf6bWDjljogumMK7GDTz8ZRQCNsXXgT2KGzpTVOeri
+	 EhiYMEwjLJX2oEednWcawZeAWi6DmoChP/BwXEzewL2hVBi6pBE/q/R8EeT0qI5FAB
+	 sdPaHrHzDKmfhfRAKSxNsriNEuecvcBDuLYQ8nT0Y57Ty1H+nIlXx81eQDLMuD4MXn
+	 QYV0CA7XN5UqQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Colin Ian King <colin.i.king@gmail.com>,
-	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
+Cc: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
+	Stable@vger.kernel.org,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y 5/8] iio: invensense: remove redundant initialization of variable period
-Date: Mon, 13 Jul 2026 21:16:24 -0400
-Message-ID: <20260714011627.2188779-5-sashal@kernel.org>
+Subject: [PATCH 5.15.y 6/8] iio: invensense: fix timestamp glitches when switching frequency
+Date: Mon, 13 Jul 2026 21:16:25 -0400
+Message-ID: <20260714011627.2188779-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260714011627.2188779-1-sashal@kernel.org>
 References: <2026071317-refill-huntress-d0e2@gregkh>
@@ -67,79 +67,243 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-3.66 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-274060-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:colin.i.king@gmail.com,m:jean-baptiste.maneyrol@tdk.com,m:Jonathan.Cameron@huawei.com,m:sashal@kernel.org,m:coliniking@gmail.com,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-274065-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:jean-baptiste.maneyrol@tdk.com,m:Stable@vger.kernel.org,m:Jonathan.Cameron@huawei.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,tdk.com,huawei.com,kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tdk.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp,huawei.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tdk.com:email,vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,huawei.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 51AB0750092
+X-Rspamd-Queue-Id: BEE257500A9
 
-From: Colin Ian King <colin.i.king@gmail.com>
+From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
 
-[ Upstream commit b58b13f156c00c2457035b7071eaaac105fe6836 ]
+[ Upstream commit bf8367b00c33c64a9391c262bb2e11d274c9f2a4 ]
 
-The variable period is being initialized with a value that is never
-read, it is being re-assigned a new value later on before it is read.
-The initialization is redundant and can be removed.
+When a sensor is running and there is a FIFO frequency change due to
+another sensor turned on/off, there are glitches on timestamp. Fix that
+by using only interrupt timestamp when there is the corresponding sensor
+data in the FIFO.
 
-Cleans up clang scan build warning:
-Value stored to 'period' during its initialization is never
-read [deadcode.DeadStores]
+Delete FIFO period handling and simplify internal functions.
 
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-Acked-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Link: https://lore.kernel.org/r/20240106153202.54861-1-colin.i.king@gmail.com
+Update integration inside inv_mpu6050 and inv_icm42600 drivers.
+
+Fixes: 0ecc363ccea7 ("iio: make invensense timestamp module generic")
+Cc: Stable@vger.kernel.org
+Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Link: https://lore.kernel.org/r/20240426094835.138389-1-inv.git-commit@tdk.com
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Stable-dep-of: affe3f077d7a ("iio: imu: inv_icm42600: fix timestamping by limiting FIFO reading")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/common/inv_sensors/inv_sensors_timestamp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../inv_sensors/inv_sensors_timestamp.c       | 30 ++++++++-----------
+ .../imu/inv_icm42600/inv_icm42600_buffer.c    | 20 +++++--------
+ drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c    |  2 +-
+ .../linux/iio/common/inv_sensors_timestamp.h  |  3 +-
+ 4 files changed, 23 insertions(+), 32 deletions(-)
 
 diff --git a/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c b/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
-index 033d3788dcf73b..77ab578ee1698d 100644
+index 77ab578ee1698d..d904fdd67d38ef 100644
 --- a/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
 +++ b/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
-@@ -105,7 +105,7 @@ void inv_sensors_timestamp_interrupt(struct inv_sensors_timestamp *ts,
+@@ -70,13 +70,13 @@ int inv_sensors_timestamp_update_odr(struct inv_sensors_timestamp *ts,
+ }
+ EXPORT_SYMBOL_NS_GPL(inv_sensors_timestamp_update_odr, IIO_INV_SENSORS_TIMESTAMP);
+ 
+-static bool inv_validate_period(struct inv_sensors_timestamp *ts, uint32_t period, uint32_t mult)
++static bool inv_validate_period(struct inv_sensors_timestamp *ts, uint32_t period)
+ {
+ 	uint32_t period_min, period_max;
+ 
+ 	/* check that period is acceptable */
+-	period_min = ts->min_period * mult;
+-	period_max = ts->max_period * mult;
++	period_min = ts->min_period * ts->mult;
++	period_max = ts->max_period * ts->mult;
+ 	if (period > period_min && period < period_max)
+ 		return true;
+ 	else
+@@ -84,32 +84,30 @@ static bool inv_validate_period(struct inv_sensors_timestamp *ts, uint32_t perio
+ }
+ 
+ static bool inv_compute_chip_period(struct inv_sensors_timestamp *ts,
+-				    uint32_t mult, uint32_t period)
++				    uint32_t period)
+ {
+ 	uint32_t new_chip_period;
+ 
+-	if (!inv_validate_period(ts, period, mult))
++	if (!inv_validate_period(ts, period))
+ 		return false;
+ 
+ 	/* update chip internal period estimation */
+-	new_chip_period = period / mult;
++	new_chip_period = period / ts->mult;
+ 	inv_update_acc(&ts->chip_period, new_chip_period);
+ 
+ 	return true;
+ }
+ 
+ void inv_sensors_timestamp_interrupt(struct inv_sensors_timestamp *ts,
+-				      uint32_t fifo_period, size_t fifo_nb,
+-				      size_t sensor_nb, int64_t timestamp)
++				     size_t sample_nb, int64_t timestamp)
+ {
  	struct inv_sensors_timestamp_interval *it;
  	int64_t delta, interval;
- 	const uint32_t fifo_mult = fifo_period / ts->chip.clock_period;
--	uint32_t period = ts->period;
-+	uint32_t period;
+-	const uint32_t fifo_mult = fifo_period / ts->chip.clock_period;
+ 	uint32_t period;
  	int32_t m;
  	bool valid = false;
  
+-	if (fifo_nb == 0)
++	if (sample_nb == 0)
+ 		return;
+ 
+ 	/* update interrupt timestamp and compute chip and sensor periods */
+@@ -119,8 +117,8 @@ void inv_sensors_timestamp_interrupt(struct inv_sensors_timestamp *ts,
+ 	delta = it->up - it->lo;
+ 	if (it->lo != 0) {
+ 		/* compute period: delta time divided by number of samples */
+-		period = div_s64(delta, fifo_nb);
+-		valid = inv_compute_chip_period(ts, fifo_mult, period);
++		period = div_s64(delta, sample_nb);
++		valid = inv_compute_chip_period(ts, period);
+ 		/* update sensor period if chip internal period is updated */
+ 		if (valid)
+ 			ts->period = ts->mult * ts->chip_period.val;
+@@ -129,20 +127,18 @@ void inv_sensors_timestamp_interrupt(struct inv_sensors_timestamp *ts,
+ 	/* no previous data, compute theoritical value from interrupt */
+ 	if (ts->timestamp == 0) {
+ 		/* elapsed time: sensor period * sensor samples number */
+-		interval = (int64_t)ts->period * (int64_t)sensor_nb;
++		interval = (int64_t)ts->period * (int64_t)sample_nb;
+ 		ts->timestamp = it->up - interval;
+ 		return;
+ 	}
+ 
+ 	/* if interrupt interval is valid, sync with interrupt timestamp */
+ 	if (valid) {
+-		/* compute measured fifo_period */
+-		fifo_period = fifo_mult * ts->chip_period.val;
+ 		/* delta time between last sample and last interrupt */
+ 		delta = it->lo - ts->timestamp;
+ 		/* if there are multiple samples, go back to first one */
+-		while (delta >= (fifo_period * 3 / 2))
+-			delta -= fifo_period;
++		while (delta >= (ts->period * 3 / 2))
++			delta -= ts->period;
+ 		/* compute maximal adjustment value */
+ 		m = INV_SENSORS_TIMESTAMP_JITTER((int64_t)ts->period, ts->chip.jitter);
+ 		if (delta > m)
+diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
+index 24b43dc75f72a2..e0e159e5de74af 100644
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
+@@ -515,20 +515,20 @@ int inv_icm42600_buffer_fifo_parse(struct inv_icm42600_state *st)
+ 		return 0;
+ 
+ 	/* handle gyroscope timestamp and FIFO data parsing */
+-	ts = iio_priv(st->indio_gyro);
+-	inv_sensors_timestamp_interrupt(ts, st->fifo.period, st->fifo.nb.total,
+-					st->fifo.nb.gyro, st->timestamp.gyro);
+ 	if (st->fifo.nb.gyro > 0) {
++		ts = iio_priv(st->indio_gyro);
++		inv_sensors_timestamp_interrupt(ts, st->fifo.nb.gyro,
++						st->timestamp.gyro);
+ 		ret = inv_icm42600_gyro_parse_fifo(st->indio_gyro);
+ 		if (ret)
+ 			return ret;
+ 	}
+ 
+ 	/* handle accelerometer timestamp and FIFO data parsing */
+-	ts = iio_priv(st->indio_accel);
+-	inv_sensors_timestamp_interrupt(ts, st->fifo.period, st->fifo.nb.total,
+-					st->fifo.nb.accel, st->timestamp.accel);
+ 	if (st->fifo.nb.accel > 0) {
++		ts = iio_priv(st->indio_accel);
++		inv_sensors_timestamp_interrupt(ts, st->fifo.nb.accel,
++						st->timestamp.accel);
+ 		ret = inv_icm42600_accel_parse_fifo(st->indio_accel);
+ 		if (ret)
+ 			return ret;
+@@ -556,9 +556,7 @@ int inv_icm42600_buffer_hwfifo_flush(struct inv_icm42600_state *st,
+ 
+ 	if (st->fifo.nb.gyro > 0) {
+ 		ts = iio_priv(st->indio_gyro);
+-		inv_sensors_timestamp_interrupt(ts, st->fifo.period,
+-						st->fifo.nb.total, st->fifo.nb.gyro,
+-						gyro_ts);
++		inv_sensors_timestamp_interrupt(ts, st->fifo.nb.gyro, gyro_ts);
+ 		ret = inv_icm42600_gyro_parse_fifo(st->indio_gyro);
+ 		if (ret)
+ 			return ret;
+@@ -566,9 +564,7 @@ int inv_icm42600_buffer_hwfifo_flush(struct inv_icm42600_state *st,
+ 
+ 	if (st->fifo.nb.accel > 0) {
+ 		ts = iio_priv(st->indio_accel);
+-		inv_sensors_timestamp_interrupt(ts, st->fifo.period,
+-						st->fifo.nb.total, st->fifo.nb.accel,
+-						accel_ts);
++		inv_sensors_timestamp_interrupt(ts, st->fifo.nb.accel, accel_ts);
+ 		ret = inv_icm42600_accel_parse_fifo(st->indio_accel);
+ 		if (ret)
+ 			return ret;
+diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
+index d83f61a9950494..41e978773b0982 100644
+--- a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
+@@ -109,7 +109,7 @@ irqreturn_t inv_mpu6050_read_fifo(int irq, void *p)
+ 	nb = fifo_count / bytes_per_datum;
+ 	/* Each FIFO data contains all sensors, so same number for FIFO and sensor data */
+ 	fifo_period = NSEC_PER_SEC / INV_MPU6050_DIVIDER_TO_FIFO_RATE(st->chip_config.divider);
+-	inv_sensors_timestamp_interrupt(&st->timestamp, fifo_period, nb, nb, pf->timestamp);
++	inv_sensors_timestamp_interrupt(&st->timestamp, nb, pf->timestamp);
+ 	inv_sensors_timestamp_apply_odr(&st->timestamp, fifo_period, nb, 0);
+ 	for (i = 0; i < nb; ++i) {
+ 		result = regmap_noinc_read(st->map, st->reg->fifo_r_w,
+diff --git a/include/linux/iio/common/inv_sensors_timestamp.h b/include/linux/iio/common/inv_sensors_timestamp.h
+index a47d304d1ba7c4..8d506f1e9df292 100644
+--- a/include/linux/iio/common/inv_sensors_timestamp.h
++++ b/include/linux/iio/common/inv_sensors_timestamp.h
+@@ -71,8 +71,7 @@ int inv_sensors_timestamp_update_odr(struct inv_sensors_timestamp *ts,
+ 				     uint32_t period, bool fifo);
+ 
+ void inv_sensors_timestamp_interrupt(struct inv_sensors_timestamp *ts,
+-				     uint32_t fifo_period, size_t fifo_nb,
+-				     size_t sensor_nb, int64_t timestamp);
++				     size_t sample_nb, int64_t timestamp);
+ 
+ static inline int64_t inv_sensors_timestamp_pop(struct inv_sensors_timestamp *ts)
+ {
 -- 
 2.53.0
 
