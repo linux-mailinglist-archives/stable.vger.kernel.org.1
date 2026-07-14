@@ -1,161 +1,142 @@
-Return-Path: <stable+bounces-274260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274261-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 5facNOVBVmpI2QAAu9opvQ
-	(envelope-from <stable+bounces-274260-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 16:04:21 +0200
+	id uHpmHCJCVmpR2QAAu9opvQ
+	(envelope-from <stable+bounces-274261-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 16:05:22 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 346B675578A
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 16:04:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2704475579F
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 16:05:17 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Slj+vHmW;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274260-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274260-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M+JcNMVV;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274261-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274261-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E0B113016D28
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 14:00:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9D79430494C7
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 14:01:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9652D44CAFC;
-	Tue, 14 Jul 2026 14:00:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8177B47CC72;
+	Tue, 14 Jul 2026 14:01:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18061365A1A;
-	Tue, 14 Jul 2026 14:00:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1293F44CAFC;
+	Tue, 14 Jul 2026 14:01:26 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784037656; cv=none; b=Selxcggtsye0CnnAjjfR8l2vBYrZxasP7MtZsbIACQ5xCQLQMvl10hAypKyA2o+xguIVfPaVEEOrka6E8FehCR4kDIGVxstAvk4OE01KhqrjyP6h5o9yzFJj28JELynyfU949bHoj0bP2LIxeXDVDU/99uPzl+hxJ4KDuiCKQrA=
+	t=1784037688; cv=none; b=cKEWNJtLjwBYm5WPbfvG7qOaUZecfUCNYWv55UH23lmIDV9jakcMTWorq7ZICVLCDCYdQwjKNJgHCosnvUNROnL77y1D0VDb0uy5YBMLIn0qVT5X8efNtoRarCNfH0QAWddBHneQ6XFF5nX8Hq0EhxH2OA2Tqx8458w+sma3sBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784037656; c=relaxed/simple;
-	bh=pVPhzD1eh8VjrToQ2HKBT7Tb8A3a8JGraswfgJYL2+o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VqX42opMGguyv+R2M9huZQ4IswfNJ4rvHeEmfSva+QzSt4tWYxAkCBQbH1sy8kkgzBOK0LUs2eclUQbRH1z5lT5e9EGn9YaoGsqTYij4fQ2/2BsWqn6/DQAUfyc95RmGSG8QiH4RWjYov4KKLZbyeUiYRc/3R/C475CsaM/eJoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Slj+vHmW; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 7BCFC1F000E9;
-	Tue, 14 Jul 2026 14:00:54 +0000 (UTC)
+	s=arc-20240116; t=1784037688; c=relaxed/simple;
+	bh=d0V2rb/osngXT8gHWvu1/UCcS5rQAWXYd/aLH1oV/Gk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=crs+phpSuateI9kS/1R5abWBkM/xsYTLkQDlrhG1tQNqabVZiM7t6h+IRJofKome9i88x8Xw8XUz73KCFloyFLdd2D80pv1eoGT3iyaXnpdBgc2abfx8fX9+GtRZypqtc9TSg6UsZOtXA2f4bFzfNB52s90MfbLPDmuPOd07i9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M+JcNMVV; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 272E41F000E9;
+	Tue, 14 Jul 2026 14:01:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784037655;
-	bh=3Bnug0ugvPvgrYXSPNVojFqJBf6D2vxnzOlW/MCJf3k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Slj+vHmWEim2I8f+C7GynElV80Bu2OqtCy1pfsqCKKmVcqM4TUrrwbMRP9CWffF9j
-	 Hx/GW1VzV5dFPYZeUh6o6Y/yedpoI7hmxwTUPC5PVFeyk838DsDKDIfj1VUC3LpUVr
-	 aALlZlvAqmrFhdPBi6uOF5y3HxVD2eteYhX7/BRbHozv9bJx7x3PZKjRb8brEuSw7y
-	 Wapmw3D7tHollekmSF4shf0NedbrM4Hio2pu+S95LwThbqyH9q1l4W1uGr9RDObVcH
-	 tBqejGnzmzGkRga6XKF7iK3xU5N/8oLYGfrGjOtsNlgg2s9BCmqW7XR9By49DAyvuI
-	 MsA6JIKOTRZsQ==
-Date: Tue, 14 Jul 2026 16:00:42 +0200
-From: Nicolas Schier <nsc@kernel.org>
-To: Sergei Litvin <litvindev@gmail.com>, miguel.ojeda.sandonis@gmail.com,
-	ojeda@kernel.org
-Cc: nathan@kernel.org, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
+	s=k20260515; t=1784037686;
+	bh=QRQ/R6IhyCOalIrS8ASQJa7G5ZabRey9LTdrVciopCs=;
+	h=From:To:Cc:Subject:Date;
+	b=M+JcNMVV9CDgT0gPBIPVPQSA27IJL/gRBnZAOPTX1WydwcRhmGm7WHkJ+0D2Da0Kb
+	 VsFEwHsYZBFvPHqSiZwuu5jB3yxU3xf0i88j8ksfrRuxJJcdSEQ2YnqNfLZGEYwsli
+	 wxb6yIDiox1plPbqZwCpcUmzzxSksbVCCQfRkG83JP0ME+ys8v5Lqxy4si2ws1L+sF
+	 rDpjKU3XhM5bR5kp+XGi8OQNWTsNdMoRzvrXKVo4dGgPKqp+hX97+wl3G2ZcMYM1lb
+	 0u8cVMT42gYYMQHLstUqNdW4T61VCoZ+Jr8BJvRSJmB1paB7OdGnxqbV1KVe4ekiFK
+	 xGhcU/6ZOQVMg==
+From: SJ Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SJ Park <sj@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH v2] scripts/tags.sh: Prevent binary files appearing in
- cscope.files
-Message-ID: <alZBCoBorSGsCw-t@levanger>
-Mail-Followup-To: Sergei Litvin <litvindev@gmail.com>,
-	miguel.ojeda.sandonis@gmail.com, ojeda@kernel.org,
-	nathan@kernel.org, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
-	stable@vger.kernel.org
-References: <CANiq72kHbVQfNrum5D2a5sCd3mFQHNtigrQxP1WW=YcggxA=WQ@mail.gmail.com>
- <20260714083331.69482-1-litvindev@gmail.com>
+Subject: [PATCH v2 0/4] Docs/ABI/damon: sysfs ABI document fixes and additions
+Date: Tue, 14 Jul 2026 07:01:12 -0700
+Message-ID: <20260714140117.94147-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260714083331.69482-1-litvindev@gmail.com>
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.16 / 15.00];
+X-Spamd-Result: default: False [-3.66 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[sj@kernel.org,stable@vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,kernel.org];
-	FORGED_SENDER(0.00)[nsc@kernel.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:litvindev@gmail.com,m:miguel.ojeda.sandonis@gmail.com,m:ojeda@kernel.org,m:nathan@kernel.org,m:rust-for-linux@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-kbuild@vger.kernel.org,m:stable@vger.kernel.org,m:miguelojedasandonis@gmail.com,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-274261-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	FORGED_RECIPIENTS(0.00)[m:akpm@linux-foundation.org,m:sj@kernel.org,m:liam@infradead.org,m:david@kernel.org,m:ljs@kernel.org,m:mhocko@suse.com,m:rppt@kernel.org,m:surenb@google.com,m:vbabka@kernel.org,m:damon@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:linux-mm@kvack.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-274260-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nsc@kernel.org,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	RSPAMD_EMAILBL_FAIL(0.00)[sj@kernel.org:query timed out];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,fritz.com:email]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 346B675578A
+X-Rspamd-Queue-Id: 2704475579F
 
-On Tue, Jul 14, 2026 at 10:33:31AM +0200, Sergei Litvin wrote:
-> When executing the command `make COMPILED_SOURCE=1 cscope`, the resulting
-> `cscope.files` file contains filenames with the extensions *.rlib, *.rmeta,
-> and *.so.
-> 
-> To fix this, modify the regular expression in the `all_compiled_sources()`
-> function so that only files with the extensions *.h, *.c, *.S, and *.rs are
-> accepted.
-> 
-> The issue has been introduced by commit 4f491bb6ea2a ("scripts/tags.sh: collect
-> compiled source precisely") which implemented the parsing of compiled sources
-> from *.cmd files instead of using the "find" command.
-> 
-> Cc: ojeda@kernel.org
-> Cc: nsc@kernel.org
-> Cc: nathan@kernel.org
-> Cc: stable@vger.kernel.org
-> Fixes: 4f491bb6ea2a ("scripts/tags.sh: collect compiled source precisely")
-> Signed-off-by: Sergei Litvin <litvindev@gmail.com>
-> 
-> ---
+This series fixes typos and fills in missing entries in the DAMON
+sysfs ABI document (Documentation/ABI/testing/sysfs-kernel-mm-damon).
 
-Thanks, looks good to me.  W/o this patch 'make COMPILED_SOURCE=1
-cscope' is actually not usable on my system, as soon as some rust libs
-are in my build tree, so thanks for fixing!
+Patch 1 fixes a path typo, "intrvals_goal" -> "intervals_goal", in
+four What: entries; the documented path points to a non-existent
+directory, so it is Cc'ed to stable.
 
-Tested-by: Nicolas Schier <n.schier@fritz.com>
-Reviewed-by: Nicolas Schier <n.schier@fritz.com>
+Patch 2 fixes two further typos ("WDate:", "manimum").
+
+Patches 3 and 4 add ABI entries that exist in the kernel and are
+already described in usage.rst but are missing from the canonical ABI
+document: the 'update_tuned_intervals' state command (patch 3) and the
+'tried_regions/<R>/probes/<P>/hits' file (patch 4).
+
+Changes from v1
+- v1: https://lore.kernel.org/20260710044737.561102-1-husong@kylinos.cn
+- Rebase to latest mm-new.
+
+Song Hu (4):
+  Docs/ABI/damon: fix typo in intervals_goal sysfs path
+  Docs/ABI/damon: fix typos
+  Docs/ABI/damon: document update_tuned_intervals state command
+  Docs/ABI/damon: document tried_regions probe hits
+
+ .../ABI/testing/sysfs-kernel-mm-damon         | 29 ++++++++++++++-----
+ 1 file changed, 22 insertions(+), 7 deletions(-)
 
 
-As this is a not really a build relevant bug, I think this should go via
-some -next rather than a -fixes tree [1].
-
-Miguel, are you with with it if I take this patch as well as the second
-one [2] via kbuild-next?
-
-(I tend to remove the Cc trailers from this patch here, as they are
-incomplete.)
-
-Kind regards,
-Nicolas
-
-
-
-[1]: https://lore.kernel.org/r/CAHk-=wjt1NiKOdyAMz_DT7NmZ++SizPOhRSi492ukdTnpDzHQw@mail.gmail.com/
-[2]: [PATCH v4] scripts/tags.sh: Add support for rust source files
-     https://lore.kernel.org/linux-kbuild/20260714125259.78824-1-litvindev@gmail.com/T/#u
-
+base-commit: 4c3e511167ba60f3934a530fa5675143a09eb909
+-- 
+2.47.3
 
