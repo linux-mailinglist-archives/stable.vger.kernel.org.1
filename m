@@ -1,156 +1,183 @@
-Return-Path: <stable+bounces-274374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274376-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 8JUhMsBaVmqH3wAAu9opvQ
-	(envelope-from <stable+bounces-274374-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 17:50:24 +0200
+	id KkgUHlxaVmps3wAAu9opvQ
+	(envelope-from <stable+bounces-274376-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 17:48:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 236707569C7
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 17:50:24 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C7B3756985
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 17:48:44 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=grrlz.net header.s=stigmate header.b=jVCbGNmD;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274374-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274374-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=grrlz.net;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=yLrLU6U6;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274376-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274376-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0A87231249A6
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 15:48:29 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 77FB63032AC4
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 15:48:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D30C048123D;
-	Tue, 14 Jul 2026 15:48:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EC5947CC8B;
+	Tue, 14 Jul 2026 15:48:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from confino.investici.org (confino.investici.org [93.190.126.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 919CF4963AB;
-	Tue, 14 Jul 2026 15:48:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19B6A3A4F55
+	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 15:48:40 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784044108; cv=none; b=GoGyE86ZU095Igt8GEn5unZPIlSGlyePjAPzZ7ic1Aq4TdG5+mMS7ho+ZLhJ01g8H8mOiBta2/gAuOHDF5lbTa9duVAsKdjgQ8PhOZg/opd2O6+7TmKaTqF7x830zit1R3/Rniq8ILuw2mA8X0kzNSOITIU9IG63skaQN+5SgJs=
+	t=1784044122; cv=none; b=cj6hYGLuoOp5H1w0az8RIRcTe6AAeB+qqd+ZsrpB6+I2tKpRlCoUksIkG4j1mm1qA+Y1QCJTLu0fe8ahU1TjWzMr3qlq1ZPA6ZLvXV6ROx7SdfWY1GELXCcu4d0v3rW7Q/sfCWx5cA79hVxhxlhvyY+0XFZxg3kMw8etWQrYDm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784044108; c=relaxed/simple;
-	bh=2xK11R5XTnZdZ9w7vMn+gA8t1UQPml6J/T5wbWKRHvM=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=hKc/pobHFnyi6qaP6FQOJPglUUqjW2npN/0adLd9FLmWLCV87FaaJycAq89cGyKBIHOzgrWGJGBDwX8g2Qz0oQBvBqOJLKlddoJFhFfKmM0G/iDDv/PJq68THSGIT1nvcnPBkhE44J0XCnm5vzdN6FVzJutNZHfi/5b61HJdMgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=grrlz.net; spf=pass smtp.mailfrom=grrlz.net; dkim=pass (1024-bit key) header.d=grrlz.net header.i=@grrlz.net header.b=jVCbGNmD; arc=none smtp.client-ip=93.190.126.19
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=grrlz.net;
-	s=stigmate; t=1784044091;
-	bh=XEhMqYAv+6EFinpq8nxhUlPqncdWVIAulg93LkLHFps=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=jVCbGNmDdhra1ZUb/BEvQFXd4jXl7qVZBpAEctqLvGNJ6hL7J6+uyvA1nKXi+MDGP
-	 GShg4ymCUIv2HMywbzhoVi3gluTQns63hIWlk3M6yU4pIA09xswxntdpEv3bVwbNB1
-	 EWDJx2IUCq7Eqmr558ClfYkWKFE47pb4RHrze2NY=
-Received: from mx1.investici.org (unknown [127.0.0.1])
-	by confino.investici.org (Postfix) with ESMTP id 4h03cC4Snkz112c;
-	Tue, 14 Jul 2026 15:48:11 +0000 (UTC)
-Received: by mx1.investici.org (Postfix) id 4h03cC17ZFz111k;
-	Tue, 14 Jul 2026 15:48:11 +0000 (UTC)
-Date: Tue, 14 Jul 2026 16:48:09 +0100
-From: Bradley Morgan <include@grrlz.net>
-To: Andrew Morton <akpm@linux-foundation.org>
-CC: brauner@kernel.org, peterz@infradead.org, oleg@redhat.com, tglx@kernel.org,
- npiggin@gmail.com, ebiederm@xmission.com, pasha.tatashin@soleen.com,
- kees@kernel.org, stable@vger.kernel.org, linux-kernel@vger.kernel.org,
- syzbot+8fdf0d8e10bdde1c2e88@syzkaller.appspotmail.com
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH=5D_reboot=3A_use_make=5Ftask=5Fdea?=
- =?US-ASCII?Q?d_for_the_halt_and_power_off_fallback?=
-In-Reply-To: <20260713181001.a46e0bf04235dd076f10d5dd@linux-foundation.org>
-References: <20260713062332.21131-1-include@grrlz.net> <20260713181001.a46e0bf04235dd076f10d5dd@linux-foundation.org>
-Message-ID: <0D454AB0-9690-4228-84DD-60AC3F02C9FC@grrlz.net>
+	s=arc-20240116; t=1784044122; c=relaxed/simple;
+	bh=/3DlIyvz+rhpmkjhJyiE16v8WLsYIhUbev9Nhubm91I=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=f9kO8x577GPd0kopOjoZNSHoUN9h99nYVI00o/lAksT4cg9FR1yLC8LDZjTWd+1C2S7G8pIkdeVnS7gfikqGqu1ITCbSK66K4DiLLNANQ6xVD4WFQNSs4WcGcjiCcHKa/hjp4W09qDlX4oaG6I+M1VgebfWrC+zBCUDlpoGh7Lc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yLrLU6U6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 282271F000E9;
+	Tue, 14 Jul 2026 15:48:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1784044120;
+	bh=5d7+1bPkamnMJnmPwDd70lDDOO+Jw6YbT9n1zXqdk8A=;
+	h=Subject:To:Cc:From:Date;
+	b=yLrLU6U6K1DWis9rGsUSnSvI351kj0rSu/MDTDp+4XZa8UT/XvHfFxFaiQ4oTC4pE
+	 PTuEy+GowQVg//82QpE8U2LeOCGIgEXN85LKbeD61lpN1w3E9WttX8Z1RwfZSjcIX+
+	 C9yQ5HgRMBDF1M8AgZCYJKu62ybIkIOYbh3XJWqo=
+Subject: FAILED: patch "[PATCH] hfs/hfsplus: fix u32 overflow in" failed to apply to 6.12-stable tree
+To: tristan@talencesecurity.com,slava@dubeyko.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Tue, 14 Jul 2026 17:48:26 +0200
+Message-ID: <2026071426-smirk-video-c05b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.54 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	SUBJ_EXCESS_QP(1.20)[];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[grrlz.net,reject];
-	R_DKIM_ALLOW(-0.20)[grrlz.net:s=stigmate];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[kernel.org,infradead.org,redhat.com,gmail.com,xmission.com,soleen.com,vger.kernel.org,syzkaller.appspotmail.com];
-	TAGGED_FROM(0.00)[bounces-274374-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:akpm@linux-foundation.org,m:brauner@kernel.org,m:peterz@infradead.org,m:oleg@redhat.com,m:tglx@kernel.org,m:npiggin@gmail.com,m:ebiederm@xmission.com,m:pasha.tatashin@soleen.com,m:kees@kernel.org,m:stable@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:syzbot+8fdf0d8e10bdde1c2e88@syzkaller.appspotmail.com,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FORGED_SENDER(0.00)[include@grrlz.net,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[grrlz.net:+];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[include@grrlz.net,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TAGGED_FROM(0.00)[bounces-274376-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:tristan@talencesecurity.com,m:slava@dubeyko.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable,8fdf0d8e10bdde1c2e88];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,linux-foundation.org:email,grrlz.net:from_mime,grrlz.net:mid,grrlz.net:email,grrlz.net:dkim]
+	TO_DN_NONE(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp,appspotmail.com:email,talencesecurity.com:email,linuxfoundation.org:from_mime,linuxfoundation.org:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 236707569C7
-
-On July 14, 2026 2:10:01 AM GMT+01:00, Andrew Morton
-<akpm@linux-foundation.org> wrote:
->On Mon, 13 Jul 2026 06:23:32 +0000 Bradley Morgan <include@grrlz.net>
->wrote:
->
->> The reboot syscall calls do_exit(0) after kernel_halt() or
->> kernel_power_off().  Those are expected to stop the machine and not
->> return.  When they do return, the shutdown path has already disabled
->> interrupts and torn down state, and do_exit() then hits its
->> WARN_ON(irqs_disabled()).
->
->Well...  why are they returning?  Is it both kernel_halt() and
->kernel_power_off()?  The report seems to indicate that
->kernel_power_off() is returning.
-
-native_machine_power_off() has no __noreturn backstop.
-
-(Only for kernel_power_off, kernel_halt() is theoretically safe, ends in
-stop_this_cpu)
-
->So is there a flaw in x86 machine_power_off() which we should be
->addressing?
-
-Well, yes, but it's really not that simple Andrew...
-
-I did a quick dig at the other arches code and guess what? 
-
-x86, arm, arm64, (loongarch, riscv)           power_off can all return,
-(BUG!)
+X-Rspamd-Queue-Id: 0C7B3756985
 
 
-So just doing a fix arch specific isn't really right (unless we want a
-3-5 patch series, which just adds more complication)
+The patch below does not apply to the 6.12-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
->> That is an error path, not a clean exit.  Use make_task_dead() instead
->> of do_exit(0): it is built for this, fixes up the irqs disabled and
->> preempt state, and bounds repeated failure via oops_limit.  This
->> matches the make_task_dead pattern that exit.c already uses for the
->> oops path.
->
->And make_tsk_dead() is __noreturn.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Nice catch! let's just remove break;, it's dead code
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git checkout FETCH_HEAD
+git cherry-pick -x 966cb76fb2857a4242cab6ea2ea17acf818a3da7
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026071426-smirk-video-c05b@gregkh' --subject-prefix 'PATCH 6.12.y' 'HEAD^..'
 
->
->
+Possible dependencies:
 
-Thanks!
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 966cb76fb2857a4242cab6ea2ea17acf818a3da7 Mon Sep 17 00:00:00 2001
+From: Tristan Madani <tristan@talencesecurity.com>
+Date: Tue, 5 May 2026 11:12:58 +0000
+Subject: [PATCH] hfs/hfsplus: fix u32 overflow in
+ check_and_correct_requested_length
+
+check_and_correct_requested_length() compares (off + len) against
+node_size using u32 arithmetic.  When the caller passes a large len
+value (e.g. from an underflowed subtraction in hfs_brec_remove()),
+off + len can wrap past 2^32 and produce a small result, causing the
+bounds check to pass when it should fail.
+
+For example, with off=14 and len=0xFFFFFFF2 (underflowed from
+data_off - keyoffset - size in hfs_brec_remove), off + len wraps to 6,
+which is less than a typical node_size of 512, so the check passes and
+the subsequent memmove reads ~4GB past the node buffer.
+
+Fix this by widening the addition to u64 before comparing against
+node_size.  This prevents the u32 wrap while keeping the logic
+straightforward.
+
+Reported-by: syzbot+6df204b70bf3261691c5@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=6df204b70bf3261691c5
+Tested-by: syzbot+6df204b70bf3261691c5@syzkaller.appspotmail.com
+Reported-by: syzbot+e76bf3d19b85350571ac@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=e76bf3d19b85350571ac
+Tested-by: syzbot+e76bf3d19b85350571ac@syzkaller.appspotmail.com
+Fixes: a431930c9bac ("hfs: fix slab-out-of-bounds in hfs_bnode_read()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
+Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Link: https://lore.kernel.org/r/20260505111300.3592757-2-tristmd@gmail.com
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+
+diff --git a/fs/hfs/bnode.c b/fs/hfs/bnode.c
+index b0165de7640d..3a8a3878d7b0 100644
+--- a/fs/hfs/bnode.c
++++ b/fs/hfs/bnode.c
+@@ -41,7 +41,7 @@ u32 check_and_correct_requested_length(struct hfs_bnode *node, u32 off, u32 len)
+ 
+ 	node_size = node->tree->node_size;
+ 
+-	if ((off + len) > node_size) {
++	if ((u64)off + len > node_size) {
+ 		u32 new_len = node_size - off;
+ 
+ 		pr_err("requested length has been corrected: "
+diff --git a/fs/hfsplus/hfsplus_fs.h b/fs/hfsplus/hfsplus_fs.h
+index 3545b8dbf11c..0e4268de9e60 100644
+--- a/fs/hfsplus/hfsplus_fs.h
++++ b/fs/hfsplus/hfsplus_fs.h
+@@ -600,7 +600,7 @@ u32 check_and_correct_requested_length(struct hfs_bnode *node, u32 off, u32 len)
+ 
+ 	node_size = node->tree->node_size;
+ 
+-	if ((off + len) > node_size) {
++	if ((u64)off + len > node_size) {
+ 		u32 new_len = node_size - off;
+ 
+ 		pr_err("requested length has been corrected: "
+
 
