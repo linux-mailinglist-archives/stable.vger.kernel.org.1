@@ -1,94 +1,62 @@
-Return-Path: <stable+bounces-274168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274171-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Y+bxDhHlVWrGuwAAu9opvQ
-	(envelope-from <stable+bounces-274168-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 09:28:17 +0200
+	id 18+zLgbpVWpBvgAAu9opvQ
+	(envelope-from <stable+bounces-274171-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 09:45:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3F5A751D87
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 09:28:16 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id B450A752095
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 09:45:09 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=MrQKtzVE;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274168-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-274168-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=none;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274171-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-274171-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=none;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 258CC302B754
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 07:28:10 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DF8E0303DEA7
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 07:37:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 621033EDE5F;
-	Tue, 14 Jul 2026 07:28:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F4C93EFFC4;
+	Tue, 14 Jul 2026 07:37:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pz2-f1.google.com (mail-pz2-f1.google.com [74.125.228.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E74C370AE5
-	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 07:28:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA71A3EEAE9;
+	Tue, 14 Jul 2026 07:37:02 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784014088; cv=none; b=neS63+V2n/EL4YqQoGZ2rnrApTxHwc0/99Uk+HTMiwQaY8RGHndJ0e03PDH6aAjQ87DBi8cPKAxdoBgoojRXeg4S/3NSK7gNtZO+THm1qvTttlz4ygEz9Ra2I1yebzMFif9b7yVhVV89dzK+TMwSkleRTfp+ULO1nHk+dkkUjlA=
+	t=1784014629; cv=none; b=QnCIVnLjHiHJgIeGQtvoV9h1rgIXAZ3WWMyUQCcv9aEjB/4Wxsc8Mg9QoT4dtn2EW6REetPe6ori3QkKbubP33j0P8UtXa6L/KN1tqgcR6p0Fl8NDIvaHPxtttkI8O3CiLcbjob6wymZcBFCqFBiqEUGKV6lyGAdiaxDi2f4YU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784014088; c=relaxed/simple;
-	bh=VV6RH/yKbbXGqbCZVlFLWMvC2IkSZjVrbZxP+GH89A0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=B5zBfRkY49T2ut2gIpSQmu3Y3wgvvmUMyXfojVnH3Ks0nT8J5FfVlstBGdoWiM7LpGzThoNQXUMi8Pv8mtZqoJaQEiPwephojU+4zO315hyBUm7UNALz7xhzoEg4ggVo1HfjCwQrdywPdbWcRscV6g17PW3cybm7u7kSl1U2bss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MrQKtzVE; arc=none smtp.client-ip=74.125.228.1
-Received: by mail-pz2-f1.google.com with SMTP id 41be03b00d2f7-c9486571b64so2287964a12.0
-        for <stable@vger.kernel.org>; Tue, 14 Jul 2026 00:28:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784014086; x=1784618886; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=UL4JsWWFy5+1VcD51BCzcQnL+AOhOLYxnY1WLoSce4c=;
-        b=MrQKtzVEK6cC864IUWe3vPOz+tNabRozEn2LOjqLNDT7Mv/1qS6ZzvJN0jatk/6BYD
-         0aXrWJV2LEUGzI9NhlgvcOd5p4zhDf4cgjbeeI0FWswQnA2/2zKSrCCtP9b3ndmXNqM3
-         t4WIyKTou7pBYd+W3WEh+5r9L/B5SwdaHZSODinrUXFSe30b5p5D+nuNkCpZ8YtFaK7K
-         yu0y6V3EjupH6oWVGXEOHWbW65pOw8C2Qcne+Vt1YF05S/glcnzK1dXXqVUKI92LL772
-         UHPwNy5lO92nmraNgsz7wgHEZjCpICyJmlCJcmsCgLSrcm3gW5rphIFAySpSY1cFQ2BO
-         BLqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784014086; x=1784618886;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=UL4JsWWFy5+1VcD51BCzcQnL+AOhOLYxnY1WLoSce4c=;
-        b=RGjSVIOs+aV88HPKTtNLCIsv2ZfgVb5c3nIhmUJYlQK4kykC+AeIBO+KrSMOsQd7+D
-         0k8XbY9mhCsLwOixF3AS0nsFjjQJR8WtOzU7a+mcZtPSlrK4/PYFZhwAthL8AZ4StXnc
-         F5uz9cOCZR+8nZbD3KcSlYiRvALOxCwM4Py0Qy/kx3Ul+cAJ9/yBKGLk6h7oT1KdUGvi
-         NzrazD4LaCE6IZb7dUFwJ8b13uQ/D+i8m381ZBuIOjjqQQRDGXyWfcg6dm3Qv4OQGMZG
-         0uidarfE3rx1rmAr38w4Dx1a4mAXQFqLmoQXAn5cTHexUhFBnjP6oPx7wdwbKLlGXTgp
-         pm2Q==
-X-Forwarded-Encrypted: i=1; AHgh+RrgFDIXw5S1pm9iMU2yLkMDZ+bgS1/UI1XwfCAY5DFCWZrs8wbnZHjGlMQqeHchNcdxCkvsr6s=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy4VQSgRhYEsVnbLUm+y732QEPj9mPLs33L4TFKm3F9xC96dkF/
-	NIZZTAbNlOfYwncsGFEDTNsU0dz8YjfMuWn00eTMnWUqARtOxOkN7cwwWn7B4We0WSIHXzMt
-X-Gm-Gg: AfdE7ckirV2o62PUvP9TqiRqcRFB7jIDsRBwAAV9Up8K08erIJxTC9yHjN6kJZw+Th8
-	3Ih7cgsVWMiCJjPl7ucG69w+Glf74//Ix02OsX5i7LbeopTmlqVlFN4Jl8CdCxcgLUn+fldvnfi
-	NHtgQVFEEzPxL76qArRWp5FX/xyqpV0cjkKjNIUIcSRvgeUU83A2EP8CUZ6WNlybxaQi9DoOksL
-	rxEBX8A4EjfoRnsOD7Hc8Etj8ORDzv2i1EdzXikbZrlopHUL5pcSUvs9d+89Va+rAfnaBiM7c1u
-	xMbmV6IzbA2jATRQRbuUV5fRDM+gXis+p81wXBd5b6cJlrWf9agFtsqisp7zf0JIarqQeXntBuk
-	N96K2VuDDuzjYdWGr03hF7PeAZ1mjd1E6VpK9jVnqFV8+A+aMQYQ4pW/FN1GikAaqDNGBlaV+Dq
-	DVHRQf6hhggMgLeUoJTj7YnM4gpRElTX3uCA==
-X-Received: by 2002:a05:6a00:1943:b0:841:58b0:82bb with SMTP id d2e1a72fcca58-84a5576ce8cmr1383065b3a.9.1784014086315;
-        Tue, 14 Jul 2026 00:28:06 -0700 (PDT)
-Received: from J4f-Laptop.localdomain ([2409:8a55:94d0:4771:cc5f:41a5:d797:4728])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84a4f80de8esm975471b3a.56.2026.07.14.00.28.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Jul 2026 00:28:05 -0700 (PDT)
-From: Shihuang Liu <shlomojune6@gmail.com>
-To: netdev@vger.kernel.org
-Cc: ap420073@gmail.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
+	s=arc-20240116; t=1784014629; c=relaxed/simple;
+	bh=AZpAkr363l173kD7NT5NPK8deMES+Fs0IiqhugmYluk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=S6NXLyrY89p4H/wDzVc6vwctzlQSi3qPmZolm3S9dqngNqSaWfKQEBR6GL8KZRnUqWb99+4G5ZOB575Sf+t97pfkbyRxtFTtjeGDMZXgy+R+8Tl/oPObpxNvaDwoWTZ2RGqmpI9Fu8YgtmKkEYN0AsaTe3uB6TzC7FgiuDIOqj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
+Received: from edelgard.fodlan.icenowy.me (unknown [112.94.101.100])
+	by APP-05 (Coremail) with SMTP id zQCowABnw9YS51VqEZEpGA--.61964S2;
+	Tue, 14 Jul 2026 15:36:51 +0800 (CST)
+From: Icenowy Zheng <zhengxingda@iscas.ac.cn>
+To: Frank Binns <frank.binns@imgtec.com>,
+	Matt Coster <matt.coster@imgtec.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>
+Cc: Alessio Belle <Alessio.Belle@imgtec.com>,
+	Brajesh Gupta <Brajesh.Gupta@imgtec.com>,
+	Brendan King <Brendan.King@imgtec.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	dri-devel@lists.freedesktop.org,
 	linux-kernel@vger.kernel.org,
-	Shihuang Liu <shlomojune6@gmail.com>,
+	Icenowy Zheng <uwu@icenowy.me>,
+	Icenowy Zheng <zhengxingda@iscas.ac.cn>,
 	stable@vger.kernel.org
-Subject: [PATCH] amt: fix use-after-free in AMT delayed works
-Date: Tue, 14 Jul 2026 15:27:05 +0800
-Message-ID: <20260714072705.129262-1-shlomojune6@gmail.com>
-X-Mailer: git-send-email 2.43.0
+Subject: [PATCH v2] drm/imagination: acquire vm_ctx->lock before mapping memory to GPU VM
+Date: Tue, 14 Jul 2026 15:36:41 +0800
+Message-ID: <20260714073641.1935075-1-zhengxingda@iscas.ac.cn>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -96,123 +64,127 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowABnw9YS51VqEZEpGA--.61964S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxJw15Zw4fJFWDGr47ZFWUJwb_yoW5Xw1rpa
+	ySqw1jkw48KrWqv3WUta4Y9rySvw4ruayxGFWkX3Z5Zwn8Gw1qyr1Fqay5ZF98Ar4xKr42
+	qr4qyayag34jka7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9014x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
+	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
+	n2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7x
+	kEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E
+	67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCw
+	CI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1x
+	MIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIda
+	VFxhVjvjDU0xZFpf9x0JUd-B_UUUUU=
+X-CM-SenderInfo: x2kh0wp0lqwv3d6l2u1dvotugofq/
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,lunn.ch,davemloft.net,google.com,kernel.org,redhat.com,vger.kernel.org];
+	DMARC_NA(0.00)[iscas.ac.cn];
+	FORGED_RECIPIENTS(0.00)[m:frank.binns@imgtec.com,m:matt.coster@imgtec.com,m:maarten.lankhorst@linux.intel.com,m:mripard@kernel.org,m:tzimmermann@suse.de,m:airlied@gmail.com,m:simona@ffwll.ch,m:Alessio.Belle@imgtec.com,m:Brajesh.Gupta@imgtec.com,m:Brendan.King@imgtec.com,m:dakr@kernel.org,m:dri-devel@lists.freedesktop.org,m:linux-kernel@vger.kernel.org,m:uwu@icenowy.me,m:zhengxingda@iscas.ac.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[imgtec.com,linux.intel.com,kernel.org,suse.de,gmail.com,ffwll.ch];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-274168-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:netdev@vger.kernel.org,m:ap420073@gmail.com,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:linux-kernel@vger.kernel.org,m:shlomojune6@gmail.com,m:stable@vger.kernel.org,m:andrew@lunn.ch,s:lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	FORGED_SENDER(0.00)[zhengxingda@iscas.ac.cn,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[shlomojune6@gmail.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-274171-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[zhengxingda@iscas.ac.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[shlomojune6@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	R_DKIM_NA(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,iscas.ac.cn:from_mime,iscas.ac.cn:email,iscas.ac.cn:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C3F5A751D87
+X-Rspamd-Queue-Id: B450A752095
 
-When an AMT device is removed, pending delayed works can still access
-the freed amt_dev structure, which may result in kernel crashes or
-memory corruption.
+The drm gpuvm code doesn't protect find operation against map operation,
+and the driver needs to ensure a map operation shouldn't happen when a
+find operation is in progress.
 
-amt_dev_stop() cancels req_wq and discovery_wq with
-cancel_delayed_work_sync(), but these works can be scheduled again
-from event_wq after the cancellation. This allows delayed works to
-access the freed amt_dev structure after the netdev has been released.
+In some cases a find operation will be in progress when doing map/unmap
+operations, and the find operation will do a NULL pointer deference.
 
-The following is a simple race scenario:
+An example of the stack trace of such NULL deference is shown below:
 
-CPU0                         CPU1
+```
+Unable to handle kernel access to user memory without uaccess routines at
+virtual address 0000000000000010
 
-amt_dev_stop()
-cancel_delayed_work_sync()
-                             amt_event_work()
-                             mod_delayed_work(req_wq)
-free netdev
-                             req_wq accesses freed amt_dev
+[<ffffffff01e989d4>] drm_gpuva_find+0x28/0x6c [drm_gpuvm]
+[<ffffffff01ed3a40>] pvr_vm_unmap+0x34/0x68 [powervr]
+[<ffffffff01ec69da>] pvr_ioctl_vm_unmap+0x2e/0x50 [powervr]
+[<ffffffff8080ce0a>] drm_ioctl_kernel+0x8e/0xdc
+[<ffffffff8080d016>] drm_ioctl+0x1be/0x3e0
+[<ffffffff802bec3e>] __riscv_sys_ioctl+0xba/0xc4
+[<ffffffff80d858b2>] do_trap_ecall_u+0x23e/0x3f4
+[<ffffffff80d92288>] handle_exception+0x168/0x174
+```
 
-Use disable_delayed_work_sync() in amt_dev_stop() to prevent req_wq and
-discovery_wq from being queued again and wait for running work items
-to complete.
+As all occurences of drm_gpuva_find*() are already guarded by
+vm_ctx->lock, make pvr_vm_map() to acquire this lock to prevent
+disturbing any find operation. This fixes the NULL deference problem in
+drm_gpuva_find*().
 
-The delayed works are disabled after initialization in
-amt_newlink() and enabled only when the device is successfully opened.
-This keeps the delayed work lifecycle synchronized with the lifetime
-of the AMT device.
-
-Fixes: cbc21dc1cfe9 ("amt: add data plane of amt interface")
 Cc: stable@vger.kernel.org
-Signed-off-by: Shihuang Liu <shlomojune6@gmail.com>
+Fixes: ff5f643de0bf ("drm/imagination: Add GEM and VM related code")
+Fixes: 4bc736f890ce ("drm/imagination: vm: make use of GPUVM's drm_exec helper")
+Signed-off-by: Icenowy Zheng <zhengxingda@iscas.ac.cn>
 ---
- drivers/net/amt.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+Changes in v2:
+- Dropped wrongly duplicated mutex_unlock() call and reordered it to
+  before pvr_vm_bind_op_fini() (the lock is acquired after
+  pvr_vm_bind_op_map_init() call). (Thanks to Brajesh)
+- Added a extra Fixes pointing to the original broken code that was
+  refactored by the original Fixes (but still broken). (Thanks to
+  Alessio)
+- Fixed some typos in commit message. (Thanks to Alessio)
+- Added a stacktrace of the oops that occured on my board. (As suggested
+  by Alessio)
 
-diff --git a/drivers/net/amt.c b/drivers/net/amt.c
-index 951dd10e192b..7eb871b9b7e1 100644
---- a/drivers/net/amt.c
-+++ b/drivers/net/amt.c
-@@ -2995,9 +2995,15 @@ static int amt_dev_open(struct net_device *dev)
- 	amt->event_idx = 0;
- 	amt->nr_events = 0;
+ drivers/gpu/drm/imagination/pvr_vm.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/gpu/drm/imagination/pvr_vm.c b/drivers/gpu/drm/imagination/pvr_vm.c
+index 396d349fb6ce4..ceb78694cd987 100644
+--- a/drivers/gpu/drm/imagination/pvr_vm.c
++++ b/drivers/gpu/drm/imagination/pvr_vm.c
+@@ -747,6 +747,7 @@ pvr_vm_map(struct pvr_vm_context *vm_ctx, struct pvr_gem_object *pvr_obj,
  
-+	enable_delayed_work(&amt->discovery_wq);
-+	enable_delayed_work(&amt->req_wq);
-+
- 	err = amt_socket_create(amt);
--	if (err)
-+	if (err) {
-+		disable_delayed_work(&amt->req_wq);
-+		disable_delayed_work(&amt->discovery_wq);
- 		return err;
-+	}
+ 	pvr_gem_object_get(pvr_obj);
  
- 	amt->req_cnt = 0;
- 	amt->remote_ip = 0;
-@@ -3023,8 +3029,8 @@ static int amt_dev_stop(struct net_device *dev)
- 	struct sock *sk;
- 	int i;
++	mutex_lock(&vm_ctx->lock);
+ 	err = drm_gpuvm_exec_lock(&vm_exec);
+ 	if (err)
+ 		goto err_cleanup;
+@@ -756,6 +757,7 @@ pvr_vm_map(struct pvr_vm_context *vm_ctx, struct pvr_gem_object *pvr_obj,
+ 	drm_gpuvm_exec_unlock(&vm_exec);
  
--	cancel_delayed_work_sync(&amt->req_wq);
--	cancel_delayed_work_sync(&amt->discovery_wq);
-+	disable_delayed_work_sync(&amt->req_wq);
-+	disable_delayed_work_sync(&amt->discovery_wq);
- 	cancel_delayed_work_sync(&amt->secret_wq);
+ err_cleanup:
++	mutex_unlock(&vm_ctx->lock);
+ 	pvr_vm_bind_op_fini(&bind_op);
  
- 	/* shutdown */
-@@ -3278,6 +3284,8 @@ static int amt_newlink(struct net_device *dev,
- 	INIT_DELAYED_WORK(&amt->req_wq, amt_req_work);
- 	INIT_DELAYED_WORK(&amt->secret_wq, amt_secret_work);
- 	INIT_WORK(&amt->event_wq, amt_event_work);
-+	disable_delayed_work(&amt->req_wq);
-+	disable_delayed_work(&amt->discovery_wq);
- 	INIT_LIST_HEAD(&amt->tunnel_list);
- 	return 0;
- err:
+ 	return err;
 -- 
-2.43.0
+2.52.0
 
 
