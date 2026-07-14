@@ -1,189 +1,224 @@
-Return-Path: <stable+bounces-274479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274482-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id RATvJ3dyVmrq5gAAu9opvQ
-	(envelope-from <stable+bounces-274479-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 19:31:35 +0200
+	id CwpsOzlzVmo75wAAu9opvQ
+	(envelope-from <stable+bounces-274482-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 19:34:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED347757758
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 19:31:34 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FA4C7577EF
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 19:34:49 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=intel.com header.s=Intel header.b=OQVTwuBi;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274479-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274479-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=intel.com;
+	dkim=pass header.d=grrlz.net header.s=stigmate header.b=N18O4HZp;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274482-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-274482-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=grrlz.net;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ABF4E3026143
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 17:29:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 308ED318D3A6
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 17:31:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8814C4DC54D;
-	Tue, 14 Jul 2026 17:29:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62D38308F23;
+	Tue, 14 Jul 2026 17:31:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from confino.investici.org (confino.investici.org [93.190.126.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82DF939CCFA;
-	Tue, 14 Jul 2026 17:29:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 809AA2F3614;
+	Tue, 14 Jul 2026 17:31:13 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784050191; cv=none; b=P6H7kpfU8z543gAks5DaD/rB7xpmarKwjNlzbW7jU+YBLoQIXgDCrW3ypEniMt9aUDFpD/C5wg0nnuwFYi8/MdVYyqDi9Ag2TzA5OTrmci22WYL3YS4nJ0TZbMd2Zs/0WjA9ybg+Wr6g9BjuiLUgxvCMeZGzzUtGZNd2Q5GES8U=
+	t=1784050278; cv=none; b=ElKcILDVU7wdXHOZfpevvADHJIEpjwUbyIqBa2YAj3631h7aCrmst2UHj6OFWZOvuF4CWD4wkomT6xg3NxwpYIjestnEey1i9JvjmhqpM3lgALqtPvYhWVixhsMjNzck34NxXpNxMLMy/N0Q394f9UJLq8AIBjWVBV/XjfQHxZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784050191; c=relaxed/simple;
-	bh=T9nDWMGUUMYK4zdgmduf9ZJ/16QHCvDwhtGJVdrnzuY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=loTBNi2VJLI/3hI69B5VLr6+rTskITPZS/fhVwOe0+9NWaTHG/0g/BnG3l4ktP3pns1djxooS8T0rnuKB7iO662sfqfOlUKAK1kHQbKdqN2bMQR30VBm5DPla9/9Ur3C2+I650hDuC5ozW9MoGReZkHHIPbYNbSsr7F+Cz2z15Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OQVTwuBi; arc=none smtp.client-ip=198.175.65.20
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784050190; x=1815586190;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=T9nDWMGUUMYK4zdgmduf9ZJ/16QHCvDwhtGJVdrnzuY=;
-  b=OQVTwuBiH8pGI+8zsuOfzvbJMEaT2vHBdiHrf6izxTsdCilwAZjFuxTp
-   wKuz5+eVvYM9jrsLHd8xz7FmZi1BL7uIo8vyWIzXV/HVt2dbePaRifrWZ
-   2ASwgNxDxqHF+Oo+4rAMeTzt8SwUpxdb8AV/qm6Fk7cJ1gNauRAArQpzH
-   QAE+DAEbh/3iyZdLGAHRs+ITqXqMhtmM2V1OdcwNV7bpgejrcqQD2kBkQ
-   tbbktxCxF3+3PSYHuIUA6u6abba/tYNRTo+XRWpQin8YuoPGuyAbUs6OH
-   LeETekGfTxwYWufTM8cMI+LGNxwXAqVb8/2BqcTD1HDfQBrWvZG87dh6I
-   Q==;
-X-CSE-ConnectionGUID: mlZu+RTmS22rODwziCadgg==
-X-CSE-MsgGUID: qTCNEHe+QbuACDkZ1l/hyA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11846"; a="84463060"
-X-IronPort-AV: E=Sophos;i="6.25,164,1779174000"; 
-   d="scan'208";a="84463060"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2026 10:29:49 -0700
-X-CSE-ConnectionGUID: JVAk0EKWSyOAbtmWxbWciQ==
-X-CSE-MsgGUID: gb3gmc2+RamLrgmELZSMvA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,164,1779174000"; 
-   d="scan'208";a="259497092"
-Received: from aschende-mobl.amr.corp.intel.com (HELO [10.125.108.120]) ([10.125.108.120])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2026 10:29:48 -0700
-Message-ID: <13fcd4d7-0efc-4aa5-9425-8f4fa05c8eee@intel.com>
-Date: Tue, 14 Jul 2026 10:29:51 -0700
+	s=arc-20240116; t=1784050278; c=relaxed/simple;
+	bh=UZiOGp0/vJhhgaQv/VWyxJYZyMtPN+vHXY20iH3H9as=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hyMDOeGkxd9KasmaXJDygIeSSIVBl2naoNN7ajlrx4jX6BUnAgfr2q2+brQ3YJIMW2zRSYwR0D5ekk0DtEQThhwSZVqKzfaFrFC52ku7ECqISX0xSYtKcf/iBj5OgeLXbxVAGzh003JJ5bkQSB7ygkgmil1Wx622UE9K0mDs9hE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=grrlz.net; spf=pass smtp.mailfrom=grrlz.net; dkim=pass (1024-bit key) header.d=grrlz.net header.i=@grrlz.net header.b=N18O4HZp; arc=none smtp.client-ip=93.190.126.19
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=grrlz.net;
+	s=stigmate; t=1784050270;
+	bh=UGpWzI1bp68mcgLlSW3gVZ5ZO/RISIWT7S496u0RQFw=;
+	h=From:To:Cc:Subject:Date:From;
+	b=N18O4HZpwv0wyGbQp+T6i90d7rzKACBjKlaVUJAgll++PUISPckwRG24MS/TNAIpb
+	 GJeabSbOs7vQkZF6DS9izJsEnQ+Oj4QH234sRbM7Gv/5GUn8eZ5kEh4XSSWsAFUoxq
+	 NOa9mplgi0HYEFp9s2ngPZis8fREr+BQCeNtSBhk=
+Received: from mx1.investici.org (unknown [127.0.0.1])
+	by confino.investici.org (Postfix) with ESMTP id 4h05v2597hz112f;
+	Tue, 14 Jul 2026 17:31:10 +0000 (UTC)
+Received: by mx1.investici.org (Postfix) id 4h05v16L7yz112c;
+	Tue, 14 Jul 2026 17:31:09 +0000 (UTC)
+From: Bradley Morgan <include@grrlz.net>
+To: akpm@linux-foundation.org
+Cc: pmladek@suse.com,
+	feng.tang@linux.alibaba.com,
+	sashiko-bot@kernel.org,
+	stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	include@grrlz.net
+Subject: [PATCH v4 0/3] panic: fix the panic_force_cpu redirect races
+Date: Tue, 14 Jul 2026 17:30:59 +0000
+Message-ID: <20260714173103.11585-1-include@grrlz.net>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-hotfixes v3 2/4] x86/mm/pat: acquire mmap lock on page
- table free to avoid ptdump UAF
-To: Lorenzo Stoakes <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Suren Baghdasaryan <surenb@google.com>, "Liam R. Howlett"
- <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Shakeel Butt <shakeel.butt@linux.dev>, David Hildenbrand <david@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>,
- Uladzislau Rezki <urezki@gmail.com>, Toshi Kani <toshi.kani@hpe.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski
- <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Dev Jain <dev.jain@arm.com>, Ryan Roberts <ryan.roberts@arm.com>
-Cc: David Carlier <devnexen@gmail.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
-References: <20260714-series-vmap-race-fix-v3-0-b812eccfa0f9@kernel.org>
- <20260714-series-vmap-race-fix-v3-2-b812eccfa0f9@kernel.org>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20260714-series-vmap-race-fix-v3-2-b812eccfa0f9@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-5.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[grrlz.net,reject];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[grrlz.net:s=stigmate];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-274479-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:ljs@kernel.org,m:akpm@linux-foundation.org,m:surenb@google.com,m:liam@infradead.org,m:vbabka@kernel.org,m:shakeel.butt@linux.dev,m:david@kernel.org,m:rppt@kernel.org,m:mhocko@suse.com,m:urezki@gmail.com,m:toshi.kani@hpe.com,m:dave.hansen@linux.intel.com,m:luto@kernel.org,m:peterz@infradead.org,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:x86@kernel.org,m:hpa@zytor.com,m:kas@kernel.org,m:catalin.marinas@arm.com,m:will@kernel.org,m:dev.jain@arm.com,m:ryan.roberts@arm.com,m:devnexen@gmail.com,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:bpf@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[dave.hansen@intel.com,stable@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[30];
-	FREEMAIL_TO(0.00)[kernel.org,linux-foundation.org,google.com,infradead.org,linux.dev,suse.com,gmail.com,hpe.com,linux.intel.com,redhat.com,alien8.de,zytor.com,arm.com];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[gmail.com,kvack.org,vger.kernel.org,lists.infradead.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	URIBL_MULTI_FAIL(0.00)[vger.kernel.org:server fail,grrlz.net:server fail,sea.lore.kernel.org:server fail];
+	TAGGED_FROM(0.00)[bounces-274482-lists,stable=lfdr.de];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS(0.00)[m:akpm@linux-foundation.org,m:pmladek@suse.com,m:feng.tang@linux.alibaba.com,m:sashiko-bot@kernel.org,m:stable@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:include@grrlz.net,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[include@grrlz.net,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[include@grrlz.net,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dave.hansen@intel.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[intel.com:+];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_NONE(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[grrlz.net:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:from_mime,intel.com:mid,intel.com:email,intel.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,grrlz.net:from_mime,grrlz.net:dkim,grrlz.net:mid,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: ED347757758
+X-Rspamd-Queue-Id: 6FA4C7577EF
 
-On 7/14/26 10:24, Lorenzo Stoakes wrote:
-...
-> Resolve the issue by acquiring the mmap read lock on init_mm which prevents
-> a concurrent ptdump as it acquires the write lock.
+Sorry for sending this before the earlier threads fully settled. I am
+posting the series now because everything is in one place, a single
+thread of three patches, instead of replies spread across the old
+threads, which is easier to follow than a few separate discussions.
 
-The move over to locking on init_mm instead of current->mm fixes the
-earlier issues I saw with this. Thanks for doing that!
+The panic_force_cpu= parameter redirects a panic to a specific CPU so
+the crash kernel runs there. The redirect code in
+panic_try_force_cpu() had two races and one ordering bug, all found by
+Sashiko. This series closes them.
 
-Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
+Patch 1: fix the redirect CPU race.
+
+The redirect is gated by an atomic cmpxchg on panic_redirect_cpu, so
+only one CPU sends the redirect IPI. The cmpxchg loser used to return
+false and fall through into vpanic(), where it could win panic_try_start()
+and run crash_kexec on the wrong CPU before the target ever received the
+IPI. The loser has to stop. It cannot just return true, though, because
+panic_try_force_cpu() can be called twice on the same CPU (nested NMI
+during the message formatting, before the IPI is sent), and a blind
+stop on that second call would abandon the panic with no IPI sent. The
+loser now returns true to stop, unless it is reentering on the same CPU
+(old_cpu == this_cpu), in which case it returns false and falls through.
+
+Patch 1 also fixes the panic_in_progress() guard. We must never redirect
+when panic_cpu is already taken, so the guard stays. But it now returns
+true (stop) when the panic is on another CPU and false (proceed) when it
+is on this CPU, instead of returning false either way.
+
+The two races side by side, two non target CPUs A and B (target is C),
+then a reentry on the redirect winner:
+
+             cpu A                          cpu B
+          ----------                     ----------
+    panic_try_force_cpu()                panic_try_force_cpu()
+        cmpxchg wins                         cmpxchg fails
+        IPI -> C                             return false  <- old BUG
+        return true                      panic_try_start() wins
+    panic_smp_self_stop()                 __crash_kexec() on B
+    (A stops)                             (target C bypassed)
+
+             cpu A (1st)                  cpu A (nested NMI)
+          ----------                     ----------
+    panic_try_force_cpu()
+        cmpxchg wins (redirect = A)
+        vsnprintf(msg) ...
+            <-- NMI -->
+                                     panic_try_force_cpu()
+                                         cmpxchg fails
+                                         old_cpu == A == this_cpu
+                                         return true  <- would abandon
+                                     self_stop (IPI never sent)
+
+Patch 2: flatten nmi_panic control flow.
+
+A behavior preserving cleanup. panic() is noreturn, so the else after it
+is dropped and the body flattened, ready for patch 3 to add the redirect
+step without piling more onto the if else chain. Split out on its own so
+patch 3 only adds new behavior and does not also reshape the function.
+
+Patch 3: allow force_cpu redirect from an NMI.
+
+A panic from an NMI used to bypass the redirect entirely. nmi_panic()
+called panic_try_start() first, which claims panic_cpu, so by the time
+panic() reached panic_try_force_cpu() the panic_in_progress() check saw
+panic_cpu set, returned false, and never sent the redirect IPI. The
+crash kernel ran on the CPU that took the NMI instead of the requested
+one.
+
+The buggy call order, on a CPU X that is not the target (target is C):
+
+  nmi_panic()
+    panic_try_start()              wins, panic_cpu = X
+    panic("%s", msg)
+      vpanic()
+        panic_try_force_cpu()
+          panic_in_progress()      true, panic_cpu is X
+          return false             redirect bypassed
+        panic_try_start()          already won
+        __crash_kexec()            on X, not C
+
+The fix tries the redirect before claiming panic_cpu. nmi_panic() calls
+panic_try_force_cpu_fmt() first and only calls panic_try_start() when no
+redirect happens. The requested CPU then claims panic_cpu itself when
+its panic() runs, so panic_cpu is never handed off.
+
+nmi_panic() holds an already formatted string, not a va_list. A variadic
+wrapper, panic_try_force_cpu_fmt(), builds the va_list and calls the
+existing panic_try_force_cpu(), which still copies and formats under the
+redirect cmpxchg. This keeps the static panic_force_buf safe, it is only
+written by the cmpxchg winner, never before ownership.
+
+The redirect IPI goes out via smp_call_function_single_async(). This is
+safe from NMI: the _async variant is documented as callable with
+interrupts disabled, and kgdb_roundup_cpus() already uses it from NMI
+context (kernel/debug/debug_core.c).
+
+Changes since v3:
+  - Patch 1 now also fixes the panic_in_progress() guard to return
+    true or false depending on which CPU owns panic_cpu, and drops the
+    recursion framing in the comment per Petr's review.
+  - Patch 3 no longer changes the panic_try_force_cpu() signature or
+    formats the message before the redirect cmpxchg. Petr pointed out
+    the static buf is only safe under panic_cpu ownership, so the
+    formatting stays inside the cmpxchg guarded path. nmi_panic() now
+    reaches it via a variadic wrapper.
+  - Patch 3 adds the NMI safety justification for
+    smp_call_function_single_async(), answering Petr's v1 question.
+  - The nmi_panic() control flow cleanup is split into its own patch
+    (patch 2), per Petr's request to split changes.
+
+Bradley Morgan (3):
+  panic: fix redirect CPU race in panic_try_force_cpu()
+  panic: flatten nmi_panic control flow
+  panic: allow force_cpu redirect from an NMI
+
+ kernel/panic.c | 48 +++++++++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 41 insertions(+), 7 deletions(-)
+
+-- 
+2.53.0
 
 
