@@ -1,260 +1,171 @@
-Return-Path: <stable+bounces-274595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274597-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id JHvXBUDFVmodBAEAu9opvQ
-	(envelope-from <stable+bounces-274595-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 01:24:48 +0200
+	id pDs7Na7FVmo2BAEAu9opvQ
+	(envelope-from <stable+bounces-274597-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 01:26:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2263759693
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 01:24:47 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5283F7596E2
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 01:26:38 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=L0h9C13O;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274595-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-274595-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=ibm.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="T/PNCdo2";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274597-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274597-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=intel.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 713473164519
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 23:22:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 44DF03038740
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 23:24:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B26404446E5;
-	Tue, 14 Jul 2026 23:22:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50B65432BF2;
+	Tue, 14 Jul 2026 23:24:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA54243B6E1;
-	Tue, 14 Jul 2026 23:22:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9680742F6FF
+	for <stable@vger.kernel.org>; Tue, 14 Jul 2026 23:24:35 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784071342; cv=none; b=oaV15Q5kzD8PPBBvV14lKRMz36eiC21HArr1m9wFwY/+tQloxue12tgC6j2ofRFtDRLbh+dc27LexwcN22bFP7xbHaGXs9UKh3KS8PXrDaOkwXcH9BL98VGUCU0n4K9+YPq8olk4cJQxBMS9HyuTbAYiWZ7QAKO+jEcJ5mlKPcs=
+	t=1784071477; cv=none; b=uRjJ7VkCRhE8+liZjzt2Zyrf4f/qVuza/r3tu9e0A/Ht8gLpwjpFwblPoEl8NIJD35ujYUyYSv0cliHHn0kbGH6W2YVI/HCUeMeBWjb7+siZnRYPUhp1eedFQEPOjKa8LT2VHKMqWw6SDZ57nmzdrulo71mzPwq/ZymJ/bARp9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784071342; c=relaxed/simple;
-	bh=P3XWV1htfv/+pnaxzwiBMyLNA7sp2LcefcxT5gFJCTY=;
+	s=arc-20240116; t=1784071477; c=relaxed/simple;
+	bh=KV57zEaBOQEPvFv/X/GjFa0YhFxJlImTSEAGcrrXJuI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NqXGivDOtTw0jgPBZDrgR8DTNaLc3+Uc7luogpKkuVn/YGTQvmCz2780yF1cNQrUnRFRAi5cL8HCw7QQOs+29PkCfeTFXFgeXutx88bzjJ5rDAz819gVFWs42sShZc5QKgdoWs7QWtGpLezS21eXZ/x+VYdqvR2FRX/VuINYH1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=L0h9C13O; arc=none smtp.client-ip=148.163.158.5
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66EJBmie2116414;
-	Tue, 14 Jul 2026 23:22:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=jdj62yyVkb6OFhQmM
-	MbgfgBqscDlThLxK9g+9kNIuAk=; b=L0h9C13O1f7T2SYHkmbBwujc0Nyzckw1T
-	QOlRIXE04zlEH9LnyErWAPQxyRnzbOySndlwJ/q8RVhhAhpjckGhaftRbewHRaBO
-	iTn25MJAnPcmkDRNEZtfP0gU6uXvPtxaxf4n+BF0hyBhG/JTxhUfXm1CYWfGnYRW
-	zpr0l9lWUM9rexegNJ6rss7Uo64YUYY5KCNtlW33y3MxOdRS/5NRdmU8NAxhb/Vx
-	NN0jETUUlfxrC032d5Gu8NHVBCPpWQdg75lr3GoiS75KNzSZLbJ6n+4vE/ldYW2g
-	dhObNG2ck/kmVhY+QiV0xR2xBf5q6k0hx2+0DEFXef19l7RKzQ6qw==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fbf2a86e3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 14 Jul 2026 23:22:19 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66ENJf3g011560;
-	Tue, 14 Jul 2026 23:22:18 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fc15jw6g9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 14 Jul 2026 23:22:18 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66ENMC7P48562512
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 14 Jul 2026 23:22:12 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 98D0620040;
-	Tue, 14 Jul 2026 23:22:12 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 745DA2004B;
-	Tue, 14 Jul 2026 23:22:12 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Tue, 14 Jul 2026 23:22:12 +0000 (GMT)
-Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 4958)
-	id 437E11626C4; Wed, 15 Jul 2026 01:22:12 +0200 (CEST)
-From: Eric Farman <farman@linux.ibm.com>
-To: linux-s390@vger.kernel.org, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc: Matthew Rosato <mjrosato@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Eric Farman <farman@linux.ibm.com>, stable@vger.kernel.org
-Subject: [PATCH v1 6/6] s390/vfio_ccw: lock I/O resources alongside I/O regions
-Date: Wed, 15 Jul 2026 01:22:08 +0200
-Message-ID: <20260714232208.1683788-7-farman@linux.ibm.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260714232208.1683788-1-farman@linux.ibm.com>
-References: <20260714232208.1683788-1-farman@linux.ibm.com>
+	 MIME-Version; b=vAGr2jyyoVVE7v7jzMityA7lN2wVCY7lxcgm8PrTdCYPygronT1zNvCVATpiWs0N186OMwOKCL2MwYq+0l5jOGe1FyBXWeGbhKsKcsWR5LLoed55lOyIo+/ZI5YtxV6YlNHsfspa9gly42zR1dMk4DDdsLQULc1UsmQgw4yk1cI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=T/PNCdo2; arc=none smtp.client-ip=192.198.163.18
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784071475; x=1815607475;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=KV57zEaBOQEPvFv/X/GjFa0YhFxJlImTSEAGcrrXJuI=;
+  b=T/PNCdo2wVC2SEchBegU8pWrEqy0JieKXf7LMl5XrQhPFLxqLM+8UT6q
+   LRxIzFYpYTkef8OHjqsYOqyKNe3FhjMK0NsFAPwn7R6iQ0OlijkzO05pR
+   IdETNmlnrgWwG2l3E/UWwx8S7bd5+yldYnU2+nB0cYzXx71PD1NeVecH8
+   514M7n2cK5c/3k5NJWtTkGBC7QSgeGJ+3XP42Ln7H9gx1aCyu8DrbxKl7
+   yzci4nstb40QNADYHxTmEuxV2kArqk2vctZcBfasCgs9TeZ0xtWR9hDE+
+   3PmlV/gPeWTd7MEqknq+CeVd91EmvqWz4UrWVu0aMvQIw7kikjIf/4dxN
+   w==;
+X-CSE-ConnectionGUID: UxUC5aDqTf6T9LOwqsFXYg==
+X-CSE-MsgGUID: OZwlz/lTSEGl810bH3qz+Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11847"; a="83826292"
+X-IronPort-AV: E=Sophos;i="6.25,164,1779174000"; 
+   d="scan'208";a="83826292"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2026 16:24:34 -0700
+X-CSE-ConnectionGUID: kGqiNYYeTuWawuXXGmMlPw==
+X-CSE-MsgGUID: KhnYWDRcSfy3Yfm3Cig86g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,164,1779174000"; 
+   d="scan'208";a="259573795"
+Received: from dut4072bmgfrd.fm.intel.com ([10.105.8.119])
+  by orviesa003.jf.intel.com with ESMTP; 14 Jul 2026 16:24:35 -0700
+From: Zongyao Bai <zongyao.bai@intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: matthew.brost@intel.com,
+	Zongyao Bai <zongyao.bai@intel.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] drm/xe/pt: Reset current_op in xe_pt_update_ops_init()
+Date: Tue, 14 Jul 2026 23:24:32 +0000
+Message-ID: <20260714232433.2737533-1-zongyao.bai@intel.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260713230830.2662760-1-zongyao.bai@intel.com>
+References: <20260713230830.2662760-1-zongyao.bai@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE0MDI0MCBTYWx0ZWRfX3T2hzZ5ZuHRS
- fa5ul8XyJISItb3qHjmBrVku8xkxX3rJi+131B/udsYUaF7bctX0ISVIf/VP822rEG8mYmoOfR3
- WkJV2nNdmAg9/PXlZ+ptB3mCF5L6HoE=
-X-Proofpoint-GUID: -aIfqjlLJgtxEpBs-PbIy1JAf2pymKLe
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE0MDI0MCBTYWx0ZWRfX60mjDU47PK4V
- LkiD/F+kGtgOGQV5gzz3h4vmLNx3akyzbw09KYXTv4PdzddEbUa2WA8ztBk4mPv7vtrzQIG0Pkw
- XLrzVk23N30CXFZ6lWeREBW0twhrce/AQBMh3EllrCIJrYpERfDKAEH6JNvRJkBc7PQhswxR3uj
- BMeEnjcnrIvDFSg/iO0VIwKIvLVJnGe/9vkeFUmQYQEp54E82oIOmHs6OsZUuDAO5i/3D3ladCL
- TW1be0qwdiOeHjk1cn5gKcU/1LXClNKk8W6knV/rRQhnzB+RCWuwhaDGJbryi70DgwjU8o0tZDg
- Z8TFzIgJ5mRypA9Tzs03fFvLGOwGX7YnW88etc9jDLIVSeoi/gOdPy6dkgcxIObezm3pRXY9dL5
- XBnH3buWwNrBj7AXitKJpg5TKv/cDobr12w8ShLbB0g+qTrQ0j0/CsTumiNDopzxHORQ+oOacH7
- M6m6vW/EUacX9QyP1Lg==
-X-Proofpoint-ORIG-GUID: -aIfqjlLJgtxEpBs-PbIy1JAf2pymKLe
-X-Authority-Analysis: v=2.4 cv=PvajqQM3 c=1 sm=1 tr=0 ts=6a56c4ab cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=KyaCFF8TlgOd3ial2BYA:9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-14_05,2026-07-14_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 malwarescore=0 bulkscore=0 impostorscore=0 adultscore=0
- clxscore=1015 lowpriorityscore=0 spamscore=0 suspectscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607140240
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-3.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
+	TAGGED_FROM(0.00)[bounces-274597-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-274595-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:linux-s390@vger.kernel.org,m:kvm@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:mjrosato@linux.ibm.com,m:pasic@linux.ibm.com,m:borntraeger@linux.ibm.com,m:farman@linux.ibm.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[farman@linux.ibm.com,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:intel-xe@lists.freedesktop.org,m:matthew.brost@intel.com,m:zongyao.bai@intel.com,m:matthew.auld@intel.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[farman@linux.ibm.com,stable@vger.kernel.org];
+	FORGED_SENDER(0.00)[zongyao.bai@intel.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	ALIAS_RESOLVED(0.00)[];
-	RCVD_COUNT_TWELVE(0.00)[12];
-	DKIM_TRACE(0.00)[ibm.com:+];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[zongyao.bai@intel.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linux.ibm.com:from_mime,linux.ibm.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:from_mime,intel.com:mid,intel.com:email,intel.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A2263759693
+X-Rspamd-Queue-Id: 5283F7596E2
 
-The memory regions shared with userspace for vfio-ccw operations
-are correctly accessed under a lock, but there are a handful of
-related structures that are associated with the same lifespan of
-a given SSCH (and thus the written-to memory region).
+xe_pt_update_ops_init() fails to reset current_op to 0. On the
+vm_bind path, ops_execute() calls xe_pt_update_ops_prepare() inside
+the xe_validation_guard() / drm_exec_until_all_locked() loop. When
+that loop retries due to lock contention or OOM eviction
+(drm_exec_retry_on_contention() / xe_validation_retry_on_oom()),
+xe_pt_update_ops_prepare() runs again on the same vops, and each
+call to bind_op_prepare() increments current_op without resetting it.
 
-Some of these cases are done asynchronously from the guest
-(e.g., hot-unplug of a device or channel path event), and so
-should be protected in some similar way. Since a subchannel can
-only have one I/O active at a time, redefine the I/O mutex from
-protecting the region, to all the resources associated with the I/O.
+After N retries current_op exceeds the array size allocated by
+xe_vma_ops_alloc(), causing an out-of-bounds write into
+SLUB-poisoned memory and a subsequent UAF crash in
+xe_migrate_update_pgtables_cpu() when reading the corrupted pt_op->bind.
 
-Fixes: 4f76617378ee ("vfio-ccw: protect the I/O region")
+Also reset needs_svm_lock and needs_invalidation which are derived in
+the same prepare pass and would otherwise cause wrong migrate ops
+selection and redundant TLB invalidation on retry.
+
+Fix this by resetting current_op, needs_svm_lock and needs_invalidation
+in xe_pt_update_ops_init().
+
+v2 (Matt):
+   - Add details in commit message.
+   - Add Fixes tag and Cc to stable@vger.kernel.org
+
+Fixes: e8babb280b5e ("drm/xe: Convert multiple bind ops into single job")
+Suggested-by: Matthew Auld <matthew.auld@intel.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Eric Farman <farman@linux.ibm.com>
+Assisted-by: GitHub-Copilot:claude-sonnet-4.6
+Signed-off-by: Zongyao Bai <zongyao.bai@intel.com>
 ---
- drivers/s390/cio/vfio_ccw_chp.c     | 2 +-
- drivers/s390/cio/vfio_ccw_drv.c     | 2 ++
- drivers/s390/cio/vfio_ccw_fsm.c     | 5 +++++
- drivers/s390/cio/vfio_ccw_private.h | 2 +-
- 4 files changed, 9 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/xe/xe_pt.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/s390/cio/vfio_ccw_chp.c b/drivers/s390/cio/vfio_ccw_=
-chp.c
-index 38c176cf6295..872620a9488d 100644
---- a/drivers/s390/cio/vfio_ccw_chp.c
-+++ b/drivers/s390/cio/vfio_ccw_chp.c
-@@ -90,13 +90,13 @@ static ssize_t vfio_ccw_crw_region_read(struct vfio_c=
-cw_private *private,
- 	if (pos + count > sizeof(*region))
- 		return -EINVAL;
-=20
-+	mutex_lock(&private->io_mutex);
- 	crw =3D list_first_entry_or_null(&private->crw,
- 				       struct vfio_ccw_crw, next);
-=20
- 	if (crw)
- 		list_del(&crw->next);
-=20
--	mutex_lock(&private->io_mutex);
- 	region =3D private->region[i].data;
-=20
- 	if (crw)
-diff --git a/drivers/s390/cio/vfio_ccw_drv.c b/drivers/s390/cio/vfio_ccw_=
-drv.c
-index 1a095085bc72..385af7daca3b 100644
---- a/drivers/s390/cio/vfio_ccw_drv.c
-+++ b/drivers/s390/cio/vfio_ccw_drv.c
-@@ -292,7 +292,9 @@ static void vfio_ccw_queue_crw(struct vfio_ccw_privat=
-e *private,
- 	crw->crw.erc =3D erc;
- 	crw->crw.rsid =3D rsid;
-=20
-+	mutex_lock(&private->io_mutex);
- 	list_add_tail(&crw->next, &private->crw);
-+	mutex_unlock(&private->io_mutex);
- 	queue_work(vfio_ccw_work_q, &private->crw_work);
+diff --git a/drivers/gpu/drm/xe/xe_pt.c b/drivers/gpu/drm/xe/xe_pt.c
+index e466f714bf86..598c6b2571e7 100644
+--- a/drivers/gpu/drm/xe/xe_pt.c
++++ b/drivers/gpu/drm/xe/xe_pt.c
+@@ -2371,8 +2371,11 @@ static void
+ xe_pt_update_ops_init(struct xe_vm_pgtable_update_ops *pt_update_ops)
+ {
+ 	init_llist_head(&pt_update_ops->deferred);
++	pt_update_ops->current_op = 0;
+ 	pt_update_ops->start = ~0x0ull;
+ 	pt_update_ops->last = 0x0ull;
++	pt_update_ops->needs_svm_lock = false;
++	pt_update_ops->needs_invalidation = false;
+ 	xe_page_reclaim_list_init(&pt_update_ops->prl);
  }
-=20
-diff --git a/drivers/s390/cio/vfio_ccw_fsm.c b/drivers/s390/cio/vfio_ccw_=
-fsm.c
-index 4d7988ea47ef..96f23da88a39 100644
---- a/drivers/s390/cio/vfio_ccw_fsm.c
-+++ b/drivers/s390/cio/vfio_ccw_fsm.c
-@@ -171,7 +171,9 @@ static void fsm_notoper(struct vfio_ccw_private *priv=
-ate,
- 	private->state =3D VFIO_CCW_STATE_NOT_OPER;
-=20
- 	/* This is usually handled during CLOSE event */
-+	mutex_lock(&private->io_mutex);
- 	cp_free(&private->cp);
-+	mutex_unlock(&private->io_mutex);
- }
-=20
- /*
-@@ -410,7 +412,10 @@ static void fsm_close(struct vfio_ccw_private *priva=
-te,
-=20
- 	private->state =3D VFIO_CCW_STATE_STANDBY;
- 	spin_unlock_irq(&sch->lock);
-+
-+	mutex_lock(&private->io_mutex);
- 	cp_free(&private->cp);
-+	mutex_unlock(&private->io_mutex);
- 	return;
-=20
- err_unlock:
-diff --git a/drivers/s390/cio/vfio_ccw_private.h b/drivers/s390/cio/vfio_=
-ccw_private.h
-index 0501d4bbcdbd..8f3792fdd31b 100644
---- a/drivers/s390/cio/vfio_ccw_private.h
-+++ b/drivers/s390/cio/vfio_ccw_private.h
-@@ -88,7 +88,7 @@ struct vfio_ccw_parent {
-  * @state: internal state of the device
-  * @completion: synchronization helper of the I/O completion
-  * @io_region: MMIO region to input/output I/O arguments/results
-- * @io_mutex: protect against concurrent update of I/O regions
-+ * @io_mutex: protect against concurrent update of I/O resources
-  * @region: additional regions for other subchannel operations
-  * @cmd_region: MMIO region for asynchronous I/O commands other than STA=
-RT
-  * @schib_region: MMIO region for SCHIB information
---=20
-2.53.0
+ 
+-- 
+2.43.0
 
 
