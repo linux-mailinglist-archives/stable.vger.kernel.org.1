@@ -1,67 +1,67 @@
-Return-Path: <stable+bounces-274051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274052-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id suLXGf2MVWrcpwAAu9opvQ
-	(envelope-from <stable+bounces-274051-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 03:12:29 +0200
+	id BkAtMCONVWrqpwAAu9opvQ
+	(envelope-from <stable+bounces-274052-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 03:13:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18B5574FFF7
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 03:12:29 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB018750029
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 03:13:06 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=intel.com header.s=Intel header.b=fltzJLGH;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274051-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274051-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=intel.com header.s=Intel header.b=K4QzwXnO;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274052-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274052-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=intel.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 86B153009CEC
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 01:12:28 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2E003300C7D4
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 01:12:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DE7B35E1A1;
-	Tue, 14 Jul 2026 01:12:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B27D35DA68;
+	Tue, 14 Jul 2026 01:12:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 344642F7F1F;
-	Tue, 14 Jul 2026 01:12:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D0233033DF;
+	Tue, 14 Jul 2026 01:12:39 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783991545; cv=none; b=GSJP/cGXsvwkA08aa0BWUUldcAzZ6PswYxzi1x9Cjxi8oqaFuEauLP9HKpoSpm3X/pHKEbZeC5E9nKkZ56BgDe/2MB+qeknexIOS9jtQ1Fg6en6FZhtpX1nXww5v6SgpXn0ruYrWfhFcZi3KMxkDFNiZGGsmljJGSb1n6TYQP3I=
+	t=1783991560; cv=none; b=PBlz2SvKM+sISNtTLQYa/wUmxN3CWlMhB2SZ8KjcX5Qg2Fdf8KssnjZssrkKi5FRTCo6Tu/uptwEj6lGxtYK/8miyrQtMwNeMwpbogW9OtHbbwd2bpFZ2ZhAn58FRYVNsGj2aP1qHowgLZbDz86fUGhYkouTn6mupO7IpdR/Ugs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783991545; c=relaxed/simple;
-	bh=SmKDjnU55LbR/+zA1mQnZYgp2l57eMHwgXQgKJ25Xdg=;
+	s=arc-20240116; t=1783991560; c=relaxed/simple;
+	bh=lgqs5fO6HrsSGee/YaRNbNfzf74wKB78RIStwdOfbZw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=afmHfQsms0RAKVTqq6oAE6jdNrPio7b+czKDV395uPPpaaB6btzV1OgOuTssO/WJ50gxgf4krdE1RYEnEHCb+7d/tQwjyrS5dvJVp39jBkmRlJfioYGFXr0pJXXsF/3/ixep6aNtn7OILVNcczm3PvyPJyu8sWO/Au/hMmarID4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fltzJLGH; arc=none smtp.client-ip=192.198.163.7
+	 Content-Type:Content-Disposition:In-Reply-To; b=e7efoiVpXIfP/RtBoVR9kWD5dQYhNQaWzFBNJ2wuR6Fb2QR8cigBppPFb+PTZ6MxBE9hxa2UvU/YSXDh2DnCRPQwDsi2/35Qn4g5BcJCujwMRdFXdbPDmKTyKvcPlQ8yeu0TlPeocqyQqmSS6HP6nXOX8qDkGhOi5s6+DNpGC78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=K4QzwXnO; arc=none smtp.client-ip=192.198.163.7
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1783991544; x=1815527544;
+  t=1783991560; x=1815527560;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=SmKDjnU55LbR/+zA1mQnZYgp2l57eMHwgXQgKJ25Xdg=;
-  b=fltzJLGH+j+dWBEEDrDqeNHeHhNm4FYZHOZcz4Or2yHOObVhXw++GU8l
-   Yex4yp8VEgx8WrPeEMwPGds1z7EFQX1VY1Q2lqz/aUonjTA7FbAQgPuam
-   wOT62N2CFXweQPEZ8mReblWdO03kyxw/AP+LAn3fx0IfXSSfFwComLanT
-   5xXsuDImrHxe3lq59b64czG8wbUZwEchA56pI6QVpn8/e7FhtSJ2Z1R7+
-   cU1+ZxuqFVF1uKhaxkeM3RFrW0NFwKzi2zRSgBOHlXo/rtnT2dVJid3cD
-   bW9AWbKF6hhhbkI5/5y56EsbHat+3YXSD3cPjIAh7zJGT7ryfsKcaDCBj
-   w==;
-X-CSE-ConnectionGUID: toDLTDqVQQ+z9XNaktHBSw==
-X-CSE-MsgGUID: 9MVePKw2QWKIrFdBruMMDg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="110154745"
+  bh=lgqs5fO6HrsSGee/YaRNbNfzf74wKB78RIStwdOfbZw=;
+  b=K4QzwXnOmcIH6jltXofrTz57i4DI0HZ7CqhHIM/qIsimT8jjXMZ/5Inm
+   Bp+uo5mTZScpgdZnr5WttBvkhwwHH+MSgzsF/8iB9LY9VRpNbHkSBRTHL
+   iuEeuQ9PQg7hLZTSW62Rlg7BWlNQqq3pnGa5P79+GY+c/E/Q06Vy4dtfW
+   Lr7lLqZ2ScCMS2TjmW2NNxusNsK8e6soe6hLkdTku1MrwrwD7LV2TrQBr
+   lYZAROD5VszUXQoz1JHVUbLJ2cOi6wBhUkC/UacwxwIz3JvblVwLwZpcb
+   ddlBoj86b/tK2Kktkz8hqUNH2bFe/nt4rCofRykGe8sSLFUiZGlz/5tsa
+   g==;
+X-CSE-ConnectionGUID: NMfIDAXNRTGdlzRzC9mMuA==
+X-CSE-MsgGUID: 2wYzV7/MSeedliQ0lfapTg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="110154757"
 X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
-   d="scan'208";a="110154745"
+   d="scan'208";a="110154757"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jul 2026 18:12:23 -0700
-X-CSE-ConnectionGUID: T5ownYrFSlC5dbM3dudMtA==
-X-CSE-MsgGUID: xj2aKYHZT5G8a4mrVazDOw==
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jul 2026 18:12:39 -0700
+X-CSE-ConnectionGUID: SgC6yYhtSTCWiC/aqctSTw==
+X-CSE-MsgGUID: Xk4gyZBRRV2IRlDwJbduXQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
-   d="scan'208";a="254583509"
+   d="scan'208";a="254583841"
 Received: from guptapa-desk.jf.intel.com (HELO desk) ([10.165.239.46])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jul 2026 18:12:23 -0700
-Date: Mon, 13 Jul 2026 18:12:23 -0700
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jul 2026 18:12:38 -0700
+Date: Mon, 13 Jul 2026 18:12:38 -0700
 From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 To: stable@vger.kernel.org, 
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>
@@ -69,8 +69,9 @@ Cc: bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
 	loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
 	x86@kernel.org, Alexei Starovoitov <ast@kernel.org>, 
 	Daniel Borkmann <daniel@iogearbox.net>
-Subject: [PATCH 6.18.y 4/6] bpf: Skip redundant IBPB in pack allocator
-Message-ID: <20260713-cbpf-jit-spray-hardening-6-18-y-v1-4-755f60c55705@linux.intel.com>
+Subject: [PATCH 6.18.y 5/6] bpf: Prefer packs that won't trigger an IBPB
+ flush on allocation
+Message-ID: <20260713-cbpf-jit-spray-hardening-6-18-y-v1-5-755f60c55705@linux.intel.com>
 X-Mailer: b4 0.16-dev
 References: <20260713-cbpf-jit-spray-hardening-6-18-y-v1-0-755f60c55705@linux.intel.com>
 Precedence: bulk
@@ -87,12 +88,12 @@ X-Spamd-Result: default: False [-5.16 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-274051-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-274052-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER(0.00)[pawan.kumar.gupta@linux.intel.com,stable@vger.kernel.org];
@@ -101,7 +102,7 @@ X-Spamd-Result: default: False [-5.16 / 15.00];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[intel.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
@@ -113,80 +114,87 @@ X-Spamd-Result: default: False [-5.16 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[11];
 	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iogearbox.net:email,linux.intel.com:from_mime,linux.intel.com:mid,vger.kernel.org:from_smtp,intel.com:email,intel.com:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iogearbox.net:email,linux.intel.com:from_mime,linux.intel.com:mid,vger.kernel.org:from_smtp,intel.com:email,intel.com:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 18B5574FFF7
+X-Rspamd-Queue-Id: BB018750029
 
-commit a23c1c5396a91680703360d1ee28a44657c503c4 upstream.
+commit a9b1f19a6a673ba06820898d0f1ad02883ea1639 upstream.
 
-bpf_prog_pack_alloc() issues IBPB on all CPUs on every cBPF allocation,
-even when reusing chunks from an existing pack where no new memory was
-touched since the last IBPB.
+Currently BPF pack allocator picks the chunks from the first available
+pack. While this is okay, it naturally leads to more frequent flushes
+when there are multiple packs in the system that weren't used since the
+last flush.
 
-Since IBPB on all CPUs is heavy, Dave Hansen suggested to track allocation
-since last IBPB, and only issue IBPB at reuse for the chunks that have not
-seen an IBPB since they were last freed.
+As an optimization prefer allocating the new programs from packs that
+are unused since last flush. When all packs are dirty, allocation forces
+a flush and marks all packs clean.
 
-Track per-pack whether an IBPB is needed via arch_flush_needed. Set it when
-allocating a chunk, reset on IBPB flush. On reuse, conditionally issue the
-flush. Since IBPB invalidates all BTB entries, clear the flag on all packs
-after flushing.
+Below are some future optimizations ideas:
+
+  1. Currently, the "dirty" tracking is only done at the pack-level.
+     Flush frequency can further be reduced with chunk-level tracking.
+     This requires a new bitmap per-pack to track the dirty state.
+  2. IBPB flush is done on all CPUs, even if only a single CPU ran the
+     BPF program. On a system with hundreds of CPUs this could be a
+     major bottleneck forcing hundreds of IPIs to deliver the flush.
+     The solution is to track the CPUs where a BPF program ran, and
+     issue IBPB only on those CPUs.
+  3. Avoid IBPB when flush is already done at other sources (e.g.
+     context switch).
 
 Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 Acked-by: Daniel Borkmann <daniel@iogearbox.net>
 Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
 ---
- kernel/bpf/core.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ kernel/bpf/core.c | 27 ++++++++++++++++++++++++---
+ 1 file changed, 24 insertions(+), 3 deletions(-)
 
 diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
-index 338a806e25c0..49ca543a4111 100644
+index 49ca543a4111..e0ffdd985eb5 100644
 --- a/kernel/bpf/core.c
 +++ b/kernel/bpf/core.c
-@@ -857,6 +857,7 @@ int bpf_jit_add_poke_descriptor(struct bpf_prog *prog,
- struct bpf_prog_pack {
- 	struct list_head list;
- 	void *ptr;
-+	bool arch_flush_needed;
- 	unsigned long bitmap[];
- };
+@@ -930,8 +930,8 @@ static struct bpf_prog_pack *alloc_new_pack(bpf_jit_fill_hole_t bpf_fill_ill_ins
+ void *bpf_prog_pack_alloc(u32 size, bpf_jit_fill_hole_t bpf_fill_ill_insns, bool was_classic)
+ {
+ 	unsigned int nbits = BPF_PROG_SIZE_TO_NBITS(size);
+-	struct bpf_prog_pack *pack;
+-	unsigned long pos;
++	struct bpf_prog_pack *pack, *fallback_pack = NULL;
++	unsigned long pos, fallback_pos = 0;
+ 	void *ptr = NULL;
  
-@@ -910,6 +911,8 @@ static struct bpf_prog_pack *alloc_new_pack(bpf_jit_fill_hole_t bpf_fill_ill_ins
- 	bpf_fill_ill_insns(pack->ptr, BPF_PROG_PACK_SIZE);
- 	bitmap_zero(pack->bitmap, BPF_PROG_PACK_SIZE / BPF_PROG_CHUNK_SIZE);
- 
-+	if (static_branch_unlikely(&bpf_pred_flush_enabled))
-+		pack->arch_flush_needed = true;
- 	set_vm_flush_reset_perms(pack->ptr);
- 	err = set_memory_rox((unsigned long)pack->ptr,
- 			     BPF_PROG_PACK_SIZE / PAGE_SIZE);
-@@ -972,8 +975,15 @@ void *bpf_prog_pack_alloc(u32 size, bpf_jit_fill_hole_t bpf_fill_ill_insns, bool
- 
- found_free_area:
- 	/* Flush only for cBPF as it may contain a crafted gadget */
--	if (static_branch_unlikely(&bpf_pred_flush_enabled) && was_classic)
-+	if (static_branch_unlikely(&bpf_pred_flush_enabled) &&
-+	    pack->arch_flush_needed &&
-+	    was_classic) {
-+		struct bpf_prog_pack *p;
-+
- 		static_call_cond(bpf_arch_pred_flush)();
-+		list_for_each_entry(p, &pack_list, list)
-+			p->arch_flush_needed = false;
+ 	mutex_lock(&pack_mutex);
+@@ -963,8 +963,29 @@ void *bpf_prog_pack_alloc(u32 size, bpf_jit_fill_hole_t bpf_fill_ill_insns, bool
+ 	list_for_each_entry(pack, &pack_list, list) {
+ 		pos = bitmap_find_next_zero_area(pack->bitmap, BPF_PROG_CHUNK_COUNT, 0,
+ 						 nbits, 0);
+-		if (pos < BPF_PROG_CHUNK_COUNT)
++		if (pos >= BPF_PROG_CHUNK_COUNT)
++			continue;
++		/* Flush not enabled, use any pack */
++		if (!static_branch_unlikely(&bpf_pred_flush_enabled))
+ 			goto found_free_area;
++		/*
++		 * cBPF reuse of a dirty pack triggers a flush, so prefer a
++		 * clean pack for cBPF. eBPF never flushes, so pick the first
++		 * free pack, dirty or clean.
++		 */
++		if (!was_classic || !pack->arch_flush_needed)
++			goto found_free_area;
++		if (!fallback_pack) {
++			fallback_pack = pack;
++			fallback_pos = pos;
++		}
 +	}
- 	bitmap_set(pack->bitmap, pos, nbits);
- 	ptr = (void *)(pack->ptr) + (pos << BPF_PROG_CHUNK_SHIFT);
- 
-@@ -1011,6 +1021,9 @@ void bpf_prog_pack_free(void *ptr, u32 size)
- 		  "bpf_prog_pack bug: missing bpf_arch_text_invalidate?\n");
- 
- 	bitmap_clear(pack->bitmap, pos, nbits);
 +
-+	if (static_branch_unlikely(&bpf_pred_flush_enabled))
-+		pack->arch_flush_needed = true;
- 	if (bitmap_find_next_zero_area(pack->bitmap, BPF_PROG_CHUNK_COUNT, 0,
- 				       BPF_PROG_CHUNK_COUNT, 0) == 0) {
- 		list_del(&pack->list);
++	/* No preferred pack found */
++	if (fallback_pack) {
++		pack = fallback_pack;
++		pos = fallback_pos;
++		goto found_free_area;
+ 	}
+ 
+ 	pack = alloc_new_pack(bpf_fill_ill_insns);
 
 -- 
 2.43.0
