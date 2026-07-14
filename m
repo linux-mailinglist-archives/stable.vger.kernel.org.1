@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-274139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274141-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id A3opIszRVWrktwAAu9opvQ
-	(envelope-from <stable+bounces-274139-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 08:06:04 +0200
+	id C2IYDtvRVWrqtwAAu9opvQ
+	(envelope-from <stable+bounces-274141-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 08:06:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1AF5751534
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 08:06:03 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4C60751551
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 08:06:18 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RTE4NdF+;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274139-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-274139-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DVbajSjR;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274141-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274141-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6C5CB302AF3F
-	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 06:06:02 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 255E13009CEB
+	for <lists+stable@lfdr.de>; Tue, 14 Jul 2026 06:06:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05C8D3D3CF6;
-	Tue, 14 Jul 2026 06:05:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D6633D45DD;
+	Tue, 14 Jul 2026 06:06:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5E9B1FFC59;
-	Tue, 14 Jul 2026 06:05:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5191936A033;
+	Tue, 14 Jul 2026 06:06:13 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784009158; cv=none; b=nW4TmubfE2k9ZHi58/RQjTSZsYXoL2b08a2CNNKqUMgihAiVx7Pi5vWLfHn6lPyblSLMndQLAyhxxJC+bPZh58qZN6/K0CyDd163TmQMHj3krLa6Q8APwVcpjn/LIrEh1mMovmPJ8ckgBp+uv0/PfsNIxRRPBaQSbFv/zqK3bJo=
+	t=1784009174; cv=none; b=EBYbIk9qrY0qHaYMXES62fkbjKwfl/X7p4O2tL/9vcr3U6QXi1Q9ugP4Eey+KITQd+hmKsmzDNerTwUofUR+xzFsq21LT3qElFr9h6hGlrhSaAejXUlPHP7yPdBnSVuAuyPNWPKeUgjTL9waiqJ/u9tQYnEc7cdss8OULJd5b/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784009158; c=relaxed/simple;
-	bh=ZUGNeCaIhOp2aiTrGjF76e0THENxkuunq/ieBoMewT4=;
+	s=arc-20240116; t=1784009174; c=relaxed/simple;
+	bh=DNc9J53MvJbrPM4W8tI6+xCI7HPFJixVEEDPKyqzZJo=;
 	h=Date:Subject:From:To:Cc:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=h53tM+3BFmel9W/0mgAfVwVyhi2mx6FvZaahZeNeRM4yLvH1T27e1RuDm9SfrypRS7Ihdgeeks3tmbQdg6NpNZpcTgAaDGvtBdrjaZ+795fb27HuTe4um/y1SXyOgiJGEUBd1OIwMs0HFP5/7vEXIXUv+TaNf+/Ju3Xh6iNCp7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RTE4NdF+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 9CE771F000E9;
-	Tue, 14 Jul 2026 06:05:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VnGhz1YxldRXV0JIaZTxZdRy6Ysm0zC1MC/WwnSU3jZL2a4yXITqRnL0wNtXS2D/pYtDS+hFjgLJ2ig4X74+OU3Qutp9o3LTZduCeob1G9z+soxKgwgC21H3BQK5ulqwz6VESxL2M9KHdhWmDXMXp/PL/RLJPy7KfxDgDb9r5sc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DVbajSjR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 2A3261F000E9;
+	Tue, 14 Jul 2026 06:06:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784009157;
-	bh=0a4r/CuVwtLPtdixj4JsF9xvRTAfAF5gZa8oqdwXv48=;
+	s=k20260515; t=1784009173;
+	bh=q5c666oVa4AjSGolyrY6lQWpvHdQzU5xCqtTnghY2O4=;
 	h=Date:Subject:From:To:Cc:In-Reply-To:References;
-	b=RTE4NdF+qutaWw6cbz9cYYvOSRh6hWd+xSEsyvBMQds9fd8M+2yF/R9Z0B1os2gbZ
-	 KHUw/0gbsqfsXqX0ay68k3ksMJVA02XDNEOFou/CukoEAhb7PTnh4ZILO3h4zQylUK
-	 oFs1LwDb88LUfRG+MfJrjE9u0p1f0DBvPdPk+5sRo+d2HlIlyi41q2xZYzWwZGfe1e
-	 W/U4a8htD/CIBzxDyZLrX+HaPNlC7LiiXYWHu4ndHUozTzWsWeYOJlVGP9CkCaGKPp
-	 MGodW47CybcDxv93VgvRuBnAY2KRZF9RVxSaCPUD3113GofG3IPspo+ZeLaDobWhgn
-	 gb3XcCyFRhYvA==
-Date: Mon, 13 Jul 2026 23:05:57 -0700
-Subject: [PATCH 8/8] xfs: grab rtrmap btree when checking rgsuper
+	b=DVbajSjRCHJk4yEeKT1PMwpqWt4Uuy6OeCviSceNAvIGStVF7w4Va2mk1JKNxuJj4
+	 M4i1v+qIGxTJKwd0aqx1l4Rffw60G0pLj3OG92Qj/c7iWbRuZcNqL3w8w1bvYejYTZ
+	 kWUMFOcbfDzRUyQHQiA2swmLAHRyHUTUOau5hdDgNd+/KeH3wTXJvk+dh6+oQXzPpS
+	 wjFs7k00MA6bEUxkgoWUqkyFkbtkAscEZksTt3+IuOe8G9kvXWBj6cJMoI61FlpWXo
+	 JIQ6URWDGXOMpGZEfxCYN5WORzZq2tDJ2u3MdCXvSMli1SyI+jkQHgtpV13e9US5Ag
+	 mdc7c278+tiQw==
+Date: Mon, 13 Jul 2026 23:06:12 -0700
+Subject: [PATCH 1/6] xfs: set xfarray killable sort correctly
 From: "Darrick J. Wong" <djwong@kernel.org>
 To: djwong@kernel.org, cem@kernel.org, hch@lst.de
 Cc: stable@vger.kernel.org, linux-xfs@vger.kernel.org
-Message-ID: <178400716542.267810.5807049128183463210.stgit@frogsfrogsfrogs>
-In-Reply-To: <178400716321.267810.14342805775513660564.stgit@frogsfrogsfrogs>
-References: <178400716321.267810.14342805775513660564.stgit@frogsfrogsfrogs>
+Message-ID: <178400716837.268162.4871292933498780753.stgit@frogsfrogsfrogs>
+In-Reply-To: <178400716782.268162.4846177784022689546.stgit@frogsfrogsfrogs>
+References: <178400716782.268162.4846177784022689546.stgit@frogsfrogsfrogs>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-4.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-4.66 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[djwong@kernel.org,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-274139-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-274141-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS(0.00)[m:djwong@kernel.org,m:cem@kernel.org,m:hch@lst.de,m:stable@vger.kernel.org,m:linux-xfs@vger.kernel.org,s:lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -93,61 +93,71 @@ X-Spamd-Result: default: False [-4.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,lst.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,frogsfrogsfrogs:mid,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E1AF5751534
+X-Rspamd-Queue-Id: B4C60751551
 
 From: Darrick J. Wong <djwong@kernel.org>
 
-LOLLM noticed that we aren't grabbing the rtrmap btree when we check the
-realtime group superblock.  As a result, none of the cross-referencing
-checks have ever run.  Fix this.
+LOLLM noticed that we *disable* interruptible sorts when the KILLABLE
+flag is set.  This is backwards.  Fix the incorrect logic, and rename
+the variable to make the connection more obvious.
 
-Cc: <stable@vger.kernel.org> # v6.14
-Fixes: 428e4884656db9 ("xfs: allow queued realtime intents to drain before scrubbing")
+Cc: <stable@vger.kernel.org> # v6.10
+Fixes: 271557de7cbfde ("xfs: reduce the rate of cond_resched calls inside scrub")
 Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
 Assisted-by: LOLLM # finding obvious bugs
-Reviewed-by: Christoph Hellwig <hch@lst.de>
 ---
- fs/xfs/scrub/rgsuper.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ fs/xfs/scrub/scrub.h   |    6 +++---
+ fs/xfs/scrub/xfarray.c |    3 +--
+ 2 files changed, 4 insertions(+), 5 deletions(-)
 
 
-diff --git a/fs/xfs/scrub/rgsuper.c b/fs/xfs/scrub/rgsuper.c
-index 3dad6e5da74e55..2bd2c0351b35f7 100644
---- a/fs/xfs/scrub/rgsuper.c
-+++ b/fs/xfs/scrub/rgsuper.c
-@@ -23,6 +23,8 @@ int
- xchk_setup_rgsuperblock(
- 	struct xfs_scrub	*sc)
- {
-+	if (xchk_need_intent_drain(sc))
-+		xchk_fsgates_enable(sc, XCHK_FSGATES_DRAIN);
- 	return xchk_trans_alloc(sc, 0);
- }
+diff --git a/fs/xfs/scrub/scrub.h b/fs/xfs/scrub/scrub.h
+index a3f1abc9139035..6d7d3523b71f25 100644
+--- a/fs/xfs/scrub/scrub.h
++++ b/fs/xfs/scrub/scrub.h
+@@ -11,7 +11,7 @@ struct xfs_scrub;
+ struct xchk_relax {
+ 	unsigned long	next_resched;
+ 	unsigned int	resched_nr;
+-	bool		interruptible;
++	bool		killable;
+ };
  
-@@ -43,6 +45,7 @@ xchk_rgsuperblock(
- 	struct xfs_scrub	*sc)
- {
- 	xfs_rgnumber_t		rgno = sc->sm->sm_agno;
-+	unsigned int		flags;
- 	int			error;
+ /* Yield to the scheduler at most 10x per second. */
+@@ -21,7 +21,7 @@ struct xchk_relax {
+ 	(struct xchk_relax){ \
+ 		.next_resched	= XCHK_RELAX_NEXT, \
+ 		.resched_nr	= 0, \
+-		.interruptible	= true, \
++		.killable	= true, \
+ 	}
  
- 	/*
-@@ -63,7 +66,12 @@ xchk_rgsuperblock(
- 	if (!xchk_xref_process_error(sc, 0, 0, &error))
- 		return error;
+ /*
+@@ -45,7 +45,7 @@ static inline int xchk_maybe_relax(struct xchk_relax *widget)
+ 		widget->next_resched = XCHK_RELAX_NEXT;
+ 	}
  
--	error = xchk_rtgroup_lock(sc, &sc->sr, XFS_RTGLOCK_BITMAP_SHARED);
-+	if (xfs_has_rtrmapbt(sc->mp))
-+		flags = XFS_RTGLOCK_BITMAP | XFS_RTGLOCK_RMAP;
-+	else
-+		flags = XFS_RTGLOCK_BITMAP_SHARED;
-+
-+	error = xchk_rtgroup_lock(sc, &sc->sr, flags);
- 	if (error)
- 		return error;
+-	if (widget->interruptible && fatal_signal_pending(current))
++	if (widget->killable && fatal_signal_pending(current))
+ 		return -EINTR;
  
+ 	return 0;
+diff --git a/fs/xfs/scrub/xfarray.c b/fs/xfs/scrub/xfarray.c
+index c7c4a71b6fa7c6..2ce24bfe4c0fab 100644
+--- a/fs/xfs/scrub/xfarray.c
++++ b/fs/xfs/scrub/xfarray.c
+@@ -487,8 +487,7 @@ xfarray_sortinfo_alloc(
+ 	xfarray_sortinfo_lo(si)[0] = 0;
+ 	xfarray_sortinfo_hi(si)[0] = array->nr - 1;
+ 	si->relax = INIT_XCHK_RELAX;
+-	if (flags & XFARRAY_SORT_KILLABLE)
+-		si->relax.interruptible = false;
++	si->relax.killable = !!(flags & XFARRAY_SORT_KILLABLE);
+ 
+ 	trace_xfarray_sort(si, nr_bytes);
+ 	*infop = si;
 
 
