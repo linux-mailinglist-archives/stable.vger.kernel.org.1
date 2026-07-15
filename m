@@ -1,64 +1,63 @@
-Return-Path: <stable+bounces-274712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274714-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id iNe7CVT6VmqfDwEAu9opvQ
-	(envelope-from <stable+bounces-274712-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 05:11:16 +0200
+	id iQh2H4v7VmrODwEAu9opvQ
+	(envelope-from <stable+bounces-274714-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 05:16:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3703D75A398
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 05:11:15 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3F3B75A3D9
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 05:16:26 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ApGedlzt;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274712-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-274712-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IhQS72g8;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274714-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274714-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C2708301B911
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 03:10:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0F9C0304C936
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 03:16:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E35293AE70A;
-	Wed, 15 Jul 2026 03:10:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FEDF261B70;
+	Wed, 15 Jul 2026 03:16:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 786BE3ACA70;
-	Wed, 15 Jul 2026 03:10:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9973164AA4
+	for <stable@vger.kernel.org>; Wed, 15 Jul 2026 03:16:04 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784085015; cv=none; b=iEDvYWt06b2HbNO1alMfjkebSIMEh2Suq6QGh/gAhoMTbPZcdS+t/3NtAwyJl35SgsWjn/RdblTIferzjRerLKhTbBz1dqXgl1ueI3RR7n4wisMkZTd9kNkrxOgsYqFQOv8Ngy/OG1M+mRtTHeJw7nHV0hSIW7tr2X6/1L7TVPo=
+	t=1784085366; cv=none; b=rFpKsMIz4OTVDUbd2OLtcSgkgXYnMeZIIpNWccwXGva0cFXa9/Nm4W8xow+vRsVd68uRoYLI5aXbMPX3GYliWQB5CPeUhGEZsX/cSOCevfhT1XR7tk8UF7Jt8ZLZyVsDbbGm1hJgECWHmwQaNpCNqPwmuWEeo1aI76lBYPQeku0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784085015; c=relaxed/simple;
-	bh=8EAZYoQVxXJWP2LY9Eji3Og75kTEnJ3aHhWisdL4r9s=;
+	s=arc-20240116; t=1784085366; c=relaxed/simple;
+	bh=WFLXNwcFTGivNKiTVVlIq3iksLBJLQsGIm/AnIN4OLM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nb7C65SwJEezuxK+PnPhoVXgft3qb+tQoPGiPsfowOGrIpTzuWe5NfGYauq9luUlUGLyMY8FqVa9E38j9wuo7Ugwe/NglPzmXUfglTGqTnJDdjCb5Zqs+s6d6SP6mH2nmGu+J68r3HhSf0I8DfnTw/uzjv+/qA730Ec8Bg9gUEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ApGedlzt; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 312081F000E9;
-	Wed, 15 Jul 2026 03:10:14 +0000 (UTC)
+	 MIME-Version; b=EN+hDS6qJ4zx7FGAd6zYQYkQBhXedb+Ggy+p2D7QkABrbxFj6UWJpJ3VObV28cczak7okHEjeLBJeg071bXfSKP8sYe/wr9en98I+uN3cPJNVvEf+zfe1sBnOWHpLPQyh2jlYeaR0Db8SwNsqFQnDOtsZ2wTxzzH8bnCtWeU3QE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IhQS72g8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 973291F000E9;
+	Wed, 15 Jul 2026 03:16:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784085014;
-	bh=r5eHq92k38jxsVe2qYUSBxPPKXWBRjXR/oltUI6KEm4=;
+	s=k20260515; t=1784085364;
+	bh=BcQJTjTOqmhtBprIj5o6ebd6NxBRAY7DTmFzETFIhQs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ApGedlzt4TB8XMMtRUBW5laM9bbzhhkdz8thJzqOnktxgQs//OWRRMHJ5FgccyqmJ
-	 k7/H/bjiH0ndpsKb09xLw9h25j/Rg6BmTsKDAAwLsCJaWdkn3lFo2Arz68emF1zzWK
-	 ta3Q9h7L8icauUyQJmW+2XPi8PT8zPIOxqSp9WtPjwHpt3QQxmZogxn9fcxgit5Br9
-	 o4WczTRKgDtfGAyVG1D0Sjz0bZGKSvRi13FFlFONO3rmh+olvMNgURIw878AEYi9K8
-	 AOIessjPfXioxFtpiFsSnbGhezs+/1XXTQqfHMBvZagOS77+INLoc/Q22y9J4A36UE
-	 ixzE/qKTRlp+w==
-From: SJ Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SJ Park <sj@kernel.org>,
-	stable@vger.kernel.org,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH v1.1 6/6] mm/damon/sysfs: read ops_id only once in damon_sysfs_apply_inputs()
-Date: Tue, 14 Jul 2026 20:10:01 -0700
-Message-ID: <20260715031002.108504-7-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260715031002.108504-1-sj@kernel.org>
-References: <20260715031002.108504-1-sj@kernel.org>
+	b=IhQS72g8bswJWhA18YIfjl/eXf9c+gsE+RYyapcNhJJ8v8XGWehguuoCpoKOy4NcG
+	 +5HrzcIQMsegCyIoripTvqIjVexNMhXxViCQksb5skXFM3U7RaUlYxNTnFW2Y35Uvw
+	 zEN69lKG9ss+4gueGBDITbBto2UL5jjLn0nlj6KmLPndmP1jAX8qu8ChKpIpkKPTTu
+	 46V9DUZX5OlhMPmf33J3yo85pjA1lIVzRbEKg77GWy+x5HTaYqjzuwXDOKgrD2EwGz
+	 44NBl/IFG8GdvhA4+T/fWg1+xi1+3HR1T63YDKG/xwJLUGeYor19NEhuujEpNCPioz
+	 oGxKs6ZG/AYBA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Ahsan Atta <ahsan.atta@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15.y] crypto: qat - fix VF2PF work teardown race in adf_disable_sriov()
+Date: Tue, 14 Jul 2026 23:16:01 -0400
+Message-ID: <20260715031602.247772-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026071352-squealer-repent-dc31@gregkh>
+References: <2026071352-squealer-repent-dc31@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -73,81 +72,268 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-274712-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-274714-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:akpm@linux-foundation.org,m:sj@kernel.org,m:stable@vger.kernel.org,m:damon@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:linux-mm@kvack.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:giovanni.cabiddu@intel.com,m:ahsan.atta@intel.com,m:herbert@gondor.apana.org.au,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[sj@kernel.org,stable@vger.kernel.org];
+	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,apana.org.au:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3703D75A398
+X-Rspamd-Queue-Id: E3F3B75A3D9
 
-damon_sysfs_apply_inputs() reads ops_id twice.  It could race with
-ops_id_store().  As a result, the min_region_sz could wrongly be set up.
-Read it once.
+From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
 
-The user impact is trivial.  Sane users ain't update the parameter in
-parallel.  Even if it happens, the DAMON core layer handles the wrong
-min_region_sz (!is_power_of_2()).  Even if somehow the race ended up
-making a min_region_sz that is different from the user's intention but
-still valid, only monitoring itself runs differently than expected.  No
-critical consequences like kernel panic or memory corruption happen
+[ Upstream commit 277281c10c63791067d24d421f7c43a15faa9096 ]
 
-The issue was discovered [1] by Sashiko.
+The VF2PF interrupt handler queues PF-side response work that stores a
+raw pointer to per-VF state (struct adf_accel_vf_info). Currently,
+adf_disable_sriov() destroys per-VF mutexes and frees vf_info without
+stopping new VF2PF work or waiting for in-flight workers to complete. A
+concurrently scheduled or already queued worker can then dereference
+freed memory.
 
-[1] https://lore.kernel.org/20260703172417.95426-1-sj@kernel.org
+This manifests as a use-after-free when KASAN is enabled:
 
-Fixes: 8d009da32f13 ("mm/damon/sysfs: set damon_ctx->min_sz_region only for paddr use case")
-Cc: <stable@vger.kernel.org> # 6.18.x
-Signed-off-by: SJ Park <sj@kernel.org>
+  BUG: KASAN: null-ptr-deref in mutex_lock+0x76/0xe0
+  Write of size 8 at addr 0000000000000260 by task kworker/24:2/...
+  Workqueue: qat_pf2vf_resp_wq adf_iov_send_resp [intel_qat]
+  Call Trace:
+    kasan_report+0x119/0x140
+    mutex_lock+0x76/0xe0
+    adf_gen4_pfvf_send+0xd4/0x1f0 [intel_qat]
+    adf_recv_and_handle_vf2pf_msg+0x290/0x360 [intel_qat]
+    adf_iov_send_resp+0x8c/0xe0 [intel_qat]
+    process_one_work+0x6ac/0xfd0
+    worker_thread+0x4dd/0xd30
+    kthread+0x326/0x410
+    ret_from_fork+0x33b/0x670
+
+Add a PF-local flag, vf2pf_disabled, that gates work queueing, worker
+processing, and interrupt re-enabling during teardown. Set this flag
+atomically with the hardware interrupt mask inside
+adf_disable_all_vf2pf_interrupts(). After masking, synchronize the AE
+cluster MSI-X interrupt and flush the PF response workqueue before
+tearing down per-VF locks and state so all in-flight work completes
+before vf_info is destroyed.
+
+Introduce adf_enable_all_vf2pf_interrupts() to clear the flag and
+unmask all VF2PF interrupts under the same lock when SR-IOV is
+re-enabled. This ensures the software flag and hardware state transition
+atomically on both the enable and disable paths.
+
+Cc: stable@vger.kernel.org
+Fixes: ed8ccaef52fa ("crypto: qat - Add support for SRIOV")
+Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Reviewed-by: Ahsan Atta <ahsan.atta@intel.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/damon/sysfs.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ .../crypto/qat/qat_common/adf_accel_devices.h |  2 ++
+ .../crypto/qat/qat_common/adf_common_drv.h    |  4 +++
+ drivers/crypto/qat/qat_common/adf_isr.c       | 18 +++++++++++++
+ drivers/crypto/qat/qat_common/adf_pf2vf_msg.c | 27 +++++++++++++++++++
+ drivers/crypto/qat/qat_common/adf_sriov.c     | 27 ++++++++++++++++---
+ 5 files changed, 74 insertions(+), 4 deletions(-)
 
-diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-index 65a502c7746c0..d777411f851c8 100644
---- a/mm/damon/sysfs.c
-+++ b/mm/damon/sysfs.c
-@@ -2094,14 +2094,16 @@ static inline bool damon_sysfs_kdamond_running(
- static int damon_sysfs_apply_inputs(struct damon_ctx *ctx,
- 		struct damon_sysfs_context *sys_ctx)
- {
-+	enum damon_ops_id ops_id;
- 	int err;
+diff --git a/drivers/crypto/qat/qat_common/adf_accel_devices.h b/drivers/crypto/qat/qat_common/adf_accel_devices.h
+index 3bb67b22edd6e1..ca26ffabc388d8 100644
+--- a/drivers/crypto/qat/qat_common/adf_accel_devices.h
++++ b/drivers/crypto/qat/qat_common/adf_accel_devices.h
+@@ -248,6 +248,8 @@ struct adf_accel_dev {
+ 		struct {
+ 			/* protects VF2PF interrupts access */
+ 			spinlock_t vf2pf_ints_lock;
++			/* prevents VF2PF handling from racing with VF state teardown */
++			bool vf2pf_disabled;
+ 			/* vf_info is non-zero when SR-IOV is init'ed */
+ 			struct adf_accel_vf_info *vf_info;
+ 		} pf;
+diff --git a/drivers/crypto/qat/qat_common/adf_common_drv.h b/drivers/crypto/qat/qat_common/adf_common_drv.h
+index d91b8e6dcd08a5..dc69edd0d1b065 100644
+--- a/drivers/crypto/qat/qat_common/adf_common_drv.h
++++ b/drivers/crypto/qat/qat_common/adf_common_drv.h
+@@ -120,6 +120,7 @@ void qat_asym_algs_unregister(void);
  
--	err = damon_select_ops(ctx, sys_ctx->ops_id);
-+	ops_id = READ_ONCE(sys_ctx->ops_id);
-+	err = damon_select_ops(ctx, ops_id);
- 	if (err)
- 		return err;
- 	ctx->addr_unit = READ_ONCE(sys_ctx->addr_unit);
- 	/* addr_unit is respected by only DAMON_OPS_PADDR */
--	if (sys_ctx->ops_id == DAMON_OPS_PADDR)
-+	if (ops_id == DAMON_OPS_PADDR)
- 		ctx->min_region_sz = max(
- 				DAMON_MIN_REGION_SZ / ctx->addr_unit, 1);
- 	ctx->pause = sys_ctx->pause;
+ int adf_isr_resource_alloc(struct adf_accel_dev *accel_dev);
+ void adf_isr_resource_free(struct adf_accel_dev *accel_dev);
++void adf_isr_sync_ae_cluster(struct adf_accel_dev *accel_dev);
+ int adf_vf_isr_resource_alloc(struct adf_accel_dev *accel_dev);
+ void adf_vf_isr_resource_free(struct adf_accel_dev *accel_dev);
+ 
+@@ -189,6 +190,9 @@ void adf_disable_vf2pf_interrupts_irq(struct adf_accel_dev *accel_dev,
+ 				      u32 vf_mask);
+ void adf_enable_vf2pf_interrupts(struct adf_accel_dev *accel_dev,
+ 				 u32 vf_mask);
++void adf_enable_all_vf2pf_interrupts(struct adf_accel_dev *accel_dev,
++				     u32 num_vfs);
++void adf_disable_all_vf2pf_interrupts(struct adf_accel_dev *accel_dev);
+ void adf_enable_pf2vf_interrupts(struct adf_accel_dev *accel_dev);
+ void adf_disable_pf2vf_interrupts(struct adf_accel_dev *accel_dev);
+ void adf_schedule_vf2pf_handler(struct adf_accel_vf_info *vf_info);
+diff --git a/drivers/crypto/qat/qat_common/adf_isr.c b/drivers/crypto/qat/qat_common/adf_isr.c
+index c678d5c531aa9d..d5d15ed1a081a0 100644
+--- a/drivers/crypto/qat/qat_common/adf_isr.c
++++ b/drivers/crypto/qat/qat_common/adf_isr.c
+@@ -135,6 +135,24 @@ static irqreturn_t adf_msix_isr_ae(int irq, void *dev_ptr)
+ 	return IRQ_NONE;
+ }
+ 
++void adf_isr_sync_ae_cluster(struct adf_accel_dev *accel_dev)
++{
++	struct adf_accel_pci *pci_dev_info = &accel_dev->accel_pci_dev;
++	struct adf_hw_device_data *hw_data = accel_dev->hw_device;
++	struct msix_entry *msixe = pci_dev_info->msix_entries.entries;
++	u32 num_entries = pci_dev_info->msix_entries.num_entries;
++	u32 irq_idx;
++
++	if (!test_bit(ADF_STATUS_IRQ_ALLOCATED, &accel_dev->status) || !msixe)
++		return;
++
++	irq_idx = num_entries > 1 ? hw_data->num_banks : 0;
++	if (irq_idx >= num_entries)
++		return;
++
++	synchronize_irq(msixe[irq_idx].vector);
++}
++
+ static int adf_request_irqs(struct adf_accel_dev *accel_dev)
+ {
+ 	struct adf_accel_pci *pci_dev_info = &accel_dev->accel_pci_dev;
+diff --git a/drivers/crypto/qat/qat_common/adf_pf2vf_msg.c b/drivers/crypto/qat/qat_common/adf_pf2vf_msg.c
+index 7ec81989beb03f..ab2d0c3ad0acf3 100644
+--- a/drivers/crypto/qat/qat_common/adf_pf2vf_msg.c
++++ b/drivers/crypto/qat/qat_common/adf_pf2vf_msg.c
+@@ -40,6 +40,23 @@ void adf_enable_vf2pf_interrupts(struct adf_accel_dev *accel_dev, u32 vf_mask)
+ 	unsigned long flags;
+ 
+ 	spin_lock_irqsave(&accel_dev->pf.vf2pf_ints_lock, flags);
++	if (!READ_ONCE(accel_dev->pf.vf2pf_disabled))
++		__adf_enable_vf2pf_interrupts(accel_dev, vf_mask);
++	spin_unlock_irqrestore(&accel_dev->pf.vf2pf_ints_lock, flags);
++}
++
++void adf_enable_all_vf2pf_interrupts(struct adf_accel_dev *accel_dev,
++				     u32 num_vfs)
++{
++	unsigned long flags;
++	u32 vf_mask;
++
++	vf_mask = BIT_ULL(num_vfs) - 1;
++	if (!vf_mask)
++		return;
++
++	spin_lock_irqsave(&accel_dev->pf.vf2pf_ints_lock, flags);
++	WRITE_ONCE(accel_dev->pf.vf2pf_disabled, false);
+ 	__adf_enable_vf2pf_interrupts(accel_dev, vf_mask);
+ 	spin_unlock_irqrestore(&accel_dev->pf.vf2pf_ints_lock, flags);
+ }
+@@ -84,6 +101,16 @@ void adf_disable_vf2pf_interrupts_irq(struct adf_accel_dev *accel_dev, u32 vf_ma
+ 	spin_unlock(&accel_dev->pf.vf2pf_ints_lock);
+ }
+ 
++void adf_disable_all_vf2pf_interrupts(struct adf_accel_dev *accel_dev)
++{
++	unsigned long flags;
++
++	spin_lock_irqsave(&accel_dev->pf.vf2pf_ints_lock, flags);
++	WRITE_ONCE(accel_dev->pf.vf2pf_disabled, true);
++	__adf_disable_vf2pf_interrupts(accel_dev, GENMASK(31, 0));
++	spin_unlock_irqrestore(&accel_dev->pf.vf2pf_ints_lock, flags);
++}
++
+ static int __adf_iov_putmsg(struct adf_accel_dev *accel_dev, u32 msg, u8 vf_nr)
+ {
+ 	struct adf_accel_pci *pci_info = &accel_dev->accel_pci_dev;
+diff --git a/drivers/crypto/qat/qat_common/adf_sriov.c b/drivers/crypto/qat/qat_common/adf_sriov.c
+index 90ec057f9183d7..6647c0fa5cd1e6 100644
+--- a/drivers/crypto/qat/qat_common/adf_sriov.c
++++ b/drivers/crypto/qat/qat_common/adf_sriov.c
+@@ -19,15 +19,26 @@ static void adf_iov_send_resp(struct work_struct *work)
+ {
+ 	struct adf_pf2vf_resp *pf2vf_resp =
+ 		container_of(work, struct adf_pf2vf_resp, pf2vf_resp_work);
++	struct adf_accel_vf_info *vf_info = pf2vf_resp->vf_info;
++	struct adf_accel_dev *accel_dev = vf_info->accel_dev;
+ 
+-	adf_vf2pf_req_hndl(pf2vf_resp->vf_info);
++	if (READ_ONCE(accel_dev->pf.vf2pf_disabled))
++		goto out;
++
++	adf_vf2pf_req_hndl(vf_info);
++
++out:
+ 	kfree(pf2vf_resp);
+ }
+ 
+ void adf_schedule_vf2pf_handler(struct adf_accel_vf_info *vf_info)
+ {
++	struct adf_accel_dev *accel_dev = vf_info->accel_dev;
+ 	struct adf_pf2vf_resp *pf2vf_resp;
+ 
++	if (READ_ONCE(accel_dev->pf.vf2pf_disabled))
++		return;
++
+ 	pf2vf_resp = kzalloc(sizeof(*pf2vf_resp), GFP_ATOMIC);
+ 	if (!pf2vf_resp)
+ 		return;
+@@ -37,6 +48,12 @@ void adf_schedule_vf2pf_handler(struct adf_accel_vf_info *vf_info)
+ 	queue_work(pf2vf_resp_wq, &pf2vf_resp->pf2vf_resp_work);
+ }
+ 
++static void adf_flush_pf2vf_resp_wq(void)
++{
++	if (pf2vf_resp_wq)
++		flush_workqueue(pf2vf_resp_wq);
++}
++
+ static int adf_enable_sriov(struct adf_accel_dev *accel_dev)
+ {
+ 	struct pci_dev *pdev = accel_to_pci_dev(accel_dev);
+@@ -63,7 +80,7 @@ static int adf_enable_sriov(struct adf_accel_dev *accel_dev)
+ 
+ 	/* Enable VF to PF interrupts for all VFs */
+ 	if (hw_data->get_pf2vf_offset)
+-		adf_enable_vf2pf_interrupts(accel_dev, BIT_ULL(totalvfs) - 1);
++		adf_enable_all_vf2pf_interrupts(accel_dev, totalvfs);
+ 
+ 	/*
+ 	 * Due to the hardware design, when SR-IOV and the ring arbiter
+@@ -97,9 +114,11 @@ void adf_disable_sriov(struct adf_accel_dev *accel_dev)
+ 
+ 	pci_disable_sriov(accel_to_pci_dev(accel_dev));
+ 
+-	/* Disable VF to PF interrupts */
++	/* Block VF2PF work and disable VF to PF interrupts */
+ 	if (hw_data->get_pf2vf_offset)
+-		adf_disable_vf2pf_interrupts(accel_dev, GENMASK(31, 0));
++		adf_disable_all_vf2pf_interrupts(accel_dev);
++	adf_isr_sync_ae_cluster(accel_dev);
++	adf_flush_pf2vf_resp_wq();
+ 
+ 	/* Clear Valid bits in AE Thread to PCIe Function Mapping */
+ 	if (hw_data->configure_iov_threads)
 -- 
-2.47.3
+2.53.0
+
 
