@@ -1,61 +1,66 @@
-Return-Path: <stable+bounces-274708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274709-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id tUS0CBv6VmqJDwEAu9opvQ
-	(envelope-from <stable+bounces-274708-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 05:10:19 +0200
+	id KGtyKCf6VmqVDwEAu9opvQ
+	(envelope-from <stable+bounces-274709-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 05:10:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC20375A36C
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 05:10:18 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92DB275A380
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 05:10:30 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EJVol9+h;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274708-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274708-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hdwQejIq;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274709-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-274709-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 62F29301EB46
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 03:10:18 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A4C793013C7F
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 03:10:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE74B38D3E2;
-	Wed, 15 Jul 2026 03:10:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30A643A9635;
+	Wed, 15 Jul 2026 03:10:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A6C5352021;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7E6D36215B;
 	Wed, 15 Jul 2026 03:10:12 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784085013; cv=none; b=oI89p5RqFICx2VWUIa6fdoED9c/4r72MXl6I4buQY86/nkRr8yhWiuTwDTw5mHZD8zcZ8yjX/KXMLTSrM8cQXGSvYIIPWPPtAEdklrQBfIDHWjD00jidQ9E9PtZEH5DtBZv2rYLWAivuuo5/NXnlncpSSVV6ddSESkexRKsak/8=
+	t=1784085014; cv=none; b=Mk2hfcWqe0sOjJGJqlOD+QdLT0nQ0+cI3nWLpERXc/fi77FtrTaxi+JaKtmrgJuH/GmRrDrHQcYTedqkf+he34+hKg24R/zACfAmii8OPaNpphqRw+B3PbboUcDFm+aLjplyJL/AKuizpMFhskjZ/3FE0xclx1k/4jZPUe8vpwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784085013; c=relaxed/simple;
-	bh=uommVYjcgv1yUQymXHLWitvXUy8HlVyIq9wOy8obzmw=;
+	s=arc-20240116; t=1784085014; c=relaxed/simple;
+	bh=oa/Api2m6C6paRLqdcrPW1anhL7pYe2ZAUU7W+EEjsg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GR3pj4huNzOdlZCpk+pdRmqzZAKkj+8fg3/pHJc/DrHZ5Ck1Jv1Ij8IcEo7KgGzc6U7lQPD9l/MJDFjixL7na6diNe84srdvZnoEh08E6lwJ7Ow+mNHJUeUygPytgKg14mfwhId054ZPDeiSm1fyROsJRP9xm+7jRRu8X/h/WDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EJVol9+h; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 227411F00A3D;
+	 MIME-Version; b=mtZgv8XsqNsbFU9U3FkTvlK40w1dmd88umaZ7rDStwam2LLPczVjYqZo3cEcDIKsiX8jkFN40iw/Q7mcwCXXrKIzkovQ/pa0GlsF4n0jeT6xXopEOrUwMXQXVAKRseOg0mat09PtZGfxxXl7RUFfmeAMG3eIt6yEkg9L0KV3IaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hdwQejIq; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76D9A1F00A3E;
 	Wed, 15 Jul 2026 03:10:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1784085012;
-	bh=Q9KjTQrAluw9j+QP6j3O8xbCeroVnCVq06v65dUktLw=;
+	bh=Csk2Bs95SoFAJpGitaPFL2lXi5OcS5tAvUkrHnWNWRA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EJVol9+hnUXr2MkTGjNeeTnr9zgtGiH5lhzdGvYd5zJCaySf6cSWxfS2J3u35p82W
-	 aN7k6jW22+/k8MA0TjfYViaGj0UAvcbe6CKpmzA1dp9E3K6YhK2ZdiYbQ0X7OM0XuI
-	 dl/ev0OzfVJ8SUjSrzFznTDRFzs+1NpfgomlPcRCKQO/u+Dh8IWCUwhA5ueQLIzG6L
-	 5paLEU0Opf1bam6u3Q2eugM68ni7424Ag6gCP5C41ySgpo22WQZ3rGKa8y344o1L8Y
-	 xvkVkSdvWNiU52kuxdqXM20DRFUDW71jWFix1mRQCU7heAgrJ2k910rqfYpb0g9ee5
-	 cDRNSdDPvfA/Q==
+	b=hdwQejIqjSXVn6ZOjjgrAJxWrno8uipge6ifEx+jog45KonTkm+btFthmQAKpVfGY
+	 0lJqAjEeCtWVkb3LH5/9Rh3jnbfuu/DkUFS5DORwogllwKC71kxDCU4xDTxYtyxG/8
+	 TwHmM9R05lRNvUclDVUams2YNzRAzh6erkKutdnASE02fLexoXyXpg7rKd8/2lOYqu
+	 DWMfD6VbNrS+gZHEUeuwMlDEWMMtwZoAkVRjTdK2XBtV9TUo8+/sZIuMXaqs/PGXUb
+	 jI6CmAHHekvsgEt0luLBay+leef/Kv8/pd601qEHt3iU61R8KZ7LNGoN8HmQXIEl5o
+	 fhuANby88ZDVQ==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SJ Park <sj@kernel.org>,
 	stable@vger.kernel.org,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@davidgow.net>,
+	SeongJae Park <sjpark@amazon.de>,
 	damon@lists.linux.dev,
+	kunit-dev@googlegroups.com,
 	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v1.1 1/6] mm/damon/core: avoid infinite kdamond_merge_regions() internal loop
-Date: Tue, 14 Jul 2026 20:09:56 -0700
-Message-ID: <20260715031002.108504-2-sj@kernel.org>
+Subject: [PATCH v1.1 2/6] mm/damon/tests/core-kunit: catch test failure in test_merge_regions_of()
+Date: Tue, 14 Jul 2026 20:09:57 -0700
+Message-ID: <20260715031002.108504-3-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260715031002.108504-1-sj@kernel.org>
 References: <20260715031002.108504-1-sj@kernel.org>
@@ -69,108 +74,82 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-3.66 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-274708-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:akpm@linux-foundation.org,m:sj@kernel.org,m:stable@vger.kernel.org,m:brendan.higgins@linux.dev,m:davidgow@davidgow.net,m:sjpark@amazon.de,m:damon@lists.linux.dev,m:kunit-dev@googlegroups.com,m:linux-kernel@vger.kernel.org,m:linux-kselftest@vger.kernel.org,m:linux-mm@kvack.org,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:akpm@linux-foundation.org,m:sj@kernel.org,m:stable@vger.kernel.org,m:damon@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:linux-mm@kvack.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-274709-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER(0.00)[sj@kernel.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: EC20375A36C
+X-Rspamd-Queue-Id: 92DB275A380
 
-Due to online parameter update like events, the number of DAMON regions
-could be higher than the user-set upper limit.  kdamond_merge_regions()
-repeats merge regions until the number meets the limit, while doubling
-the merge threshold up to the theoretical maximum threshold.  It is
-tried only up to the theoretical maximum threshold because even the
-aggressive merging can fail from reducing the number of regions under
-the user-defined upper limit.  For example, there could be many
-user-defined non-contiguous regions that cannot be merged.
+KUNIT_EXPECT_EQ() does not abort the execution of test code when the
+expectation is not met.  But damon_test_merge_regions_of() code after
+its initial KUNIT_EXPECT_EQ() call assumes the expectation is met.  It
+does a per-region test with a hard-coded number of regions that is
+correct only if the expectation was met.  As a result, __nth_region_of()
+could return NULL, and the test code can dereference NULL pointers.  Fix
+the issue by catching the expectation failure and skip the per-region
+tests.
 
-The threshold based loop break condition is evaluated by comparing the
-threshold for the next merging try against the theoretical maximum
-threshold.  If max_thres is larger than UINT_MAX / 2, doubling the
-threshold could make it overflow, and bypass the loop break condition.
-In the case, if the number of regions cannot be reduced under the upper
-limit like explained above, the loop will run infinitely.
-
-Prevent the case by doing the break condition check before doubling the
-threshold.  Also, prevent the threshold exceeding the maximum threshold,
-as it could overflow and apply the wrong merge threshold.
-
-This issue is unlikely to occur in real world, since having the
-max_thres higher than UINT_MAX / 2 require unrealistically large
-aggregation intervals compared to the sampling interval.  Also, it
-requires an unrealistically large number of uncontiguous regions setup.
-Nonetheless, the consequence is bad and the fix is simple.
+The user impact on realistic setups should be negligible, as it is a
+unit test.
 
 The issue was discovered [1] by Sashiko.
 
-[1] https://lore.kernel.org/20260709145425.96247-1-sj@kernel.org
+[1] https://lore.kernel.org/20260710144937.26981-1-sj@kernel.org
 
-Fixes: 310d6c15e910 ("mm/damon/core: merge regions aggressively when max_nr_regions is unmet")
-Cc: <stable@vger.kernel.org> # 6.10.x
+Fixes: 17ccae8bb5c9 ("mm/damon: add kunit tests")
+Cc: <stable@vger.kernel.org> # 5.15.x
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- mm/damon/core.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ mm/damon/tests/core-kunit.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 6c4215cc809ec..603b102ff80f9 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -3372,7 +3372,7 @@ static void kdamond_merge_regions(struct damon_ctx *c, unsigned int threshold,
- 
- 	max_thres = c->attrs.aggr_interval /
- 		(c->attrs.sample_interval ?  c->attrs.sample_interval : 1);
--	do {
-+	while (true) {
- 		nr_regions = 0;
- 		damon_for_each_target(t, c) {
- 			damon_merge_regions_of(t, threshold, sz_limit, c,
-@@ -3380,9 +3380,14 @@ static void kdamond_merge_regions(struct damon_ctx *c, unsigned int threshold,
- 			nr_regions += damon_nr_regions(t);
- 		}
- 		count_age = false;
--		threshold = max(1, threshold * 2);
--	} while (nr_regions > c->attrs.max_nr_regions &&
--			threshold / 2 < max_thres);
-+		if (nr_regions <= c->attrs.max_nr_regions ||
-+				max_thres <= threshold)
-+			break;
-+		if (threshold < max_thres / 2)
-+			threshold = max(1, threshold * 2);
-+		else
-+			threshold = max_thres;
-+	}
+diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
+index 485472ddebd19..eba643762132f 100644
+--- a/mm/damon/tests/core-kunit.h
++++ b/mm/damon/tests/core-kunit.h
+@@ -260,11 +260,14 @@ static void damon_test_merge_regions_of(struct kunit *test)
+ 	damon_merge_regions_of(t, 9, 9999, ctx, true);
+ 	/* 0-112, 114-130, 130-156, 156-170, 170-230, 230-10170 */
+ 	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), 6u);
++	if (damon_nr_regions(t) != 6)
++		goto out;
+ 	for (i = 0; i < 6; i++) {
+ 		r = __nth_region_of(t, i);
+ 		KUNIT_EXPECT_EQ(test, r->ar.start, saddrs[i]);
+ 		KUNIT_EXPECT_EQ(test, r->ar.end, eaddrs[i]);
+ 	}
++out:
+ 	damon_free_target(t);
+ 	damon_destroy_ctx(ctx);
  }
- 
- #ifdef CONFIG_DAMON_DEBUG_SANITY
 -- 
 2.47.3
 
