@@ -1,198 +1,244 @@
-Return-Path: <stable+bounces-274906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274909-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id PKlDIXpsV2oaNwEAu9opvQ
-	(envelope-from <stable+bounces-274906-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 13:18:18 +0200
+	id rRRYB7JvV2r8NwEAu9opvQ
+	(envelope-from <stable+bounces-274909-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 13:32:02 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF84175D7D7
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 13:18:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A8F775D953
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 13:32:01 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OW+CRJvy;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274906-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274906-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=ist.utl.pt header.s=mail header.b=QHRFFScv;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274909-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274909-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=ist.utl.pt;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 07C5C3050936
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 11:16:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B32763066416
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 11:30:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A829C41D62A;
-	Wed, 15 Jul 2026 11:16:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86CAA448CEA;
+	Wed, 15 Jul 2026 11:30:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtp1.tecnico.ulisboa.pt (smtp1.tecnico.ulisboa.pt [193.136.128.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC7B244839E
-	for <stable@vger.kernel.org>; Wed, 15 Jul 2026 11:16:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EFAE448CF5
+	for <stable@vger.kernel.org>; Wed, 15 Jul 2026 11:30:35 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784114197; cv=none; b=arOr3MX5RRAuz4o412kYrg7xuV+mOKwWcJ7eMnM6BGivYL4+Y5KTgWUvycIxcn5kMCd0iMjnNRhEjzGBysyGJvpgEZbBpus382KbVhoKVIsMDFKtX8zvmR+awrKBUxfsojjufXRDZiuDJxW54pSDinAI9nAyxsvjvGS6fgEg4tU=
+	t=1784115045; cv=none; b=bPJ0gtsWOMAHLGc30yOUdOzBtZZrEKRTGGhlezc6UPwghMclrj5lM2q77Sg8M5/U5XMJurV675dID1rLCsNCQe1mlVRjpBqyxi/cI1WO4yWssg5vPh1whmJCqQSKZNSPsondbTQAtpSezMYLWXJu6zyTBxsSXx73YCXXyrCGQp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784114197; c=relaxed/simple;
-	bh=iCF5dtSiD9DimZyvOb92Ujxx0K7O1oDghWM0wjn5TM0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SvfXUOaN6Bq1wJCgwSB9bNi0WdqkS0ZjS/ZmhHlMfDhmS7jbvYyeGIJxvXO1kxKfgjF94lcZmQhd9rtIU61OmgK3Taow6w00fTXZOUCZdBNI9HGYgvmHAuH8efrvAhBkhiLd3VF4a14wCCz69I/GHpiiY7HANdodKHgM+61LDu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OW+CRJvy; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C7FF1F000E9;
-	Wed, 15 Jul 2026 11:16:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784114194;
-	bh=jYg1M7zf065d5qWhhfvUKB3NlKpoqDZVNH9hqQrZyDE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OW+CRJvyKFNPWiU+40MKkZUt9HGSCiHoIuEqALCMJh+1+DXVOSCZMCjLigue2v22N
-	 2W1uUre9NBLwKiC9cBked3O3GrtD7uHMXkQPll9KhA4ZBHvahmrsjmy+5OphC4MdzE
-	 8uvUlfpj3H6t+0s59DMCuYy5xyx1Jc5rK/uNrZO6rWkCenSeYR+ibqZFYLIopI3IG8
-	 fnFiOSe+rYXqSlxZjnr6N1K8yQBfhYh4wom9vZW4d15o/krcL3wXNanIhKgcRzFnrF
-	 vvsFGlkQBWY0sVfyyW5dGcLAxNEccHfKdv5hk8Fhn89V2EcQ/MsR6mMQSirHRGRP3U
-	 SCc13A/kKxkqg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Alexandru Hossu <hossu.alexandru@gmail.com>,
-	stable <stable@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y 10/10] staging: rtl8723bs: fix OOB reads in rtw_get_sec_ie(), rtw_get_wapi_ie(), and rtw_get_wps_attr()
-Date: Wed, 15 Jul 2026 07:16:25 -0400
-Message-ID: <20260715111625.647536-10-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260715111625.647536-1-sashal@kernel.org>
-References: <2026071300-length-drainable-3f8e@gregkh>
- <20260715111625.647536-1-sashal@kernel.org>
+	s=arc-20240116; t=1784115045; c=relaxed/simple;
+	bh=O+Ur9eYnsFQSPhsp8ewzlA525GBnrJImSCfz0U85SQA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=lNB6WI5ygCv+LSDqLLxGzGV/avid5XNVkq+9IQbgbOU+YO9cDnPY2b9opPPMmOFQV7R8oPQuF3LtkQfRSqOW4XUzPSGNCRkpNbrukQhgnLEEIV9XB87Iv41nejm9/b5fzifxFpG+rom4JaJynvXADtMpMQppsOJHtc1Z/DabnJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ist.utl.pt; spf=pass smtp.mailfrom=ist.utl.pt; dkim=pass (1024-bit key) header.d=ist.utl.pt header.i=@ist.utl.pt header.b=QHRFFScv; arc=none smtp.client-ip=193.136.128.21
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by smtp1.tecnico.ulisboa.pt (Postfix) with ESMTP id E7069639CF3F;
+	Wed, 15 Jul 2026 12:25:04 +0100 (WEST)
+X-Virus-Scanned: by amavis-2.13.0 (20230106) (Debian) at tecnico.ulisboa.pt
+Received: from smtp1.tecnico.ulisboa.pt ([127.0.0.1])
+ by localhost (smtp1.tecnico.ulisboa.pt [127.0.0.1]) (amavis, port 10025)
+ with LMTP id tbtQaezFjhuO; Wed, 15 Jul 2026 12:25:03 +0100 (WEST)
+Received: from mail1.tecnico.ulisboa.pt (mail1.ist.utl.pt [193.136.128.10])
+	by smtp1.tecnico.ulisboa.pt (Postfix) with ESMTPS id B078E63579D2;
+	Wed, 15 Jul 2026 12:25:02 +0100 (WEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ist.utl.pt; s=mail;
+	t=1784114702;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ecflkBoDJhed0VZ6jHgpb4su8KoM+WVK0lOaA9bisVM=;
+	b=QHRFFScvNSTqmKacjhFM1K0u1eli5YizxCnf+6X5PSUJroYr9PM9h3RaQmJ6iI/At4nWWn
+	DicaEAHTD6hRl9ATzoj2KNWISPXtWqO+zPXgKBJPswyzx3CwECmbRLpRdBCks6+To+OqjQ
+	nRKnG4cUpvvRz7aP/vv7gDX2LEmgvCk=
+Received: from jcmfernandes-desktop.tail184b8c.ts.net (unknown [IPv6:2a01:14:8051:c010:b43e:a652:ae6c:a531])
+	(Authenticated sender: ist157885)
+	by mail1.tecnico.ulisboa.pt (Postfix) with ESMTPSA id 7814E3601AD;
+	Wed, 15 Jul 2026 12:25:02 +0100 (WEST)
+From: =?UTF-8?q?Jo=C3=A3o=20Moreira=20Fernandes?= <joao.fernandes@ist.utl.pt>
+To: Joao <joao@bckground.com>
+Cc: =?UTF-8?q?Jo=C3=A3o=20Moreira=20Fernandes?= <joao.fernandes@ist.utl.pt>,
+	stable@vger.kernel.org
+Subject: [PATCH] usbip: flush the event handler in usbip_stop_eh() to fix use-after-free
+Date: Wed, 15 Jul 2026 12:24:57 +0100
+Message-ID: <20260715112458.2143740-1-joao.fernandes@ist.utl.pt>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[ist.utl.pt,quarantine];
+	R_DKIM_ALLOW(-0.20)[ist.utl.pt:s=mail];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-274906-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:hossu.alexandru@gmail.com,m:stable@kernel.org,m:gregkh@linuxfoundation.org,m:sashal@kernel.org,m:hossualexandru@gmail.com,s:lists@lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TAGGED_FROM(0.00)[bounces-274909-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:joao@bckground.com,m:joao.fernandes@ist.utl.pt,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[joao.fernandes@ist.utl.pt,stable@vger.kernel.org];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,utl.pt:email];
+	RCPT_COUNT_THREE(0.00)[3];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[joao.fernandes@ist.utl.pt,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,linuxfoundation.org];
+	DKIM_TRACE(0.00)[ist.utl.pt:+];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,msgid.link:url]
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CF84175D7D7
+X-Rspamd-Queue-Id: 5A8F775D953
 
-From: Alexandru Hossu <hossu.alexandru@gmail.com>
+usbip_stop_eh() is used by the stub, vhci and vudc sides to wait for the
+event handler to finish with a usbip_device before the caller tears it
+down.  It waits only on the event bitmask:
 
-[ Upstream commit 1463ca3ec6601cbb097d8d87dbf5dcf1cb86a344 ]
+	wait_event_interruptible(ud->eh_waitq, !(ud->event & ~USBIP_EH_BYE));
 
-Three IE/attribute parsing functions have missing bounds checks.
+but event_handler() clears those bits with unset_event() *before* its
+final dereferences of ud:
 
-rtw_get_sec_ie() and rtw_get_wapi_ie() iterate over a raw IE buffer
-without verifying that the header bytes (tag + length) are within the
-remaining buffer before reading them.  Additionally, rtw_get_sec_ie()
-compares the 4-byte WPA OUI at cnt+2 without checking that at least
-6 bytes remain, and rtw_get_wapi_ie() compares a 4-byte WAPI OUI at
-cnt+6 without checking that at least 10 bytes remain.
+	if (ud->event & USBIP_EH_SHUTDOWN) {
+		ud->eh_ops.shutdown(ud);
+		unset_event(ud, USBIP_EH_SHUTDOWN);   /* wait may now return */
+	}
+	...
+	mutex_unlock(&ud->sysfs_lock);            /* still touches ud */
+	wake_up(&ud->eh_waitq);                   /* still touches ud */
 
-rtw_get_wps_attr() reads wps_ie[0] and wps_ie+2 unconditionally at
-entry, before verifying that wps_ielen is large enough to contain
-the 6-byte WPS IE header (element_id + length + 4-byte OUI).  Inside
-the attribute loop, get_unaligned_be16() is called on attr_ptr and
-attr_ptr+2 without checking that 4 bytes remain in the buffer.
+Once the last non-BYE bit is cleared the waiter can wake and the caller
+proceeds to free ud.  For the stub side, stub_disconnect() ->
+shutdown_busid() calls usbip_stop_eh() and then stub_device_free() frees
+the stub_device that embeds ud, while event_handler() is still executing
+mutex_unlock(&ud->sysfs_lock) and wake_up(&ud->eh_waitq), and may still
+mutex_lock(&ud->sysfs_lock) on a second queued event for the same ud.
+The result is a use-after-free in the usbip_event workqueue.
 
-Add a cnt+2 bounds check before each loop body in rtw_get_sec_ie()
-and rtw_get_wapi_ie(), guard each multi-byte comparison with a minimum
-IE length requirement, add a wps_ielen < 6 early return in
-rtw_get_wps_attr(), and add a 4-byte bounds check in its inner loop.
+It is readily triggered by a reverse/exported-device teardown that
+unbinds usbip-host while the importer is still attached: the socket EOF
+queues SDEV_EVENT_ERROR_TCP (SHUTDOWN|RESET) from the stub_rx thread at
+the same moment stub_disconnect() queues SDEV_EVENT_REMOVED
+(SHUTDOWN|BYE), so the handler re-runs shutdown/reset on ud in the exact
+window where it is being freed.
 
-Fixes: 554c0a3abf21 ("staging: Add rtl8723bs sdio wifi driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Alexandru Hossu <hossu.alexandru@gmail.com>
-Link: https://patch.msgid.link/20260522004531.1038924-8-hossu.alexandru@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reproduced under KASAN on v6.12.95 (usbip built as vhci_hcd importer and
+usbip-host exporter on two separate VMs).  The freed object is the
+stub_device, freed by the unbind write and then read by the event
+workqueue:
+
+  BUG: KASAN: slab-use-after-free in event_handler+0x2ba/0x3a0
+  Read of size 8 at addr ffff888005cc6058 by task kworker/u8:5/63
+  Workqueue: usbip_event event_handler
+  Call Trace:
+   event_handler+0x2ba/0x3a0
+   process_one_work+0x5c2/0xfd0
+   worker_thread+0x49d/0xb00
+   kthread+0x246/0x300
+
+  Allocated by task 1657:
+   stub_probe+0xf0/0xb00
+   usb_probe_device+0xaa/0x2e0
+   bind_store+0xce/0x140
+   vfs_write+0x87c/0xd70
+
+  Freed by task 1660:
+   kfree+0x1a4/0x3a0
+   stub_disconnect+0x21e/0x340
+   usb_unbind_device+0x6b/0x170
+   device_release_driver_internal+0x384/0x550
+   unbind_store+0xdb/0xf0
+   vfs_write+0x87c/0xd70
+
+The same run produced 37 KASAN splats against the one freed object,
+reached through every place the handler still touches ud after clearing
+the event bits: mutex_lock() on ud->sysfs_lock, the eh_waitq wake
+(__wake_up_common / finish_wait / prepare_to_wait_event), and
+stub_shutdown_connection() called from event_handler().
+
+Waiting on the event bits cannot close the window, because the handler's
+last accesses to ud are inherently after the bit is cleared.  Instead,
+flush the event work in usbip_stop_eh() so the handler has fully returned
+before the caller is allowed to free ud.  Every *_EVENT_REMOVED sets
+USBIP_EH_BYE, after which usbip_event_add() no longer queues new work for
+that ud, so flush_work() only has to wait out the in-flight run.  Guard
+the flush with usbip_in_eh() so it is skipped in the (stub reset) path
+that runs from the handler itself, and move the usbip_work declaration
+above usbip_stop_eh() so it is in scope.  None of the three usbip_stop_eh()
+callers hold ud->sysfs_lock, so flushing the worker (which takes it)
+cannot deadlock.
+
+With the patch applied, the same KASAN reproducer runs the teardown
+suite repeatedly with zero KASAN reports.
+
+Fixes: 363eaa3a450a ("usbip: synchronize event handler with sysfs code paths")
+Cc: stable@vger.kernel.org
+Signed-off-by: João Moreira Fernandes <joao.fernandes@ist.utl.pt>
+Assisted-by: Claude:claude-opus-4-8
 ---
- drivers/staging/rtl8723bs/core/rtw_ieee80211.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/usb/usbip/usbip_event.c | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/staging/rtl8723bs/core/rtw_ieee80211.c b/drivers/staging/rtl8723bs/core/rtw_ieee80211.c
-index 1fe572db5caa4f..bd7b0c9ad48ad0 100644
---- a/drivers/staging/rtl8723bs/core/rtw_ieee80211.c
-+++ b/drivers/staging/rtl8723bs/core/rtw_ieee80211.c
-@@ -622,9 +622,14 @@ int rtw_get_wapi_ie(u8 *in_ie, uint in_len, u8 *wapi_ie, u16 *wapi_len)
- 	cnt = (_TIMESTAMP_ + _BEACON_ITERVAL_ + _CAPABILITY_);
+--- a/drivers/usb/usbip/usbip_event.c
++++ b/drivers/usb/usbip/usbip_event.c
+@@ -97,6 +97,8 @@ static void event_handler(struct work_struct *work)
+ 	}
+ }
  
- 	while (cnt < in_len) {
-+		if (cnt + 2 > in_len)
-+			break;
-+		if (cnt + 2 + in_ie[cnt + 1] > in_len)
-+			break;
- 		authmode = in_ie[cnt];
- 
- 		if (authmode == WLAN_EID_BSS_AC_ACCESS_DELAY &&
-+		    in_ie[cnt + 1] >= 8 &&
- 		    (!memcmp(&in_ie[cnt + 6], wapi_oui1, 4) ||
- 		     !memcmp(&in_ie[cnt + 6], wapi_oui2, 4))) {
- 			if (wapi_ie) {
-@@ -666,9 +671,14 @@ void rtw_get_sec_ie(u8 *in_ie, uint in_len, u8 *rsn_ie, u16 *rsn_len, u8 *wpa_ie
- 	sec_idx = 0;
- 
- 	while (cnt < in_len) {
-+		if (cnt + 2 > in_len)
-+			break;
-+		if (cnt + 2 + in_ie[cnt + 1] > in_len)
-+			break;
- 		authmode = in_ie[cnt];
- 
- 		if ((authmode == WLAN_EID_VENDOR_SPECIFIC) &&
-+		    in_ie[cnt + 1] >= 4 &&
- 		    (!memcmp(&in_ie[cnt + 2], &wpa_oui[0], 4))) {
- 				RT_TRACE(_module_rtl871x_mlme_c_, _drv_info_, ("\n rtw_get_wpa_ie: sec_idx =%d in_ie[cnt+1]+2 =%d\n", sec_idx, in_ie[cnt+1]+2));
- 
-@@ -789,6 +799,9 @@ u8 *rtw_get_wps_attr(u8 *wps_ie, uint wps_ielen, u16 target_attr_id, u8 *buf_att
- 	if (len_attr)
- 		*len_attr = 0;
- 
-+	if (wps_ielen < 6)
-+		return attr_ptr;
++static DECLARE_WORK(usbip_work, event_handler);
 +
- 	if ((wps_ie[0] != WLAN_EID_VENDOR_SPECIFIC) ||
- 		(memcmp(wps_ie + 2, wps_oui, 4))) {
- 		return attr_ptr;
-@@ -799,6 +812,8 @@ u8 *rtw_get_wps_attr(u8 *wps_ie, uint wps_ielen, u16 target_attr_id, u8 *buf_att
+ int usbip_start_eh(struct usbip_device *ud)
+ {
+ 	init_waitqueue_head(&ud->eh_waitq);
+@@ -116,6 +118,21 @@ void usbip_stop_eh(struct usbip_device *ud)
+ 		usbip_dbg_eh("usbip_eh waiting completion %lx\n", pending);
  
- 	while (attr_ptr - wps_ie < wps_ielen) {
- 		/*  4 = 2(Attribute ID) + 2(Length) */
-+		if (attr_ptr + 4 > wps_ie + wps_ielen)
-+			break;
- 		u16 attr_id = get_unaligned_be16(attr_ptr);
- 		u16 attr_data_len = get_unaligned_be16(attr_ptr + 2);
- 		u16 attr_len = attr_data_len + 4;
+ 	wait_event_interruptible(ud->eh_waitq, !(ud->event & ~USBIP_EH_BYE));
++
++	/*
++	 * The wait above only tracks ud->event. event_handler() clears those
++	 * bits with unset_event() before it drops ud->sysfs_lock and wakes
++	 * eh_waitq, so the wait can return while the handler is still
++	 * dereferencing ud. A caller such as stub_disconnect() then frees ud
++	 * (and its enclosing stub_device), and the still-running handler
++	 * touches freed memory -- a use-after-free in the usbip_event
++	 * workqueue. Flush the work so the handler has completely finished
++	 * with ud before returning. Skip the flush when we are the handler,
++	 * to avoid flushing our own work.
++	 */
++	if (!usbip_in_eh(current))
++		flush_work(&usbip_work);
++
+ 	usbip_dbg_eh("usbip_eh has stopped\n");
+ }
+ EXPORT_SYMBOL_GPL(usbip_stop_eh);
+@@ -123,7 +140,6 @@ void usbip_stop_eh(struct usbip_device *ud)
+ #define WORK_QUEUE_NAME "usbip_event"
+ 
+ static struct workqueue_struct *usbip_queue;
+-static DECLARE_WORK(usbip_work, event_handler);
+ 
+ int usbip_init_eh(void)
+ {
 -- 
-2.53.0
+2.43.0
 
 
