@@ -1,168 +1,172 @@
-Return-Path: <stable+bounces-274685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274687-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id N46WLpz0VmoTDgEAu9opvQ
-	(envelope-from <stable+bounces-274685-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 04:46:52 +0200
+	id jvrgOW30VmoADgEAu9opvQ
+	(envelope-from <stable+bounces-274687-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 04:46:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 118E675A20D
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 04:46:52 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54C1275A1D4
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 04:46:05 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m4difj7C;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274685-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-274685-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mXuiZnn0;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274687-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274687-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9CADB30D8415
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 02:45:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5EF8D3022540
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 02:46:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75B6437106A;
-	Wed, 15 Jul 2026 02:45:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49F0137106A;
+	Wed, 15 Jul 2026 02:46:03 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 265B513777E
-	for <stable@vger.kernel.org>; Wed, 15 Jul 2026 02:45:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 015721A267
+	for <stable@vger.kernel.org>; Wed, 15 Jul 2026 02:46:02 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784083554; cv=none; b=axpASOAMMnZzMiwV6MDxwpN2SlzUBd6RA22AUIaCH0DuJ2B1vWjKI1HBDJrRZdW3KD7VzSHYYO7Kaq286gR7JmlLNcAaKL6HDtI19FPqfbQm97qJdzTo5My+Wg0WM+WF1bbeWW6Zoi4ggHCFQlep0V3+kVngHs9UL721Fa5rrZ0=
+	t=1784083563; cv=none; b=YbMm4Uo4x/bqqq1v/0Np3madeplI70Jrby9+glsgSv1huy4oOu1b27yXVQznDLCusk4pMP2z8WudDcu2kxJs0gFLudu814ZP1QqrNQ9TX+ZnxGE6imwPsQgiEv2KNj6O2ywSVAbEcCFw/R2bh6SLv7RWdPpjy09SuX5Kk5ExwQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784083554; c=relaxed/simple;
-	bh=OisSsJtLn0sRyNfzBRk2+VPrAo651aV5bFlxFX8Yy74=;
+	s=arc-20240116; t=1784083563; c=relaxed/simple;
+	bh=OeGHmdfLFPl9jW4FMIQcF0zflV4AFD9jmAVac49WEVM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pGIy95wfk54QvUzSztHWuQvw692cXicxJ4dMpwsVGJJqvNdyX6y0xCKddoCYZbNlHlMG4DTyyZvmT80ipS36g5VOC/orsgLt9+doOvTm3aMzotYy7id7v0Qu4DGVlMJdRjFUabt+ej8WobsWxrNLo6nnFbtnVunkUv4BFm2DlMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m4difj7C; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67A781F000E9;
-	Wed, 15 Jul 2026 02:45:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XTI6JtEV3yGzGHSOmdwd5EvezPCH8ulE3rWSgRbkq8fpfhCWtsnOhqjKvG+UJQBMXHwi236tHtrERflNQxTHVHMby7gVxRpkZR/0QK8QXpfQOlvsJIg1OgbZYMEy9nREjJolt1p3v5/OxjglIKsfwrPGuReOCLp2KsHg/i5A47s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mXuiZnn0; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DB191F000E9;
+	Wed, 15 Jul 2026 02:46:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784083553;
-	bh=wTBUvH6xoGmH1QgeZ5vL6+6hSDNyC4WCsSF2dU2PusY=;
+	s=k20260515; t=1784083561;
+	bh=TRoKCEgNh4idlyC9hxzgKaM8yG2Q740pvxVPcph8seE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=m4difj7C2HYd6Oi7ZiPYgJaLA0DI5X+uw/dbM0UsAviKSwyq9ZGaZw5LoG6ogoZLM
-	 GA8RwqdP/QU0jfFsrl16CspfgMItbhEYsCqTfdimoDRPhrD0ge9DYfsUTvJ8aYyemF
-	 efqojBNibJzFqhwxFOy/Y4yNtg9k9eYAWNghrAxcms0reNDLDRoLqpCahymy061SMN
-	 QuuyTZM4VQDXUUQkFP+MKokzFx3Piepx9fCLJBUcna9stJCb+YSXG3KPiLfUBKGvnG
-	 joZvclSMl16hfxobohHxbmagYVIHCt2YumCs9FwitFnCivrq+kBCADmmYriuE5jm4F
-	 vt/LCpHLMkgaw==
+	b=mXuiZnn0f3xhqKkzA2dlPyhuAiVnaVuFqMyk9uXGMocLNS2vl0CltxHQ2rl6osK+6
+	 1cyhr+C9HurVPsVS4TQUrnXVWKz8jXE6Qo5xUWQE+S7YmiZCCuU9bzY73cDsKgRTKh
+	 ioEvrqZnKc5MLmX9dAbu9Z7jSJVCxLKrwV8+1Xl+9ngZ9X1hovlgXUv2WgzDkI3zaH
+	 C2I4xLjLdt7t0QMOaAt9f4Dj51zuU8ybO9gPj+vXlZ4qXSlJns+YhOcASZPM1wbUxe
+	 DGxWCsLfGK/neI7D/BNJAk6yMGuy+N0kRH/USCYxapEnUz9cUzDvDSzzMySleXNd+w
+	 Ah2jHgYY5lJpA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Alexandru Hossu <hossu.alexandru@gmail.com>,
-	stable <stable@kernel.org>,
-	Luka Gejak <luka.gejak@linux.dev>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+Cc: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Simon Richter <Simon.Richter@hogyros.de>,
+	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y 10/10] staging: rtl8723bs: fix OOB read in update_beacon_info() IE loop
-Date: Tue, 14 Jul 2026 22:45:43 -0400
-Message-ID: <20260715024543.105642-10-sashal@kernel.org>
+Subject: [PATCH 6.1.y 1/6] PCI: Prevent resource tree corruption when BAR resize fails
+Date: Tue, 14 Jul 2026 22:45:54 -0400
+Message-ID: <20260715024559.106836-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260715024543.105642-1-sashal@kernel.org>
-References: <2026071316-urchin-unenvied-752f@gregkh>
- <20260715024543.105642-1-sashal@kernel.org>
+In-Reply-To: <2026071309-opal-shaking-a4ea@gregkh>
+References: <2026071309-opal-shaking-a4ea@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-4.16 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-274685-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:ilpo.jarvinen@linux.intel.com,m:Simon.Richter@hogyros.de,m:alex.bennee@linaro.org,m:bhelgaas@google.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:hossu.alexandru@gmail.com,m:stable@kernel.org,m:luka.gejak@linux.dev,m:gregkh@linuxfoundation.org,m:sashal@kernel.org,m:hossualexandru@gmail.com,s:lists@lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-274687-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,linux.dev,linuxfoundation.org];
+	RCPT_COUNT_FIVE(0.00)[6];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,msgid.link:url,linux.dev:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,vger.kernel.org:from_smtp,hogyros.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 118E675A20D
+X-Rspamd-Queue-Id: 54C1275A1D4
 
-From: Alexandru Hossu <hossu.alexandru@gmail.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit ed51de4a86e173c3b0ef78e039c2e49e08b11f16 ]
+[ Upstream commit 91c4c89db41499eea1b29c56655f79c3bae66e93 ]
 
-The IE parsing loop in update_beacon_info() advances by
-(pIE->length + 2) each iteration but only guards on i < len.
-When a malicious AP sends a Beacon whose last IE has only one byte
-remaining in the frame (the element_id byte lands at len-1), the loop
-reads pIE->length from one byte past the allocated receive buffer.
+pbus_reassign_bridge_resources() saves bridge windows into the saved
+list before attempting to adjust resource assignments to perform a BAR
+resize operation. If resource adjustments cannot be completed fully,
+rollback is attempted by restoring the resource from the saved list.
 
-Additionally, even when the header bytes are in bounds, pIE->length
-itself can extend the data window beyond len, passing a truncated IE
-to the handler functions.
+The rollback, however, does not check whether the resources it restores were
+assigned by the partial resize attempt. If restore changes addresses of the
+resource, it can result in corrupting the resource tree.
 
-Add two guards at the top of the loop body:
-  1. Break if fewer than sizeof(*pIE) bytes remain (can't read header).
-  2. Break if the IE's declared data extends past len.
+An example of a corrupted resource tree with overlapping addresses:
 
-Also replace i += (pIE->length + 2) with i += sizeof(*pIE) + pIE->length
-for consistency with the sizeof(*pIE) guards added above.
+  6200000000000-6203fbfffffff : pciex@620c3c0000000
+    6200000000000-6203fbff0ffff : PCI Bus 0030:01
+      6200020000000-62000207fffff : 0030:01:00.0
+      6200000000000-6203fbff0ffff : PCI Bus 0030:02
 
-Fixes: 554c0a3abf21 ("staging: Add rtl8723bs sdio wifi driver")
-Cc: stable <stable@kernel.org>
-Reviewed-by: Luka Gejak <luka.gejak@linux.dev>
-Signed-off-by: Alexandru Hossu <hossu.alexandru@gmail.com>
-Link: https://patch.msgid.link/20260522004531.1038924-2-hossu.alexandru@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+A resource that are assigned into the resource tree must remain
+unchanged. Thus, release such a resource before attempting to restore
+and claim it back.
+
+For simplicity, always do the release and claim back for the resource
+even in the cases where it is restored to the same address range.
+
+Note: this fix may "break" some cases where devices "worked" because
+the resource tree corruption allowed address space double counting to
+fit more resource than what can now be assigned without double
+counting. The upcoming changes to BAR resizing should address those
+scenarios (to the extent possible).
+
+Fixes: 8bb705e3e79d ("PCI: Add pci_resize_resource() for resizing BARs")
+Reported-by: Simon Richter <Simon.Richter@hogyros.de>
+Link: https://lore.kernel.org/linux-pci/67840a16-99b4-4d8c-9b5c-4721ab0970a2@hogyros.de/
+Reported-by: Alex Bennée <alex.bennee@linaro.org>
+Link: https://lore.kernel.org/linux-pci/874irqop6b.fsf@draig.linaro.org/
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Alex Bennée <alex.bennee@linaro.org> # AVA, AMD GPU
+Link: https://patch.msgid.link/20251113162628.5946-2-ilpo.jarvinen@linux.intel.com
+Stable-dep-of: ee7471fe968d ("PCI: Skip Resizable BAR restore on read error")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/rtl8723bs/core/rtw_wlan_util.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/pci/setup-bus.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/staging/rtl8723bs/core/rtw_wlan_util.c b/drivers/staging/rtl8723bs/core/rtw_wlan_util.c
-index aa02881f4efe59..7d5fe15379dc83 100644
---- a/drivers/staging/rtl8723bs/core/rtw_wlan_util.c
-+++ b/drivers/staging/rtl8723bs/core/rtw_wlan_util.c
-@@ -1389,7 +1389,11 @@ void update_beacon_info(struct adapter *padapter, u8 *pframe, uint pkt_len, stru
- 	len = pkt_len - (_BEACON_IE_OFFSET_ + WLAN_HDR_A3_LEN);
+diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
+index 9c078af9e166b6..066d4dd2fc1e89 100644
+--- a/drivers/pci/setup-bus.c
++++ b/drivers/pci/setup-bus.c
+@@ -2314,6 +2314,11 @@ int pci_reassign_bridge_resources(struct pci_dev *bridge, unsigned long type)
+ 		bridge = dev_res->dev;
+ 		i = res - bridge->resource;
  
- 	for (i = 0; i < len;) {
-+		if (i + sizeof(*pIE) > len)
-+			break;
- 		pIE = (struct ndis_80211_var_ie *)(pframe + (_BEACON_IE_OFFSET_ + WLAN_HDR_A3_LEN) + i);
-+		if (i + sizeof(*pIE) + pIE->length > len)
-+			break;
- 
- 		switch (pIE->element_id) {
- 		case _VENDOR_SPECIFIC_IE_:
-@@ -1414,7 +1418,7 @@ void update_beacon_info(struct adapter *padapter, u8 *pframe, uint pkt_len, stru
- 			break;
- 		}
- 
--		i += (pIE->length + 2);
-+		i += sizeof(*pIE) + pIE->length;
- 	}
- }
- 
++		if (res->parent) {
++			release_child_resources(res);
++			pci_release_resource(bridge, i);
++		}
++
+ 		res->start = dev_res->start;
+ 		res->end = dev_res->end;
+ 		res->flags = dev_res->flags;
 -- 
 2.53.0
 
