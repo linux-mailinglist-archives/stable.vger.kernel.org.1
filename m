@@ -1,270 +1,145 @@
-Return-Path: <stable+bounces-274731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274732-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id LbkZO+IbV2rsFQEAu9opvQ
-	(envelope-from <stable+bounces-274731-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 07:34:26 +0200
+	id ilvlL3wdV2ooFgEAu9opvQ
+	(envelope-from <stable+bounces-274732-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 07:41:16 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 586B875AB21
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 07:34:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2756C75AB93
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 07:41:16 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=F4SsJSBa;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274731-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-274731-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AH4aTfvD;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274732-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-274732-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6349A3015D28
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 05:34:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 80BF43025C43
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 05:41:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAB3D3B3BF2;
-	Wed, 15 Jul 2026 05:34:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEFF13B52EA;
+	Wed, 15 Jul 2026 05:41:08 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC76539CCE1
-	for <stable@vger.kernel.org>; Wed, 15 Jul 2026 05:34:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E66C1A8F7B;
+	Wed, 15 Jul 2026 05:41:07 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784093664; cv=none; b=WsZoAXxEpZUuLnpZNG/rWwbm/6+HMMkcFMNZ91Gs9NmRDI7pL0N4qrYj15tPDAUUHShxQMuVJAkug+7z4vgn6c00nRsF6ceqNUVu39qv0mKgantup+r+JnASohcrVKmWfWID+gI80sZnJIuy6H9U3bIYy6+/GFD7afObeDenPYY=
+	t=1784094068; cv=none; b=oZLELezftuTnL8xkVyIdUDE6fBYMBEA26UDzDSryXE/v20Qa/rojpesLE23HQX7V0ZluwhcnFJhGMV5OMZu0SRXDoIv8VZ0ibnUgqXjrYn9cvfJk2xkcTl+VpfIADM6ydIhDWCEka3F65MGPz6t37ETr5+6LQ1CS0wBNi0tT6Wc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784093664; c=relaxed/simple;
-	bh=zxczRmFlgL80bpV/DYtMF+mlbt4jOVvndkOtJVGbW94=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FmJqE8LCu/bHLKq8yIcXp92j6osIC2SKAPVi0KtWkstMz9nu+CWaN60OG9ePqNrA7fMSAwIyOb8ZNQbhnC4WlPdWEdvaT5AbTHZG7LD/ezn14vH86A4TOaffwO/lAiFsQSXHfxgrhzvOxOoSRpdWASuCdA7YJgsowgxKW2RoP0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F4SsJSBa; arc=none smtp.client-ip=209.85.219.48
-Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-8eefd0c5f59so18546026d6.3
-        for <stable@vger.kernel.org>; Tue, 14 Jul 2026 22:34:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784093662; x=1784698462; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=qjHH+FMkakpyFDgNWCbAnIusGPkRsb+vc761IxBrtvA=;
-        b=F4SsJSBawelW6PWaH7d+OmZeNohJb4QWM2PfipiFmcx5DlRJKT2F5BvKLoSGud9ZKP
-         P4alw6j8JzdHhucD7ox9U6lCNC3KM9/EBLdgz3zp2T561Qg2icJq3fnqSbkqp206FYuM
-         EepdhopCfByyc53qzLdM0f+Pwk1Jmh2YyiaVLx3Gwf/9bc4GqfAtmk2Q2CecVTAVcaDe
-         g9yIs39vk7aErHHGNSumnhSwsnl8O2jJZsNXXT3VkDCbFEekTfewh9dI2kw0A5TenR45
-         x2R+gOrsUnlbaoTIh/A/WulBR4/AzEpGyl87TB+qtYKK89aAYs9+INRBKzbHAuPBi5qc
-         e3gg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784093662; x=1784698462;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=qjHH+FMkakpyFDgNWCbAnIusGPkRsb+vc761IxBrtvA=;
-        b=n02vo0NPLTvwsh6kTe+SN8hVylbs/pSfMvCm6/l1h3w3HaQ6kaZLIWFP65oqqvdbTm
-         DX9Y5B4Am9QtY3neBNcN4LJOWKPeXd6DN7NPeli0ksqx0o4N920nhS9zfpJwLfCF/bEM
-         6FC//kuls2GfKCS6XSxEF0u5NKwHzM08xci7NHOgy0PEFat1MCAbVV8PUsPIwu7pfcYx
-         SRMtgW1Mka6/u+WeQkkkkBbDh1g0gheLr5Q/nRZ+xXRP2Em06H6WnnVwwIuc6PwiHz9B
-         tWngvg53kl/Fxssjg2XyJQml8v2hlx/XPrsmd2PVuPlwefnBx4EkPbdEri1yXXfAfLxH
-         4uIw==
-X-Forwarded-Encrypted: i=1; AHgh+RodV+nRx9nkWnvYpEBiGDC6LEC4Udsgh9x2tHJFgzPPtiXwl5VPd3DK201l9PSjhmJvl9jeulk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzLEx6s9eQH1/8unRWBgq4rxgS4gZFzCy63Yr2ymf4G5rzhoFNi
-	d+9XDQUJ2YXcnToFpK7IoVVVzrvEfRmNx1DIsdRDlUx3vCmdKLRxK5vPlQ9xMrMjm+knCfga
-X-Gm-Gg: AfdE7ckKAK3w70Kn6z7IgA+QM99w6I6qJIP1WH1IrANUcQMpNx95JuGoe6Fu8rPG32X
-	iLLe6WPbU4KXE7SBrrJTQEO6qCcL5iEZmtHGtmQQ1BAJDojZS6X/+dPnC4C6p8xwpNiC2WYF3l5
-	aZc/3J+pFK7VG0zatbB+6o65Ofgf0c+8HrH+tM8VktLYMg5B7D0C+6AG3CU/CTrMR7Mnet8tTkW
-	OZeUAUp2Vf0UMYkFbVpIGcnTZBpQTcV4VnBJCSHp2KCj2kYCkWib8EBmnAZk9wCl3ryczUsAQhZ
-	zOibY8P6Iz24dbYouvwzTaIhmq8+yLe56G0yBVtZr6aXbbCy2pKRzFCnY6tNC12hH0P+WKV+WBJ
-	nDpu8CUVHMIFbqYbeSQ/Y/REaVsDnk2eSuWMl+8qEyzU6oM9D882lgvWJMJ3CwJ8BfEPeJhuAb8
-	beOi6jnGe/knY+k6HvekAeOtkBP1kbsWPucX3w5xjdNr3Ugd2ToJQMIUw=
-X-Received: by 2002:a05:6214:3992:b0:8ee:a2f3:af32 with SMTP id 6a1803df08f44-90401578bb0mr198230206d6.38.1784093661755;
-        Tue, 14 Jul 2026 22:34:21 -0700 (PDT)
-Received: from [198.18.0.1] ([48.45.163.146])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ffd82e8ffdsm190584646d6.37.2026.07.14.22.34.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 14 Jul 2026 22:34:20 -0700 (PDT)
-Message-ID: <15e5b802-b43a-44c5-97b6-a599f28bdee4@gmail.com>
-Date: Wed, 15 Jul 2026 01:34:13 -0400
+	s=arc-20240116; t=1784094068; c=relaxed/simple;
+	bh=MqgU87tnw3x0VinNOOZYu2BJQGAzPMXZxgnk/r+TJm0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XQ8fTmWiaQbrPEu0pWq9/a8ymCecv8D/WDqn6UCajcc/xa+tlRY2kdqY4DbV5LfSnvM5AUyGxyqVdHcHWcX3BVTl6urHtKV3HMpSx60xW/gP3vx2CCu9MtRJlhehCuhV/16wSZ8wHJgjP41cOlktDvsIHvGP+X2X6T9bvkCbG9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AH4aTfvD; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B26371F000E9;
+	Wed, 15 Jul 2026 05:41:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784094067;
+	bh=hMQq0jJEQshTzjxnb1XfDCm8LASdaJ7clh2uWi+5Tsc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=AH4aTfvDY5e8DVBk0K2mX2cWVmPb+J7VHhpunZwIEDTNnFrO5WVUXGGmcFU/dQ1Ke
+	 Yj9YWaZRJsivMAhj0+0a+C/cbDat6h1jV++jjlpXYlSUVn1KB98ZxUyV8IXI9T1GCI
+	 2B2lhwXSZ8DCodJEu4Bcn1X7X0Rt2kj7F07FT9hjlOzfQQpkECoKE3iBz1PeWlWPOl
+	 kR9tng4/1i/fHV6IcH7KzySOPRYBjnyY4G0LPykQzJJrHpWfFyBuYTlkNIe7V6n/fR
+	 ruWs+8DAhXYmuYYfCqAfrk9Dk+0RDmgHSjSFCSrnge7TGpH0pm5L/Ti3t79QK6YIWY
+	 nFFuiD6yTZrIw==
+Date: Wed, 15 Jul 2026 07:40:59 +0200
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Soeren Moch <smoch@web.de>
+Cc: Bjorn Helgaas <bhelgaas@google.com>, 
+	Richard Zhu <hongxing.zhu@nxp.com>, stable@vger.kernel.org, Lucas Stach <l.stach@pengutronix.de>, 
+	Frank Li <Frank.Li@nxp.com>, Fabio Estevam <festevam@gmail.com>, linux-pci@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] PCI: imx6: Keep Root Port MSI capability also for i.MX6Q
+Message-ID: <6ayf4vt5wiftgz4myxpyze2wmmuxf5miakq6ffz2k3r6beiztu@lh5z5zjnljad>
+References: <20260427115804.134231-1-smoch@web.de>
+ <2cbqhvfjszzuanp4i3rohntkxpfgftfjvzt66te3wkohsvw26g@yv4txuy74tvu>
+ <465b1dcc-8e96-4edb-aebd-52937b8076d0@web.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] usb: gadget: dummy_hcd: prevent fifo_req reuse during
- giveback
-To: Alan Stern <stern@rowland.harvard.edu>
-Cc: gregkh@linuxfoundation.org, linux-usb@vger.kernel.org,
- bigeasy@linutronix.de, eeodqql09@gmail.com, kees@kernel.org,
- surban@surban.net, linux-kernel@vger.kernel.org,
- syzkaller-bugs@googlegroups.com, stable@vger.kernel.org
-References: <20260714064829.172098-1-wangjinchao600@gmail.com>
- <c7de3923-1f68-46f9-986e-33899dce112c@rowland.harvard.edu>
-Content-Language: en-US
-From: Jinchao Wang <wangjinchao600@gmail.com>
-In-Reply-To: <c7de3923-1f68-46f9-986e-33899dce112c@rowland.harvard.edu>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <465b1dcc-8e96-4edb-aebd-52937b8076d0@web.de>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-4.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-274731-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,vger.kernel.org,linutronix.de,gmail.com,kernel.org,surban.net,googlegroups.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[wangjinchao600@gmail.com,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stern@rowland.harvard.edu,m:gregkh@linuxfoundation.org,m:linux-usb@vger.kernel.org,m:bigeasy@linutronix.de,m:eeodqql09@gmail.com,m:kees@kernel.org,m:surban@surban.net,m:linux-kernel@vger.kernel.org,m:syzkaller-bugs@googlegroups.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-274732-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[web.de];
+	FORGED_SENDER(0.00)[mani@kernel.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:smoch@web.de,m:bhelgaas@google.com,m:hongxing.zhu@nxp.com,m:stable@vger.kernel.org,m:l.stach@pengutronix.de,m:Frank.Li@nxp.com,m:festevam@gmail.com,m:linux-pci@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:imx@lists.linux.dev,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[wangjinchao600@gmail.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[google.com,nxp.com,vger.kernel.org,pengutronix.de,gmail.com,lists.infradead.org,lists.linux.dev];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mani@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 586B875AB21
+X-Rspamd-Queue-Id: 2756C75AB93
 
-On 7/14/2026 5:13 PM, Alan Stern wrote:
-> On Tue, Jul 14, 2026 at 02:48:29PM +0800, Jinchao Wang wrote:
->> dummy_hcd embeds a single shared usb_request (dum->fifo_req) that the
->> "emulated single-request FIFO" fast-path in dummy_queue() reuses for
->> small IN transfers: it copies the caller's request into it
->> (req->req = *_req) and queues it, treating list_empty(&fifo_req.queue)
->> as "the slot is free".
->>
->> The completion side (dummy_timer/transfer/nuke/dummy_dequeue) follows
->> the standard pattern: list_del_init(&req->queue) unlinks the request,
->> then the lock is dropped and usb_gadget_giveback_request() invokes
->> req->complete().  But list_del_init() makes fifo_req.queue look empty
->> *before* the completion callback returns, so a concurrent dummy_queue()
->> on another CPU sees the slot as free, reuses fifo_req and runs
->> req->req = *_req -- overwriting req->complete while dummy_timer is
->> mid-calling it.  The indirect call then jumps to a clobbered pointer,
->> causing a general protection fault / page fault in dummy_timer
->> (syzkaller extid faf3a6cf579fc65591ca).  The clobbering write is an
->> in-bounds memcpy on a live shared object, so KASAN cannot flag it.
->>
->> Add a fifo_req_busy bit, set across the lockless giveback window via a
->> dummy_giveback() helper used at all four gadget-request giveback sites,
->> and require !fifo_req_busy in the FIFO fast-path guard so the shared
->> slot cannot be reused until its completion callback has returned.
->>
->> Reported-by: syzbot+faf3a6cf579fc65591ca@syzkaller.appspotmail.com
->> Closes: https://syzkaller.appspot.com/bug?extid=faf3a6cf579fc65591ca
->> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Jinchao Wang <wangjinchao600@gmail.com>
+On Wed, Jul 08, 2026 at 10:52:22AM +0200, Soeren Moch wrote:
+> On 06.07.26 12:29, Manivannan Sadhasivam wrote:
+> > On Mon, Apr 27, 2026 at 01:58:04PM +0200, Soeren Moch wrote:
+> > > Also on the NXP i.MX6Q chipset MSIs from the endpoints won't be received by
+> > > the iMSI-RX MSI controller if the Root Port MSI capability is disabled.
+> > > 
+> > > Even though the Root Port MSIs won't be received by the iMSI-RX controller
+> > > due to design, this chipset has some weird hardware bug that prevents
+> > > the endpoint MSIs from reaching when the Root Port MSI capability is
+> > > disabled.
+> > > 
+> > > Hence, always keep the Root Port MSI capability for this chipset.
+> > > 
+> > > Note that by keeping Root Port MSI capability, Root Port MSIs such as AER,
+> > > PME and others won't be received by default. So users need to use
+> > > workarounds such as passing 'pcie_pme=nomsi' cmdline param.
+> > > 
+> > > Fixes: 3a4e8302e72f ("PCI: imx6: Keep Root Port MSI capability with iMSI-RX to work around hardware bug")
+> > This is not the correct fixes tag. Correct one is:
+> > f5cd8a929c825 ("PCI: dwc: Remove MSI/MSIX capability for Root Port if iMSI-RX is used as MSI controller")
+> Thanks for the fix of the fixes tag!
+> > > Cc: <stable@vger.kernel.org> # 7.0.x
+> > > Signed-off-by: Soeren Moch <smoch@web.de>
+> > Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
+> > 
+> > @Bjorn: Can you merge this patch for 7.2-rcS with correct fixes tag?
+> I can send a v2 of the patch if you prefer.
 > 
-> Wow!  I'm impressed.  How did you figure this out?
 
-With a hardware watchpoint: I armed one on the victim field
-(req->complete, at arg2+56 of usb_gadget_giveback_request) only while
-usb_gadget_giveback_request() was running, and it caught the writing
-memcpy with a full stack - usb_ep_queue <- raw_process_ep_io <-
-raw_ioctl - on the same request that crashed an instant later.
+That'll help.
 
-The watchpoint setup came from a small tool I am working on; I posted
-it as an RFC in case it is useful to others:
+- Mani
 
-https://lore.kernel.org/all/20260714182243.10687-1-wangjinchao600@gmail.com/
-
-> 
->> ---
->>  drivers/usb/gadget/udc/dummy_hcd.c | 40 +++++++++++++++++++++---------
->>  1 file changed, 28 insertions(+), 12 deletions(-)
->>
->> diff --git a/drivers/usb/gadget/udc/dummy_hcd.c b/drivers/usb/gadget/udc/dummy_hcd.c
->> index f47903461ed5..fce3c3ba7a63 100644
->> --- a/drivers/usb/gadget/udc/dummy_hcd.c
->> +++ b/drivers/usb/gadget/udc/dummy_hcd.c
->> @@ -278,6 +278,7 @@ struct dummy {
->>  	unsigned			ints_enabled:1;
->>  	unsigned			udc_suspended:1;
->>  	unsigned			pullup:1;
->> +	unsigned			fifo_req_busy:1;
->>  
->>  	/*
->>  	 * HOST side support
->> @@ -330,6 +331,28 @@ static inline struct dummy *gadget_dev_to_dummy(struct device *dev)
->>  /* DEVICE/GADGET SIDE UTILITY ROUTINES */
->>  
->>  /* called with spinlock held */
-> 
-> That comment line is supposed to come immediately before nuke().  Your 
-> new code got inserted below the comment instead of above it.
-
-Right, will fix in v2.
-
-> 
->> +/*
->> + * Give back a gadget request with dum->lock dropped around the callback.
->> + * If @req is the shared fifo_req, mark it busy across the callback so
->> + * dummy_queue()'s FIFO fast-path (keyed on list_empty(&fifo_req.queue))
->> + * cannot reuse it mid-giveback: list_del_init() already made the queue look
->> + * empty, but the request is in flight until the completion callback returns.
->> + * Caller holds dum->lock and has already done list_del_init() + status.
->> + */
->> +static void dummy_giveback(struct dummy *dum, struct usb_ep *_ep,
->> +			   struct dummy_request *req)
->> +{
->> +	bool fifo = req == &dum->fifo_req;
->> +
->> +	if (fifo)
->> +		dum->fifo_req_busy = 1;
-> 
-> Don't set the new flag here...
-> 
->> +	spin_unlock(&dum->lock);
->> +	usb_gadget_giveback_request(_ep, &req->req);
->> +	spin_lock(&dum->lock);
->> +	if (fifo)
->> +		dum->fifo_req_busy = 0;
->> +}
->> +
->>  static void nuke(struct dummy *dum, struct dummy_ep *ep)
->>  {
->>  	while (!list_empty(&ep->queue)) {
-> 
->> @@ -729,6 +750,7 @@ static int dummy_queue(struct usb_ep *_ep, struct usb_request *_req,
->>  	/* implement an emulated single-request FIFO */
->>  	if (ep->desc && (ep->desc->bEndpointAddress & USB_DIR_IN) &&
->>  			list_empty(&dum->fifo_req.queue) &&
->> +			!dum->fifo_req_busy &&
->>  			list_empty(&ep->queue) &&
->>  			_req->length <= FIFO_SIZE) {
->>  		req = &dum->fifo_req;
-> 
-> Set it here instead, so the flag is set during the entire time that 
-> dum->fifo_req is in use.  As a bonus, you can then remove the 
-> list_empty(&dum->fifo_req.queue) test above.
-
-Indeed better - the flag then covers the whole lifetime of the shared
-request instead of just the giveback window. Will do in v2, with the
-list_empty() test removed.
- 
-
-> Otherwise this seems fine.
-
-Thanks for the review, v2 shortly.
-
-Thanks,
-Jinchao
-
-> 
-> Alan Stern
-
+-- 
+மணிவண்ணன் சதாசிவம்
 
