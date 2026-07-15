@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-274911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274912-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 3jT+EnZyV2rEOAEAu9opvQ
-	(envelope-from <stable+bounces-274911-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 13:43:50 +0200
+	id E3ScKbRxV2p/OAEAu9opvQ
+	(envelope-from <stable+bounces-274912-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 13:40:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E86375DA97
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 13:43:49 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A23E75DA0E
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 13:40:33 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dvipJVjo;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274911-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274911-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZaiOJJpz;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274912-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274912-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 87F87303FA90
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 11:40:27 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5235130080AB
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 11:40:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12BE643C7DF;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A16B23B27F4;
 	Wed, 15 Jul 2026 11:40:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB8A33B27F4
-	for <stable@vger.kernel.org>; Wed, 15 Jul 2026 11:40:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 547DD43303A
+	for <stable@vger.kernel.org>; Wed, 15 Jul 2026 11:40:26 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784115626; cv=none; b=Gm+x53CR1tf6BK/P1XDJrSFHs63V04GT48QNy9Pn7hAlnDxyNUajl3x69eXXXLv3SmMDaVfn5l+PEnnABipQTsGOP7wn1cW2z/q+U9DSH1yMgXwgtJrWMgeVnPH2dTgpTUoHgvE2fqkKWMBxe3pSjCzlfadQUziHbELgO3JdfRI=
+	t=1784115627; cv=none; b=Z4MhEiITbTpCVu8bJgRaW9hje8uYXFgvYgqV00sPLcqhwK3spDmK2GlMJ/XQpMtV4ECR6diyRvS3ry/4NAMz6EOH6xXGhECgRyxjTbHQxb2oB7Jx7c+qGTTiAXl/WndaS45uJwIH9Z9WQwAjEpITlhoQGGpjXynFuCLWLpqgIYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784115626; c=relaxed/simple;
-	bh=XNvPGFgQNmYnfRZWfhVPVyqMhHMMVqa4iyiSbSR7JAA=;
+	s=arc-20240116; t=1784115627; c=relaxed/simple;
+	bh=sIxXvNI9OBBFOr+5tk8wIXJAmXmqGlX6vGJgXDsYjlg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=THQx2QSbj6Bi12uCVUwEkNZC2787xkBDTnZq3LjMsJaXuKUeWJNcMXQegdERLQCNv4WeHfG6MK01QWQVx/zKHG6DL+EdMd2M2FzlVNBxwzXUSBvCMWtOVXQVVmFETwvidrnAZFJxX6prCyJWPGjuL+07dj4xeXj1T8u0LGBQmIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dvipJVjo; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA4801F000E9;
-	Wed, 15 Jul 2026 11:40:24 +0000 (UTC)
+	 MIME-Version; b=JYqOGdmy8GWtN/ruXARn8jOiL37SI6FxJxnbDqlpynB110fHHikG7/nmNV/wJvT+Mh+Bnz/NinZbAAgF/KveM7agL3sKncBwX3VLxFqmoYmlBQNaWLxlbJPs3M9tJ3+cJDRkyoTNshtWciGqnB4N2tBYhOdmyyIV0pC1pcjq53M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZaiOJJpz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D60B1F00A3D;
+	Wed, 15 Jul 2026 11:40:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784115625;
-	bh=9xWPpSWjPDOcQlieIuc/uGM58t1W+5oN6SJOtUh+8Uw=;
+	s=k20260515; t=1784115626;
+	bh=7foHQ87lxEB1eudb38AO7hm9RxFZSdtOLpakl49oElY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dvipJVjonIwg7uBh4TI5JAcqj+IutfeloZY8GluTc++m+vtNNilmF7ZuX0R2203/G
-	 Fu3ym0GdWlncwMTjAm0yr6NiJ72Hs/OU7ArajOUKcEbjiZOxsEypwSzdNXbO92IH3x
-	 vw1g+iGNWvaE1a29xgMYekvzTNdsMMrrpxFQB5m+T5bKp+dlTr8chibPBsieSeC2Zu
-	 QBaYJCb8pUGBsggjOkmPywDtLWyiPVnxruDu9RF3DH9ZJug+qFVyiYEClbFuIvh9Kr
-	 fT5n1bbJGKk9qbNgR5cxzp7lcYFfh922e+SLmfjO9+T3p3P4QlkeJoFkDe2c2PnQfB
-	 9V//HOc61WV3w==
+	b=ZaiOJJpz7DsXnxeCr47wZJJLGOxE4sxL0jdSOmM9ZXovBGlh9vxTtlWreBzy1aiwJ
+	 o9N/ukfxGuCpnT8ZJ9763pGqvcQr60RnFhELkwlykV9iJhdtJQLHu5LJJiRliLPMqB
+	 4Gv6slebRQYmVE+XpPF2qFdf2NkwQkBWOUqVh/eDNtA+mCJXz3PN5zwvGwTTenHcfK
+	 yWcLWxkN7X1hOWYuNGFGC++ymoTYicD8EYn+c24DWUhk/dprg4s5yNcPUk8jSBeELm
+	 b2I6UF585p83w9qAh+Nom+W5b/aVJkqWoEZaz/VHiEd12AxkGMG5hFow5cTU3IPwml
+	 zSjqcPL/hmvHg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Jens Axboe <axboe@kernel.dk>,
-	John Garry <john.g.garry@oracle.com>,
+Cc: Michael Wigham <michael@wigham.net>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 1/2] io_uring/rw: ensure reissue path is correctly handled for IOPOLL
-Date: Wed, 15 Jul 2026 07:40:17 -0400
-Message-ID: <20260715114018.726395-1-sashal@kernel.org>
+Subject: [PATCH 6.12.y 2/2] io_uring/rw: preserve partial result for iopoll
+Date: Wed, 15 Jul 2026 07:40:18 -0400
+Message-ID: <20260715114018.726395-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026071357-gout-canyon-b50f@gregkh>
+In-Reply-To: <20260715114018.726395-1-sashal@kernel.org>
 References: <2026071357-gout-canyon-b50f@gregkh>
+ <20260715114018.726395-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -71,13 +72,13 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:axboe@kernel.dk,m:john.g.garry@oracle.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-274911-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:michael@wigham.net,m:axboe@kernel.dk,m:sashal@kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-274912-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
@@ -95,53 +96,63 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,oracle.com:email,kernel.dk:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8E86375DA97
+X-Rspamd-Queue-Id: 3A23E75DA0E
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Michael Wigham <michael@wigham.net>
 
-[ Upstream commit bcb0fda3c2da9fe4721d3e73d80e778c038e7d27 ]
+[ Upstream commit c554246ff4c68abf71b61a89c6e39d3cf94f523e ]
 
-The IOPOLL path posts CQEs when the io_kiocb is marked as completed,
-so it cannot rely on the usual retry that non-IOPOLL requests do for
-read/write requests.
+A partial read will store the completed byte count in io->bytes_done.
+The regular completion path applies io_fixup_rw_res() so that, when the
+following operation reaches EOF, the number of bytes already read is
+returned.
 
-If -EAGAIN is received and the request should be retried, go through
-the normal completion path and let the normal flush logic catch it and
-reissue it, like what is done for !IOPOLL reads or writes.
+The iopoll completion path does not apply this fixup to the return value
+and can return zero instead.
 
-Fixes: d803d123948f ("io_uring/rw: handle -EAGAIN retry at IO completion time")
-Reported-by: John Garry <john.g.garry@oracle.com>
-Link: https://lore.kernel.org/io-uring/2b43ccfa-644d-4a09-8f8f-39ad71810f41@oracle.com/
+Use the fixup result when updating the CQE, and the raw result for the
+reissue check.
+
+Cc: stable@vger.kernel.org
+Fixes: 4d9cb92ca41d ("io_uring/rw: fix short rw error handling")
+Signed-off-by: Michael Wigham <michael@wigham.net>
+Link: https://patch.msgid.link/20260613225240.34032-1-michael@wigham.net
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Stable-dep-of: c554246ff4c6 ("io_uring/rw: preserve partial result for iopoll")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/rw.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ io_uring/rw.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/io_uring/rw.c b/io_uring/rw.c
-index ab2c092d82b4b6..0afbb1ae76618f 100644
+index 0afbb1ae76618f..a744cb5d235a6a 100644
 --- a/io_uring/rw.c
 +++ b/io_uring/rw.c
-@@ -550,11 +550,10 @@ static void io_complete_rw_iopoll(struct kiocb *kiocb, long res)
+@@ -546,15 +546,15 @@ static void io_complete_rw_iopoll(struct kiocb *kiocb, long res)
+ {
+ 	struct io_rw *rw = container_of(kiocb, struct io_rw, kiocb);
+ 	struct io_kiocb *req = cmd_to_io_kiocb(rw);
++	int final_res = io_fixup_rw_res(req, res);
+ 
  	if (kiocb->ki_flags & IOCB_WRITE)
  		io_req_end_write(req);
- 	if (unlikely(res != req->cqe.res)) {
--		if (res == -EAGAIN && io_rw_should_reissue(req)) {
-+		if (res == -EAGAIN && io_rw_should_reissue(req))
- 			req->flags |= REQ_F_REISSUE | REQ_F_BL_NO_RECYCLE;
--			return;
--		}
--		req->cqe.res = res;
-+		else
-+			req->cqe.res = res;
- 	}
+-	if (unlikely(res != req->cqe.res)) {
+-		if (res == -EAGAIN && io_rw_should_reissue(req))
+-			req->flags |= REQ_F_REISSUE | REQ_F_BL_NO_RECYCLE;
+-		else
+-			req->cqe.res = res;
+-	}
++
++	if (res == -EAGAIN && io_rw_should_reissue(req))
++		req->flags |= REQ_F_REISSUE | REQ_F_BL_NO_RECYCLE;
++	else if (unlikely(final_res != req->cqe.res))
++		req->cqe.res = final_res;
  
  	/* order with io_iopoll_complete() checking ->iopoll_completed */
+ 	smp_store_release(&req->iopoll_completed, 1);
 -- 
 2.53.0
 
