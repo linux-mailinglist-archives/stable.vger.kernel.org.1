@@ -1,64 +1,51 @@
-Return-Path: <stable+bounces-274775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274780-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id SxgNHBtIV2pDIgEAu9opvQ
-	(envelope-from <stable+bounces-274775-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 10:43:07 +0200
+	id yIsKJ65IV2ppIgEAu9opvQ
+	(envelope-from <stable+bounces-274780-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 10:45:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D30C75BFD2
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 10:43:07 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A28175C03B
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 10:45:33 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=aevm4GHx;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274775-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274775-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	dkim=none;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274780-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274780-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=none;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A5D103031634
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 08:43:05 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 122AA300B81F
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 08:45:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D99943CF032;
-	Wed, 15 Jul 2026 08:43:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E5373CDBAA;
+	Wed, 15 Jul 2026 08:45:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB03C3CD8CA;
-	Wed, 15 Jul 2026 08:43:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA3BA2F7AC1;
+	Wed, 15 Jul 2026 08:45:12 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784104984; cv=none; b=g4baPZjXvRzVi+/wqadY9tmsjBiO4PdxlEMC8I9d3d9NjlWiamn9NTwLwOAiwLBFcTZb/OwMy4OuDpPvWHefwWmrdES+aD9PGe9kjsirEXrlLP21jQxzieokdfOA61P6PXY4yGNvNeDUcAG/zok7MkpqKNEk+vMCT4HfmVZmrJk=
+	t=1784105122; cv=none; b=T9zrZkPQQv6IrmFgpA/Lt54BA4zLPHzNtc+5nI2WtyvKs2cVGJ3DJf8xnkg9+XunAiA9/RovFeJgVb8dtJNRFhcZ3J638YzFdQRcIOY3Pvk0U2NS2TcriwJAe42XxfQaH9/ylXB4jy3+1fX8nDb3Wg5nwY9musMx7bN53qMdJFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784104984; c=relaxed/simple;
-	bh=ycs+mN9RabwlhwD5CE575co4HGaYQoH70pQ78XvuNvU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=juudO7PLSg+y7jEqcFZNzyVaqSmEu5utHmDZo0tAgN93jJjh+CDrWFPRArviYZbaeIfFTBPNmqGR2p5vlsZrslH08GkgWp3p/zlCQg6biP1nhH09u09s9WEDnDJNSrNe5nhRsPb6w0VLP2Z9OPAArr/DhhxdQYesNfA5564KxCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=aevm4GHx; arc=none smtp.client-ip=115.124.30.130
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1784104979; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=scQDkHTu4k7SgaJHMPX3ke5fiUwIFc+s0rlVtiQuedo=;
-	b=aevm4GHxl3Ep+JcG0Ow/YlW8jMeEtKGl7NkhNlVDuePlRWLXOoUmqhT3yHzgBknSO15Yh8inRhPbh3LPRIBpK2zKqydwAXGakvgsi884htB/CxGytl7fx1Zi3nUNMgPvIJD8uumrgHW1vA/Z9y8idZm1Gu340KAwjKZsvZSPeO8=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R591e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=lulie@linux.alibaba.com;NM=1;PH=DS;RN=9;SR=0;TI=SMTPD_---0X78ezD3_1784104978;
-Received: from localhost(mailfrom:lulie@linux.alibaba.com fp:SMTPD_---0X78ezD3_1784104978 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 15 Jul 2026 16:42:58 +0800
-From: Philo Lu <lulie@linux.alibaba.com>
-To: stable@vger.kernel.org
-Cc: tj@kernel.org,
-	hannes@cmpxchg.org,
-	cgroups@vger.kernel.org,
+	s=arc-20240116; t=1784105122; c=relaxed/simple;
+	bh=jrqxvQ6fl3wHhckb9vjLy3xKdNcIqzjtXsr5o/DqW/c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Jnka7H56nnoyZ8ii9tARw+QGbd+hn3qBllP7EwGiFhq/V3VUhdKrLVMIMXLUqvxsT4if6YZoqLhwV5UO+eibs52/HCFjM4WWWhGx2QLy2A4enkcvCIDg0sS4+g4aR7H/fkP1i/vAGeowbXu/aLVwWq4Z4YXqiUfytiiQbJede5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
+Received: from localhost.localdomain (unknown [111.196.245.140])
+	by APP-05 (Coremail) with SMTP id zQCowABnw9aQSFdqUXdHGA--.8434S2;
+	Wed, 15 Jul 2026 16:45:04 +0800 (CST)
+From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+To: srini@kernel.org
+Cc: Pengpeng Hou <pengpeng@iscas.ac.cn>,
+	rafal@milecki.pl,
 	linux-kernel@vger.kernel.org,
-	eadavis@qq.com,
-	surenb@google.com,
-	akpm@linux-foundation.org,
-	dust.li@linux.alibaba.com
-Subject: [PATCH 6.6.y 2/2] sched/psi: fix race between file release and pressure write
-Date: Wed, 15 Jul 2026 16:42:56 +0800
-Message-Id: <20260715084256.43412-3-lulie@linux.alibaba.com>
-X-Mailer: git-send-email 2.32.0.3.g01195cf9f
-In-Reply-To: <20260715084256.43412-1-lulie@linux.alibaba.com>
-References: <20260715084256.43412-1-lulie@linux.alibaba.com>
+	stable@vger.kernel.org
+Subject: [PATCH] nvmem: brcm_nvram: validate cached NVRAM length
+Date: Wed, 15 Jul 2026 16:45:04 +0800
+Message-ID: <20260715084504.43774-1-pengpeng@iscas.ac.cn>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,221 +53,107 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowABnw9aQSFdqUXdHGA--.8434S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7ZF18tFyxXw4fGw47Cry8Zrb_yoW8Aw4rpa
+	43XFy0qwsrXa4ftw17CrsrGas8A39aga42g3WUZ3sYvw13Zry5try0gF92gFyYkF48XwsF
+	934FqF15WF4rGrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUv014x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
+	JVWxJr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26r
+	xl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj
+	6xIIjxv20xvE14v26r1q6rW5McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr
+	0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v2
+	6r126r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrV
+	AFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCI
+	c40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r4j6ryUMIIF0xvE2Ix0cI8IcVCY1x0267
+	AKxVW8Jr0_Cr1UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8
+	JVWxJwCI42IY6I8E87Iv6xkF7I0E14v26r4UJVWxJrUvcSsGvfC2KfnxnUUI43ZEXa7VUj
+	nmRUUUUUU==
+X-CM-SenderInfo: pshqw1xhqjqxpvfd2hldfou0/
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-10.66 / 15.00];
-	WHITELIST_DMARC(-7.00)[alibaba.com:D:+];
-	WHITELIST_SPF_DKIM(-3.00)[alibaba.com:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [0.04 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.alibaba.com,none];
-	R_DKIM_ALLOW(-0.20)[linux.alibaba.com:s=default];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DMARC_NA(0.00)[iscas.ac.cn];
+	FORGED_RECIPIENTS(0.00)[m:srini@kernel.org,m:pengpeng@iscas.ac.cn,m:rafal@milecki.pl,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[kernel.org,cmpxchg.org,vger.kernel.org,qq.com,google.com,linux-foundation.org,linux.alibaba.com];
-	FORGED_SENDER(0.00)[lulie@linux.alibaba.com,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:tj@kernel.org,m:hannes@cmpxchg.org,m:cgroups@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:eadavis@qq.com,m:surenb@google.com,m:akpm@linux-foundation.org,m:dust.li@linux.alibaba.com,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-274775-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lulie@linux.alibaba.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linux.alibaba.com:+];
-	TO_DN_NONE(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	TAGGED_FROM(0.00)[bounces-274780-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[pengpeng@iscas.ac.cn,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linux.alibaba.com:from_mime,linux.alibaba.com:dkim,linux.alibaba.com:mid,alibaba.com:email,qq.com:email,syzkaller.appspot.com:url,huaweicloud.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pengpeng@iscas.ac.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	R_DKIM_NA(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,iscas.ac.cn:from_mime,iscas.ac.cn:email,iscas.ac.cn:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0D30C75BFD2
+X-Rspamd-Queue-Id: 8A28175C03B
 
-From: Edward Adam Davis <eadavis@qq.com>
+The cached-content conversion stops at the partition padding.  Therefore,
+data_len may be smaller than nvmem_size.  brcm_nvram_parse() checks
+header->len against nvmem_size, then passes that length to
+brcm_nvram_add_cells(), which temporarily writes data[len - 1] and parses
+NUL-separated entries.
 
-commit a5b98009f16d8a5fb4a8ff9a193f5735515c38fa upstream.
+A corrupted header can declare a length that fits the MMIO resource but
+exceeds the cached allocation.  Also reject a cached object that is too
+small for the header, and reject declared lengths shorter than the header.
 
-A potential race condition exists between pressure write and cgroup file
-release regarding the priv member of struct kernfs_open_file, which
-triggers the uaf reported in [1].
+Validate the declaration against data_len, which bounds the parsed object.
 
-Consider the following scenario involving execution on two separate CPUs:
-
-   CPU0					CPU1
-   ====					====
-					vfs_rmdir()
-					kernfs_iop_rmdir()
-					cgroup_rmdir()
-					cgroup_kn_lock_live()
-					cgroup_destroy_locked()
-					cgroup_addrm_files()
-					cgroup_rm_file()
-					kernfs_remove_by_name()
-					kernfs_remove_by_name_ns()
- vfs_write()				__kernfs_remove()
- new_sync_write()			kernfs_drain()
- kernfs_fop_write_iter()		kernfs_drain_open_files()
- cgroup_file_write()			kernfs_release_file()
- pressure_write()			cgroup_file_release()
- ctx = of->priv;
-					kfree(ctx);
- 					of->priv = NULL;
-					cgroup_kn_unlock()
- cgroup_kn_lock_live()
- cgroup_get(cgrp)
- cgroup_kn_unlock()
- if (ctx->psi.trigger)  // here, trigger uaf for ctx, that is of->priv
-
-The cgroup_rmdir() is protected by the cgroup_mutex, it also safeguards
-the memory deallocation of of->priv performed within cgroup_file_release().
-However, the operations involving of->priv executed within pressure_write()
-are not entirely covered by the protection of cgroup_mutex. Consequently,
-if the code in pressure_write(), specifically the section handling the
-ctx variable executes after cgroup_file_release() has completed, a uaf
-vulnerability involving of->priv is triggered.
-
-Therefore, the issue can be resolved by extending the scope of the
-cgroup_mutex lock within pressure_write() to encompass all code paths
-involving of->priv, thereby properly synchronizing the race condition
-occurring between cgroup_file_release() and pressure_write().
-
-And, if an live kn lock can be successfully acquired while executing
-the pressure write operation, it indicates that the cgroup deletion
-process has not yet reached its final stage; consequently, the priv
-pointer within open_file cannot be NULL. Therefore, the operation to
-retrieve the ctx value must be moved to a point *after* the live kn
-lock has been successfully acquired.
-
-In another situation, specifically after entering cgroup_kn_lock_live()
-but before acquiring cgroup_mutex, there exists a different class of
-race condition:
-
-CPU0: write memory.pressure               CPU1: write cgroup.pressure=0
-===========================		  =============================
-
-kernfs_fop_write_iter()
- kernfs_get_active_of(of)
- pressure_write()
-   cgroup_kn_lock_live(memory.pressure)
-     cgroup_tryget(cgrp)
-     kernfs_break_active_protection(kn)
-     ... blocks on cgroup_mutex
-
-                                     	  cgroup_pressure_write()
-                                     	  cgroup_kn_lock_live(cgroup.pressure)
-                                     	  cgroup_file_show(memory.pressure, false)
-                                     	    kernfs_show(false)
-                                     	      kernfs_drain_open_files()
-                                     	        cgroup_file_release(of)
-                                     	          kfree(ctx)
-                                     	            of->priv = NULL
-                                     	  cgroup_kn_unlock()
-
-   ... acquires cgroup_mutex
-   ctx = of->priv;        // may now be NULL
-   if (ctx->psi.trigger)  // NULL dereference
-
-Consequently, there is a possibility that of->priv is NULL, the pressure
-write needs to check for this.
-
-Now that the scope of the cgroup_mutex has been expanded, the original
-explicit cgroup_get/put operations are no longer necessary, this is
-because acquiring/releasing the live kn lock inherently executes a
-cgroup get/put operation.
-
-[1]
-BUG: KASAN: slab-use-after-free in pressure_write+0xa4/0x210 kernel/cgroup/cgroup.c:4011
-Call Trace:
- pressure_write+0xa4/0x210 kernel/cgroup/cgroup.c:4011
- cgroup_file_write+0x36f/0x790 kernel/cgroup/cgroup.c:4311
- kernfs_fop_write_iter+0x3b0/0x540 fs/kernfs/file.c:352
-
-Allocated by task 9352:
- cgroup_file_open+0x90/0x3a0 kernel/cgroup/cgroup.c:4256
- kernfs_fop_open+0x9eb/0xcb0 fs/kernfs/file.c:724
- do_dentry_open+0x83d/0x13e0 fs/open.c:949
-
-Freed by task 9353:
- cgroup_file_release+0xd6/0x100 kernel/cgroup/cgroup.c:4283
- kernfs_release_file fs/kernfs/file.c:764 [inline]
- kernfs_drain_open_files+0x392/0x720 fs/kernfs/file.c:834
- kernfs_drain+0x470/0x600 fs/kernfs/dir.c:525
-
-Fixes: 0e94682b73bf ("psi: introduce psi monitor")
-Reported-by: syzbot+33e571025d88efd1312c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=33e571025d88efd1312c
-Tested-by: syzbot+33e571025d88efd1312c@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Reviewed-by: Chen Ridong <chenridong@huaweicloud.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Philo Lu <lulie@linux.alibaba.com>
+Fixes: 1e37bf84afac ("nvmem: brcm_nvram: store a copy of NVRAM content")
+Cc: stable@vger.kernel.org
+Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
 ---
- kernel/cgroup/cgroup.c | 24 ++++++++++++++++--------
- 1 file changed, 16 insertions(+), 8 deletions(-)
+ drivers/nvmem/brcm_nvram.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
-index 4a7d334be50a5..8bcf9f61c6a04 100644
---- a/kernel/cgroup/cgroup.c
-+++ b/kernel/cgroup/cgroup.c
-@@ -3775,33 +3775,41 @@ static int cgroup_cpu_pressure_show(struct seq_file *seq, void *v)
- static ssize_t pressure_write(struct kernfs_open_file *of, char *buf,
- 			      size_t nbytes, enum psi_res res)
- {
--	struct cgroup_file_ctx *ctx = of->priv;
-+	struct cgroup_file_ctx *ctx;
- 	struct psi_trigger *new;
- 	struct cgroup *cgrp;
- 	struct psi_group *psi;
-+	ssize_t ret = 0;
+diff --git a/drivers/nvmem/brcm_nvram.c b/drivers/nvmem/brcm_nvram.c
+index aaa6537798bf..4701772cfa47 100644
+--- a/drivers/nvmem/brcm_nvram.c
++++ b/drivers/nvmem/brcm_nvram.c
+@@ -181,15 +181,21 @@ static int brcm_nvram_parse(struct brcm_nvram *priv)
+ 	size_t len;
+ 	int err;
  
- 	cgrp = cgroup_kn_lock_live(of->kn, false);
- 	if (!cgrp)
- 		return -ENODEV;
- 
--	cgroup_get(cgrp);
--	cgroup_kn_unlock(of->kn);
-+	ctx = of->priv;
-+	if (!ctx) {
-+		ret = -ENODEV;
-+		goto out_unlock;
++	if (priv->data_len < sizeof(*header)) {
++		dev_err(dev, "NVRAM content (%zu) is smaller than header (%zu)\n",
++			priv->data_len, sizeof(*header));
++		return -EINVAL;
 +	}
- 
- 	/* Allow only one trigger per file descriptor */
- 	if (ctx->psi.trigger) {
--		cgroup_put(cgrp);
--		return -EBUSY;
-+		ret = -EBUSY;
-+		goto out_unlock;
- 	}
- 
- 	psi = cgroup_psi(cgrp);
- 	new = psi_trigger_create(psi, buf, res, of->file, of);
- 	if (IS_ERR(new)) {
--		cgroup_put(cgrp);
--		return PTR_ERR(new);
-+		ret = PTR_ERR(new);
-+		goto out_unlock;
- 	}
- 
- 	smp_store_release(&ctx->psi.trigger, new);
--	cgroup_put(cgrp);
 +
-+out_unlock:
-+	cgroup_kn_unlock(of->kn);
-+	if (ret)
-+		return ret;
+ 	if (memcmp(header->magic, NVRAM_MAGIC, 4)) {
+ 		dev_err(dev, "Invalid NVRAM magic\n");
+ 		return -EINVAL;
+ 	}
  
- 	return nbytes;
- }
+ 	len = le32_to_cpu(header->len);
+-	if (len > priv->nvmem_size) {
+-		dev_err(dev, "NVRAM length (%zd) exceeds mapped size (%zd)\n", len,
+-			priv->nvmem_size);
++	if (len < sizeof(*header) || len > priv->data_len) {
++		dev_err(dev, "NVRAM length (%zu) is outside cached content (%zu)\n",
++			len, priv->data_len);
+ 		return -EINVAL;
+ 	}
+ 
 -- 
-2.47.3
+2.43.0
 
 
