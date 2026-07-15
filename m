@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-274626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274627-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 91YwOrzQVmoNBgEAu9opvQ
-	(envelope-from <stable+bounces-274626-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 02:13:48 +0200
+	id qQZ7OMDQVmoOBgEAu9opvQ
+	(envelope-from <stable+bounces-274627-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 02:13:52 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73D4E7599E8
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 02:13:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A37BE7599ED
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 02:13:52 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Yat/kOHb";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274626-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274626-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NJmoVYJP;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274627-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274627-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 63E54311CA67
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 00:12:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 35A64311F801
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 00:12:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C9EC35966;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC69F249EB;
 	Wed, 15 Jul 2026 00:12:53 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1238742BC48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC3B02AF1D
 	for <stable@vger.kernel.org>; Wed, 15 Jul 2026 00:12:52 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784074373; cv=none; b=KgwQB8izqT4OnjWkmd+gZPlbIxATq0vixK1BkpZj66QhaROTXQNyEByC9mWGi7/6FxYGofDFpBexVe8WxT9qkWyMbdGdIpdrxapTAtZN9bYDJ55lTokakVKuUM/4s3O12wr1TB9WUNHWinXALcX3FB9KTfwD8ybDj4WOTPusYXg=
+	t=1784074373; cv=none; b=nQzLg5dzW/sAQl0LnCzNXvQODn402UaTPtjqm1SctrO+KNZpgQnZk6O/b5eFjZpPLAZGnT5xiGGlAvMrMMTx4XIII8ou9oOE6yqgLiuIzdJ2RKHLIACRj7IWHh1p9eTjs/ndaUk1iYSy0u5EStTmlRAEUTyuu9gq/upEh6djNY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1784074373; c=relaxed/simple;
-	bh=n4Ekerv6SdJQbYQSuW0KmBkOOZ37I8x/SFXdKhsEdHo=;
+	bh=X70KQHQzPPZauwAhMqugpAebI1rSkCGjqMFW4ek7AXg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q7vOqo0mgm5RW9aEDDMmoRg6VT7urynxXJHRmCPAOV8tpNp9HhrCLnTBGkuT/MvJ6roWmblUOMoHys/dG0JG9EnrPe9ipD0/HLHgeyoIXVoxMqBrOl4Ihrw1Gm8CyrcniUOD6Yz2sBhQO//OJHFypSj4k+Igbii2RNLXfoZdI8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yat/kOHb; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 732381F00A3E;
-	Wed, 15 Jul 2026 00:12:51 +0000 (UTC)
+	 MIME-Version; b=F8AFjnfyPfGYuuxVwjp0igeAvoHnp9CxT/3EY08U1hleI8CAVxnYZ1IRcizEObzgh1ew4qpeRO+pMoSDKlLYYCW8mglYWOjYnNYa0liyBdcaWnz0e9saHC2AdCWvIUBIiGPlNLbzi9eu0Hn4DLnmKmIer2o9UGwAV15dPsOds/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NJmoVYJP; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A7B21F00A3D;
+	Wed, 15 Jul 2026 00:12:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1784074372;
-	bh=Hsw4LO4/Ge7HJDdrhIGWxxwGd+XcFY0tj4W0k18Cayc=;
+	bh=zLS7wYIgYVljk6zgdvYRBml+YlMgxs3Dn5pw2gPoIAE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Yat/kOHb+jO9VhSkyFY3UpFvAzW8VsKSke5eRb6jIRp0ZY99D6wvCDW3ekOYBFh8Q
-	 8LHTAu5c6XEbp+LuHqTbzQ4gmFh8T/VNuTuikCxWgHZXNcht+dUXnDm1dck3Wtu9ig
-	 iy9D2kl5KCwaC9z3wHEohfiCwWCDQomaTHYq5/i7ckI/BZHGvnMER8HfYW4eIZ2/fw
-	 dN+HBppbZV5wHYCQuEcL82oEeJeEPRWAYzYLDVsCO9qnLnGTLWXdEtXSvrVYgJwApQ
-	 akKDPN/v2LkMh6H62JLwAUJ/fwn8flHmrKI50RgeTksH9RDq5vf8ElVV+/wYDQu/IE
-	 LbYytD5inws9Q==
+	b=NJmoVYJPEOZ8RiAEKhhXFpC/ROMxAMc4w/WPzsnzzqfsMot/BVK97QBT1lBpRDCCp
+	 sgP7pVKkhu9W45RIRbDR68mQ9mHUYYg7KKWVL0hBKwT/uQGVb4Epuc/KUAvdbnXZ90
+	 Euzp1il3+heaO3Q6gPj1CBRpXTMpVJLajO/RfkvnZXKCpTlZqn3yBDZReUEGOZZiAK
+	 jHh9nl09mMWFEkuONl4gi42xSWAmz1DRKETDynmLvzZsoE6yK2qIyTjukxvDGS45n+
+	 kZ90PATk1eu+3s6B7b75Tu42oN9YUEEOUn+TvnSzSpTXVdwvBDuc6uEKXjRpitj519
+	 HG3u7218/nx/Q==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Sasha Levin <sashal@kernel.org>,
-	Liviu Stan <liviu.stan@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>
-Subject: Re: [PATCH 5.10.y] iio: temperature: ltc2983: Fix n_wires default bypassing rotation check
-Date: Tue, 14 Jul 2026 20:12:36 -0400
-Message-ID: <20260714200600.stable0007@kernel.org>
+	Alice Ryhl <aliceryhl@google.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH 6.18.y 1/2] rust_binder: introduce TransactionInfo
+Date: Tue, 14 Jul 2026 20:12:37 -0400
+Message-ID: <20260714200600.stable0008@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260713151613.93022-1-liviu.stan@analog.com>
-References: <20260713151613.93022-1-liviu.stan@analog.com>
+In-Reply-To: <20260714064554.2090610-1-aliceryhl@google.com>
+References: <20260714064554.2090610-1-aliceryhl@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -77,8 +77,8 @@ X-Spamd-Result: default: False [-4.66 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-274626-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:sashal@kernel.org,m:liviu.stan@analog.com,m:jic23@kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-274627-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:sashal@kernel.org,m:aliceryhl@google.com,m:gregkh@linuxfoundation.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
@@ -99,12 +99,13 @@ X-Spamd-Result: default: False [-4.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 73D4E7599E8
+X-Rspamd-Queue-Id: A37BE7599ED
 
-> Initialize n_wires = 2 to match the binding default and ensure the
-> rotation check fires correctly when the property is absent.
+> Rust Binder exposes information about transactions that are sent in
+> various ways: printing to the kernel log, tracepoints, files in
+> binderfs, and the upcoming netlink support.
 
-Queued for 5.10, thanks.
+Queued the series for 6.18, thanks.
 
 -- 
 Thanks,
