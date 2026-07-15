@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-274803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274805-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id WJdqDKFcV2qMKQEAu9opvQ
-	(envelope-from <stable+bounces-274803-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 12:10:41 +0200
+	id QIUUKSNdV2q5KQEAu9opvQ
+	(envelope-from <stable+bounces-274805-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 12:12:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20F2075CC81
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 12:10:40 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 045CB75CCD7
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 12:12:51 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ZgjGVgjb;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274803-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-274803-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=BpcH7p78;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274805-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-274805-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 389063004D3D
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 10:10:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4D5AF305788A
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 10:10:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFB0943B6CA;
-	Wed, 15 Jul 2026 10:10:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DE0543B6ED;
+	Wed, 15 Jul 2026 10:10:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61CBA35F16F
-	for <stable@vger.kernel.org>; Wed, 15 Jul 2026 10:10:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6B3D35F16F
+	for <stable@vger.kernel.org>; Wed, 15 Jul 2026 10:10:46 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784110236; cv=none; b=KDhMe4MfbO2VZSxkwbb2VcoH/XcjKwZYduXCgHK8y3BUUJXj4soXRjlf1UMkzeAHtX7PXOlv2OzV59l7Bdg2L1jc0jEo0p7THjf9dzTfglnU55ait31P/MUapdqZx96KbCpQDi1v0NzQUB8Fu1UCKNdeg5zEfiu5LxB1r25L7vE=
+	t=1784110247; cv=none; b=TPT17D4CPfWomBmHkBb225BFEAYrfpmZOoE7AQdaYPzqhZsUMtiG19Nmctto97BCYYSmvYKLV8KDkb5s1oGFpJmjH8qBREOWxGon9rirasL8d48USn5RpDWLLTlypkpU0Pddi8jwZDPiNeEkWslbiMFTakjxCPLDIcZVODbB0Yo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784110236; c=relaxed/simple;
-	bh=hnAQ5jgtLHz3gQ5ZKhKZyjxGDmsPNS4mdLlerCaHPgE=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ajbEWO2EvG0oUp2oOzCc0zTIjxrUWMd1BmYnoc3IXLnBs6Xwsk4LVKptR0IOntOlnq8BPS8JGTK6NXU6UvVJ20UgimSPa26SrZm8BfP/L5YNi1FOaLodmBSJeAF8l2Z4Elcno5QuT7+dG4UqJ5x+0E0LHaJOo+HxlgMT2pbeXSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZgjGVgjb; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94DE31F000E9;
-	Wed, 15 Jul 2026 10:10:34 +0000 (UTC)
+	s=arc-20240116; t=1784110247; c=relaxed/simple;
+	bh=If2cfkod5COH947E8eO9zGyS/kqZq0PaVpwmXO0fibc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ifYaMvlDSusvlP46f9DfiSHSPfL99CoXB8jaP8FJJrOFf45t/JI+LGgUGY6MRafntnuerJ2O9BuwuhTIrUlTEESdeoMBiJzgFK8XQFl/qYlvsugxdg8JyFp+ECSWYn8JOtBXZImXK1oH7hct19GpIRfPxTKHmynK+n6z4S4sVSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BpcH7p78; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C200F1F000E9;
+	Wed, 15 Jul 2026 10:10:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1784110235;
-	bh=dtS566iwB+fx//3rLAGSqaHutqf7aNVvI6LEmz2ba10=;
+	s=korg; t=1784110246;
+	bh=Jq50e7sZ882CZCMxnwqnURTi15+AYihDjelnPi0GiNs=;
 	h=Subject:To:Cc:From:Date;
-	b=ZgjGVgjbEfkjPsw+1jiR8TbQMvKgg/EdkkzWA1J41Zy7r8ljM45olXb5vg3ykPZdv
-	 gt6+qFukajmDV2S9ZH2/ScJHfAS+twsgS3z7b1Od2m/fpKbLAMCyKhX39P6NfYEDJb
-	 BOj4DC5syiLVTyaxvxF4IEGUAA48QZRwYkDuXmM0=
-Subject: FAILED: patch "[PATCH] crypto: atmel-sha204a - drop hwrng quality reduction for" failed to apply to 5.10-stable tree
-To: thorsten.blum@linux.dev,ardb@kernel.org,herbert@gondor.apana.org.au
+	b=BpcH7p78oZNHc2plSzdfQImUma4FoB5hosb7oHR3RJm2dm5nAIUZhW1WAZaPCPsIV
+	 IOVBYy+NjikkGeaq8kRpEMaCZt+jkXlJEFPNLS1MVMNcIXkcTak6Y3mAtprjLnTFny
+	 akoEg+bIJND3JpHhv2L+KAufh788KB2yP7JHlDLw=
+Subject: FAILED: patch "[PATCH] crypto: atmel-sha204a - fail on hwrng registration error in" failed to apply to 6.18-stable tree
+To: thorsten.blum@linux.dev,herbert@gondor.apana.org.au
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 15 Jul 2026 12:10:14 +0200
-Message-ID: <2026071514-kindling-fried-4b7e@gregkh>
+Date: Wed, 15 Jul 2026 12:10:22 +0200
+Message-ID: <2026071522-shy-landmark-49bf@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,16 +62,16 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-274803-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-274805-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:thorsten.blum@linux.dev,m:ardb@kernel.org,m:herbert@gondor.apana.org.au,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:thorsten.blum@linux.dev,m:herbert@gondor.apana.org.au,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
@@ -83,30 +83,30 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_THREE(0.00)[3];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,metzdowd.com:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,gregkh:mid]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,gregkh:mid,apana.org.au:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 20F2075CC81
+X-Rspamd-Queue-Id: 045CB75CCD7
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.18-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
 git checkout FETCH_HEAD
-git cherry-pick -x ea5e57cc97185329dcc5ebdcaae7e1500bf0ad0b
+git cherry-pick -x 49e05bb00f2e8168695f7af4d694c39e1423e8a2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026071514-kindling-fried-4b7e@gregkh' --subject-prefix 'PATCH 5.10.y' 'HEAD^..'
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026071522-shy-landmark-49bf@gregkh' --subject-prefix 'PATCH 6.18.y' 'HEAD^..'
 
 Possible dependencies:
 
@@ -118,97 +118,47 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From ea5e57cc97185329dcc5ebdcaae7e1500bf0ad0b Mon Sep 17 00:00:00 2001
+From 49e05bb00f2e8168695f7af4d694c39e1423e8a2 Mon Sep 17 00:00:00 2001
 From: Thorsten Blum <thorsten.blum@linux.dev>
-Date: Tue, 28 Apr 2026 12:14:32 +0200
-Subject: [PATCH] crypto: atmel-sha204a - drop hwrng quality reduction for
- ATSHA204A
+Date: Sun, 17 May 2026 18:27:40 +0200
+Subject: [PATCH] crypto: atmel-sha204a - fail on hwrng registration error in
+ probe path
 
-Commit 8006aff15516 ("crypto: atmel-sha204a - Set hwrng quality to
-lowest possible") reduced the hwrng quality to 1 based on a review by
-Bill Cox [1]. However, despite its title, the review only tested the
-ATSHA204, not the ATSHA204A.
+Commit 13909a0c8897 ("crypto: atmel-sha204a - provide the otp content")
+overwrote the hwrng registration return value when creating the sysfs
+group, which allowed atmel_sha204a_probe() to succeed even if
+devm_hwrng_register() failed.
 
-In the same thread, Atmel engineer Landon Cox wrote "this behavior has
-been eliminated entirely"[2] in the ATSHA204A and "this problem does not
-affect the ATECC108 or the ATECC108A (or the ATSHA204A)"[3].
+Return immediately when devm_hwrng_register() fails, and report both
+hwrng and sysfs registration errors with dev_err(). Adjust the sysfs
+error log message for consistency.
 
-According to the official ATSHA204A datasheet [4], the device contains a
-high-quality hardware RNG that combines its output with an internal seed
-value stored in EEPROM or SRAM to generate random numbers. The device
-also implements all security functions using SHA-256, and the driver
-uses the chip's Random command in seed-update mode.
-
-Keep 'quality = 1' for ATSHA204, but drop the explicit hwrng quality
-reduction for ATSHA204A and fall back to the hwrng core default.
-
-[1] https://www.metzdowd.com/pipermail/cryptography/2014-December/023858.html
-[2] https://www.metzdowd.com/pipermail/cryptography/2014-December/023852.html
-[3] https://www.metzdowd.com/pipermail/cryptography/2014-December/023886.html
-[4] https://ww1.microchip.com/downloads/en/DeviceDoc/ATSHA204A-Data-Sheet-40002025A.pdf
-
-Fixes: 8006aff15516 ("crypto: atmel-sha204a - Set hwrng quality to lowest possible")
+Fixes: 13909a0c8897 ("crypto: atmel-sha204a - provide the otp content")
 Cc: stable@vger.kernel.org
 Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 
 diff --git a/drivers/crypto/atmel-sha204a.c b/drivers/crypto/atmel-sha204a.c
-index 5699bb532325..ed7d69bf6890 100644
+index 37538b0fd7c2..12eb85b57380 100644
 --- a/drivers/crypto/atmel-sha204a.c
 +++ b/drivers/crypto/atmel-sha204a.c
-@@ -19,6 +19,12 @@
- #include <linux/workqueue.h>
- #include "atmel-i2c.h"
- 
-+/*
-+ * According to review by Bill Cox [1], the ATSHA204 has very low entropy.
-+ * [1] https://www.metzdowd.com/pipermail/cryptography/2014-December/023858.html
-+ */
-+static const unsigned short atsha204_quality = 1;
-+
- static void atmel_sha204a_rng_done(struct atmel_i2c_work_data *work_data,
- 				   void *areq, int status)
- {
-@@ -158,6 +164,7 @@ static const struct attribute_group atmel_sha204a_groups = {
- static int atmel_sha204a_probe(struct i2c_client *client)
- {
- 	struct atmel_i2c_client_priv *i2c_priv;
-+	const unsigned short *quality;
- 	int ret;
- 
- 	ret = atmel_i2c_probe(client);
-@@ -171,11 +178,9 @@ static int atmel_sha204a_probe(struct i2c_client *client)
- 	i2c_priv->hwrng.name = dev_name(&client->dev);
- 	i2c_priv->hwrng.read = atmel_sha204a_rng_read;
- 
--	/*
--	 * According to review by Bill Cox [1], this HWRNG has very low entropy.
--	 * [1] https://www.metzdowd.com/pipermail/cryptography/2014-December/023858.html
--	 */
--	i2c_priv->hwrng.quality = 1;
-+	quality = i2c_get_match_data(client);
-+	if (quality)
-+		i2c_priv->hwrng.quality = *quality;
+@@ -183,12 +183,14 @@ static int atmel_sha204a_probe(struct i2c_client *client)
+ 		i2c_priv->hwrng.quality = *quality;
  
  	ret = devm_hwrng_register(&client->dev, &i2c_priv->hwrng);
- 	if (ret)
-@@ -203,14 +208,14 @@ static void atmel_sha204a_remove(struct i2c_client *client)
- }
+-	if (ret)
+-		dev_warn(&client->dev, "failed to register RNG (%d)\n", ret);
++	if (ret) {
++		dev_err(&client->dev, "failed to register RNG (%d)\n", ret);
++		return ret;
++	}
  
- static const struct of_device_id atmel_sha204a_dt_ids[] __maybe_unused = {
--	{ .compatible = "atmel,atsha204", },
-+	{ .compatible = "atmel,atsha204", .data = &atsha204_quality },
- 	{ .compatible = "atmel,atsha204a", },
- 	{ /* sentinel */ }
- };
- MODULE_DEVICE_TABLE(of, atmel_sha204a_dt_ids);
+ 	ret = sysfs_create_group(&client->dev.kobj, &atmel_sha204a_groups);
+ 	if (ret) {
+-		dev_err(&client->dev, "failed to register sysfs entry\n");
++		dev_err(&client->dev, "failed to create sysfs group (%d)\n", ret);
+ 		return ret;
+ 	}
  
- static const struct i2c_device_id atmel_sha204a_id[] = {
--	{ "atsha204" },
-+	{ "atsha204", (kernel_ulong_t)&atsha204_quality },
- 	{ "atsha204a" },
- 	{ /* sentinel */ }
- };
 
 
