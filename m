@@ -1,199 +1,235 @@
-Return-Path: <stable+bounces-274942-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274940-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id uXPzBIWSV2omXQAAu9opvQ
-	(envelope-from <stable+bounces-274942-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 16:00:37 +0200
+	id yf1TCc6QV2q8XAAAu9opvQ
+	(envelope-from <stable+bounces-274940-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 15:53:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id A45D375F15F
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 16:00:34 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FC6775F043
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 15:53:17 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=eNIXQOiy;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274942-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-274942-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=reject ("cv is fail on i=2")
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=kOajmKYd;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274940-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-274940-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=igalia.com;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 64D53306C556
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 13:48:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 329F23062D64
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 13:46:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8D81314A8E;
-	Wed, 15 Jul 2026 13:48:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D228D3016F5;
+	Wed, 15 Jul 2026 13:46:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011059.outbound.protection.outlook.com [40.93.194.59])
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9DDE2AE8D
-	for <stable@vger.kernel.org>; Wed, 15 Jul 2026 13:48:44 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784123326; cv=fail; b=kkMsPgoSZZa1RTXcqdLblhcwgUOftPVLH3bfe/S6RkuTwC5iFna1oIsPOmMclC67lF45NYF8ZswvtEN1Oayi/NiMgfUN8cOGWkjccAO1bbmvZwbIiGgBSLn2Iu1mI2guTjqAtOC4vN5vq7/FRCOTnjHxeFJBtHCuLXKqTZ4qGXo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784123326; c=relaxed/simple;
-	bh=PQ2jrB866ns886snYA0gx9l9IAQFaC5sWohOXAP4Hgw=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=H06YeFCxMTVaqbYZ85+iscqgn6VLzlPVN7ZTaPzMrD7DTGKIiQhWxqh3tFl0+yhPVhqcnrWAfrt1iyza5+aZQNG0gl0OCjPYoDSyAhc5rtCx0/rb7K3H5mNHWAiNrYNayZDH+h/2/WjEuHcqV0jriLaBmXtFpgwdhRwvW/ZXbOY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=eNIXQOiy; arc=fail smtp.client-ip=40.93.194.59
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dOnzqGqrzTxrgO/8puH/20gs8porjVqoyQVjuYnzphehaPavYLWdEW/h26zTAitM8U7n1lTRuaMl4usaryqI7nlKnS82BK5tCtEpgDKIL+dzCQFyQOGLCHo+UNab2RJ2/FypBfQk3Dlhe3xjrR+TCQMQI1R1hnFB5YiJC7Cc1OY0orrvesAwOMvBeL+j+5aVOjw/E0wQO7SDZOazI/IlLgfBS36LTPrTGwT4i+vp3f+/+/8JilOZdhV3J9XyJilpR/WmD9KoxdicmDwgTd4wjK1P3J4QIcs2CRT1Ng6YP6CqfeTFupfquvdwNhv3iGka+71UtXMEpPnmeQs74YTKvw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Kbj5RkskGRsMrW0/VRu7P2GNTLBMDhfX1r6koRhU9C8=;
- b=GV1uQuECGSHxzcLgdmuA14AicevahpWCczPS098c5qcERjRoplMDIod89LMl58JMuHCHbiwj/RZ1e0TNipluJHGzFfnxgdbzXc97fKHK5nse0LmB/WO/MxrRIJpzDW9sBGNCv13vC5MMItf7naFpS2ElI+u97dmoQMXrmjhG2hq24inP/Nb6/uEW2uVt5Yh3six3BJt2jM83IQvyblQFGNh81ZMHNDhAuxGlZrQnZwM3yv+P0BGuNbaGR77PROz9Dum6hR7aE8T+cIEazI3UmZntpJ2DElZBbNP77Nn1C09OyXBo2ijQl87BfP4VzbfSyjnSE5JjlnxuAUjQyW+5Yw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Kbj5RkskGRsMrW0/VRu7P2GNTLBMDhfX1r6koRhU9C8=;
- b=eNIXQOiyQf43Lm5DT/qSuKiRl3kEoCiF4mY8Ci0J8BfJBtV2qNUUQVfiJ1+EQBQgQuLiWFvSmWylJVAuActJhibsHykEa5sikKNXE1x4glL4EdY+GPOuxF+IUaZYzWbYexCRJWYuje1mrdYpMsiMBN7lrBJ/aqEYrogXCjtYZ1E=
-Received: from SJ2P220CA0002.NAMP220.PROD.OUTLOOK.COM (2603:10b6:a03:5da::10)
- by MN2PR12MB4359.namprd12.prod.outlook.com (2603:10b6:208:265::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.12; Wed, 15 Jul
- 2026 13:48:38 +0000
-Received: from SJ5PEPF000001F0.namprd05.prod.outlook.com
- (2603:10b6:a03:5da:cafe::5c) by SJ2P220CA0002.outlook.office365.com
- (2603:10b6:a03:5da::10) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.223.12 via Frontend Transport; Wed,
- 15 Jul 2026 13:48:38 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SJ5PEPF000001F0.mail.protection.outlook.com (10.167.242.68) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.223.9 via Frontend Transport; Wed, 15 Jul 2026 13:48:37 +0000
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Wed, 15 Jul
- 2026 08:48:36 -0500
-Received: from wayne-dev-lnx.amd.com (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
- Transport; Wed, 15 Jul 2026 08:48:33 -0500
-From: Wayne Lin <Wayne.Lin@amd.com>
-To: <amd-gfx@lists.freedesktop.org>
-CC: Harry Wentland <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>, Roman Li <roman.li@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>, Tom Chung <chiahsuan.chung@amd.com>, "Fangzhi
- Zuo" <jerry.zuo@amd.com>, Dan Wheeler <daniel.wheeler@amd.com>, Ray Wu
-	<Ray.Wu@amd.com>, Ivan Lipski <ivan.lipski@amd.com>, Alex Hung
-	<alex.hung@amd.com>, James Lin <PingLei.Lin@amd.com>, Chenyu Chen
-	<Chen-Yu.Chen@amd.com>, WenTao Liang <vulab@iscas.ac.cn>,
-	<stable@vger.kernel.org>, George Zhang <george.zhang@amd.com>
-Subject: [PATCH 59/70] drm/amd/display: set new_stream to NULL after release
-Date: Wed, 15 Jul 2026 21:38:09 +0800
-Message-ID: <20260715134432.1975118-60-Wayne.Lin@amd.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260715134432.1975118-1-Wayne.Lin@amd.com>
-References: <20260715134432.1975118-1-Wayne.Lin@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B974E2F3C3E
+	for <stable@vger.kernel.org>; Wed, 15 Jul 2026 13:46:54 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784123217; cv=none; b=OedF5gDe+TfuVTLQjLUmHfm0EEFYuF364d5gBr72aE/FrEtd+tYJtW4VC1a20ueclh6opzrs9x9w4A2ncLEuLebfYpspilo+pYTNTYtDodid9TBvODq6sZCB7fQbQzxI61t8zSik+/xJUCE/oVI2/OEZIM5kPdWRd01TVnPbroU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784123217; c=relaxed/simple;
+	bh=NiwuDIMSiv6k9ajHVFaOIVKuR2qZfSsp+xs5XsSYY54=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qFch04cncYy39RHYJwhHpPUg4ckGe58SBnMEUR5703OLLHEP49NAhw8wWUVkAKf4Rb3yrepzMrmF9AasoQIg9MYciqm25mjbnfHAjGKIOqCDA+1yvjK4UY8eM2W8MTuP9n/czuK8CSGpCBRiM5Swup2dJEYxDePQBY2Nt3SjZZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=kOajmKYd; arc=none smtp.client-ip=213.97.179.56
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:From:Cc:To:Subject:
+	MIME-Version:Date:Message-ID:From:Reply-To;
+	bh=Uo61uh8d0g4W7zMCQ6OTzWnkeXWexsVHjVydVzKCuP8=; b=kOajmKYdhjeS/3bRIl9cZG5SWY
+	joHxEMNPEdgB6n8lB6xlRy+JQXOFBGiQktNDrwiEhfyHsmLW6oKWTlJV/D3/6cNp1vn8Z+hXWDwwb
+	rSYDtEZ/xGSxpk8nH1xl8XE/aDmqUrabpQ1HCc5bulMEE2wLEBUZXvnk22pBrJjx9pMm63CIwqOxK
+	CryVEoXU3FGjbifOKhhT6i+0v3Egf/g/MSPm6Tk/qgIpQs0QRhpLuhnV5Y4QWmGU02HPl+cGf+OQm
+	WEE3njUnpp8M7+PWQf4BnYwSztFTv6PCaDSelUqGKfan2f9aae9WYlktpobGIVj1x7sVrPfjDNxaQ
+	Nxe+QY5w==;
+Received: from [189.7.87.67] (helo=[192.168.0.2])
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+	id 1wjzwn-00FThw-9Z; Wed, 15 Jul 2026 15:46:49 +0200
+Message-ID: <f51d745c-c383-4d19-ac51-af9c69a83ba8@igalia.com>
+Date: Wed, 15 Jul 2026 10:46:44 -0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drm/v3d: Widen cache_clean_lock over the whole L2TCACTL
+ sequence
+To: Iago Toral <itoral@igalia.com>, Melissa Wen <mwen@igalia.com>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
+Cc: dri-devel@lists.freedesktop.org, kernel-dev@igalia.com,
+ stable@vger.kernel.org
+References: <20260707200738.659002-2-mcanal@igalia.com>
+ <e65137e19a8773a2f760531034481e0df60071d4.camel@igalia.com>
+From: =?UTF-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
+Content-Language: en-US
+Autocrypt: addr=mcanal@igalia.com; keydata=
+ xsBNBGcCwywBCADgTji02Sv9zjHo26LXKdCaumcSWglfnJ93rwOCNkHfPIBll85LL9G0J7H8
+ /PmEL9y0LPo9/B3fhIpbD8VhSy9Sqz8qVl1oeqSe/rh3M+GceZbFUPpMSk5pNY9wr5raZ63d
+ gJc1cs8XBhuj1EzeE8qbP6JAmsL+NMEmtkkNPfjhX14yqzHDVSqmAFEsh4Vmw6oaTMXvwQ40
+ SkFjtl3sr20y07cJMDe++tFet2fsfKqQNxwiGBZJsjEMO2T+mW7DuV2pKHr9aifWjABY5EPw
+ G7qbrh+hXgfT+njAVg5+BcLz7w9Ju/7iwDMiIY1hx64Ogrpwykj9bXav35GKobicCAwHABEB
+ AAHNIE1hw61yYSBDYW5hbCA8bWNhbmFsQGlnYWxpYS5jb20+wsCRBBMBCAA7FiEE+ORdfQEW
+ dwcppnfRP/MOinaI+qoFAmcCwywCGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AACgkQ
+ P/MOinaI+qoUBQgAqz2gzUP7K3EBI24+a5FwFlruQGtim85GAJZXToBtzsfGLLVUSCL3aF/5
+ O335Bh6ViSBgxmowIwVJlS/e+L95CkTGzIIMHgyUZfNefR2L3aZA6cgc9z8cfow62Wu8eXnq
+ GM/+WWvrFQb/dBKKuohfBlpThqDWXxhozazCcJYYHradIuOM8zyMtCLDYwPW7Vqmewa+w994
+ 7Lo4CgOhUXVI2jJSBq3sgHEPxiUBOGxvOt1YBg7H9C37BeZYZxFmU8vh7fbOsvhx7Aqu5xV7
+ FG+1ZMfDkv+PixCuGtR5yPPaqU2XdjDC/9mlRWWQTPzg74RLEw5sz/tIHQPPm6ROCACFls7A
+ TQRnAsMsAQgAxTU8dnqzK6vgODTCW2A6SAzcvKztxae4YjRwN1SuGhJR2isJgQHoOH6oCItW
+ Xc1CGAWnci6doh1DJvbbB7uvkQlbeNxeIz0OzHSiB+pb1ssuT31Hz6QZFbX4q+crregPIhr+
+ 0xeDi6Mtu+paYprI7USGFFjDUvJUf36kK0yuF2XUOBlF0beCQ7Jhc+UoI9Akmvl4sHUrZJzX
+ LMeajARnSBXTcig6h6/NFVkr1mi1uuZfIRNCkxCE8QRYebZLSWxBVr3h7dtOUkq2CzL2kRCK
+ T2rKkmYrvBJTqSvfK3Ba7QrDg3szEe+fENpL3gHtH6h/XQF92EOulm5S5o0I+ceREwARAQAB
+ wsB2BBgBCAAgFiEE+ORdfQEWdwcppnfRP/MOinaI+qoFAmcCwywCGwwACgkQP/MOinaI+qpI
+ zQf+NAcNDBXWHGA3lgvYvOU31+ik9bb30xZ7IqK9MIi6TpZqL7cxNwZ+FAK2GbUWhy+/gPkX
+ it2gCAJsjo/QEKJi7Zh8IgHN+jfim942QZOkU+p/YEcvqBvXa0zqW0sYfyAxkrf/OZfTnNNE
+ Tr+uBKNaQGO2vkn5AX5l8zMl9LCH3/Ieaboni35qEhoD/aM0Kpf93PhCvJGbD4n1DnRhrxm1
+ uEdQ6HUjWghEjC+Jh9xUvJco2tUTepw4OwuPxOvtuPTUa1kgixYyG1Jck/67reJzMigeuYFt
+ raV3P8t/6cmtawVjurhnCDuURyhUrjpRhgFp+lW8OGr6pepHol/WFIOQEg==
+In-Reply-To: <e65137e19a8773a2f760531034481e0df60071d4.camel@igalia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PEPF000001F0:EE_|MN2PR12MB4359:EE_
-X-MS-Office365-Filtering-Correlation-Id: d22929b7-8641-437e-2a87-08dee277c5bf
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|376014|1800799024|36860700016|23010399003|22082099003|18002099003|6133799003|56012099006|10067099003|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	ME5uZ62HVSSET4yed5oPRK81HfFhqhTkoZtc3v6PMuAKPqjpCqydchQI08UzHImtFOG8Gf9Bj2ZZm+8zOlxFWzk20T+ghnUDzPNxaW/CsI4qoNLux5+U3i/8pMB4ca2huskMCRAMnnX7cohdFAG583NKY5KK8zyfoeJAgHTzwzTQamGiGW7UMWqwIwPFbYp0miaXky1/nb4wz79bCCoaq1MH2HY3RpczTp2glkrXR2Dj3efk5f1VWpjbvneDIr9dLysecWK22AN8ueKWo1mqWL3bREqAthbuXl06H6FruiUAo2JjYOscFg08Ebrd1cW0FCLs5qA8I7bWV1DvV3ZLAka7df1r8/hJ4DMCiNfAp3tfEp2fzAtb3aQVtdQvPP5fR4jLL7kO4rEAykq0xWdCad0YhMx6V9ybIxMo53ohe6X7CYG8C0nMTQbRa5gELbJb8VoTJ560PvWZuel1gunGx91DNZoAueGClZzc7LzE5/SCwNyUJfhzCptVgRMQWXeiRT3cgPnbmRgbZlDHKvoV87tV3uXw6YEINOXAhyiTZbdgy41JKM4ghRYaSkf3nesXAoIJ9uCkw//gaeRoZYhhZ4NFKPVVy4hFGZQ6lUVmRVs9fUDINkh/oxJWf8zkDK9ASZlSRQO4t3o10VyfDh3K1NTQjYzf4NP0k3b09mFKTGcCVhfhfDVco8QTdsq0Fz1ncql/IjYvjKB2CFgnOxL1SA==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(376014)(1800799024)(36860700016)(23010399003)(22082099003)(18002099003)(6133799003)(56012099006)(10067099003)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	xWafth9erGJZUH9mHph+W0NPE+1ZL78VYU9fymWgqIibkYX5u19bTrYlSH+hEMsAiKSFAePIoSXPnUCokMy1iMn5ME4wHPirtKg8XE6VzwH0osRUzGjY1/+54HChSWzq48ndJUtSOEFIGD4VMZT5VzBM5DEPgzY6ifGIpZxxwVEbpIJEhiEF4VSVyZPLwN9EVEURZS/8GrFroea+b9+cAZd6jOsO9Sx6NUalymw3R3FIwFII9hFWw4rqhM9B6m+ZV/yI92cexOYJvbeKiiOMM+PAXWNOhxr8KMAuPQLXCMIbN+yDLQPcJzQfJy/17kIdfOVHFJ4hW1OIhHNG9LBuW+Rzzi+EiF2QoJVgr7qGqLSxXLj20QCxDWcmX1cvzJxSkWXKaJ/wEyK5JXzIY89n6CFMmIcKkKl9jpTbuEVorpHdwNH+syLwe88Uznc5FYlG
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jul 2026 13:48:37.9088
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: d22929b7-8641-437e-2a87-08dee277c5bf
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ5PEPF000001F0.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4359
-X-Spamd-Result: default: False [1.34 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[amd.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[amd.com:s=selector1];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[igalia.com,none];
+	R_DKIM_ALLOW(-0.20)[igalia.com:s=20170329];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-274942-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[Wayne.Lin@amd.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:amd-gfx@lists.freedesktop.org,m:harry.wentland@amd.com,m:sunpeng.li@amd.com,m:aurabindo.pillai@amd.com,m:roman.li@amd.com,m:wayne.lin@amd.com,m:chiahsuan.chung@amd.com,m:jerry.zuo@amd.com,m:daniel.wheeler@amd.com,m:Ray.Wu@amd.com,m:ivan.lipski@amd.com,m:alex.hung@amd.com,m:PingLei.Lin@amd.com,m:Chen-Yu.Chen@amd.com,m:vulab@iscas.ac.cn,m:stable@vger.kernel.org,m:george.zhang@amd.com,s:lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[Wayne.Lin@amd.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[amd.com:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:dkim,amd.com:email,amd.com:mid,amd.com:from_mime,iscas.ac.cn:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp];
+	TAGGED_FROM(0.00)[bounces-274940-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:itoral@igalia.com,m:mwen@igalia.com,m:airlied@gmail.com,m:simona@ffwll.ch,m:dri-devel@lists.freedesktop.org,m:kernel-dev@igalia.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FREEMAIL_TO(0.00)[igalia.com,gmail.com,ffwll.ch];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[172.234.253.10:from];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[mcanal@igalia.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[igalia.com:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mcanal@igalia.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[213.97.179.56:received,192.168.0.2:received];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[8]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,igalia.com:dkim,igalia.com:email,igalia.com:mid,igalia.com:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A45D375F15F
+X-Rspamd-Queue-Id: 8FC6775F043
 X-Rspamd-Action: no action
 
-From: WenTao Liang <vulab@iscas.ac.cn>
+Hi Iago,
 
-In dm_update_crtc_state(), the skip_modeset path releases new_stream
-via dc_stream_release() but does not set the pointer to NULL.
+On 15/07/26 03:16, Iago Toral wrote:
+> Hi Maíra,
+> 
+> has this change fixed anything?
 
-If a later error (e.g., color management failure) triggers the fail
-label, the error path calls dc_stream_release() again on the same
-dangling pointer, causing a double release and potential use-after-free.
+Not real bug, just the theoretical race-condition between
+v3d_clean_caches() and v3d_flush_l2t().
 
-Fix this by setting new_stream to NULL after the initial release.
+> 
+> Also, I believe that GFXH-1897 is exclusive to Pi4. Have you tested if
+> this change has any visible performance impact on Pi5?
 
-Fixes: 9b690ef3c7042 ("drm/amd/display: Avoid full modeset when not required")
-Cc: stable@vger.kernel.org
-Reviewed-by: George Zhang <george.zhang@amd.com>
-Signed-off-by: WenTao Liang <vulab@iscas.ac.cn>
-Signed-off-by: Wayne Lin <wayne.lin@amd.com>
----
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 1 +
- 1 file changed, 1 insertion(+)
+I'll test it, however I don't imagine it would have a impact, as the
+race condition should be rare enough. We would need a CACHE_CLEAN job
+running simultaneously to v3d_invalidate_caches().
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 9a3f78c17a5a..5a9afc0607b2 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -6063,6 +6063,7 @@ static int dm_update_crtc_state(struct amdgpu_display_manager *dm,
- 	/* Release extra reference */
- 	if (new_stream)
- 		dc_stream_release(new_stream);
-+	new_stream = NULL;
- 
- 	/*
- 	 * We want to do dc stream updates that do not require a
--- 
-2.43.0
+One thing I believe it might be possible is to skip a flush if a flush
+is already happening, but it would be a micro-optimization.
+
+Best regards,
+- Maíra
+
+> 
+> Iago
+> 
+> 
+> El mar, 07-07-2026 a las 17:05 -0300, Maíra Canal escribió:
+>> v3d_clean_caches() and v3d_flush_l2t() both write the single L2TCACTL
+>> register and poll its status bits. The mutex cache_clean_lock exists
+>> to
+>> serialize them, but v3d_clean_caches() only took the lock around its
+>> final
+>> FLM_CLEAN write.
+>>
+>> These functions run concurrently: v3d_flush_l2t() is issued from the
+>> BIN/RENDER/CSD invalidate path while v3d_clean_caches() runs from the
+>> CACHE_CLEAN queue, and each queue's scheduler uses its own ordered
+>> workqueue, so their run_job callbacks execute in parallel.
+>>
+>> Because clean locked only its final write, a concurrent flush can
+>> write
+>> L2TCACTL during clean's unlocked phase. Both use non read-modify-
+>> write
+>> writes to the one register, so whichever lands last wins: clean's
+>> TMUWCF
+>> write can land on the flush's in-flight L2TFLS invalidate, triggering
+>> the
+>> GFXH-1897 hazard of writing L2TCACTL while a flush is pending.
+>>
+>> Hold cache_clean_lock across the entire L2TCACTL access sequence so
+>> it
+>> is fully mutually exclusive with v3d_flush_l2t(), which already takes
+>> the
+>> lock around its own write.
+>>
+>> Cc: stable@vger.kernel.org
+>> Fixes: abf888b03a98 ("drm/v3d: Wait for pending L2T flush before
+>> cleaning caches")
+>> Signed-off-by: Maíra Canal <mcanal@igalia.com>
+>> ---
+>>   drivers/gpu/drm/v3d/v3d_gem.c | 5 ++---
+>>   1 file changed, 2 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/drivers/gpu/drm/v3d/v3d_gem.c
+>> b/drivers/gpu/drm/v3d/v3d_gem.c
+>> index c43d9af41374..e597b6fd47c4 100644
+>> --- a/drivers/gpu/drm/v3d/v3d_gem.c
+>> +++ b/drivers/gpu/drm/v3d/v3d_gem.c
+>> @@ -204,6 +204,8 @@ v3d_clean_caches(struct v3d_dev *v3d)
+>>   	struct drm_device *dev = &v3d->drm;
+>>   	int core = 0;
+>>   
+>> +	guard(mutex)(&v3d->cache_clean_lock);
+>> +
+>>   	trace_v3d_cache_clean_begin(dev);
+>>   
+>>   	/* GFXH-1897: Ensure pending flushes complete before writing
+>> L2TCACTL */
+>> @@ -220,7 +222,6 @@ v3d_clean_caches(struct v3d_dev *v3d)
+>>   		drm_err(dev, "Timeout waiting for TMU write combiner
+>> flush\n");
+>>   	}
+>>   
+>> -	mutex_lock(&v3d->cache_clean_lock);
+>>   	V3D_CORE_WRITE(core, V3D_CTL_L2TCACTL,
+>>   		       V3D_L2TCACTL_L2TFLS |
+>>   		       V3D_SET_FIELD(V3D_L2TCACTL_FLM_CLEAN,
+>> V3D_L2TCACTL_FLM));
+>> @@ -230,8 +231,6 @@ v3d_clean_caches(struct v3d_dev *v3d)
+>>   		drm_err(dev, "Timeout waiting for L2T clean\n");
+>>   	}
+>>   
+>> -	mutex_unlock(&v3d->cache_clean_lock);
+>> -
+>>   	trace_v3d_cache_clean_end(dev);
+>>   }
+>>   
+> 
 
 
