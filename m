@@ -1,174 +1,139 @@
-Return-Path: <stable+bounces-274736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274739-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id y4bLLv8iV2oaFwEAu9opvQ
-	(envelope-from <stable+bounces-274736-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 08:04:47 +0200
+	id lqzoHCAlV2qMFwEAu9opvQ
+	(envelope-from <stable+bounces-274739-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 08:13:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4592475AD38
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 08:04:47 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3D0A75AE0D
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 08:13:51 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=horbHq44;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274736-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-274736-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=vJeKyWE3;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274739-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-274739-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linux.dev;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A7EDB300C317
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 06:04:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 15EEB3052FFF
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 06:13:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB6B030BF70;
-	Wed, 15 Jul 2026 06:04:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B46033B2FC0;
+	Wed, 15 Jul 2026 06:13:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C4722DA757;
-	Wed, 15 Jul 2026 06:04:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C148C33DEE5
+	for <stable@vger.kernel.org>; Wed, 15 Jul 2026 06:13:09 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784095482; cv=none; b=o039ktYjdSyVX+7v4pOE8dRLZlkd8EpWTlaLYQsg76QzU2DsYACU7sIu8+ZpwSY4coSdK7npsFHs7L5QsUFM+/ziU9+9BBI/VOdhdU/AEdLBd4V70NXIPlnzZmR56f1dlySQXupkMpuZ40mr1Y/29P7dt9+cFH84rm4hlqgF7fU=
+	t=1784095992; cv=none; b=aIXWYXIkriatzTIui63cEcRmr8gooQx/RWnZoHAb1FZQyXOAKysDZISek0hv1g7u+/B7aCbULCjVx2BWLkPu1tYTbKglY78hMyHtaixtesic07vrcAELwMUPtkzoTOWV9P+a+6Z5Go6xy35oxbicWwKLCvHwauxPDoEhiTyof2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784095482; c=relaxed/simple;
-	bh=cDBfR7VZXzWQDfHQGuw+uTgGsKYv2brCjYecZtayH0s=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=kURPZbRfemsWfXjtu1C86M55OdOyB0ye45gmt11bWjS75SmK7ueuEkPy/KCK/GMFOV8ri55XB1TZVIvdz3KEcb7P7P+mj9zVKGXITHO3vq6H6YDCFYl7cxLrNw5zakqDF5MxlXc2rk7HlkDp8aias7aOPv1w/O+xmkE/CeilKr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=horbHq44; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 4E608C2BCF7;
-	Wed, 15 Jul 2026 06:04:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1784095482;
-	bh=cDBfR7VZXzWQDfHQGuw+uTgGsKYv2brCjYecZtayH0s=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=horbHq44ucNi5wKus9eLFzwlUzDo0JgSjx6+CI9eggpGkkXSKGvr7GoklkweOL9Q0
-	 YkeUGvty+4JIBdKrHrPmOWFPIC+VMmEFvV79HZgCGZ4iZ0jJwHOrr64NgKXSLq41JW
-	 Ln6Z+cpKy712Ta6UFPlb/i6DGaPBaGORmTs5vVTIQ/Oys9XDN3UVW2mWdHrFuvaMh/
-	 IEaIqlyFAQauVf450ujfd3JJ8Ph3KleiKA9gXpY8kd9TeUgcS6+OCADPdZDlHcVyTj
-	 btFLpPK7uyQFhJS0h2RqEDg1jh5IjELpHqB9HqS7TwrdBbUhxydarA2dY70jwdr9Z8
-	 CI7dWnNo+vxew==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 32928C4450C;
-	Wed, 15 Jul 2026 06:04:42 +0000 (UTC)
-From: Haidar Lee via B4 Relay <devnull+haidar.lee.adlinktech.com@kernel.org>
-Date: Wed, 15 Jul 2026 14:04:41 +0800
-Subject: [PATCH 2/2] ASoC: tas2562: fix broken entries in the volume lookup
- table
+	s=arc-20240116; t=1784095992; c=relaxed/simple;
+	bh=Nv2g73dT9Ca/Dmbupn785gM4E5jzpax/qHLKPGVllpw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=nyNV6byqh8Tf+JkDNZr+Ix5Blw4EzXcypuqjP8d0gr81Yt0ppGh8FqhFdPp0yRdumQ2CM7Cg0gHfw7JFst9X0Kr2jk0ZNSJ37ll5yuRQ48SnR779j7xrOC8HeKZsTJS9eMeudzwyicJarCasiTrfX9m2mqMAP2h4MQk/hZInptA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=vJeKyWE3; arc=none smtp.client-ip=95.215.58.173
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784095987;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GNA34ZVAFe+Zjxs6F20dktajo1LonGeHCUW7GzDGnsw=;
+	b=vJeKyWE34SQhoigJZ0mLJv5fiWh7HpHFQ8s33lvfIDYX+wGgjskEcqf9MP6XM+7EWLVGJ2
+	wOBZ5Qn7OPKAyiqfAlfER98FEMYYk28wEqZuVvwXdlvQpgGmv0FzvH7Dxv1FZfGmpsVYyT
+	mFucntdU6STRSdwENCfNuh2IIQcm1+0=
+From: xuanqiang.luo@linux.dev
+To: Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	intel-wired-lan@lists.osuosl.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	Mitch Williams <mitch.a.williams@intel.com>,
+	Greg Rose <gregory.v.rose@intel.com>,
+	Sudheer Mogilappagari <sudheer.mogilappagari@intel.com>,
+	netdev@vger.kernel.org,
+	Xuanqiang Luo <luoxuanqiang@kylinos.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH iwl-net v1 1/2] iavf: fix ASQ command buffer leak on init failure
+Date: Wed, 15 Jul 2026 14:11:30 +0800
+Message-ID: <20260715061131.34420-2-xuanqiang.luo@linux.dev>
+In-Reply-To: <20260715061131.34420-1-xuanqiang.luo@linux.dev>
+References: <20260715061131.34420-1-xuanqiang.luo@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260715-tas2562-dvc-fix-v1-2-072b13901b20@adlinktech.com>
-References: <20260715-tas2562-dvc-fix-v1-0-072b13901b20@adlinktech.com>
-In-Reply-To: <20260715-tas2562-dvc-fix-v1-0-072b13901b20@adlinktech.com>
-To: Shenghao Ding <shenghao-ding@ti.com>, Kevin Lu <kevin-lu@ti.com>, 
- Baojun Xu <baojun.xu@ti.com>, Sen Wang <sen@ti.com>, 
- Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
- Dan Murphy <dmurphy@ti.com>
-Cc: linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Haidar Lee <haidar.lee@adlinktech.com>, stable@vger.kernel.org
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784095481; l=2082;
- i=haidar.lee@adlinktech.com; s=20260715; h=from:subject:message-id;
- bh=/UoYM9/AkmbMBBJjFQcKRx8doPtiLNXUryHarALR2+U=;
- b=G9R4a9/biCE5j2qrRqzkcOOvZyDxPTIRNr79T2t0ducKc9Tt4HqtswlAC3QpdvBmk2z43C/nu
- eJYxLW4aKKpBcsCiUIBGOFhOytQrPsgYAilMEImq3LJMl9tY0+rLA2/
-X-Developer-Key: i=haidar.lee@adlinktech.com; a=ed25519;
- pk=p37KzVgRl0a8om8VCM7iEwQvNuZz2fxL4lBCBp5qrno=
-X-Endpoint-Received: by B4 Relay for haidar.lee@adlinktech.com/20260715
- with auth_id=872
-X-Original-From: Haidar Lee <haidar.lee@adlinktech.com>
-Reply-To: haidar.lee@adlinktech.com
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-5.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_TO(0.00)[ti.com,gmail.com,kernel.org,perex.cz,suse.com];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:shenghao-ding@ti.com,m:kevin-lu@ti.com,m:baojun.xu@ti.com,m:sen@ti.com,m:lgirdwood@gmail.com,m:broonie@kernel.org,m:perex@perex.cz,m:tiwai@suse.com,m:dmurphy@ti.com,m:linux-sound@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:haidar.lee@adlinktech.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[devnull@kernel.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-274736-lists,stable=lfdr.de,haidar.lee.adlinktech.com];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-274739-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:anthony.l.nguyen@intel.com,m:przemyslaw.kitszel@intel.com,m:intel-wired-lan@lists.osuosl.org,m:andrew+netdev@lunn.ch,m:mitch.a.williams@intel.com,m:gregory.v.rose@intel.com,m:sudheer.mogilappagari@intel.com,m:netdev@vger.kernel.org,m:luoxuanqiang@kylinos.cn,m:stable@vger.kernel.org,m:andrew@lunn.ch,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	HAS_REPLYTO(0.00)[haidar.lee@adlinktech.com];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,stable@vger.kernel.org];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER(0.00)[xuanqiang.luo@linux.dev,stable@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[3];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,adlinktech.com:mid,adlinktech.com:email,adlinktech.com:replyto]
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[xuanqiang.luo@linux.dev,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux.dev:+];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FROM_NO_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:from_mime,linux.dev:dkim,linux.dev:mid,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kylinos.cn:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4592475AD38
+X-Rspamd-Queue-Id: F3D0A75AE0D
 
-From: Haidar Lee <haidar.lee@adlinktech.com>
+From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
 
-The float_vol_db_lookup table is supposed to hold
-round(10^(dB/20) * 2^30) for every 2 dB step from -110 dB to 0 dB,
-which is 56 entries, but it only has 55: the -90 dB entry duplicates
-the -92 dB value (0x0000695b) and the -20 dB entry (0x06666666) is
-missing altogether. As a result every step between -90 dB and -22 dB
-is off by 2 dB, and the control's maximum raw value of 110 indexes one
-element past the end of the array.
+iavf_alloc_adminq_asq_ring() allocates cmd_buf before the remaining ASQ
+resources. If iavf_alloc_asq_bufs() or iavf_config_asq_regs() fails, the
+unwind path elides cmd_buf while freeing the other allocations.
 
-Replace the duplicated -90 dB entry with the correct value 0x000084a3
-and add the missing -20 dB entry, bringing the table to the full 56
-entries so index 55 (raw value 110, 0 dB) is in range again.
+The ASQ count is not set until initialization succeeds, so the shutdown
+path cannot reclaim the buffer. Free cmd_buf in the common unwind path.
 
-Fixes: bf726b1c86f2 ("ASoC: tas2562: Add support for digital volume control")
+Fixes: d358aa9a7a2d ("i40evf: init code and hardware support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Haidar Lee <haidar.lee@adlinktech.com>
+Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
 ---
- sound/soc/codecs/tas2562.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/intel/iavf/iavf_adminq.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/codecs/tas2562.c b/sound/soc/codecs/tas2562.c
-index ec32ef0afd7e..cdd695c3807e 100644
---- a/sound/soc/codecs/tas2562.c
-+++ b/sound/soc/codecs/tas2562.c
-@@ -32,15 +32,16 @@
- static const unsigned int float_vol_db_lookup[] = {
- 0x00000d43, 0x000010b2, 0x00001505, 0x00001a67, 0x00002151,
- 0x000029f1, 0x000034cd, 0x00004279, 0x000053af, 0x0000695b,
--0x0000695b, 0x0000a6fa, 0x0000d236, 0x000108a4, 0x00014d2a,
-+0x000084a3, 0x0000a6fa, 0x0000d236, 0x000108a4, 0x00014d2a,
- 0x0001a36e, 0x00021008, 0x000298c0, 0x000344df, 0x00041d8f,
- 0x00052e5a, 0x000685c8, 0x00083621, 0x000a566d, 0x000d03a7,
- 0x0010624d, 0x0014a050, 0x0019f786, 0x0020b0bc, 0x0029279d,
- 0x0033cf8d, 0x004139d3, 0x00521d50, 0x00676044, 0x0082248a,
- 0x00a3d70a, 0x00ce4328, 0x0103ab3d, 0x0146e75d, 0x019b8c27,
- 0x02061b89, 0x028c423f, 0x03352529, 0x0409c2b0, 0x05156d68,
--0x080e9f96, 0x0a24b062, 0x0cc509ab, 0x10137987, 0x143d1362,
--0x197a967f, 0x2013739e, 0x28619ae9, 0x32d64617, 0x40000000
-+0x06666666, 0x080e9f96, 0x0a24b062, 0x0cc509ab, 0x10137987,
-+0x143d1362, 0x197a967f, 0x2013739e, 0x28619ae9, 0x32d64617,
-+0x40000000
- };
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_adminq.c b/drivers/net/ethernet/intel/iavf/iavf_adminq.c
+index 6937b7dd44cbb..82a32f8e78c12 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_adminq.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_adminq.c
+@@ -346,6 +346,7 @@ static enum iavf_status iavf_init_asq(struct iavf_hw *hw)
+ 	iavf_free_virt_mem(hw, &hw->aq.asq.dma_head);
  
- struct tas2562_data {
-
+ init_adminq_free_rings:
++	iavf_free_virt_mem(hw, &hw->aq.asq.cmd_buf);
+ 	iavf_free_adminq_asq(hw);
+ 
+ init_adminq_exit:
 -- 
-2.34.1
-
-
+2.43.0
 
