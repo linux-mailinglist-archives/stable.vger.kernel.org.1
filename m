@@ -1,217 +1,180 @@
-Return-Path: <stable+bounces-274793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274795-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id tGbkENdWV2pUKAEAu9opvQ
-	(envelope-from <stable+bounces-274793-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 11:45:59 +0200
+	id 26SRLnpXV2qBKAEAu9opvQ
+	(envelope-from <stable+bounces-274795-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 11:48:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABD6D75CA80
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 11:45:58 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23A3C75CAF2
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 11:48:42 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="e4D4in7/";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274793-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274793-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
+	dkim=pass header.d=intel.com header.s=Intel header.b=hRcI8pQr;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274795-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-274795-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6E3433087B63
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 09:40:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7A88B304C933
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 09:45:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16F3F438495;
-	Wed, 15 Jul 2026 09:40:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4509C43A80F;
+	Wed, 15 Jul 2026 09:45:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 476F0437127
-	for <stable@vger.kernel.org>; Wed, 15 Jul 2026 09:40:21 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784108428; cv=pass; b=GyrGFF7hw6TpXvnFlzp98TzGii9oHUNCgezoXkDMFDmwEqUtJQYQhU7xrmaSO+r8ayDRSUwi+Hfl2+R+k+2fu5add7vS+ubVqqvdQAc4Sw/cHo/DT4qeov2OA5ofAcxLUcT3557betd6nGvZeV4jVlzPxKVk+fXThxAIn4TCk3E=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784108428; c=relaxed/simple;
-	bh=u5x5UjFfiIypuUG/u8VBeYI24RclQQxYRKNVOEumIHY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iexZpxSxWb8WoD3WLEkTJOw9EgC07wnSRXyLQKx20C45OPziTI54wZMKEEfSS/XZty5EbOCYLjb7u6kirdWGSMzCMN5+x1fDJdmnHN84kkx8EERdxWdrA8UcHhDUdWg2x+v3sb3wThl2zG1D6GcG+bVCZs0w9LgUUf/waL36Rpc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e4D4in7/; arc=pass smtp.client-ip=209.85.208.48
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6983d3dae7aso804226a12.0
-        for <stable@vger.kernel.org>; Wed, 15 Jul 2026 02:40:21 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784108416; cv=none;
-        d=google.com; s=arc-20260327;
-        b=glxPYFFYNW4h6sCanovs2lvP3R4ZX80UGjKJ9pWyYhkQoQIV+95XzNKcYLl7qlwREb
-         eqdOQ+aBZmBzxtcKRUkTAnH5c9YX1U8gOsnd5GDFMMownKsJh/3RNJyvA+BMj7bzZDoR
-         yU8+nmFkA6dN2XrGNPu5f83TszwkAmPea7HrosodNPBPiSf3ITsiLt783c8cLrWHPRPz
-         qrtnbEN/b8cmO9i5Nf7dzLxkQDppZiLrDSvOD2Kr/N8ju3O2xT1InrO2Vf6G01A10kim
-         TmOFvnt0P1EarQH+QC7PLqnem6Sghgc9oQizSuKaVV43z/4HTwgmeTookvRzBDBJE3ln
-         HaCQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ayP+P5/Pd6BGHZjCoYBRcVoPcvH07ra6Sodaq/Yi54U=;
-        fh=lbvIoN/pLvcafNjKakeMBuZdDGfM88P+l+c8H/86IOc=;
-        b=nAlFXa56n+SEhgBfKVuTDHTFfGGTUUioxmnuCVlWawUH1PobmaWXGxkQ55IyW5l3Pk
-         /+4ydV3o4+eZpWKzJhZzlnYz6X6fC/9zwI29wIgIJjVF+20PrDjYseTPc+4avoccGyd4
-         udPnU9aKacfpvzrQTpBQLDAkz9IEWtKCgpwyRgu67ctCAV+d/B4rg/SgqweFCn9SbZRo
-         Jt6qdxeispDgCIcTwDBL3i9v5hdmPQ8mt2A5QX/Omyxm8SaxGgj76Hc7EkaxcjqU1edl
-         SdVhEwmCzaWzHDVRJXnAWuUOtgUoEf8+fcWvLX1tgrVK5sXTBtIFQyyNTgZfYfHBoroE
-         g7Rw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784108416; x=1784713216; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ayP+P5/Pd6BGHZjCoYBRcVoPcvH07ra6Sodaq/Yi54U=;
-        b=e4D4in7/Ck70VkX4eAF5tKnxnFQv1sMZVZApngXtf0s0DtyigcrQr5S51R8GYijc7H
-         jnCfC4twqFHunYGeKftAi1OCutBidgVGf4UbqEgECct5OlOwZRxe8epzr3L/O34zqthE
-         cJ+ngDEazznFCLLzYdaoxMoK3kZZCG0s0bO/oqYRZfTQt+i2MA/Yx8LCRxaTnk1MVYp8
-         jLQmp9z/3rqDwHAjCiM5BdcZ/VhzrWtCF6y4EXjmlrIrKa6OlsXq4okB8iyi5FH8ZprY
-         NjsL6cZjf3I0rnGWj8imgDOeV0HHOJuFHdKm7nZ8zQgbTXUm2wLq7TYfizM6h3iceIVu
-         xErw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784108416; x=1784713216;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ayP+P5/Pd6BGHZjCoYBRcVoPcvH07ra6Sodaq/Yi54U=;
-        b=LYe91uH/bmI72B5/b/QKxAwvfF/1G4d7itFfmAzYyCxcKxz9wzh51vsjUVkS6w62X7
-         f9jwP6ZH7kolENhB7r5UkJIKZ8UK6Ynl4fUujucBS7pI1vV7ltK9Jnry5x7b6Hbr+yKM
-         XmOqkHfQ95Q/yL3tHeYljX3a8smZyt8O9lkwlsZt2jidmQcu4C1RFlt4jmCnKMZwZSr2
-         gysYqpEiOTIxdNquUvPDOsV8AXVAeLNdjMNqiyJ05PB4X+FJ0k8wQEdzKixtojXu4Sgl
-         GHojyUMrnfXCNX+4O/SrXsOKXT2txP4JDZIL3tJWykL0FdlpJsFUhomJCPePUHT3TKsG
-         CsPw==
-X-Forwarded-Encrypted: i=1; AHgh+Rol5h9ranbSnTLkjOqUKb2d0C2RRpRCJTvnhN2ux0O2RofDiUTPx97oJgE9OGiBF6DVctb2snM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwAxOYtOjaNikDUPL9MRC3Gi2BaPu66gwXqvDeLfH1zDRdJ0jya
-	PGA+YBeWxO+W5C2TXKy4l+Neb0RxkCz7x2g+XNrS9t4SP2I8i5MCjsJ8P+dFjMQE6hHdZwY/2Nt
-	SUeD7R50GJROe5xtyOahiVBHUUIrspZEvDARP/YQsag==
-X-Gm-Gg: AfdE7clhtqWD8YwDNYxzHaWSDqKmQQnlRK9kXhN8xye0ACfcoESXWSzmdYFolUV2tSy
-	PNnNXo1hYzDSqz/GlRbkLqa7F0JO1uk9bbZyBESAJLTsC4St0/gertVIA3DA9fnZhvsNHgc0hzX
-	vvJOf7ypKpBGeqLIvrVvGISrQIgF6ObO0K17BN1nVcsG5Mvc212JC8pzYFPpWj5H16ZurqYdikX
-	gUZHoO5VfDAGV2Kco7Rt7CnsXzuNVtYvukZrHCgFpT+UYONnhVTQGKDYxALk3+QDjKYGo92Ew==
-X-Received: by 2002:a17:907:6e86:b0:c08:5bdb:e904 with SMTP id
- a640c23a62f3a-c161e89a8f7mr791839866b.9.1784108416323; Wed, 15 Jul 2026
- 02:40:16 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5D6943849D;
+	Wed, 15 Jul 2026 09:45:25 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784108738; cv=none; b=oxnemYE4bhR0QKv1oBJLxy0SNHljOVW8kilmFGW6S7xW0N77J4TIXvp9p4uS9b10F9R5NaHlkG72LU4xs7FQZsos2fc6fpRK0ug7XAfAONR5QEdvTKTn6ikQuxAOTWeR7Py6S+OnaCQxpF5zNJu0kcmVh0szj6Xa0x9jqVZe7Jk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784108738; c=relaxed/simple;
+	bh=e9EVrjo4je06jJvzKOXmUSY/lYq5x3Z/o92jN55pK0M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lePW7tnli9dpRG3XFTumiHWuYI2g0U7ypXFYik9YA3mrJwCo294rXeCNi+Ou+HtFwPyy9w0W0Rkz7sjXCunpkK3WXCYFcxMyNJNed9YteShvDOr6dLUwdTHUuipQttNg8W2T+oKWvrT7cgOIQNQcxYwtBA+yFkC9Z0qn4CbuWeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hRcI8pQr; arc=none smtp.client-ip=198.175.65.12
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784108727; x=1815644727;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=e9EVrjo4je06jJvzKOXmUSY/lYq5x3Z/o92jN55pK0M=;
+  b=hRcI8pQrlTnCrwB2AJQ09UUJyKdrsu7rv2O1CaLoGqMKIAL9MiOogsCr
+   muuHvRDTxJhdO7RTMMHii/MALqgVFqi6O6+KOD9hP9LfjmT4ISk9w+H/O
+   4E8wPwHtDcS6Ga554Sodv9kEFwGVz2qVIqCaRicsVewlA6qsvIyHkUZgh
+   axr5AS3fAR4WjQ7bJTbm5rjfHyWNIWoButWfX3p9rmOV7QbwSxzugmQqR
+   MRZL4nvudLhScDvxM0u63AA4DG0RyRu/H8EnigV/UG4punOntuCpuDIc5
+   1FpfURA6s60TOp3uN3FUTDIas13vKwmpAnFU1xt4Mvs+KI3zIswQQgYGh
+   A==;
+X-CSE-ConnectionGUID: aF9clrLDSdCUIl2PjrJ07A==
+X-CSE-MsgGUID: Nojr+s7ZSjKU4pRw+w5AhQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11847"; a="96257149"
+X-IronPort-AV: E=Sophos;i="6.25,165,1779174000"; 
+   d="scan'208";a="96257149"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jul 2026 02:45:21 -0700
+X-CSE-ConnectionGUID: bS6xCzrUSFq3jpUdTo3EPQ==
+X-CSE-MsgGUID: 76+3OtpmRq6zXHTmIOx6xQ==
+X-ExtLoop1: 1
+Received: from black.igk.intel.com ([10.91.253.5])
+  by fmviesa003.fm.intel.com with ESMTP; 15 Jul 2026 02:45:18 -0700
+Received: by black.igk.intel.com (Postfix, from userid 1008)
+	id 747CB95; Wed, 15 Jul 2026 11:45:17 +0200 (CEST)
+Date: Wed, 15 Jul 2026 12:45:15 +0300
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To: Raag Jadav <raag.jadav@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>,
+	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Ramesh Babu B <ramesh.babu.b@intel.com>,
+	"Michael J. Ruhl" <michael.j.ruhl@intel.com>,
+	linux-kernel@vger.kernel.org, intel-xe@lists.freedesktop.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v4 3/3] drm/xe/i2c: Keep the i2c controller always enabled
+Message-ID: <aldWqyg_bnt5KsGT@kuha>
+References: <20260713155601.711389-1-heikki.krogerus@linux.intel.com>
+ <20260713155601.711389-4-heikki.krogerus@linux.intel.com>
+ <alcpuxJktaVwrIaa@black.igk.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260713220932.413004-1-amir73il@gmail.com> <20260713220932.413004-2-amir73il@gmail.com>
- <20260715-seilschaft-fahrbahn-talstation-6c45445d2535@brauner>
-In-Reply-To: <20260715-seilschaft-fahrbahn-talstation-6c45445d2535@brauner>
-From: Amir Goldstein <amir73il@gmail.com>
-Date: Wed, 15 Jul 2026 11:40:05 +0200
-X-Gm-Features: AUfX_mxOzjZVXHNjf0PogjbfsvYj10SoFZT144LLQab9SavhtKt6eUxVr6kJ1c4
-Message-ID: <CAOQ4uxh0J6CMCeUYRQX7buf+SHp2Az4kvWWvtMk9A1h-tqhmmQ@mail.gmail.com>
-Subject: Re: [PATCH 1/2] fs: preserve ACL_DONT_CACHE state in forget_cached_acl()
-To: Christian Brauner <brauner@kernel.org>
-Cc: Miklos Szeredi <miklos@szeredi.hu>, linux-fsdevel@vger.kernel.org, 
-	fuse-devel@lists.linux.dev, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <alcpuxJktaVwrIaa@black.igk.intel.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+X-Spamd-Result: default: False [-4.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:brauner@kernel.org,m:miklos@szeredi.hu,m:linux-fsdevel@vger.kernel.org,m:fuse-devel@lists.linux.dev,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-274793-lists,stable=lfdr.de];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FORGED_SENDER(0.00)[amir73il@gmail.com,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	FORGED_SENDER(0.00)[heikki.krogerus@linux.intel.com,stable@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:raag.jadav@intel.com,m:matthew.brost@intel.com,m:thomas.hellstrom@linux.intel.com,m:rodrigo.vivi@intel.com,m:mika.westerberg@linux.intel.com,m:andriy.shevchenko@linux.intel.com,m:andi.shyti@kernel.org,m:ramesh.babu.b@intel.com,m:michael.j.ruhl@intel.com,m:linux-kernel@vger.kernel.org,m:intel-xe@lists.freedesktop.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-274795-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[amir73il@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[heikki.krogerus@linux.intel.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[intel.com:+];
+	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid,vger.kernel.org:from_smtp]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,linux.intel.com:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: ABD6D75CA80
+X-Rspamd-Queue-Id: 23A3C75CAF2
 
-On Wed, Jul 15, 2026 at 11:02=E2=80=AFAM Christian Brauner <brauner@kernel.=
-org> wrote:
->
-> > The ACL_DONT_CACHE state is meant to be a constant state for the inode
-> > for filesystems that want to opt out of posix acl caching.
-> >
-> > Commit facd61053cff1 ("fuse: fixes after adapting to new posix acl api"=
-)
-> > used this facility to opt out of posix acl caching for fuse inodes with
-> > fuse server that does not negotiate FUSE_POSIX_ACL (fc->posix_acl).
-> >
-> > The commit also takes care to gate the forget_all_cached_acls() call in
-> > fuse_set_acl() on fc->posix_acl because there is no need for it, but
-> > there are other placed in fuse code which call forget_all_cached_acls()
-> > unconditional to fc->posix_acl and those cause the loss of the
-> > ACL_DONT_CACHE state.
-> >
-> > This is not only a functional bug. Properly timed, a get_acl() from thi=
-s
-> > fuse filesystem can return a stale cached value, as was observed in tes=
-ts,
-> > because set_acl() does not invalidate the unintentional acl cache.
-> >
-> > We could fix this in fuse, but it actually makes no sense for the vfs
-> > helper forget_cached_acl() to invalidate the ACL_DONT_CACHE state, so
-> > let it not do that to fix fuse and future users of ACL_DONT_CACHE.
-> >
-> > Fixes: facd61053cff1 ("fuse: fixes after adapting to new posix acl api"=
-)
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-> >
-> > diff --git a/fs/posix_acl.c b/fs/posix_acl.c
-> > index b4bfe4ddf64e..3dc62c1c2708 100644
-> > --- a/fs/posix_acl.c
-> > +++ b/fs/posix_acl.c
-> > @@ -93,6 +93,13 @@ static void __forget_cached_acl(struct posix_acl **p=
-)
+On Wed, Jul 15, 2026 at 08:33:31AM +0200, Raag Jadav wrote:
+> > +/* See "Disabling DW_apb_i2c" in the DesignWare DW_abp_i2c databook. */
+> > +static void xe_i2c_disable(struct xe_i2c *i2c)
+> > +{
+> > +	int timeout = 100;
+> > +	u32 status;
+> > +
+> > +	xe_mmio_rmw32(i2c->mmio, I2C_REG(DW_IC_ENABLE), 1, 0);
+> 
+> Can we use DW_IC_ENABLE_* defines?
+> 
+> > +	do {
+> > +		status = xe_mmio_read32(i2c->mmio, I2C_REG(DW_IC_ENABLE_STATUS));
+> > +		if (!(status & 1))
+> 
+> Ditto for DW_IC_STATUS_*.
+> 
+> > +			return;
+> > +		/* Can't sleep here. */
+> > +		udelay(25);
+> > +	} while (timeout--);
+> > +
+> > +	dev_warn(&i2c->adapter->dev, "timeout in disabling adapter\n");
+> > +}
+> 
+> ...
+> 
+> > @@ -230,7 +260,28 @@ static int xe_i2c_write(void *context, unsigned int reg, unsigned int val)
 > >  {
-> >       struct posix_acl *old;
-> >
-> > +     /*
-> > +      * ACL_DONT_CACHE is expected to be a "const" value and xchg it w=
-ith
-> > +      * ACL_NOT_CACHED would enable acl caching for the inode -
-> > +      * clearly not what the caller has intended.
-> > +      */
-> > +     if (READ_ONCE(*p) =3D=3D ACL_DONT_CACHE)
-> > +             return;
->
-> Still on vacation this week but I took a glimpse:
->
-> If this isn't what the caller intended, having ACL_DONT_CACHE end up
-> should be treated like a bug. So shouldn't this then be a WARN_ON_ONCE()
-> and return?
+> >  	struct xe_i2c *i2c = context;
+> >  
+> > -	xe_mmio_write32(i2c->mmio, XE_REG(reg + I2C_MEM_SPACE_OFFSET), val);
+> > +	switch (reg) {
+> > +	case DW_IC_CON:
+> > +	case DW_IC_TAR:
+> > +	case DW_IC_SAR:
+> > +		/* Disable the controller. */
+> > +		xe_i2c_disable(i2c);
+> > +
+> > +		/* Write the register. */
+> > +		xe_mmio_write32(i2c->mmio, I2C_REG(reg), val);
+> > +
+> > +		/* Enable the controller. */
+> > +		xe_mmio_rmw32(i2c->mmio, I2C_REG(DW_IC_ENABLE), 0, 1);
+> 
+> Ditto.
 
-The caller has requested to *forget* any *cached* *acl*.
-The value ACL_DONT_CACHE means that there are no cached acls to forget
-so the call is a success.
-Therefore, WARN_ON is not called for IMO.
-
-Sorry to interrupt vacation.
-Let's continue when you get back.
+Yes to all three. I'll fix these.
 
 Thanks,
-Amir.
+
+-- 
+heikki
 
