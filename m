@@ -1,180 +1,283 @@
-Return-Path: <stable+bounces-274920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274921-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id UMmjMpRyV2rTOAEAu9opvQ
-	(envelope-from <stable+bounces-274920-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 13:44:20 +0200
+	id NJeQIDR1V2oGOgEAu9opvQ
+	(envelope-from <stable+bounces-274921-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 13:55:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7840D75DABD
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 13:44:20 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E47DB75DD21
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 13:55:31 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=raspberrypi.com header.s=google header.b=Vi1o2TyR;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274920-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-274920-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=raspberrypi.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BQ66qRhr;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274921-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-274921-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7EAD8300C03A
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 11:44:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C58A030120DA
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 11:51:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D24E4448CE6;
-	Wed, 15 Jul 2026 11:44:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24E7744A72C;
+	Wed, 15 Jul 2026 11:51:08 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2C7644839C
-	for <stable@vger.kernel.org>; Wed, 15 Jul 2026 11:44:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0E38448D03;
+	Wed, 15 Jul 2026 11:51:05 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784115852; cv=none; b=thNwgLFjKNcXqPKW43Zny+COCbi3PGVxaPiPDFf9L51/L7wQepAul45iVKTZjZGoMN6+TEABDbzsvlyUk4MSjkf4bwoHA1L6Xatgg2RXjZ51jQmqyT5knLOAIxlijCtxWwy164xFEggSeDU9vYA4ci/YTtXcLYm3YrGkiKGSXCs=
+	t=1784116267; cv=none; b=Vtpn/qmauKarl2zNjx7Ya2xfo0dU3we5ALV2vZfEugNb6aFwDSz7BGKz+zOLDPjyovEVt2GyIdlWAPOTgJSkgjBPRscHF3i/67zE7P55j7oXlp+QC35Mo0SWPiEf3EraHAb3+pW6lpVldIXfwejbq+TaRK2dgUenYdHGrRCQBBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784115852; c=relaxed/simple;
-	bh=TiWHPeDGaPVeBlBGHKihLG/CZfpC4vuLM0PYqJWSqJ0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=juL3/iyeerxghhkKxreMYRq7+44DI5OxUfHloo3oC/j/DXd1624J+jtPtPJOv+JQk4RKvzdF2sqQDGNqktShxEjDdbeEIC+x96cpbJzdaaxM6aUvUD98WpYzvr5tRFOjQSaHex2938zOHD8yJJ2vl72yUzRZ8Sp0HTQ7DY3S9Hs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=raspberrypi.com; spf=pass smtp.mailfrom=raspberrypi.com; dkim=pass (2048-bit key) header.d=raspberrypi.com header.i=@raspberrypi.com header.b=Vi1o2TyR; arc=none smtp.client-ip=209.85.221.41
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-47d70879764so3615600f8f.2
-        for <stable@vger.kernel.org>; Wed, 15 Jul 2026 04:44:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=raspberrypi.com; s=google; t=1784115849; x=1784720649; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=RvLfYd+pvOrvfxKIqJXK3E0FFOSlNO+LlwCAOW1ExY0=;
-        b=Vi1o2TyRXB3P/F/zsiNIhDq9FHeLY6vHkvmCZTUINf1iBBFth3nDL8WGpQW4fcodyo
-         2+miF+04CTFz6PbVzMoPYyzVLsma2Tw+e88tsve1w/2aI3b0eM4tfqj1qdAuNl2SoBNv
-         g+FcJ3HClQuL5TBPlhmH16DUgMMzMTgXW1GjThnDpd5r7gkF2/tgJF+mxubGZ8MbcZ9a
-         3TS4q66JAR0IGnnt9kZg8qNNR3hWlL3BvwbB0Or113/4Jo6H/CJnYr8z1D8JauFzJoVb
-         blhXa0Xx4Au/m0sVFsnos+oVJt0VB5rb0ppvBa7Q60ZPgFsOKyMaeb8Vy7V5mwlKssbl
-         Ofxg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784115849; x=1784720649;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=RvLfYd+pvOrvfxKIqJXK3E0FFOSlNO+LlwCAOW1ExY0=;
-        b=g0a63ke/shlPSuhtvOewXCs1UsLOO+areycTZmUCBdITDB7vqfrjXiNzHkhjXh7AhP
-         2J+qdMIgGR5DYANsTgxaXTN9/ZI2BM/SD5UxNepcvJ6xyPs7GBKzCpliITAKjRYnGS3H
-         yZvUPnhw9Q9NOBVaFe1sVmMCZKw2mxRHgLkneMZgVT4Mua0Lwqemm/M7q5S111A9IrBZ
-         jEoah/XmEt8H03Dryz0x/00ZeGCFEGbOGpJDB0uFMZ25NM9XzIATjmeH1YRDOjB7PJHC
-         tvxFPdoG8S2bYwv2POQSFFXFbjvi0ZAeqxhIMWPMwQhKiZ02DU2k5bx97irwVl0mhBxX
-         g2Cw==
-X-Forwarded-Encrypted: i=1; AHgh+RrUeSMZbY8GeYlZWSMESYZDPJNDBqJtTRYffE6KdQvHde+A9230h4B759Tw/JPVIdMOLC1S5CU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyB7+sB6SzGyc4CZWgQLffpKdmyfWNLpqlb0aFTOC7dlEOfyGsa
-	BitZII8tBLHC6dhP98eFwqwQsGwJ8A77BpWOtUNjUAjRn+Xe6z2FA6G1oeaSlqCCPCw=
-X-Gm-Gg: AfdE7ckLy5B/U+yeX27PleoyZSe23klLc5Itlj7DRMunNgy4TTsgeV+EXVIBs4k7nRo
-	YOomZ7PMJiCjWVH378diTf3iXEUMgulP/ZSkNs3jEA9S/5b4tmdhp9zxRRVncgkEkx9HvXRnudx
-	RW46tn5vV20SZHMO/d3AuQSy1BzjpkFJkU7U96xmqKkvCfluNO/gpNNAQ/svY1zLOrI8mceoRvM
-	avMO8VQ/Cdb5pGJ+KuIGg4AcOYiVfShUOB7lF77BcztiKP5GEklbxxWQDNoltEKEMprJe5I8hQs
-	a7ySKnG2UDzr7eG6WbZTOYXTlW96a+H5BBuVgu37Ds2MC5GbPA1659ZKUnf0dVzGZcPv6Qod9kg
-	mgizLXkDRu8uHmtOvMhjg0yDevwpo73NY0TaKdnXO1aJKSEu6B8c1CkkFR9vP/eNuLlJGN3V5gO
-	NcZPfjQ5LwlerTAx+zSVLLl7ZedN9Cgb0JqW2Vu7ZvwHOlP2Be7oa9jZiV2vqL2NO9
-X-Received: by 2002:a05:6000:612:b0:478:9d9a:d4e1 with SMTP id ffacd0b85a97d-47f4fce484emr2623565f8f.30.1784115849048;
-        Wed, 15 Jul 2026 04:44:09 -0700 (PDT)
-Received: from [127.0.1.1] ([2a00:1098:3142:e::8])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-47f4829896asm14005425f8f.23.2026.07.15.04.44.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jul 2026 04:44:08 -0700 (PDT)
-From: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Date: Wed, 15 Jul 2026 12:43:14 +0100
-Subject: [PATCH v4 01/21] media: imx355: Avoid calling imx355_power_off
- twice in error path
+	s=arc-20240116; t=1784116267; c=relaxed/simple;
+	bh=gOCHKkzFj8Llq3Xow7fLUehPkDztwpHtiB4IBMTq1Ok=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=kLeaTVf6njPOfXbYVpHK4CWgiagGq5wkWsLZwChqu6IZPYX6E1cVvl0Duqwt4Zb4obtX76D/ReER1yyId2aEfI0dkGm4c/Lziu7eqB4pRTgYGzcuR8VdcF5HelGL6vLFiENg601g5XKYcqDTxb9yemc+SyW3lCIrC2DglVQMdic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BQ66qRhr; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5853E1F000E9;
+	Wed, 15 Jul 2026 11:51:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784116265;
+	bh=ZksEdlHG8eYEb4FRJd8G+klMQE6uApl+yisjGGemO8Y=;
+	h=Date:From:Subject:To:Cc:References:In-Reply-To;
+	b=BQ66qRhr8Cf7Ao5pin5Mg7ass/PLJZgVVR18pozqglZRQUOgUdlkxX1gXln/er3wF
+	 DAkSH6T/tQvfyL+GC2O23VQOqMpTZTcZ3diNwzwkuC++vNxcSKzV4/i7DWhj7RWSDc
+	 TbQwpnbR6VEGk9pOoAWdirQ/Lin4X+lud4qjUDSFcVmwGrf2KeDpmwZpZ4FC1Tnasc
+	 9yfWFw4z8VO35kZQvIXx9lLN0ELE4SPWJz5PHPePAU0k8zfBJvye/ZhwN3E0/pgIMI
+	 C1aPEz3dirXAOLRaVDuN+bw/0kuNIUlimX/Pv/73joOOjcpjY4Iy2SyBQ8Egtvv0Bj
+	 wKNlx8QqccvbQ==
+Message-ID: <8c7e1294-b906-4636-890c-b64d03b0e1d0@kernel.org>
+Date: Wed, 15 Jul 2026 13:51:02 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+From: Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: Re: [PATCH] media: cx231xx-audio: gate wq_trigger on an audio-local
+ teardown flag
+To: Fan Wu <fanwu01@zju.edu.cn>, mchehab@kernel.org
+Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20260708141622.3936490-1-fanwu01@zju.edu.cn>
+Content-Language: en-US, nl
+In-Reply-To: <20260708141622.3936490-1-fanwu01@zju.edu.cn>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260715-media-imx355-v4-1-f7f966fb9ffd@raspberrypi.com>
-References: <20260715-media-imx355-v4-0-f7f966fb9ffd@raspberrypi.com>
-In-Reply-To: <20260715-media-imx355-v4-0-f7f966fb9ffd@raspberrypi.com>
-To: Sakari Ailus <sakari.ailus@linux.intel.com>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Richard Acayan <mailingradian@gmail.com>
-Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
- David Heidelberg <david@ixit.cz>, 
- Jacopo Mondi <jacopo.mondi@ideasonboard.com>, devicetree@vger.kernel.org, 
- stable@vger.kernel.org, Dave Stevenson <dave.stevenson@raspberrypi.com>
-X-Mailer: b4 0.14.1
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-5.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[raspberrypi.com,reject];
-	R_DKIM_ALLOW(-0.20)[raspberrypi.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-274920-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_TO(0.00)[linux.intel.com,kernel.org,gmail.com];
-	FORGED_RECIPIENTS(0.00)[m:sakari.ailus@linux.intel.com,m:mchehab@kernel.org,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:mailingradian@gmail.com,m:linux-media@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:david@ixit.cz,m:jacopo.mondi@ideasonboard.com,m:devicetree@vger.kernel.org,m:stable@vger.kernel.org,m:dave.stevenson@raspberrypi.com,m:krzk@kernel.org,m:conor@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[dave.stevenson@raspberrypi.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:fanwu01@zju.edu.cn,m:mchehab@kernel.org,m:linux-media@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[hverkuil@kernel.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dave.stevenson@raspberrypi.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[raspberrypi.com:+];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-274921-lists,stable=lfdr.de,cisco];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[hverkuil@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,dt];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,zju.edu.cn:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7840D75DABD
+X-Rspamd-Queue-Id: E47DB75DD21
 
-If v4l2_async_register_subdev_sensor failed, then the sensor had
-already been powered down by pm_runtime_idle, but the error path
-then also explicitly called imx355_power_off as well. That left
-an imbalance in the regulator and clock calls.
+On 08/07/2026 16:16, Fan Wu wrote:
+> audio_trigger() is deferred work (dev->wq_trigger) armed from
+> snd_cx231xx_capture_trigger() on every PCM START/STOP; it dereferences
+> dev->adev state and may free the URBs via cx231xx_isoc_audio_deinit().
+> cx231xx_audio_fini() tore down that state (snd_card_free_when_closed,
+> alt_max_pkt_size) without draining wq_trigger, so work armed before or
+> racing fini ran against freed state.
+> 
+> Adding cancel_work_sync() alone is insufficient: in capture_trigger() the
+> DEV_DISCONNECTED test and schedule_work() were not atomic, and
+> DEV_DISCONNECTED is only set on USB disconnect, but fini also runs on
+> cx231xx-alsa module unload (cx231xx_unregister_extension()), which never
+> sets it.  A trigger that passed the check could still queue work after
+> fini's cancel returned an empty queue.
+> 
+> Add an audio-local teardown gate (dev->adev.teardown): fini raises it under
+> adev.slock, releases the lock, then calls cancel_work_sync() outside the
+> spinlock.  Both arm sites perform the teardown check and schedule_work()
+> inside one adev.slock section, so once the gate is visible no new work can
+> arm after cancel returns.  Initialize the lock, work and gate at the top of
+> cx231xx_audio_init(), before any fallible allocation, and clear the
+> partially-built audio state on its error path, so fini is safe even if a
+> later step fails.
+> 
+> This issue was found by an in-house static analysis tool.
+> 
+> Fixes: 61b04cb24a12 ("[media] cx231xx-audio: fix some locking issues")
+> Cc: stable@vger.kernel.org
+> Assisted-by: Codex:gpt-5.5
+> Signed-off-by: Fan Wu <fanwu01@zju.edu.cn>
+> ---
+>  drivers/media/usb/cx231xx/cx231xx-audio.c | 42 +++++++++++++++++++----
+>  drivers/media/usb/cx231xx/cx231xx.h       |  1 +
+>  2 files changed, 36 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/media/usb/cx231xx/cx231xx-audio.c b/drivers/media/usb/cx231xx/cx231xx-audio.c
+> index 9c71b32552df..44ca75b18a5d 100644
+> --- a/drivers/media/usb/cx231xx/cx231xx-audio.c
+> +++ b/drivers/media/usb/cx231xx/cx231xx-audio.c
+> @@ -441,6 +441,7 @@ static int snd_cx231xx_capture_open(struct snd_pcm_substream *substream)
+>  static int snd_cx231xx_pcm_close(struct snd_pcm_substream *substream)
+>  {
+>  	int ret;
+> +	unsigned long flags;
+>  	struct cx231xx *dev = snd_pcm_substream_chip(substream);
+>  
+>  	dev_dbg(dev->dev, "closing device\n");
+> @@ -470,7 +471,11 @@ static int snd_cx231xx_pcm_close(struct snd_pcm_substream *substream)
+>  		dev_dbg(dev->dev, "released lock\n");
+>  		if (atomic_read(&dev->stream_started) > 0) {
+>  			atomic_set(&dev->stream_started, 0);
+> -			schedule_work(&dev->wq_trigger);
+> +
+> +			spin_lock_irqsave(&dev->adev.slock, flags);
+> +			if (!dev->adev.teardown)
+> +				schedule_work(&dev->wq_trigger);
+> +			spin_unlock_irqrestore(&dev->adev.slock, flags);
+>  		}
+>  	}
+>  	return 0;
+> @@ -509,11 +514,14 @@ static int snd_cx231xx_capture_trigger(struct snd_pcm_substream *substream,
+>  {
+>  	struct cx231xx *dev = snd_pcm_substream_chip(substream);
+>  	int retval = 0;
+> +	unsigned long flags;
+>  
+> -	if (dev->state & DEV_DISCONNECTED)
+> +	spin_lock_irqsave(&dev->adev.slock, flags);
+> +	if (dev->adev.teardown || (dev->state & DEV_DISCONNECTED)) {
+> +		spin_unlock_irqrestore(&dev->adev.slock, flags);
+>  		return -ENODEV;
+> +	}
+>  
+> -	spin_lock(&dev->adev.slock);
+>  	switch (cmd) {
+>  	case SNDRV_PCM_TRIGGER_START:
+>  		atomic_set(&dev->stream_started, 1);
+> @@ -525,10 +533,10 @@ static int snd_cx231xx_capture_trigger(struct snd_pcm_substream *substream,
+>  		retval = -EINVAL;
+>  		break;
+>  	}
+> -	spin_unlock(&dev->adev.slock);
+>  
+>  	schedule_work(&dev->wq_trigger);
+>  
+> +	spin_unlock_irqrestore(&dev->adev.slock, flags);
+>  	return retval;
+>  }
+>  
+> @@ -576,12 +584,20 @@ static int cx231xx_audio_init(struct cx231xx *dev)
+>  	dev_dbg(dev->dev,
+>  		"probing for cx231xx non standard usbaudio\n");
+>  
+> +	/*
+> +	 * Extension init errors are ignored by the cx231xx core, so fini()
+> +	 * must be safe even if initialization fails part way through.
+> +	 */
+> +	spin_lock_init(&adev->slock);
+> +	INIT_WORK(&dev->wq_trigger, audio_trigger);
+> +	adev->teardown = false;
+> +	atomic_set(&dev->stream_started, 0);
+> +
+>  	err = snd_card_new(dev->dev, index[devnr], "Cx231xx Audio",
+>  			   THIS_MODULE, 0, &card);
+>  	if (err < 0)
+>  		return err;
+>  
+> -	spin_lock_init(&adev->slock);
+>  	err = snd_pcm_new(card, "Cx231xx Audio", 0, 0, 1, &pcm);
+>  	if (err < 0)
+>  		goto err_free_card;
+> @@ -596,8 +612,6 @@ static int cx231xx_audio_init(struct cx231xx *dev)
+>  	strscpy(card->shortname, "Cx231xx Audio", sizeof(card->shortname));
+>  	strscpy(card->longname, "Conexant cx231xx Audio", sizeof(card->longname));
+>  
+> -	INIT_WORK(&dev->wq_trigger, audio_trigger);
+> -
+>  	err = snd_card_register(card);
+>  	if (err < 0)
+>  		goto err_free_card;
+> @@ -651,14 +665,18 @@ static int cx231xx_audio_init(struct cx231xx *dev)
+>  
+>  err_free_pkt_size:
+>  	kfree(adev->alt_max_pkt_size);
+> +	adev->alt_max_pkt_size = NULL;
+>  err_free_card:
+>  	snd_card_free(card);
+> +	adev->sndcard = NULL;
+>  
+>  	return err;
+>  }
+>  
+>  static int cx231xx_audio_fini(struct cx231xx *dev)
+>  {
+> +	unsigned long flags;
+> +
+>  	if (dev == NULL)
+>  		return 0;
+>  
+> @@ -669,6 +687,16 @@ static int cx231xx_audio_fini(struct cx231xx *dev)
+>  		return 0;
+>  	}
+>  
+> +	/*
+> +	 * Block new trigger work before draining already queued work.
+> +	 * cancel_work_sync() may sleep, so it must run after dropping slock.
+> +	 */
+> +	spin_lock_irqsave(&dev->adev.slock, flags);
+> +	dev->adev.teardown = true;
+> +	spin_unlock_irqrestore(&dev->adev.slock, flags);
+> +
+> +	cancel_work_sync(&dev->wq_trigger);
 
-Call pm_runtime_idle only after v4l2_async_register_subdev_sensor
-succeeds to avoid this.
+If I am not mistaken, it should be enough to use disable_work_sync() instead of
+cancel_work_sync(): this disables the workqueue as well, preventing new work from
+being queued. That avoids all the fiddly 'teardown' bits.
 
-Fixes: efa5fe19c0a9 ("media: imx355: Enable runtime PM before registering async sub-device")
-Cc: stable@vger.kernel.org
-Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
----
- drivers/media/i2c/imx355.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Regards,
 
-diff --git a/drivers/media/i2c/imx355.c b/drivers/media/i2c/imx355.c
-index 27a5c212a527..ac59908f57aa 100644
---- a/drivers/media/i2c/imx355.c
-+++ b/drivers/media/i2c/imx355.c
-@@ -1822,12 +1822,13 @@ static int imx355_probe(struct i2c_client *client)
- 	 */
- 	pm_runtime_set_active(imx355->dev);
- 	pm_runtime_enable(imx355->dev);
--	pm_runtime_idle(imx355->dev);
- 
- 	ret = v4l2_async_register_subdev_sensor(&imx355->sd);
- 	if (ret < 0)
- 		goto error_media_entity_runtime_pm;
- 
-+	pm_runtime_idle(imx355->dev);
-+
- 	return 0;
- 
- error_media_entity_runtime_pm:
+	Hans
 
--- 
-2.34.1
+> +
+>  	if (dev->adev.sndcard) {
+>  		snd_card_free_when_closed(dev->adev.sndcard);
+>  		kfree(dev->adev.alt_max_pkt_size);
+> diff --git a/drivers/media/usb/cx231xx/cx231xx.h b/drivers/media/usb/cx231xx/cx231xx.h
+> index 19f5036a78d7..99c6a279944f 100644
+> --- a/drivers/media/usb/cx231xx/cx231xx.h
+> +++ b/drivers/media/usb/cx231xx/cx231xx.h
+> @@ -418,6 +418,7 @@ struct cx231xx_audio {
+>  	struct snd_card *sndcard;
+>  
+>  	int users, shutdown;
+> +	bool teardown;		/* audio fini in progress; set under slock */
+>  	/* locks */
+>  	spinlock_t slock;
+>  
 
 
