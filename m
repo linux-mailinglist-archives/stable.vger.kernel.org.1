@@ -1,289 +1,148 @@
-Return-Path: <stable+bounces-274908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274911-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id +0drFIRvV2rwNwEAu9opvQ
-	(envelope-from <stable+bounces-274908-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 13:31:16 +0200
+	id 3jT+EnZyV2rEOAEAu9opvQ
+	(envelope-from <stable+bounces-274911-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 13:43:50 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A20E075D943
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 13:31:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E86375DA97
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 13:43:49 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.s=selector1-NXP1-onmicrosoft-com header.b=prqoXVRu;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274908-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274908-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=fail reason="SPF not aligned (relaxed), DKIM not aligned (relaxed)" header.from=nxp.com (policy=none);
-	arc=reject ("cv is fail on i=2")
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dvipJVjo;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274911-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274911-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BEE08303CA78
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 11:30:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 87F87303FA90
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 11:40:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A013353A7F;
-	Wed, 15 Jul 2026 11:30:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12BE643C7DF;
+	Wed, 15 Jul 2026 11:40:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013045.outbound.protection.outlook.com [52.101.72.45])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F09593CF212;
-	Wed, 15 Jul 2026 11:30:35 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784115038; cv=fail; b=Nzg9Iu2sRlBrgtZF9rrC0qg3PRU7vQJ8mIKMeOmXgtCx0SlcZRH0OP3zPFcTUB4FtQzGTkRuETOUDoZnwZVcnaXIE21bQ0feg+flOyCP61sBfgffAnJogtz+atAs77kBLxxzb12mWVF5x0xca0aKjckEpYl6CffCT+UH0xcbk/w=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784115038; c=relaxed/simple;
-	bh=Er/3rOp/KX0QAh3cj3hkw2OC5kJ7Mn8MJ+ULbJXSuOI=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=mrCCoKITKyl6zm/Q9pbaqTBfi5lLvCeLIKqQdaHovIyoGDop1ds1mz5mreqmC1NBpz0ZsE3ef+sKVky1H/2g7WSe1/48ntmvJ4FlNIznn9QCCshQ087FIV3hudkBQJe+dAipWtZYy1fq6x1tAt+6BkCMUqYdU1xjoSw97rrgWSw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=prqoXVRu; arc=fail smtp.client-ip=52.101.72.45
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LA7O380AsmSgOFrufIIAAS9z6kLx1/dQmSJjj9UD+c1bklOqSsmqjFAmzJga2axM22CO4xlon3xJmYQlKPBkSxuLJsKgLyOh+In8L4voXZcKad8YDWheqBsBBdAgpeihMLs46hRaEGmL0+bFCIm/NQ8c8U8XdHmBv4SiQgriBje2wMEgJcAZNCeCxES6Xlb7uUFTBAYj09AqSzXmMeknF6ZGNfIBgvYROk3R18E87UpfCIj6fb8l/6loIUxG4/ungRQPMIhroOMR8OI58+bSIGSzeNXDY7tQwI8iU+FQYWlJk7Q31Ws/Wtz1UBleyZlorU9B4Ckf3oOYZlGepwrP0A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wWM0/dKUX8zCGUjE9cqph3ca1OTcroilnW34TnRkPu0=;
- b=APv3kXIO43IlmDj3pCShDG1dj92YRzSSfXQRJb+Va+KCVueGVLxTFqOqExlk/qify2F9EQ3AQtuY7NiCxiiDKJ12REBKXzrl1hmspIj8zvqQ102M5qi4t2KZwTql9FjdDMDVHixfgqJ1Atd3zVxZaQGi+DM8QvN6e0Q/vWNsLChPOZfHftzyO6C3PaF19Fp1sAjYQqT1HrEsdDYBCyco75pykeY+UkLFYuSe6pnZMiXYFE0SkVgnvLhQjGDyIKALECqJR4HwL6ZDZKGUZ4rdJdIskfYACvgDcoH7vzVtjBM5ohDwyiozpcmugV8ieiHRlsJTaqhy+yazGX3v4eDM1Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wWM0/dKUX8zCGUjE9cqph3ca1OTcroilnW34TnRkPu0=;
- b=prqoXVRu6xE8kmTmfJH6iJn6h5kSe2SYYYdQH9vnlp1YsYjaMUd4tPtyP1N/5xJYrm69dhjagFFaX7iUwJ99xnnpkQkbnUqfr1atVPdmbTYi858ga8/eLQVw+hkY06uetzQIMN6BgLbAVa+Mih5bhez8HUND5/p4atnt4OTla0T+Ht76LSEKkLJoDwq7oh8sTXZtBVupe77bmUrjix+4UBp3TK6+jiQG6T6DKq3esaPmK2Uxa6mMfPL/EUGndWgYY90DN4z0QnMQM+bfQ1eBf9H+GLtlTXnTisXsfIIoW2yct1i4eVQbdFWwsWUoQfwDJ8xqt70xCMSV50ny72O2rQ==
-Received: from PAXPR04MB9422.eurprd04.prod.outlook.com (2603:10a6:102:2b4::21)
- by GV1PR04MB9134.eurprd04.prod.outlook.com (2603:10a6:150:25::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.202.18; Wed, 15 Jul
- 2026 11:30:32 +0000
-Received: from PAXPR04MB9422.eurprd04.prod.outlook.com
- ([fe80::54e:28bf:aa85:d25d]) by PAXPR04MB9422.eurprd04.prod.outlook.com
- ([fe80::54e:28bf:aa85:d25d%4]) with mapi id 15.21.0202.014; Wed, 15 Jul 2026
- 11:30:32 +0000
-From: Xu Yang <xu.yang_2@oss.nxp.com>
-Date: Wed, 15 Jul 2026 19:33:56 +0800
-Subject: [PATCH v6 1/6] phy: fsl-imx8mq-usb: fix typec switch leak on probe
- error path
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260715-imx8mp-usb-phy-improvement-v6-1-00d95e270e4c@nxp.com>
-References: <20260715-imx8mp-usb-phy-improvement-v6-0-00d95e270e4c@nxp.com>
-In-Reply-To: <20260715-imx8mp-usb-phy-improvement-v6-0-00d95e270e4c@nxp.com>
-To: Vinod Koul <vkoul@kernel.org>, 
- Neil Armstrong <neil.armstrong@linaro.org>, Frank Li <Frank.Li@nxp.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Jun Li <jun.li@nxp.com>
-Cc: linux-phy@lists.infradead.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Felix Gu <ustc.gu@gmail.com>, stable@vger.kernel.org, 
- Xu Yang <xu.yang_2@nxp.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784115243; l=2860;
- i=xu.yang_2@nxp.com; s=20250815; h=from:subject:message-id;
- bh=KBrW5DQA37AQDiStxXTe/j8vzfNIUfWgsF52yv7R4yc=;
- b=VMfUrL78UE4BTnpsatN7PZHurk/xEvOKX5YChWAFW/nfLfjk22ROSlzsew2l6zEwPRZnHtIaa
- FnVwgZ0I7FrDjyKcUzauvYp6NOOrKqmp569lqCwDpAN39UlhPqvnr/a
-X-Developer-Key: i=xu.yang_2@nxp.com; a=ed25519;
- pk=5c2HwftfKxFlMJboUe40+xawMtfnp5F8iEiv5CiKS+4=
-X-ClientProxiedBy: SI2PR04CA0011.apcprd04.prod.outlook.com
- (2603:1096:4:197::10) To PAXPR04MB9422.eurprd04.prod.outlook.com
- (2603:10a6:102:2b4::21)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB8A33B27F4
+	for <stable@vger.kernel.org>; Wed, 15 Jul 2026 11:40:25 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784115626; cv=none; b=Gm+x53CR1tf6BK/P1XDJrSFHs63V04GT48QNy9Pn7hAlnDxyNUajl3x69eXXXLv3SmMDaVfn5l+PEnnABipQTsGOP7wn1cW2z/q+U9DSH1yMgXwgtJrWMgeVnPH2dTgpTUoHgvE2fqkKWMBxe3pSjCzlfadQUziHbELgO3JdfRI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784115626; c=relaxed/simple;
+	bh=XNvPGFgQNmYnfRZWfhVPVyqMhHMMVqa4iyiSbSR7JAA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=THQx2QSbj6Bi12uCVUwEkNZC2787xkBDTnZq3LjMsJaXuKUeWJNcMXQegdERLQCNv4WeHfG6MK01QWQVx/zKHG6DL+EdMd2M2FzlVNBxwzXUSBvCMWtOVXQVVmFETwvidrnAZFJxX6prCyJWPGjuL+07dj4xeXj1T8u0LGBQmIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dvipJVjo; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA4801F000E9;
+	Wed, 15 Jul 2026 11:40:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784115625;
+	bh=9xWPpSWjPDOcQlieIuc/uGM58t1W+5oN6SJOtUh+8Uw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=dvipJVjonIwg7uBh4TI5JAcqj+IutfeloZY8GluTc++m+vtNNilmF7ZuX0R2203/G
+	 Fu3ym0GdWlncwMTjAm0yr6NiJ72Hs/OU7ArajOUKcEbjiZOxsEypwSzdNXbO92IH3x
+	 vw1g+iGNWvaE1a29xgMYekvzTNdsMMrrpxFQB5m+T5bKp+dlTr8chibPBsieSeC2Zu
+	 QBaYJCb8pUGBsggjOkmPywDtLWyiPVnxruDu9RF3DH9ZJug+qFVyiYEClbFuIvh9Kr
+	 fT5n1bbJGKk9qbNgR5cxzp7lcYFfh922e+SLmfjO9+T3p3P4QlkeJoFkDe2c2PnQfB
+	 9V//HOc61WV3w==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Jens Axboe <axboe@kernel.dk>,
+	John Garry <john.g.garry@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12.y 1/2] io_uring/rw: ensure reissue path is correctly handled for IOPOLL
+Date: Wed, 15 Jul 2026 07:40:17 -0400
+Message-ID: <20260715114018.726395-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026071357-gout-canyon-b50f@gregkh>
+References: <2026071357-gout-canyon-b50f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9422:EE_|GV1PR04MB9134:EE_
-X-MS-Office365-Filtering-Correlation-Id: 06649c12-0427-41c4-130e-08dee2647afd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|7416014|19092799006|366016|1800799024|10067099003|56012099006|18002099003|22082099003|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	HDsgSi6sIQb0JF28Xtqi2ReW7SWFJBZzNkVMDlDCXXCQJ4h+sOtHe3GH/KjEMQ5mCxzdVEZ8Ot5+2vSy+81a6EEpgksAX4jrBu53OOCClc9FYIqRv0ZHV6SalYACFHp/L1KWQefU4HXo/SExgUdr00XAzecxqqUS6lOaXwP7OcGnKkSpaECiRXEXXHp5yPkB2GFTbOYRx/datGgl4fl+/JpPgDuGxeBVtD0NmJbs3eTsBSnIZePigToGIwALELRwaTf4FC4El85OhCf5/sr3BUCRePjxTAWKgRN829/OzwjDZ6ot5e2VKnri4gvR2S2EQuBWTP167ug9ucPqOtsA4ieTt+nKMdnN0tGRywpJTg/EXk4/JdqL56Hh87zl9QWAny+AVhILJPCqoNiE7ILjBze31ZA1Wd00K/K2JbDromMYYy29X2YG4BXk5NI6lvTnTMtWglS3UQbezsGwRoaONIvkCPH6EQ9ntaiCpknIZPpSzJ9BPGLaIeKoChYEB5lyPQUooNuBOB8M2ZfiUTrZmJlp/RFNpRh54CrfZY3cHo8GISGjF9HhE5QRzhXSWgG9PusiqSsQGM5ac0SgxaJ3vsenXtHIu0TSmS5jqeSk8sxSotdYhEoSZN1/IKJ0XQiKUV/bDGUhQ+cwLX8OSO4xyjEmLykzRjXJo7wEZdVxWVU=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9422.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(19092799006)(366016)(1800799024)(10067099003)(56012099006)(18002099003)(22082099003)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?dFlscHRGT1prN054WmVUamJyQm5Wck9abVhXVnVKNmxJVnVMSnRCTlVHMjRS?=
- =?utf-8?B?NHI2Y3dnMmg1OFF4aCtYVGZuWGdJZy9QMk9kdFd0OXdMVDB1WTVjcThaSlRl?=
- =?utf-8?B?WFJ1NHlnWTUvVTRrZlFMbHhqU2RtT0R2blMwbjF3UmVxOXRTU2JZeHczZ1FN?=
- =?utf-8?B?OWlhVGJIRUVkMG1OTzd6L1ZlZzM4Z1M2cGxJM2NxYStzeUErcU4rdytUT20w?=
- =?utf-8?B?QldhdENrMFZyYkRLWkJicWlZbzRjOGxRcFk1cEhWK0Z2QjRRbi82ZWNHeGxY?=
- =?utf-8?B?dWE1ZG16a0hIUEtJRlhwcXRqSzJycTFpendWbSs3NWZkQUhpNHlOU3Vjbk5R?=
- =?utf-8?B?M2VBWVhrdmx3cU52RUw4anV2ZUtvZUVzZ3NwNUFkaUxWNmxLMzIvV0p3cERM?=
- =?utf-8?B?RzM5YkgyS0tacDVpVUlrQ3k1TWhnZDdlanRORWw3ZFczTVQvMlNDMnpmNExm?=
- =?utf-8?B?RG1HbVhjRVlkY090OFQ2Y2pYbkdPQXR6NGp6Y0JscTdYTFR2bFl1MUdZTE1n?=
- =?utf-8?B?SnpzNFdMbmtPS0xuRWhZTmg2K0tXdDNLd0UrRzV3ajJ3MkFybWdMcU5PYmQ2?=
- =?utf-8?B?bXdDdHdQTXF6TlhhNHdud3JlbU5XbTNEU0IvU3huckNjbzNlUTY2d3dyaWZI?=
- =?utf-8?B?SWMwaU50amVDb1NuZEpqWS9uRnBVMSs2L0lSZm5GWnYxSndObG84cWkyeFJq?=
- =?utf-8?B?N1kxVlBhMjlESWx0UlIxUzFXWUx0RDRobzFkc1hnVHZFQmw3WHVIUEJjVjR4?=
- =?utf-8?B?R01hSzVnL0tyblpGWjh4aVU5UWpHZ1YwNDkwMG1iYndpeklvdk14USs1U2hq?=
- =?utf-8?B?cEYyQnR4RmNOb2RybEZwU05kMVlNb3UvQ3ZWWUhEdkFIWWtkSGtmWWhwTktE?=
- =?utf-8?B?azVneVh5WnVyTzAxek5HeHY0eTkvTUpEN1h6Szh5Uzc0WStTaWtlc0ZvdWNZ?=
- =?utf-8?B?RlZ4dFh3SWZmd0tSWWs3bW4yR1FMaXE0SGxrRGMyYmlINFVrQkVWcHpkTEEz?=
- =?utf-8?B?UkhFemNuN1FqT1FGY01ZekludXFxWFc3WUNuQU1CSHNiZHdHVzlGRVRXUnJM?=
- =?utf-8?B?YmU4WSt6TUVKT1hRQW9uVEtseWMxbExsRVJiNUtjNjdLRm5vTHJsRnAwNi9l?=
- =?utf-8?B?N21xMnVxRDMwaEp2TWQvNkJJTUFvT09PUnNvazJZTDNiR3RQUFZaeG03Q21D?=
- =?utf-8?B?VTQ0cHVJTFVycmNQNlBrZElhQ0J4RnV6ektzaUs3dld5UVljVUFndEQ3dDRs?=
- =?utf-8?B?dzdDcGFzQ2dTeW0ycU1zdFdWRVpnUENBUjJFVkpNUys3SnpFQi8rK1d6Skwx?=
- =?utf-8?B?cXZZWU5JcmVZOWZjMGVUTk4zQWJDZERJWktnOUhBaDFCSVZKeHMrbFU4YTN6?=
- =?utf-8?B?WDZNWmIxZWN0dS8xemcwUUMzcG8wZm1tc2dkTTlXaWR0Smo5M2drSWszUnI0?=
- =?utf-8?B?WEpNZE96c2F1bjdJTTcvM2MzWDY0Zlc5QW9wMVdJRzFmSTR6YW14MUtjVUEz?=
- =?utf-8?B?QkxJbHBGVlEzcG5NbHd1SngrejlCSjFMTE5lUk1taUcvZ1Mza21PcGpNdStk?=
- =?utf-8?B?b3p4RzloN09DN0dRUkR6Z09rVEQvU24wRmtkakVyazBocm9CdFBKZ1ZuQU1Q?=
- =?utf-8?B?d2I2Nlh3dkZNNWRhR2RRbHRRdHhaRmpabGt2ZVdmUE1wa09LWGJQVUF2K3VF?=
- =?utf-8?B?SStleUpSV0kzVDVSK0JvYXpudm43Z3VkVDBlS0NoRHI5aGppV1BtTy93dVR6?=
- =?utf-8?B?NTAyZmphREVjdWpTRGNGZ2krcEFKWVlvRGZBZ1I4TitKWmFuSkJQeTZ2Z0hk?=
- =?utf-8?B?T0M2eE5wU3FjT1BPaVQ2aXRXMTBXSTZEem5COXdZZWxJRjRVSkw3Z241VmRm?=
- =?utf-8?B?YmxsK2N3WXp1Q3hpcXdhUlNMR2JRMHNSTXpOQWVxZGtsSFNsWTBWTjRVVTZw?=
- =?utf-8?B?UTZpekdPbnhLNVRJUWdXa1ArVkhLZjZjeHZqTjQwNjFHSTFZa1lvNmJzd0R5?=
- =?utf-8?B?SWJ4RFd6NUJobGdhN2lSUkxoSHkwNmlzL3ppQTVlNW9KZ1B2amt5aEE3T1N3?=
- =?utf-8?B?ckxEdG9GckJiOFpFdXhoMFJKUU5qQnVDTFdJbGR6MzFQV0tlRHE5bFBXM05I?=
- =?utf-8?B?Z1VLcmhHeUFSanluY3pmdWJUUjVoNHpyemJYU3o3N2RObU90RW1SWDVUQ25l?=
- =?utf-8?B?L01TSm5PcTl0am4xM3l6VG9FeEpjYitBYzdpS2U4aXV6T0FQMnJHV2dkMTlS?=
- =?utf-8?B?dHV1eEJRTy9wMGs4am1wQlE5R1hyV0RZdWJQYlBCQ0dNaUVaSDdnd0dCdFNn?=
- =?utf-8?B?eHU0djE2ZHp1RldEV0dZdXdwZWhRV0lRN3ZnV1RzbHJ3TWhBQzVOMmM2c0tM?=
- =?utf-8?Q?FpJcY8BrBFW54DqNSqqItByLePaVJ5Y6d1q9W?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 06649c12-0427-41c4-130e-08dee2647afd
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9422.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jul 2026 11:30:32.2887
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: uvslutCf7xSQJ6GnRk9or0u+O18Z82qvRCeX2Q+br1OS+DWIB82g4GF3AA8qE4X7+9qQCcywLeu1R/iumNBhLBzxB4klkZEIYm8WrXEEvxBLe1UdMg7lE8+sR+SU5nOP
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB9134
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [1.94 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
+X-Spamd-Result: default: False [-3.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[NXP1.onmicrosoft.com:s=selector1-NXP1-onmicrosoft-com];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[nxp.com : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-274908-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:vkoul@kernel.org,m:neil.armstrong@linaro.org,m:Frank.Li@nxp.com,m:s.hauer@pengutronix.de,m:kernel@pengutronix.de,m:festevam@gmail.com,m:jun.li@nxp.com,m:linux-phy@lists.infradead.org,m:imx@lists.linux.dev,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:ustc.gu@gmail.com,m:stable@vger.kernel.org,m:xu.yang_2@nxp.com,m:ustcgu@gmail.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[kernel.org,linaro.org,nxp.com,pengutronix.de,gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[xu.yang_2@oss.nxp.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:axboe@kernel.dk,m:john.g.garry@oracle.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-274911-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[NXP1.onmicrosoft.com:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[xu.yang_2@oss.nxp.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[lists.infradead.org,lists.linux.dev,vger.kernel.org,gmail.com,nxp.com];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oss.nxp.com:from_mime,nxp.com:email,nxp.com:mid,NXP1.onmicrosoft.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,oracle.com:email,kernel.dk:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A20E075D943
+X-Rspamd-Queue-Id: 8E86375DA97
 
-From: Felix Gu <ustc.gu@gmail.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-If probe fails after imx95_usb_phy_get_tca() succeeds, the typec
-switch leaks because the only cleanup path was in .remove(), which
-never runs on probe failure.
+[ Upstream commit bcb0fda3c2da9fe4721d3e73d80e778c038e7d27 ]
 
-Use devm_add_action_or_reset() so the switch is cleaned up on both
-probe failure and driver removal. The imx95_usb_phy_put_tca() is no
-longer needed, it will be removed in .remove() too.
+The IOPOLL path posts CQEs when the io_kiocb is marked as completed,
+so it cannot rely on the usual retry that non-IOPOLL requests do for
+read/write requests.
 
-Fixes: b58f0f86fd61 ("phy: fsl-imx8mq-usb: add tca function driver for imx95")
-Cc: stable@vger.kernel.org
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Xu Yang <xu.yang_2@nxp.com>
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+If -EAGAIN is received and the request should be retried, go through
+the normal completion path and let the normal flush logic catch it and
+reissue it, like what is done for !IOPOLL reads or writes.
 
+Fixes: d803d123948f ("io_uring/rw: handle -EAGAIN retry at IO completion time")
+Reported-by: John Garry <john.g.garry@oracle.com>
+Link: https://lore.kernel.org/io-uring/2b43ccfa-644d-4a09-8f8f-39ad71810f41@oracle.com/
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: c554246ff4c6 ("io_uring/rw: preserve partial result for iopoll")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-Changes in v6:
- - delete .remove() is deleted words in commit message
-Changes in v5:
- - keep remove() callback as patch #3 needs it
-Changes in v4:
- - add my signed-off tag
-Changes in v3:
- - add R-b tag
- - cc statble
- - drop "sw = data" conversion
----
- drivers/phy/freescale/phy-fsl-imx8mq-usb.c | 21 +++++++--------------
- 1 file changed, 7 insertions(+), 14 deletions(-)
+ io_uring/rw.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c b/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
-index b05d80e849a1..9a33c06d6fc3 100644
---- a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
-+++ b/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
-@@ -173,9 +173,9 @@ static struct typec_switch_dev *tca_blk_get_typec_switch(struct platform_device
- 	return sw;
- }
+diff --git a/io_uring/rw.c b/io_uring/rw.c
+index ab2c092d82b4b6..0afbb1ae76618f 100644
+--- a/io_uring/rw.c
++++ b/io_uring/rw.c
+@@ -550,11 +550,10 @@ static void io_complete_rw_iopoll(struct kiocb *kiocb, long res)
+ 	if (kiocb->ki_flags & IOCB_WRITE)
+ 		io_req_end_write(req);
+ 	if (unlikely(res != req->cqe.res)) {
+-		if (res == -EAGAIN && io_rw_should_reissue(req)) {
++		if (res == -EAGAIN && io_rw_should_reissue(req))
+ 			req->flags |= REQ_F_REISSUE | REQ_F_BL_NO_RECYCLE;
+-			return;
+-		}
+-		req->cqe.res = res;
++		else
++			req->cqe.res = res;
+ 	}
  
--static void tca_blk_put_typec_switch(struct typec_switch_dev *sw)
-+static void tca_blk_put_typec_switch(void *data)
- {
--	typec_switch_unregister(sw);
-+	typec_switch_unregister(data);
- }
- 
- static void tca_blk_orientation_set(struct tca_blk *tca,
-@@ -248,6 +248,7 @@ static struct tca_blk *imx95_usb_phy_get_tca(struct platform_device *pdev,
- 	struct device *dev = &pdev->dev;
- 	struct resource *res;
- 	struct tca_blk *tca;
-+	int ret;
- 
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
- 	if (!res)
-@@ -266,17 +267,11 @@ static struct tca_blk *imx95_usb_phy_get_tca(struct platform_device *pdev,
- 	tca->orientation = TYPEC_ORIENTATION_NORMAL;
- 	tca->sw = tca_blk_get_typec_switch(pdev, imx_phy);
- 
--	return tca;
--}
--
--static void imx95_usb_phy_put_tca(struct imx8mq_usb_phy *imx_phy)
--{
--	struct tca_blk *tca = imx_phy->tca;
--
--	if (!tca)
--		return;
-+	ret = devm_add_action_or_reset(&pdev->dev, tca_blk_put_typec_switch, tca->sw);
-+	if (ret)
-+		return ERR_PTR(ret);
- 
--	tca_blk_put_typec_switch(tca->sw);
-+	return tca;
- }
- 
- static u32 phy_tx_vref_tune_from_property(u32 percent)
-@@ -741,9 +736,7 @@ static int imx8mq_usb_phy_probe(struct platform_device *pdev)
- 
- static void imx8mq_usb_phy_remove(struct platform_device *pdev)
- {
--	struct imx8mq_usb_phy *imx_phy = platform_get_drvdata(pdev);
- 
--	imx95_usb_phy_put_tca(imx_phy);
- }
- 
- static struct platform_driver imx8mq_usb_phy_driver = {
-
+ 	/* order with io_iopoll_complete() checking ->iopoll_completed */
 -- 
-2.34.1
+2.53.0
 
 
