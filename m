@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-274843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274844-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 40VlBM1eV2pOKgEAu9opvQ
-	(envelope-from <stable+bounces-274843-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 12:19:57 +0200
+	id VK9cFjFeV2oKKgEAu9opvQ
+	(envelope-from <stable+bounces-274844-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 12:17:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0645A75CE6F
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 12:19:56 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E880375CDBE
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 12:17:20 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ZQRzawY5;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274843-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-274843-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=BFypU0lq;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274844-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274844-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 639FA303286B
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 10:17:10 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 76ACB3030E99
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 10:17:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC42E43DA51;
-	Wed, 15 Jul 2026 10:17:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E25B22FFDEA;
+	Wed, 15 Jul 2026 10:17:08 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14D1E43A80F
-	for <stable@vger.kernel.org>; Wed, 15 Jul 2026 10:17:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 667C63C9894
+	for <stable@vger.kernel.org>; Wed, 15 Jul 2026 10:17:06 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784110625; cv=none; b=f1DEZjBV97RlgbSJ1xzKjS79jV4hnD6XTDSIjPd+JH7MplSLBUCbXGjQFr37QVmhuHNiat+vVpOaG1ABoewbW8bNYOunnojmKJaHOOvT9BivhFxYLKEGslH+pxBeebLjjDCFV3bhYqjWvV3QCCm9th7XLXqs0Cfn2AZpOoBQdLc=
+	t=1784110628; cv=none; b=oKhsS4ZGUUQS2oTTgFxoxm/w4kt9SEu6qClGn/ku3L51RbAtQiVGAXQ7UjMP30k6/DH6up5in0wUeH1e+OH0O0eMn/Q86/ybB5ocMtWL95FQ25BlvtqNivoYjF5go2vohpp3BZipA2fJly6BVsb9pvBPcIgFfbB1HeNIhs++Kpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784110625; c=relaxed/simple;
-	bh=S8Wlsy2+6XFcvbSvjMRcUeCLjJallJcswpC4K9DCWzc=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=lYbJ1TWQ7qo3YrAhgqjB6ofc0rdLfOz5msuO3knmClfH1oa9Y3/F0iFoeafDUVj6YkwEPu7fR2dSDobH9ofZB578q7wnOO2YEpihFShvHzxy62jjCj5s/zF8ySG9EqSmEg2n0atbLVLhbtyyoi0tg2xh5vThUjXZwxLJFuDT78o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZQRzawY5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FD391F00A3A;
-	Wed, 15 Jul 2026 10:17:03 +0000 (UTC)
+	s=arc-20240116; t=1784110628; c=relaxed/simple;
+	bh=ftTwyrgwo9NogFqVmxU058dmFFJsG0tVhbKJGwwFLDM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=uNcMuZECSMwwZAz6++kkEfAOWxe1x58UBbABhdD+Ly4EBueRi6+p0wmoW3D6YJD5xVeER38PZvyOQJjJHozx6Y1m+FMdDQOKZwCYoHPrxJf4p3DD6pEUMgTLHxpUCd6I0zx4Qy3oVJYBPiiTsNGGS5oPdaEZVQBcUjioRUwnhIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BFypU0lq; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC52C1F000E9;
+	Wed, 15 Jul 2026 10:17:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1784110623;
-	bh=g5rnejpKiknTPE5sVhlDaERu0jRZauNpz4m95kJKeuE=;
+	s=korg; t=1784110626;
+	bh=5JzliA4uhmrhSCyQlc3lk4P6OnTuNjPUEI2a+eIFGPU=;
 	h=Subject:To:Cc:From:Date;
-	b=ZQRzawY5rf5iBMYgO2yGj+jhdaE2xer32mk9Wpw1JrvCiYNNtu4PVp/vxBUkXSN5k
-	 7jp/oyf2ZNqalk8FrvRltt0zW7MU5VtPNqaCNuml2P96OGijr0AUSvSnPMLAEXz/g9
-	 0yM8m/kDbgEWKKI754stj7d9MRvWZ52IppkvjgZQ=
-Subject: FAILED: patch "[PATCH] crypto: sun4i-ss - Remove insecure and unused rng_alg" failed to apply to 6.6-stable tree
+	b=BFypU0lqY9UurBN+RSonSPyLjLps1FcREeTHB0tieyZtbT60x9aoHpne66JWgkuqC
+	 qs5VYOUkYh74f1OtDaYBDAWU3c8NzyCIVHXYNCQXnRIKUV2np/R1kaHwIRPvEF4zaC
+	 MBsAhvBeyeXua2luRwjlEU9mfBOW6XzUcHHk7BDo=
+Subject: FAILED: patch "[PATCH] crypto: sun4i-ss - Remove insecure and unused rng_alg" failed to apply to 6.12-stable tree
 To: ebiggers@kernel.org,clabbe.montjoie@gmail.com,flynnnchen@tencent.com,herbert@gondor.apana.org.au
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
 Date: Wed, 15 Jul 2026 12:16:47 +0200
-Message-ID: <2026071547-deferral-endless-f9c3@gregkh>
+Message-ID: <2026071547-riverbed-deflate-5e2c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,12 +64,12 @@ X-Spamd-Result: default: False [3.84 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-274843-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-274844-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FREEMAIL_TO(0.00)[kernel.org,gmail.com,tencent.com,gondor.apana.org.au];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -90,25 +90,25 @@ X-Spamd-Result: default: False [3.84 / 15.00];
 	RCPT_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
 	FROM_NO_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,gregkh:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,apana.org.au:email,tencent.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,tencent.com:email,gregkh:mid,apana.org.au:email,vger.kernel.org:from_smtp,linuxfoundation.org:from_mime,linuxfoundation.org:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0645A75CE6F
+X-Rspamd-Queue-Id: E880375CDBE
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
 git cherry-pick -x b2c41fa9dd8fc740c489e060b199165771f268d1
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026071547-deferral-endless-f9c3@gregkh' --subject-prefix 'PATCH 6.6.y' 'HEAD^..'
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026071547-riverbed-deflate-5e2c@gregkh' --subject-prefix 'PATCH 6.12.y' 'HEAD^..'
 
 Possible dependencies:
 
