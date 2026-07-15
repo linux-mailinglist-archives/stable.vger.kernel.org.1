@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-274663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274664-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id mI4jAZnjVmrOCQEAu9opvQ
-	(envelope-from <stable+bounces-274663-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 03:34:17 +0200
+	id seHMH5zjVmrRCQEAu9opvQ
+	(envelope-from <stable+bounces-274664-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 03:34:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98823759E6A
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 03:34:16 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE1BD759E6D
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 03:34:19 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iklCwbmy;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274663-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274663-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=K7qlQBsL;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274664-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-274664-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id F2D79301B58E
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 01:34:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 21A24303E8C8
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 01:34:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D4DA70809;
-	Wed, 15 Jul 2026 01:34:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FA0837BE6A;
+	Wed, 15 Jul 2026 01:34:13 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5567D13790B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D16141714AA
 	for <stable@vger.kernel.org>; Wed, 15 Jul 2026 01:34:11 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784079252; cv=none; b=ciyi2NN7/xB5ffScvlAEqVASQF640ytOq9vyCuCp6bBiGno0fCS4QYpOFVA7hYPpUPG2Ct2VTHInY6Ag7fC6dzE06OAW7ruv554wTLqdCB+TZB9fBxIBHBxAUQcWUs+psnc2zlrfVIE8UBQzAtO/Nv9x2wcLwaDfdIAS+oqYx/4=
+	t=1784079252; cv=none; b=qzzVR9yAfHlB3L/FERY01huY8+LaDK5xbz2yV95keZ7/zOKXZP5ptksV+FxG2FX2dpj7cz9ApzcVG0pFMA1Rn8Kx+VjpIxQqyaVtwpkUJ9832lBS0EpKe1HV3jp4zjB7kmJYyvhEKa5rvOin/O60gRGqpYK0SSbg0JZT7Y7aaSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1784079252; c=relaxed/simple;
-	bh=SlK7FDyEivXps8TBU91/DflotaTTclA3wC39xO6KwuQ=;
+	bh=813+2KwkfXzjaRYV6mfc5FZA75+Zupe2qZ74IR0QAPs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ANYKmFexlVTrEW3d04+vNpYO1eSw6YsfE9XD5EQRbOQLcCFmIsv5CJIutl4WdlQtuf5HK+gguEBojv1F4t7cRAvHFfonGvhYjysCLhGRKF+p3k2ErH4rDOClQlMnI7yqkbcjJ4MRKxfpF9bB2cWmp1pEfNPJcmZtvVS1ZnZHqp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iklCwbmy; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CBE11F00A3D;
-	Wed, 15 Jul 2026 01:34:10 +0000 (UTC)
+	 MIME-Version; b=CyupUEF3/ld3+Xk8jg1HQxIDdW/0KpxGiv0a0cRn4p9BdmnG/kw40KYfWPlYgH/AYCQJikvckN75p5Ik+bRLOFybjkEhcLYK94MEyZQTekJwAz+U4HJAo+Uyl31zPDO7dbgTD3/pZhbOzHBRgXmwgf7NQsjdbjp8L4oOg7dXSZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K7qlQBsL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46BA31F00A3A;
+	Wed, 15 Jul 2026 01:34:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1784079251;
-	bh=X2h0kEhvPzHz8yEDGagucNjudePLMWpsdmTsxHb7//U=;
+	bh=bBoJm4+ekPSyqyPp//OaZM9lmfYbK+5t6WBwl2pkUTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iklCwbmynKzto0BcaTS4gmh1EvOBmLWwKu5YyzO7ZyN2NF/RpRvujfmMg6t/xPunv
-	 csDa4CredMEwBQOdedzZbNuz8G2yyKCcjhlhBbi9Vmsi8Nux11GyObvHsQkOiJIlNA
-	 sPj5zPLTMbPVT+Uo7bUEXThNDIg48CWcjPqq55ck6w+ZrZ8QhTY0tfMKNizq3KAznL
-	 M44R9evyT9WEXuTcj37ZgQrXlsXHMUUllHffpk/Bo9PNnDiTnNvvVLyJt1hOfmFhRF
-	 mfiK+rA40eipQhNGZ4QpTPX0pQ/8NFqfBjYoB2RQ+fWZmaxZFI0Og1C7DZ3ieYVM14
-	 IcBpTojihy6dg==
+	b=K7qlQBsLCZCq0s0EeMzH/93DCgBxgbKX9hdthZ0b29HbvxUSS5VeL8yQRNv+FyGtq
+	 gv36b0W0MHvKgx0W5vJNZ30lXD0IfoxsCIPMKyEbwbJmVny+gzH92ukzII5YlLVFjz
+	 GmKl0GIMKOrjKsJaqJHrdESAbDcJjNdhx9pJEbL0YvqV0JlzzYLk4pfM6wy496sLNE
+	 txn2Mo5hwuJDCSyfAx66ZB1rGDDVvt7nGUA4GR9SdSDD3aLEGLjOFj20isrx3vR9Jy
+	 rSSwJTfy1S6up4mUPaoBrSGQY8pG4w7UZaZkXZzjiDLBvhveaX0GOHMAtqaeBz76lS
+	 VKoHffucfeyig==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Sevinj Aghayeva <sevinj.aghayeva@gmail.com>,
+Cc: William Hansen-Baird <william.hansen.baird@gmail.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y 2/5] staging: rtl8723bs: remove redundant braces in if statements
-Date: Tue, 14 Jul 2026 21:34:05 -0400
-Message-ID: <20260715013408.4110029-2-sashal@kernel.org>
+Subject: [PATCH 5.15.y 3/5] staging: rtl8723bs: core: move constants to right side in comparison
+Date: Tue, 14 Jul 2026 21:34:06 -0400
+Message-ID: <20260715013408.4110029-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260715013408.4110029-1-sashal@kernel.org>
 References: <2026071359-gecko-previous-ef42@gregkh>
@@ -74,11 +74,11 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-274663-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-274664-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
@@ -86,7 +86,7 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:sevinj.aghayeva@gmail.com,m:gregkh@linuxfoundation.org,m:sashal@kernel.org,m:sevinjaghayeva@gmail.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:william.hansen.baird@gmail.com,m:gregkh@linuxfoundation.org,m:sashal@kernel.org,m:williamhansenbaird@gmail.com,s:lists@lfdr.de];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
@@ -98,79 +98,63 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 98823759E6A
+X-Rspamd-Queue-Id: EE1BD759E6D
 
-From: Sevinj Aghayeva <sevinj.aghayeva@gmail.com>
+From: William Hansen-Baird <william.hansen.baird@gmail.com>
 
-[ Upstream commit 94579b02720bb63096312c4bc7694fd2f6df7cbb ]
+[ Upstream commit cf0f2680c30d4b438a5e84b73dc70be405936b54 ]
 
-Adhere to Linux kernel coding style.
+Move constants to right side in if-statement conditions.
 
-Reported by checkpatch:
-
-WARNING: braces {} are not necessary for single statement blocks
-
-Signed-off-by: Sevinj Aghayeva <sevinj.aghayeva@gmail.com>
-Link: https://lore.kernel.org/r/20220331113245.GA425141@euclid
+Signed-off-by: William Hansen-Baird <william.hansen.baird@gmail.com>
+Link: https://patch.msgid.link/20251224100329.762141-3-william.hansen.baird@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Stable-dep-of: 1463ca3ec660 ("staging: rtl8723bs: fix OOB reads in rtw_get_sec_ie(), rtw_get_wapi_ie(), and rtw_get_wps_attr()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/rtl8723bs/core/rtw_ieee80211.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ drivers/staging/rtl8723bs/core/rtw_ieee80211.c | 4 ++--
+ drivers/staging/rtl8723bs/core/rtw_security.c  | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/staging/rtl8723bs/core/rtw_ieee80211.c b/drivers/staging/rtl8723bs/core/rtw_ieee80211.c
-index 8932161637a65e..559ae13db3d362 100644
+index 559ae13db3d362..e6054afcc80029 100644
 --- a/drivers/staging/rtl8723bs/core/rtw_ieee80211.c
 +++ b/drivers/staging/rtl8723bs/core/rtw_ieee80211.c
-@@ -341,9 +341,8 @@ int rtw_generate_ie(struct registry_priv *pregistrypriv)
+@@ -1028,7 +1028,7 @@ static int rtw_get_cipher_info(struct wlan_network *pnetwork)
+ 	pbuf = rtw_get_wpa_ie(&pnetwork->network.ies[12], &wpa_ielen, pnetwork->network.ie_length-12);
  
- 	ie = rtw_set_ie(ie, WLAN_EID_IBSS_PARAMS, 2, (u8 *)&(pdev_network->configuration.atim_window), &sz);
+ 	if (pbuf && (wpa_ielen > 0)) {
+-		if (_SUCCESS == rtw_parse_wpa_ie(pbuf, wpa_ielen+2, &group_cipher, &pairwise_cipher, &is8021x)) {
++		if (rtw_parse_wpa_ie(pbuf, wpa_ielen+2, &group_cipher, &pairwise_cipher, &is8021x) == _SUCCESS) {
+ 			pnetwork->bcn_info.pairwise_cipher = pairwise_cipher;
+ 			pnetwork->bcn_info.group_cipher = group_cipher;
+ 			pnetwork->bcn_info.is_8021x = is8021x;
+@@ -1038,7 +1038,7 @@ static int rtw_get_cipher_info(struct wlan_network *pnetwork)
+ 		pbuf = rtw_get_wpa2_ie(&pnetwork->network.ies[12], &wpa_ielen, pnetwork->network.ie_length-12);
  
--	if (rateLen > 8) {
-+	if (rateLen > 8)
- 		ie = rtw_set_ie(ie, WLAN_EID_EXT_SUPP_RATES, (rateLen - 8), (pdev_network->supported_rates + 8), &sz);
--	}
+ 		if (pbuf && (wpa_ielen > 0)) {
+-			if (_SUCCESS == rtw_parse_wpa2_ie(pbuf, wpa_ielen+2, &group_cipher, &pairwise_cipher, &is8021x)) {
++			if (rtw_parse_wpa2_ie(pbuf, wpa_ielen+2, &group_cipher, &pairwise_cipher, &is8021x) == _SUCCESS) {
+ 				pnetwork->bcn_info.pairwise_cipher = pairwise_cipher;
+ 				pnetwork->bcn_info.group_cipher = group_cipher;
+ 				pnetwork->bcn_info.is_8021x = is8021x;
+diff --git a/drivers/staging/rtl8723bs/core/rtw_security.c b/drivers/staging/rtl8723bs/core/rtw_security.c
+index a36f4318c9a706..483eb2b1bc57f2 100644
+--- a/drivers/staging/rtl8723bs/core/rtw_security.c
++++ b/drivers/staging/rtl8723bs/core/rtw_security.c
+@@ -1538,7 +1538,7 @@ void rtw_sec_restore_wep_key(struct adapter *adapter)
+ 	struct security_priv *securitypriv = &(adapter->securitypriv);
+ 	signed int keyid;
  
- 	/* HT Cap. */
- 	if ((pregistrypriv->wireless_mode & WIRELESS_11_24N) &&
-@@ -372,9 +371,8 @@ unsigned char *rtw_get_wpa_ie(unsigned char *pie, int *wpa_ie_len, int limit)
- 
- 		if (pbuf) {
- 			/* check if oui matches... */
--			if (memcmp((pbuf + 2), wpa_oui_type, sizeof(wpa_oui_type))) {
-+			if (memcmp((pbuf + 2), wpa_oui_type, sizeof(wpa_oui_type)))
- 				goto check_next_ie;
--			}
- 
- 			/* check version... */
- 			memcpy((u8 *)&le_tmp, (pbuf + 6), sizeof(val16));
-@@ -499,9 +497,8 @@ int rtw_parse_wpa_ie(u8 *wpa_ie, int wpa_ie_len, int *group_cipher, int *pairwis
- 	if (is_8021x) {
- 		if (left >= 6) {
- 			pos += 2;
--			if (!memcmp(pos, SUITE_1X, 4)) {
-+			if (!memcmp(pos, SUITE_1X, 4))
- 				*is_8021x = 1;
--			}
- 		}
- 	}
- 
-@@ -520,9 +517,8 @@ int rtw_parse_wpa2_ie(u8 *rsn_ie, int rsn_ie_len, int *group_cipher, int *pairwi
- 		return _FAIL;
- 	}
- 
--	if ((*rsn_ie != WLAN_EID_RSN) || (*(rsn_ie+1) != (u8)(rsn_ie_len - 2))) {
-+	if ((*rsn_ie != WLAN_EID_RSN) || (*(rsn_ie+1) != (u8)(rsn_ie_len - 2)))
- 		return _FAIL;
--	}
- 
- 	pos = rsn_ie;
- 	pos += 4;
+-	if ((_WEP40_ == securitypriv->dot11PrivacyAlgrthm) || (_WEP104_ == securitypriv->dot11PrivacyAlgrthm)) {
++	if ((securitypriv->dot11PrivacyAlgrthm == _WEP40_) || (securitypriv->dot11PrivacyAlgrthm == _WEP104_)) {
+ 		for (keyid = 0; keyid < 4; keyid++) {
+ 			if (securitypriv->key_mask & BIT(keyid)) {
+ 				if (keyid == securitypriv->dot11PrivacyKeyIndex)
 -- 
 2.53.0
 
