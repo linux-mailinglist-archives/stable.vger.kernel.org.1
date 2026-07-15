@@ -1,138 +1,156 @@
-Return-Path: <stable+bounces-274755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274756-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ApnJGcI2V2rNHQEAu9opvQ
-	(envelope-from <stable+bounces-274755-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 09:29:06 +0200
+	id fYI6Dmw3V2r/HQEAu9opvQ
+	(envelope-from <stable+bounces-274756-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 09:31:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA03275B6CF
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 09:29:05 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9D9775B731
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 09:31:55 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KCWKi30M;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274755-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-274755-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=none;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274756-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274756-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=none;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 71080300D73C
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 07:29:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E11BE3020EBC
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 07:31:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B73513C3434;
-	Wed, 15 Jul 2026 07:29:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1DEC3C1F4F;
+	Wed, 15 Jul 2026 07:30:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A917F3C1983;
-	Wed, 15 Jul 2026 07:28:57 +0000 (UTC)
+Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [13.76.78.106])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86771312826;
+	Wed, 15 Jul 2026 07:30:46 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784100539; cv=none; b=D683zEMMKeOPQuV2TvXUHvyYhc4PGLkVhTdwuWcqqZ7/JzXl+mnxZDt8Ndsd+u+AjeCexlo1X8JFLhtsG7SRCjmJsaKZHfC6vkYOaUE4nNL/zntA8JSRrENHHAzvBw/yzw23A+Eoxqfe/ycC9TTV2Xug+6CYYyjFv4TvXg9FHys=
+	t=1784100657; cv=none; b=s4rmlokvucUyIZibsGyDiY+FMQtzmZ8OfkDeJAFU7vYVqAe+W/1a3xflH6ogi+Za9ivzsjjI+MK1U4qwfYKgCfhxLroR2xbiIuYRuJdXODMEHxSJtVQ7yRnGSy0zFNBAU+ZrjzTlgkaKGbkO7GtGDEfP8RQBqgiW7wfH/8N+K4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784100539; c=relaxed/simple;
-	bh=6X3BfS/vlKMVeP0+vXeVJjquysDomjXRdgpvx3atWI4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nWQIuwQGJRJpP6dhtdJu+20iUACVUs6uIMOdkSaDMsg7PwPG3WCFWiw3GVkMXwIcoWoF+hkkqsCF6yVyy4O800LJKpSbDOHZDqSvvNgM3KRh94KZqqLSvMeV+o50wyCFlLmRkOUt0UIG/bZxsjahw7B7rPIZt9lH7accLd1OvjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KCWKi30M; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 226311F000E9;
-	Wed, 15 Jul 2026 07:28:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784100536;
-	bh=Vk/Pmtw5V1S5Wy95XZKiQxPxVWpzziuE+PvkoAYgcUs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=KCWKi30MM2OO4LbExOFY2K96V4NJnrOuSYk2LaflLMjhkhQxOtZ8oF5qHjCyMhZjy
-	 fPI9vhQ68B18TFLQc3JbwI/Bza/bFsu5vcGWnxMof6ezZ2Al6zMpJSuqppPOTYXzYT
-	 8+D5XxspV4qS44G7arRn0036MucchjV9d63PSsiJbu1DSE6GwYB0emo7MC2q4heaGB
-	 TKK6px3LaBeex8N46xrQYxluBESDOGdkya0vb+VTMG0INmsmp1l+C1gSOSe8CTqgcr
-	 pRlVqlQ7TMusHrBvhsj2AwYxV1OOC6mM8wt75yCtk/bubtRjZK+Pe103PlnYk0FR5u
-	 LwNn3Od+F1tEg==
-Date: Wed, 15 Jul 2026 08:28:39 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Suren Baghdasaryan <surenb@google.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
-	Uladzislau Rezki <urezki@gmail.com>, Toshi Kani <toshi.kani@hpe.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski <luto@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Dev Jain <dev.jain@arm.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, David Carlier <devnexen@gmail.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	stable@vger.kernel.org, syzbot+fd95a72470f5a44e464c@syzkaller.appspotmail.com
-Subject: Re: [PATCH mm-hotfixes v3 0/4] mm: fix UAF caused by race between
- ptdump and vmap pgtable freeing
-Message-ID: <alc0YTcSVuBMdo8A@lucifer>
-References: <20260714-series-vmap-race-fix-v3-0-b812eccfa0f9@kernel.org>
- <e2d9f516-2dae-4356-830a-14b99fd32a90@intel.com>
+	s=arc-20240116; t=1784100657; c=relaxed/simple;
+	bh=rL8hLMujvacVYSA7witLeIejqtHG7AcgFZld+ZY6lZA=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=GlDlJjHlcnGtTqkAc6PdmMP4ArUBGtz6qAFpBr6m3RM6pq4Yy+i+Lo4T3cuFd3D/DpnZFVNdCgp4+wPYvT5NMK0RLUbSaDCVqneJf6UnhBu4SiPzSBdP9PBNgz5p4stU6vXc0gSG706yILa+cx6MLJv3fBQKCCLJ0LLHIMYZAkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=13.76.78.106
+Received: from zju.edu.cn (unknown [10.190.161.1])
+	by mtasvr (Coremail) with SMTP id _____wA3RhQXN1dqdhRUAA--.4770S3;
+	Wed, 15 Jul 2026 15:30:32 +0800 (CST)
+Received: from smtpclient.apple (unknown [10.190.161.1])
+	by mail-app4 (Coremail) with SMTP id zi_KCgCn2TATN1dqaLtRAg--.7181S2;
+	Wed, 15 Jul 2026 15:30:28 +0800 (CST)
+Content-Type: text/plain;
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e2d9f516-2dae-4356-830a-14b99fd32a90@intel.com>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.600.62\))
+Subject: Re: [PATCH net] net: hip04: fix RX buffer leak on build_skb failure
+From: Fan Wu <12321260@zju.edu.cn>
+In-Reply-To: <a361aa28-7f55-4476-9072-aa392a34b735@intel.com>
+Date: Wed, 15 Jul 2026 15:30:17 +0800
+Cc: Fan Wu <fanwu01@zju.edu.cn>,
+ netdev@vger.kernel.org,
+ przemyslaw.kitszel@intel.com,
+ Simon Horman <horms@kernel.org>,
+ shenjian15@huawei.com,
+ salil.mehta@huawei.com,
+ dingtianhong@huawei.com,
+ andrew+netdev@lunn.ch,
+ davem@davemloft.net,
+ edumazet@google.com,
+ kuba@kernel.org,
+ pabeni@redhat.com,
+ linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Content-Transfer-Encoding: 7bit
+Message-Id: <190A7669-E0EC-4257-B65E-817FFA1ACCDC@zju.edu.cn>
+References: <20260712142729.2057636-1-fanwu01@zju.edu.cn>
+ <a361aa28-7f55-4476-9072-aa392a34b735@intel.com>
+To: Jacob Keller <jacob.e.keller@intel.com>
+X-Mailer: Apple Mail (2.3774.600.62)
+X-CM-TRANSID:zi_KCgCn2TATN1dqaLtRAg--.7181S2
+X-CM-SenderInfo: qrstjiaswqq6lmxovvfxof0/
+X-CM-DELIVERINFO: =?B?dTAZ5wXKKxbFmtjJiESix3B1w3vZ3A9ovKVTomAyoQazvoRs/NHSP8GI2EvgeEEW7R
+	sfnXz+g1OQfMo27QHy5TwQyZzFg6QqpdDXDgMm1kEV24G8cSZoMjKBt5ZSGVWwqOiPFB+t
+	uHd4o4L3Eo6XtrIyZJQ=
+X-Coremail-Antispam: 1Uk129KBj9xXoW7XrWfGF15Ww4UJw1fWr1fXwc_yoWkGFX_u3
+	40qryUJ34kCFn7Awn5KF43AFZ7u3W09FyrZrykKwsxt348JFs8ur4vk340yrZrKw4Yyrn8
+	Cryvva4a9r13uosvyTuYvTs0mTUanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUj1kv1TuYvT
+	s0mT0YCTnIWjqI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUI
+	cSsGvfJTRUUUbDxYFVCjjxCrM7AC8VAFwI0_Gr0_Xr1l1xkIjI8I6I8E6xAIw20EY4v20x
+	vaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
+	w2x7M28EF7xvwVC0I7IYx2IY67AKxVWDJVCq3wA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
+	W8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v2
+	6rxl6s0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6x
+	kI12xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v2
+	6r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2
+	Ij64vIr41lF7xvr2IYc2Ij64vIr40E4x8a64kEw24lFIxGxcIEc7CjxVA2Y2ka0xkIwI1l
+	42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJV
+	WUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAK
+	I48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F
+	4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY
+	6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU7gAwDUUUU
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [0.04 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-274756-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[zju.edu.cn];
+	FORGED_RECIPIENTS(0.00)[m:fanwu01@zju.edu.cn,m:netdev@vger.kernel.org,m:przemyslaw.kitszel@intel.com,m:horms@kernel.org,m:shenjian15@huawei.com,m:salil.mehta@huawei.com,m:dingtianhong@huawei.com,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:jacob.e.keller@intel.com,m:andrew@lunn.ch,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[12321260@zju.edu.cn,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[31];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:dave.hansen@intel.com,m:akpm@linux-foundation.org,m:surenb@google.com,m:liam@infradead.org,m:vbabka@kernel.org,m:shakeel.butt@linux.dev,m:david@kernel.org,m:rppt@kernel.org,m:mhocko@suse.com,m:urezki@gmail.com,m:toshi.kani@hpe.com,m:dave.hansen@linux.intel.com,m:luto@kernel.org,m:peterz@infradead.org,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:x86@kernel.org,m:hpa@zytor.com,m:kas@kernel.org,m:catalin.marinas@arm.com,m:will@kernel.org,m:dev.jain@arm.com,m:ryan.roberts@arm.com,m:devnexen@gmail.com,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:bpf@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:stable@vger.kernel.org,m:syzbot+fd95a72470f5a44e464c@syzkaller.appspotmail.com,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-274755-lists,stable=lfdr.de];
-	FORGED_SENDER(0.00)[ljs@kernel.org,stable@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ljs@kernel.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linux-foundation.org,google.com,infradead.org,kernel.org,linux.dev,suse.com,gmail.com,hpe.com,linux.intel.com,redhat.com,alien8.de,zytor.com,arm.com,kvack.org,vger.kernel.org,lists.infradead.org,syzkaller.appspotmail.com];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable,fd95a72470f5a44e464c];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,lucifer:mid]
+	FROM_NEQ_ENVFROM(0.00)[12321260@zju.edu.cn,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	R_DKIM_NA(0.00)[];
+	APPLE_MAILER_COMMON(0.00)[];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DA03275B6CF
+X-Rspamd-Queue-Id: D9D9775B731
 
-On Tue, Jul 14, 2026 at 10:31:52AM -0700, Dave Hansen wrote:
-> On 7/14/26 10:24, Lorenzo Stoakes wrote:
-> >  arch/arm64/include/asm/ptdump.h |  2 --
-> >  arch/arm64/mm/mmu.c             | 43 ++++-------------------------------------
-> >  arch/arm64/mm/ptdump.c          | 11 ++---------
-> >  arch/x86/mm/pat/set_memory.c    | 14 +++++++++++---
-> >  include/linux/mmap_lock.h       |  1 +
-> >  mm/pagewalk.c                   | 36 ++++++++++++++++++++--------------
-> >  mm/ptdump.c                     |  7 +++++++
-> >  mm/vmalloc.c                    | 41 ++++++++++++++++++++++++++++++---------
-> >  8 files changed, 78 insertions(+), 77 deletions(-)
->
-> BTW, this is super nice. It fixes a bug, makes the architectures more
-> consistent, and is effectively neutral on lines-of-code.
->
-> Very cool.
+Hi Jacob,
 
-Thanks very much Dave, that's very kind of you to say :)
+Thanks for the review. I agree this is a rare allocation-failure path.
 
-Cheers, Lorenzo
+The leak is nevertheless deterministic from the ownership contract and
+the driver's control flow. __build_skb() documents that, on failure, it
+returns NULL without freeing the caller-provided data.
+
+hip04_rx_poll() currently jumps to refill before dma_unmap_single().
+Refill then replaces rx_buf[rx_head] and rx_phys[rx_head], so the old
+fragment and its streaming DMA mapping are no longer reachable. The
+stop and free-ring paths only operate on entries still referenced by
+those arrays.
+
+The fix leaves the slot, descriptor, rx_head, and rx_cnt_remaining
+unchanged, and returns budget. This tells NAPI that RX work remains
+outstanding and retries build_skb() using the same buffer. The additional
+skb_free_frag() handles the separate case where a replacement fragment
+was allocated but dma_map_single() failed before it was installed.
+
+I hope this clarifies why the failure path is a deterministic leak even
+though I do not have a dynamic reproduction on HIP04 hardware.
+
+Thanks,
+Fan
+
 
