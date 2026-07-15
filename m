@@ -1,187 +1,210 @@
-Return-Path: <stable+bounces-274928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274930-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ewlwCpGBV2oyTgAAu9opvQ
-	(envelope-from <stable+bounces-274928-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 14:48:17 +0200
+	id LhllBpKEV2rMVwAAu9opvQ
+	(envelope-from <stable+bounces-274930-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 15:01:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DD4175E53B
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 14:48:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0FAE75E69D
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 15:01:00 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=W7vlsnwQ;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=mmDU5Eji;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=W7vlsnwQ;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=mmDU5Eji;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274928-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-274928-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=suse.de;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b="R/vbPxIp";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274930-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-274930-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=samsung.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7A16D30317EA
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 12:36:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4D4A73048922
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 13:00:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78A8E4534AD;
-	Wed, 15 Jul 2026 12:36:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7360D47A0D8;
+	Wed, 15 Jul 2026 12:52:40 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailout3.samsung.com (mailout3.samsung.com [203.254.224.33])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1DBF43B3CB
-	for <stable@vger.kernel.org>; Wed, 15 Jul 2026 12:36:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB17C47AF60
+	for <stable@vger.kernel.org>; Wed, 15 Jul 2026 12:52:36 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784118996; cv=none; b=oxC9FFvA8NxadHIdZpJfW8k8UjGMfDJ/z+OaVw+aVF5ECT7KB7Q7y/vNxga1CLLGPMjL4+P8X4zB9XJ8cu7SQbaXntsafMQCjGyAjJit6ABKB2x4N0RhtYjLx8NXseL7tJ6exmZPXJPFp2zDdi+kdr7QODsLDjKSfaHNReLJImo=
+	t=1784119960; cv=none; b=OCvmojiDVLlhEKDmLSoN889QU5W8orx24bnnnUcXo0++s4DBWoI/fUS3RJTyVFiafh41LDziwKIORsWztQexGcQzNl/DW4Uxzh/Mjz/xCCKtMZd+OY5WG2F6uEmjr5rGveOSuvJCrRl7T61UrbBLi+rd5sDGHTfoIJqP3s7PZh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784118996; c=relaxed/simple;
-	bh=IatuHyfwLQQvbWzQIAxho2BwnzbGtZaHleZ1LF5eeqY=;
-	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
-	 References:Date:Message-Id; b=hq+Rd0rfvuoasjtuKJagEBD6uVxvfEYESLliqkfUMEdxfdMrGgsnGTslVDnmgdo1Q6HC+pEfTXX14RxJfHvqHAMuHXa5e0TRsU24eEj9+SDnzQPtbSgk4RGzoaT02OZcLr4Sj09cK3wDHquYuSyZdcvDBoZ9kbCS0yWuZPQ3BG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=W7vlsnwQ; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=mmDU5Eji; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=W7vlsnwQ; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=mmDU5Eji; arc=none smtp.client-ip=195.135.223.130
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id A9573783BB;
-	Wed, 15 Jul 2026 12:36:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1784118992; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DMEvKsLBP+9lioNe5wVxGNYQ1H3Bizh6VOqrMBcaSRI=;
-	b=W7vlsnwQ4M1/XG775I0yFjZ6do7H8/tbb4XozlmyBhVSoN5pmF3GBZrZE8vQv06j8jZxU2
-	EDFl9UT9+8gxPUEmjcbIELuHn5TWxMFz0p4eb+JVja0NK2VPD0Vc0QRKOjpf070fBWGFTl
-	0/+4f3HkMQblpFytlPFD7qx/tBteeEE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1784118992;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DMEvKsLBP+9lioNe5wVxGNYQ1H3Bizh6VOqrMBcaSRI=;
-	b=mmDU5Eji+xFyckmyXc3gKaF6iEnSnJGM4LbzM3reWV4ZZr05nrRFyLX/cTksaT4oc9krpK
-	EhyxhWNtXtndU2Cg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1784118992; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DMEvKsLBP+9lioNe5wVxGNYQ1H3Bizh6VOqrMBcaSRI=;
-	b=W7vlsnwQ4M1/XG775I0yFjZ6do7H8/tbb4XozlmyBhVSoN5pmF3GBZrZE8vQv06j8jZxU2
-	EDFl9UT9+8gxPUEmjcbIELuHn5TWxMFz0p4eb+JVja0NK2VPD0Vc0QRKOjpf070fBWGFTl
-	0/+4f3HkMQblpFytlPFD7qx/tBteeEE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1784118992;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DMEvKsLBP+9lioNe5wVxGNYQ1H3Bizh6VOqrMBcaSRI=;
-	b=mmDU5Eji+xFyckmyXc3gKaF6iEnSnJGM4LbzM3reWV4ZZr05nrRFyLX/cTksaT4oc9krpK
-	EhyxhWNtXtndU2Cg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id ECAC4779AD;
-	Wed, 15 Jul 2026 12:36:31 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 4XmpNs9+V2o6XAAAD6G6ig
-	(envelope-from <fmancera@suse.de>); Wed, 15 Jul 2026 12:36:31 +0000
+	s=arc-20240116; t=1784119960; c=relaxed/simple;
+	bh=QR1KtJH/AH6+jz+caLP1dhCtq9vx6yxL661RggMN8hI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:MIME-Version:
+	 Content-Type:References; b=MJHKpdUZd/H3QoTRR8Cp4wF79I7VToyd1RjV2ymQHGrcy6SL1rcgUCdarNjHwm4xWv+HBUfm2blk6GfYOFiZX2fQRNOl1xpSpUO5RhkuBIY98HyyoOSWKn11+GYB4CA8MjtY7PnpQQyd1SHxewwQH+mp+Bcyu2Y3hK4zZ2SQDko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=R/vbPxIp; arc=none smtp.client-ip=203.254.224.33
+Received: from epcas5p1.samsung.com (unknown [182.195.41.39])
+	by mailout3.samsung.com (KnoxPortal) with ESMTP id 20260715125229epoutp03d465aa836d8c5c113fd970b0dc77a1e3~Cd6QxPxmm2272222722epoutp03V
+	for <stable@vger.kernel.org>; Wed, 15 Jul 2026 12:52:29 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com 20260715125229epoutp03d465aa836d8c5c113fd970b0dc77a1e3~Cd6QxPxmm2272222722epoutp03V
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1784119949;
+	bh=LnBlRGw+TZzG5V+xrdi5GyO/+gof+1IbI18UxfdZhx0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=R/vbPxIpyNCmo1xeYqjGuD25C+YBVIibaf9Hm6+BxCI/Q4bFECLtPOkjD8/P7z40B
+	 jFhrzDpi/HX96WJVx8I3OTbr+4Fu0v2MB190XYg9TmWfemS3V1n5UVVdoFipXtvn87
+	 L1LzCifAiOVEMhSMqZbfqyZ6q1tzwvJAoVrpr7+0=
+Received: from epsnrtp02.localdomain (unknown [182.195.42.154]) by
+	epcas5p1.samsung.com (KnoxPortal) with ESMTPS id
+	20260715125229epcas5p17bc009d6a530e4e0d56a91f725b0230a~Cd6QdmqTV2575225752epcas5p1Q;
+	Wed, 15 Jul 2026 12:52:29 +0000 (GMT)
+Received: from epcas5p1.samsung.com (unknown [182.195.38.89]) by
+	epsnrtp02.localdomain (Postfix) with ESMTP id 4h0bg035WJz2SSKX; Wed, 15 Jul
+	2026 12:52:28 +0000 (GMT)
+Received: from epsmtip1.samsung.com (unknown [182.195.34.30]) by
+	epcas5p2.samsung.com (KnoxPortal) with ESMTPA id
+	20260715125228epcas5p294ba6f5661bb690be77247e881c031c0~Cd6Pci_Q30435504355epcas5p2f;
+	Wed, 15 Jul 2026 12:52:28 +0000 (GMT)
+Received: from INBRO002811.samsungds.net (unknown [107.122.5.126]) by
+	epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20260715125227epsmtip141ff12e6f3ec6abb86b8452d7f8cb17d~Cd6O48Jmc1978619786epsmtip1A;
+	Wed, 15 Jul 2026 12:52:27 +0000 (GMT)
+From: Shashank A P <shashank.ap@samsung.com>
+To: stable@vger.kernel.org
+Cc: Shashank A P <shashank.ap@samsung.com>, Jan Kara <jack@suse.cz>
+Subject: [PATCH 6.1.y] fs: quota: create dedicated workqueue for
+ quota_release_work
+Date: Wed, 15 Jul 2026 18:21:37 +0530
+Message-ID: <20260715125138.668-1-shashank.ap@samsung.com>
+X-Mailer: git-send-email 2.46.0.windows.1
+In-Reply-To: <2025101651-arrive-frail-3c0f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20260715125228epcas5p294ba6f5661bb690be77247e881c031c0
+X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH net 1/2] vxlan: require CAP_NET_ADMIN in the device
- netns for changelink
-From: Fernando Fernandez Mancera <fmancera@suse.de>
-To: Doruk Tan Ozturk <doruk@0sec.ai>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
- pabeni@redhat.com, andrew+netdev@lunn.ch, sd@queasysnail.net, 
- linville@tuxdriver.com, mschiffer@universe-factory.net, 
- maoyixie.tju@gmail.com, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-In-Reply-To: <20260715055648.33060-2-doruk@0sec.ai>
-References: <20260715055648.33060-1-doruk@0sec.ai>
- <20260715055648.33060-2-doruk@0sec.ai>
-Date: Wed, 15 Jul 2026 14:36:23 +0200
-Message-Id: <178411898386.23973.9996844791788311105.b4-review@b4>
-X-Mailer: b4 0.16-dev
-X-Spam-Flag: NO
-X-Spam-Level: 
-X-Spam-Score: -2.51
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+CMS-TYPE: 105P
+cpgsPolicy: CPGSC10-542,Y
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20260715125228epcas5p294ba6f5661bb690be77247e881c031c0
+References: <2025101651-arrive-frail-3c0f@gregkh>
+	<CGME20260715125228epcas5p294ba6f5661bb690be77247e881c031c0@epcas5p2.samsung.com>
+X-Spamd-Result: default: False [-4.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[samsung.com:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[samsung.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[samsung.com:s=mail20170921];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-274928-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:doruk@0sec.ai,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:andrew+netdev@lunn.ch,m:sd@queasysnail.net,m:linville@tuxdriver.com,m:mschiffer@universe-factory.net,m:maoyixie.tju@gmail.com,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:andrew@lunn.ch,m:maoyixietju@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	FORGED_SENDER(0.00)[fmancera@suse.de,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[davemloft.net,google.com,kernel.org,redhat.com,lunn.ch,queasysnail.net,tuxdriver.com,universe-factory.net,gmail.com,vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-274930-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:shashank.ap@samsung.com,m:jack@suse.cz,s:lists@lfdr.de];
+	RSPAMD_URIBL_FAIL(0.00)[suse.cz:query timed out];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[shashank.ap@samsung.com,stable@vger.kernel.org];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,samsung.com:dkim,samsung.com:email,samsung.com:mid,samsung.com:from_mime,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.cz:email];
+	RCPT_COUNT_THREE(0.00)[3];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[fmancera@suse.de,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[suse.de:+];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[shashank.ap@samsung.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[samsung.com:+];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
+	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,0sec.ai:url,0sec.ai:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,suse.de:dkim,suse.de:from_mime]
+	RCVD_COUNT_SEVEN(0.00)[8]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1DD4175E53B
+X-Rspamd-Queue-Id: A0FAE75E69D
 X-Rspamd-Action: no action
 
-On Wed, 15 Jul 2026 07:56:47 +0200, Doruk Tan Ozturk <doruk@0sec.ai> wrote:
-> A tunnel changelink() operates on at most two netns, dev_net(dev) and
-> the sticky underlay netns vxlan->net. They differ once the device is
-> created in or moved to a netns other than the one the request runs in.
-> The rtnl changelink path checks CAP_NET_ADMIN only against dev_net(dev),
-> so a caller privileged there but not in vxlan->net can rewrite a vxlan
-> device whose underlay lives in vxlan->net.
-> 
-> vxlan_changelink() validates and applies the new configuration against
-> vxlan->net (vxlan_config_validate(vxlan->net, ...)) and can reopen the
-> underlay socket in that netns, so the same reasoning as the tunnel
-> changelink series applies here.
-> 
-> Gate vxlan_changelink() with rtnl_dev_link_net_capable(), at the top of
-> the op before any attribute is parsed, matching ipgre_changelink() and
-> the rest of the "require CAP_NET_ADMIN in the device netns for
-> changelink" series.
-> 
-> Found by 0sec automated security-research tooling (https://0sec.ai).
-> 
-> Fixes: 889ce937c98f ("vxlan: correctly set vxlan->net when creating the device in a netns")
-> Cc: stable@vger.kernel.org
-> Assisted-by: 0sec:multi-model
-> Signed-off-by: Doruk Tan Ozturk <doruk@0sec.ai>
->
+There is a kernel panic due to WARN_ONCE when panic_on_warn is set.
 
-The patch makes sense to me but I believe the right fixes tag would be:
+This issue occurs when writeback is triggered due to sync call for an
+opened file(ie, writeback reason is WB_REASON_SYNC). When f2fs balance
+is needed at sync path, flush for quota_release_work is triggered.
+By default quota_release_work is queued to "events_unbound" queue which
+does not have WQ_MEM_RECLAIM flag. During f2fs balance "writeback"
+workqueue tries to flush quota_release_work causing kernel panic due to
+MEM_RECLAIM flag mismatch errors.
 
-Fixes: 8bcdc4f3a20b ("vxlan: add changelink support")
+This patch creates dedicated workqueue with WQ_MEM_RECLAIM flag
+for work quota_release_work.
 
-Thanks,
-Fernando.
+------------[ cut here ]------------
+WARNING: CPU: 4 PID: 14867 at kernel/workqueue.c:3721 check_flush_dependency+0x13c/0x148
+Call trace:
+ check_flush_dependency+0x13c/0x148
+ __flush_work+0xd0/0x398
+ flush_delayed_work+0x44/0x5c
+ dquot_writeback_dquots+0x54/0x318
+ f2fs_do_quota_sync+0xb8/0x1a8
+ f2fs_write_checkpoint+0x3cc/0x99c
+ f2fs_gc+0x190/0x750
+ f2fs_balance_fs+0x110/0x168
+ f2fs_write_single_data_page+0x474/0x7dc
+ f2fs_write_data_pages+0x7d0/0xd0c
+ do_writepages+0xe0/0x2f4
+ __writeback_single_inode+0x44/0x4ac
+ writeback_sb_inodes+0x30c/0x538
+ wb_writeback+0xf4/0x440
+ wb_workfn+0x128/0x5d4
+ process_scheduled_works+0x1c4/0x45c
+ worker_thread+0x32c/0x3e8
+ kthread+0x11c/0x1b0
+ ret_from_fork+0x10/0x20
+Kernel panic - not syncing: kernel: panic_on_warn set ...
+
+Fixes: ac6f420291b3 ("quota: flush quota_release_work upon quota writeback")
+CC: stable@vger.kernel.org
+Signed-off-by: Shashank A P <shashank.ap@samsung.com>
+Link: https://patch.msgid.link/20250901092905.2115-1-shashank.ap@samsung.com
+Signed-off-by: Jan Kara <jack@suse.cz>
+(cherry picked from commit 72b7ceca857f38a8ca7c5629feffc63769638974)
+---
+ fs/quota/dquot.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/fs/quota/dquot.c b/fs/quota/dquot.c
+index 0aa0ed754f2e..f296872efda9 100644
+--- a/fs/quota/dquot.c
++++ b/fs/quota/dquot.c
+@@ -163,6 +163,9 @@ static struct quota_module_name module_names[] = INIT_QUOTA_MODULE_NAMES;
+ /* SLAB cache for dquot structures */
+ static struct kmem_cache *dquot_cachep;
+ 
++/* workqueue for work quota_release_work*/
++static struct workqueue_struct *quota_unbound_wq;
++
+ int register_quota_format(struct quota_format_type *fmt)
+ {
+ 	spin_lock(&dq_list_lock);
+@@ -916,7 +919,7 @@ void dqput(struct dquot *dquot)
+ 	put_releasing_dquots(dquot);
+ 	atomic_dec(&dquot->dq_count);
+ 	spin_unlock(&dq_list_lock);
+-	queue_delayed_work(system_unbound_wq, &quota_release_work, 1);
++	queue_delayed_work(quota_unbound_wq, &quota_release_work, 1);
+ }
+ EXPORT_SYMBOL(dqput);
+ 
+@@ -3091,6 +3094,11 @@ static int __init dquot_init(void)
+ 	if (register_shrinker(&dqcache_shrinker, "dquota-cache"))
+ 		panic("Cannot register dquot shrinker");
+ 
++	quota_unbound_wq = alloc_workqueue("quota_events_unbound",
++					   WQ_UNBOUND | WQ_MEM_RECLAIM, WQ_MAX_ACTIVE);
++	if (!quota_unbound_wq)
++		panic("Cannot create quota_unbound_wq\n");
++
+ 	return 0;
+ }
+ fs_initcall(dquot_init);
+-- 
+2.34.1
+
 
