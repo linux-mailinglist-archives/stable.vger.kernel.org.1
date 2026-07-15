@@ -1,64 +1,64 @@
-Return-Path: <stable+bounces-274891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274892-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id oJV5AQlsV2rjNgEAu9opvQ
-	(envelope-from <stable+bounces-274891-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 13:16:25 +0200
+	id PWrSGgxsV2rkNgEAu9opvQ
+	(envelope-from <stable+bounces-274892-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 13:16:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91FF875D76C
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 13:16:24 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B57D775D76F
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 13:16:27 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="RCXqSTm/";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274891-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-274891-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Jqi34uNV;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274892-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-274892-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 05300300748E
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 11:16:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BB0E03007350
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 11:16:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2EB4334692;
-	Wed, 15 Jul 2026 11:16:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57A8741A903;
+	Wed, 15 Jul 2026 11:16:23 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA17725CC57
-	for <stable@vger.kernel.org>; Wed, 15 Jul 2026 11:16:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25F2B3C9ED5
+	for <stable@vger.kernel.org>; Wed, 15 Jul 2026 11:16:21 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784114181; cv=none; b=sa1OUY0NAJ1i1KChfJY58zuksI40SPIaxs0duhkpijP5T/axKvfvX/baQ18Le4c1oVRH/GFBglxAlR69M88JkpthX4KaCjbjkXyn8X9VP4WMBi6FHwF/xhwhZ2/B1fsyCFk6ECLUQFzapLT+0tM5I+4g2Iw7rpwDv4I+eRZkDj0=
+	t=1784114183; cv=none; b=IemMJP5zcoOnFbXK3sLDyb9FPNXODJe7QO0VREpoZSYYKxhVoJPZ4NSxFMlohrAmBVhv6t5U55RK4aUwIhCJjRsFapIiJe3BJ4ZdLthytAwTd1XZU1H1N5iAj2/C9/2SgrnAYnk7mABZ4P9XzVb2/QGDqX2F2Fhv3ragqkHaLh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784114181; c=relaxed/simple;
-	bh=w4WT5jjx6r+X0lquEG4NBtO7Z4IRyduBagLGufTiuxw=;
+	s=arc-20240116; t=1784114183; c=relaxed/simple;
+	bh=cA7KJuejJcGfVAe1w5mbwBnFHS489fvONJusiC3FlmA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rPLzjAqiN/TbERNie/Jm50Mq4e9zito5t26vCQAK9yXUigrL4eP8k8uQb5WfQUZ1vLmtBmuEQ4lGTFkXY8Dgou6QObh5mjl3CPD0rGP7Sp/RHL1l8j3awXAqDlTszTQtqDqiNF8HoZxJSDUTVK+BiYQwbTnYNMOMFHYIrhEKpac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RCXqSTm/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBF421F000E9;
-	Wed, 15 Jul 2026 11:16:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Wc5DKc5ZsFkkubpeB5FGDdQWoewqiWk6f7w/JalOeuVB9A3pzwJnDPiP42mnlGOeLG/Vb/hk6zUXU3ZVWPoemrL8cJpxeyGvL6oEL5uIrJtJIb9c1ZGxUkq0d4VbuSKVnnD8oNSqPG5G+kExAe4iGWKmLkXYJIfM2aS6G7lCA5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jqi34uNV; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA8601F00A3D;
+	Wed, 15 Jul 2026 11:16:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784114180;
-	bh=gK9RqY3Wa0HzDTaRz73/AmxLKaiwSyW3h83+nZq9R5o=;
+	s=k20260515; t=1784114181;
+	bh=7/94RzFanRSTI9ta7ZjLdZR53wXHEJGdYyoaY200/1w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RCXqSTm/GYsxoW2BTRkohct/XtKYmKTFyF9E9rTMALX1XEHJ81ZQk4vTdg2UO/yBd
-	 FjjiUqrSjIDXGmTCspELZJTW0oQ29I77Mkatha7UW1zJ3+a0XR+p/DBmiUMT6cKvV4
-	 wU5U/p35gQBVu32vIAU2bPw93rEf6nTGoNLY0SfUFPN/z9yEBZMg6BYwyNbTXCossQ
-	 G+Wg94c8Ga6Ip5UPZ/+sWHnq/v+1e7GHyyR5E68Ft6UO/w/XfolHtwko3dZhLbzerK
-	 tGquDX6eRi5xYyfrusPwoLfL6RiIgjkPSjR2ruWUS98me8pFgP/dZQCDCaYoYizfe1
-	 TIrEuY0NLvY/A==
+	b=Jqi34uNV+IOcS5LmaG6mrC9lOe+8RIQsXKRMyfEJcGlgsKkNGvbSZqhBBBLB2tOC4
+	 cb/wUygSP1AFVs3UrKCJ7XBr1CcOa9K3nIpjm8dBYLslgHVH+5t78aZQ7a0e6MvSYN
+	 Kh92tveRrVciVieoCbv7IoYeXdnNzuTjJucntvOp64OxD/PcNA+ZuFYiP4SoemOSvh
+	 /HPfO7hkttF/jMXbUTZZI4we1m/QAWyQ7bHVsSiwG4B3BwbsX3sM1ID3s3PtI32hb9
+	 DEz1bGg2yPNoMkN80g6McVEqKqpUMNPKGK26QT9FQmNbjeFOIRkSps3KSJtGc6eDlg
+	 03zQCwVq+hJkw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Simon Richter <Simon.Richter@hogyros.de>,
-	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
 	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y 1/6] PCI: Prevent resource tree corruption when BAR resize fails
-Date: Wed, 15 Jul 2026 07:16:13 -0400
-Message-ID: <20260715111618.647249-1-sashal@kernel.org>
+Subject: [PATCH 5.15.y 2/6] PCI: Free saved list without holding pci_bus_sem
+Date: Wed, 15 Jul 2026 07:16:14 -0400
+Message-ID: <20260715111618.647249-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026071314-tableware-flashback-79cc@gregkh>
+In-Reply-To: <20260715111618.647249-1-sashal@kernel.org>
 References: <2026071314-tableware-flashback-79cc@gregkh>
+ <20260715111618.647249-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -74,11 +74,11 @@ X-Spamd-Result: default: False [-4.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:ilpo.jarvinen@linux.intel.com,m:Simon.Richter@hogyros.de,m:alex.bennee@linaro.org,m:bhelgaas@google.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:ilpo.jarvinen@linux.intel.com,m:bhelgaas@google.com,m:alex.bennee@linaro.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FROM_HAS_DN(0.00)[];
@@ -87,86 +87,53 @@ X-Spamd-Result: default: False [-4.16 / 15.00];
 	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-274891-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-274892-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp,linaro.org:email,hogyros.de:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linaro.org:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 91FF875D76C
+X-Rspamd-Queue-Id: B57D775D76F
 
 From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 91c4c89db41499eea1b29c56655f79c3bae66e93 ]
+[ Upstream commit 1d8a0506f69895b7cfd9d5c4546761c508231a8a ]
 
-pbus_reassign_bridge_resources() saves bridge windows into the saved
-list before attempting to adjust resource assignments to perform a BAR
-resize operation. If resource adjustments cannot be completed fully,
-rollback is attempted by restoring the resource from the saved list.
+Freeing the saved list does not require holding pci_bus_sem, so the
+critical section can be made shorter.
 
-The rollback, however, does not check whether the resources it restores were
-assigned by the partial resize attempt. If restore changes addresses of the
-resource, it can result in corrupting the resource tree.
-
-An example of a corrupted resource tree with overlapping addresses:
-
-  6200000000000-6203fbfffffff : pciex@620c3c0000000
-    6200000000000-6203fbff0ffff : PCI Bus 0030:01
-      6200020000000-62000207fffff : 0030:01:00.0
-      6200000000000-6203fbff0ffff : PCI Bus 0030:02
-
-A resource that are assigned into the resource tree must remain
-unchanged. Thus, release such a resource before attempting to restore
-and claim it back.
-
-For simplicity, always do the release and claim back for the resource
-even in the cases where it is restored to the same address range.
-
-Note: this fix may "break" some cases where devices "worked" because
-the resource tree corruption allowed address space double counting to
-fit more resource than what can now be assigned without double
-counting. The upcoming changes to BAR resizing should address those
-scenarios (to the extent possible).
-
-Fixes: 8bb705e3e79d ("PCI: Add pci_resize_resource() for resizing BARs")
-Reported-by: Simon Richter <Simon.Richter@hogyros.de>
-Link: https://lore.kernel.org/linux-pci/67840a16-99b4-4d8c-9b5c-4721ab0970a2@hogyros.de/
-Reported-by: Alex Bennée <alex.bennee@linaro.org>
-Link: https://lore.kernel.org/linux-pci/874irqop6b.fsf@draig.linaro.org/
 Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Tested-by: Alex Bennée <alex.bennee@linaro.org> # AVA, AMD GPU
-Link: https://patch.msgid.link/20251113162628.5946-2-ilpo.jarvinen@linux.intel.com
+Link: https://patch.msgid.link/20251113162628.5946-6-ilpo.jarvinen@linux.intel.com
 Stable-dep-of: ee7471fe968d ("PCI: Skip Resizable BAR restore on read error")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/setup-bus.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/pci/setup-bus.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
-index 04c3ae8efc0f84..92a9a0f38fa76e 100644
+index 92a9a0f38fa76e..5d85de5e777ddd 100644
 --- a/drivers/pci/setup-bus.c
 +++ b/drivers/pci/setup-bus.c
-@@ -2257,6 +2257,11 @@ int pci_reassign_bridge_resources(struct pci_dev *bridge, unsigned long type)
- 		bridge = dev_res->dev;
- 		i = res - bridge->resource;
+@@ -2269,8 +2269,8 @@ int pci_reassign_bridge_resources(struct pci_dev *bridge, unsigned long type)
+ 		pci_claim_resource(bridge, i);
+ 		pci_setup_bridge(bridge->subordinate);
+ 	}
+-	free_list(&saved);
+ 	up_read(&pci_bus_sem);
++	free_list(&saved);
  
-+		if (res->parent) {
-+			release_child_resources(res);
-+			pci_release_resource(bridge, i);
-+		}
-+
- 		res->start = dev_res->start;
- 		res->end = dev_res->end;
- 		res->flags = dev_res->flags;
+ 	return ret;
+ }
 -- 
 2.53.0
 
