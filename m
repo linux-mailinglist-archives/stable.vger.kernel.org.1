@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-274660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274661-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id +rwQM/XgVmpCCQEAu9opvQ
-	(envelope-from <stable+bounces-274660-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 03:23:01 +0200
+	id 1oYbCPfgVmpDCQEAu9opvQ
+	(envelope-from <stable+bounces-274661-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 03:23:03 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4803C759DB8
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 03:23:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92188759DBB
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 03:23:02 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WwwX5BTZ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274660-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-274660-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BwFg1t9f;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274661-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-274661-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 54D1B302A7C1
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 01:23:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9EA4030298A0
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 01:23:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ED0C37AA7E;
-	Wed, 15 Jul 2026 01:23:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E60037A83A;
+	Wed, 15 Jul 2026 01:23:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C22C5379EDA
-	for <stable@vger.kernel.org>; Wed, 15 Jul 2026 01:22:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE811379C5A
+	for <stable@vger.kernel.org>; Wed, 15 Jul 2026 01:22:59 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784078579; cv=none; b=Pqn5zW9IFFUbP1HgU6Yv544QDU3AGXWUYdtU4bmKo6nPZrmHt3KbukKM58qPj/jaxH+ueH9PQhKwjITPkvzlKqucWEjizYMngh76DSE4dVKG080SozkzloE75V0sRMmso7Xry6sDX/uSZ0+zySbF5TvnoC23N806tijRj0ygbO8=
+	t=1784078581; cv=none; b=YxSvjxmH8EmwgnJJZqFpcjt0CzCcwwMrLumuLrtZl423SW3Haf5VC3iia6JgZ9vKABa5N3VvnpKSKiJK3S8Q89D7rgCZ6mVTTiDY8/uDYUYLD9SnH6fZm305DNF/sbLIy6h+CHDUv3C+vz10HpL13KFks+OVCrfmbZYgCFVKD+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784078579; c=relaxed/simple;
-	bh=OEi/t49PYQKrKDGgCSLn/mw59ysfPtiCXojBwBxC/80=;
+	s=arc-20240116; t=1784078581; c=relaxed/simple;
+	bh=somVpQ4jrrCT/TXgV6OQh9PgwdB5VN7h/9CoegamcGA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PyVqbBR17qlVexUxCTwIee8vAUmLZkOquN/d67wgLbPEOYihI7bCQReSMNPrJFY5kxL0FrRuGy1delXHl0LCibfM/d4CRpZIK4aV8qlEl7vtyx2dxdDNkoGBNW5HAz53srkHZXSP09hFxqets+2U4I6xTDj5s8pJ9beSS2eJOpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WwwX5BTZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C8CC1F00A3A;
+	 MIME-Version; b=HPfcG0yBnvKbbDAbsLnku+C9KyC4lf+faSyHAA70Vrf0Nfw2e5flgtS6OVzrtnpx+rbaN8ZZg3LT/7bv1fLCF3hUpcOM3u02r78A3JHIEJUh+ccsOwex+MwCD9gHMtU9U8Qi4rzskeF8UgS/Oblm7BXpndzBQ+uio+HY1rYR3I4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BwFg1t9f; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E81D31F00A3E;
 	Wed, 15 Jul 2026 01:22:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784078578;
-	bh=23JPN3N5wmmKFt8V4zRbSpKuyNswMuLk2AH1YNEXg5Q=;
+	s=k20260515; t=1784078579;
+	bh=hjyXC4xsT3XeLEPpHG6Xv7Hxm4wpMGDp8YBkHXUD5U0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WwwX5BTZmEPC8XMetLTGSSGoULg4mf9Dv10BQ0R3ejyT07kX0w9GG2Wkhi35LMqXR
-	 vPKF+T6Dq+JKSl6yEAM1DoDNiDinM4zypaORaPthoFPY5luhAr0816uLT4FtZqUBI/
-	 JCRPOKt9qIdgt3PV05a/F2T404efpRtT00xEca2301IAXj9IZ2YciAoX/C6e6Ly4eM
-	 +Zv2upwPRArWfUOS1XkQ5FA6t0R09qnhCkh0Nry8SYWT8eahLIG5YsSZR//cLW9TJz
-	 B/yUBxakFikZQflNSM6+kFGP9pmLIvDE55XdGq7w0izBN66Bd8t69G2lFX0tVg736A
-	 x0tFo2b69xF3g==
+	b=BwFg1t9fXKDo37guLxcUh7XG4/dQGF+3jZF0+dB9UOH59Hc6W7ProNyfZVmvJbj6N
+	 oyt4D8uZ+M18UsUVPDKP/pvGnqJUN6n6PpoBruvuXnoLdKAXin3kN3UmCsqpzch3sa
+	 vKiRld+sV5N2MVz0tR3AfixIkH3xfpNhwVqyyilSBzf1AS3cSPiH+RWYPP03DGUZAC
+	 ObX+dDpEemSkN57eGv0wh/OepwxP3Txk+t+tlcqNoUuIZtq1NGUMAa6jPw2Ri0QKKe
+	 qDcwnQJJZpbp73w86QSTwG5TPMvkgCytujyv/KAkLzKfqzP5lvoxlb3RsAXtI/+wHi
+	 4f3uzeZ8yiwzA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Christian Marangi <ansuelsmth@gmail.com>,
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
 	Manivannan Sadhasivam <mani@kernel.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Caleb James DeLisle <cjd@cjdns.fr>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y 2/3] PCI: mediatek: Convert bool to single quirks entry and bitmap
-Date: Tue, 14 Jul 2026 21:22:54 -0400
-Message-ID: <20260715012255.4073217-2-sashal@kernel.org>
+Subject: [PATCH 5.10.y 3/3] PCI: mediatek: Fix IRQ domain leak when port fails to enable
+Date: Tue, 14 Jul 2026 21:22:55 -0400
+Message-ID: <20260715012255.4073217-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260715012255.4073217-1-sashal@kernel.org>
 References: <2026071332-nectar-acre-e146@gregkh>
@@ -71,136 +71,201 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-274660-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-274661-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:ansuelsmth@gmail.com,m:mani@kernel.org,m:angelogioacchino.delregno@collabora.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:manivannan.sadhasivam@oss.qualcomm.com,m:mani@kernel.org,m:cjd@cjdns.fr,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,collabora.com];
-	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,collabora.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qualcomm.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4803C759DB8
+X-Rspamd-Queue-Id: 92188759DBB
 
-From: Christian Marangi <ansuelsmth@gmail.com>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 
-[ Upstream commit 04305367fab7ec9c98eeba315ad09c8b20abce93 ]
+[ Upstream commit f865a57896bd92d7662eb2818d8f48872e2cbbc7 ]
 
-To clean Mediatek SoC PCIe struct, convert all the bool to a bitmap and
-use a single quirks to reference all the values. This permits cleaner
-addition of new quirk without having to define a new bool in the struct.
+When mtk_pcie_enable_port() fails, mtk_pcie_port_free() removes the port
+from pcie->ports and frees the port structure. However, the IRQ domains set
+up earlier by mtk_pcie_init_irq_domain() are never freed.
 
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+Fix this by refactoring mtk_pcie_irq_teardown() into a per-port helper,
+mtk_pcie_irq_teardown_port(), and calling it from mtk_pcie_setup() when
+mtk_pcie_enable_port() fails. Since the IRQ teardown must only happen in
+the probe error path (during resume, child devices may have active MSI
+mappings and the NOIRQ context prohibits sleeping locks),
+mtk_pcie_enable_port() is changed to return an error code so callers can
+distinguish the two paths and act accordingly.
+
+This issue was reported by Sashiko while reviewing the EcoNet EN7528 SoC
+support series.
+
+Fixes: b099631df160 ("PCI: mediatek: Add controller support for MT2712 and MT7622")
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://patch.msgid.link/20251020111121.31779-4-ansuelsmth@gmail.com
-Stable-dep-of: f865a57896bd ("PCI: mediatek: Fix IRQ domain leak when port fails to enable")
+Cc: stable@vger.kernel.org # 5.10
+Cc: Caleb James DeLisle <cjd@cjdns.fr>
+Link: https://patch.msgid.link/20260521174617.17692-1-mani@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/pcie-mediatek.c | 25 ++++++++++++++++---------
- 1 file changed, 16 insertions(+), 9 deletions(-)
+ drivers/pci/controller/pcie-mediatek.c | 67 ++++++++++++++++----------
+ 1 file changed, 42 insertions(+), 25 deletions(-)
 
 diff --git a/drivers/pci/controller/pcie-mediatek.c b/drivers/pci/controller/pcie-mediatek.c
-index 3e4b0882ee3350..a69f5c89cbd0f6 100644
+index a69f5c89cbd0f6..b09b09252d218e 100644
 --- a/drivers/pci/controller/pcie-mediatek.c
 +++ b/drivers/pci/controller/pcie-mediatek.c
-@@ -139,22 +139,30 @@
+@@ -538,25 +538,29 @@ static void mtk_pcie_enable_msi(struct mtk_pcie_port *port)
+ 	writel(val, port->base + PCIE_INT_MASK);
+ }
  
- struct mtk_pcie_port;
+-static void mtk_pcie_irq_teardown(struct mtk_pcie *pcie)
++static void mtk_pcie_irq_teardown_port(struct mtk_pcie_port *port)
+ {
+-	struct mtk_pcie_port *port, *tmp;
++	irq_set_chained_handler_and_data(port->irq, NULL, NULL);
  
-+/**
-+ * enum mtk_pcie_quirks - MTK PCIe quirks
-+ * @MTK_PCIE_FIX_CLASS_ID: host's class ID needed to be fixed
-+ * @MTK_PCIE_FIX_DEVICE_ID: host's device ID needed to be fixed
-+ */
-+enum mtk_pcie_quirks {
-+	MTK_PCIE_FIX_CLASS_ID = BIT(0),
-+	MTK_PCIE_FIX_DEVICE_ID = BIT(1),
-+};
+-	list_for_each_entry_safe(port, tmp, &pcie->ports, list) {
+-		irq_set_chained_handler_and_data(port->irq, NULL, NULL);
++	if (port->irq_domain)
++		irq_domain_remove(port->irq_domain);
+ 
+-		if (port->irq_domain)
+-			irq_domain_remove(port->irq_domain);
++	if (IS_ENABLED(CONFIG_PCI_MSI)) {
++		if (port->msi_domain)
++			irq_domain_remove(port->msi_domain);
++		if (port->inner_domain)
++			irq_domain_remove(port->inner_domain);
++	}
+ 
+-		if (IS_ENABLED(CONFIG_PCI_MSI)) {
+-			if (port->msi_domain)
+-				irq_domain_remove(port->msi_domain);
+-			if (port->inner_domain)
+-				irq_domain_remove(port->inner_domain);
+-		}
++	irq_dispose_mapping(port->irq);
++}
+ 
+-		irq_dispose_mapping(port->irq);
+-	}
++static void mtk_pcie_irq_teardown(struct mtk_pcie *pcie)
++{
++	struct mtk_pcie_port *port, *tmp;
 +
- /**
-  * struct mtk_pcie_soc - differentiate between host generations
-- * @need_fix_class_id: whether this host's class ID needed to be fixed or not
-- * @need_fix_device_id: whether this host's device ID needed to be fixed or not
-  * @device_id: device ID which this host need to be fixed
-  * @ops: pointer to configuration access functions
-  * @startup: pointer to controller setting functions
-  * @setup_irq: pointer to initialize IRQ functions
-+ * @quirks: PCIe device quirks.
-  */
- struct mtk_pcie_soc {
--	bool need_fix_class_id;
--	bool need_fix_device_id;
- 	unsigned int device_id;
- 	struct pci_ops *ops;
- 	int (*startup)(struct mtk_pcie_port *port);
- 	int (*setup_irq)(struct mtk_pcie_port *port, struct device_node *node);
-+	enum mtk_pcie_quirks quirks;
- };
++	list_for_each_entry_safe(port, tmp, &pcie->ports, list)
++		mtk_pcie_irq_teardown_port(port);
+ }
  
- /**
-@@ -707,7 +715,7 @@ static int mtk_pcie_startup_port_v2(struct mtk_pcie_port *port)
- 	writel(val, port->base + PCIE_RST_CTRL);
+ static int mtk_pcie_intx_map(struct irq_domain *domain, unsigned int irq,
+@@ -833,7 +837,7 @@ static int mtk_pcie_startup_port(struct mtk_pcie_port *port)
+ 	return 0;
+ }
  
- 	/* Set up vendor ID and class code */
--	if (soc->need_fix_class_id) {
-+	if (soc->quirks & MTK_PCIE_FIX_CLASS_ID) {
- 		val = PCI_VENDOR_ID_MEDIATEK;
- 		writew(val, port->base + PCIE_CONF_VEND_ID);
- 
-@@ -715,7 +723,7 @@ static int mtk_pcie_startup_port_v2(struct mtk_pcie_port *port)
- 		writew(val, port->base + PCIE_CONF_CLASS_ID);
+-static void mtk_pcie_enable_port(struct mtk_pcie_port *port)
++static int mtk_pcie_enable_port(struct mtk_pcie_port *port)
+ {
+ 	struct mtk_pcie *pcie = port->pcie;
+ 	struct device *dev = pcie->dev;
+@@ -842,7 +846,7 @@ static void mtk_pcie_enable_port(struct mtk_pcie_port *port)
+ 	err = clk_prepare_enable(port->sys_ck);
+ 	if (err) {
+ 		dev_err(dev, "failed to enable sys_ck%d clock\n", port->slot);
+-		goto err_sys_clk;
++		return err;
  	}
  
--	if (soc->need_fix_device_id)
-+	if (soc->quirks & MTK_PCIE_FIX_DEVICE_ID)
- 		writew(soc->device_id, port->base + PCIE_CONF_DEVICE_ID);
+ 	err = clk_prepare_enable(port->ahb_ck);
+@@ -890,11 +894,15 @@ static void mtk_pcie_enable_port(struct mtk_pcie_port *port)
+ 		goto err_phy_on;
+ 	}
  
- 	/* 100ms timeout value should be enough for Gen1/2 training */
-@@ -1195,19 +1203,18 @@ static const struct mtk_pcie_soc mtk_pcie_soc_mt2712 = {
- };
+-	if (!pcie->soc->startup(port))
+-		return;
++	err = pcie->soc->startup(port);
++	if (err) {
++		dev_info(dev, "Port%d link down\n", port->slot);
++		goto err_soc_startup;
++	}
  
- static const struct mtk_pcie_soc mtk_pcie_soc_mt7622 = {
--	.need_fix_class_id = true,
- 	.ops = &mtk_pcie_ops_v2,
- 	.startup = mtk_pcie_startup_port_v2,
- 	.setup_irq = mtk_pcie_setup_irq,
-+	.quirks = MTK_PCIE_FIX_CLASS_ID,
- };
+-	dev_info(dev, "Port%d link down\n", port->slot);
++	return 0;
  
- static const struct mtk_pcie_soc mtk_pcie_soc_mt7629 = {
--	.need_fix_class_id = true,
--	.need_fix_device_id = true,
- 	.device_id = PCI_DEVICE_ID_MEDIATEK_7629,
- 	.ops = &mtk_pcie_ops_v2,
- 	.startup = mtk_pcie_startup_port_v2,
- 	.setup_irq = mtk_pcie_setup_irq,
-+	.quirks = MTK_PCIE_FIX_CLASS_ID | MTK_PCIE_FIX_DEVICE_ID,
- };
++err_soc_startup:
+ 	phy_power_off(port->phy);
+ err_phy_on:
+ 	phy_exit(port->phy);
+@@ -910,8 +918,8 @@ static void mtk_pcie_enable_port(struct mtk_pcie_port *port)
+ 	clk_disable_unprepare(port->ahb_ck);
+ err_ahb_clk:
+ 	clk_disable_unprepare(port->sys_ck);
+-err_sys_clk:
+-	mtk_pcie_port_free(port);
++
++	return err;
+ }
  
- static const struct of_device_id mtk_pcie_ids[] = {
+ static int mtk_pcie_parse_port(struct mtk_pcie *pcie,
+@@ -1066,8 +1074,13 @@ static int mtk_pcie_setup(struct mtk_pcie *pcie)
+ 		return err;
+ 
+ 	/* enable each port, and then check link status */
+-	list_for_each_entry_safe(port, tmp, &pcie->ports, list)
+-		mtk_pcie_enable_port(port);
++	list_for_each_entry_safe(port, tmp, &pcie->ports, list) {
++		err = mtk_pcie_enable_port(port);
++		if (err) {
++			mtk_pcie_irq_teardown_port(port);
++			mtk_pcie_port_free(port);
++		}
++	}
+ 
+ 	/* power down PCIe subsys if slots are all empty (link down) */
+ 	if (list_empty(&pcie->ports))
+@@ -1170,14 +1183,18 @@ static int __maybe_unused mtk_pcie_resume_noirq(struct device *dev)
+ {
+ 	struct mtk_pcie *pcie = dev_get_drvdata(dev);
+ 	struct mtk_pcie_port *port, *tmp;
++	int err;
+ 
+ 	if (list_empty(&pcie->ports))
+ 		return 0;
+ 
+ 	clk_prepare_enable(pcie->free_ck);
+ 
+-	list_for_each_entry_safe(port, tmp, &pcie->ports, list)
+-		mtk_pcie_enable_port(port);
++	list_for_each_entry_safe(port, tmp, &pcie->ports, list) {
++		err = mtk_pcie_enable_port(port);
++		if (err)
++			mtk_pcie_port_free(port);
++	}
+ 
+ 	/* In case of EP was removed while system suspend. */
+ 	if (list_empty(&pcie->ports))
 -- 
 2.53.0
 
