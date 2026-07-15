@@ -1,64 +1,93 @@
-Return-Path: <stable+bounces-274701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274703-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id oE+VB3/0VmoKDgEAu9opvQ
-	(envelope-from <stable+bounces-274701-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 04:46:23 +0200
+	id LyO1B+L0VmovDgEAu9opvQ
+	(envelope-from <stable+bounces-274703-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 04:48:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2EE075A1ED
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 04:46:22 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A74675A243
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 04:48:01 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l0q7W2th;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274701-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-274701-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=QpHGXfsl;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274703-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274703-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C1C433025143
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 02:46:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3E822307A9E1
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 02:46:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BFD738A702;
-	Wed, 15 Jul 2026 02:46:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D35FB3A7F69;
+	Wed, 15 Jul 2026 02:46:45 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B64137106A
-	for <stable@vger.kernel.org>; Wed, 15 Jul 2026 02:46:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ACDE3242D4
+	for <stable@vger.kernel.org>; Wed, 15 Jul 2026 02:46:44 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784083577; cv=none; b=miW/r0UZYOg3jfQYzyKV7J0Q7I8lelh9iVWyPubTJlzF8jUoTevFNX+tL98e+RtoJHI8qmQf+zbp/hy6pORqXpSrVSX7pHLX5MqJKUJuV/U+6na+IzntFTxPJYIRMZ/ryMVr8bXJLdx8gPkkBh+XJfbIb2FeLZYDxHCKmJKRafU=
+	t=1784083605; cv=none; b=pe0OHiuSaitLHG3zDXQHWChLF6jMSOtagosv+inlcWesdyvdjWd9bHL7uBAliuRb5S/xFIKDmGy1WaZUJ81dEgwg0LxvdVdtQ/1PPeZG5FZR6rXNUFMGN+Icfa9RqNuAhOj9aDgIY/2zmGqQGOSFjDCwPJEUOE/ZJu15BJRgE5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784083577; c=relaxed/simple;
-	bh=iDEhQojbXbS9UMZAFo/wwONccEu6PtBa17iYsoy6hGA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cRWsxZZmg6S7VGtVYfXE94FxpaTa3cnU/Z7D85zyEBeBkHDj7oG0npOkhLxnpsmfTLB7hg45/5CzDBZPtvApCJF5r8UgEhYTpnYW4PXdPqjFLbRIW71/DE0YPNYAo1bgR9FVrixUcUkma5qy8ywb8OPVvyFeIM9bJC9Y3XxTDtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l0q7W2th; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 767591F000E9;
-	Wed, 15 Jul 2026 02:46:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784083576;
-	bh=Hh7+Wr/AUjUQAuDkq8Z8ehd/TWfNRZC0aYBYzm4Zxs4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=l0q7W2thgRs0aotsRc+tsuTFMs6z5EDTLR+YbbfP2bEq/9HclIfj0RLrssffppsGN
-	 F4MUo3Fvz8TcUK95c1Bh/oUQhvjnrPF92lNWQNB2BbxS+uK+vghScwlABqq4q04ATx
-	 Iq+iMoOpBnCI3C2Abb5EH5QEOSsZ6pYkSPz43PktzaH9wgZGx997ai9IkMcD8Xu5mE
-	 jXTn7nhRrkIwVg4L6XqxD51KQTFQzAZ1oRl1uxf6LFLvjL0H9oLsBM5GE1EJfSGD71
-	 +c5RwHj1ISS0hqYwbs0UrZxg87cQmdamer1n0i1C11STZFjysqetkFYrKO3dN92qcG
-	 IOSgL5rFhTwEQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Alexandru Hossu <hossu.alexandru@gmail.com>,
-	stable <stable@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y 10/10] staging: rtl8723bs: fix OOB reads in is_ap_in_tkip() IE loop
-Date: Tue, 14 Jul 2026 22:46:06 -0400
-Message-ID: <20260715024606.107096-10-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260715024606.107096-1-sashal@kernel.org>
-References: <2026071347-leotard-finlike-cc76@gregkh>
- <20260715024606.107096-1-sashal@kernel.org>
+	s=arc-20240116; t=1784083605; c=relaxed/simple;
+	bh=y95DrYbP/VmjOSUNzUGbzSp38YYbp8UhXE/2Bv6rCrs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EXn6Sx1YgVasKip+ycrBI1gkvpdx40ZELan/oR5zYfpNYkkb8+u26mwJKytazF5kfvZAstT/G7NbMGzVgX0QPnXdS+yM04sSVRzbS9UAXnMbK+eLh3YZjlwN3BxRwFCE7d6kIBJ/xcks7sOezSzjIW30dS8nNaOWIsHC71kVfkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QpHGXfsl; arc=none smtp.client-ip=209.85.214.170
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2cc7ef7ec27so57371285ad.1
+        for <stable@vger.kernel.org>; Tue, 14 Jul 2026 19:46:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784083604; x=1784688404; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=IgrBcgsc/jMn8PcArbo69Rr9sOwNc88jPEb6vu9Je+A=;
+        b=QpHGXfslb83Ccc2nR3Soo0LX+Pr5KmLbmE9LZwcfK4rWzMXNGWv4QoVcLKq3ZapsBO
+         shlPznte5Sh6O4F/MMfN9hg5YBEKBIjLQ385vQG7RC+bGscRLdCXUyclOdpzpiiLEUDT
+         OYQLcrpiHChxM18J/g3c1nFV/QJM/OF0fvT8wVEPJkGbFRTy5j2Vi3SCFLfijeAppcpa
+         hfumkkE/SsCFfEgAVgxB490AYYJgabY5pwvNoCd2gmVAOQnev3EqCU2Duqcn09ouiT7r
+         zrV+LczB41Rin5FMr7FhgqYihci7SYdSXQLS81QKltOwvO8GJoNMBY2JyamHobISe5n7
+         DOzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784083604; x=1784688404;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=IgrBcgsc/jMn8PcArbo69Rr9sOwNc88jPEb6vu9Je+A=;
+        b=BrKoVGXqTm+UnzPBrt8ml/YXIDLG5IBsaZAhxaRDvnYy2tFubWQlMD4h/DYmrbLdeJ
+         db+iYn5PFPq5YRJSrtla+TOqncdWcoMCGiOE675ZHS7UPCcvJSltitY8260o6bhkuJdr
+         g/44gMLNWWCPNOKCuMIn/Kqxh3gVjeK65Uzg8+AuRczxAXbmv4rpSHdcpTaMxkoja034
+         1SEsYJgeEpeTNi3AaveePtXQUz3wJhIpE/jOMeNmpzZPp5xaBkfK9wZxBJ+O+xNXpHsG
+         K2cfu7LR3pvy8MSQ8cx5/nLfpw8fXyIvphM3Wkbmutf+3dCE3jemFsN2/U3ftfSriKqZ
+         sYsQ==
+X-Forwarded-Encrypted: i=1; AHgh+Ro+BTqRwe5t5yNPJCw+skAriLUyZpQlFCX4AnHZKZqrNOEbsmuDiDVhDUYJ2UUq3uIvMrrDBN4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxIda1VOjJ2qFOMl087maqjtVT00TUxt9N08LTzwn2zSl2HdjxR
+	HhLm2rRLzDvPUMOD0gl3cbxmW2e2Laea+4KFImu2FymFx8BExyiQouIA
+X-Gm-Gg: AfdE7cmPjBccIpeIpiaUnRqFplI9SJJgTC/nwuI3G2FzW7VSg4Gnqgf4vkdvCFcT8OI
+	PtTH2aA4CAir4ycYvd235DIWbk/ZoqieUdGNZwXCpgxlZwHXnqOvDMrB5B9CfmLVtLO0niaveNw
+	kTFhqPHMcUxQFf/+I0XGrIHKvxNTdWkNMfI0t5bPur6aMp5hZ1oVBtBkPTwdETALX7l+VtKnSEp
+	o2QdQNDOFXwFbYFmXG/hQ+qn2hUUEoHre0C8JYq7Amk/ePBphN0lNghsfPv0N1sHiU4DVXl7ASM
+	D+z5l1CXcG+JSQN3DAI6PFCfCgynUFUfeMk3/QYlwJvT6XZj7gQ2hsiDuQ3sU8dGP/ZSuRxRXUC
+	lZ20PaPpqCsO8vx94PlHXVsFXuo5FwY8AIlaSP91f3wLxLFMYRZ40xQhoOJ7w8WCurL8DBP1E5x
+	JDaEoJ7EqeN4Wjs2ijwPD+fw/pi8tJJujp1lg=
+X-Received: by 2002:a17:902:e787:b0:2cc:7c36:2c23 with SMTP id d9443c01a7336-2cf03d6be8amr8405355ad.43.1784083603695;
+        Tue, 14 Jul 2026 19:46:43 -0700 (PDT)
+Received: from osman.mioffice.cn ([43.224.245.178])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc9d1edb0sm124530935ad.53.2026.07.14.19.46.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Jul 2026 19:46:42 -0700 (PDT)
+From: Zhan Xusheng <zhanxusheng1024@gmail.com>
+X-Google-Original-From: Zhan Xusheng <zhanxusheng@xiaomi.com>
+To: Paul Moore <paul@paul-moore.com>
+Cc: Eric Paris <eparis@redhat.com>,
+	Ricardo Robaina <rrobaina@redhat.com>,
+	Richard Guy Briggs <rgb@redhat.com>,
+	audit@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Zhan Xusheng <zhanxusheng@xiaomi.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] audit: fix potential integer overflow in audit_log_n_string()
+Date: Wed, 15 Jul 2026 10:46:35 +0800
+Message-ID: <20260715024635.25376-1-zhanxusheng@xiaomi.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,105 +96,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-274701-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:hossu.alexandru@gmail.com,m:stable@kernel.org,m:gregkh@linuxfoundation.org,m:sashal@kernel.org,m:hossualexandru@gmail.com,s:lists@lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-274703-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:paul@paul-moore.com,m:eparis@redhat.com,m:rrobaina@redhat.com,m:rgb@redhat.com,m:audit@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:zhanxusheng@xiaomi.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,linuxfoundation.org];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER(0.00)[zhanxusheng1024@gmail.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[zhanxusheng1024@gmail.com,stable@vger.kernel.org];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,vger.kernel.org:from_smtp,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B2EE075A1ED
+X-Rspamd-Queue-Id: 6A74675A243
 
-From: Alexandru Hossu <hossu.alexandru@gmail.com>
+audit_log_n_string() computes new_len as "slen + 3" (enclosing quotes
+plus the NUL terminator) and stores it into an int, while slen is a
+size_t.  For a sufficiently large slen the addition can overflow and/or
+the result be truncated when assigned to the int new_len, so the
+"new_len > avail" check can be bypassed and the subsequent
+memcpy(ptr, string, slen) can write past the skb tail.
 
-[ Upstream commit 3bf39f711ff27c64be8680a8938bcc5001982e81 ]
+This is the same class of bug that was fixed for the hex sibling in
+commit 65dfde57d1e2 ("audit: fix potential integer overflow in
+audit_log_n_hex()"); both helpers are reached through
+audit_log_n_untrustedstring() with the same length source.
 
-The loop in is_ap_in_tkip() iterates over IEs without verifying that
-enough bytes remain before dereferencing the IE header or its payload:
+Make new_len a size_t and use check_add_overflow() to catch the
+overflow, mirroring the audit_log_n_hex() fix.  No functional change for
+the in-tree callers, which all pass bounded lengths.
 
-- pIE->element_id and pIE->length are read without checking that
-  i + sizeof(*pIE) <= ie_length, so a truncated IE at the end of the
-  buffer causes an OOB read.
-
-- For WLAN_EID_VENDOR_SPECIFIC the code compares pIE->data + 12,
-  which requires pIE->length >= 16.  For WLAN_EID_RSN it compares
-  pIE->data + 8, requiring pIE->length >= 12.  Neither requirement
-  is checked.
-
-Add the missing IE header and payload bounds checks and guard each
-data access with an explicit pIE->length minimum, matching the
-pattern established in update_beacon_info().
-
-Fixes: 554c0a3abf21 ("staging: Add rtl8723bs sdio wifi driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Alexandru Hossu <hossu.alexandru@gmail.com>
-Link: https://patch.msgid.link/20260522004531.1038924-7-hossu.alexandru@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 168b7173959f ("AUDIT: Clean up logging of untrusted strings")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zhan Xusheng <zhanxusheng@xiaomi.com>
 ---
- drivers/staging/rtl8723bs/core/rtw_wlan_util.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ kernel/audit.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/staging/rtl8723bs/core/rtw_wlan_util.c b/drivers/staging/rtl8723bs/core/rtw_wlan_util.c
-index aa02881f4efe59..38c9ec26ce2962 100644
---- a/drivers/staging/rtl8723bs/core/rtw_wlan_util.c
-+++ b/drivers/staging/rtl8723bs/core/rtw_wlan_util.c
-@@ -1430,15 +1430,23 @@ unsigned int is_ap_in_tkip(struct adapter *padapter)
- 		for (i = sizeof(struct ndis_802_11_fix_ie); i < pmlmeinfo->network.IELength;) {
- 			pIE = (struct ndis_80211_var_ie *)(pmlmeinfo->network.IEs + i);
+diff --git a/kernel/audit.c b/kernel/audit.c
+index 562476937fa7..547ae0cebec9 100644
+--- a/kernel/audit.c
++++ b/kernel/audit.c
+@@ -2120,7 +2120,8 @@ void audit_log_n_hex(struct audit_buffer *ab, const unsigned char *buf,
+ void audit_log_n_string(struct audit_buffer *ab, const char *string,
+ 			size_t slen)
+ {
+-	int avail, new_len;
++	int avail;
++	size_t new_len;
+ 	unsigned char *ptr;
+ 	struct sk_buff *skb;
  
-+			if (i + 2 > pmlmeinfo->network.IELength)
-+				break;
-+			if (i + 2 + pIE->length > pmlmeinfo->network.IELength)
-+				break;
+@@ -2130,7 +2131,13 @@ void audit_log_n_string(struct audit_buffer *ab, const char *string,
+ 	BUG_ON(!ab->skb);
+ 	skb = ab->skb;
+ 	avail = skb_tailroom(skb);
+-	new_len = slen + 3;	/* enclosing quotes + null terminator */
 +
- 			switch (pIE->element_id) {
- 			case _VENDOR_SPECIFIC_IE_:
--				if ((!memcmp(pIE->data, RTW_WPA_OUI, 4)) && (!memcmp((pIE->data + 12), WPA_TKIP_CIPHER, 4)))
-+				if (pIE->length >= 16 &&
-+				    !memcmp(pIE->data, RTW_WPA_OUI, 4) &&
-+				    !memcmp((pIE->data + 12), WPA_TKIP_CIPHER, 4))
- 					return true;
- 
- 				break;
- 
- 			case _RSN_IE_2_:
--				if (!memcmp((pIE->data + 8), RSN_TKIP_CIPHER, 4))
-+				if (pIE->length >= 12 &&
-+				    !memcmp((pIE->data + 8), RSN_TKIP_CIPHER, 4))
- 					return true;
- 
- 			default:
++	/* enclosing quotes + null terminator */
++	if (check_add_overflow(slen, (size_t)3, &new_len)) {
++		audit_log_format(ab, "\"?\"");
++		return;
++	}
++
+ 	if (new_len > avail) {
+ 		avail = audit_expand(ab, new_len);
+ 		if (!avail)
 -- 
-2.53.0
+2.43.0
 
 
