@@ -1,189 +1,155 @@
-Return-Path: <stable+bounces-274735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274737-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id SerIMDQhV2rAFgEAu9opvQ
-	(envelope-from <stable+bounces-274735-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 07:57:08 +0200
+	id G9SbKQojV2oeFwEAu9opvQ
+	(envelope-from <stable+bounces-274737-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 08:04:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A93DB75AC8E
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 07:57:08 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A42A875AD46
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 08:04:57 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=0sec.ai header.s=google header.b=nCsoSLEc;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274735-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-274735-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=none;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UNfd8vhp;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274737-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274737-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 22520302FEB0
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 05:57:08 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id ADC443016ACC
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 06:04:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB64F3B8111;
-	Wed, 15 Jul 2026 05:56:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB0D037B003;
+	Wed, 15 Jul 2026 06:04:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB95C3B8105
-	for <stable@vger.kernel.org>; Wed, 15 Jul 2026 05:56:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAC1330674B;
+	Wed, 15 Jul 2026 06:04:42 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784095018; cv=none; b=V+xv3G5+cZYWiliRQcfbtPrnu0rVmDUQnjm01LDF463+UqHaPw9T2joyMFM+DqQ+6kjRgDC9Alplw5KGw0Wrav1EGey7ERvEgK4utyq2Ay4CgE89j19q/AMUwvOHlJ164WXdaJNpQMISOznDt0/WmuEKezKTocvWqUn2TPPdqCM=
+	t=1784095482; cv=none; b=tuQwEc3zK8rmRvEr6EyNwTVX8K/0rMlSJKdzR3CCK2UWxPQj9sp2H9ag4AmMfzbcW3AP0v97Nkfe4MbkMUaEnTih8DhfWGTkM9wWxoiy67LL66JyucNzA+FNLe3JtvFcrJxmJnWq79McjJmD0Fus0OPHA2Uo2C069Vlxc/Uig1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784095018; c=relaxed/simple;
-	bh=esL/43unqiNUkBr/Ljva6pP91lPf4vb7RyxAP1zl12c=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fx3dXir0aEvA7Sh7/qVdIEnfghh4CCMAhf7hYJC/OCpSqeAsORBpv5zbKKUUhiw1rv2fX1KWfEhceUOPpsm6Tua+U3eP0bM4kO1+YWU+V5EZoXwrzY3QG+NGNTobBLjOzLwaziYByOOH4QLYjVu9n+jCIVzZm6Q7vEIohvbqSz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai; spf=pass smtp.mailfrom=0sec.ai; dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b=nCsoSLEc; arc=none smtp.client-ip=209.85.221.52
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-47ddf7b09e5so1537385f8f.1
-        for <stable@vger.kernel.org>; Tue, 14 Jul 2026 22:56:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=0sec.ai; s=google; t=1784095013; x=1784699813; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=iueURVe0vlYIqUuAsBfvKYIJESyK+6jqiIp58cwZiM8=;
-        b=nCsoSLEcjUE3qQ+jpRtBiSHZz+xWcrG9vjTNkYWF1V+0mZyK5KTd4njN7WY7qhetK/
-         OLV6TrS5aBpEU7A3jLAubLcnSjYMHarXfQbbisTm2KEqGGAWfCnBmDGEa4/+zKr4ILNz
-         oPrCPXvXflKVHA7+LJxKIxO4Wxw4/gpeRdhelvUv61j7S5qgGf31y0f07LaOTg2j9yPR
-         SkeWsn18bLqGp/luj9vQw8oV3AWWt9clqvFOGVXZT892pz7yuPMDwF5jezGjLXJiU4Bs
-         celWm3mRxtVW7t3XZ6kCAVqh7DFWhV6u4YfvXnLGkzXFGh5KbFl6n1KNbqEGCaynF5Xv
-         pePA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784095013; x=1784699813;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=iueURVe0vlYIqUuAsBfvKYIJESyK+6jqiIp58cwZiM8=;
-        b=ciwBjE2bmsclJ6WQCtJmfYU8udrJ/11NBDawlWj8CJrHWAa+nNe5hcEkY/Fd8eWtEE
-         VBGBcp8Ik+L0PslneJcu2eq91nfriNBxgIWyUma1Tur09oENS+Iprrpytv0viKMqNpi4
-         0Nc7F1Z/7V3U29pPHbdrn+Bvs9tDorphHOVIbpalP0dWGs3YcvICWhgN1dEyyXfD1D3F
-         3chXS53tdZVfTk2e31pyYltN6ggobVXDodiCFhyA+lBPSRyvEJBkqTbEa70Qlytl/Lcm
-         m1XX/wLp2iP4IyBiraSLhfxgrDccB4GzEV7XFEUY7FoUwezgbOK7aj1r7Fpd7ADmrhxs
-         3FeA==
-X-Forwarded-Encrypted: i=1; AHgh+RqJUodzAsuTOxE2CG2XDGrR+g3zpu2C9H/86IMN0E1pAYXzFA8E+Hfa5f6tVOjiyKA3Nuj1WLs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwKhjNNFq6/LyXaUIZgeBwskfT95+whrGmibEu0zb9XT9FQAt6l
-	0tuXPU9k5/uEd4XlDRJRkpQ6OEi7J6fUsa+ojxEw13PB9WugigENJ2FCU1dyXq7AjKgV
-X-Gm-Gg: AfdE7cnnlSd8hPdmqaYMDSUPRpmVQU6R/d/wq60b2SU/WvtxLghiX0qwGTL/2tlcJUm
-	vXM/3OZvYWeMCBGE4UwebfWbk3eGsTONlXeyxlqtjxN+TMAPJQz1viBfvzLJhJ934buquVT8wo8
-	DmsL7gc2EQA9Z1LZG2+UCkWVBJ3xEKZ5zZDo+k7b1azgqVGzz4PkyxOrmDEYnilBhSXi//PNHoK
-	d52n0PDnyI4H7RTX64UBVzYSfviZi2k03njBFk6xKKw6KfKLAddPH5dTdWYZCa9jzJXA3lG7L2h
-	iqaTiEAzY9PsJbSp7at8Lca9MVsS/cgdqQ8erLfB6ciC/5xnQDeee/NW3IYd248UDC2Vf/8Xpkc
-	mjttJBadmc6S8EJ8m1cBi1AWvk9NcgJQrIf1aW35qXywK38iUhDPjmhhAK5tHHWIrJY2QqLeE6v
-	nOkaLO6I94H85zHMzOytxEranAN6BOgVWrhD3SIIjRq3z9JrvBSy8vha/tZxD5qp5uVwWbSMKjC
-	zXkVbHdEZQy1Ww7IC/9O1c6oNrztugAyrE=
-X-Received: by 2002:a5d:59c7:0:b0:461:a16c:a5f4 with SMTP id ffacd0b85a97d-47f2dd1f29emr18774517f8f.33.1784095013281;
-        Tue, 14 Jul 2026 22:56:53 -0700 (PDT)
-Received: from PeakBook-Mini.tail8e484.ts.net ([178.197.218.188])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f4635082csm14220369f8f.7.2026.07.14.22.56.52
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 14 Jul 2026 22:56:52 -0700 (PDT)
-From: Doruk Tan Ozturk <doruk@0sec.ai>
-To: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch
-Cc: sd@queasysnail.net,
-	linville@tuxdriver.com,
-	mschiffer@universe-factory.net,
-	maoyixie.tju@gmail.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH net 2/2] geneve: require CAP_NET_ADMIN in the device netns for changelink
-Date: Wed, 15 Jul 2026 07:56:48 +0200
-Message-ID: <20260715055648.33060-3-doruk@0sec.ai>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260715055648.33060-1-doruk@0sec.ai>
-References: <20260715055648.33060-1-doruk@0sec.ai>
+	s=arc-20240116; t=1784095482; c=relaxed/simple;
+	bh=Su3y5H+XropravPSwjmbGLXz02SfJzDuKDVzb682+LY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ifBdP0ElQsD9QehHpVSZKHOprfhI52a+MXDlRLV5SH6XNFwB6cU/7U/bc2/iVUfzME7Xs0iDFx+71l8tO09M58A+yHVwXJhbFKXFhMiQEzlnkoRHDa1tPWR/+5fAjjE2aEWEzGzjP605HG5269EO/gsJyO8zY43IvhqO4O/eu38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UNfd8vhp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 248C3C2BCB7;
+	Wed, 15 Jul 2026 06:04:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1784095482;
+	bh=Su3y5H+XropravPSwjmbGLXz02SfJzDuKDVzb682+LY=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=UNfd8vhpdBX4fTycTNbAQhcO0vD2VJY7FtRrsCM3eTtsTYAmAdPhe/HXzwm7v/NEe
+	 JMhFgzObWc8n9W0u/SVPb5TTkB1QQ92AJnqVSF/22KOKuOE9/Wl/Om2NXPaHv7NXDi
+	 foYe7QMYEPqZOa1Y7dIok0ZtPZ7955IRZzh2uY7WXNI6Nk12CpNnXUP2IpV4AdtNQC
+	 T/rbQ16sgow0DQ9yiDLc5aXAeqihvZYQovo6tgIhxFaVr675rhaCPEpk4dHbsN4fXO
+	 VV7RjZABnv/ah5Hy8mL24QTJazgQKln8HNVoL7ZmBTmti60RIDDD7CzJTjv3SeodHK
+	 yuvre/9evLB4w==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 00087C4450A;
+	Wed, 15 Jul 2026 06:04:41 +0000 (UTC)
+From: Haidar Lee via B4 Relay <devnull+haidar.lee.adlinktech.com@kernel.org>
+Subject: [PATCH 0/2] ASoC: tas2562: fix Digital Volume Control
+Date: Wed, 15 Jul 2026 14:04:39 +0800
+Message-Id: <20260715-tas2562-dvc-fix-v1-0-072b13901b20@adlinktech.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAPciV2oC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDc0NT3ZLEYiNTMyPdlLJk3bTMCl0zU7M0E9NkExNLIyMloK6ColSgMNj
+ E6FgIv7g0KSs1uQRkjFJtLQBWZWaZcwAAAA==
+X-Change-ID: 20260715-tas2562-dvc-fix-656f45c44922
+To: Shenghao Ding <shenghao-ding@ti.com>, Kevin Lu <kevin-lu@ti.com>, 
+ Baojun Xu <baojun.xu@ti.com>, Sen Wang <sen@ti.com>, 
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+ Dan Murphy <dmurphy@ti.com>
+Cc: linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Haidar Lee <haidar.lee@adlinktech.com>, stable@vger.kernel.org
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784095481; l=1287;
+ i=haidar.lee@adlinktech.com; s=20260715; h=from:subject:message-id;
+ bh=Su3y5H+XropravPSwjmbGLXz02SfJzDuKDVzb682+LY=;
+ b=8ZNmVGCGjs4EH4nTMnEyEGiWmeRhO/0vN23LgLkWVjqJu3F6zGPyjoWLlBzgml3PMA/6HdQmU
+ /May/zpWfATAC9uFoAweyiiWt+CS8Kj2JTHOg+t8J9MJvqWbHIqQfjw
+X-Developer-Key: i=haidar.lee@adlinktech.com; a=ed25519;
+ pk=p37KzVgRl0a8om8VCM7iEwQvNuZz2fxL4lBCBp5qrno=
+X-Endpoint-Received: by B4 Relay for haidar.lee@adlinktech.com/20260715
+ with auth_id=872
+X-Original-From: Haidar Lee <haidar.lee@adlinktech.com>
+Reply-To: haidar.lee@adlinktech.com
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [1.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-5.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[0sec.ai:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:andrew+netdev@lunn.ch,m:sd@queasysnail.net,m:linville@tuxdriver.com,m:mschiffer@universe-factory.net,m:maoyixie.tju@gmail.com,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:andrew@lunn.ch,m:maoyixietju@gmail.com,s:lists@lfdr.de];
-	FREEMAIL_CC(0.00)[queasysnail.net,tuxdriver.com,universe-factory.net,gmail.com,vger.kernel.org];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-274735-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[ti.com,gmail.com,kernel.org,perex.cz,suse.com];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[0sec.ai];
-	FORGED_SENDER(0.00)[doruk@0sec.ai,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[0sec.ai:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[doruk@0sec.ai,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:shenghao-ding@ti.com,m:kevin-lu@ti.com,m:baojun.xu@ti.com,m:sen@ti.com,m:lgirdwood@gmail.com,m:broonie@kernel.org,m:perex@perex.cz,m:tiwai@suse.com,m:dmurphy@ti.com,m:linux-sound@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:haidar.lee@adlinktech.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[devnull@kernel.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-274737-lists,stable=lfdr.de,haidar.lee.adlinktech.com];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	FORWARDED(0.00)[lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	HAS_REPLYTO(0.00)[haidar.lee@adlinktech.com];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,stable@vger.kernel.org];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
+	TAGGED_RCPT(0.00)[stable];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[adlinktech.com:mid,adlinktech.com:email,adlinktech.com:replyto,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A93DB75AC8E
+X-Rspamd-Queue-Id: A42A875AD46
 
-A tunnel changelink() operates on at most two netns, dev_net(dev) and
-the sticky underlay netns geneve->net. They differ once the device is
-created in or moved to a netns other than the one the request runs in.
-The rtnl changelink path checks CAP_NET_ADMIN only against dev_net(dev),
-so a caller privileged there but not in geneve->net can rewrite a geneve
-device whose underlay lives in geneve->net.
+The 'Digital Volume Control' added in v5.7 has never worked correctly:
+the driver writes the 32-bit DVC coefficient LSB first, but the device
+latches the whole coefficient on the write to the last byte (DVC_CFG4),
+so every volume change applies a mix of the previous coefficient's
+upper bytes and the new LSB. Depending on the sequence of values this
+mutes the output entirely or plays at full volume regardless of the
+requested level.
 
-geneve_changelink() applies the new configuration against geneve->net:
-geneve_link_config() and the geneve_quiesce()/geneve_unquiesce() pair
-reopen the underlay sockets in that netns (geneve_sock_add() uses
-geneve->net), so the same reasoning as the tunnel changelink series
-applies here.
+Debugged on a TAS2562 (ADLINK OSM-520 / MT8189): traced the I2C writes
+with ftrace to confirm the driver writes the intended bytes, then
+reproduced both behaviours by writing the same coefficients manually in
+each byte order. Patch 1 fixes the write order; patch 2 fixes two wrong
+entries in the volume lookup table found while debugging this.
 
-Gate geneve_changelink() with rtnl_dev_link_net_capable(), at the top of
-the op before any attribute is parsed, matching ipgre_changelink() and
-the rest of the "require CAP_NET_ADMIN in the device netns for
-changelink" series.
-
-Found by 0sec automated security-research tooling (https://0sec.ai).
-
-Fixes: 2d07dc79fe04 ("geneve: add initial netdev driver for GENEVE tunnels")
-Cc: stable@vger.kernel.org
-Assisted-by: 0sec:multi-model
-Signed-off-by: Doruk Tan Ozturk <doruk@0sec.ai>
+Signed-off-by: Haidar Lee <haidar.lee@adlinktech.com>
 ---
- drivers/net/geneve.c | 3 +++
- 1 file changed, 3 insertions(+)
+Haidar Lee (2):
+      ASoC: tas2562: fix DVC coefficient write order
+      ASoC: tas2562: fix broken entries in the volume lookup table
 
-diff --git a/drivers/net/geneve.c b/drivers/net/geneve.c
-index 396e1a113cd4..03c99a016298 100644
---- a/drivers/net/geneve.c
-+++ b/drivers/net/geneve.c
-@@ -2376,6 +2376,9 @@ static int geneve_changelink(struct net_device *dev, struct nlattr *tb[],
- 	struct geneve_config cfg;
- 	int err;
- 
-+	if (!rtnl_dev_link_net_capable(dev, geneve->net))
-+		return -EPERM;
-+
- 	/* If the geneve device is configured for metadata (or externally
- 	 * controlled, for example, OVS), then nothing can be changed.
- 	 */
--- 
-2.43.0
+ sound/soc/codecs/tas2562.c | 30 +++++++++++++++++++-----------
+ 1 file changed, 19 insertions(+), 11 deletions(-)
+---
+base-commit: 58717b2a1365d06c8c64b72aa948541b53fe31eb
+change-id: 20260715-tas2562-dvc-fix-656f45c44922
+
+Best regards,
+--  
+Haidar Lee <haidar.lee@adlinktech.com>
+
 
 
