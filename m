@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-274763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274764-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 74SWOaxGV2ryIQEAu9opvQ
-	(envelope-from <stable+bounces-274763-lists+stable=lfdr.de@vger.kernel.org>)
+	id f76NN6xGV2rvIQEAu9opvQ
+	(envelope-from <stable+bounces-274764-lists+stable=lfdr.de@vger.kernel.org>)
 	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 10:37:00 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27E6D75BF14
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 10:37:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A37D75BF12
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 10:36:59 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=fail ("headers rsa verify failed") header.d=linux.dev header.s=key1 header.b=gMvU5E+B;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274763-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-274763-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=fail ("headers rsa verify failed") header.d=linux.dev header.s=key1 header.b=YgBrBjye;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274764-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-274764-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=fail reason="SPF not aligned (relaxed)" header.from=linux.dev (policy=none);
 	arc=reject ("signature check failed: fail, {[1] = sig:subspace.kernel.org:reject}")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6EFFE3012D09
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 08:27:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5C1E93015706
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 08:27:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02E733CC323;
-	Wed, 15 Jul 2026 08:27:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB2033CBE9C;
+	Wed, 15 Jul 2026 08:27:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 573193C553B
-	for <stable@vger.kernel.org>; Wed, 15 Jul 2026 08:27:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DA843C553B
+	for <stable@vger.kernel.org>; Wed, 15 Jul 2026 08:27:35 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784104048; cv=none; b=uLdeJc1ZZWMD/c2BDcLqTqHQgZoCsjfqj7ok3BSBR55XLyKaj+PCpRtYWlOETTwOluqjSpKDVEUXZVGojE7I5a5K9+cIiSxv+/o9FIy9im1LKAcfl29JzEbN6/y3V1Qivz8900DYTKLRA4OJ3EI8hY7KEqchlI7IDPYAZv47wLg=
+	t=1784104057; cv=none; b=UxVofIdgAUPEPOMhKt4VRGftkgFn9SKm+QJMUHoi0jiNNBQ/SZRvSP4sP2sLmyk1+zTfn49xa1JnuH3c8QsggpiJpZHOsOBzQe1UOXCVBciyMPFdv5IfueafmGd+8fMn5bW0cxS2HW+o8GrEZbpKmgDtX3IT8zGK5qDrB1G1bng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784104048; c=relaxed/simple;
-	bh=EFTvZ/fJ5V0Q3f11qDtI+bniAlV3kStsISFGyiORu3I=;
+	s=arc-20240116; t=1784104057; c=relaxed/simple;
+	bh=nKd84V/9X2y89yu7OGQCN/8khagFxgbbCnrIv34xDZA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mq4rSwW480dMpvwOc/WwvXOlST0NBfl0Dh7lAqJA3gceQ7ZOE3MJ23h5mxpKPzHL6i1m3EB7PItUNLjNcHP3TKtzZDHvclhk16N6t6ge52yl3l+18efvcQ3coX0X1K4wEWIJ+q5m1zkofv3zF6ZiJIQ9pbdrovqM6Uh7aL969Xw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=gMvU5E+B; arc=none smtp.client-ip=95.215.58.181
+	 MIME-Version; b=D64iqurvEkmQ3WAUVQcWbwKHxZ5bMuDuu1EgSvtFDCb7FOXQySCTniGmaaCRbX5qHkOCLbZWgFZJMnDCEkzykDQN2MZMuh33szKuQcn7d9OBoBEdtF8AXNlAY3GNsiDGzBgYmKi30MheJYL0QhStECes0/yqmRQ2USE+mBfXq8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=YgBrBjye; arc=none smtp.client-ip=95.215.58.183
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784104045;
+	t=1784104054;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/i/S6+I3OZ6MoEmGhUzQo3sY9bpnI/3MGwofuQD07JM=;
-	b=gMvU5E+BoQXinDcxY0VE9NNWOgIOTiXhFBa0QAVqn2HVe2M2IdvyiKn2etcgQ7QO6ijOTf
-	IxQsp6m2F5+VgZSYoZjITzsWJrfmmuXRq7eq2LN3NCJjKCKL5TXytUNCrr/KfeSQ8MrAdp
-	Nb7QxbQ90AQ//0ugFSg0gorNv/46jdU=
+	bh=j5zxSO+IiC/aaC3ze1Xp0Plh4QW43E7b/Q2x8rCpqKQ=;
+	b=YgBrBjyeXwATe4y8fj92081fvgvxwEYXr5EgJazBct+C6+8lAewYvYoAXJOWa/67RO1E/U
+	XFHtLTq6c95SQaNnMdqNiwrd7TG9YAN2c/pGTWMNny0zwJGHuQVSxDY7W0hbi/F9rUxk6l
+	c5rGR08p01eKodOsqpIxEG1JJJJVg8M=
 From: xuanqiang.luo@linux.dev
 To: Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
@@ -57,9 +57,9 @@ Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	netdev@vger.kernel.org,
 	Xuanqiang Luo <luoxuanqiang@kylinos.cn>,
 	stable@vger.kernel.org
-Subject: [PATCH iwl-net v2 1/2] iavf: fix ASQ command buffer leak on init failure
-Date: Wed, 15 Jul 2026 16:25:47 +0800
-Message-ID: <20260715082548.56687-2-xuanqiang.luo@linux.dev>
+Subject: [PATCH iwl-net v2 2/2] iavf: fix QoS capabilities memory leak
+Date: Wed, 15 Jul 2026 16:25:48 +0800
+Message-ID: <20260715082548.56687-3-xuanqiang.luo@linux.dev>
 In-Reply-To: <20260715082548.56687-1-xuanqiang.luo@linux.dev>
 References: <20260715082548.56687-1-xuanqiang.luo@linux.dev>
 Precedence: bulk
@@ -91,7 +91,7 @@ X-Spamd-Result: default: False [4.64 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-274763-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-274764-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	TAGGED_RCPT(0.00)[stable,netdev];
@@ -104,38 +104,38 @@ X-Spamd-Result: default: False [4.64 / 15.00];
 	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linux.dev:-];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kylinos.cn:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kylinos.cn:email,intel.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 27E6D75BF14
+X-Rspamd-Queue-Id: 7A37D75BF12
 
 From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
 
-iavf_alloc_adminq_asq_ring() allocates cmd_buf before the remaining ASQ
-resources. If iavf_alloc_asq_bufs() or iavf_config_asq_regs() fails, the
-unwind path elides cmd_buf while freeing the other allocations.
+Commit 4c1a457cb8b0 ("iavf: add support to exchange qos capabilities")
+allocates adapter->qos_caps during probe, but iavf_remove() does not
+free it. This leaks the allocation whenever an iavf device is removed.
 
-The ASQ count is not set until initialization succeeds, so the shutdown
-path cannot reclaim the buffer. Free cmd_buf in the common unwind path.
+Free adapter->qos_caps in iavf_remove().
 
-Fixes: d358aa9a7a2d ("i40evf: init code and hardware support")
+Fixes: 4c1a457cb8b0 ("iavf: add support to exchange qos capabilities")
 Cc: stable@vger.kernel.org
+Reviewed-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
 Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
 ---
- drivers/net/ethernet/intel/iavf/iavf_adminq.c | 1 +
+ drivers/net/ethernet/intel/iavf/iavf_main.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_adminq.c b/drivers/net/ethernet/intel/iavf/iavf_adminq.c
-index 6937b7dd44cbb..40f76f9507f4b 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_adminq.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_adminq.c
-@@ -60,6 +60,7 @@ static enum iavf_status iavf_alloc_adminq_arq_ring(struct iavf_hw *hw)
-  **/
- static void iavf_free_adminq_asq(struct iavf_hw *hw)
- {
-+	iavf_free_virt_mem(hw, &hw->aq.asq.cmd_buf);
- 	iavf_free_dma_mem(hw, &hw->aq.asq.desc_buf);
- }
- 
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
+index 29b8403a066bc..c7f69a9040588 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_main.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
+@@ -5589,6 +5589,7 @@ static void iavf_remove(struct pci_dev *pdev)
+ 	iounmap(hw->hw_addr);
+ 	pci_release_regions(pdev);
+ 	kfree(adapter->vf_res);
++	kfree(adapter->qos_caps);
+ 	spin_lock_bh(&adapter->mac_vlan_list_lock);
+ 	/* If we got removed before an up/down sequence, we've got a filter
+ 	 * hanging out there that we need to get rid of.
 -- 
 2.43.0
 
