@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-274812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274814-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Tc4tAvRdV2ryKQEAu9opvQ
-	(envelope-from <stable+bounces-274812-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 12:16:20 +0200
+	id 7GcjKXJeV2owKgEAu9opvQ
+	(envelope-from <stable+bounces-274814-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 12:18:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 626F975CD7E
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 12:16:19 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED3B075CE17
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 12:18:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ocQh+VEo;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274812-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274812-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=UXSpVJUj;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274814-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274814-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 35B5E301584F
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 10:12:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 39E1B3052B62
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 10:12:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDAFA43C05C;
-	Wed, 15 Jul 2026 10:12:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB61C43B6E3;
+	Wed, 15 Jul 2026 10:12:22 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49E56433E7A
-	for <stable@vger.kernel.org>; Wed, 15 Jul 2026 10:12:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7978343B6D0
+	for <stable@vger.kernel.org>; Wed, 15 Jul 2026 10:12:21 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784110337; cv=none; b=QuC5vOHxLROJvXtaZNQgGMVNt2K5PrKOspStcCacmmchAJAglMan36oVUFq5GtURGo84Y3YeLkcYQ3su9z0KujpDitjYaZ80c1dmlELQSqzjk9VhrJZ0heKuj8WO9MjSDytUy3RXGf2n1OD+d/2LQRK6img+oEMZZk98oi91d4c=
+	t=1784110342; cv=none; b=YgS5CJSMJRmyFIcoBLc9Yhh5OxCiqhadgQTA7kJV1tbda66nWXuPb8GStnll8NfdEr0cQ3xKQltYqh5ymMVicuX8WiQ/etcO4BVq1pFTdIamY3x7F2ikgBAwr4DJ4/+XeDtUPZcptf+no2GgglvOVYhgSSCDIyQzSh6e5dV3PBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784110337; c=relaxed/simple;
-	bh=4Ymw+xL5ZEVNTyzObQgd/B6B03LVYHe9Z62g1Sij67g=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=a01/DUyVIzmPcPWFaz932xh4NsonMM7xZCPzbKMmnHSsk5glVDfAsfTAicpG6Q1WWSfX2jtvdzX6kpU2ghCtNKKFO7RhS3lbc9UPf5FVwHb/9wVCOcyJyr0fdk+yuSl3sW1pPmKMNI3n65uJzgEdkIkdDJkk2wF5/ogCeAUknu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ocQh+VEo; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 793A31F000E9;
-	Wed, 15 Jul 2026 10:12:15 +0000 (UTC)
+	s=arc-20240116; t=1784110342; c=relaxed/simple;
+	bh=8fwjhINMAAMkU1rCiiSQWdbZA9ez/nw15HDET5Jb+XU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=GKcG462mcWqgQwSi+1LWy9HtLpPMlPKN8+95xaql7m1dxMlLZRS+QbY/UKE5jxitLwy2D3cJjmKoczIG8RYbt+1pAmLml+UJd/xxti8ywjqB+WKjl/hK4jevLnd0NsFQN6iEWjQRaY9Z3svaSYMtbnZPansjbd1RSC2gMfVEBLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UXSpVJUj; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C2ED1F000E9;
+	Wed, 15 Jul 2026 10:12:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1784110335;
-	bh=wOYSRi3CxoxkCqTsvzW83QcFmx/BPqM5EdIrGq2VR/I=;
+	s=korg; t=1784110341;
+	bh=fR78pDetkX+M9385rdLtoQoKJjaPsQ/v7omxDg7zl08=;
 	h=Subject:To:Cc:From:Date;
-	b=ocQh+VEoO7jhY5SvkRplNQqLXLdStG/4EylNyKdUwljpqEWy7ByEe6cdDwR9O1R64
-	 t/jy4fkgXNlHBCyEVj52xoV1dkSUiJYxv1kLKfCnK6YneQLXS2JrQhZZxhL1jcVBHD
-	 gNJJiT6+GVuO5oiRacaxXNGZeb5OcJBraxaBbK3E=
-Subject: FAILED: patch "[PATCH] btrfs: fix false IO failure after falling back to buffered" failed to apply to 5.10-stable tree
-To: wqu@suse.com
+	b=UXSpVJUj35xf13sVj3tcSacC12TeBf+3wVQOSCSFBM60VdCPbUcG/jHaU7yMFCK7h
+	 ubyKu2v26hfe2dUsUsds6UMi5aKW8TgDmOMaPLQcZtUCJPWbsNqhLmKww/271yn4Qj
+	 AnW25TY3LXO6GdaPerUfBqOb0xOjoTAvU2clE900=
+Subject: FAILED: patch "[PATCH] nvmet-auth: validate reply message payload bounds against" failed to apply to 6.1-stable tree
+To: flynnnchen@tencent.com,hare@kernel.org,kbusch@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 15 Jul 2026 12:11:54 +0200
-Message-ID: <2026071554-unshaven-asleep-0270@gregkh>
+Date: Wed, 15 Jul 2026 12:12:06 +0200
+Message-ID: <2026071506-uncounted-retaliate-5437@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,22 +60,22 @@ X-Rspamd-Action: no action
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-274812-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-274814-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWO(0.00)[2];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:wqu@suse.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:flynnnchen@tencent.com,m:hare@kernel.org,m:kbusch@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
@@ -83,30 +83,30 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,gregkh:mid,vger.kernel.org:from_smtp,bur.io:email,suse.com:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:from_mime,linuxfoundation.org:dkim,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gregkh:mid,tencent.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 626F975CD7E
+X-Rspamd-Queue-Id: ED3B075CE17
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 66ff4d366e7eb4d31813d2acabf3af512ce03aa5
+git cherry-pick -x 3a413ece2504c70aa34a20be4dafec04e8c741f9
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026071554-unshaven-asleep-0270@gregkh' --subject-prefix 'PATCH 5.10.y' 'HEAD^..'
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026071506-uncounted-retaliate-5437@gregkh' --subject-prefix 'PATCH 6.1.y' 'HEAD^..'
 
 Possible dependencies:
 
@@ -118,188 +118,73 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 66ff4d366e7eb4d31813d2acabf3af512ce03aa5 Mon Sep 17 00:00:00 2001
-From: Qu Wenruo <wqu@suse.com>
-Date: Thu, 4 Jun 2026 09:59:46 +0930
-Subject: [PATCH] btrfs: fix false IO failure after falling back to buffered
- write
+From 3a413ece2504c70aa34a20be4dafec04e8c741f9 Mon Sep 17 00:00:00 2001
+From: Tianchu Chen <flynnnchen@tencent.com>
+Date: Fri, 29 May 2026 14:18:39 +0000
+Subject: [PATCH] nvmet-auth: validate reply message payload bounds against
+ transfer length
 
-[BUG]
-The test case generic/362 will fail with "nodatasum" mount option (*):
+nvmet_auth_reply() accesses the variable-length rval[] array using
+attacker-controlled hl (hash length) and dhvlen (DH value length) fields
+without verifying they fit within the allocated buffer of tl bytes.
 
- MOUNT_OPTIONS -- -o nodatasum /dev/mapper/test-scratch1 /mnt/scratch
+A malicious NVMe-oF initiator can craft a DHCHAP_REPLY message with a
+small transfer length but large hl/dhvlen values, causing out-of-bounds
+heap reads when the target processes the DH public key (rval + 2*hl) or
+performs the host response memcmp.
 
- generic/362  0s ... - output mismatch (see /home/adam/xfstests/results//generic/362.out.bad)
-    --- tests/generic/362.out	2024-08-24 15:31:37.200000000 +0930
-    +++ /home/adam/xfstests/results//generic/362.out.bad	2026-05-27 10:21:17.574771567 +0930
-    @@ -1,2 +1,3 @@
-     QA output created by 362
-    +First write failed: Input/output error
-     Silence is golden
-    ...
+With DH authentication configured, the OOB pointer is passed directly to
+sg_init_one() and read by crypto_kpp_compute_shared_secret(), reaching
+up to 526 bytes past the buffer. This is exploitable pre-authentication.
 
-*: If the test case has been executed before with default data checksum,
-the failure will not reproduce. Need the following fix to make it
-reliably reproducible:
-https://lore.kernel.org/linux-btrfs/20260528111659.87113-1-wqu@suse.com/
+Add bounds validation ensuring sizeof(*data) + 2*hl + dhvlen <= tl before
+any access to the variable-length fields.
 
-[CAUSE]
-Inside __iomap_dio_rw(), the -EFAULT/-ENOTBLK error is not directly returned.
-Thus we never got an error pointer from __iomap_dio_rw().
+Discovered by Atuin - Automated Vulnerability Discovery Engine.
 
-The call chain looks like this:
+Fixes: db1312dd9548 ("nvmet: implement basic In-Band Authentication")
+Cc: stable@vger.kernel.org
+Reviewed-by: Hannes Reinecke <hare@kernel.org>
+Signed-off-by: Tianchu Chen <flynnnchen@tencent.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 
- btrfs_direct_write()
- |- btrfs_dio_write()
- |-  __iomap_dio_rw()
- |  |- iomap_iter()
- |  |  |- btrfs_dio_iomap_begin()
- |  |     Now an ordered extent is allocated for the 4K write.
- |  |
- |  |- iomi.status = iomap_dio_iter()
- |  |  Where iomap_dio_iter() returned -EFAULT.
- |  |
- |  |- ret = iomap_iter()
- |  |  |- btrfs_dio_iomap_end()
- |  |  |  |- btrfs_finish_ordered_extent(uptodate = false)
- |  |  |  |  |- can_finish_ordered_extent()
- |  |  |  |     |- btrfs_mark_ordered_extent_error()
- |  |  |  |        |- mapping_set_error()
- |  |  |  |           Now the address space is marked error.
- |  |  |  | return -ENOTBLK
- |  |  |- return -ENOTBLK
- |  |- if (ret == -ENOTBLK) { ret = 0; }
- |     Now the return value is reset to 0.
- |     Thus no error pointer will be returned.
- |
- |- ret = iomap_dio_complete()
- |  Since no byte is submitted, @ret is 0.
- |
- |- Fallback to buffered IO
- |  And the buffered write finished without error
- |
- |- filemap_fdatawait_range()
-    |- filemap_check_errors()
-       The previous error is recorded, thus an error is returned
-
-However the buffered write is properly submitted and finished, the error
-is from the btrfs_finish_ordered_extent() call with @uptodate = false.
-
-[FIX]
-When a short dio write happened, any range that is submitted will have
-btrfs_extract_ordered_extent() to be called, thus the submitted range
-will always have an OE just covering the submitted range.
-
-The remaining OE range is never submitted, thus they should be treated
-as truncated, not an error. So that we can properly reclaim and not
-insert an unnecessary file extent item, without marking the mapping as
-error.
-
-Extract a helper, btrfs_mark_ordered_extent_truncated(), and utilize
-that helper to mark the direct IO ordered extent as truncated, so it
-won't cause failure for the later buffered fallback.
-
-[REASON FOR NO FIXES TAG]
-The bug itself is pretty old, at commit f85781fb505e ("btrfs: switch to
-iomap for direct IO") we're already passing @uptodate=false finishing
-the OE.
-But at that time OE with IOERR won't call mapping_set_error(), so it's
-not exposed.
-Later commit d61bec08b904 ("btrfs: mark ordered extent and inode with
-error if we fail to finish") finally exposed the bug, but that commit
-is doing a correct job, not the root cause.
-
-Anyway the bug is very old, dating back to 5.1x days, thus only CC to
-stable.
-
-CC: stable@vger.kernel.org # 5.15+
-Reviewed-by: Boris Burkov <boris@bur.io>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-
-diff --git a/fs/btrfs/direct-io.c b/fs/btrfs/direct-io.c
-index 57167d56dc72..88cb2e82a507 100644
---- a/fs/btrfs/direct-io.c
-+++ b/fs/btrfs/direct-io.c
-@@ -624,12 +624,23 @@ static int btrfs_dio_iomap_end(struct inode *inode, loff_t pos, loff_t length,
- 	if (submitted < length) {
- 		pos += submitted;
- 		length -= submitted;
--		if (write)
-+		if (write) {
-+			/*
-+			 * We have a short write, if there is any range
-+			 * that is submitted properly, that part will have
-+			 * its own OE split from the original one.
-+			 *
-+			 * So for the OE at dio_data->ordered, it's the part
-+			 * that is not submitted, and should be marked
-+			 * as fully truncated.
-+			 */
-+			btrfs_mark_ordered_extent_truncated(dio_data->ordered, 0);
- 			btrfs_finish_ordered_extent(dio_data->ordered,
--						    pos, length, false);
--		else
-+						    pos, length, true);
-+		} else {
- 			btrfs_unlock_dio_extent(&BTRFS_I(inode)->io_tree, pos,
- 						pos + length - 1, NULL);
-+		}
- 		ret = -ENOTBLK;
- 	}
- 	if (write) {
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index 3c66853276b7..0133b688ce04 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -7590,11 +7590,7 @@ static void btrfs_invalidate_folio(struct folio *folio, size_t offset,
- 					       EXTENT_LOCKED | EXTENT_DO_ACCOUNTING |
- 					       EXTENT_DEFRAG, &cached_state);
- 
--		spin_lock(&inode->ordered_tree_lock);
--		set_bit(BTRFS_ORDERED_TRUNCATED, &ordered->flags);
--		ordered->truncated_len = min(ordered->truncated_len,
--					     cur - ordered->file_offset);
--		spin_unlock(&inode->ordered_tree_lock);
-+		btrfs_mark_ordered_extent_truncated(ordered, cur - ordered->file_offset);
- 
- 		/*
- 		 * If the ordered extent has finished, we're safe to delete all
-diff --git a/fs/btrfs/ordered-data.c b/fs/btrfs/ordered-data.c
-index f5f77c33cf59..b32d4eabe0ab 100644
---- a/fs/btrfs/ordered-data.c
-+++ b/fs/btrfs/ordered-data.c
-@@ -358,6 +358,18 @@ void btrfs_mark_ordered_extent_error(struct btrfs_ordered_extent *ordered)
- 		mapping_set_error(ordered->inode->vfs_inode.i_mapping, -EIO);
+diff --git a/drivers/nvme/target/fabrics-cmd-auth.c b/drivers/nvme/target/fabrics-cmd-auth.c
+index f1e613e7c63e..0a85acf1e5c7 100644
+--- a/drivers/nvme/target/fabrics-cmd-auth.c
++++ b/drivers/nvme/target/fabrics-cmd-auth.c
+@@ -132,13 +132,22 @@ static u8 nvmet_auth_negotiate(struct nvmet_req *req, void *d)
+ 	return 0;
  }
  
-+void btrfs_mark_ordered_extent_truncated(struct btrfs_ordered_extent *ordered,
-+					 u64 truncate_len)
-+{
-+	struct btrfs_inode *inode = ordered->inode;
-+
-+	ASSERT(truncate_len <= ordered->num_bytes);
-+	spin_lock(&inode->ordered_tree_lock);
-+	set_bit(BTRFS_ORDERED_TRUNCATED, &ordered->flags);
-+	ordered->truncated_len = min(ordered->truncated_len, truncate_len);
-+	spin_unlock(&inode->ordered_tree_lock);
-+}
-+
- static void finish_ordered_fn(struct btrfs_work *work)
+-static u8 nvmet_auth_reply(struct nvmet_req *req, void *d)
++static u8 nvmet_auth_reply(struct nvmet_req *req, void *d, u32 tl)
  {
- 	struct btrfs_ordered_extent *ordered_extent;
-diff --git a/fs/btrfs/ordered-data.h b/fs/btrfs/ordered-data.h
-index 03e12380a2fd..8d5d5ba1e02f 100644
---- a/fs/btrfs/ordered-data.h
-+++ b/fs/btrfs/ordered-data.h
-@@ -226,6 +226,8 @@ bool btrfs_try_lock_ordered_range(struct btrfs_inode *inode, u64 start, u64 end,
- struct btrfs_ordered_extent *btrfs_split_ordered_extent(
- 			struct btrfs_ordered_extent *ordered, u64 len);
- void btrfs_mark_ordered_extent_error(struct btrfs_ordered_extent *ordered);
-+void btrfs_mark_ordered_extent_truncated(struct btrfs_ordered_extent *ordered,
-+					 u64 truncate_len);
- int __init ordered_data_init(void);
- void __cold ordered_data_exit(void);
+ 	struct nvmet_ctrl *ctrl = req->sq->ctrl;
+ 	struct nvmf_auth_dhchap_reply_data *data = d;
+-	u16 dhvlen = le16_to_cpu(data->dhvlen);
++	u16 dhvlen;
+ 	u8 *response;
  
++	if (tl < sizeof(*data))
++		return NVME_AUTH_DHCHAP_FAILURE_INCORRECT_PAYLOAD;
++
++	dhvlen = le16_to_cpu(data->dhvlen);
++
++	/* Validate that hl and dhvlen fit within the transfer length */
++	if (sizeof(*data) + 2 * (size_t)data->hl + dhvlen > tl)
++		return NVME_AUTH_DHCHAP_FAILURE_INCORRECT_PAYLOAD;
++
+ 	pr_debug("%s: ctrl %d qid %d: data hl %d cvalid %d dhvlen %u\n",
+ 		 __func__, ctrl->cntlid, req->sq->qid,
+ 		 data->hl, data->cvalid, dhvlen);
+@@ -338,7 +347,7 @@ void nvmet_execute_auth_send(struct nvmet_req *req)
+ 
+ 	switch (data->auth_id) {
+ 	case NVME_AUTH_DHCHAP_MESSAGE_REPLY:
+-		dhchap_status = nvmet_auth_reply(req, d);
++		dhchap_status = nvmet_auth_reply(req, d, tl);
+ 		if (dhchap_status == 0)
+ 			req->sq->dhchap_step =
+ 				NVME_AUTH_DHCHAP_MESSAGE_SUCCESS1;
 
 
