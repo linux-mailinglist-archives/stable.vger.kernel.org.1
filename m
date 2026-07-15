@@ -1,193 +1,241 @@
-Return-Path: <stable+bounces-274658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274659-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id UMPOL7LgVmo0CQEAu9opvQ
-	(envelope-from <stable+bounces-274658-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 03:21:54 +0200
+	id Zq6zNhDhVmpNCQEAu9opvQ
+	(envelope-from <stable+bounces-274659-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 03:23:28 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B3F0759DA7
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 03:21:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34C51759DCD
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 03:23:28 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=amd.com header.s=selector1 header.b="fW0beh/1";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-274658-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274658-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=reject ("cv is fail on i=2")
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jeArWA75;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-274659-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-274659-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AFDFC301C3D7
-	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 01:21:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 00C1B301F1A9
+	for <lists+stable@lfdr.de>; Wed, 15 Jul 2026 01:23:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39E153793DF;
-	Wed, 15 Jul 2026 01:21:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98AA537A854;
+	Wed, 15 Jul 2026 01:22:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011005.outbound.protection.outlook.com [40.107.208.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C10DF374E64
-	for <stable@vger.kernel.org>; Wed, 15 Jul 2026 01:21:49 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784078511; cv=fail; b=oMcwSHutB3miWk5n0WF/r3xIqAjcl1EsspqZekSdEZ9GgWrjjSlN4ISqpaJ+vEiGL3EvgY2SIVeHAKewmrma954KB8rkjT63Ftpi+/jAW2DwgXIp/ztkAPZro+eEzUiyV9KyU3X5INaXAcov+bhp5Z/3DPYz4LroPTlj64OUw+o=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784078511; c=relaxed/simple;
-	bh=8YNev70RP+CjqyMQS9NafyjVmfRhgB6LV+G19c5RgLU=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=BerMf0aEFlqFjhuAc/yBn5pq7r3nh8r2M+WvCM1//0eVUSxE8nlTBnm1yjqxwQPtMfTPBTmOMcQhvH8EMRMTxgwZvXLg+egon8ZtlqsbMFQhH4m5ZQmP/CDtj4c6LP+YL+MHv+8gw2E3/o7PJY1Gk2tUYXEt5XeiFP8x5XF0r8U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=fW0beh/1; arc=fail smtp.client-ip=40.107.208.5
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=J4RQzF4Cn0aBEFVtX/Pd0UjCGiovGYVfWK9cBCNxOG0BOcevc+zmm/g3zN04OFoPE+CET32aL5oauZW+mn+zxl5bn9gPHMld4CwJG9oA1VMbTDOO+EuM8DUSnOxizanaSH3GGs+Q9bks2jOfCsi6wAn0lJxN0ttn3/EegwXDdeWEIaMAbIUVuU81/zJkKUjw8qph99nHuS0lcw4CWcYqQ0wGbwf0bE/M7ynwL8jkvtVZ8fw2IBLl18v7kfPS6Wmvtpa27V1U4UfAIBt8Zp66r7escuPjIhtQPxeF15HsNZnf8WESy8V8tos/4ZHqJYGmS6B+BZE0pvXwrAIyuyTgVQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3ylT28yJ9ttIimzkW/Rtoq2yoVQBfnbFpVdc1PIpUWg=;
- b=aJRzJyHPPt0ku2FH7cNYwSvRZbtYDR2MvYKQqt12Xrk6+35UKYHs0w/l1aTycp4O4alzQPrDAfwWUwWO3XLSMqXZerBdxib0Vg5Q9NIiJvCBQVhFgoZzbR3Q0I4QlEvF6RIX+QutJJvRbGqqA8gPVDccC6fGCWp8sQyG6TxrEKDI8JO4Yw1WT2KfLT5PStgCFsR0hv4vCBI8b5GwRlDatkrxUKa5hhJQQKvcSwaH29RIPqAL3uDGP4d3K+j7uMQP0vgEu0HQklwsz9vVe1tyNTC4KSms3yKw8PZPaptAOzoNLJL0yHsOWBfMEn1WolbBCWZ0s7UJLHmn7c/y89ju1w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3ylT28yJ9ttIimzkW/Rtoq2yoVQBfnbFpVdc1PIpUWg=;
- b=fW0beh/1DpcdjltxqamLej9lXbSC1lIyi7i/5mmktfXTTsfkyzFx8fpLR22HfS1OigoSYv2Vp+ntr5hD1RSUNrebG2FQGvbfSS7TRKWjmemN7h5KXknxcepBUQiTE1OX3XyPxO/6wlzYyOJjINd6KiqMR7m2WXh/YIRKlX9UUxY=
-Received: from PH8PR12MB6914.namprd12.prod.outlook.com (2603:10b6:510:1cb::21)
- by CH3PR12MB8710.namprd12.prod.outlook.com (2603:10b6:610:173::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.10; Wed, 15 Jul
- 2026 01:21:46 +0000
-Received: from PH8PR12MB6914.namprd12.prod.outlook.com
- ([fe80::2893:177a:72b0:6000]) by PH8PR12MB6914.namprd12.prod.outlook.com
- ([fe80::2893:177a:72b0:6000%6]) with mapi id 15.21.0223.008; Wed, 15 Jul 2026
- 01:21:46 +0000
-Message-ID: <eab814b7-8bc7-4ce3-acf4-ec32e3c06dff@amd.com>
-Date: Tue, 14 Jul 2026 20:21:42 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.1.y] efivarfs: expose used and total size
-Content-Language: en-US
-To: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
-Cc: Anisse Astier <an.astier@criteo.com>, Ard Biesheuvel <ardb@kernel.org>,
- "Mario Limonciello (AMD)" <superm1@kernel.org>
-References: <20260714043329.3510162-1-superm1@kernel.org>
- <20260714200600.stable0012@kernel.org>
-From: Mario Limonciello <mario.limonciello@amd.com>
-In-Reply-To: <20260714200600.stable0012@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: DM6PR07CA0121.namprd07.prod.outlook.com
- (2603:10b6:5:330::33) To PH8PR12MB6914.namprd12.prod.outlook.com
- (2603:10b6:510:1cb::21)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39537379C5A
+	for <stable@vger.kernel.org>; Wed, 15 Jul 2026 01:22:57 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784078579; cv=none; b=TcwPGbsICUNo3r3vp50dRdoIgI4K55H8ahiy//aetQ48gmw9nuaXkXZFc2iBpiQfl67bq7HQftNWlmo4oAD6bAeI2KyYz6St9NzVjC0KieJ+WbxVChveasjgrfw1ZI8Ptag61t+SNNqTs86RLUIIPoLud7aRXcFbwhU3m0ZOKJ8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784078579; c=relaxed/simple;
+	bh=coaMwINbLGmrucgwgwJlmdJH78FUX2BceVnxkbtdPQc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=jPrhhVrEiL8bEG7jTQ+9ZA47LmcdybV2RIOFjCXlrWq4BWROjJzbS1iHUYwHEiu/SJ4Xkz1XmTbUbmgGGBEw7Zfu1UW6QrkB7doCUntXKlgRiur8p1VkaQCOCDGITTmbAi5x2CV+JuSGYPm3rD0q2qd1FUkxVvXvOQlNoH8P3SM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jeArWA75; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 474B71F000E9;
+	Wed, 15 Jul 2026 01:22:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784078577;
+	bh=Z/ySNf9g/aFD7PQApPSMfRv67nD7tF6sKdw/IxhwqA4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=jeArWA75jV26xMGy5riN+Q1BUBhnC2x/4A/T/MeNexDeAXZUIXTbtXZPqwyIgSu24
+	 hNeQAPvZWb8Zjlt7bJ8hzdPbBTxDkuH0WbFVyqfRMveZDL9JN0fDhpzjlL/VSm+huq
+	 ATLTMZuWKwFYoB0utUf/wMmpIxTOn67EZFCyFyv62ge8hbgbmAfSsSXVUoNKpVzzp+
+	 sgSZ5kSdqJA3TvPxB0ZlfbnAfTPYUsbu5VagSCuevkwobJfL1HVVXdzSa6LhvLb8tA
+	 GnNOlBd+lkZ6lA6JqviZkIdlIFbS80exIffGVvyU2UPWDUHN6gejgQ7Zp6F8MzR8j2
+	 R083VUuz4dcfg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10.y 1/3] PCI: controller: Use dev_fwnode() instead of of_fwnode_handle()
+Date: Tue, 14 Jul 2026 21:22:53 -0400
+Message-ID: <20260715012255.4073217-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026071332-nectar-acre-e146@gregkh>
+References: <2026071332-nectar-acre-e146@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR12MB6914:EE_|CH3PR12MB8710:EE_
-X-MS-Office365-Filtering-Correlation-Id: cc6302d5-d11f-4a7b-83c2-08dee20f6f9c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|23010399003|1800799024|366016|18002099003|11063799006|4143699003|22082099003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	NgnoQ+lG5/UBT7oSsv6p6x8Kr2inQQ1NNz4JAzxSW2qx0TYUH+dA4KFC2iLLu/W3hrNGrUR/lzrv1j9FVlBKo20CbV1IO9JlEAchkLNwDmQ4VYQb3aMe+m+vsgNHyHALQpUVAhdmRrUYrCrP/AU3+gtGT+zVt2lE1BX7I5zGFqrb2ljY3elVP7mNEgU4w/6WfeNCtUQ8JqqCVCZEhpIPH5ocDsvOzrKqOtNxyGxhslDEmmfnyW93D4OdlOtdgY+kcas3TXRyU5wba02Wfla1IEhFGl/P0OW86XfFxkguiUq1yOGlNXuXPNtEUl57pW6NryF6mK21vsAeYmtPLxl0pO00yRfxVJSGu/xA7Ud1LCZ2isguBc8pRYHO2GytexpLru4dNdkyz8BsaQE23f+3EcKlpkzt4d7S1L7J0CfKUENzM48sJReYoObWpr4Rr1SjvT+XKOH7wA02etNQeZ/FZuQuFICnve1bqU1dD111ZAMjYb2Go6/cYuZ8gDA0Cn2rveVtqBVzyBtMHOo9a1z7xyYyYrwHbP5wWX9WmSdR/MLW93j+Al7J3XskogFWYPsYLA+3Wjp9JRqVez7ytgbJe+qw0Mi041K5w5JGBwBOzDVfYRnDZFQoz0SlYMPo5eo1o6+ksOr8JYGNmF2Cs57f+lEm1bMEl2JJvt++j3NfRVk=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR12MB6914.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(1800799024)(366016)(18002099003)(11063799006)(4143699003)(22082099003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VDR3RCtVZE9zczc5cFFOYTUxbEwrUzVqRllwandPMXBCaDR5dHFFRFRoN0tR?=
- =?utf-8?B?czFBL3hMVEVzeDkvSWtZbXkyY0tyRlB4allJNExOVlViV3VramdvMzFuU3ZU?=
- =?utf-8?B?c1pFeGh6NCs4eDZRSFdKdDVhYm1ZQkxGNDV0S2VtRHlkMGVQZGtyRmxoVURR?=
- =?utf-8?B?MzlOaFVkcGR3dzRnTkpHbnF1SGowSXAzeG52YnlaRi90M2x1Nk4wQ2xWMWRJ?=
- =?utf-8?B?NHFUL3lncXJrbmNCOFF2cVhEcUYwbWdMampsOUlDTnVuMnp2bWRJUjF5YW1O?=
- =?utf-8?B?eE9GWDFINncrSllSU0l6dktRSWYzNHJodVBQVGJ3ZGFpR3J0VVBBLzE1dzB4?=
- =?utf-8?B?VktYYkYvdEs4bWRsZEtNSzJ6azVHMUZMY3hWUnpXSmF0a0hxVVhjRnZhZG54?=
- =?utf-8?B?aUlwSzRJbGY3SUkwU3FYM0lUT2hyNUxDWU5CZW9teENnUUZoeFk4VTVXQzJx?=
- =?utf-8?B?VktKYyt4UkQvbHRjNG5Hb0gwREN4UE9LQ2tuVThEb1BHSU1IaUNBb0g3YlF3?=
- =?utf-8?B?NzIrOWRPTHJvWVFic3EyaFg5TTV0eUVCRXRBRWc5UmJZUE5xVnpBYkppVEs1?=
- =?utf-8?B?YVZkY3l5YXphTmxjaW9IWjNZVE54SlJnRHQxdWNEREJad0hhNVhJTTV0aVE1?=
- =?utf-8?B?WlFHTXNUYmtyYjdOcWg3N2dxMS95Y1E5Mld5aXZ0dmlXL3d5Q1V4bE5rd04x?=
- =?utf-8?B?by9YM05POW1FWUkyUkEvRi9Bc29ob3VKb01FUjFkRXBsQ3JxajM5Y29MTmor?=
- =?utf-8?B?bnU0Y1ZiQVFRSk91YTNTZHNZYXFSYVJoZmdQaldZU3RNcWdwckFiL2p2RURT?=
- =?utf-8?B?bE4yeHZ4WDZoaENOc2VCVExlbTd4TlNnVUxJYTFvYjZuUVRyWWxZLzJ6bE41?=
- =?utf-8?B?VzhJcG9tN3JHd2tldDBhaWJBSzFrWmhmaFNSMVRoVENKZzNnMjRnMDZqL2NV?=
- =?utf-8?B?NmdtV0s4eWF2ekc2ZW5FYWtKWE9ieHp4NnpaRnRNUFJrL01JN3JUY2JXV3gw?=
- =?utf-8?B?bmoxNDR4K1pCWXdpM0grRFdmRDBZcXdIbXMvY2JZNkJpQVpXMEJKaW9Qa1Iv?=
- =?utf-8?B?MnRCY2UvMW1DcHpkZzkycDVYRzVIdjBrenBPR2FPcVh3czRBRGcrZzN2eXhV?=
- =?utf-8?B?L1ljbVMrQmF1QjJMZlJGb2ZNOHpONW5QWHdkR0REbWU3TWpRL0s5SHIyclNP?=
- =?utf-8?B?N2VCTFBDUlZTMDRHT29GRmwvQ3BPNUZOc3JJeW1KdENjZGdma2NHdGZJWDlF?=
- =?utf-8?B?a04rOXM3dlh4Rlp3NmtuQ2F1TU9Dc3VKclpHam01UkFSTTQvQWRwbFJFOEV2?=
- =?utf-8?B?QzV2bVRFdWtiakpKVzI4WEdvMjg1VXpZS2V1d1BhMStQQ3FZaUdwNmhUb2F1?=
- =?utf-8?B?M2EreE40QWVCakc4OG8wZDZpcmRBZmRhTFNvTmZEd1dzeEhtZTR6TzRybkFh?=
- =?utf-8?B?blg5RC8zY2hVZGw5a2U0WVoyRkcwTUlQLzhpY3RqNFdqcVE0YWwrS3JuWjdI?=
- =?utf-8?B?dGFqd2x5RXRMODY4U1VrcC8zcWh1YnkzVUlVRWZEd3VuTjFFQTJpQ3NmbGx0?=
- =?utf-8?B?UEp5UFJXc1lUZ0FrbmpOWnh3NlZCSlUxYzdlZ3d0cTlKR09iTXorWkxoRG9w?=
- =?utf-8?B?S0RjL2RLTkRRdlJLc0ZkYlZRTlZ2VHhsR0hpQ28wcHFmTzdDL3VzY2RWenVQ?=
- =?utf-8?B?ZTEybmx6OGttYWtxSmRJdUYzNVNNZWhrVGI1dDlLaGpRT01NQndvZkRLb1Bu?=
- =?utf-8?B?MW53Mk8yc2xFVXBvRmFVZ01zUDVjU1JQdVQvbXRlOHN5aG1ybGFQVDQxcGFp?=
- =?utf-8?B?TjI0N0dvaU1EZ3Z3QmdldGMzV2Nqelp5ZkxqTDBYaEZqdkNoWmNpUDZ3SkNp?=
- =?utf-8?B?ZG9vcjBXNWxJZXI4Yjd4MzArQ0p2NGxQdlh5OVpPY0k1VFhRdnVxNUNKbVNt?=
- =?utf-8?B?c3NQeldmMGozRGlyM3FkQzVXKzU4UW1BYkdwckR1WGpVY3dhR1FzTE5LNnVD?=
- =?utf-8?B?eFc2VngwSGhuY044NDF3ZU9aS1FqVzJOeUtycWp3SkhVSGNwd0NZV0tXdlZJ?=
- =?utf-8?B?S1FHQXp0bHZqQVlYbWFKYiswUWtsc2NWeVlpY2hJeEw1eE1zYTNIZldzUDY3?=
- =?utf-8?B?MHZmamp1ZjVjcG1WTFFqSkRZOFA5NHJIUkUreU9oZ3g2WkJvdUV4UlN0ZmQw?=
- =?utf-8?B?d240T3R0ZTVHdzJJWnVUVFhOVlhyaVhNU1ZrR1R4SHJTZTlUYUM3ck1aK043?=
- =?utf-8?B?NTlrR2I1djNzWWJ5QlFXMHlNdjU3VmMyWHE2OWliM2RZZzBXQldNT2lkS3dy?=
- =?utf-8?B?Ti9Ba2g3SmFGdkpWOG50c2Ixb3lFM1NLMzdoSWhpN3RFWVY4SWJhQT09?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cc6302d5-d11f-4a7b-83c2-08dee20f6f9c
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR12MB6914.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jul 2026 01:21:46.0805
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: RdGYh6QRS2npVWFZqn+ADQeHIe/e6CpDITUiOffB6hJGR92Kgp0E+UwUehipMptaWpDE8uV7SZk/PkSwbsMHgw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8710
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[amd.com,quarantine];
+X-Spamd-Result: default: False [-3.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[amd.com:s=selector1];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-274658-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:sashal@kernel.org,m:stable@vger.kernel.org,m:an.astier@criteo.com,m:ardb@kernel.org,m:superm1@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[mario.limonciello@amd.com,stable@vger.kernel.org];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-274659-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:jirislaby@kernel.org,m:arnd@arndb.de,m:bhelgaas@google.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mario.limonciello@amd.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[amd.com:+];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:from_mime,amd.com:dkim,amd.com:mid]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,arndb.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1B3F0759DA7
+X-Rspamd-Queue-Id: 34C51759DCD
 
+From: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
 
+[ Upstream commit a103d2dede5683dabbac2c3374bc24b6a9434478 ]
 
-On 7/14/26 19:12, Sasha Levin wrote:
->> Background for this backport is that fwupd needs to be able to do CA
->> updates on Debian oldstable (bookworm) which tracks 6.1.7.  The CA update
->> process checks for free storage, and needs this function to do it.
-> 
-> Queued for 6.1. I also pulled in the follow-up fix 79b83606abc7 ("efivarfs: fix
-> statfs() on efivarfs") on top, so the broken statfs() error path this commit
-> shipped with doesn't land in 6.1.y, thanks.
-> 
+All irq_domain functions now accept fwnode instead of of_node. But many
+PCI controllers still extract dev to of_node and then of_node to fwnode.
 
-Much appreciated.
+Instead, clean this up and simply use the dev_fwnode() helper to extract
+fwnode directly from dev. Internally, it still does dev => of_node =>
+fwnode steps, but it's now hidden from the users.
+
+In the case of altera, this also removes an unused 'node' variable that is
+only used when CONFIG_OF is enabled:
+
+  drivers/pci/controller/pcie-altera.c: In function 'altera_pcie_init_irq_domain':
+  drivers/pci/controller/pcie-altera.c:855:29: error: unused variable 'node' [-Werror=unused-variable]
+    855 |         struct device_node *node = dev->of_node;
+
+Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>	# altera
+[bhelgaas: squash together, rebase to precede msi-parent]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Link: https://patch.msgid.link/20250521163329.2137973-1-arnd@kernel.org
+Link: https://patch.msgid.link/20250611104348.192092-16-jirislaby@kernel.org
+Link: https://patch.msgid.link/20250723065907.1841758-1-jirislaby@kernel.org
+Stable-dep-of: f865a57896bd ("PCI: mediatek: Fix IRQ domain leak when port fails to enable")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/pci/controller/dwc/pcie-designware-host.c    | 2 +-
+ drivers/pci/controller/mobiveil/pcie-mobiveil-host.c | 8 +++-----
+ drivers/pci/controller/pcie-altera-msi.c             | 2 +-
+ drivers/pci/controller/pcie-altera.c                 | 3 +--
+ drivers/pci/controller/pcie-mediatek.c               | 2 +-
+ drivers/pci/controller/pcie-xilinx-nwl.c             | 2 +-
+ 6 files changed, 8 insertions(+), 11 deletions(-)
+
+diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
+index 42d8116a4a0021..f38c248da44984 100644
+--- a/drivers/pci/controller/dwc/pcie-designware-host.c
++++ b/drivers/pci/controller/dwc/pcie-designware-host.c
+@@ -233,7 +233,7 @@ static const struct irq_domain_ops dw_pcie_msi_domain_ops = {
+ int dw_pcie_allocate_domains(struct pcie_port *pp)
+ {
+ 	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+-	struct fwnode_handle *fwnode = of_node_to_fwnode(pci->dev->of_node);
++	struct fwnode_handle *fwnode = dev_fwnode(pci->dev);
+ 
+ 	pp->irq_domain = irq_domain_create_linear(fwnode, pp->num_vectors,
+ 					       &dw_pcie_msi_domain_ops, pp);
+diff --git a/drivers/pci/controller/mobiveil/pcie-mobiveil-host.c b/drivers/pci/controller/mobiveil/pcie-mobiveil-host.c
+index a2632d02ce8f8c..613dc2bad1e146 100644
+--- a/drivers/pci/controller/mobiveil/pcie-mobiveil-host.c
++++ b/drivers/pci/controller/mobiveil/pcie-mobiveil-host.c
+@@ -452,7 +452,7 @@ static const struct irq_domain_ops msi_domain_ops = {
+ static int mobiveil_allocate_msi_domains(struct mobiveil_pcie *pcie)
+ {
+ 	struct device *dev = &pcie->pdev->dev;
+-	struct fwnode_handle *fwnode = of_node_to_fwnode(dev->of_node);
++	struct fwnode_handle *fwnode = dev_fwnode(dev);
+ 	struct mobiveil_msi *msi = &pcie->rp.msi;
+ 
+ 	mutex_init(&msi->lock);
+@@ -478,13 +478,11 @@ static int mobiveil_allocate_msi_domains(struct mobiveil_pcie *pcie)
+ static int mobiveil_pcie_init_irq_domain(struct mobiveil_pcie *pcie)
+ {
+ 	struct device *dev = &pcie->pdev->dev;
+-	struct device_node *node = dev->of_node;
+ 	struct mobiveil_root_port *rp = &pcie->rp;
+ 
+ 	/* setup INTx */
+-	rp->intx_domain = irq_domain_add_linear(node, PCI_NUM_INTX,
+-						&intx_domain_ops, pcie);
+-
++	rp->intx_domain = irq_domain_create_linear(dev_fwnode(dev), PCI_NUM_INTX, &intx_domain_ops,
++						   pcie);
+ 	if (!rp->intx_domain) {
+ 		dev_err(dev, "Failed to get a INTx IRQ domain\n");
+ 		return -ENOMEM;
+diff --git a/drivers/pci/controller/pcie-altera-msi.c b/drivers/pci/controller/pcie-altera-msi.c
+index e1636f7714ca70..6da6b14181d978 100644
+--- a/drivers/pci/controller/pcie-altera-msi.c
++++ b/drivers/pci/controller/pcie-altera-msi.c
+@@ -173,7 +173,7 @@ static const struct irq_domain_ops msi_domain_ops = {
+ 
+ static int altera_allocate_domains(struct altera_msi *msi)
+ {
+-	struct fwnode_handle *fwnode = of_node_to_fwnode(msi->pdev->dev.of_node);
++	struct fwnode_handle *fwnode = dev_fwnode(&msi->pdev->dev);
+ 
+ 	msi->inner_domain = irq_domain_add_linear(NULL, msi->num_of_vectors,
+ 					     &msi_domain_ops, msi);
+diff --git a/drivers/pci/controller/pcie-altera.c b/drivers/pci/controller/pcie-altera.c
+index 523bd928b380a4..a7ed08a7d34193 100644
+--- a/drivers/pci/controller/pcie-altera.c
++++ b/drivers/pci/controller/pcie-altera.c
+@@ -672,10 +672,9 @@ static void altera_pcie_isr(struct irq_desc *desc)
+ static int altera_pcie_init_irq_domain(struct altera_pcie *pcie)
+ {
+ 	struct device *dev = &pcie->pdev->dev;
+-	struct device_node *node = dev->of_node;
+ 
+ 	/* Setup INTx */
+-	pcie->irq_domain = irq_domain_add_linear(node, PCI_NUM_INTX,
++	pcie->irq_domain = irq_domain_create_linear(dev_fwnode(dev), PCI_NUM_INTX,
+ 					&intx_domain_ops, pcie);
+ 	if (!pcie->irq_domain) {
+ 		dev_err(dev, "Failed to get a INTx IRQ domain\n");
+diff --git a/drivers/pci/controller/pcie-mediatek.c b/drivers/pci/controller/pcie-mediatek.c
+index bab962ec7ab468..3e4b0882ee3350 100644
+--- a/drivers/pci/controller/pcie-mediatek.c
++++ b/drivers/pci/controller/pcie-mediatek.c
+@@ -494,7 +494,7 @@ static struct msi_domain_info mtk_msi_domain_info = {
+ 
+ static int mtk_pcie_allocate_msi_domains(struct mtk_pcie_port *port)
+ {
+-	struct fwnode_handle *fwnode = of_node_to_fwnode(port->pcie->dev->of_node);
++	struct fwnode_handle *fwnode = dev_fwnode(port->pcie->dev);
+ 
+ 	mutex_init(&port->lock);
+ 
+diff --git a/drivers/pci/controller/pcie-xilinx-nwl.c b/drivers/pci/controller/pcie-xilinx-nwl.c
+index bf9c30776087ca..696f0aacce5198 100644
+--- a/drivers/pci/controller/pcie-xilinx-nwl.c
++++ b/drivers/pci/controller/pcie-xilinx-nwl.c
+@@ -515,7 +515,7 @@ static int nwl_pcie_init_msi_irq_domain(struct nwl_pcie *pcie)
+ {
+ #ifdef CONFIG_PCI_MSI
+ 	struct device *dev = pcie->dev;
+-	struct fwnode_handle *fwnode = of_node_to_fwnode(dev->of_node);
++	struct fwnode_handle *fwnode = dev_fwnode(dev);
+ 	struct nwl_msi *msi = &pcie->msi;
+ 
+ 	msi->dev_domain = irq_domain_add_linear(NULL, INT_PCI_MSI_NR,
+-- 
+2.53.0
+
 
